@@ -1,0 +1,14 @@
+LIBRARY libarpack
+EXPORTS
+    cnaupd_
+    cneupd_
+    dsaupd_
+    dseupd_
+    dnaupd_
+    dneupd_
+    ssaupd_
+    sseupd_
+    snaupd_
+    sneupd_
+    znaupd_
+    zneupd_

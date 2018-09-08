@@ -3,9 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2019
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "static", "static", "{557469D5-C174-4774-8215-C60A327C58FD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{2AA7C31A-C8C5-4596-88EE-B3EDD40400A1}"
+EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "arpack-ng", "Visual Studio\static\arpack-ng\arpack-ng.vcxproj", "{8E839A8F-36C7-48DE-8A88-E94DFAE6E416}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "static", "static", "{557469D5-C174-4774-8215-C60A327C58FD}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libarpack", "Visual Studio\shared\libarpack\libarpack.vcxproj", "{56B3596E-6653-4BF3-B1E6-AAC213C1F2A1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,12 +27,21 @@ Global
 		{8E839A8F-36C7-48DE-8A88-E94DFAE6E416}.Release|x64.Build.0 = Release|x64
 		{8E839A8F-36C7-48DE-8A88-E94DFAE6E416}.Release|x86.ActiveCfg = Release|Win32
 		{8E839A8F-36C7-48DE-8A88-E94DFAE6E416}.Release|x86.Build.0 = Release|Win32
+		{56B3596E-6653-4BF3-B1E6-AAC213C1F2A1}.Debug|x64.ActiveCfg = Debug|x64
+		{56B3596E-6653-4BF3-B1E6-AAC213C1F2A1}.Debug|x64.Build.0 = Debug|x64
+		{56B3596E-6653-4BF3-B1E6-AAC213C1F2A1}.Debug|x86.ActiveCfg = Debug|Win32
+		{56B3596E-6653-4BF3-B1E6-AAC213C1F2A1}.Debug|x86.Build.0 = Debug|Win32
+		{56B3596E-6653-4BF3-B1E6-AAC213C1F2A1}.Release|x64.ActiveCfg = Release|x64
+		{56B3596E-6653-4BF3-B1E6-AAC213C1F2A1}.Release|x64.Build.0 = Release|x64
+		{56B3596E-6653-4BF3-B1E6-AAC213C1F2A1}.Release|x86.ActiveCfg = Release|Win32
+		{56B3596E-6653-4BF3-B1E6-AAC213C1F2A1}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{8E839A8F-36C7-48DE-8A88-E94DFAE6E416} = {557469D5-C174-4774-8215-C60A327C58FD}
+		{56B3596E-6653-4BF3-B1E6-AAC213C1F2A1} = {2AA7C31A-C8C5-4596-88EE-B3EDD40400A1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B8E70845-C25B-4F1F-9E6A-9698AF9B68C5}
