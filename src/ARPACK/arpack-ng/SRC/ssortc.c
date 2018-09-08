@@ -1,4 +1,4 @@
-/* D:\Projekte\csparse-interop\vs-arpack\src\ARPACK\arpack-ng\SRC\ssortc.f -- translated by f2c (version 20100827).
+/* D:\Projekte\ARPACK\arpack-ng\SRC\ssortc.f -- translated by f2c (version 20100827).
    You must link the resulting object file with libf2c:
 	on Microsoft Windows system, link with libf2c.lib;
 	on Linux or Unix systems, link with .../path/to/libf2c.a -lm
@@ -90,7 +90,7 @@
     /* Local variables */
     integer i__, j, igap;
     real temp, temp1, temp2;
-    extern real slapy2_(real *, real *);
+    extern doublereal slapy2_(real *, real *);
 
 
 /*     %------------------% */
@@ -323,7 +323,7 @@ L140:
 		goto L150;
 	    }
 
-	    if ((r__1 = ximag[j], abs(r__1)) > (r__2 = ximag[j + igap], abs(
+	    if ((r__1 = ximag[j], dabs(r__1)) > (r__2 = ximag[j + igap], dabs(
 		    r__2))) {
 		temp = xreal[j];
 		xreal[j] = xreal[j + igap];
@@ -368,7 +368,7 @@ L170:
 		goto L180;
 	    }
 
-	    if ((r__1 = ximag[j], abs(r__1)) < (r__2 = ximag[j + igap], abs(
+	    if ((r__1 = ximag[j], dabs(r__1)) < (r__2 = ximag[j + igap], dabs(
 		    r__2))) {
 		temp = xreal[j];
 		xreal[j] = xreal[j + igap];

@@ -1,4 +1,4 @@
-/* D:\Projekte\csparse-interop\vs-arpack\src\ARPACK\arpack-ng\SRC\ssortr.f -- translated by f2c (version 20100827).
+/* D:\Projekte\ARPACK\arpack-ng\SRC\ssortr.f -- translated by f2c (version 20100827).
    You must link the resulting object file with libf2c:
 	on Microsoft Windows system, link with libf2c.lib;
 	on Linux or Unix systems, link with .../path/to/libf2c.a -lm
@@ -160,8 +160,8 @@ L50:
 		goto L60;
 	    }
 
-	    if ((r__1 = x1[j], abs(r__1)) < (r__2 = x1[j + igap], abs(r__2))) 
-		    {
+	    if ((r__1 = x1[j], dabs(r__1)) < (r__2 = x1[j + igap], dabs(r__2))
+		    ) {
 		temp = x1[j];
 		x1[j] = x1[j + igap];
 		x1[j + igap] = temp;
@@ -235,8 +235,8 @@ L110:
 		goto L120;
 	    }
 
-	    if ((r__1 = x1[j], abs(r__1)) > (r__2 = x1[j + igap], abs(r__2))) 
-		    {
+	    if ((r__1 = x1[j], dabs(r__1)) > (r__2 = x1[j + igap], dabs(r__2))
+		    ) {
 		temp = x1[j];
 		x1[j] = x1[j + igap];
 		x1[j + igap] = temp;

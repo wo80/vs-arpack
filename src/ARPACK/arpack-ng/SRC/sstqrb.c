@@ -1,4 +1,4 @@
-/* D:\Projekte\csparse-interop\vs-arpack\src\ARPACK\arpack-ng\SRC\sstqrb.f -- translated by f2c (version 20100827).
+/* D:\Projekte\ARPACK\arpack-ng\SRC\sstqrb.f -- translated by f2c (version 20100827).
    You must link the resulting object file with libf2c:
 	on Microsoft Windows system, link with libf2c.lib;
 	on Linux or Unix systems, link with .../path/to/libf2c.a -lm
@@ -150,9 +150,9 @@ static real c_b31 = 1.f;
     integer lendm1, lendp1;
     extern /* Subroutine */ int slaev2_(real *, real *, real *, real *, real *
 	    , real *, real *);
-    extern real slapy2_(real *, real *);
+    extern doublereal slapy2_(real *, real *);
     integer iscale;
-    extern real slamch_(char *, ftnlen);
+    extern doublereal slamch_(char *, ftnlen);
     real safmin, safmax;
     extern /* Subroutine */ int slascl_(char *, integer *, integer *, real *, 
 	    real *, integer *, integer *, real *, integer *, integer *, 
@@ -163,7 +163,7 @@ static real c_b31 = 1.f;
     real ssfmin;
     integer nmaxit, icompz;
     real ssfmax;
-    extern real slanst_(char *, integer *, real *, real *, ftnlen);
+    extern doublereal slanst_(char *, integer *, real *, real *, ftnlen);
     extern /* Subroutine */ int slasrt_(char *, integer *, real *, integer *, 
 	    ftnlen);
 
@@ -290,12 +290,12 @@ L10:
     if (l1 <= nm1) {
 	i__1 = nm1;
 	for (m = l1; m <= i__1; ++m) {
-	    tst = (r__1 = e[m], abs(r__1));
+	    tst = (r__1 = e[m], dabs(r__1));
 	    if (tst == 0.f) {
 		goto L30;
 	    }
-	    if (tst <= sqrt((r__1 = d__[m], abs(r__1))) * sqrt((r__2 = d__[m 
-		    + 1], abs(r__2))) * eps) {
+	    if (tst <= sqrt((r__1 = d__[m], dabs(r__1))) * sqrt((r__2 = d__[m 
+		    + 1], dabs(r__2))) * eps) {
 		e[m] = 0.f;
 		goto L30;
 	    }
@@ -342,7 +342,7 @@ L30:
 
 /*     choose between ql and qr iteration */
 
-    if ((r__1 = d__[lend], abs(r__1)) < (r__2 = d__[l], abs(r__2))) {
+    if ((r__1 = d__[lend], dabs(r__1)) < (r__2 = d__[l], dabs(r__2))) {
 	lend = lsv;
 	l = lendsv;
     }
@@ -359,10 +359,10 @@ L40:
 	    i__1 = lendm1;
 	    for (m = l; m <= i__1; ++m) {
 /* Computing 2nd power */
-		r__2 = (r__1 = e[m], abs(r__1));
+		r__2 = (r__1 = e[m], dabs(r__1));
 		tst = r__2 * r__2;
-		if (tst <= eps2 * (r__1 = d__[m], abs(r__1)) * (r__2 = d__[m 
-			+ 1], abs(r__2)) + safmin) {
+		if (tst <= eps2 * (r__1 = d__[m], dabs(r__1)) * (r__2 = d__[m 
+			+ 1], dabs(r__2)) + safmin) {
 		    goto L60;
 		}
 /* L50: */
@@ -493,10 +493,10 @@ L90:
 	    i__1 = lendp1;
 	    for (m = l; m >= i__1; --m) {
 /* Computing 2nd power */
-		r__2 = (r__1 = e[m - 1], abs(r__1));
+		r__2 = (r__1 = e[m - 1], dabs(r__1));
 		tst = r__2 * r__2;
-		if (tst <= eps2 * (r__1 = d__[m], abs(r__1)) * (r__2 = d__[m 
-			- 1], abs(r__2)) + safmin) {
+		if (tst <= eps2 * (r__1 = d__[m], dabs(r__1)) * (r__2 = d__[m 
+			- 1], dabs(r__2)) + safmin) {
 		    goto L110;
 		}
 /* L100: */
