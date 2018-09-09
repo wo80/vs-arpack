@@ -417,8 +417,7 @@ static integer c__1 = 1;
 /* Subroutine */ int cnaupd_(integer *ido, char *bmat, integer *n, char *
 	which, integer *nev, real *tol, complex *resid, integer *ncv, complex 
 	*v, integer *ldv, integer *iparam, integer *ipntr, complex *workd, 
-	complex *workl, integer *lworkl, real *rwork, integer *info, ftnlen 
-	bmat_len, ftnlen which_len)
+	complex *workl, integer *lworkl, real *rwork, integer *info)
 {
     /* Format strings */
     static char fmt_1000[] = "(//,5x,\002==================================="

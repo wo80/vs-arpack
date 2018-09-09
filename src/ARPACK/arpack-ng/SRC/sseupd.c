@@ -259,8 +259,7 @@ static real c_b111 = 1.f;
 	real *d__, real *z__, integer *ldz, real *sigma, char *bmat, integer *
 	n, char *which, integer *nev, real *tol, real *resid, integer *ncv, 
 	real *v, integer *ldv, integer *iparam, integer *ipntr, real *workd, 
-	real *workl, integer *lworkl, integer *info, ftnlen howmny_len, 
-	ftnlen bmat_len, ftnlen which_len)
+	real *workl, integer *lworkl, integer *info)
 {
     /* System generated locals */
     integer v_dim1, v_offset, z_dim1, z_offset, i__1;

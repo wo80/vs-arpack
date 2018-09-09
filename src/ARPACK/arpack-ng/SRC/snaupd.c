@@ -444,8 +444,7 @@ static integer c__1 = 1;
 /* Subroutine */ int snaupd_(integer *ido, char *bmat, integer *n, char *
 	which, integer *nev, real *tol, real *resid, integer *ncv, real *v, 
 	integer *ldv, integer *iparam, integer *ipntr, real *workd, real *
-	workl, integer *lworkl, integer *info, ftnlen bmat_len, ftnlen 
-	which_len)
+	workl, integer *lworkl, integer *info)
 {
     /* Format strings */
     static char fmt_1000[] = "(//,5x,\002==================================="

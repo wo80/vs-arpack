@@ -444,8 +444,7 @@ static integer c__1 = 1;
 /* Subroutine */ int dnaupd_(integer *ido, char *bmat, integer *n, char *
 	which, integer *nev, doublereal *tol, doublereal *resid, integer *ncv,
 	 doublereal *v, integer *ldv, integer *iparam, integer *ipntr, 
-	doublereal *workd, doublereal *workl, integer *lworkl, integer *info, 
-	ftnlen bmat_len, ftnlen which_len)
+	doublereal *workd, doublereal *workl, integer *lworkl, integer *info)
 {
     /* Format strings */
     static char fmt_1000[] = "(//,5x,\002==================================="

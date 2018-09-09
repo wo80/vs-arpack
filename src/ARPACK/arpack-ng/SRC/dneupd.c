@@ -348,8 +348,7 @@ static doublereal c_b64 = -1.;
 	bmat, integer *n, char *which, integer *nev, doublereal *tol, 
 	doublereal *resid, integer *ncv, doublereal *v, integer *ldv, integer 
 	*iparam, integer *ipntr, doublereal *workd, doublereal *workl, 
-	integer *lworkl, integer *info, ftnlen howmny_len, ftnlen bmat_len, 
-	ftnlen which_len)
+	integer *lworkl, integer *info)
 {
     /* System generated locals */
     integer v_dim1, v_offset, z_dim1, z_offset, i__1;

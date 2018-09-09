@@ -293,8 +293,7 @@ static logical c_true = TRUE_;
 	integer *nev, doublereal *tol, doublecomplex *resid, integer *ncv, 
 	doublecomplex *v, integer *ldv, integer *iparam, integer *ipntr, 
 	doublecomplex *workd, doublecomplex *workl, integer *lworkl, 
-	doublereal *rwork, integer *info, ftnlen howmny_len, ftnlen bmat_len, 
-	ftnlen which_len)
+	doublereal *rwork, integer *info)
 {
     /* System generated locals */
     integer v_dim1, v_offset, z_dim1, z_offset, i__1, i__2;

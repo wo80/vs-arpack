@@ -418,7 +418,7 @@ static integer c__1 = 1;
 	which, integer *nev, doublereal *tol, doublecomplex *resid, integer *
 	ncv, doublecomplex *v, integer *ldv, integer *iparam, integer *ipntr, 
 	doublecomplex *workd, doublecomplex *workl, integer *lworkl, 
-	doublereal *rwork, integer *info, ftnlen bmat_len, ftnlen which_len)
+	doublereal *rwork, integer *info)
 {
     /* Format strings */
     static char fmt_1000[] = "(//,5x,\002==================================="
