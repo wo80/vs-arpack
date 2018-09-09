@@ -466,7 +466,7 @@ static integer c__1 = 1;
 	    , char *, integer *, integer *, real *, complex *, integer *, 
 	    integer *, integer *, integer *, complex *, integer *, complex *, 
 	    integer *, complex *, complex *, complex *, integer *, complex *, 
-	    integer *, complex *, real *, integer *, ftnlen, ftnlen);
+	    integer *, complex *, real *, integer *);
     extern doublereal slamch_(char *, ftnlen);
     extern /* Subroutine */ int arscnd_(real *);
     static integer bounds, ishift, msglvl, mxiter;
@@ -691,7 +691,7 @@ static integer c__1 = 1;
     cnaup2_(ido, bmat, n, which, &nev0, &np, tol, &resid[1], &mode, &iupd, &
 	    ishift, &mxiter, &v[v_offset], ldv, &workl[ih], &ldh, &workl[ritz]
 	    , &workl[bounds], &workl[iq], &ldq, &workl[iw], &ipntr[1], &workd[
-	    1], &rwork[1], info, (ftnlen)1, (ftnlen)2);
+	    1], &rwork[1], info);
 
 /*     %--------------------------------------------------% */
 /*     | ido .ne. 99 implies use of reverse communication | */

@@ -78,7 +78,7 @@
 /* ----------------------------------------------------------------------- */
 
 /* Subroutine */ int ssortc_(char *which, logical *apply, integer *n, real *
-	xreal, real *ximag, real *y, ftnlen which_len)
+	xreal, real *ximag, real *y)
 {
     /* System generated locals */
     integer i__1;

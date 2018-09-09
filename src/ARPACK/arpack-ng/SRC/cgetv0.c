@@ -154,8 +154,7 @@ static integer c__1 = 1;
 
 /* Subroutine */ int cgetv0_(integer *ido, char *bmat, integer *itry, logical 
 	*initv, integer *n, integer *j, complex *v, integer *ldv, complex *
-	resid, real *rnorm, integer *ipntr, complex *workd, integer *ierr, 
-	ftnlen bmat_len)
+	resid, real *rnorm, integer *ipntr, complex *workd, integer *ierr)
 {
     /* Initialized data */
 

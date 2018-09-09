@@ -251,7 +251,7 @@ static integer c__2 = 2;
 /* Subroutine */ int znaitr_(integer *ido, char *bmat, integer *n, integer *k,
 	 integer *np, integer *nb, doublecomplex *resid, doublereal *rnorm, 
 	doublecomplex *v, integer *ldv, doublecomplex *h__, integer *ldh, 
-	integer *ipntr, doublecomplex *workd, integer *info, ftnlen bmat_len)
+	integer *ipntr, doublecomplex *workd, integer *info)
 {
     /* Initialized data */
 
@@ -303,7 +303,7 @@ static integer c__2 = 2;
     extern /* Subroutine */ int zgetv0_(integer *, char *, integer *, logical 
 	    *, integer *, integer *, doublecomplex *, integer *, 
 	    doublecomplex *, doublereal *, integer *, doublecomplex *, 
-	    integer *, ftnlen);
+	    integer *);
     extern doublereal dlamch_(char *, ftnlen);
     extern /* Subroutine */ int arscnd_(real *), zdscal_(integer *, 
 	    doublereal *, doublecomplex *, integer *);
@@ -534,7 +534,7 @@ L30:
 /*           %--------------------------------------% */
 
     zgetv0_(ido, bmat, &itry, &c_false, n, &j, &v[v_offset], ldv, &resid[1], 
-	    rnorm, &ipntr[1], &workd[1], &ierr, (ftnlen)1);
+	    rnorm, &ipntr[1], &workd[1], &ierr);
     if (*ido != 99) {
 	goto L9000;
     }

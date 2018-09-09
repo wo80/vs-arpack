@@ -73,7 +73,7 @@
 /* ----------------------------------------------------------------------- */
 
 /* Subroutine */ int csortc_(char *which, logical *apply, integer *n, complex 
-	*x, complex *y, ftnlen which_len)
+	*x, complex *y)
 {
     /* System generated locals */
     integer i__1, i__2, i__3;

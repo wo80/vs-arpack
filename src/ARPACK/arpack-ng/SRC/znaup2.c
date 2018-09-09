@@ -214,7 +214,7 @@ static integer c__2 = 2;
 	 doublecomplex *v, integer *ldv, doublecomplex *h__, integer *ldh, 
 	doublecomplex *ritz, doublecomplex *bounds, doublecomplex *q, integer 
 	*ldq, doublecomplex *workl, integer *ipntr, doublecomplex *workd, 
-	doublereal *rwork, integer *info, ftnlen bmat_len, ftnlen which_len)
+	doublereal *rwork, integer *info)
 {
     /* System generated locals */
     integer h_dim1, h_offset, q_dim1, q_offset, v_dim1, v_offset, i__1, i__2, 
@@ -255,7 +255,7 @@ static integer c__2 = 2;
     extern /* Subroutine */ int zgetv0_(integer *, char *, integer *, logical 
 	    *, integer *, integer *, doublecomplex *, integer *, 
 	    doublecomplex *, doublereal *, integer *, doublecomplex *, 
-	    integer *, ftnlen);
+	    integer *);
     extern doublereal dlamch_(char *, ftnlen);
     static integer nevbef;
     extern /* Subroutine */ int arscnd_(real *);
@@ -266,16 +266,16 @@ static integer c__2 = 2;
     extern /* Subroutine */ int znaitr_(integer *, char *, integer *, integer 
 	    *, integer *, integer *, doublecomplex *, doublereal *, 
 	    doublecomplex *, integer *, doublecomplex *, integer *, integer *,
-	     doublecomplex *, integer *, ftnlen), zneigh_(doublereal *, 
+	     doublecomplex *, integer *), zneigh_(doublereal *, 
 	    integer *, doublecomplex *, integer *, doublecomplex *, 
 	    doublecomplex *, doublecomplex *, integer *, doublecomplex *, 
 	    doublereal *, integer *), zngets_(integer *, char *, integer *, 
-	    integer *, doublecomplex *, doublecomplex *, ftnlen), znapps_(
+	    integer *, doublecomplex *, doublecomplex *), znapps_(
 	    integer *, integer *, integer *, doublecomplex *, doublecomplex *,
 	     integer *, doublecomplex *, integer *, doublecomplex *, 
 	    doublecomplex *, integer *, doublecomplex *, doublecomplex *), 
 	    zsortc_(char *, logical *, integer *, doublecomplex *, 
-	    doublecomplex *, ftnlen);
+	    doublecomplex *);
     doublecomplex cmpnorm;
 
 
@@ -425,7 +425,7 @@ static integer c__2 = 2;
 
     if (getv0) {
 	zgetv0_(ido, bmat, &c__1, &initv, n, &c__1, &v[v_offset], ldv, &resid[
-		1], &rnorm, &ipntr[1], &workd[1], info, (ftnlen)1);
+		1], &rnorm, &ipntr[1], &workd[1], info);
 
 	if (*ido != 99) {
 	    goto L9000;
@@ -475,7 +475,7 @@ static integer c__2 = 2;
 /*     %----------------------------------------------------------% */
 
     znaitr_(ido, bmat, n, &c__0, nev, mode, &resid[1], &rnorm, &v[v_offset], 
-	    ldv, &h__[h_offset], ldh, &ipntr[1], &workd[1], info, (ftnlen)1);
+	    ldv, &h__[h_offset], ldh, &ipntr[1], &workd[1], info);
 
     if (*ido != 99) {
 	goto L9000;
@@ -529,7 +529,7 @@ L20:
     update = TRUE_;
 
     znaitr_(ido, bmat, n, nev, np, mode, &resid[1], &rnorm, &v[v_offset], ldv,
-	     &h__[h_offset], ldh, &ipntr[1], &workd[1], info, (ftnlen)1);
+	     &h__[h_offset], ldh, &ipntr[1], &workd[1], info);
 
     if (*ido != 99) {
 	goto L9000;
@@ -593,7 +593,7 @@ L20:
 /*        | BOUNDS respectively.                              | */
 /*        %---------------------------------------------------% */
 
-    zngets_(ishift, which, nev, np, &ritz[1], &bounds[1], (ftnlen)2);
+    zngets_(ishift, which, nev, np, &ritz[1], &bounds[1]);
 
 /*        %------------------------------------------------------------% */
 /*        | Convergence test: currently we use the following criteria. | */
@@ -713,7 +713,7 @@ L20:
 	    s_copy(wprime, "LI", (ftnlen)2, (ftnlen)2);
 	}
 
-	zsortc_(wprime, &c_true, &kplusp, &ritz[1], &bounds[1], (ftnlen)2);
+	zsortc_(wprime, &c_true, &kplusp, &ritz[1], &bounds[1]);
 
 /*           %--------------------------------------------------% */
 /*           | Scale the Ritz estimate of each Ritz value       | */
@@ -743,7 +743,7 @@ L20:
 /*           %---------------------------------------------------% */
 
 	s_copy(wprime, "LM", (ftnlen)2, (ftnlen)2);
-	zsortc_(wprime, &c_true, &nev0, &bounds[1], &ritz[1], (ftnlen)2);
+	zsortc_(wprime, &c_true, &nev0, &bounds[1], &ritz[1]);
 
 /*           %----------------------------------------------% */
 /*           | Scale the Ritz estimate back to its original | */
@@ -771,7 +771,7 @@ L20:
 /*           | ritz and bound.                               | */
 /*           %-----------------------------------------------% */
 
-	zsortc_(which, &c_true, &nconv, &ritz[1], &bounds[1], (ftnlen)2);
+	zsortc_(which, &c_true, &nconv, &ritz[1], &bounds[1]);
 
 	if (msglvl > 1) {
 	    zvout_(&debug_1.logfil, &kplusp, &ritz[1], &debug_1.ndigit, "_na"
@@ -824,7 +824,7 @@ L20:
 /*           %---------------------------------------% */
 
 	if (nevbef < *nev) {
-	    zngets_(ishift, which, nev, np, &ritz[1], &bounds[1], (ftnlen)2);
+	    zngets_(ishift, which, nev, np, &ritz[1], &bounds[1]);
 	}
 
     }

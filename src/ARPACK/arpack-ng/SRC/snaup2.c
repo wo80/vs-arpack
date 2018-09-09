@@ -219,7 +219,7 @@ static integer c__2 = 2;
 	mode, integer *iupd, integer *ishift, integer *mxiter, real *v, 
 	integer *ldv, real *h__, integer *ldh, real *ritzr, real *ritzi, real 
 	*bounds, real *q, integer *ldq, real *workl, integer *ipntr, real *
-	workd, integer *info, ftnlen bmat_len, ftnlen which_len)
+	workd, integer *info)
 {
     /* System generated locals */
     integer h_dim1, h_offset, q_dim1, q_offset, v_dim1, v_offset, i__1, i__2;
@@ -254,7 +254,7 @@ static integer c__2 = 2;
 	    integer *, integer *, char *, ftnlen), svout_(integer *, integer *
 	    , real *, integer *, char *, ftnlen), sgetv0_(integer *, char *, 
 	    integer *, logical *, integer *, integer *, real *, integer *, 
-	    real *, real *, integer *, real *, integer *, ftnlen);
+	    real *, real *, integer *, real *, integer *);
     extern doublereal slapy2_(real *, real *);
     static integer nevbef;
     extern doublereal slamch_(char *, ftnlen);
@@ -267,15 +267,15 @@ static integer c__2 = 2;
     static integer numcnv;
     extern /* Subroutine */ int snaitr_(integer *, char *, integer *, integer 
 	    *, integer *, integer *, real *, real *, real *, integer *, real *
-	    , integer *, integer *, real *, integer *, ftnlen), snconv_(
+	    , integer *, integer *, real *, integer *), snconv_(
 	    integer *, real *, real *, real *, real *, integer *), sneigh_(
 	    real *, integer *, real *, integer *, real *, real *, real *, 
 	    real *, integer *, real *, integer *), sngets_(integer *, char *, 
-	    integer *, integer *, real *, real *, real *, real *, real *, 
-	    ftnlen), snapps_(integer *, integer *, integer *, real *, real *, 
+	    integer *, integer *, real *, real *, real *, real *, real *),
+		snapps_(integer *, integer *, integer *, real *, real *,
 	    real *, integer *, real *, integer *, real *, real *, integer *, 
 	    real *, real *), ssortc_(char *, logical *, integer *, real *, 
-	    real *, real *, ftnlen);
+	    real *, real *);
 
 
 /*     %----------------------------------------------------% */
@@ -423,7 +423,7 @@ static integer c__2 = 2;
 
     if (getv0) {
 	sgetv0_(ido, bmat, &c__1, &initv, n, &c__1, &v[v_offset], ldv, &resid[
-		1], &rnorm, &ipntr[1], &workd[1], info, (ftnlen)1);
+		1], &rnorm, &ipntr[1], &workd[1], info);
 
 	if (*ido != 99) {
 	    goto L9000;
@@ -473,7 +473,7 @@ static integer c__2 = 2;
 /*     %----------------------------------------------------------% */
 
     snaitr_(ido, bmat, n, &c__0, nev, mode, &resid[1], &rnorm, &v[v_offset], 
-	    ldv, &h__[h_offset], ldh, &ipntr[1], &workd[1], info, (ftnlen)1);
+	    ldv, &h__[h_offset], ldh, &ipntr[1], &workd[1], info);
 
 /*     %---------------------------------------------------% */
 /*     | ido .ne. 99 implies use of reverse communication  | */
@@ -532,7 +532,7 @@ L20:
     update = TRUE_;
 
     snaitr_(ido, bmat, n, nev, np, mode, &resid[1], &rnorm, &v[v_offset], ldv,
-	     &h__[h_offset], ldh, &ipntr[1], &workd[1], info, (ftnlen)1);
+	     &h__[h_offset], ldh, &ipntr[1], &workd[1], info);
 
 /*        %---------------------------------------------------% */
 /*        | ido .ne. 99 implies use of reverse communication  | */
@@ -603,7 +603,7 @@ L20:
     *np = np0;
     numcnv = *nev;
     sngets_(ishift, which, nev, np, &ritzr[1], &ritzi[1], &bounds[1], &workl[
-	    1], &workl[*np + 1], (ftnlen)2);
+	    1], &workl[*np + 1]);
     if (*nev == nev0 + 1) {
 	numcnv = nev0 + 1;
     }
@@ -713,8 +713,7 @@ L20:
 	    s_copy(wprime, "LM", (ftnlen)2, (ftnlen)2);
 	}
 
-	ssortc_(wprime, &c_true, &kplusp, &ritzr[1], &ritzi[1], &bounds[1], (
-		ftnlen)2);
+	ssortc_(wprime, &c_true, &kplusp, &ritzr[1], &ritzi[1], &bounds[1]);
 
 /*           %----------------------------------------------% */
 /*           | Now sort Ritz values so that converged Ritz  | */
@@ -742,8 +741,7 @@ L20:
 	    s_copy(wprime, "LI", (ftnlen)2, (ftnlen)2);
 	}
 
-	ssortc_(wprime, &c_true, &kplusp, &ritzr[1], &ritzi[1], &bounds[1], (
-		ftnlen)2);
+	ssortc_(wprime, &c_true, &kplusp, &ritzr[1], &ritzi[1], &bounds[1]);
 
 /*           %--------------------------------------------------% */
 /*           | Scale the Ritz estimate of each Ritz value       | */
@@ -767,8 +765,7 @@ L20:
 /*           %----------------------------------------------------% */
 
 	s_copy(wprime, "LR", (ftnlen)2, (ftnlen)2);
-	ssortc_(wprime, &c_true, &numcnv, &bounds[1], &ritzr[1], &ritzi[1], (
-		ftnlen)2);
+	ssortc_(wprime, &c_true, &numcnv, &bounds[1], &ritzr[1], &ritzi[1]);
 
 /*           %----------------------------------------------% */
 /*           | Scale the Ritz estimate back to its original | */
@@ -790,8 +787,7 @@ L20:
 /*           | ritzr, ritzi and bound.                        | */
 /*           %------------------------------------------------% */
 
-	ssortc_(which, &c_true, &nconv, &ritzr[1], &ritzi[1], &bounds[1], (
-		ftnlen)2);
+	ssortc_(which, &c_true, &nconv, &ritzr[1], &ritzi[1], &bounds[1]);
 
 	if (msglvl > 1) {
 	    svout_(&debug_1.logfil, &kplusp, &ritzr[1], &debug_1.ndigit, 
@@ -860,7 +856,7 @@ L20:
 
 	if (nevbef < *nev) {
 	    sngets_(ishift, which, nev, np, &ritzr[1], &ritzi[1], &bounds[1], 
-		    &workl[1], &workl[*np + 1], (ftnlen)2);
+		    &workl[1], &workl[*np + 1]);
 	}
 
     }

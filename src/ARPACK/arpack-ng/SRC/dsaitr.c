@@ -247,7 +247,7 @@ static integer c__2 = 2;
 /* Subroutine */ int dsaitr_(integer *ido, char *bmat, integer *n, integer *k,
 	 integer *np, integer *mode, doublereal *resid, doublereal *rnorm, 
 	doublereal *v, integer *ldv, doublereal *h__, integer *ldh, integer *
-	ipntr, doublereal *workd, integer *info, ftnlen bmat_len)
+	ipntr, doublereal *workd, integer *info)
 {
     /* Initialized data */
 
@@ -285,8 +285,7 @@ static integer c__2 = 2;
     extern /* Subroutine */ int ivout_(integer *, integer *, integer *, 
 	    integer *, char *, ftnlen), dgetv0_(integer *, char *, integer *, 
 	    logical *, integer *, integer *, doublereal *, integer *, 
-	    doublereal *, doublereal *, integer *, doublereal *, integer *, 
-	    ftnlen);
+	    doublereal *, doublereal *, integer *, doublereal *, integer *);
     static doublereal rnorm1;
     extern doublereal dlamch_(char *, ftnlen);
     extern /* Subroutine */ int dlascl_(char *, integer *, integer *, 
@@ -510,7 +509,7 @@ L30:
 /*           %--------------------------------------% */
 
     dgetv0_(ido, bmat, &itry, &c_false, n, &j, &v[v_offset], ldv, &resid[1], 
-	    rnorm, &ipntr[1], &workd[1], &ierr, (ftnlen)1);
+	    rnorm, &ipntr[1], &workd[1], &ierr);
     if (*ido != 99) {
 	goto L9000;
     }

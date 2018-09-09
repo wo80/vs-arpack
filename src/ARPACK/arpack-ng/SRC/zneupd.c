@@ -354,7 +354,7 @@ static logical c_true = TRUE_;
 	    zlahqr_(logical *, logical *, integer *, integer *, integer *, 
 	    doublecomplex *, integer *, doublecomplex *, integer *, integer *,
 	     doublecomplex *, integer *, integer *), zngets_(integer *, char *
-	    , integer *, integer *, doublecomplex *, doublecomplex *, ftnlen),
+	    , integer *, integer *, doublecomplex *, doublecomplex *),
 	     zlaset_(char *, integer *, integer *, doublecomplex *, 
 	    doublecomplex *, doublecomplex *, integer *, ftnlen), ztrsen_(
 	    char *, char *, logical *, integer *, doublecomplex *, integer *, 
@@ -615,8 +615,7 @@ static logical c_true = TRUE_;
 
 	np = *ncv - *nev;
 	ishift = 0;
-	zngets_(&ishift, which, nev, &np, &workl[irz], &workl[bounds], (
-		ftnlen)2);
+	zngets_(&ishift, which, nev, &np, &workl[irz], &workl[bounds]);
 
 	if (msglvl > 2) {
 	    zvout_(&debug_1.logfil, ncv, &workl[irz], &debug_1.ndigit, "_neu"

@@ -309,8 +309,7 @@ static doublereal c_b111 = 1.;
 	    doublereal *, doublereal *, doublereal *, integer *, doublereal *,
 	     integer *, ftnlen), dsortr_(char *, logical *, integer *, 
 	    doublereal *, doublereal *, ftnlen), dsgets_(integer *, char *, 
-	    integer *, integer *, doublereal *, doublereal *, doublereal *, 
-	    ftnlen);
+	    integer *, integer *, doublereal *, doublereal *, doublereal *);
     integer leftptr, rghtptr;
 
 
@@ -595,8 +594,7 @@ static doublereal c_b111 = 1.;
 
 	np = *ncv - *nev;
 	ishift = 0;
-	dsgets_(&ishift, which, nev, &np, &workl[irz], &workl[bounds], &workl[
-		1], (ftnlen)2);
+	dsgets_(&ishift, which, nev, &np, &workl[irz], &workl[bounds], &workl[1]);
 
 	if (msglvl > 2) {
 	    dvout_(&debug_1.logfil, ncv, &workl[irz], &debug_1.ndigit, "_seu"

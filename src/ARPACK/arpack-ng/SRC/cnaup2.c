@@ -213,8 +213,7 @@ static integer c__2 = 2;
 	mode, integer *iupd, integer *ishift, integer *mxiter, complex *v, 
 	integer *ldv, complex *h__, integer *ldh, complex *ritz, complex *
 	bounds, complex *q, integer *ldq, complex *workl, integer *ipntr, 
-	complex *workd, real *rwork, integer *info, ftnlen bmat_len, ftnlen 
-	which_len)
+	complex *workd, real *rwork, integer *info)
 {
     /* System generated locals */
     integer h_dim1, h_offset, q_dim1, q_offset, v_dim1, v_offset, i__1, i__2, 
@@ -254,7 +253,7 @@ static integer c__2 = 2;
 	    , integer *, char *, ftnlen), svout_(integer *, integer *, real *,
 	     integer *, char *, ftnlen), cgetv0_(integer *, char *, integer *,
 	     logical *, integer *, integer *, complex *, integer *, complex *,
-	     real *, integer *, complex *, integer *, ftnlen);
+	     real *, integer *, complex *, integer *);
     extern doublereal scnrm2_(integer *, complex *, integer *), slapy2_(real *
 	    , real *);
     extern /* Subroutine */ int cneigh_(real *, integer *, complex *, integer 
@@ -269,12 +268,12 @@ static integer c__2 = 2;
     char wprime[2];
     extern /* Subroutine */ int cnaitr_(integer *, char *, integer *, integer 
 	    *, integer *, integer *, complex *, real *, complex *, integer *, 
-	    complex *, integer *, integer *, complex *, integer *, ftnlen), 
+	    complex *, integer *, integer *, complex *, integer *), 
 	    cngets_(integer *, char *, integer *, integer *, complex *, 
-	    complex *, ftnlen), cnapps_(integer *, integer *, integer *, 
+	    complex *), cnapps_(integer *, integer *, integer *, 
 	    complex *, complex *, integer *, complex *, integer *, complex *, 
 	    complex *, integer *, complex *, complex *), csortc_(char *, 
-	    logical *, integer *, complex *, complex *, ftnlen);
+	    logical *, integer *, complex *, complex *);
     complex cmpnorm;
 
 
@@ -425,7 +424,7 @@ static integer c__2 = 2;
 
     if (getv0) {
 	cgetv0_(ido, bmat, &c__1, &initv, n, &c__1, &v[v_offset], ldv, &resid[
-		1], &rnorm, &ipntr[1], &workd[1], info, (ftnlen)1);
+		1], &rnorm, &ipntr[1], &workd[1], info);
 
 	if (*ido != 99) {
 	    goto L9000;
@@ -475,7 +474,7 @@ static integer c__2 = 2;
 /*     %----------------------------------------------------------% */
 
     cnaitr_(ido, bmat, n, &c__0, nev, mode, &resid[1], &rnorm, &v[v_offset], 
-	    ldv, &h__[h_offset], ldh, &ipntr[1], &workd[1], info, (ftnlen)1);
+	    ldv, &h__[h_offset], ldh, &ipntr[1], &workd[1], info);
 
     if (*ido != 99) {
 	goto L9000;
@@ -529,7 +528,7 @@ L20:
     update = TRUE_;
 
     cnaitr_(ido, bmat, n, nev, np, mode, &resid[1], &rnorm, &v[v_offset], ldv,
-	     &h__[h_offset], ldh, &ipntr[1], &workd[1], info, (ftnlen)1);
+	     &h__[h_offset], ldh, &ipntr[1], &workd[1], info);
 
     if (*ido != 99) {
 	goto L9000;
@@ -593,7 +592,7 @@ L20:
 /*        | BOUNDS respectively.                              | */
 /*        %---------------------------------------------------% */
 
-    cngets_(ishift, which, nev, np, &ritz[1], &bounds[1], (ftnlen)2);
+    cngets_(ishift, which, nev, np, &ritz[1], &bounds[1]);
 
 /*        %------------------------------------------------------------% */
 /*        | Convergence test: currently we use the following criteria. | */
@@ -713,7 +712,7 @@ L20:
 	    s_copy(wprime, "LI", (ftnlen)2, (ftnlen)2);
 	}
 
-	csortc_(wprime, &c_true, &kplusp, &ritz[1], &bounds[1], (ftnlen)2);
+	csortc_(wprime, &c_true, &kplusp, &ritz[1], &bounds[1]);
 
 /*           %--------------------------------------------------% */
 /*           | Scale the Ritz estimate of each Ritz value       | */
@@ -743,7 +742,7 @@ L20:
 /*           %---------------------------------------------------% */
 
 	s_copy(wprime, "LM", (ftnlen)2, (ftnlen)2);
-	csortc_(wprime, &c_true, &nev0, &bounds[1], &ritz[1], (ftnlen)2);
+	csortc_(wprime, &c_true, &nev0, &bounds[1], &ritz[1]);
 
 /*           %----------------------------------------------% */
 /*           | Scale the Ritz estimate back to its original | */
@@ -771,7 +770,7 @@ L20:
 /*           | ritz and bound.                               | */
 /*           %-----------------------------------------------% */
 
-	csortc_(which, &c_true, &nconv, &ritz[1], &bounds[1], (ftnlen)2);
+	csortc_(which, &c_true, &nconv, &ritz[1], &bounds[1]);
 
 	if (msglvl > 1) {
 	    cvout_(&debug_1.logfil, &kplusp, &ritz[1], &debug_1.ndigit, "_na"
@@ -824,7 +823,7 @@ L20:
 /*           %---------------------------------------% */
 
 	if (nevbef < *nev) {
-	    cngets_(ishift, which, nev, np, &ritz[1], &bounds[1], (ftnlen)2);
+	    cngets_(ishift, which, nev, np, &ritz[1], &bounds[1]);
 	}
 
     }

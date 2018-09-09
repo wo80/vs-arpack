@@ -159,8 +159,7 @@ static real c_b31 = -1.f;
 
 /* Subroutine */ int sgetv0_(integer *ido, char *bmat, integer *itry, logical 
 	*initv, integer *n, integer *j, real *v, integer *ldv, real *resid, 
-	real *rnorm, integer *ipntr, real *workd, integer *ierr, ftnlen 
-	bmat_len)
+	real *rnorm, integer *ipntr, real *workd, integer *ierr)
 {
     /* Initialized data */
 

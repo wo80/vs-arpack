@@ -155,7 +155,7 @@ static integer c__1 = 1;
 /* Subroutine */ int zgetv0_(integer *ido, char *bmat, integer *itry, logical 
 	*initv, integer *n, integer *j, doublecomplex *v, integer *ldv, 
 	doublecomplex *resid, doublereal *rnorm, integer *ipntr, 
-	doublecomplex *workd, integer *ierr, ftnlen bmat_len)
+	doublecomplex *workd, integer *ierr)
 {
     /* Initialized data */
 

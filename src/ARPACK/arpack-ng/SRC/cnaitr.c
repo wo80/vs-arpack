@@ -251,7 +251,7 @@ static integer c__2 = 2;
 /* Subroutine */ int cnaitr_(integer *ido, char *bmat, integer *n, integer *k,
 	 integer *np, integer *nb, complex *resid, real *rnorm, complex *v, 
 	integer *ldv, complex *h__, integer *ldh, integer *ipntr, complex *
-	workd, integer *info, ftnlen bmat_len)
+	workd, integer *info)
 {
     /* Initialized data */
 
@@ -299,7 +299,7 @@ static integer c__2 = 2;
 	    , integer *, char *, ftnlen), svout_(integer *, integer *, real *,
 	     integer *, char *, ftnlen), cgetv0_(integer *, char *, integer *,
 	     logical *, integer *, integer *, complex *, integer *, complex *,
-	     real *, integer *, complex *, integer *, ftnlen);
+	     real *, integer *, complex *, integer *);
     extern doublereal scnrm2_(integer *, complex *, integer *), slapy2_(real *
 	    , real *);
     static real rnorm1;
@@ -532,7 +532,7 @@ L30:
 /*           %--------------------------------------% */
 
     cgetv0_(ido, bmat, &itry, &c_false, n, &j, &v[v_offset], ldv, &resid[1], 
-	    rnorm, &ipntr[1], &workd[1], &ierr, (ftnlen)1);
+	    rnorm, &ipntr[1], &workd[1], &ierr);
     if (*ido != 99) {
 	goto L9000;
     }

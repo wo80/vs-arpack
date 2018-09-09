@@ -252,7 +252,7 @@ static integer c__2 = 2;
 /* Subroutine */ int snaitr_(integer *ido, char *bmat, integer *n, integer *k,
 	 integer *np, integer *nb, real *resid, real *rnorm, real *v, integer 
 	*ldv, real *h__, integer *ldh, integer *ipntr, real *workd, integer *
-	info, ftnlen bmat_len)
+	info)
 {
     /* Initialized data */
 
@@ -296,7 +296,7 @@ static integer c__2 = 2;
 	    , real *, integer *, integer *, char *, ftnlen), svout_(integer *,
 	     integer *, real *, integer *, char *, ftnlen), sgetv0_(integer *,
 	     char *, integer *, logical *, integer *, integer *, real *, 
-	    integer *, real *, real *, integer *, real *, integer *, ftnlen);
+	    integer *, real *, real *, integer *, real *, integer *);
     static real rnorm1;
     extern /* Subroutine */ int slabad_(real *, real *);
     extern doublereal slamch_(char *, ftnlen);
@@ -525,7 +525,7 @@ L30:
 /*           %--------------------------------------% */
 
     sgetv0_(ido, bmat, &itry, &c_false, n, &j, &v[v_offset], ldv, &resid[1], 
-	    rnorm, &ipntr[1], &workd[1], &ierr, (ftnlen)1);
+	    rnorm, &ipntr[1], &workd[1], &ierr);
     if (*ido != 99) {
 	goto L9000;
     }

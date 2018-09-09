@@ -130,7 +130,7 @@ static integer c__1 = 1;
 /* ----------------------------------------------------------------------- */
 
 /* Subroutine */ int ssgets_(integer *ishift, char *which, integer *kev, 
-	integer *np, real *ritz, real *bounds, real *shifts, ftnlen which_len)
+	integer *np, real *ritz, real *bounds, real *shifts)
 {
     /* System generated locals */
     integer i__1;
@@ -148,7 +148,7 @@ static integer c__1 = 1;
 	    ftnlen), arscnd_(real *);
     integer msglvl;
     extern /* Subroutine */ int ssortr_(char *, logical *, integer *, real *, 
-	    real *, ftnlen);
+	    real *);
 
 
 /*     %----------------------------------------------------% */
@@ -231,7 +231,7 @@ static integer c__1 = 1;
 /*        %-----------------------------------------------------% */
 
 	i__1 = *kev + *np;
-	ssortr_("LA", &c_true, &i__1, &ritz[1], &bounds[1], (ftnlen)2);
+	ssortr_("LA", &c_true, &i__1, &ritz[1], &bounds[1]);
 	kevd2 = *kev / 2;
 	if (*kev > 1) {
 	    i__1 = min(kevd2,*np);
@@ -252,7 +252,7 @@ static integer c__1 = 1;
 /*        %----------------------------------------------------% */
 
 	i__1 = *kev + *np;
-	ssortr_(which, &c_true, &i__1, &ritz[1], &bounds[1], (ftnlen)2);
+	ssortr_(which, &c_true, &i__1, &ritz[1], &bounds[1]);
     }
 
     if (*ishift == 1 && *np > 0) {
@@ -265,7 +265,7 @@ static integer c__1 = 1;
 /*        | are applied in subroutine ssapps.                     | */
 /*        %-------------------------------------------------------% */
 
-	ssortr_("SM", &c_true, np, &bounds[1], &ritz[1], (ftnlen)2);
+	ssortr_("SM", &c_true, np, &bounds[1], &ritz[1]);
 	scopy_(np, &ritz[1], &c__1, &shifts[1], &c__1);
     }
 

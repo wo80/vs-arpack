@@ -73,7 +73,7 @@
 /* ----------------------------------------------------------------------- */
 
 /* Subroutine */ int zsortc_(char *which, logical *apply, integer *n, 
-	doublecomplex *x, doublecomplex *y, ftnlen which_len)
+	doublecomplex *x, doublecomplex *y)
 {
     /* System generated locals */
     integer i__1, i__2, i__3;

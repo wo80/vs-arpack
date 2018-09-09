@@ -423,7 +423,7 @@ static doublereal c_b64 = -1.;
 	     integer *, doublereal *, doublereal *, doublereal *, integer *, 
 	    integer *, integer *, integer *, ftnlen, ftnlen), dngets_(integer 
 	    *, char *, integer *, integer *, doublereal *, doublereal *, 
-	    doublereal *, doublereal *, doublereal *, ftnlen);
+	    doublereal *, doublereal *, doublereal *);
 
 
 /*     %----------------------------------------------------% */
@@ -687,7 +687,7 @@ static doublereal c_b64 = -1.;
 	np = *ncv - *nev;
 	ishift = 0;
 	dngets_(&ishift, which, nev, &np, &workl[irr], &workl[iri], &workl[
-		bounds], &workl[1], &workl[np + 1], (ftnlen)2);
+		bounds], &workl[1], &workl[np + 1]);
 
 	if (msglvl > 2) {
 	    dvout_(&debug_1.logfil, ncv, &workl[irr], &debug_1.ndigit, "_neu"

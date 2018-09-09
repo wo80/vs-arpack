@@ -496,7 +496,7 @@ static integer c__1 = 1;
 	    integer *, integer *, integer *, doublereal *, integer *, 
 	    doublereal *, integer *, doublereal *, doublereal *, doublereal *,
 	     doublereal *, integer *, doublereal *, integer *, doublereal *, 
-	    integer *, ftnlen, ftnlen);
+	    integer *);
     extern doublereal dlamch_(char *, ftnlen);
     extern /* Subroutine */ int arscnd_(real *);
     static integer bounds, ishift, msglvl, mxiter;
@@ -721,7 +721,7 @@ static integer c__1 = 1;
     dnaup2_(ido, bmat, n, which, &nev0, &np, tol, &resid[1], &mode, &iupd, &
 	    ishift, &mxiter, &v[v_offset], ldv, &workl[ih], &ldh, &workl[
 	    ritzr], &workl[ritzi], &workl[bounds], &workl[iq], &ldq, &workl[
-	    iw], &ipntr[1], &workd[1], info, (ftnlen)1, (ftnlen)2);
+	    iw], &ipntr[1], &workd[1], info);
 
 /*     %--------------------------------------------------% */
 /*     | ido .ne. 99 implies use of reverse communication | */

@@ -71,7 +71,7 @@
 /* ----------------------------------------------------------------------- */
 
 /* Subroutine */ int ssortr_(char *which, logical *apply, integer *n, real *
-	x1, real *x2, ftnlen which_len)
+	x1, real *x2)
 {
     /* System generated locals */
     integer i__1;

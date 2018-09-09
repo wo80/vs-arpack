@@ -125,8 +125,7 @@ static integer c__1 = 1;
 /* ----------------------------------------------------------------------- */
 
 /* Subroutine */ int zngets_(integer *ishift, char *which, integer *kev, 
-	integer *np, doublecomplex *ritz, doublecomplex *bounds, ftnlen 
-	which_len)
+	integer *np, doublecomplex *ritz, doublecomplex *bounds)
 {
     /* System generated locals */
     integer i__1;
@@ -138,7 +137,7 @@ static integer c__1 = 1;
 	    doublecomplex *, integer *, char *, ftnlen), arscnd_(real *);
     integer msglvl;
     extern /* Subroutine */ int zsortc_(char *, logical *, integer *, 
-	    doublecomplex *, doublecomplex *, ftnlen);
+	    doublecomplex *, doublecomplex *);
 
 
 /*     %----------------------------------------------------% */
@@ -204,7 +203,7 @@ static integer c__1 = 1;
     msglvl = debug_1.mcgets;
 
     i__1 = *kev + *np;
-    zsortc_(which, &c_true, &i__1, &ritz[1], &bounds[1], (ftnlen)2);
+    zsortc_(which, &c_true, &i__1, &ritz[1], &bounds[1]);
 
     if (*ishift == 1) {
 
@@ -217,7 +216,7 @@ static integer c__1 = 1;
 /*        | Be careful and use 'SM' since we want to sort BOUNDS! | */
 /*        %-------------------------------------------------------% */
 
-	zsortc_("SM", &c_true, np, &bounds[1], &ritz[1], (ftnlen)2);
+	zsortc_("SM", &c_true, np, &bounds[1], &ritz[1]);
 
     }
 

@@ -125,7 +125,7 @@ static integer c__1 = 1;
 /* ----------------------------------------------------------------------- */
 
 /* Subroutine */ int cngets_(integer *ishift, char *which, integer *kev, 
-	integer *np, complex *ritz, complex *bounds, ftnlen which_len)
+	integer *np, complex *ritz, complex *bounds)
 {
     /* System generated locals */
     integer i__1;
@@ -137,7 +137,7 @@ static integer c__1 = 1;
 	    , integer *, char *, ftnlen), arscnd_(real *);
     integer msglvl;
     extern /* Subroutine */ int csortc_(char *, logical *, integer *, complex 
-	    *, complex *, ftnlen);
+	    *, complex *);
 
 
 /*     %----------------------------------------------------% */
@@ -203,7 +203,7 @@ static integer c__1 = 1;
     msglvl = debug_1.mcgets;
 
     i__1 = *kev + *np;
-    csortc_(which, &c_true, &i__1, &ritz[1], &bounds[1], (ftnlen)2);
+    csortc_(which, &c_true, &i__1, &ritz[1], &bounds[1]);
 
     if (*ishift == 1) {
 
@@ -216,7 +216,7 @@ static integer c__1 = 1;
 /*        | Be careful and use 'SM' since we want to sort BOUNDS! | */
 /*        %-------------------------------------------------------% */
 
-	csortc_("SM", &c_true, np, &bounds[1], &ritz[1], (ftnlen)2);
+	csortc_("SM", &c_true, np, &bounds[1], &ritz[1]);
 
     }
 

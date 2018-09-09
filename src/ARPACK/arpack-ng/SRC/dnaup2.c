@@ -220,7 +220,7 @@ static integer c__2 = 2;
 	doublereal *v, integer *ldv, doublereal *h__, integer *ldh, 
 	doublereal *ritzr, doublereal *ritzi, doublereal *bounds, doublereal *
 	q, integer *ldq, doublereal *workl, integer *ipntr, doublereal *workd,
-	 integer *info, ftnlen bmat_len, ftnlen which_len)
+	 integer *info)
 {
     /* System generated locals */
     integer h_dim1, h_offset, q_dim1, q_offset, v_dim1, v_offset, i__1, i__2;
@@ -256,8 +256,7 @@ static integer c__2 = 2;
 	    integer *, char *, ftnlen), ivout_(integer *, integer *, integer *
 	    , integer *, char *, ftnlen), dgetv0_(integer *, char *, integer *
 	    , logical *, integer *, integer *, doublereal *, integer *, 
-	    doublereal *, doublereal *, integer *, doublereal *, integer *, 
-	    ftnlen);
+	    doublereal *, doublereal *, integer *, doublereal *, integer *);
     extern doublereal dlapy2_(doublereal *, doublereal *), dlamch_(char *, 
 	    ftnlen);
     extern /* Subroutine */ int dneigh_(doublereal *, integer *, doublereal *,
@@ -274,14 +273,14 @@ static integer c__2 = 2;
     extern /* Subroutine */ int dnaitr_(integer *, char *, integer *, integer 
 	    *, integer *, integer *, doublereal *, doublereal *, doublereal *,
 	     integer *, doublereal *, integer *, integer *, doublereal *, 
-	    integer *, ftnlen), dnconv_(integer *, doublereal *, doublereal *,
+	    integer *), dnconv_(integer *, doublereal *, doublereal *,
 	     doublereal *, doublereal *, integer *), dngets_(integer *, char *
 	    , integer *, integer *, doublereal *, doublereal *, doublereal *, 
-	    doublereal *, doublereal *, ftnlen), dnapps_(integer *, integer *,
+	    doublereal *, doublereal *), dnapps_(integer *, integer *,
 	     integer *, doublereal *, doublereal *, doublereal *, integer *, 
 	    doublereal *, integer *, doublereal *, doublereal *, integer *, 
 	    doublereal *, doublereal *), dsortc_(char *, logical *, integer *,
-	     doublereal *, doublereal *, doublereal *, ftnlen);
+	     doublereal *, doublereal *, doublereal *);
 
 
 /*     %----------------------------------------------------% */
@@ -428,7 +427,7 @@ static integer c__2 = 2;
 
     if (getv0) {
 	dgetv0_(ido, bmat, &c__1, &initv, n, &c__1, &v[v_offset], ldv, &resid[
-		1], &rnorm, &ipntr[1], &workd[1], info, (ftnlen)1);
+		1], &rnorm, &ipntr[1], &workd[1], info);
 
 	if (*ido != 99) {
 	    goto L9000;
@@ -478,7 +477,7 @@ static integer c__2 = 2;
 /*     %----------------------------------------------------------% */
 
     dnaitr_(ido, bmat, n, &c__0, nev, mode, &resid[1], &rnorm, &v[v_offset], 
-	    ldv, &h__[h_offset], ldh, &ipntr[1], &workd[1], info, (ftnlen)1);
+	    ldv, &h__[h_offset], ldh, &ipntr[1], &workd[1], info);
 
 /*     %---------------------------------------------------% */
 /*     | ido .ne. 99 implies use of reverse communication  | */
@@ -537,7 +536,7 @@ L20:
     update = TRUE_;
 
     dnaitr_(ido, bmat, n, nev, np, mode, &resid[1], &rnorm, &v[v_offset], ldv,
-	     &h__[h_offset], ldh, &ipntr[1], &workd[1], info, (ftnlen)1);
+	     &h__[h_offset], ldh, &ipntr[1], &workd[1], info);
 
 /*        %---------------------------------------------------% */
 /*        | ido .ne. 99 implies use of reverse communication  | */
@@ -608,7 +607,7 @@ L20:
     *np = np0;
     numcnv = *nev;
     dngets_(ishift, which, nev, np, &ritzr[1], &ritzi[1], &bounds[1], &workl[
-	    1], &workl[*np + 1], (ftnlen)2);
+	    1], &workl[*np + 1]);
     if (*nev == nev0 + 1) {
 	numcnv = nev0 + 1;
     }
@@ -718,8 +717,7 @@ L20:
 	    s_copy(wprime, "LM", (ftnlen)2, (ftnlen)2);
 	}
 
-	dsortc_(wprime, &c_true, &kplusp, &ritzr[1], &ritzi[1], &bounds[1], (
-		ftnlen)2);
+	dsortc_(wprime, &c_true, &kplusp, &ritzr[1], &ritzi[1], &bounds[1]);
 
 /*           %----------------------------------------------% */
 /*           | Now sort Ritz values so that converged Ritz  | */
@@ -747,8 +745,7 @@ L20:
 	    s_copy(wprime, "LI", (ftnlen)2, (ftnlen)2);
 	}
 
-	dsortc_(wprime, &c_true, &kplusp, &ritzr[1], &ritzi[1], &bounds[1], (
-		ftnlen)2);
+	dsortc_(wprime, &c_true, &kplusp, &ritzr[1], &ritzi[1], &bounds[1]);
 
 /*           %--------------------------------------------------% */
 /*           | Scale the Ritz estimate of each Ritz value       | */
@@ -772,8 +769,7 @@ L20:
 /*           %----------------------------------------------------% */
 
 	s_copy(wprime, "LR", (ftnlen)2, (ftnlen)2);
-	dsortc_(wprime, &c_true, &numcnv, &bounds[1], &ritzr[1], &ritzi[1], (
-		ftnlen)2);
+	dsortc_(wprime, &c_true, &numcnv, &bounds[1], &ritzr[1], &ritzi[1]);
 
 /*           %----------------------------------------------% */
 /*           | Scale the Ritz estimate back to its original | */
@@ -795,8 +791,7 @@ L20:
 /*           | ritzr, ritzi and bound.                        | */
 /*           %------------------------------------------------% */
 
-	dsortc_(which, &c_true, &nconv, &ritzr[1], &ritzi[1], &bounds[1], (
-		ftnlen)2);
+	dsortc_(which, &c_true, &nconv, &ritzr[1], &ritzi[1], &bounds[1]);
 
 	if (msglvl > 1) {
 	    dvout_(&debug_1.logfil, &kplusp, &ritzr[1], &debug_1.ndigit, 
@@ -865,7 +860,7 @@ L20:
 
 	if (nevbef < *nev) {
 	    dngets_(ishift, which, nev, np, &ritzr[1], &ritzi[1], &bounds[1], 
-		    &workl[1], &workl[*np + 1], (ftnlen)2);
+		    &workl[1], &workl[*np + 1]);
 	}
 
     }

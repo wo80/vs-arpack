@@ -304,7 +304,7 @@ static real c_b111 = 1.f;
 	    char *, integer *, real *, real *, real *, integer *, real *, 
 	    integer *, ftnlen), ssortr_(char *, logical *, integer *, real *, 
 	    real *, ftnlen), ssgets_(integer *, char *, integer *, integer *, 
-	    real *, real *, real *, ftnlen);
+	    real *, real *, real *);
     integer leftptr, rghtptr;
 
 
@@ -590,8 +590,7 @@ static real c_b111 = 1.f;
 
 	np = *ncv - *nev;
 	ishift = 0;
-	ssgets_(&ishift, which, nev, &np, &workl[irz], &workl[bounds], &workl[
-		1], (ftnlen)2);
+	ssgets_(&ishift, which, nev, &np, &workl[irz], &workl[bounds], &workl[1]);
 
 	if (msglvl > 2) {
 	    svout_(&debug_1.logfil, ncv, &workl[irz], &debug_1.ndigit, "_seu"

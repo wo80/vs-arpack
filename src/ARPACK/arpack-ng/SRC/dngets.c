@@ -133,7 +133,7 @@ static integer c__1 = 1;
 
 /* Subroutine */ int dngets_(integer *ishift, char *which, integer *kev, 
 	integer *np, doublereal *ritzr, doublereal *ritzi, doublereal *bounds,
-	 doublereal *shiftr, doublereal *shifti, ftnlen which_len)
+	 doublereal *shiftr, doublereal *shifti)
 {
     /* System generated locals */
     integer i__1;
@@ -148,7 +148,7 @@ static integer c__1 = 1;
 	    , integer *, char *, ftnlen), arscnd_(real *);
     integer msglvl;
     extern /* Subroutine */ int dsortc_(char *, logical *, integer *, 
-	    doublereal *, doublereal *, doublereal *, ftnlen);
+	    doublereal *, doublereal *, doublereal *);
 
 
 /*     %----------------------------------------------------% */
@@ -233,33 +233,26 @@ static integer c__1 = 1;
 
     if (s_cmp(which, "LM", (ftnlen)2, (ftnlen)2) == 0) {
 	i__1 = *kev + *np;
-	dsortc_("LR", &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1], (
-		ftnlen)2);
+	dsortc_("LR", &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1]);
     } else if (s_cmp(which, "SM", (ftnlen)2, (ftnlen)2) == 0) {
 	i__1 = *kev + *np;
-	dsortc_("SR", &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1], (
-		ftnlen)2);
+	dsortc_("SR", &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1]);
     } else if (s_cmp(which, "LR", (ftnlen)2, (ftnlen)2) == 0) {
 	i__1 = *kev + *np;
-	dsortc_("LM", &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1], (
-		ftnlen)2);
+	dsortc_("LM", &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1]);
     } else if (s_cmp(which, "SR", (ftnlen)2, (ftnlen)2) == 0) {
 	i__1 = *kev + *np;
-	dsortc_("SM", &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1], (
-		ftnlen)2);
+	dsortc_("SM", &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1]);
     } else if (s_cmp(which, "LI", (ftnlen)2, (ftnlen)2) == 0) {
 	i__1 = *kev + *np;
-	dsortc_("LM", &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1], (
-		ftnlen)2);
+	dsortc_("LM", &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1]);
     } else if (s_cmp(which, "SI", (ftnlen)2, (ftnlen)2) == 0) {
 	i__1 = *kev + *np;
-	dsortc_("SM", &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1], (
-		ftnlen)2);
+	dsortc_("SM", &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1]);
     }
 
     i__1 = *kev + *np;
-    dsortc_(which, &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1], (ftnlen)
-	    2);
+    dsortc_(which, &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1]);
 
 /*     %-------------------------------------------------------% */
 /*     | Increase KEV by one if the ( ritzr(np),ritzi(np) )    | */
@@ -285,8 +278,7 @@ static integer c__1 = 1;
 /*        | Be careful and use 'SR' since we want to sort BOUNDS! | */
 /*        %-------------------------------------------------------% */
 
-	dsortc_("SR", &c_true, np, &bounds[1], &ritzr[1], &ritzi[1], (ftnlen)
-		2);
+	dsortc_("SR", &c_true, np, &bounds[1], &ritzr[1], &ritzi[1]);
     }
 
     arscnd_(&t1);

@@ -224,7 +224,7 @@ static integer c__2 = 2;
 	mode, integer *iupd, integer *ishift, integer *mxiter, real *v, 
 	integer *ldv, real *h__, integer *ldh, real *ritz, real *bounds, real 
 	*q, integer *ldq, real *workl, integer *ipntr, real *workd, integer *
-	info, ftnlen bmat_len, ftnlen which_len)
+	info)
 {
     /* System generated locals */
     integer h_dim1, h_offset, q_dim1, q_offset, v_dim1, v_offset, i__1, i__2, 
@@ -262,7 +262,7 @@ static integer c__2 = 2;
 	    ftnlen), svout_(integer *, integer *, real *, integer *, char *, 
 	    ftnlen), sgetv0_(integer *, char *, integer *, logical *, integer 
 	    *, integer *, real *, integer *, real *, real *, integer *, real *
-	    , integer *, ftnlen);
+	    , integer *);
     integer nevbef;
     extern doublereal slamch_(char *, ftnlen);
     extern /* Subroutine */ int arscnd_(real *);
@@ -273,14 +273,13 @@ static integer c__2 = 2;
     integer nptemp;
     extern /* Subroutine */ int ssaitr_(integer *, char *, integer *, integer 
 	    *, integer *, integer *, real *, real *, real *, integer *, real *
-	    , integer *, integer *, real *, integer *, ftnlen), ssconv_(
+	    , integer *, integer *, real *, integer *), ssconv_(
 	    integer *, real *, real *, real *, integer *), sseigt_(real *, 
 	    integer *, real *, integer *, real *, real *, real *, integer *), 
 	    ssgets_(integer *, char *, integer *, integer *, real *, real *, 
-	    real *, ftnlen), ssapps_(integer *, integer *, integer *, real *, 
+	    real *), ssapps_(integer *, integer *, integer *, real *, 
 	    real *, integer *, real *, integer *, real *, real *, integer *, 
-	    real *), ssortr_(char *, logical *, integer *, real *, real *, 
-	    ftnlen);
+	    real *), ssortr_(char *, logical *, integer *, real *, real *);
 
 
 /*     %----------------------------------------------------% */
@@ -431,7 +430,7 @@ static integer c__2 = 2;
 
     if (getv0) {
 	sgetv0_(ido, bmat, &c__1, &initv, n, &c__1, &v[v_offset], ldv, &resid[
-		1], &rnorm, &ipntr[1], &workd[1], info, (ftnlen)1);
+		1], &rnorm, &ipntr[1], &workd[1], info);
 
 	if (*ido != 99) {
 	    goto L9000;
@@ -480,7 +479,7 @@ static integer c__2 = 2;
 /*     %----------------------------------------------------------% */
 
     ssaitr_(ido, bmat, n, &c__0, &nev0, mode, &resid[1], &rnorm, &v[v_offset],
-	     ldv, &h__[h_offset], ldh, &ipntr[1], &workd[1], info, (ftnlen)1);
+	     ldv, &h__[h_offset], ldh, &ipntr[1], &workd[1], info);
 
 /*     %---------------------------------------------------% */
 /*     | ido .ne. 99 implies use of reverse communication  | */
@@ -537,7 +536,7 @@ L20:
     update = TRUE_;
 
     ssaitr_(ido, bmat, n, nev, np, mode, &resid[1], &rnorm, &v[v_offset], ldv,
-	     &h__[h_offset], ldh, &ipntr[1], &workd[1], info, (ftnlen)1);
+	     &h__[h_offset], ldh, &ipntr[1], &workd[1], info);
 
 /*        %---------------------------------------------------% */
 /*        | ido .ne. 99 implies use of reverse communication  | */
@@ -601,8 +600,7 @@ L20:
 
     *nev = nev0;
     *np = np0;
-    ssgets_(ishift, which, nev, np, &ritz[1], &bounds[1], &workl[1], (ftnlen)
-	    2);
+    ssgets_(ishift, which, nev, np, &ritz[1], &bounds[1], &workl[1]);
 
 /*        %-------------------% */
 /*        | Convergence test. | */
@@ -666,7 +664,7 @@ L20:
 /*              %-----------------------------------------------------% */
 
 	    s_copy(wprime, "SA", (ftnlen)2, (ftnlen)2);
-	    ssortr_(wprime, &c_true, &kplusp, &ritz[1], &bounds[1], (ftnlen)2)
+	    ssortr_(wprime, &c_true, &kplusp, &ritz[1], &bounds[1])
 		    ;
 	    nevd2 = nev0 / 2;
 	    nevm2 = nev0 - nevd2;
@@ -707,7 +705,7 @@ L20:
 		s_copy(wprime, "LA", (ftnlen)2, (ftnlen)2);
 	    }
 
-	    ssortr_(wprime, &c_true, &kplusp, &ritz[1], &bounds[1], (ftnlen)2)
+	    ssortr_(wprime, &c_true, &kplusp, &ritz[1], &bounds[1])
 		    ;
 
 	}
@@ -734,7 +732,7 @@ L20:
 /*           %----------------------------------------------------% */
 
 	s_copy(wprime, "LA", (ftnlen)2, (ftnlen)2);
-	ssortr_(wprime, &c_true, &nev0, &bounds[1], &ritz[1], (ftnlen)2);
+	ssortr_(wprime, &c_true, &nev0, &bounds[1], &ritz[1]);
 
 /*           %----------------------------------------------% */
 /*           | Scale the Ritz estimate back to its original | */
@@ -766,7 +764,7 @@ L20:
 /*              %------------------------------------------------% */
 
 	    s_copy(wprime, "LA", (ftnlen)2, (ftnlen)2);
-	    ssortr_(wprime, &c_true, &nconv, &ritz[1], &bounds[1], (ftnlen)2);
+	    ssortr_(wprime, &c_true, &nconv, &ritz[1], &bounds[1]);
 
 	} else {
 
@@ -776,7 +774,7 @@ L20:
 /*              | "threshold" value appears at the front of    | */
 /*              | ritz.                                        | */
 /*              %----------------------------------------------% */
-	    ssortr_(which, &c_true, &nconv, &ritz[1], &bounds[1], (ftnlen)2);
+	    ssortr_(which, &c_true, &nconv, &ritz[1], &bounds[1]);
 
 	}
 
@@ -838,8 +836,7 @@ L20:
 /*           %---------------------------------------% */
 
 	if (nevbef < *nev) {
-	    ssgets_(ishift, which, nev, np, &ritz[1], &bounds[1], &workl[1], (
-		    ftnlen)2);
+	    ssgets_(ishift, which, nev, np, &ritz[1], &bounds[1], &workl[1]);
 	}
 
     }

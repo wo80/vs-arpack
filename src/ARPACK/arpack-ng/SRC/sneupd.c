@@ -415,7 +415,7 @@ static real c_b64 = -1.f;
 	    integer *, integer *, integer *, ftnlen, ftnlen);
     extern doublereal slamch_(char *, ftnlen);
     extern /* Subroutine */ int sngets_(integer *, char *, integer *, integer 
-	    *, real *, real *, real *, real *, real *, ftnlen);
+	    *, real *, real *, real *, real *, real *);
 
 
 /*     %----------------------------------------------------% */
@@ -680,7 +680,7 @@ static real c_b64 = -1.f;
 	np = *ncv - *nev;
 	ishift = 0;
 	sngets_(&ishift, which, nev, &np, &workl[irr], &workl[iri], &workl[
-		bounds], &workl[1], &workl[np + 1], (ftnlen)2);
+		bounds], &workl[1], &workl[np + 1]);
 
 	if (msglvl > 2) {
 	    svout_(&debug_1.logfil, ncv, &workl[irr], &debug_1.ndigit, "_neu"

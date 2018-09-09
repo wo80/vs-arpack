@@ -160,7 +160,7 @@ static doublereal c_b31 = -1.;
 /* Subroutine */ int dgetv0_(integer *ido, char *bmat, integer *itry, logical 
 	*initv, integer *n, integer *j, doublereal *v, integer *ldv, 
 	doublereal *resid, doublereal *rnorm, integer *ipntr, doublereal *
-	workd, integer *ierr, ftnlen bmat_len)
+	workd, integer *ierr)
 {
     /* Initialized data */
 

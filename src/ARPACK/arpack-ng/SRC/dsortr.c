@@ -71,7 +71,7 @@
 /* ----------------------------------------------------------------------- */
 
 /* Subroutine */ int dsortr_(char *which, logical *apply, integer *n, 
-	doublereal *x1, doublereal *x2, ftnlen which_len)
+	doublereal *x1, doublereal *x2)
 {
     /* System generated locals */
     integer i__1;

@@ -353,7 +353,7 @@ static logical c_true = TRUE_;
     extern /* Subroutine */ int clahqr_(logical *, logical *, integer *, 
 	    integer *, integer *, complex *, integer *, complex *, integer *, 
 	    integer *, complex *, integer *, integer *), cngets_(integer *, 
-	    char *, integer *, integer *, complex *, complex *, ftnlen), 
+	    char *, integer *, integer *, complex *, complex *), 
 	    claset_(char *, integer *, integer *, complex *, complex *, 
 	    complex *, integer *, ftnlen), ctrsen_(char *, char *, logical *, 
 	    integer *, complex *, integer *, complex *, integer *, complex *, 
@@ -613,8 +613,7 @@ static logical c_true = TRUE_;
 
 	np = *ncv - *nev;
 	ishift = 0;
-	cngets_(&ishift, which, nev, &np, &workl[irz], &workl[bounds], (
-		ftnlen)2);
+	cngets_(&ishift, which, nev, &np, &workl[irz], &workl[bounds]);
 
 	if (msglvl > 2) {
 	    cvout_(&debug_1.logfil, ncv, &workl[irz], &debug_1.ndigit, "_neu"

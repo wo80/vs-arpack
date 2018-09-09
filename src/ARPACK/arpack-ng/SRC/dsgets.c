@@ -130,8 +130,7 @@ static integer c__1 = 1;
 /* ----------------------------------------------------------------------- */
 
 /* Subroutine */ int dsgets_(integer *ishift, char *which, integer *kev, 
-	integer *np, doublereal *ritz, doublereal *bounds, doublereal *shifts,
-	 ftnlen which_len)
+	integer *np, doublereal *ritz, doublereal *bounds, doublereal *shifts)
 {
     /* System generated locals */
     integer i__1;
@@ -149,7 +148,7 @@ static integer c__1 = 1;
 	    integer *, integer *, integer *, char *, ftnlen), arscnd_(real *);
     integer msglvl;
     extern /* Subroutine */ int dsortr_(char *, logical *, integer *, 
-	    doublereal *, doublereal *, ftnlen);
+	    doublereal *, doublereal *);
 
 
 /*     %----------------------------------------------------% */
@@ -232,7 +231,7 @@ static integer c__1 = 1;
 /*        %-----------------------------------------------------% */
 
 	i__1 = *kev + *np;
-	dsortr_("LA", &c_true, &i__1, &ritz[1], &bounds[1], (ftnlen)2);
+	dsortr_("LA", &c_true, &i__1, &ritz[1], &bounds[1]);
 	kevd2 = *kev / 2;
 	if (*kev > 1) {
 	    i__1 = min(kevd2,*np);
@@ -253,7 +252,7 @@ static integer c__1 = 1;
 /*        %----------------------------------------------------% */
 
 	i__1 = *kev + *np;
-	dsortr_(which, &c_true, &i__1, &ritz[1], &bounds[1], (ftnlen)2);
+	dsortr_(which, &c_true, &i__1, &ritz[1], &bounds[1]);
     }
 
     if (*ishift == 1 && *np > 0) {
@@ -266,7 +265,7 @@ static integer c__1 = 1;
 /*        | are applied in subroutine dsapps.                     | */
 /*        %-------------------------------------------------------% */
 
-	dsortr_("SM", &c_true, np, &bounds[1], &ritz[1], (ftnlen)2);
+	dsortr_("SM", &c_true, np, &bounds[1], &ritz[1]);
 	dcopy_(np, &ritz[1], &c__1, &shifts[1], &c__1);
     }
 
