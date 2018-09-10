@@ -286,7 +286,7 @@ static integer c__2 = 2;
     doublereal rtemp[2];
     extern /* Subroutine */ int zgemv_(char *, integer *, integer *, 
 	    doublecomplex *, doublecomplex *, integer *, doublecomplex *, 
-	    integer *, doublecomplex *, doublecomplex *, integer *, ftnlen);
+	    integer *, doublecomplex *, doublecomplex *, integer *);
     static doublereal wnorm;
     extern /* Subroutine */ int dvout_(integer *, integer *, doublereal *, 
 	    integer *, char *, ftnlen), zcopy_(integer *, doublecomplex *, 
@@ -304,17 +304,17 @@ static integer c__2 = 2;
 	    *, integer *, integer *, doublecomplex *, integer *, 
 	    doublecomplex *, doublereal *, integer *, doublecomplex *, 
 	    integer *);
-    extern doublereal dlamch_(char *, ftnlen);
+    extern doublereal dlamch_(char *);
     extern /* Subroutine */ int arscnd_(real *), zdscal_(integer *, 
 	    doublereal *, doublecomplex *, integer *);
     static logical rstart;
     static integer msglvl;
     static doublereal smlnum;
     extern doublereal zlanhs_(char *, integer *, doublecomplex *, integer *, 
-	    doublecomplex *, ftnlen);
+	    doublecomplex *);
     extern /* Subroutine */ int zlascl_(char *, integer *, integer *, 
 	    doublereal *, doublereal *, integer *, integer *, doublecomplex *,
-	     integer *, integer *, ftnlen);
+	     integer *, integer *);
 
 
 /*     %----------------------------------------------------% */
@@ -409,11 +409,11 @@ static integer c__2 = 2;
 /*        | REFERENCE: LAPACK subroutine zlahqr     | */
 /*        %-----------------------------------------% */
 
-	unfl = dlamch_("safe minimum", (ftnlen)12);
+	unfl = dlamch_("safe minimum");
 	z__1.r = 1. / unfl, z__1.i = 0. / unfl;
 	ovfl = z__1.r;
 	dlabad_(&unfl, &ovfl);
-	ulp = dlamch_("precision", (ftnlen)9);
+	ulp = dlamch_("precision");
 	smlnum = unfl * (*n / ulp);
 	first = FALSE_;
     }
@@ -579,9 +579,9 @@ L40:
 /*            %-----------------------------------------% */
 
 	zlascl_("General", &i__, &i__, rnorm, &c_b27, n, &c__1, &v[j * v_dim1 
-		+ 1], n, &infol, (ftnlen)7);
+		+ 1], n, &infol);
 	zlascl_("General", &i__, &i__, rnorm, &c_b27, n, &c__1, &workd[ipj], 
-		n, &infol, (ftnlen)7);
+		n, &infol);
     }
 
 /*        %------------------------------------------------------% */
@@ -687,7 +687,7 @@ L60:
 /*        %------------------------------------------% */
 
     zgemv_("C", n, &j, &c_b1, &v[v_offset], ldv, &workd[ipj], &c__1, &c_b2, &
-	    h__[j * h_dim1 + 1], &c__1, (ftnlen)1);
+	    h__[j * h_dim1 + 1], &c__1);
 
 /*        %--------------------------------------% */
 /*        | Orthogonalize r_{j} against V_{j}.   | */
@@ -696,7 +696,7 @@ L60:
 
     z__1.r = -1., z__1.i = -0.;
     zgemv_("N", n, &j, &z__1, &v[v_offset], ldv, &h__[j * h_dim1 + 1], &c__1, 
-	    &c_b1, &resid[1], &c__1, (ftnlen)1);
+	    &c_b1, &resid[1], &c__1);
 
     if (j > 1) {
 	i__1 = j + (j - 1) * h_dim1;
@@ -801,7 +801,7 @@ L80:
 /*        %----------------------------------------------------% */
 
     zgemv_("C", n, &j, &c_b1, &v[v_offset], ldv, &workd[ipj], &c__1, &c_b2, &
-	    workd[irj], &c__1, (ftnlen)1);
+	    workd[irj], &c__1);
 
 /*        %---------------------------------------------% */
 /*        | Compute the correction to the residual:     | */
@@ -812,7 +812,7 @@ L80:
 
     z__1.r = -1., z__1.i = -0.;
     zgemv_("N", n, &j, &z__1, &v[v_offset], ldv, &workd[irj], &c__1, &c_b1, &
-	    resid[1], &c__1, (ftnlen)1);
+	    resid[1], &c__1);
     zaxpy_(&j, &c_b1, &workd[irj], &c__1, &h__[j * h_dim1 + 1], &c__1);
 
     orth2 = TRUE_;
@@ -956,8 +956,7 @@ L100:
 	    tst1 = dlapy2_(&d__1, &d__2) + dlapy2_(&d__3, &d__4);
 	    if (tst1 == 0.) {
 		i__2 = *k + *np;
-		tst1 = zlanhs_("1", &i__2, &h__[h_offset], ldh, &workd[*n + 1]
-			, (ftnlen)1);
+		tst1 = zlanhs_("1", &i__2, &h__[h_offset], ldh, &workd[*n + 1]);
 	    }
 	    i__2 = i__ + 1 + i__ * h_dim1;
 	    d__1 = h__[i__2].r;

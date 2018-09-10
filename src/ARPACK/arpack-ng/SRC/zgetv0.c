@@ -182,7 +182,7 @@ static integer c__1 = 1;
     static logical first;
     extern /* Subroutine */ int zgemv_(char *, integer *, integer *, 
 	    doublecomplex *, doublecomplex *, integer *, doublecomplex *, 
-	    integer *, doublecomplex *, doublecomplex *, integer *, ftnlen), 
+	    integer *, doublecomplex *, doublecomplex *, integer *), 
 	    dvout_(integer *, integer *, doublereal *, integer *, char *, 
 	    ftnlen), zcopy_(integer *, doublecomplex *, integer *, 
 	    doublecomplex *, integer *), zvout_(integer *, integer *, 
@@ -408,11 +408,11 @@ L30:
 
     i__1 = *j - 1;
     zgemv_("C", n, &i__1, &c_b1, &v[v_offset], ldv, &workd[1], &c__1, &c_b2, &
-	    workd[*n + 1], &c__1, (ftnlen)1);
+	    workd[*n + 1], &c__1);
     i__1 = *j - 1;
     z__1.r = -1., z__1.i = -0.;
     zgemv_("N", n, &i__1, &z__1, &v[v_offset], ldv, &workd[*n + 1], &c__1, &
-	    c_b1, &resid[1], &c__1, (ftnlen)1);
+	    c_b1, &resid[1], &c__1);
 
 /*     %----------------------------------------------------------% */
 /*     | Compute the B-norm of the orthogonalized starting vector | */

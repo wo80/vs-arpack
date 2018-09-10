@@ -192,19 +192,19 @@ static real c_b20 = -1.f;
     integer iend, itop;
     extern /* Subroutine */ int sscal_(integer *, real *, real *, integer *), 
 	    sgemv_(char *, integer *, integer *, real *, real *, integer *, 
-	    real *, integer *, real *, real *, integer *, ftnlen), scopy_(
+	    real *, integer *, real *, real *, integer *), scopy_(
 	    integer *, real *, integer *, real *, integer *), saxpy_(integer *
 	    , real *, real *, integer *, real *, integer *), ivout_(integer *,
 	     integer *, integer *, integer *, char *, ftnlen), svout_(integer 
 	    *, integer *, real *, integer *, char *, ftnlen);
-    extern doublereal slamch_(char *, ftnlen);
+    extern doublereal slamch_(char *);
     extern /* Subroutine */ int arscnd_(real *);
     static real epsmch;
     integer istart, kplusp, msglvl;
     extern /* Subroutine */ int slacpy_(char *, integer *, integer *, real *, 
-	    integer *, real *, integer *, ftnlen), slartg_(real *, real *, 
+	    integer *, real *, integer *), slartg_(real *, real *, 
 	    real *, real *, real *), slaset_(char *, integer *, integer *, 
-	    real *, real *, real *, integer *, ftnlen);
+	    real *, real *, real *, integer *);
 
 
 /*     %----------------------------------------------------% */
@@ -288,7 +288,7 @@ static real c_b20 = -1.f;
 /*     %-----------------------% */
 
     if (first) {
-	epsmch = slamch_("Epsilon-Machine", (ftnlen)15);
+	epsmch = slamch_("Epsilon-Machine");
 	first = FALSE_;
     }
     itop = 1;
@@ -308,8 +308,7 @@ static real c_b20 = -1.f;
 /*     | kplusp used to accumulate the rotations.     | */
 /*     %----------------------------------------------% */
 
-    slaset_("All", &kplusp, &kplusp, &c_b4, &c_b5, &q[q_offset], ldq, (ftnlen)
-	    3);
+    slaset_("All", &kplusp, &kplusp, &c_b4, &c_b5, &q[q_offset], ldq);
 
 /*     %----------------------------------------------% */
 /*     | Quick return if there are no shifts to apply | */
@@ -578,7 +577,7 @@ L90:
 
     if (h__[*kev + 1 + h_dim1] > 0.f) {
 	sgemv_("N", n, &kplusp, &c_b5, &v[v_offset], ldv, &q[(*kev + 1) * 
-		q_dim1 + 1], &c__1, &c_b4, &workd[*n + 1], &c__1, (ftnlen)1);
+		q_dim1 + 1], &c__1, &c_b4, &workd[*n + 1], &c__1);
     }
 
 /*     %-------------------------------------------------------% */
@@ -592,7 +591,7 @@ L90:
     for (i__ = 1; i__ <= i__1; ++i__) {
 	i__2 = kplusp - i__ + 1;
 	sgemv_("N", n, &i__2, &c_b5, &v[v_offset], ldv, &q[(*kev - i__ + 1) * 
-		q_dim1 + 1], &c__1, &c_b4, &workd[1], &c__1, (ftnlen)1);
+		q_dim1 + 1], &c__1, &c_b4, &workd[1], &c__1);
 	scopy_(n, &workd[1], &c__1, &v[(kplusp - i__ + 1) * v_dim1 + 1], &
 		c__1);
 /* L130: */
@@ -602,8 +601,7 @@ L90:
 /*     |  Move v(:,kplusp-kev+1:kplusp) into v(:,1:kev). | */
 /*     %-------------------------------------------------% */
 
-    slacpy_("All", n, kev, &v[(*np + 1) * v_dim1 + 1], ldv, &v[v_offset], ldv,
-	     (ftnlen)3);
+    slacpy_("All", n, kev, &v[(*np + 1) * v_dim1 + 1], ldv, &v[v_offset], ldv);
 
 /*     %--------------------------------------------% */
 /*     | Copy the (kev+1)-st column of (V*Q) in the | */

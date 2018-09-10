@@ -284,8 +284,7 @@ static integer c__2 = 2;
     extern /* Subroutine */ int sscal_(integer *, real *, real *, integer *);
     integer infol;
     extern /* Subroutine */ int sgemv_(char *, integer *, integer *, real *, 
-	    real *, integer *, real *, integer *, real *, real *, integer *, 
-	    ftnlen);
+	    real *, integer *, real *, integer *, real *, real *, integer *);
     real xtemp[2];
     extern /* Subroutine */ int scopy_(integer *, real *, integer *, real *, 
 	    integer *);
@@ -299,15 +298,14 @@ static integer c__2 = 2;
 	    integer *, real *, real *, integer *, real *, integer *);
     static real rnorm1;
     extern /* Subroutine */ int slabad_(real *, real *);
-    extern doublereal slamch_(char *, ftnlen);
+    extern doublereal slamch_(char *);
     extern /* Subroutine */ int arscnd_(real *), slascl_(char *, integer *, 
 	    integer *, real *, real *, integer *, integer *, real *, integer *
-	    , integer *, ftnlen);
+	    , integer *);
     static logical rstart;
     static integer msglvl;
     static real smlnum;
-    extern doublereal slanhs_(char *, integer *, real *, integer *, real *, 
-	    ftnlen);
+    extern doublereal slanhs_(char *, integer *, real *, integer *, real *);
 
 
 /*     %----------------------------------------------------% */
@@ -401,10 +399,10 @@ static integer c__2 = 2;
 /*        | REFERENCE: LAPACK subroutine slahqr     | */
 /*        %-----------------------------------------% */
 
-	unfl = slamch_("safe minimum", (ftnlen)12);
+	unfl = slamch_("safe minimum");
 	ovfl = 1.f / unfl;
 	slabad_(&unfl, &ovfl);
-	ulp = slamch_("precision", (ftnlen)9);
+	ulp = slamch_("precision");
 	smlnum = unfl * (*n / ulp);
 	first = FALSE_;
     }
@@ -570,9 +568,9 @@ L40:
 /*            %-----------------------------------------% */
 
 	slascl_("General", &i__, &i__, rnorm, &c_b25, n, &c__1, &v[j * v_dim1 
-		+ 1], n, &infol, (ftnlen)7);
+		+ 1], n, &infol);
 	slascl_("General", &i__, &i__, rnorm, &c_b25, n, &c__1, &workd[ipj], 
-		n, &infol, (ftnlen)7);
+		n, &infol);
     }
 
 /*        %------------------------------------------------------% */
@@ -675,7 +673,7 @@ L60:
 /*        %------------------------------------------% */
 
     sgemv_("T", n, &j, &c_b25, &v[v_offset], ldv, &workd[ipj], &c__1, &c_b47, 
-	    &h__[j * h_dim1 + 1], &c__1, (ftnlen)1);
+	    &h__[j * h_dim1 + 1], &c__1);
 
 /*        %--------------------------------------% */
 /*        | Orthogonalize r_{j} against V_{j}.   | */
@@ -683,7 +681,7 @@ L60:
 /*        %--------------------------------------% */
 
     sgemv_("N", n, &j, &c_b50, &v[v_offset], ldv, &h__[j * h_dim1 + 1], &c__1,
-	     &c_b25, &resid[1], &c__1, (ftnlen)1);
+	     &c_b25, &resid[1], &c__1);
 
     if (j > 1) {
 	h__[j + (j - 1) * h_dim1] = betaj;
@@ -782,7 +780,7 @@ L80:
 /*        %----------------------------------------------------% */
 
     sgemv_("T", n, &j, &c_b25, &v[v_offset], ldv, &workd[ipj], &c__1, &c_b47, 
-	    &workd[irj], &c__1, (ftnlen)1);
+	    &workd[irj], &c__1);
 
 /*        %---------------------------------------------% */
 /*        | Compute the correction to the residual:     | */
@@ -792,7 +790,7 @@ L80:
 /*        %---------------------------------------------% */
 
     sgemv_("N", n, &j, &c_b50, &v[v_offset], ldv, &workd[irj], &c__1, &c_b25, 
-	    &resid[1], &c__1, (ftnlen)1);
+	    &resid[1], &c__1);
     saxpy_(&j, &c_b25, &workd[irj], &c__1, &h__[j * h_dim1 + 1], &c__1);
 
     orth2 = TRUE_;
@@ -927,8 +925,7 @@ L100:
 		    i__ + 1 + (i__ + 1) * h_dim1], dabs(r__2));
 	    if (tst1 == 0.f) {
 		i__2 = *k + *np;
-		tst1 = slanhs_("1", &i__2, &h__[h_offset], ldh, &workd[*n + 1]
-			, (ftnlen)1);
+		tst1 = slanhs_("1", &i__2, &h__[h_offset], ldh, &workd[*n + 1]);
 	    }
 /* Computing MAX */
 	    r__2 = ulp * tst1;

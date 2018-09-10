@@ -285,7 +285,7 @@ static integer c__2 = 2;
     extern /* Subroutine */ int dscal_(integer *, doublereal *, doublereal *, 
 	    integer *), dgemv_(char *, integer *, integer *, doublereal *, 
 	    doublereal *, integer *, doublereal *, integer *, doublereal *, 
-	    doublereal *, integer *, ftnlen);
+	    doublereal *, integer *);
     integer infol;
     extern /* Subroutine */ int dcopy_(integer *, doublereal *, integer *, 
 	    doublereal *, integer *), daxpy_(integer *, doublereal *, 
@@ -302,12 +302,12 @@ static integer c__2 = 2;
 	    doublereal *, doublereal *, integer *, doublereal *, integer *),
 		dlabad_(doublereal *, doublereal *);
     static doublereal rnorm1;
-    extern doublereal dlamch_(char *, ftnlen);
+    extern doublereal dlamch_(char *);
     extern /* Subroutine */ int dlascl_(char *, integer *, integer *, 
 	    doublereal *, doublereal *, integer *, integer *, doublereal *, 
-	    integer *, integer *, ftnlen), arscnd_(real *);
+	    integer *, integer *), arscnd_(real *);
     extern doublereal dlanhs_(char *, integer *, doublereal *, integer *, 
-	    doublereal *, ftnlen);
+	    doublereal *);
     static logical rstart;
     static integer msglvl;
     static doublereal smlnum;
@@ -404,10 +404,10 @@ static integer c__2 = 2;
 /*        | REFERENCE: LAPACK subroutine dlahqr     | */
 /*        %-----------------------------------------% */
 
-	unfl = dlamch_("safe minimum", (ftnlen)12);
+	unfl = dlamch_("safe minimum");
 	ovfl = 1. / unfl;
 	dlabad_(&unfl, &ovfl);
-	ulp = dlamch_("precision", (ftnlen)9);
+	ulp = dlamch_("precision");
 	smlnum = unfl * (*n / ulp);
 	first = FALSE_;
     }
@@ -573,9 +573,9 @@ L40:
 /*            %-----------------------------------------% */
 
 	dlascl_("General", &i__, &i__, rnorm, &c_b25, n, &c__1, &v[j * v_dim1 
-		+ 1], n, &infol, (ftnlen)7);
+		+ 1], n, &infol);
 	dlascl_("General", &i__, &i__, rnorm, &c_b25, n, &c__1, &workd[ipj], 
-		n, &infol, (ftnlen)7);
+		n, &infol);
     }
 
 /*        %------------------------------------------------------% */
@@ -678,7 +678,7 @@ L60:
 /*        %------------------------------------------% */
 
     dgemv_("T", n, &j, &c_b25, &v[v_offset], ldv, &workd[ipj], &c__1, &c_b47, 
-	    &h__[j * h_dim1 + 1], &c__1, (ftnlen)1);
+	    &h__[j * h_dim1 + 1], &c__1);
 
 /*        %--------------------------------------% */
 /*        | Orthogonalize r_{j} against V_{j}.   | */
@@ -686,7 +686,7 @@ L60:
 /*        %--------------------------------------% */
 
     dgemv_("N", n, &j, &c_b50, &v[v_offset], ldv, &h__[j * h_dim1 + 1], &c__1,
-	     &c_b25, &resid[1], &c__1, (ftnlen)1);
+	     &c_b25, &resid[1], &c__1);
 
     if (j > 1) {
 	h__[j + (j - 1) * h_dim1] = betaj;
@@ -785,7 +785,7 @@ L80:
 /*        %----------------------------------------------------% */
 
     dgemv_("T", n, &j, &c_b25, &v[v_offset], ldv, &workd[ipj], &c__1, &c_b47, 
-	    &workd[irj], &c__1, (ftnlen)1);
+	    &workd[irj], &c__1);
 
 /*        %---------------------------------------------% */
 /*        | Compute the correction to the residual:     | */
@@ -795,7 +795,7 @@ L80:
 /*        %---------------------------------------------% */
 
     dgemv_("N", n, &j, &c_b50, &v[v_offset], ldv, &workd[irj], &c__1, &c_b25, 
-	    &resid[1], &c__1, (ftnlen)1);
+	    &resid[1], &c__1);
     daxpy_(&j, &c_b25, &workd[irj], &c__1, &h__[j * h_dim1 + 1], &c__1);
 
     orth2 = TRUE_;
@@ -930,8 +930,7 @@ L100:
 		    i__ + 1 + (i__ + 1) * h_dim1], abs(d__2));
 	    if (tst1 == 0.) {
 		i__2 = *k + *np;
-		tst1 = dlanhs_("1", &i__2, &h__[h_offset], ldh, &workd[*n + 1]
-			, (ftnlen)1);
+		tst1 = dlanhs_("1", &i__2, &h__[h_offset], ldh, &workd[*n + 1]);
 	    }
 /* Computing MAX */
 	    d__2 = ulp * tst1;

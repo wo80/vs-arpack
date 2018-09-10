@@ -206,7 +206,7 @@ static integer c__1 = 1;
     complex sigma;
     extern /* Subroutine */ int cgemv_(char *, integer *, integer *, complex *
 	    , complex *, integer *, complex *, integer *, complex *, complex *
-	    , integer *, ftnlen), ccopy_(integer *, complex *, integer *, 
+	    , integer *), ccopy_(integer *, complex *, integer *, 
 	    complex *, integer *), caxpy_(integer *, complex *, complex *, 
 	    integer *, complex *, integer *), cmout_(integer *, integer *, 
 	    integer *, complex *, integer *, integer *, char *, ftnlen), 
@@ -216,15 +216,15 @@ static integer c__1 = 1;
     extern doublereal slapy2_(real *, real *);
     extern /* Subroutine */ int slabad_(real *, real *);
     extern doublereal clanhs_(char *, integer *, complex *, integer *, 
-	    complex *, ftnlen);
+	    complex *);
     extern /* Subroutine */ int arscnd_(real *), clacpy_(char *, integer *, 
-	    integer *, complex *, integer *, complex *, integer *, ftnlen);
+	    integer *, complex *, integer *, complex *, integer *);
     integer istart, kplusp, msglvl;
     static real smlnum;
     extern /* Subroutine */ int clartg_(complex *, complex *, real *, complex 
 	    *, complex *), claset_(char *, integer *, integer *, complex *, 
-	    complex *, complex *, integer *, ftnlen);
-    extern doublereal slamch_(char *, ftnlen);
+	    complex *, complex *, integer *);
+    extern doublereal slamch_(char *);
 
 
 /*     %----------------------------------------------------% */
@@ -321,11 +321,11 @@ static integer c__1 = 1;
 /*        | REFERENCE: LAPACK subroutine clahqr           | */
 /*        %-----------------------------------------------% */
 
-	unfl = slamch_("safe minimum", (ftnlen)12);
+	unfl = slamch_("safe minimum");
 	q__1.r = 1.f / unfl, q__1.i = 0.f / unfl;
 	ovfl = q__1.r;
 	slabad_(&unfl, &ovfl);
-	ulp = slamch_("precision", (ftnlen)9);
+	ulp = slamch_("precision");
 	smlnum = unfl * (*n / ulp);
 	first = FALSE_;
     }
@@ -345,8 +345,7 @@ static integer c__1 = 1;
 /*     | the rotations and reflections              | */
 /*     %--------------------------------------------% */
 
-    claset_("All", &kplusp, &kplusp, &c_b2, &c_b1, &q[q_offset], ldq, (ftnlen)
-	    3);
+    claset_("All", &kplusp, &kplusp, &c_b2, &c_b1, &q[q_offset], ldq);
 
 /*     %----------------------------------------------% */
 /*     | Quick return if there are no shifts to apply | */
@@ -394,8 +393,7 @@ L20:
 		    h_dim1]), dabs(r__4)));
 	    if (tst1 == 0.f) {
 		i__3 = kplusp - jj + 1;
-		tst1 = clanhs_("1", &i__3, &h__[h_offset], ldh, &workl[1], (
-			ftnlen)1);
+		tst1 = clanhs_("1", &i__3, &h__[h_offset], ldh, &workl[1]);
 	    }
 	    i__3 = i__ + 1 + i__ * h_dim1;
 /* Computing MAX */
@@ -641,8 +639,7 @@ L100:
 		) + (r__4 = r_imag(&h__[i__ + 1 + (i__ + 1) * h_dim1]), dabs(
 		r__4)));
 	if (tst1 == 0.f) {
-	    tst1 = clanhs_("1", kev, &h__[h_offset], ldh, &workl[1], (ftnlen)
-		    1);
+	    tst1 = clanhs_("1", kev, &h__[h_offset], ldh, &workl[1]);
 	}
 	i__2 = i__ + 1 + i__ * h_dim1;
 /* Computing MAX */
@@ -665,7 +662,7 @@ L100:
     i__1 = *kev + 1 + *kev * h_dim1;
     if (h__[i__1].r > 0.f) {
 	cgemv_("N", n, &kplusp, &c_b1, &v[v_offset], ldv, &q[(*kev + 1) * 
-		q_dim1 + 1], &c__1, &c_b2, &workd[*n + 1], &c__1, (ftnlen)1);
+		q_dim1 + 1], &c__1, &c_b2, &workd[*n + 1], &c__1);
     }
 
 /*     %----------------------------------------------------------% */
@@ -677,7 +674,7 @@ L100:
     for (i__ = 1; i__ <= i__1; ++i__) {
 	i__2 = kplusp - i__ + 1;
 	cgemv_("N", n, &i__2, &c_b1, &v[v_offset], ldv, &q[(*kev - i__ + 1) * 
-		q_dim1 + 1], &c__1, &c_b2, &workd[1], &c__1, (ftnlen)1);
+		q_dim1 + 1], &c__1, &c_b2, &workd[1], &c__1);
 	ccopy_(n, &workd[1], &c__1, &v[(kplusp - i__ + 1) * v_dim1 + 1], &
 		c__1);
 /* L140: */
@@ -688,7 +685,7 @@ L100:
 /*     %-------------------------------------------------% */
 
     clacpy_("A", n, kev, &v[(kplusp - *kev + 1) * v_dim1 + 1], ldv, &v[
-	    v_offset], ldv, (ftnlen)1);
+	    v_offset], ldv);
 
 /*     %--------------------------------------------------------------% */
 /*     | Copy the (kev+1)-st column of (V*Q) in the appropriate place | */

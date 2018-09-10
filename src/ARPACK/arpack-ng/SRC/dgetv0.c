@@ -183,7 +183,7 @@ static doublereal c_b31 = -1.;
     static integer iseed[4];
     extern /* Subroutine */ int dgemv_(char *, integer *, integer *, 
 	    doublereal *, doublereal *, integer *, doublereal *, integer *, 
-	    doublereal *, doublereal *, integer *, ftnlen);
+	    doublereal *, doublereal *, integer *);
     integer idist;
     extern /* Subroutine */ int dcopy_(integer *, doublereal *, integer *, 
 	    doublereal *, integer *);
@@ -413,10 +413,10 @@ L30:
 
     i__1 = *j - 1;
     dgemv_("T", n, &i__1, &c_b26, &v[v_offset], ldv, &workd[1], &c__1, &c_b28,
-	     &workd[*n + 1], &c__1, (ftnlen)1);
+	     &workd[*n + 1], &c__1);
     i__1 = *j - 1;
     dgemv_("N", n, &i__1, &c_b31, &v[v_offset], ldv, &workd[*n + 1], &c__1, &
-	    c_b26, &resid[1], &c__1, (ftnlen)1);
+	    c_b26, &resid[1], &c__1);
 
 /*     %----------------------------------------------------------% */
 /*     | Compute the B-norm of the orthogonalized starting vector | */

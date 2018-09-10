@@ -274,7 +274,7 @@ static integer c__2 = 2;
     extern /* Subroutine */ int dscal_(integer *, doublereal *, doublereal *, 
 	    integer *), dgemv_(char *, integer *, integer *, doublereal *, 
 	    doublereal *, integer *, doublereal *, integer *, doublereal *, 
-	    doublereal *, integer *, ftnlen);
+	    doublereal *, integer *);
     integer infol;
     extern /* Subroutine */ int dcopy_(integer *, doublereal *, integer *, 
 	    doublereal *, integer *);
@@ -287,10 +287,10 @@ static integer c__2 = 2;
 	    logical *, integer *, integer *, doublereal *, integer *, 
 	    doublereal *, doublereal *, integer *, doublereal *, integer *);
     static doublereal rnorm1;
-    extern doublereal dlamch_(char *, ftnlen);
+    extern doublereal dlamch_(char *);
     extern /* Subroutine */ int dlascl_(char *, integer *, integer *, 
 	    doublereal *, doublereal *, integer *, integer *, doublereal *, 
-	    integer *, integer *, ftnlen), arscnd_(real *);
+	    integer *, integer *), arscnd_(real *);
     static doublereal safmin;
     static logical rstart;
     static integer msglvl;
@@ -380,7 +380,7 @@ static integer c__2 = 2;
 /*        | that 1/sfmin does not overflow | */
 /*        %--------------------------------% */
 
-	safmin = dlamch_("safmin", (ftnlen)6);
+	safmin = dlamch_("safmin");
     }
 
     if (*ido == 0) {
@@ -554,9 +554,9 @@ L40:
 /*            %-----------------------------------------% */
 
 	dlascl_("General", &i__, &i__, rnorm, &c_b24, n, &c__1, &v[j * v_dim1 
-		+ 1], n, &infol, (ftnlen)7);
+		+ 1], n, &infol);
 	dlascl_("General", &i__, &i__, rnorm, &c_b24, n, &c__1, &workd[ipj], 
-		n, &infol, (ftnlen)7);
+		n, &infol);
     }
 
 /*        %------------------------------------------------------% */
@@ -676,10 +676,10 @@ L65:
 
     if (*mode != 2) {
 	dgemv_("T", n, &j, &c_b24, &v[v_offset], ldv, &workd[ipj], &c__1, &
-		c_b49, &workd[irj], &c__1, (ftnlen)1);
+		c_b49, &workd[irj], &c__1);
     } else if (*mode == 2) {
 	dgemv_("T", n, &j, &c_b24, &v[v_offset], ldv, &workd[ivj], &c__1, &
-		c_b49, &workd[irj], &c__1, (ftnlen)1);
+		c_b49, &workd[irj], &c__1);
     }
 
 /*        %--------------------------------------% */
@@ -688,7 +688,7 @@ L65:
 /*        %--------------------------------------% */
 
     dgemv_("N", n, &j, &c_b57, &v[v_offset], ldv, &workd[irj], &c__1, &c_b24, 
-	    &resid[1], &c__1, (ftnlen)1);
+	    &resid[1], &c__1);
 
 /*        %--------------------------------------% */
 /*        | Extend H to have j rows and columns. | */
@@ -788,7 +788,7 @@ L80:
 /*        %----------------------------------------------------% */
 
     dgemv_("T", n, &j, &c_b24, &v[v_offset], ldv, &workd[ipj], &c__1, &c_b49, 
-	    &workd[irj], &c__1, (ftnlen)1);
+	    &workd[irj], &c__1);
 
 /*        %----------------------------------------------% */
 /*        | Compute the correction to the residual:      | */
@@ -799,7 +799,7 @@ L80:
 /*        %----------------------------------------------% */
 
     dgemv_("N", n, &j, &c_b57, &v[v_offset], ldv, &workd[irj], &c__1, &c_b24, 
-	    &resid[1], &c__1, (ftnlen)1);
+	    &resid[1], &c__1);
 
     if (j == 1 || rstart) {
 	h__[j + h_dim1] = 0.;

@@ -209,12 +209,11 @@ static doublereal c_b43 = -1.;
     static doublereal unfl, ovfl;
     extern /* Subroutine */ int dscal_(integer *, doublereal *, doublereal *, 
 	    integer *), dlarf_(char *, integer *, integer *, doublereal *, 
-	    integer *, doublereal *, doublereal *, integer *, doublereal *, 
-	    ftnlen);
+	    integer *, doublereal *, doublereal *, integer *, doublereal *);
     logical cconj;
     extern /* Subroutine */ int dgemv_(char *, integer *, integer *, 
 	    doublereal *, doublereal *, integer *, doublereal *, integer *, 
-	    doublereal *, doublereal *, integer *, ftnlen), dcopy_(integer *, 
+	    doublereal *, doublereal *, integer *), dcopy_(integer *, 
 	    doublereal *, integer *, doublereal *, integer *), daxpy_(integer 
 	    *, doublereal *, doublereal *, integer *, doublereal *, integer *)
 	    , dmout_(integer *, integer *, integer *, doublereal *, integer *,
@@ -223,7 +222,7 @@ static doublereal c_b43 = -1.;
 	    integer *, integer *, integer *, char *, ftnlen);
     extern doublereal dlapy2_(doublereal *, doublereal *);
     extern /* Subroutine */ int dlabad_(doublereal *, doublereal *);
-    extern doublereal dlamch_(char *, ftnlen);
+    extern doublereal dlamch_(char *);
     extern /* Subroutine */ int dlarfg_(integer *, doublereal *, doublereal *,
 	     integer *, doublereal *);
     doublereal sigmai;
@@ -232,11 +231,11 @@ static doublereal c_b43 = -1.;
     doublereal sigmar;
     static doublereal smlnum;
     extern /* Subroutine */ int dlaset_(char *, integer *, integer *, 
-	    doublereal *, doublereal *, doublereal *, integer *, ftnlen), 
+	    doublereal *, doublereal *, doublereal *, integer *), 
 	    dlartg_(doublereal *, doublereal *, doublereal *, doublereal *, 
 	    doublereal *);
     extern doublereal dlanhs_(char *, integer *, doublereal *, integer *, 
-	    doublereal *, ftnlen);
+	    doublereal *);
 
 
 /*     %----------------------------------------------------% */
@@ -329,10 +328,10 @@ static doublereal c_b43 = -1.;
 /*        | REFERENCE: LAPACK subroutine dlahqr           | */
 /*        %-----------------------------------------------% */
 
-	unfl = dlamch_("safe minimum", (ftnlen)12);
+	unfl = dlamch_("safe minimum");
 	ovfl = 1. / unfl;
 	dlabad_(&unfl, &ovfl);
-	ulp = dlamch_("precision", (ftnlen)9);
+	ulp = dlamch_("precision");
 	smlnum = unfl * (*n / ulp);
 	first = FALSE_;
     }
@@ -351,8 +350,7 @@ static doublereal c_b43 = -1.;
 /*     | the rotations and reflections              | */
 /*     %--------------------------------------------% */
 
-    dlaset_("All", &kplusp, &kplusp, &c_b5, &c_b6, &q[q_offset], ldq, (ftnlen)
-	    3);
+    dlaset_("All", &kplusp, &kplusp, &c_b5, &c_b6, &q[q_offset], ldq);
 
 /*     %----------------------------------------------% */
 /*     | Quick return if there are no shifts to apply | */
@@ -444,8 +442,7 @@ L20:
 		    i__ + 1 + (i__ + 1) * h_dim1], abs(d__2));
 	    if (tst1 == 0.) {
 		i__3 = kplusp - jj + 1;
-		tst1 = dlanhs_("1", &i__3, &h__[h_offset], ldh, &workl[1], (
-			ftnlen)1);
+		tst1 = dlanhs_("1", &i__3, &h__[h_offset], ldh, &workl[1]);
 	    }
 /* Computing MAX */
 	    d__2 = ulp * tst1;
@@ -641,7 +638,7 @@ L40:
 
 		i__3 = kplusp - i__ + 1;
 		dlarf_("Left", &nr, &i__3, u, &c__1, &tau, &h__[i__ + i__ * 
-			h_dim1], ldh, &workl[1], (ftnlen)4);
+			h_dim1], ldh, &workl[1]);
 
 /*              %---------------------------------------% */
 /*              | Apply the reflector to the right of H | */
@@ -651,14 +648,14 @@ L40:
 		i__3 = i__ + 3;
 		ir = min(i__3,iend);
 		dlarf_("Right", &ir, &nr, u, &c__1, &tau, &h__[i__ * h_dim1 + 
-			1], ldh, &workl[1], (ftnlen)5);
+			1], ldh, &workl[1]);
 
 /*              %-----------------------------------------------------% */
 /*              | Accumulate the reflector in the matrix Q;  Q <- Q*G | */
 /*              %-----------------------------------------------------% */
 
 		dlarf_("Right", &kplusp, &nr, u, &c__1, &tau, &q[i__ * q_dim1 
-			+ 1], ldq, &workl[1], (ftnlen)5);
+			+ 1], ldq, &workl[1]);
 
 /*              %----------------------------% */
 /*              | Prepare for next reflector | */
@@ -735,8 +732,7 @@ L110:
 	tst1 = (d__1 = h__[i__ + i__ * h_dim1], abs(d__1)) + (d__2 = h__[i__ 
 		+ 1 + (i__ + 1) * h_dim1], abs(d__2));
 	if (tst1 == 0.) {
-	    tst1 = dlanhs_("1", kev, &h__[h_offset], ldh, &workl[1], (ftnlen)
-		    1);
+	    tst1 = dlanhs_("1", kev, &h__[h_offset], ldh, &workl[1]);
 	}
 /* Computing MAX */
 	d__1 = ulp * tst1;
@@ -756,7 +752,7 @@ L110:
 
     if (h__[*kev + 1 + *kev * h_dim1] > 0.) {
 	dgemv_("N", n, &kplusp, &c_b6, &v[v_offset], ldv, &q[(*kev + 1) * 
-		q_dim1 + 1], &c__1, &c_b5, &workd[*n + 1], &c__1, (ftnlen)1);
+		q_dim1 + 1], &c__1, &c_b5, &workd[*n + 1], &c__1);
     }
 
 /*     %----------------------------------------------------------% */
@@ -768,7 +764,7 @@ L110:
     for (i__ = 1; i__ <= i__1; ++i__) {
 	i__2 = kplusp - i__ + 1;
 	dgemv_("N", n, &i__2, &c_b6, &v[v_offset], ldv, &q[(*kev - i__ + 1) * 
-		q_dim1 + 1], &c__1, &c_b5, &workd[1], &c__1, (ftnlen)1);
+		q_dim1 + 1], &c__1, &c_b5, &workd[1], &c__1);
 	dcopy_(n, &workd[1], &c__1, &v[(kplusp - i__ + 1) * v_dim1 + 1], &
 		c__1);
 /* L140: */

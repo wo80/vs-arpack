@@ -209,9 +209,9 @@ static real c_b43 = -1.f;
     logical cconj;
     extern /* Subroutine */ int sscal_(integer *, real *, real *, integer *), 
 	    slarf_(char *, integer *, integer *, real *, integer *, real *, 
-	    real *, integer *, real *, ftnlen), sgemv_(char *, integer *, 
+	    real *, integer *, real *), sgemv_(char *, integer *, 
 	    integer *, real *, real *, integer *, real *, integer *, real *, 
-	    real *, integer *, ftnlen), scopy_(integer *, real *, integer *, 
+	    real *, integer *), scopy_(integer *, real *, integer *, 
 	    real *, integer *), saxpy_(integer *, real *, real *, integer *, 
 	    real *, integer *), ivout_(integer *, integer *, integer *, 
 	    integer *, char *, ftnlen), smout_(integer *, integer *, integer *
@@ -219,19 +219,18 @@ static real c_b43 = -1.f;
 	     integer *, real *, integer *, char *, ftnlen);
     extern doublereal slapy2_(real *, real *);
     extern /* Subroutine */ int slabad_(real *, real *);
-    extern doublereal slamch_(char *, ftnlen);
+    extern doublereal slamch_(char *);
     real sigmai;
     extern /* Subroutine */ int arscnd_(real *);
     real sigmar;
     integer istart, kplusp, msglvl;
     static real smlnum;
     extern /* Subroutine */ int slacpy_(char *, integer *, integer *, real *, 
-	    integer *, real *, integer *, ftnlen), slarfg_(integer *, real *, 
+	    integer *, real *, integer *), slarfg_(integer *, real *, 
 	    real *, integer *, real *), slaset_(char *, integer *, integer *, 
-	    real *, real *, real *, integer *, ftnlen), slartg_(real *, real *
+	    real *, real *, real *, integer *), slartg_(real *, real *
 	    , real *, real *, real *);
-    extern doublereal slanhs_(char *, integer *, real *, integer *, real *, 
-	    ftnlen);
+    extern doublereal slanhs_(char *, integer *, real *, integer *, real *);
 
 
 /*     %----------------------------------------------------% */
@@ -324,10 +323,10 @@ static real c_b43 = -1.f;
 /*        | REFERENCE: LAPACK subroutine slahqr           | */
 /*        %-----------------------------------------------% */
 
-	unfl = slamch_("safe minimum", (ftnlen)12);
+	unfl = slamch_("safe minimum");
 	ovfl = 1.f / unfl;
 	slabad_(&unfl, &ovfl);
-	ulp = slamch_("precision", (ftnlen)9);
+	ulp = slamch_("precision");
 	smlnum = unfl * (*n / ulp);
 	first = FALSE_;
     }
@@ -346,8 +345,7 @@ static real c_b43 = -1.f;
 /*     | the rotations and reflections              | */
 /*     %--------------------------------------------% */
 
-    slaset_("All", &kplusp, &kplusp, &c_b5, &c_b6, &q[q_offset], ldq, (ftnlen)
-	    3);
+    slaset_("All", &kplusp, &kplusp, &c_b5, &c_b6, &q[q_offset], ldq);
 
 /*     %----------------------------------------------% */
 /*     | Quick return if there are no shifts to apply | */
@@ -439,8 +437,7 @@ L20:
 		    i__ + 1 + (i__ + 1) * h_dim1], dabs(r__2));
 	    if (tst1 == 0.f) {
 		i__3 = kplusp - jj + 1;
-		tst1 = slanhs_("1", &i__3, &h__[h_offset], ldh, &workl[1], (
-			ftnlen)1);
+		tst1 = slanhs_("1", &i__3, &h__[h_offset], ldh, &workl[1]);
 	    }
 /* Computing MAX */
 	    r__2 = ulp * tst1;
@@ -636,7 +633,7 @@ L40:
 
 		i__3 = kplusp - i__ + 1;
 		slarf_("Left", &nr, &i__3, u, &c__1, &tau, &h__[i__ + i__ * 
-			h_dim1], ldh, &workl[1], (ftnlen)4);
+			h_dim1], ldh, &workl[1]);
 
 /*              %---------------------------------------% */
 /*              | Apply the reflector to the right of H | */
@@ -646,14 +643,14 @@ L40:
 		i__3 = i__ + 3;
 		ir = min(i__3,iend);
 		slarf_("Right", &ir, &nr, u, &c__1, &tau, &h__[i__ * h_dim1 + 
-			1], ldh, &workl[1], (ftnlen)5);
+			1], ldh, &workl[1]);
 
 /*              %-----------------------------------------------------% */
 /*              | Accumulate the reflector in the matrix Q;  Q <- Q*G | */
 /*              %-----------------------------------------------------% */
 
 		slarf_("Right", &kplusp, &nr, u, &c__1, &tau, &q[i__ * q_dim1 
-			+ 1], ldq, &workl[1], (ftnlen)5);
+			+ 1], ldq, &workl[1]);
 
 /*              %----------------------------% */
 /*              | Prepare for next reflector | */
@@ -730,8 +727,7 @@ L110:
 	tst1 = (r__1 = h__[i__ + i__ * h_dim1], dabs(r__1)) + (r__2 = h__[i__ 
 		+ 1 + (i__ + 1) * h_dim1], dabs(r__2));
 	if (tst1 == 0.f) {
-	    tst1 = slanhs_("1", kev, &h__[h_offset], ldh, &workl[1], (ftnlen)
-		    1);
+	    tst1 = slanhs_("1", kev, &h__[h_offset], ldh, &workl[1]);
 	}
 /* Computing MAX */
 	r__1 = ulp * tst1;
@@ -751,7 +747,7 @@ L110:
 
     if (h__[*kev + 1 + *kev * h_dim1] > 0.f) {
 	sgemv_("N", n, &kplusp, &c_b6, &v[v_offset], ldv, &q[(*kev + 1) * 
-		q_dim1 + 1], &c__1, &c_b5, &workd[*n + 1], &c__1, (ftnlen)1);
+		q_dim1 + 1], &c__1, &c_b5, &workd[*n + 1], &c__1);
     }
 
 /*     %----------------------------------------------------------% */
@@ -763,7 +759,7 @@ L110:
     for (i__ = 1; i__ <= i__1; ++i__) {
 	i__2 = kplusp - i__ + 1;
 	sgemv_("N", n, &i__2, &c_b6, &v[v_offset], ldv, &q[(*kev - i__ + 1) * 
-		q_dim1 + 1], &c__1, &c_b5, &workd[1], &c__1, (ftnlen)1);
+		q_dim1 + 1], &c__1, &c_b5, &workd[1], &c__1);
 	scopy_(n, &workd[1], &c__1, &v[(kplusp - i__ + 1) * v_dim1 + 1], &
 		c__1);
 /* L140: */
@@ -774,7 +770,7 @@ L110:
 /*     %-------------------------------------------------% */
 
     slacpy_("A", n, kev, &v[(kplusp - *kev + 1) * v_dim1 + 1], ldv, &v[
-	    v_offset], ldv, (ftnlen)1);
+	    v_offset], ldv);
 
 /*     %--------------------------------------------------------------% */
 /*     | Copy the (kev+1)-st column of (V*Q) in the appropriate place | */

@@ -206,7 +206,7 @@ static integer c__1 = 1;
     extern /* Subroutine */ int zscal_(integer *, doublecomplex *, 
 	    doublecomplex *, integer *), zgemv_(char *, integer *, integer *, 
 	    doublecomplex *, doublecomplex *, integer *, doublecomplex *, 
-	    integer *, doublecomplex *, doublecomplex *, integer *, ftnlen), 
+	    integer *, doublecomplex *, doublecomplex *, integer *), 
 	    zcopy_(integer *, doublecomplex *, integer *, doublecomplex *, 
 	    integer *), ivout_(integer *, integer *, integer *, integer *, 
 	    char *, ftnlen), zaxpy_(integer *, doublecomplex *, doublecomplex 
@@ -216,18 +216,18 @@ static integer c__1 = 1;
 	    *, char *, ftnlen);
     extern doublereal dlapy2_(doublereal *, doublereal *);
     extern /* Subroutine */ int dlabad_(doublereal *, doublereal *);
-    extern doublereal dlamch_(char *, ftnlen);
+    extern doublereal dlamch_(char *);
     extern /* Subroutine */ int arscnd_(real *);
     integer istart, kplusp, msglvl;
     static doublereal smlnum;
     extern /* Subroutine */ int zlacpy_(char *, integer *, integer *, 
-	    doublecomplex *, integer *, doublecomplex *, integer *, ftnlen), 
+	    doublecomplex *, integer *, doublecomplex *, integer *), 
 	    zlartg_(doublecomplex *, doublecomplex *, doublereal *, 
 	    doublecomplex *, doublecomplex *), zlaset_(char *, integer *, 
 	    integer *, doublecomplex *, doublecomplex *, doublecomplex *, 
-	    integer *, ftnlen);
+	    integer *);
     extern doublereal zlanhs_(char *, integer *, doublecomplex *, integer *, 
-	    doublecomplex *, ftnlen);
+	    doublecomplex *);
 
 
 /*     %----------------------------------------------------% */
@@ -324,11 +324,11 @@ static integer c__1 = 1;
 /*        | REFERENCE: LAPACK subroutine zlahqr           | */
 /*        %-----------------------------------------------% */
 
-	unfl = dlamch_("safe minimum", (ftnlen)12);
+	unfl = dlamch_("safe minimum");
 	z__1.r = 1. / unfl, z__1.i = 0. / unfl;
 	ovfl = z__1.r;
 	dlabad_(&unfl, &ovfl);
-	ulp = dlamch_("precision", (ftnlen)9);
+	ulp = dlamch_("precision");
 	smlnum = unfl * (*n / ulp);
 	first = FALSE_;
     }
@@ -348,8 +348,7 @@ static integer c__1 = 1;
 /*     | the rotations and reflections              | */
 /*     %--------------------------------------------% */
 
-    zlaset_("All", &kplusp, &kplusp, &c_b2, &c_b1, &q[q_offset], ldq, (ftnlen)
-	    3);
+    zlaset_("All", &kplusp, &kplusp, &c_b2, &c_b1, &q[q_offset], ldq);
 
 /*     %----------------------------------------------% */
 /*     | Quick return if there are no shifts to apply | */
@@ -397,8 +396,7 @@ L20:
 		    ), abs(d__4)));
 	    if (tst1 == 0.) {
 		i__3 = kplusp - jj + 1;
-		tst1 = zlanhs_("1", &i__3, &h__[h_offset], ldh, &workl[1], (
-			ftnlen)1);
+		tst1 = zlanhs_("1", &i__3, &h__[h_offset], ldh, &workl[1]);
 	    }
 	    i__3 = i__ + 1 + i__ * h_dim1;
 /* Computing MAX */
@@ -644,8 +642,7 @@ L100:
 		+ (d__4 = d_imag(&h__[i__ + 1 + (i__ + 1) * h_dim1]), abs(
 		d__4)));
 	if (tst1 == 0.) {
-	    tst1 = zlanhs_("1", kev, &h__[h_offset], ldh, &workl[1], (ftnlen)
-		    1);
+	    tst1 = zlanhs_("1", kev, &h__[h_offset], ldh, &workl[1]);
 	}
 	i__2 = i__ + 1 + i__ * h_dim1;
 /* Computing MAX */
@@ -668,7 +665,7 @@ L100:
     i__1 = *kev + 1 + *kev * h_dim1;
     if (h__[i__1].r > 0.) {
 	zgemv_("N", n, &kplusp, &c_b1, &v[v_offset], ldv, &q[(*kev + 1) * 
-		q_dim1 + 1], &c__1, &c_b2, &workd[*n + 1], &c__1, (ftnlen)1);
+		q_dim1 + 1], &c__1, &c_b2, &workd[*n + 1], &c__1);
     }
 
 /*     %----------------------------------------------------------% */
@@ -680,7 +677,7 @@ L100:
     for (i__ = 1; i__ <= i__1; ++i__) {
 	i__2 = kplusp - i__ + 1;
 	zgemv_("N", n, &i__2, &c_b1, &v[v_offset], ldv, &q[(*kev - i__ + 1) * 
-		q_dim1 + 1], &c__1, &c_b2, &workd[1], &c__1, (ftnlen)1);
+		q_dim1 + 1], &c__1, &c_b2, &workd[1], &c__1);
 	zcopy_(n, &workd[1], &c__1, &v[(kplusp - i__ + 1) * v_dim1 + 1], &
 		c__1);
 /* L140: */
@@ -691,7 +688,7 @@ L100:
 /*     %-------------------------------------------------% */
 
     zlacpy_("A", n, kev, &v[(kplusp - *kev + 1) * v_dim1 + 1], ldv, &v[
-	    v_offset], ldv, (ftnlen)1);
+	    v_offset], ldv);
 
 /*     %--------------------------------------------------------------% */
 /*     | Copy the (kev+1)-st column of (V*Q) in the appropriate place | */

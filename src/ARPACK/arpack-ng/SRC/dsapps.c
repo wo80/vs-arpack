@@ -194,20 +194,20 @@ static doublereal c_b20 = -1.;
     extern /* Subroutine */ int dscal_(integer *, doublereal *, doublereal *, 
 	    integer *), dgemv_(char *, integer *, integer *, doublereal *, 
 	    doublereal *, integer *, doublereal *, integer *, doublereal *, 
-	    doublereal *, integer *, ftnlen), dcopy_(integer *, doublereal *, 
+	    doublereal *, integer *), dcopy_(integer *, doublereal *, 
 	    integer *, doublereal *, integer *), daxpy_(integer *, doublereal 
 	    *, doublereal *, integer *, doublereal *, integer *), dvout_(
 	    integer *, integer *, doublereal *, integer *, char *, ftnlen), 
 	    ivout_(integer *, integer *, integer *, integer *, char *, ftnlen)
 	    ;
-    extern doublereal dlamch_(char *, ftnlen);
+    extern doublereal dlamch_(char *);
     extern /* Subroutine */ int arscnd_(real *);
     static doublereal epsmch;
     integer istart, kplusp, msglvl;
     extern /* Subroutine */ int dlartg_(doublereal *, doublereal *, 
 	    doublereal *, doublereal *, doublereal *), dlaset_(char *, 
 	    integer *, integer *, doublereal *, doublereal *, doublereal *, 
-	    integer *, ftnlen);
+	    integer *);
 
 
 /*     %----------------------------------------------------% */
@@ -291,7 +291,7 @@ static doublereal c_b20 = -1.;
 /*     %-----------------------% */
 
     if (first) {
-	epsmch = dlamch_("Epsilon-Machine", (ftnlen)15);
+	epsmch = dlamch_("Epsilon-Machine");
 	first = FALSE_;
     }
     itop = 1;
@@ -311,8 +311,7 @@ static doublereal c_b20 = -1.;
 /*     | kplusp used to accumulate the rotations.     | */
 /*     %----------------------------------------------% */
 
-    dlaset_("All", &kplusp, &kplusp, &c_b4, &c_b5, &q[q_offset], ldq, (ftnlen)
-	    3);
+    dlaset_("All", &kplusp, &kplusp, &c_b4, &c_b5, &q[q_offset], ldq);
 
 /*     %----------------------------------------------% */
 /*     | Quick return if there are no shifts to apply | */
@@ -581,7 +580,7 @@ L90:
 
     if (h__[*kev + 1 + h_dim1] > 0.) {
 	dgemv_("N", n, &kplusp, &c_b5, &v[v_offset], ldv, &q[(*kev + 1) * 
-		q_dim1 + 1], &c__1, &c_b4, &workd[*n + 1], &c__1, (ftnlen)1);
+		q_dim1 + 1], &c__1, &c_b4, &workd[*n + 1], &c__1);
     }
 
 /*     %-------------------------------------------------------% */
@@ -595,7 +594,7 @@ L90:
     for (i__ = 1; i__ <= i__1; ++i__) {
 	i__2 = kplusp - i__ + 1;
 	dgemv_("N", n, &i__2, &c_b5, &v[v_offset], ldv, &q[(*kev - i__ + 1) * 
-		q_dim1 + 1], &c__1, &c_b4, &workd[1], &c__1, (ftnlen)1);
+		q_dim1 + 1], &c__1, &c_b4, &workd[1], &c__1);
 	dcopy_(n, &workd[1], &c__1, &v[(kplusp - i__ + 1) * v_dim1 + 1], &
 		c__1);
 /* L130: */

@@ -283,7 +283,7 @@ static integer c__2 = 2;
 	    *, complex *, integer *);
     extern /* Subroutine */ int cgemv_(char *, integer *, integer *, complex *
 	    , complex *, integer *, complex *, integer *, complex *, complex *
-	    , integer *, ftnlen);
+	    , integer *);
     integer infol;
     extern /* Subroutine */ int ccopy_(integer *, complex *, integer *, 
 	    complex *, integer *);
@@ -305,14 +305,14 @@ static integer c__2 = 2;
     static real rnorm1;
     extern /* Subroutine */ int slabad_(real *, real *), clascl_(char *, 
 	    integer *, integer *, real *, real *, integer *, integer *, 
-	    complex *, integer *, integer *, ftnlen), csscal_(integer *, real 
+	    complex *, integer *, integer *), csscal_(integer *, real 
 	    *, complex *, integer *), arscnd_(real *);
-    extern doublereal slamch_(char *, ftnlen);
+    extern doublereal slamch_(char *);
     static logical rstart;
     static integer msglvl;
     static real smlnum;
     extern doublereal clanhs_(char *, integer *, complex *, integer *, 
-	    complex *, ftnlen);
+	    complex *);
 
 
 /*     %----------------------------------------------------% */
@@ -407,11 +407,11 @@ static integer c__2 = 2;
 /*        | REFERENCE: LAPACK subroutine clahqr     | */
 /*        %-----------------------------------------% */
 
-	unfl = slamch_("safe minimum", (ftnlen)12);
+	unfl = slamch_("safe minimum");
 	q__1.r = 1.f / unfl, q__1.i = 0.f / unfl;
 	ovfl = q__1.r;
 	slabad_(&unfl, &ovfl);
-	ulp = slamch_("precision", (ftnlen)9);
+	ulp = slamch_("precision");
 	smlnum = unfl * (*n / ulp);
 	first = FALSE_;
     }
@@ -577,9 +577,9 @@ L40:
 /*            %-----------------------------------------% */
 
 	clascl_("General", &i__, &i__, rnorm, &c_b27, n, &c__1, &v[j * v_dim1 
-		+ 1], n, &infol, (ftnlen)7);
+		+ 1], n, &infol);
 	clascl_("General", &i__, &i__, rnorm, &c_b27, n, &c__1, &workd[ipj], 
-		n, &infol, (ftnlen)7);
+		n, &infol);
     }
 
 /*        %------------------------------------------------------% */
@@ -685,7 +685,7 @@ L60:
 /*        %------------------------------------------% */
 
     cgemv_("C", n, &j, &c_b1, &v[v_offset], ldv, &workd[ipj], &c__1, &c_b2, &
-	    h__[j * h_dim1 + 1], &c__1, (ftnlen)1);
+	    h__[j * h_dim1 + 1], &c__1);
 
 /*        %--------------------------------------% */
 /*        | Orthogonalize r_{j} against V_{j}.   | */
@@ -694,7 +694,7 @@ L60:
 
     q__1.r = -1.f, q__1.i = -0.f;
     cgemv_("N", n, &j, &q__1, &v[v_offset], ldv, &h__[j * h_dim1 + 1], &c__1, 
-	    &c_b1, &resid[1], &c__1, (ftnlen)1);
+	    &c_b1, &resid[1], &c__1);
 
     if (j > 1) {
 	i__1 = j + (j - 1) * h_dim1;
@@ -799,7 +799,7 @@ L80:
 /*        %----------------------------------------------------% */
 
     cgemv_("C", n, &j, &c_b1, &v[v_offset], ldv, &workd[ipj], &c__1, &c_b2, &
-	    workd[irj], &c__1, (ftnlen)1);
+	    workd[irj], &c__1);
 
 /*        %---------------------------------------------% */
 /*        | Compute the correction to the residual:     | */
@@ -810,7 +810,7 @@ L80:
 
     q__1.r = -1.f, q__1.i = -0.f;
     cgemv_("N", n, &j, &q__1, &v[v_offset], ldv, &workd[irj], &c__1, &c_b1, &
-	    resid[1], &c__1, (ftnlen)1);
+	    resid[1], &c__1);
     caxpy_(&j, &c_b1, &workd[irj], &c__1, &h__[j * h_dim1 + 1], &c__1);
 
     orth2 = TRUE_;
@@ -954,8 +954,7 @@ L100:
 	    tst1 = slapy2_(&r__1, &r__2) + slapy2_(&r__3, &r__4);
 	    if (tst1 == 0.f) {
 		i__2 = *k + *np;
-		tst1 = clanhs_("1", &i__2, &h__[h_offset], ldh, &workd[*n + 1]
-			, (ftnlen)1);
+		tst1 = clanhs_("1", &i__2, &h__[h_offset], ldh, &workd[*n + 1]);
 	    }
 	    i__2 = i__ + 1 + i__ * h_dim1;
 	    r__1 = h__[i__2].r;

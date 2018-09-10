@@ -494,7 +494,7 @@ static integer c__1 = 1;
 	    , integer *, integer *, real *, integer *, real *, integer *, 
 	    real *, real *, real *, integer *, real *, integer *, real *, 
 	    integer *);
-    extern doublereal slamch_(char *, ftnlen);
+    extern doublereal slamch_(char *);
     extern /* Subroutine */ int arscnd_(real *);
     static integer bounds, ishift, msglvl, mxiter;
     extern /* Subroutine */ int sstats_(void);
@@ -661,7 +661,7 @@ static integer c__1 = 1;
 	    nb = 1;
 	}
 	if (*tol <= 0.f) {
-	    *tol = slamch_("EpsMach", (ftnlen)7);
+	    *tol = slamch_("EpsMach");
 	}
 
 /*        %----------------------------------------------% */

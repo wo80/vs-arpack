@@ -181,8 +181,7 @@ static real c_b31 = -1.f;
     static integer iseed[4];
     integer idist;
     extern /* Subroutine */ int sgemv_(char *, integer *, integer *, real *, 
-	    real *, integer *, real *, integer *, real *, real *, integer *, 
-	    ftnlen);
+	    real *, integer *, real *, integer *, real *, real *, integer *);
     static logical first;
     extern /* Subroutine */ int scopy_(integer *, real *, integer *, real *, 
 	    integer *), svout_(integer *, integer *, real *, integer *, char *
@@ -410,10 +409,10 @@ L30:
 
     i__1 = *j - 1;
     sgemv_("T", n, &i__1, &c_b26, &v[v_offset], ldv, &workd[1], &c__1, &c_b28,
-	     &workd[*n + 1], &c__1, (ftnlen)1);
+	     &workd[*n + 1], &c__1);
     i__1 = *j - 1;
     sgemv_("N", n, &i__1, &c_b31, &v[v_offset], ldv, &workd[*n + 1], &c__1, &
-	    c_b26, &resid[1], &c__1, (ftnlen)1);
+	    c_b26, &resid[1], &c__1);
 
 /*     %----------------------------------------------------------% */
 /*     | Compute the B-norm of the orthogonalized starting vector | */

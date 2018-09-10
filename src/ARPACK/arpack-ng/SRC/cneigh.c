@@ -160,14 +160,14 @@ static integer c__1 = 1;
 	    *), clahqr_(logical *, logical *, integer *, integer *, integer *,
 	     complex *, integer *, complex *, integer *, integer *, complex *,
 	     integer *, integer *), clacpy_(char *, integer *, integer *, 
-	    complex *, integer *, complex *, integer *, ftnlen);
+	    complex *, integer *, complex *, integer *);
     logical select[1];
     integer msglvl;
     extern /* Subroutine */ int ctrevc_(char *, char *, logical *, integer *, 
 	    complex *, integer *, complex *, integer *, complex *, integer *, 
 	    integer *, integer *, complex *, real *, integer *, ftnlen, 
 	    ftnlen), arscnd_(real *), claset_(char *, integer *, integer *, 
-	    complex *, complex *, complex *, integer *, ftnlen);
+	    complex *, complex *, complex *, integer *);
 
 
 /*     %----------------------------------------------------% */

@@ -470,7 +470,7 @@ static integer c__1 = 1;
 	    doublecomplex *, doublecomplex *, doublecomplex *, integer *, 
 	    doublecomplex *, integer *, doublecomplex *, doublereal *, 
 	    integer *);
-    extern doublereal dlamch_(char *, ftnlen);
+    extern doublereal dlamch_(char *);
     extern /* Subroutine */ int arscnd_(real *);
     static integer bounds, ishift, msglvl, mxiter;
     extern /* Subroutine */ int zstatn_(void);
@@ -623,7 +623,7 @@ static integer c__1 = 1;
 	    nb = 1;
 	}
 	if (*tol <= 0.) {
-	    *tol = dlamch_("EpsMach", (ftnlen)7);
+	    *tol = dlamch_("EpsMach");
 	}
 	if (ishift != 0 && ishift != 1 && ishift != 2) {
 	    ishift = 1;
