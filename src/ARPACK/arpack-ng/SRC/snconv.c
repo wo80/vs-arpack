@@ -115,7 +115,7 @@ static doublereal c_b3 = .66666666666666663;
     integer i__;
     static real t0, t1;
     real eps23, temp;
-    extern doublereal slapy2_(real *, real *), slamch_(char *, ftnlen);
+    extern doublereal slapy2_(real *, real *), slamch_(char *);
     extern /* Subroutine */ int arscnd_(real *);
 
 
@@ -185,7 +185,7 @@ static doublereal c_b3 = .66666666666666663;
 /*     | Get machine dependent constant. | */
 /*     %---------------------------------% */
 
-    eps23 = slamch_("Epsilon-Machine", (ftnlen)15);
+    eps23 = slamch_("Epsilon-Machine");
     d__1 = (doublereal) eps23;
     eps23 = pow_dd(&d__1, &c_b3);
 

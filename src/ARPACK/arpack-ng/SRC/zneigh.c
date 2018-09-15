@@ -161,16 +161,16 @@ static integer c__1 = 1;
     logical select[1];
     integer msglvl;
     extern /* Subroutine */ int zlacpy_(char *, integer *, integer *, 
-	    doublecomplex *, integer *, doublecomplex *, integer *, ftnlen), 
+	    doublecomplex *, integer *, doublecomplex *, integer *), 
 	    zlahqr_(logical *, logical *, integer *, integer *, integer *, 
 	    doublecomplex *, integer *, doublecomplex *, integer *, integer *,
 	     doublecomplex *, integer *, integer *), ztrevc_(char *, char *, 
 	    logical *, integer *, doublecomplex *, integer *, doublecomplex *,
 	     integer *, doublecomplex *, integer *, integer *, integer *, 
-	    doublecomplex *, doublereal *, integer *, ftnlen, ftnlen), 
+	    doublecomplex *, doublereal *, integer *), 
 	    zdscal_(integer *, doublereal *, doublecomplex *, integer *), 
 	    zlaset_(char *, integer *, integer *, doublecomplex *, 
-	    doublecomplex *, doublecomplex *, integer *, ftnlen);
+	    doublecomplex *, doublecomplex *, integer *);
 
 
 /*     %----------------------------------------------------% */
@@ -261,8 +261,8 @@ static integer c__1 = 1;
 /*     |    in WORKL(1:N**2), and the Schur vectors in q.         | */
 /*     %----------------------------------------------------------% */
 
-    zlacpy_("All", n, n, &h__[h_offset], ldh, &workl[1], n, (ftnlen)3);
-    zlaset_("All", n, n, &c_b2, &c_b1, &q[q_offset], ldq, (ftnlen)3);
+    zlacpy_("All", n, n, &h__[h_offset], ldh, &workl[1], n);
+    zlaset_("All", n, n, &c_b2, &c_b1, &q[q_offset], ldq);
     zlahqr_(&c_true, &c_true, n, &c__1, n, &workl[1], ldh, &ritz[1], &c__1, n,
 	     &q[q_offset], ldq, ierr);
     if (*ierr != 0) {
@@ -282,8 +282,7 @@ static integer c__1 = 1;
 /*     %----------------------------------------------------------% */
 
     ztrevc_("Right", "Back", select, n, &workl[1], n, vl, n, &q[q_offset], 
-	    ldq, n, n, &workl[*n * *n + 1], &rwork[1], ierr, (ftnlen)5, (
-	    ftnlen)4);
+	    ldq, n, n, &workl[*n * *n + 1], &rwork[1], ierr);
 
     if (*ierr != 0) {
 	goto L9000;

@@ -334,36 +334,34 @@ static logical c_true = TRUE_;
 	    integer *, doublecomplex *, integer *), ivout_(integer *, integer 
 	    *, integer *, integer *, char *, ftnlen), ztrmm_(char *, char *, 
 	    char *, char *, integer *, integer *, doublecomplex *, 
-	    doublecomplex *, integer *, doublecomplex *, integer *, ftnlen, 
-	    ftnlen, ftnlen, ftnlen), zmout_(integer *, integer *, integer *, 
+	    doublecomplex *, integer *, doublecomplex *, integer *), 
+	    zmout_(integer *, integer *, integer *, 
 	    doublecomplex *, integer *, integer *, char *, ftnlen), zvout_(
 	    integer *, integer *, doublecomplex *, integer *, char *, ftnlen);
     extern doublereal dlapy2_(doublereal *, doublereal *);
     integer nconv2;
     extern /* Subroutine */ int zgeqr2_(integer *, integer *, doublecomplex *,
 	     integer *, doublecomplex *, doublecomplex *, integer *);
-    extern doublereal dznrm2_(integer *, doublecomplex *, integer *), dlamch_(
-	    char *, ftnlen);
+    extern doublereal dznrm2_(integer *, doublecomplex *, integer *), dlamch_(char *);
     extern /* Subroutine */ int zunm2r_(char *, char *, integer *, integer *, 
 	    integer *, doublecomplex *, integer *, doublecomplex *, 
-	    doublecomplex *, integer *, doublecomplex *, integer *, ftnlen, 
-	    ftnlen);
+	    doublecomplex *, integer *, doublecomplex *, integer *);
     integer bounds, invsub, iuptri, msglvl, outncv, numcnv, ishift;
     extern /* Subroutine */ int zlacpy_(char *, integer *, integer *, 
-	    doublecomplex *, integer *, doublecomplex *, integer *, ftnlen), 
+	    doublecomplex *, integer *, doublecomplex *, integer *), 
 	    zlahqr_(logical *, logical *, integer *, integer *, integer *, 
 	    doublecomplex *, integer *, doublecomplex *, integer *, integer *,
 	     doublecomplex *, integer *, integer *), zngets_(integer *, char *
 	    , integer *, integer *, doublecomplex *, doublecomplex *),
 	     zlaset_(char *, integer *, integer *, doublecomplex *, 
-	    doublecomplex *, doublecomplex *, integer *, ftnlen), ztrsen_(
+	    doublecomplex *, doublecomplex *, integer *), ztrsen_(
 	    char *, char *, logical *, integer *, doublecomplex *, integer *, 
 	    doublecomplex *, integer *, doublecomplex *, integer *, 
-	    doublereal *, doublereal *, doublecomplex *, integer *, integer *,
-	     ftnlen, ftnlen), ztrevc_(char *, char *, logical *, integer *, 
+	    doublereal *, doublereal *, doublecomplex *, integer *, integer *),
+	    ztrevc_(char *, char *, logical *, integer *, 
 	    doublecomplex *, integer *, doublecomplex *, integer *, 
 	    doublecomplex *, integer *, integer *, integer *, doublecomplex *,
-	     doublereal *, integer *, ftnlen, ftnlen), zdscal_(integer *, 
+	     doublereal *, integer *), zdscal_(integer *, 
 	    doublereal *, doublecomplex *, integer *);
 
 
@@ -454,7 +452,7 @@ static logical c_true = TRUE_;
 /*     | Get machine dependent constant. | */
 /*     %---------------------------------% */
 
-    eps23 = dlamch_("Epsilon-Machine", (ftnlen)15);
+    eps23 = dlamch_("Epsilon-Machine");
     eps23 = pow_dd(&eps23, &c_b5);
 
 /*     %-------------------------------% */
@@ -682,8 +680,7 @@ static logical c_true = TRUE_;
 
 	i__1 = ldh * *ncv;
 	zcopy_(&i__1, &workl[ih], &c__1, &workl[iuptri], &c__1);
-	zlaset_("All", ncv, ncv, &c_b2, &c_b1, &workl[invsub], &ldq, (ftnlen)
-		3);
+	zlaset_("All", ncv, ncv, &c_b2, &c_b1, &workl[invsub], &ldq);
 	zlahqr_(&c_true, &c_true, ncv, &c__1, ncv, &workl[iuptri], &ldh, &
 		workl[iheig], &c__1, ncv, &workl[invsub], &ldq, &ierr);
 	zcopy_(ncv, &workl[invsub + *ncv - 1], &ldq, &workl[ihbds], &c__1);
@@ -714,7 +711,7 @@ static logical c_true = TRUE_;
 
 	    ztrsen_("None", "V", &select[1], ncv, &workl[iuptri], &ldh, &
 		    workl[invsub], &ldq, &workl[iheig], &nconv2, &conds, &sep,
-		     &workev[1], ncv, &ierr, (ftnlen)4, (ftnlen)1);
+		     &workev[1], ncv, &ierr);
 
 	    if (nconv2 < nconv) {
 		nconv = nconv2;
@@ -776,10 +773,8 @@ static logical c_true = TRUE_;
 /*        %--------------------------------------------------------% */
 
 	zunm2r_("Right", "Notranspose", n, ncv, &nconv, &workl[invsub], &ldq, 
-		&workev[1], &v[v_offset], ldv, &workd[*n + 1], &ierr, (ftnlen)
-		5, (ftnlen)11);
-	zlacpy_("All", n, &nconv, &v[v_offset], ldv, &z__[z_offset], ldz, (
-		ftnlen)3);
+		&workev[1], &v[v_offset], ldv, &workd[*n + 1], &ierr);
+	zlacpy_("All", n, &nconv, &v[v_offset], ldv, &z__[z_offset], ldz);
 
 	i__1 = nconv;
 	for (j = 1; j <= i__1; ++j) {
@@ -823,7 +818,7 @@ static logical c_true = TRUE_;
 
 	    ztrevc_("Right", "Select", &select[1], ncv, &workl[iuptri], &ldq, 
 		    vl, &c__1, &workl[invsub], &ldq, ncv, &outncv, &workev[1],
-		     &rwork[1], &ierr, (ftnlen)5, (ftnlen)6);
+		     &rwork[1], &ierr);
 
 	    if (ierr != 0) {
 		*info = -9;
@@ -885,8 +880,7 @@ static logical c_true = TRUE_;
 /*           %----------------------------------------------% */
 
 	    ztrmm_("Right", "Upper", "No transpose", "Non-unit", n, &nconv, &
-		    c_b1, &workl[invsub], &ldq, &z__[z_offset], ldz, (ftnlen)
-		    5, (ftnlen)5, (ftnlen)12, (ftnlen)8);
+		    c_b1, &workl[invsub], &ldq, &z__[z_offset], ldz);
 	}
 
     } else {

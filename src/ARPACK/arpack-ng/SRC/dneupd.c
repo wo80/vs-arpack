@@ -381,7 +381,7 @@ static doublereal c_b64 = -1.;
     integer ihbds, iconj;
     extern /* Subroutine */ int dgemv_(char *, integer *, integer *, 
 	    doublereal *, doublereal *, integer *, doublereal *, integer *, 
-	    doublereal *, doublereal *, integer *, ftnlen);
+	    doublereal *, doublereal *, integer *);
     doublereal conds;
     logical reord;
     extern /* Subroutine */ int dcopy_(integer *, doublereal *, integer *, 
@@ -389,7 +389,7 @@ static doublereal c_b64 = -1.;
     integer nconv;
     extern /* Subroutine */ int dtrmm_(char *, char *, char *, char *, 
 	    integer *, integer *, doublereal *, doublereal *, integer *, 
-	    doublereal *, integer *, ftnlen, ftnlen, ftnlen, ftnlen), dmout_(
+	    doublereal *, integer *), dmout_(
 	    integer *, integer *, integer *, doublereal *, integer *, integer 
 	    *, char *, ftnlen);
     integer iwork[1];
@@ -405,23 +405,23 @@ static doublereal c_b64 = -1.;
     integer nconv2;
     extern /* Subroutine */ int dorm2r_(char *, char *, integer *, integer *, 
 	    integer *, doublereal *, integer *, doublereal *, doublereal *, 
-	    integer *, doublereal *, integer *, ftnlen, ftnlen);
-    extern doublereal dlamch_(char *, ftnlen);
+	    integer *, doublereal *, integer *);
+    extern doublereal dlamch_(char *);
     integer iheigi, iheigr, bounds, invsub, iuptri, msglvl, outncv, ishift, 
 	    numcnv;
     extern /* Subroutine */ int dlacpy_(char *, integer *, integer *, 
-	    doublereal *, integer *, doublereal *, integer *, ftnlen), 
+	    doublereal *, integer *, doublereal *, integer *), 
 	    dlahqr_(logical *, logical *, integer *, integer *, integer *, 
 	    doublereal *, integer *, doublereal *, doublereal *, integer *, 
 	    integer *, doublereal *, integer *, integer *), dlaset_(char *, 
 	    integer *, integer *, doublereal *, doublereal *, doublereal *, 
-	    integer *, ftnlen), dtrevc_(char *, char *, logical *, integer *, 
+	    integer *), dtrevc_(char *, char *, logical *, integer *, 
 	    doublereal *, integer *, doublereal *, integer *, doublereal *, 
-	    integer *, integer *, integer *, doublereal *, integer *, ftnlen, 
-	    ftnlen), dtrsen_(char *, char *, logical *, integer *, doublereal 
+	    integer *, integer *, integer *, doublereal *, integer *), 
+	    dtrsen_(char *, char *, logical *, integer *, doublereal 
 	    *, integer *, doublereal *, integer *, doublereal *, doublereal *,
 	     integer *, doublereal *, doublereal *, doublereal *, integer *, 
-	    integer *, integer *, integer *, ftnlen, ftnlen), dngets_(integer 
+	    integer *, integer *, integer *), dngets_(integer 
 	    *, char *, integer *, integer *, doublereal *, doublereal *, 
 	    doublereal *, doublereal *, doublereal *);
 
@@ -516,7 +516,7 @@ static doublereal c_b64 = -1.;
 /*     | Get machine dependent constant. | */
 /*     %---------------------------------% */
 
-    eps23 = dlamch_("Epsilon-Machine", (ftnlen)15);
+    eps23 = dlamch_("Epsilon-Machine");
     eps23 = pow_dd(&eps23, &c_b3);
 
 /*     %--------------% */
@@ -752,8 +752,7 @@ static doublereal c_b64 = -1.;
 
 	i__1 = ldh * *ncv;
 	dcopy_(&i__1, &workl[ih], &c__1, &workl[iuptri], &c__1);
-	dlaset_("All", ncv, ncv, &c_b37, &c_b38, &workl[invsub], &ldq, (
-		ftnlen)3);
+	dlaset_("All", ncv, ncv, &c_b37, &c_b38, &workl[invsub], &ldq);
 	dlahqr_(&c_true, &c_true, ncv, &c__1, ncv, &workl[iuptri], &ldh, &
 		workl[iheigr], &workl[iheigi], &c__1, ncv, &workl[invsub], &
 		ldq, &ierr);
@@ -789,7 +788,7 @@ static doublereal c_b64 = -1.;
 	    dtrsen_("None", "V", &select[1], ncv, &workl[iuptri], &ldh, &
 		    workl[invsub], &ldq, &workl[iheigr], &workl[iheigi], &
 		    nconv2, &conds, &sep, &workl[ihbds], ncv, iwork, &c__1, &
-		    ierr, (ftnlen)4, (ftnlen)1);
+		    ierr);
 
 	    if (nconv2 < nconv) {
 		nconv = nconv2;
@@ -856,10 +855,8 @@ static doublereal c_b64 = -1.;
 /*        %---------------------------------------------------------% */
 
 	dorm2r_("Right", "Notranspose", n, ncv, &nconv, &workl[invsub], &ldq, 
-		&workev[1], &v[v_offset], ldv, &workd[*n + 1], &ierr, (ftnlen)
-		5, (ftnlen)11);
-	dlacpy_("All", n, &nconv, &v[v_offset], ldv, &z__[z_offset], ldz, (
-		ftnlen)3);
+		&workev[1], &v[v_offset], ldv, &workd[*n + 1], &ierr);
+	dlacpy_("All", n, &nconv, &v[v_offset], ldv, &z__[z_offset], ldz);
 
 	i__1 = nconv;
 	for (j = 1; j <= i__1; ++j) {
@@ -900,7 +897,7 @@ static doublereal c_b64 = -1.;
 
 	    dtrevc_("Right", "Select", &select[1], ncv, &workl[iuptri], &ldq, 
 		    vl, &c__1, &workl[invsub], &ldq, ncv, &outncv, &workev[1],
-		     &ierr, (ftnlen)5, (ftnlen)6);
+		     &ierr);
 
 	    if (ierr != 0) {
 		*info = -9;
@@ -960,7 +957,7 @@ static doublereal c_b64 = -1.;
 	    }
 
 	    dgemv_("T", ncv, &nconv, &c_b38, &workl[invsub], &ldq, &workl[
-		    ihbds], &c__1, &c_b37, &workev[1], &c__1, (ftnlen)1);
+		    ihbds], &c__1, &c_b37, &workev[1], &c__1);
 
 	    iconj = 0;
 	    i__1 = nconv;

@@ -154,7 +154,7 @@ static real c_b25 = 0.f;
     integer iconj;
     extern /* Subroutine */ int sscal_(integer *, real *, real *, integer *), 
 	    sgemv_(char *, integer *, integer *, real *, real *, integer *, 
-	    real *, integer *, real *, real *, integer *, ftnlen), smout_(
+	    real *, integer *, real *, real *, integer *), smout_(
 	    integer *, integer *, integer *, real *, integer *, integer *, 
 	    char *, ftnlen), svout_(integer *, integer *, real *, integer *, 
 	    char *, ftnlen);
@@ -163,12 +163,12 @@ static real c_b25 = 0.f;
     logical select[1];
     integer msglvl;
     extern /* Subroutine */ int slacpy_(char *, integer *, integer *, real *, 
-	    integer *, real *, integer *, ftnlen), slahqr_(logical *, logical 
+	    integer *, real *, integer *), slahqr_(logical *, logical 
 	    *, integer *, integer *, integer *, real *, integer *, real *, 
 	    real *, integer *, integer *, real *, integer *, integer *), 
 	    strevc_(char *, char *, logical *, integer *, real *, integer *, 
 	    real *, integer *, real *, integer *, integer *, integer *, real *
-	    , integer *, ftnlen, ftnlen);
+	    , integer *);
 
 
 /*     %----------------------------------------------------% */
@@ -265,7 +265,7 @@ static real c_b25 = 0.f;
 /*     | and the last components of the Schur vectors in BOUNDS.   | */
 /*     %-----------------------------------------------------------% */
 
-    slacpy_("All", n, n, &h__[h_offset], ldh, &workl[1], n, (ftnlen)3);
+    slacpy_("All", n, n, &h__[h_offset], ldh, &workl[1], n);
     i__1 = *n - 1;
     for (j = 1; j <= i__1; ++j) {
 	bounds[j] = 0.f;
@@ -294,7 +294,7 @@ static real c_b25 = 0.f;
 /*     %-----------------------------------------------------------% */
 
     strevc_("R", "A", select, n, &workl[1], n, vl, n, &q[q_offset], ldq, n, n,
-	     &workl[*n * *n + 1], ierr, (ftnlen)1, (ftnlen)1);
+	     &workl[*n * *n + 1], ierr);
 
     if (*ierr != 0) {
 	goto L9000;
@@ -348,7 +348,7 @@ static real c_b25 = 0.f;
     }
 
     sgemv_("T", n, n, &c_b23, &q[q_offset], ldq, &bounds[1], &c__1, &c_b25, &
-	    workl[1], &c__1, (ftnlen)1);
+	    workl[1], &c__1);
 
     if (msglvl > 1) {
 	svout_(&debug_1.logfil, n, &workl[1], &debug_1.ndigit, "_neigh: Last"

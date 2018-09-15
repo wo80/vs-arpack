@@ -379,16 +379,15 @@ static real c_b64 = -1.f;
     real conds;
     logical reord;
     extern /* Subroutine */ int sgemv_(char *, integer *, integer *, real *, 
-	    real *, integer *, real *, integer *, real *, real *, integer *, 
-	    ftnlen);
+	    real *, integer *, real *, integer *, real *, real *, integer *);
     integer nconv, iwork[1];
     real rnorm;
     extern /* Subroutine */ int scopy_(integer *, real *, integer *, real *, 
 	    integer *);
     integer ritzi;
     extern /* Subroutine */ int strmm_(char *, char *, char *, char *, 
-	    integer *, integer *, real *, real *, integer *, real *, integer *
-	    , ftnlen, ftnlen, ftnlen, ftnlen), ivout_(integer *, integer *, 
+	    integer *, integer *, real *, real *, integer *, real *, integer *),
+	    ivout_(integer *, integer *, 
 	    integer *, integer *, char *, ftnlen), smout_(integer *, integer *
 	    , integer *, real *, integer *, integer *, char *, ftnlen);
     integer ritzr;
@@ -399,21 +398,21 @@ static real c_b64 = -1.f;
     extern doublereal slapy2_(real *, real *);
     extern /* Subroutine */ int sorm2r_(char *, char *, integer *, integer *, 
 	    integer *, real *, integer *, real *, real *, integer *, real *, 
-	    integer *, ftnlen, ftnlen);
+	    integer *);
     integer iheigi, iheigr, bounds, invsub, iuptri, msglvl, outncv, ishift, 
 	    numcnv;
     extern /* Subroutine */ int slacpy_(char *, integer *, integer *, real *, 
-	    integer *, real *, integer *, ftnlen), slahqr_(logical *, logical 
+	    integer *, real *, integer *), slahqr_(logical *, logical 
 	    *, integer *, integer *, integer *, real *, integer *, real *, 
 	    real *, integer *, integer *, real *, integer *, integer *), 
 	    slaset_(char *, integer *, integer *, real *, real *, real *, 
-	    integer *, ftnlen), strevc_(char *, char *, logical *, integer *, 
+	    integer *), strevc_(char *, char *, logical *, integer *, 
 	    real *, integer *, real *, integer *, real *, integer *, integer *
-	    , integer *, real *, integer *, ftnlen, ftnlen), strsen_(char *, 
+	    , integer *, real *, integer *), strsen_(char *, 
 	    char *, logical *, integer *, real *, integer *, real *, integer *
 	    , real *, real *, integer *, real *, real *, real *, integer *, 
-	    integer *, integer *, integer *, ftnlen, ftnlen);
-    extern doublereal slamch_(char *, ftnlen);
+	    integer *, integer *, integer *);
+    extern doublereal slamch_(char *);
     extern /* Subroutine */ int sngets_(integer *, char *, integer *, integer 
 	    *, real *, real *, real *, real *, real *);
 
@@ -508,7 +507,7 @@ static real c_b64 = -1.f;
 /*     | Get machine dependent constant. | */
 /*     %---------------------------------% */
 
-    eps23 = slamch_("Epsilon-Machine", (ftnlen)15);
+    eps23 = slamch_("Epsilon-Machine");
     d__1 = (doublereal) eps23;
     eps23 = pow_dd(&d__1, &c_b3);
 
@@ -745,8 +744,7 @@ static real c_b64 = -1.f;
 
 	i__1 = ldh * *ncv;
 	scopy_(&i__1, &workl[ih], &c__1, &workl[iuptri], &c__1);
-	slaset_("All", ncv, ncv, &c_b37, &c_b38, &workl[invsub], &ldq, (
-		ftnlen)3);
+	slaset_("All", ncv, ncv, &c_b37, &c_b38, &workl[invsub], &ldq);
 	slahqr_(&c_true, &c_true, ncv, &c__1, ncv, &workl[iuptri], &ldh, &
 		workl[iheigr], &workl[iheigi], &c__1, ncv, &workl[invsub], &
 		ldq, &ierr);
@@ -782,7 +780,7 @@ static real c_b64 = -1.f;
 	    strsen_("None", "V", &select[1], ncv, &workl[iuptri], &ldh, &
 		    workl[invsub], &ldq, &workl[iheigr], &workl[iheigi], &
 		    nconv2, &conds, &sep, &workl[ihbds], ncv, iwork, &c__1, &
-		    ierr, (ftnlen)4, (ftnlen)1);
+		    ierr);
 
 	    if (nconv2 < nconv) {
 		nconv = nconv2;
@@ -849,10 +847,8 @@ static real c_b64 = -1.f;
 /*        %---------------------------------------------------------% */
 
 	sorm2r_("Right", "Notranspose", n, ncv, &nconv, &workl[invsub], &ldq, 
-		&workev[1], &v[v_offset], ldv, &workd[*n + 1], &ierr, (ftnlen)
-		5, (ftnlen)11);
-	slacpy_("All", n, &nconv, &v[v_offset], ldv, &z__[z_offset], ldz, (
-		ftnlen)3);
+		&workev[1], &v[v_offset], ldv, &workd[*n + 1], &ierr);
+	slacpy_("All", n, &nconv, &v[v_offset], ldv, &z__[z_offset], ldz);
 
 	i__1 = nconv;
 	for (j = 1; j <= i__1; ++j) {
@@ -893,7 +889,7 @@ static real c_b64 = -1.f;
 
 	    strevc_("Right", "Select", &select[1], ncv, &workl[iuptri], &ldq, 
 		    vl, &c__1, &workl[invsub], &ldq, ncv, &outncv, &workev[1],
-		     &ierr, (ftnlen)5, (ftnlen)6);
+		     &ierr);
 
 	    if (ierr != 0) {
 		*info = -9;
@@ -953,7 +949,7 @@ static real c_b64 = -1.f;
 	    }
 
 	    sgemv_("T", ncv, &nconv, &c_b38, &workl[invsub], &ldq, &workl[
-		    ihbds], &c__1, &c_b37, &workev[1], &c__1, (ftnlen)1);
+		    ihbds], &c__1, &c_b37, &workev[1], &c__1);
 
 	    iconj = 0;
 	    i__1 = nconv;

@@ -264,7 +264,7 @@ static integer c__2 = 2;
 	    *, integer *, real *, integer *, real *, real *, integer *, real *
 	    , integer *);
     integer nevbef;
-    extern doublereal slamch_(char *, ftnlen);
+    extern doublereal slamch_(char *);
     extern /* Subroutine */ int arscnd_(real *);
     static logical update;
     char wprime[2];
@@ -373,7 +373,7 @@ static integer c__2 = 2;
 /*        | Set machine dependent constant. | */
 /*        %---------------------------------% */
 
-	eps23 = slamch_("Epsilon-Machine", (ftnlen)15);
+	eps23 = slamch_("Epsilon-Machine");
 	d__1 = (doublereal) eps23;
 	eps23 = pow_dd(&d__1, &c_b3);
 

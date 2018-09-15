@@ -257,8 +257,7 @@ static integer c__2 = 2;
 	    , integer *, char *, ftnlen), dgetv0_(integer *, char *, integer *
 	    , logical *, integer *, integer *, doublereal *, integer *, 
 	    doublereal *, doublereal *, integer *, doublereal *, integer *);
-    extern doublereal dlapy2_(doublereal *, doublereal *), dlamch_(char *, 
-	    ftnlen);
+    extern doublereal dlapy2_(doublereal *, doublereal *), dlamch_(char *);
     extern /* Subroutine */ int dneigh_(doublereal *, integer *, doublereal *,
 	     integer *, doublereal *, doublereal *, doublereal *, doublereal *
 	    , integer *, doublereal *, integer *);
@@ -376,7 +375,7 @@ static integer c__2 = 2;
 /*        | Get the machine dependent constant. | */
 /*        %-------------------------------------% */
 
-	eps23 = dlamch_("Epsilon-Machine", (ftnlen)15);
+	eps23 = dlamch_("Epsilon-Machine");
 	eps23 = pow_dd(&eps23, &c_b3);
 
 	nev0 = *nev;

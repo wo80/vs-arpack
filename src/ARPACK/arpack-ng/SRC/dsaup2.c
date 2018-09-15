@@ -264,7 +264,7 @@ static integer c__2 = 2;
 	    , integer *, char *, ftnlen), dgetv0_(integer *, char *, integer *
 	    , logical *, integer *, integer *, doublereal *, integer *, 
 	    doublereal *, doublereal *, integer *, doublereal *, integer *);
-    extern doublereal dlamch_(char *, ftnlen);
+    extern doublereal dlamch_(char *);
     integer nevbef;
     extern /* Subroutine */ int arscnd_(real *);
     static logical update;
@@ -377,7 +377,7 @@ static integer c__2 = 2;
 /*        | Set machine dependent constant. | */
 /*        %---------------------------------% */
 
-	eps23 = dlamch_("Epsilon-Machine", (ftnlen)15);
+	eps23 = dlamch_("Epsilon-Machine");
 	eps23 = pow_dd(&eps23, &c_b3);
 
 /*        %-------------------------------------% */

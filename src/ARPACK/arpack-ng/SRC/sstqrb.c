@@ -145,27 +145,23 @@ static real c_b31 = 1.f;
 	    ;
     real anorm;
     extern /* Subroutine */ int slasr_(char *, char *, char *, integer *, 
-	    integer *, real *, real *, real *, integer *, ftnlen, ftnlen, 
-	    ftnlen);
+	    integer *, real *, real *, real *, integer *);
     integer lendm1, lendp1;
     extern /* Subroutine */ int slaev2_(real *, real *, real *, real *, real *
 	    , real *, real *);
     extern doublereal slapy2_(real *, real *);
     integer iscale;
-    extern doublereal slamch_(char *, ftnlen);
+    extern doublereal slamch_(char *);
     real safmin, safmax;
     extern /* Subroutine */ int slascl_(char *, integer *, integer *, real *, 
-	    real *, integer *, integer *, real *, integer *, integer *, 
-	    ftnlen);
+	    real *, integer *, integer *, real *, integer *, integer *);
     integer lendsv;
-    extern /* Subroutine */ int slartg_(real *, real *, real *, real *, real *
-	    );
+    extern /* Subroutine */ int slartg_(real *, real *, real *, real *, real *);
     real ssfmin;
     integer nmaxit, icompz;
     real ssfmax;
-    extern doublereal slanst_(char *, integer *, real *, real *, ftnlen);
-    extern /* Subroutine */ int slasrt_(char *, integer *, real *, integer *, 
-	    ftnlen);
+    extern doublereal slanst_(char *, integer *, real *, real *);
+    extern /* Subroutine */ int slasrt_(char *, integer *, real *, integer *);
 
 
 /*     %------------------% */
@@ -243,11 +239,11 @@ static real c_b31 = 1.f;
 
 /*     determine the unit roundoff and over/underflow thresholds. */
 
-    eps = slamch_("e", (ftnlen)1);
+    eps = slamch_("e");
 /* Computing 2nd power */
     r__1 = eps;
     eps2 = r__1 * r__1;
-    safmin = slamch_("s", (ftnlen)1);
+    safmin = slamch_("s");
     safmax = 1.f / safmin;
     ssfmax = sqrt(safmax) / 3.f;
     ssfmin = sqrt(safmin) / eps2;
@@ -325,19 +321,15 @@ L30:
     if (anorm > ssfmax) {
 	iscale = 1;
 	i__1 = lend - l + 1;
-	slascl_("g", &c__0, &c__0, &anorm, &ssfmax, &i__1, &c__1, &d__[l], n, 
-		info, (ftnlen)1);
+	slascl_("g", &c__0, &c__0, &anorm, &ssfmax, &i__1, &c__1, &d__[l], n, info);
 	i__1 = lend - l;
-	slascl_("g", &c__0, &c__0, &anorm, &ssfmax, &i__1, &c__1, &e[l], n, 
-		info, (ftnlen)1);
+	slascl_("g", &c__0, &c__0, &anorm, &ssfmax, &i__1, &c__1, &e[l], n, info);
     } else if (anorm < ssfmin) {
 	iscale = 2;
 	i__1 = lend - l + 1;
-	slascl_("g", &c__0, &c__0, &anorm, &ssfmin, &i__1, &c__1, &d__[l], n, 
-		info, (ftnlen)1);
+	slascl_("g", &c__0, &c__0, &anorm, &ssfmin, &i__1, &c__1, &d__[l], n, info);
 	i__1 = lend - l;
-	slascl_("g", &c__0, &c__0, &anorm, &ssfmin, &i__1, &c__1, &e[l], n, 
-		info, (ftnlen)1);
+	slascl_("g", &c__0, &c__0, &anorm, &ssfmin, &i__1, &c__1, &e[l], n, info);
     }
 
 /*     choose between ql and qr iteration */
@@ -462,7 +454,7 @@ L60:
 /*             *** New starting with version 2.5 *** */
 
 	    slasr_("r", "v", "b", &c__1, &mm, &work[l], &work[*n - 1 + l], &
-		    z__[l], &c__1, (ftnlen)1, (ftnlen)1, (ftnlen)1);
+		    z__[l], &c__1);
 /*             ************************************* */
 	}
 
@@ -597,7 +589,7 @@ L110:
 /*           *** New starting with version 2.5 *** */
 
 	    slasr_("r", "v", "f", &c__1, &mm, &work[m], &work[*n - 1 + m], &
-		    z__[m], &c__1, (ftnlen)1, (ftnlen)1, (ftnlen)1);
+		    z__[m], &c__1);
 /*           ************************************* */
 	}
 
@@ -623,18 +615,14 @@ L130:
 L140:
     if (iscale == 1) {
 	i__1 = lendsv - lsv + 1;
-	slascl_("g", &c__0, &c__0, &ssfmax, &anorm, &i__1, &c__1, &d__[lsv], 
-		n, info, (ftnlen)1);
+	slascl_("g", &c__0, &c__0, &ssfmax, &anorm, &i__1, &c__1, &d__[lsv], n, info);
 	i__1 = lendsv - lsv;
-	slascl_("g", &c__0, &c__0, &ssfmax, &anorm, &i__1, &c__1, &e[lsv], n, 
-		info, (ftnlen)1);
+	slascl_("g", &c__0, &c__0, &ssfmax, &anorm, &i__1, &c__1, &e[lsv], n, info);
     } else if (iscale == 2) {
 	i__1 = lendsv - lsv + 1;
-	slascl_("g", &c__0, &c__0, &ssfmin, &anorm, &i__1, &c__1, &d__[lsv], 
-		n, info, (ftnlen)1);
+	slascl_("g", &c__0, &c__0, &ssfmin, &anorm, &i__1, &c__1, &d__[lsv], n, info);
 	i__1 = lendsv - lsv;
-	slascl_("g", &c__0, &c__0, &ssfmin, &anorm, &i__1, &c__1, &e[lsv], n, 
-		info, (ftnlen)1);
+	slascl_("g", &c__0, &c__0, &ssfmin, &anorm, &i__1, &c__1, &e[lsv], n, info);
     }
 
 /*     check for no convergence to an eigenvalue after a total */
@@ -659,7 +647,7 @@ L160:
 
 /*        use quick sort */
 
-	slasrt_("i", n, &d__[1], info, (ftnlen)1);
+	slasrt_("i", n, &d__[1], info);
 
     } else {
 

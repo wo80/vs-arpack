@@ -295,15 +295,15 @@ static real c_b111 = 1.f;
     extern /* Subroutine */ int sgeqr2_(integer *, integer *, real *, integer 
 	    *, real *, real *, integer *), sorm2r_(char *, char *, integer *, 
 	    integer *, integer *, real *, integer *, real *, real *, integer *
-	    , real *, integer *, ftnlen, ftnlen);
-    extern doublereal slamch_(char *, ftnlen);
+	    , real *, integer *);
+    extern doublereal slamch_(char *);
     integer bounds, msglvl, ishift, numcnv;
     extern /* Subroutine */ int slacpy_(char *, integer *, integer *, real *, 
-	    integer *, real *, integer *, ftnlen), ssesrt_(char *, logical *, 
-	    integer *, real *, integer *, real *, integer *, ftnlen), ssteqr_(
+	    integer *, real *, integer *), ssesrt_(char *, logical *, 
+	    integer *, real *, integer *, real *, integer *), ssteqr_(
 	    char *, integer *, real *, real *, real *, integer *, real *, 
-	    integer *, ftnlen), ssortr_(char *, logical *, integer *, real *, 
-	    real *, ftnlen), ssgets_(integer *, char *, integer *, integer *, 
+	    integer *), ssortr_(char *, logical *, integer *, real *, 
+	    real *), ssgets_(integer *, char *, integer *, integer *, 
 	    real *, real *, real *);
     integer leftptr, rghtptr;
 
@@ -537,7 +537,7 @@ static real c_b111 = 1.f;
 /*     | Set machine dependent constant. | */
 /*     %---------------------------------% */
 
-    eps23 = slamch_("Epsilon-Machine", (ftnlen)15);
+    eps23 = slamch_("Epsilon-Machine");
     d__1 = (doublereal) eps23;
     eps23 = pow_dd(&d__1, &c_b21);
 
@@ -652,7 +652,7 @@ static real c_b111 = 1.f;
 	scopy_(ncv, &workl[ih + ldh], &c__1, &workl[ihd], &c__1);
 
 	ssteqr_("Identity", ncv, &workl[ihd], &workl[ihb], &workl[iq], &ldq, &
-		workl[iw], &ierr, (ftnlen)8);
+		workl[iw], &ierr);
 
 	if (ierr != 0) {
 	    *info = -8;
@@ -771,8 +771,7 @@ L30:
 /*        %---------------------------------------------------------% */
 
 	if (*rvec) {
-	    ssesrt_("LA", rvec, &nconv, &d__[1], ncv, &workl[iq], &ldq, (
-		    ftnlen)2);
+	    ssesrt_("LA", rvec, &nconv, &d__[1], ncv, &workl[iq], &ldq);
 	} else {
 	    scopy_(ncv, &workl[bounds], &c__1, &workl[ihb], &c__1);
 	}
@@ -833,15 +832,14 @@ L30:
 /*        %-------------------------------------------------------------% */
 
 	scopy_(&nconv, &workl[ihd], &c__1, &d__[1], &c__1);
-	ssortr_("LA", &c_true, &nconv, &workl[ihd], &workl[iw], (ftnlen)2);
+	ssortr_("LA", &c_true, &nconv, &workl[ihd], &workl[iw]);
 	if (*rvec) {
-	    ssesrt_("LA", rvec, &nconv, &d__[1], ncv, &workl[iq], &ldq, (
-		    ftnlen)2);
+	    ssesrt_("LA", rvec, &nconv, &d__[1], ncv, &workl[iq], &ldq);
 	} else {
 	    scopy_(ncv, &workl[bounds], &c__1, &workl[ihb], &c__1);
 	    r__1 = bnorm2 / rnorm;
 	    sscal_(ncv, &r__1, &workl[ihb], &c__1);
-	    ssortr_("LA", &c_true, &nconv, &d__[1], &workl[ihb], (ftnlen)2);
+	    ssortr_("LA", &c_true, &nconv, &d__[1], &workl[ihb]);
 	}
 
     }
@@ -872,10 +870,8 @@ L30:
 /*        %--------------------------------------------------------% */
 
 	sorm2r_("Right", "Notranspose", n, ncv, &nconv, &workl[iq], &ldq, &
-		workl[iw + *ncv], &v[v_offset], ldv, &workd[*n + 1], &ierr, (
-		ftnlen)5, (ftnlen)11);
-	slacpy_("All", n, &nconv, &v[v_offset], ldv, &z__[z_offset], ldz, (
-		ftnlen)3);
+		workl[iw + *ncv], &v[v_offset], ldv, &workd[*n + 1], &ierr);
+	slacpy_("All", n, &nconv, &v[v_offset], ldv, &z__[z_offset], ldz);
 
 /*        %-----------------------------------------------------% */
 /*        | In order to compute the Ritz estimates for the Ritz | */
@@ -890,8 +886,7 @@ L30:
 	}
 	workl[ihb + *ncv - 1] = 1.f;
 	sorm2r_("Left", "Transpose", ncv, &c__1, &nconv, &workl[iq], &ldq, &
-		workl[iw + *ncv], &workl[ihb], ncv, &temp, &ierr, (ftnlen)4, (
-		ftnlen)9);
+		workl[iw + *ncv], &workl[ihb], ncv, &temp, &ierr);
 
 /*        %-----------------------------------------------------% */
 /*        | Make a copy of the last row into                    | */

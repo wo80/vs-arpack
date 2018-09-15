@@ -299,16 +299,16 @@ static doublereal c_b111 = 1.;
     doublereal bnorm2;
     extern /* Subroutine */ int dorm2r_(char *, char *, integer *, integer *, 
 	    integer *, doublereal *, integer *, doublereal *, doublereal *, 
-	    integer *, doublereal *, integer *, ftnlen, ftnlen);
-    extern doublereal dlamch_(char *, ftnlen);
+	    integer *, doublereal *, integer *);
+    extern doublereal dlamch_(char *);
     integer bounds, msglvl, ishift, numcnv;
     extern /* Subroutine */ int dlacpy_(char *, integer *, integer *, 
-	    doublereal *, integer *, doublereal *, integer *, ftnlen), 
+	    doublereal *, integer *, doublereal *, integer *), 
 	    dsesrt_(char *, logical *, integer *, doublereal *, integer *, 
-	    doublereal *, integer *, ftnlen), dsteqr_(char *, integer *, 
+	    doublereal *, integer *), dsteqr_(char *, integer *, 
 	    doublereal *, doublereal *, doublereal *, integer *, doublereal *,
-	     integer *, ftnlen), dsortr_(char *, logical *, integer *, 
-	    doublereal *, doublereal *, ftnlen), dsgets_(integer *, char *, 
+	     integer *), dsortr_(char *, logical *, integer *, 
+	    doublereal *, doublereal *), dsgets_(integer *, char *, 
 	    integer *, integer *, doublereal *, doublereal *, doublereal *);
     integer leftptr, rghtptr;
 
@@ -542,7 +542,7 @@ static doublereal c_b111 = 1.;
 /*     | Set machine dependent constant. | */
 /*     %---------------------------------% */
 
-    eps23 = dlamch_("Epsilon-Machine", (ftnlen)15);
+    eps23 = dlamch_("Epsilon-Machine");
     eps23 = pow_dd(&eps23, &c_b21);
 
 /*     %---------------------------------------% */
@@ -656,7 +656,7 @@ static doublereal c_b111 = 1.;
 	dcopy_(ncv, &workl[ih + ldh], &c__1, &workl[ihd], &c__1);
 
 	dsteqr_("Identity", ncv, &workl[ihd], &workl[ihb], &workl[iq], &ldq, &
-		workl[iw], &ierr, (ftnlen)8);
+		workl[iw], &ierr);
 
 	if (ierr != 0) {
 	    *info = -8;
@@ -775,8 +775,7 @@ L30:
 /*        %---------------------------------------------------------% */
 
 	if (*rvec) {
-	    dsesrt_("LA", rvec, &nconv, &d__[1], ncv, &workl[iq], &ldq, (
-		    ftnlen)2);
+	    dsesrt_("LA", rvec, &nconv, &d__[1], ncv, &workl[iq], &ldq);
 	} else {
 	    dcopy_(ncv, &workl[bounds], &c__1, &workl[ihb], &c__1);
 	}
@@ -837,15 +836,14 @@ L30:
 /*        %-------------------------------------------------------------% */
 
 	dcopy_(&nconv, &workl[ihd], &c__1, &d__[1], &c__1);
-	dsortr_("LA", &c_true, &nconv, &workl[ihd], &workl[iw], (ftnlen)2);
+	dsortr_("LA", &c_true, &nconv, &workl[ihd], &workl[iw]);
 	if (*rvec) {
-	    dsesrt_("LA", rvec, &nconv, &d__[1], ncv, &workl[iq], &ldq, (
-		    ftnlen)2);
+	    dsesrt_("LA", rvec, &nconv, &d__[1], ncv, &workl[iq], &ldq);
 	} else {
 	    dcopy_(ncv, &workl[bounds], &c__1, &workl[ihb], &c__1);
 	    d__1 = bnorm2 / rnorm;
 	    dscal_(ncv, &d__1, &workl[ihb], &c__1);
-	    dsortr_("LA", &c_true, &nconv, &d__[1], &workl[ihb], (ftnlen)2);
+	    dsortr_("LA", &c_true, &nconv, &d__[1], &workl[ihb]);
 	}
 
     }
@@ -876,10 +874,8 @@ L30:
 /*        %--------------------------------------------------------% */
 
 	dorm2r_("Right", "Notranspose", n, ncv, &nconv, &workl[iq], &ldq, &
-		workl[iw + *ncv], &v[v_offset], ldv, &workd[*n + 1], &ierr, (
-		ftnlen)5, (ftnlen)11);
-	dlacpy_("All", n, &nconv, &v[v_offset], ldv, &z__[z_offset], ldz, (
-		ftnlen)3);
+		workl[iw + *ncv], &v[v_offset], ldv, &workd[*n + 1], &ierr);
+	dlacpy_("All", n, &nconv, &v[v_offset], ldv, &z__[z_offset], ldz);
 
 /*        %-----------------------------------------------------% */
 /*        | In order to compute the Ritz estimates for the Ritz | */
@@ -894,8 +890,7 @@ L30:
 	}
 	workl[ihb + *ncv - 1] = 1.;
 	dorm2r_("Left", "Transpose", ncv, &c__1, &nconv, &workl[iq], &ldq, &
-		workl[iw + *ncv], &workl[ihb], ncv, &temp, &ierr, (ftnlen)4, (
-		ftnlen)9);
+		workl[iw + *ncv], &workl[ihb], ncv, &temp, &ierr);
 
 /*        %-----------------------------------------------------% */
 /*        | Make a copy of the last row into                    | */

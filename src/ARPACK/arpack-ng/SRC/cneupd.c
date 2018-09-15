@@ -331,7 +331,7 @@ static logical c_true = TRUE_;
     extern /* Subroutine */ int ccopy_(integer *, complex *, integer *, 
 	    complex *, integer *), ctrmm_(char *, char *, char *, char *, 
 	    integer *, integer *, complex *, complex *, integer *, complex *, 
-	    integer *, ftnlen, ftnlen, ftnlen, ftnlen);
+	    integer *);
     integer nconv;
     real rtemp;
     extern /* Subroutine */ int cmout_(integer *, integer *, integer *, 
@@ -345,23 +345,23 @@ static logical c_true = TRUE_;
     integer nconv2;
     extern /* Subroutine */ int cunm2r_(char *, char *, integer *, integer *, 
 	    integer *, complex *, integer *, complex *, complex *, integer *, 
-	    complex *, integer *, ftnlen, ftnlen);
-    extern doublereal slapy2_(real *, real *), slamch_(char *, ftnlen);
+	    complex *, integer *);
+    extern doublereal slapy2_(real *, real *), slamch_(char *);
     extern /* Subroutine */ int clacpy_(char *, integer *, integer *, complex 
-	    *, integer *, complex *, integer *, ftnlen);
+	    *, integer *, complex *, integer *);
     integer bounds, invsub, iuptri, msglvl, outncv, numcnv, ishift;
     extern /* Subroutine */ int clahqr_(logical *, logical *, integer *, 
 	    integer *, integer *, complex *, integer *, complex *, integer *, 
 	    integer *, complex *, integer *, integer *), cngets_(integer *, 
 	    char *, integer *, integer *, complex *, complex *), 
 	    claset_(char *, integer *, integer *, complex *, complex *, 
-	    complex *, integer *, ftnlen), ctrsen_(char *, char *, logical *, 
+	    complex *, integer *), ctrsen_(char *, char *, logical *, 
 	    integer *, complex *, integer *, complex *, integer *, complex *, 
-	    integer *, real *, real *, complex *, integer *, integer *, 
-	    ftnlen, ftnlen), ctrevc_(char *, char *, logical *, integer *, 
+	    integer *, real *, real *, complex *, integer *, integer *), 
+	    ctrevc_(char *, char *, logical *, integer *, 
 	    complex *, integer *, complex *, integer *, complex *, integer *, 
-	    integer *, integer *, complex *, real *, integer *, ftnlen, 
-	    ftnlen), csscal_(integer *, real *, complex *, integer *);
+	    integer *, integer *, complex *, real *, integer *), 
+	    csscal_(integer *, real *, complex *, integer *);
 
 
 /*     %----------------------------------------------------% */
@@ -451,7 +451,7 @@ static logical c_true = TRUE_;
 /*     | Get machine dependent constant. | */
 /*     %---------------------------------% */
 
-    eps23 = slamch_("Epsilon-Machine", (ftnlen)15);
+    eps23 = slamch_("Epsilon-Machine");
     d__1 = (doublereal) eps23;
     eps23 = pow_dd(&d__1, &c_b5);
 
@@ -680,8 +680,7 @@ static logical c_true = TRUE_;
 
 	i__1 = ldh * *ncv;
 	ccopy_(&i__1, &workl[ih], &c__1, &workl[iuptri], &c__1);
-	claset_("All", ncv, ncv, &c_b2, &c_b1, &workl[invsub], &ldq, (ftnlen)
-		3);
+	claset_("All", ncv, ncv, &c_b2, &c_b1, &workl[invsub], &ldq);
 	clahqr_(&c_true, &c_true, ncv, &c__1, ncv, &workl[iuptri], &ldh, &
 		workl[iheig], &c__1, ncv, &workl[invsub], &ldq, &ierr);
 	ccopy_(ncv, &workl[invsub + *ncv - 1], &ldq, &workl[ihbds], &c__1);
@@ -712,7 +711,7 @@ static logical c_true = TRUE_;
 
 	    ctrsen_("None", "V", &select[1], ncv, &workl[iuptri], &ldh, &
 		    workl[invsub], &ldq, &workl[iheig], &nconv2, &conds, &sep,
-		     &workev[1], ncv, &ierr, (ftnlen)4, (ftnlen)1);
+		     &workev[1], ncv, &ierr);
 
 	    if (nconv2 < nconv) {
 		nconv = nconv2;
@@ -774,10 +773,8 @@ static logical c_true = TRUE_;
 /*        %--------------------------------------------------------% */
 
 	cunm2r_("Right", "Notranspose", n, ncv, &nconv, &workl[invsub], &ldq, 
-		&workev[1], &v[v_offset], ldv, &workd[*n + 1], &ierr, (ftnlen)
-		5, (ftnlen)11);
-	clacpy_("All", n, &nconv, &v[v_offset], ldv, &z__[z_offset], ldz, (
-		ftnlen)3);
+		&workev[1], &v[v_offset], ldv, &workd[*n + 1], &ierr);
+	clacpy_("All", n, &nconv, &v[v_offset], ldv, &z__[z_offset], ldz);
 
 	i__1 = nconv;
 	for (j = 1; j <= i__1; ++j) {
@@ -821,7 +818,7 @@ static logical c_true = TRUE_;
 
 	    ctrevc_("Right", "Select", &select[1], ncv, &workl[iuptri], &ldq, 
 		    vl, &c__1, &workl[invsub], &ldq, ncv, &outncv, &workev[1],
-		     &rwork[1], &ierr, (ftnlen)5, (ftnlen)6);
+		     &rwork[1], &ierr);
 
 	    if (ierr != 0) {
 		*info = -9;
@@ -883,8 +880,7 @@ static logical c_true = TRUE_;
 /*           %----------------------------------------------% */
 
 	    ctrmm_("Right", "Upper", "No transpose", "Non-unit", n, &nconv, &
-		    c_b1, &workl[invsub], &ldq, &z__[z_offset], ldz, (ftnlen)
-		    5, (ftnlen)5, (ftnlen)12, (ftnlen)8);
+		    c_b1, &workl[invsub], &ldq, &z__[z_offset], ldz);
 	}
 
     } else {

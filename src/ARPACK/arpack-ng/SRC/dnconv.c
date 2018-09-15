@@ -114,8 +114,7 @@ static doublereal c_b3 = .66666666666666663;
     integer i__;
     static real t0, t1;
     doublereal eps23, temp;
-    extern doublereal dlapy2_(doublereal *, doublereal *), dlamch_(char *, 
-	    ftnlen);
+    extern doublereal dlapy2_(doublereal *, doublereal *), dlamch_(char *);
     extern /* Subroutine */ int arscnd_(real *);
 
 
@@ -185,7 +184,7 @@ static doublereal c_b3 = .66666666666666663;
 /*     | Get machine dependent constant. | */
 /*     %---------------------------------% */
 
-    eps23 = dlamch_("Epsilon-Machine", (ftnlen)15);
+    eps23 = dlamch_("Epsilon-Machine");
     eps23 = pow_dd(&eps23, &c_b3);
 
     *nconv = 0;

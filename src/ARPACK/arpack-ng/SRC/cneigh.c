@@ -165,8 +165,8 @@ static integer c__1 = 1;
     integer msglvl;
     extern /* Subroutine */ int ctrevc_(char *, char *, logical *, integer *, 
 	    complex *, integer *, complex *, integer *, complex *, integer *, 
-	    integer *, integer *, complex *, real *, integer *, ftnlen, 
-	    ftnlen), arscnd_(real *), claset_(char *, integer *, integer *, 
+	    integer *, integer *, complex *, real *, integer *), 
+	    arscnd_(real *), claset_(char *, integer *, integer *, 
 	    complex *, complex *, complex *, integer *);
 
 
@@ -258,8 +258,8 @@ static integer c__1 = 1;
 /*     |    in WORKL(1:N**2), and the Schur vectors in q.         | */
 /*     %----------------------------------------------------------% */
 
-    clacpy_("All", n, n, &h__[h_offset], ldh, &workl[1], n, (ftnlen)3);
-    claset_("All", n, n, &c_b2, &c_b1, &q[q_offset], ldq, (ftnlen)3);
+    clacpy_("All", n, n, &h__[h_offset], ldh, &workl[1], n);
+    claset_("All", n, n, &c_b2, &c_b1, &q[q_offset], ldq);
     clahqr_(&c_true, &c_true, n, &c__1, n, &workl[1], ldh, &ritz[1], &c__1, n,
 	     &q[q_offset], ldq, ierr);
     if (*ierr != 0) {
@@ -279,8 +279,7 @@ static integer c__1 = 1;
 /*     %----------------------------------------------------------% */
 
     ctrevc_("Right", "Back", select, n, &workl[1], n, vl, n, &q[q_offset], 
-	    ldq, n, n, &workl[*n * *n + 1], &rwork[1], ierr, (ftnlen)5, (
-	    ftnlen)4);
+	    ldq, n, n, &workl[*n * *n + 1], &rwork[1], ierr);
 
     if (*ierr != 0) {
 	goto L9000;
