@@ -14,7 +14,7 @@
 #define AR_TYPE arcomplex<float>
 
 int ar_ci_ns(char* which, int k, int ncv, int maxit, double tol,
-		   spmat *A, ar_result *result)
+		   ar_spmat *A, ar_result *result)
 {
 	int nconv = 0; // Number of converged eigenvalues.
 	
@@ -47,7 +47,7 @@ int ar_ci_ns(char* which, int k, int ncv, int maxit, double tol,
 }
 
 int ar_ci_ns_shift(char* which,  int k, int ncv, int maxit, double tol, arcomplex<float> sigma,
-				 spmat *A, ar_result *result)
+				 ar_spmat *A, ar_result *result)
 {
 	int nconv = 0; // Number of converged eigenvalues.
 	
@@ -80,7 +80,7 @@ int ar_ci_ns_shift(char* which,  int k, int ncv, int maxit, double tol, arcomple
 }
 
 int ar_ci_ng(char* which, int k, int ncv, int maxit, double tol,
-		   spmat *A, spmat *B, ar_result *result)
+		   ar_spmat *A, ar_spmat *B, ar_result *result)
 {
 	int nconv = 0; // Number of converged eigenvalues.
 	
@@ -114,7 +114,7 @@ int ar_ci_ng(char* which, int k, int ncv, int maxit, double tol,
 }
 
 int ar_ci_ng_shift(char* which,  int k, int ncv, int maxit, double tol, arcomplex<float> sigma,
-				 spmat *A, spmat *B, ar_result *result)
+				 ar_spmat *A, ar_spmat *B, ar_result *result)
 {
 	int nconv = 0; // Number of converged eigenvalues.
 	

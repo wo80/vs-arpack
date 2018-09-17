@@ -23,19 +23,19 @@ extern "C"
 
 	// Complex standard problem (Hermitian or not) - regular mode
 	EXPORT int ar_ci_ns(char* which, int k, int ncv, int maxit, double tol,
-		spmat *A, ar_result *result);
+		ar_spmat *A, ar_result *result);
 
 	// Complex standard problem (Hermitian or not) - shift-and-invert mode
 	EXPORT int ar_ci_ns_shift(char* which,  int k, int ncv, int maxit, double tol, arcomplex<float> sigma,
-		spmat *A, ar_result *result);
+		ar_spmat *A, ar_result *result);
 
 	// Complex generalized problem (Hermitian or not) - regular mode
 	EXPORT int ar_ci_ng(char* which, int k, int ncv, int maxit, double tol,
-		spmat *A, spmat *B, ar_result *result);
+		ar_spmat *A, ar_spmat *B, ar_result *result);
 
 	// Complex generalized problem (Hermitian or not) - shift-and-invert mode
 	EXPORT int ar_ci_ng_shift(char* which,  int k, int ncv, int maxit, double tol, arcomplex<float> sigma,
-		spmat *A, spmat *B, ar_result *result);
+		ar_spmat *A, ar_spmat *B, ar_result *result);
 
 #ifdef __cplusplus
 }

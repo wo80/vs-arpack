@@ -10,6 +10,9 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "arpack-ng", "Visual Studio\static\arpack-ng\arpack-ng.vcxproj", "{8E839A8F-36C7-48DE-8A88-E94DFAE6E416}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libarpack", "Visual Studio\shared\libarpack\libarpack.vcxproj", "{56B3596E-6653-4BF3-B1E6-AAC213C1F2A1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8E839A8F-36C7-48DE-8A88-E94DFAE6E416} = {8E839A8F-36C7-48DE-8A88-E94DFAE6E416}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

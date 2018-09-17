@@ -1,7 +1,7 @@
 #pragma once
 
 /* Sparse matrix in column compressed format. */
-typedef struct spmat_t {
+typedef struct ar_spmat_t {
 	/* Number of rows/columns. */
     int  n;
 	/* Array of nonzero values. */
@@ -12,7 +12,7 @@ typedef struct spmat_t {
     int  *p;
 	/* Number of nonzeros in the matrix. */
     int  nnz;
-} spmat;
+} ar_spmat;
 
 typedef struct ar_result_t {
 	/* Eigenvalues. */
