@@ -10,6 +10,10 @@ Replace `ARPACK\arpackpp\include\arerror.h` with `ARPACK\arerror.h`.
 
 Pre-compiled binaries for windows users can be found [here](http://wo80.bplaced.net/math/packages.html).
 
+## Thread Safety
+
+At the moment, the ARPACK C code created by F2C is **NOT** thread-safe!
+
 ## Why?
 
 The project was created to maintain ARPACK builds matching the [CSparse.Interop](https://github.com/wo80/csparse-interop) bindings for C#.
