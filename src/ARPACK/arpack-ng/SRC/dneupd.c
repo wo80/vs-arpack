@@ -2,14 +2,7 @@
 
 #include "arpack.h"
 
-/* Table of constant values */
 
-static doublereal c_b3 = .66666666666666663;
-static integer c__1 = 1;
-static doublereal c_b37 = 0.;
-static doublereal c_b38 = 1.;
-static logical c_true = TRUE_;
-static doublereal c_b64 = -1.;
 
 /* \BeginDoc */
 
@@ -487,7 +480,7 @@ static doublereal c_b64 = -1.;
 /*     %---------------------------------% */
 
     eps23 = dlamch_("Epsilon-Machine");
-    eps23 = pow_dd(&eps23, &c_b3);
+    eps23 = pow_dd(&eps23, &d_23);
 
 /*     %--------------% */
 /*     | Quick return | */
@@ -722,7 +715,7 @@ static doublereal c_b64 = -1.;
 
 	i__1 = ldh * *ncv;
 	dcopy_(&i__1, &workl[ih], &c__1, &workl[iuptri], &c__1);
-	dlaset_("All", ncv, ncv, &c_b37, &c_b38, &workl[invsub], &ldq);
+	dlaset_("All", ncv, ncv, &d_zero, &d_one, &workl[invsub], &ldq);
 	dlahqr_(&c_true, &c_true, ncv, &c__1, ncv, &workl[iuptri], &ldh, &
 		workl[iheigr], &workl[iheigi], &c__1, ncv, &workl[invsub], &
 		ldq, &ierr);
@@ -841,8 +834,8 @@ static doublereal c_b64 = -1.;
 /*           %---------------------------------------------------% */
 
 	    if (workl[invsub + (j - 1) * ldq + j - 1] < 0.) {
-		dscal_(&nconv, &c_b64, &workl[iuptri + j - 1], &ldq);
-		dscal_(&nconv, &c_b64, &workl[iuptri + (j - 1) * ldq], &c__1);
+		dscal_(&nconv, &d_m1, &workl[iuptri + j - 1], &ldq);
+		dscal_(&nconv, &d_m1, &workl[iuptri + (j - 1) * ldq], &c__1);
 	    }
 
 /* L20: */
@@ -926,8 +919,8 @@ static doublereal c_b64 = -1.;
 /* L40: */
 	    }
 
-	    dgemv_("T", ncv, &nconv, &c_b38, &workl[invsub], &ldq, &workl[
-		    ihbds], &c__1, &c_b37, &workev[1], &c__1);
+	    dgemv_("T", ncv, &nconv, &d_one, &workl[invsub], &ldq, &workl[
+		    ihbds], &c__1, &d_zero, &workev[1], &c__1);
 
 	    iconj = 0;
 	    i__1 = nconv;
@@ -992,7 +985,7 @@ static doublereal c_b64 = -1.;
 		    ierr, (ftnlen)5, (ftnlen)11);
 
 	    dtrmm_("Right", "Upper", "No transpose", "Non-unit", n, &nconv, &
-		    c_b38, &workl[invsub], &ldq, &z__[z_offset], ldz, (ftnlen)
+		    d_one, &workl[invsub], &ldq, &z__[z_offset], ldz, (ftnlen)
 		    5, (ftnlen)5, (ftnlen)12, (ftnlen)8);
 
 	}
@@ -1166,7 +1159,7 @@ static doublereal c_b64 = -1.;
 /*        | purify all the Ritz vectors together. | */
 /*        %---------------------------------------% */
 
-	dger_(n, &nconv, &c_b38, &resid[1], &c__1, &workev[1], &c__1, &z__[
+	dger_(n, &nconv, &d_one, &resid[1], &c__1, &workev[1], &c__1, &z__[
 		z_offset], ldz);
 
     }

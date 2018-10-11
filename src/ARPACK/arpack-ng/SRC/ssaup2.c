@@ -2,14 +2,7 @@
 
 #include "arpack.h"
 
-/* Table of constant values */
 
-static doublereal c_b3 = .66666666666666663;
-static integer c__1 = 1;
-static integer c__0 = 0;
-static integer c__3 = 3;
-static logical c_true = TRUE_;
-static integer c__2 = 2;
 
 /* ----------------------------------------------------------------------- */
 /* \BeginDoc */
@@ -345,7 +338,7 @@ static integer c__2 = 2;
 
 	eps23 = slamch_("Epsilon-Machine");
 	d__1 = (doublereal) eps23;
-	eps23 = pow_dd(&d__1, &c_b3);
+	eps23 = pow_dd(&d__1, &d_23);
 
 /*        %-------------------------------------% */
 /*        | nev0 and np0 are integer variables  | */

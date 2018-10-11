@@ -2,14 +2,7 @@
 
 #include "arpack.h"
 
-/* Table of constant values */
 
-static doublereal c_b5 = .66666666666666663;
-static integer c__1 = 1;
-static integer c__0 = 0;
-static integer c__3 = 3;
-static logical c_true = TRUE_;
-static integer c__2 = 2;
 
 /* \BeginDoc */
 
@@ -361,7 +354,7 @@ static integer c__2 = 2;
 /*        %---------------------------------% */
 
 	eps23 = dlamch_("Epsilon-Machine");
-	eps23 = pow_dd(&eps23, &c_b5);
+	eps23 = pow_dd(&eps23, &d_23);
 
 /*        %---------------------------------------% */
 /*        | Set flags for computing the first NEV | */

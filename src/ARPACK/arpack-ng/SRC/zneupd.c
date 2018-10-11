@@ -2,13 +2,7 @@
 
 #include "arpack.h"
 
-/* Table of constant values */
 
-static doublecomplex c_b1 = {1.,0.};
-static doublecomplex c_b2 = {0.,0.};
-static doublereal c_b5 = .66666666666666663;
-static integer c__1 = 1;
-static logical c_true = TRUE_;
 
 /* \BeginDoc */
 
@@ -423,7 +417,7 @@ static logical c_true = TRUE_;
 /*     %---------------------------------% */
 
     eps23 = dlamch_("Epsilon-Machine");
-    eps23 = pow_dd(&eps23, &c_b5);
+    eps23 = pow_dd(&eps23, &d_23);
 
 /*     %-------------------------------% */
 /*     | Quick return                  | */
@@ -650,7 +644,7 @@ static logical c_true = TRUE_;
 
 	i__1 = ldh * *ncv;
 	zcopy_(&i__1, &workl[ih], &c__1, &workl[iuptri], &c__1);
-	zlaset_("All", ncv, ncv, &c_b2, &c_b1, &workl[invsub], &ldq);
+	zlaset_("All", ncv, ncv, &z_zero, &z_one, &workl[invsub], &ldq);
 	zlahqr_(&c_true, &c_true, ncv, &c__1, ncv, &workl[iuptri], &ldh, &
 		workl[iheig], &c__1, ncv, &workl[invsub], &ldq, &ierr);
 	zcopy_(ncv, &workl[invsub + *ncv - 1], &ldq, &workl[ihbds], &c__1);
@@ -850,7 +844,7 @@ static logical c_true = TRUE_;
 /*           %----------------------------------------------% */
 
 	    ztrmm_("Right", "Upper", "No transpose", "Non-unit", n, &nconv, &
-		    c_b1, &workl[invsub], &ldq, &z__[z_offset], ldz);
+		    z_one, &workl[invsub], &ldq, &z__[z_offset], ldz);
 	}
 
     } else {
@@ -915,7 +909,7 @@ static logical c_true = TRUE_;
 	i__1 = nconv;
 	for (k = 1; k <= i__1; ++k) {
 	    i__2 = k;
-	    z_div(&z__2, &c_b1, &workl[iheig + k - 1]);
+	    z_div(&z__2, &z_one, &workl[iheig + k - 1]);
 	    z__1.r = z__2.r + sigma->r, z__1.i = z__2.i + sigma->i;
 	    d__[i__2].r = z__1.r, d__[i__2].i = z__1.i;
 /* L60: */
@@ -969,7 +963,7 @@ static logical c_true = TRUE_;
 /*        | purify all the Ritz vectors together. | */
 /*        %---------------------------------------% */
 
-	zgeru_(n, &nconv, &c_b1, &resid[1], &c__1, &workev[1], &c__1, &z__[
+	zgeru_(n, &nconv, &z_one, &resid[1], &c__1, &workev[1], &c__1, &z__[
 		z_offset], ldz);
 
     }

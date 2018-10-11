@@ -2,10 +2,7 @@
 
 #include "arpack.h"
 
-/* Table of constant values */
 
-static logical c_true = TRUE_;
-static integer c__1 = 1;
 
 /* ----------------------------------------------------------------------- */
 /* \BeginDoc */

@@ -2,9 +2,7 @@
 
 #include "arpack.h"
 
-/* Table of constant values */
 
-static integer c__1 = 1;
 
 /* ----------------------------------------------------------------------- */
 /*  Routine:    DVOUT */

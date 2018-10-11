@@ -2,11 +2,7 @@
 
 #include "arpack.h"
 
-/* Table of constant values */
 
-static integer c__0 = 0;
-static integer c__1 = 1;
-static real c_b31 = 1.f;
 
 /* ----------------------------------------------------------------------- */
 /* \BeginDoc */
@@ -400,7 +396,7 @@ L60:
 /*        form shift. */
 
 	g = (d__[l + 1] - p) / (e[l] * 2.f);
-	r__ = slapy2_(&g, &c_b31);
+	r__ = slapy2_(&g, &s_one);
 	g = d__[m] - p + e[l] / (g + r_sign(&r__, &g));
 
 	s = 1.f;
@@ -535,7 +531,7 @@ L110:
 /*        form shift. */
 
 	g = (d__[l - 1] - p) / (e[l - 1] * 2.f);
-	r__ = slapy2_(&g, &c_b31);
+	r__ = slapy2_(&g, &s_one);
 	g = d__[m] - p + e[l - 1] / (g + r_sign(&r__, &g));
 
 	s = 1.f;

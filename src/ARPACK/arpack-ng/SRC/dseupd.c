@@ -2,12 +2,7 @@
 
 #include "arpack.h"
 
-/* Table of constant values */
 
-static doublereal c_b21 = .66666666666666663;
-static integer c__1 = 1;
-static logical c_true = TRUE_;
-static doublereal c_b111 = 1.;
 
 /* \BeginDoc */
 
@@ -513,7 +508,7 @@ static doublereal c_b111 = 1.;
 /*     %---------------------------------% */
 
     eps23 = dlamch_("Epsilon-Machine");
-    eps23 = pow_dd(&eps23, &c_b21);
+    eps23 = pow_dd(&eps23, &d_23);
 
 /*     %---------------------------------------% */
 /*     | RNORM is B-norm of the RESID(1:N).    | */
@@ -974,7 +969,7 @@ L30:
     }
 
     if (*rvec && s_cmp(type__, "REGULR", (ftnlen)6, (ftnlen)6) != 0) {
-	dger_(n, &nconv, &c_b111, &resid[1], &c__1, &workl[iw], &c__1, &z__[
+	dger_(n, &nconv, &d_one, &resid[1], &c__1, &workl[iw], &c__1, &z__[
 		z_offset], ldz);
     }
 

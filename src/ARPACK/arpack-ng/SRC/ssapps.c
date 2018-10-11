@@ -2,12 +2,7 @@
 
 #include "arpack.h"
 
-/* Table of constant values */
 
-static real c_b4 = 0.f;
-static real c_b5 = 1.f;
-static integer c__1 = 1;
-static real c_b20 = -1.f;
 
 /* ----------------------------------------------------------------------- */
 /* \BeginDoc */
@@ -278,7 +273,7 @@ static real c_b20 = -1.f;
 /*     | kplusp used to accumulate the rotations.     | */
 /*     %----------------------------------------------% */
 
-    slaset_("All", &kplusp, &kplusp, &c_b4, &c_b5, &q[q_offset], ldq);
+    slaset_("All", &kplusp, &kplusp, &s_zero, &s_one, &q[q_offset], ldq);
 
 /*     %----------------------------------------------% */
 /*     | Quick return if there are no shifts to apply | */
@@ -484,7 +479,7 @@ L40:
 
 	if (h__[iend + h_dim1] < 0.f) {
 	    h__[iend + h_dim1] = -h__[iend + h_dim1];
-	    sscal_(&kplusp, &c_b20, &q[iend * q_dim1 + 1], &c__1);
+	    sscal_(&kplusp, &s_m1, &q[iend * q_dim1 + 1], &c__1);
 	}
 
 /*        %--------------------------------------------------------% */
@@ -546,8 +541,8 @@ L90:
 /*     %-------------------------------------------------% */
 
     if (h__[*kev + 1 + h_dim1] > 0.f) {
-	sgemv_("N", n, &kplusp, &c_b5, &v[v_offset], ldv, &q[(*kev + 1) * 
-		q_dim1 + 1], &c__1, &c_b4, &workd[*n + 1], &c__1);
+	sgemv_("N", n, &kplusp, &s_one, &v[v_offset], ldv, &q[(*kev + 1) * 
+		q_dim1 + 1], &c__1, &s_zero, &workd[*n + 1], &c__1);
     }
 
 /*     %-------------------------------------------------------% */
@@ -560,8 +555,8 @@ L90:
     i__1 = *kev;
     for (i__ = 1; i__ <= i__1; ++i__) {
 	i__2 = kplusp - i__ + 1;
-	sgemv_("N", n, &i__2, &c_b5, &v[v_offset], ldv, &q[(*kev - i__ + 1) * 
-		q_dim1 + 1], &c__1, &c_b4, &workd[1], &c__1);
+	sgemv_("N", n, &i__2, &s_one, &v[v_offset], ldv, &q[(*kev - i__ + 1) * 
+		q_dim1 + 1], &c__1, &s_zero, &workd[1], &c__1);
 	scopy_(n, &workd[1], &c__1, &v[(kplusp - i__ + 1) * v_dim1 + 1], &
 		c__1);
 /* L130: */

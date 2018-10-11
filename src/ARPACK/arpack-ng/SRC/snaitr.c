@@ -2,14 +2,7 @@
 
 #include "arpack.h"
 
-/* Table of constant values */
 
-static integer c__1 = 1;
-static logical c_false = FALSE_;
-static real c_b25 = 1.f;
-static real c_b47 = 0.f;
-static real c_b50 = -1.f;
-static integer c__2 = 2;
 
 /* ----------------------------------------------------------------------- */
 /* \BeginDoc */
@@ -537,9 +530,9 @@ L40:
 /*            | use LAPACK routine SLASCL               | */
 /*            %-----------------------------------------% */
 
-	slascl_("General", &i__, &i__, rnorm, &c_b25, n, &c__1, &v[j * v_dim1 
+	slascl_("General", &i__, &i__, rnorm, &s_one, n, &c__1, &v[j * v_dim1 
 		+ 1], n, &infol);
-	slascl_("General", &i__, &i__, rnorm, &c_b25, n, &c__1, &workd[ipj], 
+	slascl_("General", &i__, &i__, rnorm, &s_one, n, &c__1, &workd[ipj], 
 		n, &infol);
     }
 
@@ -642,7 +635,7 @@ L60:
 /*        | WORKD(IPJ:IPJ+N-1) contains B*OP*v_{j}.  | */
 /*        %------------------------------------------% */
 
-    sgemv_("T", n, &j, &c_b25, &v[v_offset], ldv, &workd[ipj], &c__1, &c_b47, 
+    sgemv_("T", n, &j, &s_one, &v[v_offset], ldv, &workd[ipj], &c__1, &s_zero, 
 	    &h__[j * h_dim1 + 1], &c__1);
 
 /*        %--------------------------------------% */
@@ -650,8 +643,8 @@ L60:
 /*        | RESID contains OP*v_{j}. See STEP 3. | */
 /*        %--------------------------------------% */
 
-    sgemv_("N", n, &j, &c_b50, &v[v_offset], ldv, &h__[j * h_dim1 + 1], &c__1,
-	     &c_b25, &resid[1], &c__1);
+    sgemv_("N", n, &j, &s_m1, &v[v_offset], ldv, &h__[j * h_dim1 + 1], &c__1,
+	     &s_one, &resid[1], &c__1);
 
     if (j > 1) {
 	h__[j + (j - 1) * h_dim1] = betaj;
@@ -749,7 +742,7 @@ L80:
 /*        | WORKD(IRJ:IRJ+J-1) = v(:,1:J)'*WORKD(IPJ:IPJ+N-1). | */
 /*        %----------------------------------------------------% */
 
-    sgemv_("T", n, &j, &c_b25, &v[v_offset], ldv, &workd[ipj], &c__1, &c_b47, 
+    sgemv_("T", n, &j, &s_one, &v[v_offset], ldv, &workd[ipj], &c__1, &s_zero, 
 	    &workd[irj], &c__1);
 
 /*        %---------------------------------------------% */
@@ -759,9 +752,9 @@ L80:
 /*        | + v(:,1:J)*WORKD(IRJ:IRJ+J-1)*e'_j.         | */
 /*        %---------------------------------------------% */
 
-    sgemv_("N", n, &j, &c_b50, &v[v_offset], ldv, &workd[irj], &c__1, &c_b25, 
+    sgemv_("N", n, &j, &s_m1, &v[v_offset], ldv, &workd[irj], &c__1, &s_one, 
 	    &resid[1], &c__1);
-    saxpy_(&j, &c_b25, &workd[irj], &c__1, &h__[j * h_dim1 + 1], &c__1);
+    saxpy_(&j, &s_one, &workd[irj], &c__1, &h__[j * h_dim1 + 1], &c__1);
 
     orth2 = TRUE_;
     arscnd_(&t2);

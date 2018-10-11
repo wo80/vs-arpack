@@ -2,11 +2,7 @@
 
 #include "arpack.h"
 
-/* Table of constant values */
 
-static complex c_b1 = {1.f,0.f};
-static complex c_b2 = {0.f,0.f};
-static integer c__1 = 1;
 
 /* \BeginDoc */
 
@@ -315,7 +311,7 @@ static integer c__1 = 1;
 /*     | the rotations and reflections              | */
 /*     %--------------------------------------------% */
 
-    claset_("All", &kplusp, &kplusp, &c_b2, &c_b1, &q[q_offset], ldq);
+    claset_("All", &kplusp, &kplusp, &c_zero, &c_one, &q[q_offset], ldq);
 
 /*     %----------------------------------------------% */
 /*     | Quick return if there are no shifts to apply | */
@@ -631,8 +627,8 @@ L100:
 
     i__1 = *kev + 1 + *kev * h_dim1;
     if (h__[i__1].r > 0.f) {
-	cgemv_("N", n, &kplusp, &c_b1, &v[v_offset], ldv, &q[(*kev + 1) * 
-		q_dim1 + 1], &c__1, &c_b2, &workd[*n + 1], &c__1);
+	cgemv_("N", n, &kplusp, &c_one, &v[v_offset], ldv, &q[(*kev + 1) * 
+		q_dim1 + 1], &c__1, &c_zero, &workd[*n + 1], &c__1);
     }
 
 /*     %----------------------------------------------------------% */
@@ -643,8 +639,8 @@ L100:
     i__1 = *kev;
     for (i__ = 1; i__ <= i__1; ++i__) {
 	i__2 = kplusp - i__ + 1;
-	cgemv_("N", n, &i__2, &c_b1, &v[v_offset], ldv, &q[(*kev - i__ + 1) * 
-		q_dim1 + 1], &c__1, &c_b2, &workd[1], &c__1);
+	cgemv_("N", n, &i__2, &c_one, &v[v_offset], ldv, &q[(*kev - i__ + 1) * 
+		q_dim1 + 1], &c__1, &c_zero, &workd[1], &c__1);
 	ccopy_(n, &workd[1], &c__1, &v[(kplusp - i__ + 1) * v_dim1 + 1], &
 		c__1);
 /* L140: */

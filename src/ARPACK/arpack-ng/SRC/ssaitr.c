@@ -2,14 +2,7 @@
 
 #include "arpack.h"
 
-/* Table of constant values */
 
-static integer c__1 = 1;
-static logical c_false = FALSE_;
-static real c_b24 = 1.f;
-static real c_b49 = 0.f;
-static real c_b57 = -1.f;
-static integer c__2 = 2;
 
 /* ----------------------------------------------------------------------- */
 /* \BeginDoc */
@@ -520,9 +513,9 @@ L40:
 /*            | use LAPACK routine SLASCL               | */
 /*            %-----------------------------------------% */
 
-	slascl_("General", &i__, &i__, rnorm, &c_b24, n, &c__1, &v[j * v_dim1 
+	slascl_("General", &i__, &i__, rnorm, &s_one, n, &c__1, &v[j * v_dim1 
 		+ 1], n, &infol);
-	slascl_("General", &i__, &i__, rnorm, &c_b24, n, &c__1, &workd[ipj], 
+	slascl_("General", &i__, &i__, rnorm, &s_one, n, &c__1, &workd[ipj], 
 		n, &infol);
     }
 
@@ -642,11 +635,11 @@ L65:
 /*        %------------------------------------------% */
 
     if (*mode != 2) {
-	sgemv_("T", n, &j, &c_b24, &v[v_offset], ldv, &workd[ipj], &c__1, &
-		c_b49, &workd[irj], &c__1);
+	sgemv_("T", n, &j, &s_one, &v[v_offset], ldv, &workd[ipj], &c__1, &
+		s_zero, &workd[irj], &c__1);
     } else if (*mode == 2) {
-	sgemv_("T", n, &j, &c_b24, &v[v_offset], ldv, &workd[ivj], &c__1, &
-		c_b49, &workd[irj], &c__1);
+	sgemv_("T", n, &j, &s_one, &v[v_offset], ldv, &workd[ivj], &c__1, &
+		s_zero, &workd[irj], &c__1);
     }
 
 /*        %--------------------------------------% */
@@ -654,7 +647,7 @@ L65:
 /*        | RESID contains OP*v_{j}. See STEP 3. | */
 /*        %--------------------------------------% */
 
-    sgemv_("N", n, &j, &c_b57, &v[v_offset], ldv, &workd[irj], &c__1, &c_b24, 
+    sgemv_("N", n, &j, &s_m1, &v[v_offset], ldv, &workd[irj], &c__1, &s_one, 
 	    &resid[1], &c__1);
 
 /*        %--------------------------------------% */
@@ -754,7 +747,7 @@ L80:
 /*        | WORKD(IRJ:IRJ+J-1) = v(:,1:J)'*WORKD(IPJ:IPJ+N-1). | */
 /*        %----------------------------------------------------% */
 
-    sgemv_("T", n, &j, &c_b24, &v[v_offset], ldv, &workd[ipj], &c__1, &c_b49, 
+    sgemv_("T", n, &j, &s_one, &v[v_offset], ldv, &workd[ipj], &c__1, &s_zero, 
 	    &workd[irj], &c__1);
 
 /*        %----------------------------------------------% */
@@ -765,7 +758,7 @@ L80:
 /*        | H(j,j) is updated.                           | */
 /*        %----------------------------------------------% */
 
-    sgemv_("N", n, &j, &c_b57, &v[v_offset], ldv, &workd[irj], &c__1, &c_b24, 
+    sgemv_("N", n, &j, &s_m1, &v[v_offset], ldv, &workd[irj], &c__1, &s_one, 
 	    &resid[1], &c__1);
 
     if (j == 1 || rstart) {
@@ -886,9 +879,9 @@ L100:
     if (h__[j + h_dim1] < 0.f) {
 	h__[j + h_dim1] = -h__[j + h_dim1];
 	if (j < *k + *np) {
-	    sscal_(n, &c_b57, &v[(j + 1) * v_dim1 + 1], &c__1);
+	    sscal_(n, &s_m1, &v[(j + 1) * v_dim1 + 1], &c__1);
 	} else {
-	    sscal_(n, &c_b57, &resid[1], &c__1);
+	    sscal_(n, &s_m1, &resid[1], &c__1);
 	}
     }
 

@@ -2,11 +2,7 @@
 
 #include "arpack.h"
 
-/* Table of constant values */
 
-static complex c_b1 = {1.f,0.f};
-static complex c_b2 = {0.f,0.f};
-static integer c__1 = 1;
 
 /* \BeginDoc */
 
@@ -376,12 +372,12 @@ L20:
 L30:
 
     i__1 = *j - 1;
-    cgemv_("C", n, &i__1, &c_b1, &v[v_offset], ldv, &workd[1], &c__1, &c_b2, &
+    cgemv_("C", n, &i__1, &c_one, &v[v_offset], ldv, &workd[1], &c__1, &c_zero, &
 	    workd[*n + 1], &c__1);
     i__1 = *j - 1;
     q__1.r = -1.f, q__1.i = -0.f;
     cgemv_("N", n, &i__1, &q__1, &v[v_offset], ldv, &workd[*n + 1], &c__1, &
-	    c_b1, &resid[1], &c__1);
+	    c_one, &resid[1], &c__1);
 
 /*     %----------------------------------------------------------% */
 /*     | Compute the B-norm of the orthogonalized starting vector | */

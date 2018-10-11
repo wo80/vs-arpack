@@ -2,13 +2,7 @@
 
 #include "arpack.h"
 
-/* Table of constant values */
 
-static complex c_b1 = {1.f,0.f};
-static complex c_b2 = {0.f,0.f};
-static doublereal c_b5 = .66666666666666663;
-static integer c__1 = 1;
-static logical c_true = TRUE_;
 
 /* \BeginDoc */
 
@@ -423,7 +417,7 @@ static logical c_true = TRUE_;
 
     eps23 = slamch_("Epsilon-Machine");
     d__1 = (doublereal) eps23;
-    eps23 = pow_dd(&d__1, &c_b5);
+    eps23 = pow_dd(&d__1, &d_23);
 
 /*     %-------------------------------% */
 /*     | Quick return                  | */
@@ -650,7 +644,7 @@ static logical c_true = TRUE_;
 
 	i__1 = ldh * *ncv;
 	ccopy_(&i__1, &workl[ih], &c__1, &workl[iuptri], &c__1);
-	claset_("All", ncv, ncv, &c_b2, &c_b1, &workl[invsub], &ldq);
+	claset_("All", ncv, ncv, &c_zero, &c_one, &workl[invsub], &ldq);
 	clahqr_(&c_true, &c_true, ncv, &c__1, ncv, &workl[iuptri], &ldh, &
 		workl[iheig], &c__1, ncv, &workl[invsub], &ldq, &ierr);
 	ccopy_(ncv, &workl[invsub + *ncv - 1], &ldq, &workl[ihbds], &c__1);
@@ -850,7 +844,7 @@ static logical c_true = TRUE_;
 /*           %----------------------------------------------% */
 
 	    ctrmm_("Right", "Upper", "No transpose", "Non-unit", n, &nconv, &
-		    c_b1, &workl[invsub], &ldq, &z__[z_offset], ldz);
+		    c_one, &workl[invsub], &ldq, &z__[z_offset], ldz);
 	}
 
     } else {
@@ -915,7 +909,7 @@ static logical c_true = TRUE_;
 	i__1 = nconv;
 	for (k = 1; k <= i__1; ++k) {
 	    i__2 = k;
-	    c_div(&q__2, &c_b1, &workl[iheig + k - 1]);
+	    c_div(&q__2, &c_one, &workl[iheig + k - 1]);
 	    q__1.r = q__2.r + sigma->r, q__1.i = q__2.i + sigma->i;
 	    d__[i__2].r = q__1.r, d__[i__2].i = q__1.i;
 /* L60: */
@@ -969,7 +963,7 @@ static logical c_true = TRUE_;
 /*        | purify all the Ritz vectors together. | */
 /*        %---------------------------------------% */
 
-	cgeru_(n, &nconv, &c_b1, &resid[1], &c__1, &workev[1], &c__1, &z__[
+	cgeru_(n, &nconv, &c_one, &resid[1], &c__1, &workev[1], &c__1, &z__[
 		z_offset], ldz);
 
     }

@@ -2,9 +2,7 @@
 
 #include "arpack.h"
 
-/* Table of constant values */
 
-static doublereal c_b3 = .66666666666666663;
 
 /* ----------------------------------------------------------------------- */
 /* \BeginDoc */
@@ -155,7 +153,7 @@ static doublereal c_b3 = .66666666666666663;
 /*     %---------------------------------% */
 
     eps23 = dlamch_("Epsilon-Machine");
-    eps23 = pow_dd(&eps23, &c_b3);
+    eps23 = pow_dd(&eps23, &d_23);
 
     *nconv = 0;
     i__1 = *n;

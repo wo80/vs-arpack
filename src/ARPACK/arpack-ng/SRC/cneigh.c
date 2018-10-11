@@ -2,12 +2,7 @@
 
 #include "arpack.h"
 
-/* Table of constant values */
 
-static complex c_b1 = {1.f,0.f};
-static complex c_b2 = {0.f,0.f};
-static logical c_true = TRUE_;
-static integer c__1 = 1;
 
 /* \BeginDoc */
 
@@ -229,7 +224,7 @@ static integer c__1 = 1;
 /*     %----------------------------------------------------------% */
 
     clacpy_("All", n, n, &h__[h_offset], ldh, &workl[1], n);
-    claset_("All", n, n, &c_b2, &c_b1, &q[q_offset], ldq);
+    claset_("All", n, n, &c_zero, &c_one, &q[q_offset], ldq);
     clahqr_(&c_true, &c_true, n, &c__1, n, &workl[1], ldh, &ritz[1], &c__1, n,
 	     &q[q_offset], ldq, ierr);
     if (*ierr != 0) {

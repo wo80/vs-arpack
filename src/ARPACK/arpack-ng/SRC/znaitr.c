@@ -2,14 +2,7 @@
 
 #include "arpack.h"
 
-/* Table of constant values */
 
-static doublecomplex c_b1 = {1.,0.};
-static doublecomplex c_b2 = {0.,0.};
-static integer c__1 = 1;
-static logical c_false = FALSE_;
-static doublereal c_b27 = 1.;
-static integer c__2 = 2;
 
 /* \BeginDoc */
 
@@ -548,9 +541,9 @@ L40:
 /*            | use LAPACK routine zlascl               | */
 /*            %-----------------------------------------% */
 
-	zlascl_("General", &i__, &i__, rnorm, &c_b27, n, &c__1, &v[j * v_dim1 
+	zlascl_("General", &i__, &i__, rnorm, &d_one, n, &c__1, &v[j * v_dim1 
 		+ 1], n, &infol);
-	zlascl_("General", &i__, &i__, rnorm, &c_b27, n, &c__1, &workd[ipj], 
+	zlascl_("General", &i__, &i__, rnorm, &d_one, n, &c__1, &workd[ipj], 
 		n, &infol);
     }
 
@@ -656,7 +649,7 @@ L60:
 /*        | WORKD(IPJ:IPJ+N-1) contains B*OP*v_{j}.  | */
 /*        %------------------------------------------% */
 
-    zgemv_("C", n, &j, &c_b1, &v[v_offset], ldv, &workd[ipj], &c__1, &c_b2, &
+    zgemv_("C", n, &j, &z_one, &v[v_offset], ldv, &workd[ipj], &c__1, &z_zero, &
 	    h__[j * h_dim1 + 1], &c__1);
 
 /*        %--------------------------------------% */
@@ -666,7 +659,7 @@ L60:
 
     z__1.r = -1., z__1.i = -0.;
     zgemv_("N", n, &j, &z__1, &v[v_offset], ldv, &h__[j * h_dim1 + 1], &c__1, 
-	    &c_b1, &resid[1], &c__1);
+	    &z_one, &resid[1], &c__1);
 
     if (j > 1) {
 	i__1 = j + (j - 1) * h_dim1;
@@ -770,7 +763,7 @@ L80:
 /*        | WORKD(IRJ:IRJ+J-1) = v(:,1:J)'*WORKD(IPJ:IPJ+N-1). | */
 /*        %----------------------------------------------------% */
 
-    zgemv_("C", n, &j, &c_b1, &v[v_offset], ldv, &workd[ipj], &c__1, &c_b2, &
+    zgemv_("C", n, &j, &z_one, &v[v_offset], ldv, &workd[ipj], &c__1, &z_zero, &
 	    workd[irj], &c__1);
 
 /*        %---------------------------------------------% */
@@ -781,9 +774,9 @@ L80:
 /*        %---------------------------------------------% */
 
     z__1.r = -1., z__1.i = -0.;
-    zgemv_("N", n, &j, &z__1, &v[v_offset], ldv, &workd[irj], &c__1, &c_b1, &
+    zgemv_("N", n, &j, &z__1, &v[v_offset], ldv, &workd[irj], &c__1, &z_one, &
 	    resid[1], &c__1);
-    zaxpy_(&j, &c_b1, &workd[irj], &c__1, &h__[j * h_dim1 + 1], &c__1);
+    zaxpy_(&j, &z_one, &workd[irj], &c__1, &h__[j * h_dim1 + 1], &c__1);
 
     orth2 = TRUE_;
     arscnd_(&t2);

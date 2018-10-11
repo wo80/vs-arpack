@@ -2,12 +2,7 @@
 
 #include "arpack.h"
 
-/* Table of constant values */
 
-static real c_b5 = 0.f;
-static real c_b6 = 1.f;
-static integer c__1 = 1;
-static real c_b43 = -1.f;
 
 /* ----------------------------------------------------------------------- */
 /* \BeginDoc */
@@ -315,7 +310,7 @@ static real c_b43 = -1.f;
 /*     | the rotations and reflections              | */
 /*     %--------------------------------------------% */
 
-    slaset_("All", &kplusp, &kplusp, &c_b5, &c_b6, &q[q_offset], ldq);
+    slaset_("All", &kplusp, &kplusp, &s_zero, &s_one, &q[q_offset], ldq);
 
 /*     %----------------------------------------------% */
 /*     | Quick return if there are no shifts to apply | */
@@ -672,15 +667,15 @@ L110:
     for (j = 1; j <= i__1; ++j) {
 	if (h__[j + 1 + j * h_dim1] < 0.f) {
 	    i__2 = kplusp - j + 1;
-	    sscal_(&i__2, &c_b43, &h__[j + 1 + j * h_dim1], ldh);
+	    sscal_(&i__2, &s_m1, &h__[j + 1 + j * h_dim1], ldh);
 /* Computing MIN */
 	    i__3 = j + 2;
 	    i__2 = min(i__3,kplusp);
-	    sscal_(&i__2, &c_b43, &h__[(j + 1) * h_dim1 + 1], &c__1);
+	    sscal_(&i__2, &s_m1, &h__[(j + 1) * h_dim1 + 1], &c__1);
 /* Computing MIN */
 	    i__3 = j + *np + 1;
 	    i__2 = min(i__3,kplusp);
-	    sscal_(&i__2, &c_b43, &q[(j + 1) * q_dim1 + 1], &c__1);
+	    sscal_(&i__2, &s_m1, &q[(j + 1) * q_dim1 + 1], &c__1);
 	}
 /* L120: */
     }
@@ -716,8 +711,8 @@ L110:
 /*     %-------------------------------------------------% */
 
     if (h__[*kev + 1 + *kev * h_dim1] > 0.f) {
-	sgemv_("N", n, &kplusp, &c_b6, &v[v_offset], ldv, &q[(*kev + 1) * 
-		q_dim1 + 1], &c__1, &c_b5, &workd[*n + 1], &c__1);
+	sgemv_("N", n, &kplusp, &s_one, &v[v_offset], ldv, &q[(*kev + 1) * 
+		q_dim1 + 1], &c__1, &s_zero, &workd[*n + 1], &c__1);
     }
 
 /*     %----------------------------------------------------------% */
@@ -728,8 +723,8 @@ L110:
     i__1 = *kev;
     for (i__ = 1; i__ <= i__1; ++i__) {
 	i__2 = kplusp - i__ + 1;
-	sgemv_("N", n, &i__2, &c_b6, &v[v_offset], ldv, &q[(*kev - i__ + 1) * 
-		q_dim1 + 1], &c__1, &c_b5, &workd[1], &c__1);
+	sgemv_("N", n, &i__2, &s_one, &v[v_offset], ldv, &q[(*kev - i__ + 1) * 
+		q_dim1 + 1], &c__1, &s_zero, &workd[1], &c__1);
 	scopy_(n, &workd[1], &c__1, &v[(kplusp - i__ + 1) * v_dim1 + 1], &
 		c__1);
 /* L140: */

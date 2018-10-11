@@ -2,14 +2,7 @@
 
 #include "arpack.h"
 
-/* Table of constant values */
 
-static integer c__1 = 1;
-static logical c_false = FALSE_;
-static doublereal c_b25 = 1.;
-static doublereal c_b47 = 0.;
-static doublereal c_b50 = -1.;
-static integer c__2 = 2;
 
 /* ----------------------------------------------------------------------- */
 /* \BeginDoc */
@@ -542,9 +535,9 @@ L40:
 /*            | use LAPACK routine SLASCL               | */
 /*            %-----------------------------------------% */
 
-	dlascl_("General", &i__, &i__, rnorm, &c_b25, n, &c__1, &v[j * v_dim1 
+	dlascl_("General", &i__, &i__, rnorm, &d_one, n, &c__1, &v[j * v_dim1 
 		+ 1], n, &infol);
-	dlascl_("General", &i__, &i__, rnorm, &c_b25, n, &c__1, &workd[ipj], 
+	dlascl_("General", &i__, &i__, rnorm, &d_one, n, &c__1, &workd[ipj], 
 		n, &infol);
     }
 
@@ -647,7 +640,7 @@ L60:
 /*        | WORKD(IPJ:IPJ+N-1) contains B*OP*v_{j}.  | */
 /*        %------------------------------------------% */
 
-    dgemv_("T", n, &j, &c_b25, &v[v_offset], ldv, &workd[ipj], &c__1, &c_b47, 
+    dgemv_("T", n, &j, &d_one, &v[v_offset], ldv, &workd[ipj], &c__1, &d_zero, 
 	    &h__[j * h_dim1 + 1], &c__1);
 
 /*        %--------------------------------------% */
@@ -655,8 +648,8 @@ L60:
 /*        | RESID contains OP*v_{j}. See STEP 3. | */
 /*        %--------------------------------------% */
 
-    dgemv_("N", n, &j, &c_b50, &v[v_offset], ldv, &h__[j * h_dim1 + 1], &c__1,
-	     &c_b25, &resid[1], &c__1);
+    dgemv_("N", n, &j, &d_m1, &v[v_offset], ldv, &h__[j * h_dim1 + 1], &c__1,
+	     &d_one, &resid[1], &c__1);
 
     if (j > 1) {
 	h__[j + (j - 1) * h_dim1] = betaj;
@@ -754,7 +747,7 @@ L80:
 /*        | WORKD(IRJ:IRJ+J-1) = v(:,1:J)'*WORKD(IPJ:IPJ+N-1). | */
 /*        %----------------------------------------------------% */
 
-    dgemv_("T", n, &j, &c_b25, &v[v_offset], ldv, &workd[ipj], &c__1, &c_b47, 
+    dgemv_("T", n, &j, &d_one, &v[v_offset], ldv, &workd[ipj], &c__1, &d_zero, 
 	    &workd[irj], &c__1);
 
 /*        %---------------------------------------------% */
@@ -764,9 +757,9 @@ L80:
 /*        | + v(:,1:J)*WORKD(IRJ:IRJ+J-1)*e'_j.         | */
 /*        %---------------------------------------------% */
 
-    dgemv_("N", n, &j, &c_b50, &v[v_offset], ldv, &workd[irj], &c__1, &c_b25, 
+    dgemv_("N", n, &j, &d_m1, &v[v_offset], ldv, &workd[irj], &c__1, &d_one, 
 	    &resid[1], &c__1);
-    daxpy_(&j, &c_b25, &workd[irj], &c__1, &h__[j * h_dim1 + 1], &c__1);
+    daxpy_(&j, &d_one, &workd[irj], &c__1, &h__[j * h_dim1 + 1], &c__1);
 
     orth2 = TRUE_;
     arscnd_(&t2);

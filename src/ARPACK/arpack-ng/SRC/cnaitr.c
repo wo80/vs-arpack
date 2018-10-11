@@ -2,14 +2,7 @@
 
 #include "arpack.h"
 
-/* Table of constant values */
 
-static complex c_b1 = {1.f,0.f};
-static complex c_b2 = {0.f,0.f};
-static integer c__1 = 1;
-static logical c_false = FALSE_;
-static real c_b27 = 1.f;
-static integer c__2 = 2;
 
 /* \BeginDoc */
 
@@ -546,9 +539,9 @@ L40:
 /*            | use LAPACK routine clascl               | */
 /*            %-----------------------------------------% */
 
-	clascl_("General", &i__, &i__, rnorm, &c_b27, n, &c__1, &v[j * v_dim1 
+	clascl_("General", &i__, &i__, rnorm, &s_one, n, &c__1, &v[j * v_dim1 
 		+ 1], n, &infol);
-	clascl_("General", &i__, &i__, rnorm, &c_b27, n, &c__1, &workd[ipj], 
+	clascl_("General", &i__, &i__, rnorm, &s_one, n, &c__1, &workd[ipj], 
 		n, &infol);
     }
 
@@ -654,7 +647,7 @@ L60:
 /*        | WORKD(IPJ:IPJ+N-1) contains B*OP*v_{j}.  | */
 /*        %------------------------------------------% */
 
-    cgemv_("C", n, &j, &c_b1, &v[v_offset], ldv, &workd[ipj], &c__1, &c_b2, &
+    cgemv_("C", n, &j, &c_one, &v[v_offset], ldv, &workd[ipj], &c__1, &c_zero, &
 	    h__[j * h_dim1 + 1], &c__1);
 
 /*        %--------------------------------------% */
@@ -664,7 +657,7 @@ L60:
 
     q__1.r = -1.f, q__1.i = -0.f;
     cgemv_("N", n, &j, &q__1, &v[v_offset], ldv, &h__[j * h_dim1 + 1], &c__1, 
-	    &c_b1, &resid[1], &c__1);
+	    &c_one, &resid[1], &c__1);
 
     if (j > 1) {
 	i__1 = j + (j - 1) * h_dim1;
@@ -768,7 +761,7 @@ L80:
 /*        | WORKD(IRJ:IRJ+J-1) = v(:,1:J)'*WORKD(IPJ:IPJ+N-1). | */
 /*        %----------------------------------------------------% */
 
-    cgemv_("C", n, &j, &c_b1, &v[v_offset], ldv, &workd[ipj], &c__1, &c_b2, &
+    cgemv_("C", n, &j, &c_one, &v[v_offset], ldv, &workd[ipj], &c__1, &c_zero, &
 	    workd[irj], &c__1);
 
 /*        %---------------------------------------------% */
@@ -779,9 +772,9 @@ L80:
 /*        %---------------------------------------------% */
 
     q__1.r = -1.f, q__1.i = -0.f;
-    cgemv_("N", n, &j, &q__1, &v[v_offset], ldv, &workd[irj], &c__1, &c_b1, &
+    cgemv_("N", n, &j, &q__1, &v[v_offset], ldv, &workd[irj], &c__1, &c_one, &
 	    resid[1], &c__1);
-    caxpy_(&j, &c_b1, &workd[irj], &c__1, &h__[j * h_dim1 + 1], &c__1);
+    caxpy_(&j, &c_one, &workd[irj], &c__1, &h__[j * h_dim1 + 1], &c__1);
 
     orth2 = TRUE_;
     arscnd_(&t2);

@@ -2,12 +2,7 @@
 
 #include "arpack.h"
 
-/* Table of constant values */
 
-static logical c_true = TRUE_;
-static integer c__1 = 1;
-static doublereal c_b23 = 1.;
-static doublereal c_b25 = 0.;
 
 /* ----------------------------------------------------------------------- */
 /* \BeginDoc */
@@ -320,7 +315,7 @@ static doublereal c_b25 = 0.;
 /* L10: */
     }
 
-    dgemv_("T", n, n, &c_b23, &q[q_offset], ldq, &bounds[1], &c__1, &c_b25, &
+    dgemv_("T", n, n, &d_one, &q[q_offset], ldq, &bounds[1], &c__1, &d_zero, &
 	    workl[1], &c__1);
 
     if (msglvl > 1) {

@@ -2,11 +2,7 @@
 
 #include "arpack.h"
 
-/* Table of constant values */
 
-static doublecomplex c_b1 = {1.,0.};
-static doublecomplex c_b2 = {0.,0.};
-static integer c__1 = 1;
 
 /* \BeginDoc */
 
@@ -318,7 +314,7 @@ static integer c__1 = 1;
 /*     | the rotations and reflections              | */
 /*     %--------------------------------------------% */
 
-    zlaset_("All", &kplusp, &kplusp, &c_b2, &c_b1, &q[q_offset], ldq);
+    zlaset_("All", &kplusp, &kplusp, &z_zero, &z_one, &q[q_offset], ldq);
 
 /*     %----------------------------------------------% */
 /*     | Quick return if there are no shifts to apply | */
@@ -634,8 +630,8 @@ L100:
 
     i__1 = *kev + 1 + *kev * h_dim1;
     if (h__[i__1].r > 0.) {
-	zgemv_("N", n, &kplusp, &c_b1, &v[v_offset], ldv, &q[(*kev + 1) * 
-		q_dim1 + 1], &c__1, &c_b2, &workd[*n + 1], &c__1);
+	zgemv_("N", n, &kplusp, &z_one, &v[v_offset], ldv, &q[(*kev + 1) * 
+		q_dim1 + 1], &c__1, &z_zero, &workd[*n + 1], &c__1);
     }
 
 /*     %----------------------------------------------------------% */
@@ -646,8 +642,8 @@ L100:
     i__1 = *kev;
     for (i__ = 1; i__ <= i__1; ++i__) {
 	i__2 = kplusp - i__ + 1;
-	zgemv_("N", n, &i__2, &c_b1, &v[v_offset], ldv, &q[(*kev - i__ + 1) * 
-		q_dim1 + 1], &c__1, &c_b2, &workd[1], &c__1);
+	zgemv_("N", n, &i__2, &z_one, &v[v_offset], ldv, &q[(*kev - i__ + 1) * 
+		q_dim1 + 1], &c__1, &z_zero, &workd[1], &c__1);
 	zcopy_(n, &workd[1], &c__1, &v[(kplusp - i__ + 1) * v_dim1 + 1], &
 		c__1);
 /* L140: */
