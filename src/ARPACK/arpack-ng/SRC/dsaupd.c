@@ -2,8 +2,6 @@
 
 #include "arpack.h"
 
-
-
 /**
  * \BeginDoc
  *
@@ -354,8 +352,9 @@
  *  SHARED     RESID(BLOCK), V(BLOCK,:), WORKD(BLOCK,:)
  *  REPLICATED WORKL(LWORKL)
  *
- * \EndDoc */
-/** \BeginLib
+ * \EndDoc
+ *
+ * \BeginLib
  *
  * \References:
  *  1. D.C. Sorensen, "Implicit Application of Polynomial Filters in
@@ -455,18 +454,7 @@
     static real t0, t1;
     static integer nb, ih, iq, np, iw, ldh, ldq, nev0, mode, ierr, iupd, next,
 	     ritz;
-    extern /* Subroutine */ int dvout_(integer *, integer *, doublereal *, 
-	    integer *, char *, ftnlen), ivout_(integer *, integer *, integer *
-	    , integer *, char *, ftnlen), dsaup2_(integer *, char *, integer *
-	    , char *, integer *, integer *, doublereal *, doublereal *, 
-	    integer *, integer *, integer *, integer *, doublereal *, integer 
-	    *, doublereal *, integer *, doublereal *, doublereal *, 
-	    doublereal *, integer *, doublereal *, integer *, doublereal *, 
-	    integer *);
-    extern doublereal dlamch_(char *);
-    extern /* Subroutine */ int arscnd_(real *);
     static integer bounds, ishift, msglvl, mxiter;
-    extern /* Subroutine */ int dstats_(void);
 
     /* Fortran I/O blocks */
     static cilist io___21 = { 0, 6, 0, fmt_1000, 0 };

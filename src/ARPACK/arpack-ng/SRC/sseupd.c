@@ -2,7 +2,6 @@
 
 #include "arpack.h"
 
-
 /**
  * \BeginDoc
  *
@@ -152,8 +151,9 @@
  *                 probably made an error in passing data from SSAUPD to
  *                 SSEUPD or that the data was modified before entering
  *                 SSEUPD.
- * \EndDoc */
-/** \BeginLib
+ * \EndDoc
+ *
+ * \BeginLib
  *
  * \References:
  *  1. D.C. Sorensen, "Implicit Application of Polynomial Filters in
@@ -239,37 +239,17 @@
     /* Local variables */
     integer j, k, ih, jj, iq, np, iw, ibd, ihb, ihd, ldh, ldq, irz, mode;
     real eps23;
-    extern /* Subroutine */ int sger_(integer *, integer *, real *, real *, 
-	    integer *, real *, integer *, real *, integer *);
     integer ierr;
     real temp;
     integer next;
     char type__[6];
     integer ritz;
     real temp1;
-    extern doublereal snrm2_(integer *, real *, integer *);
-    extern /* Subroutine */ int sscal_(integer *, real *, real *, integer *);
     logical reord;
     integer nconv;
     real rnorm;
-    extern /* Subroutine */ int scopy_(integer *, real *, integer *, real *, 
-	    integer *), ivout_(integer *, integer *, integer *, integer *, 
-	    char *, ftnlen), svout_(integer *, integer *, real *, integer *, 
-	    char *, ftnlen);
     real bnorm2;
-    extern /* Subroutine */ int sgeqr2_(integer *, integer *, real *, integer 
-	    *, real *, real *, integer *), sorm2r_(char *, char *, integer *, 
-	    integer *, integer *, real *, integer *, real *, real *, integer *
-	    , real *, integer *);
-    extern doublereal slamch_(char *);
     integer bounds, msglvl, ishift, numcnv;
-    extern /* Subroutine */ int slacpy_(char *, integer *, integer *, real *, 
-	    integer *, real *, integer *), ssesrt_(char *, logical *, 
-	    integer *, real *, integer *, real *, integer *), ssteqr_(
-	    char *, integer *, real *, real *, real *, integer *, real *, 
-	    integer *), ssortr_(char *, logical *, integer *, real *, 
-	    real *), ssgets_(integer *, char *, integer *, integer *, 
-	    real *, real *, real *);
     integer leftptr, rghtptr;
 
 

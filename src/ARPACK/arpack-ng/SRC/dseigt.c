@@ -2,8 +2,6 @@
 
 #include "arpack.h"
 
-
-
 /**
  * \BeginDoc
  *
@@ -53,9 +51,7 @@
  *          Error exit flag from dstqrb.
  *
  * \EndDoc
- */
-
-/**
+ *
  * \BeginLib
  *
  * \Local variables:
@@ -101,12 +97,7 @@
     /* Local variables */
     integer k;
     static real t0, t1;
-    extern /* Subroutine */ int dcopy_(integer *, doublereal *, integer *, 
-	    doublereal *, integer *), dvout_(integer *, integer *, doublereal 
-	    *, integer *, char *, ftnlen), arscnd_(real *);
     integer msglvl;
-    extern /* Subroutine */ int dstqrb_(integer *, doublereal *, doublereal *,
-	     doublereal *, doublereal *, integer *);
 
 
 /*     %----------------------------------------------------% */

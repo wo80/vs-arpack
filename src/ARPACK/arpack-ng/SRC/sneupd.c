@@ -2,7 +2,6 @@
 
 #include "arpack.h"
 
-
 /**
  * \BeginDoc
  *
@@ -217,8 +216,9 @@
  *                 probably made an error in passing data from DNAUPD to
  *                 DNEUPD or that the data was modified before entering
  *                 DNEUPD
- * \EndDoc */
-/** \BeginLib
+ * \EndDoc
+ *
+ * \BeginLib
  *
  * \References:
  *  1. D.C. Sorensen, "Implicit Application of Polynomial Filters in
@@ -329,55 +329,21 @@
     real sep;
     integer irr, wri, wrr, mode;
     real eps23;
-    extern /* Subroutine */ int sger_(integer *, integer *, real *, real *, 
-	    integer *, real *, integer *, real *, integer *);
     integer ierr;
     real temp;
     integer iwev;
     char type__[6];
     real temp1;
-    extern doublereal snrm2_(integer *, real *, integer *);
     integer ihbds, iconj;
-    extern /* Subroutine */ int sscal_(integer *, real *, real *, integer *);
     real conds;
     logical reord;
-    extern /* Subroutine */ int sgemv_(char *, integer *, integer *, real *, 
-	    real *, integer *, real *, integer *, real *, real *, integer *);
     integer nconv, iwork[1];
     real rnorm;
-    extern /* Subroutine */ int scopy_(integer *, real *, integer *, real *, 
-	    integer *);
     integer ritzi;
-    extern /* Subroutine */ int strmm_(char *, char *, char *, char *, 
-	    integer *, integer *, real *, real *, integer *, real *, integer *),
-	    ivout_(integer *, integer *, 
-	    integer *, integer *, char *, ftnlen), smout_(integer *, integer *
-	    , integer *, real *, integer *, integer *, char *, ftnlen);
     integer ritzr;
-    extern /* Subroutine */ int svout_(integer *, integer *, real *, integer *
-	    , char *, ftnlen), sgeqr2_(integer *, integer *, real *, integer *
-	    , real *, real *, integer *);
     integer nconv2;
-    extern doublereal slapy2_(real *, real *);
-    extern /* Subroutine */ int sorm2r_(char *, char *, integer *, integer *, 
-	    integer *, real *, integer *, real *, real *, integer *, real *, 
-	    integer *);
     integer iheigi, iheigr, bounds, invsub, iuptri, msglvl, outncv, ishift, 
 	    numcnv;
-    extern /* Subroutine */ int slacpy_(char *, integer *, integer *, real *, 
-	    integer *, real *, integer *), slahqr_(logical *, logical 
-	    *, integer *, integer *, integer *, real *, integer *, real *, 
-	    real *, integer *, integer *, real *, integer *, integer *), 
-	    slaset_(char *, integer *, integer *, real *, real *, real *, 
-	    integer *), strevc_(char *, char *, logical *, integer *, 
-	    real *, integer *, real *, integer *, real *, integer *, integer *
-	    , integer *, real *, integer *), strsen_(char *, 
-	    char *, logical *, integer *, real *, integer *, real *, integer *
-	    , real *, real *, integer *, real *, real *, real *, integer *, 
-	    integer *, integer *, integer *);
-    extern doublereal slamch_(char *);
-    extern /* Subroutine */ int sngets_(integer *, char *, integer *, integer 
-	    *, real *, real *, real *, real *, real *);
 
 
 /*     %----------------------------------------------------% */

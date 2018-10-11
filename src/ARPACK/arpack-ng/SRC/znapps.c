@@ -2,7 +2,6 @@
 
 #include "arpack.h"
 
-
 /**
  * \BeginDoc
  *
@@ -83,9 +82,7 @@
  *          orthogonal matrix Q.
  *
  * \EndDoc
- */
-
-/**
+ *
  * \BeginLib
  *
  * \Local variables:
@@ -169,31 +166,8 @@
     integer iend;
     static doublereal unfl, ovfl;
     doublecomplex sigma;
-    extern /* Subroutine */ int zscal_(integer *, doublecomplex *, 
-	    doublecomplex *, integer *), zgemv_(char *, integer *, integer *, 
-	    doublecomplex *, doublecomplex *, integer *, doublecomplex *, 
-	    integer *, doublecomplex *, doublecomplex *, integer *), 
-	    zcopy_(integer *, doublecomplex *, integer *, doublecomplex *, 
-	    integer *), ivout_(integer *, integer *, integer *, integer *, 
-	    char *, ftnlen), zaxpy_(integer *, doublecomplex *, doublecomplex 
-	    *, integer *, doublecomplex *, integer *), zmout_(integer *, 
-	    integer *, integer *, doublecomplex *, integer *, integer *, char 
-	    *, ftnlen), zvout_(integer *, integer *, doublecomplex *, integer 
-	    *, char *, ftnlen);
-    extern doublereal dlapy2_(doublereal *, doublereal *);
-    extern /* Subroutine */ int dlabad_(doublereal *, doublereal *);
-    extern doublereal dlamch_(char *);
-    extern /* Subroutine */ int arscnd_(real *);
     integer istart, kplusp, msglvl;
     static doublereal smlnum;
-    extern /* Subroutine */ int zlacpy_(char *, integer *, integer *, 
-	    doublecomplex *, integer *, doublecomplex *, integer *), 
-	    zlartg_(doublecomplex *, doublecomplex *, doublereal *, 
-	    doublecomplex *, doublecomplex *), zlaset_(char *, integer *, 
-	    integer *, doublecomplex *, doublecomplex *, doublecomplex *, 
-	    integer *);
-    extern doublereal zlanhs_(char *, integer *, doublecomplex *, integer *, 
-	    doublecomplex *);
 
 
 /*     %----------------------------------------------------% */

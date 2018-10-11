@@ -2,7 +2,6 @@
 
 #include "arpack.h"
 
-
 /**
  * \BeginDoc
  *
@@ -118,9 +117,7 @@
  *          > 0: Size of the spanning invariant subspace of OP found.
  *
  * \EndDoc
- */
-
-/**
+ *
  * \BeginLib
  *
  * \Local variables:
@@ -242,40 +239,14 @@
     real temp1;
     static logical orth1, orth2, step3, step4;
     static real betaj;
-    extern /* Complex */ VOID cdotc_(complex *, integer *, complex *, integer 
-	    *, complex *, integer *);
-    extern /* Subroutine */ int cgemv_(char *, integer *, integer *, complex *
-	    , complex *, integer *, complex *, integer *, complex *, complex *
-	    , integer *);
     integer infol;
-    extern /* Subroutine */ int ccopy_(integer *, complex *, integer *, 
-	    complex *, integer *);
     complex cnorm;
-    extern /* Subroutine */ int caxpy_(integer *, complex *, complex *, 
-	    integer *, complex *, integer *);
     real rtemp[2];
-    extern /* Subroutine */ int cmout_(integer *, integer *, integer *, 
-	    complex *, integer *, integer *, char *, ftnlen);
     static real wnorm;
-    extern /* Subroutine */ int cvout_(integer *, integer *, complex *, 
-	    integer *, char *, ftnlen), ivout_(integer *, integer *, integer *
-	    , integer *, char *, ftnlen), svout_(integer *, integer *, real *,
-	     integer *, char *, ftnlen), cgetv0_(integer *, char *, integer *,
-	     logical *, integer *, integer *, complex *, integer *, complex *,
-	     real *, integer *, complex *, integer *);
-    extern doublereal scnrm2_(integer *, complex *, integer *), slapy2_(real *
-	    , real *);
     static real rnorm1;
-    extern /* Subroutine */ int slabad_(real *, real *), clascl_(char *, 
-	    integer *, integer *, real *, real *, integer *, integer *, 
-	    complex *, integer *, integer *), csscal_(integer *, real 
-	    *, complex *, integer *), arscnd_(real *);
-    extern doublereal slamch_(char *);
     static logical rstart;
     static integer msglvl;
     static real smlnum;
-    extern doublereal clanhs_(char *, integer *, complex *, integer *, 
-	    complex *);
 
 
 /*     %----------------------------------------------------% */

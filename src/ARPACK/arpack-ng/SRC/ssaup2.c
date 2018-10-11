@@ -2,8 +2,6 @@
 
 #include "arpack.h"
 
-
-
 /**
  * \BeginDoc
  *
@@ -119,9 +117,7 @@
  *                   Size that was built in returned in NP.
  *
  * \EndDoc
- */
-
-/**
+ *
  * \BeginLib
  *
  * \References:
@@ -210,39 +206,19 @@
     integer ierr;
     static integer iter;
     real temp;
-    extern doublereal sdot_(integer *, real *, integer *, real *, integer *);
     integer nevd2;
     static logical getv0;
     integer nevm2;
-    extern doublereal snrm2_(integer *, real *, integer *);
     static logical cnorm;
     static integer nconv;
     static logical initv;
     static real rnorm;
-    extern /* Subroutine */ int scopy_(integer *, real *, integer *, real *, 
-	    integer *), sswap_(integer *, real *, integer *, real *, integer *
-	    ), ivout_(integer *, integer *, integer *, integer *, char *, 
-	    ftnlen), svout_(integer *, integer *, real *, integer *, char *, 
-	    ftnlen), sgetv0_(integer *, char *, integer *, logical *, integer 
-	    *, integer *, real *, integer *, real *, real *, integer *, real *
-	    , integer *);
     integer nevbef;
-    extern doublereal slamch_(char *);
-    extern /* Subroutine */ int arscnd_(real *);
     static logical update;
     char wprime[2];
     static logical ushift;
     static integer kplusp, msglvl;
     integer nptemp;
-    extern /* Subroutine */ int ssaitr_(integer *, char *, integer *, integer 
-	    *, integer *, integer *, real *, real *, real *, integer *, real *
-	    , integer *, integer *, real *, integer *), ssconv_(
-	    integer *, real *, real *, real *, integer *), sseigt_(real *, 
-	    integer *, real *, integer *, real *, real *, real *, integer *), 
-	    ssgets_(integer *, char *, integer *, integer *, real *, real *, 
-	    real *), ssapps_(integer *, integer *, integer *, real *, 
-	    real *, integer *, real *, integer *, real *, real *, integer *, 
-	    real *), ssortr_(char *, logical *, integer *, real *, real *);
 
 
 /*     %----------------------------------------------------% */

@@ -2,7 +2,6 @@
 
 #include "arpack.h"
 
-
 /**
  * \BeginDoc
  *
@@ -60,9 +59,7 @@
  *          Error exit flag from clahqr or ctrevc.
  *
  * \EndDoc
- */
-
-/**
+ *
  * \BeginLib
  *
  * \Local variables:
@@ -116,23 +113,8 @@
     static real t0, t1;
     complex vl[1];
     real temp;
-    extern /* Subroutine */ int ccopy_(integer *, complex *, integer *, 
-	    complex *, integer *), cmout_(integer *, integer *, integer *, 
-	    complex *, integer *, integer *, char *, ftnlen), cvout_(integer *
-	    , integer *, complex *, integer *, char *, ftnlen);
-    extern doublereal scnrm2_(integer *, complex *, integer *);
-    extern /* Subroutine */ int csscal_(integer *, real *, complex *, integer 
-	    *), clahqr_(logical *, logical *, integer *, integer *, integer *,
-	     complex *, integer *, complex *, integer *, integer *, complex *,
-	     integer *, integer *), clacpy_(char *, integer *, integer *, 
-	    complex *, integer *, complex *, integer *);
     logical select[1];
     integer msglvl;
-    extern /* Subroutine */ int ctrevc_(char *, char *, logical *, integer *, 
-	    complex *, integer *, complex *, integer *, complex *, integer *, 
-	    integer *, integer *, complex *, real *, integer *), 
-	    arscnd_(real *), claset_(char *, integer *, integer *, 
-	    complex *, complex *, complex *, integer *);
 
 
 /*     %----------------------------------------------------% */

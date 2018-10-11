@@ -2,7 +2,6 @@
 
 #include "arpack.h"
 
-
 /**
  * \BeginDoc
  *
@@ -124,9 +123,7 @@
  *                   Size that was built in returned in NP.
  *
  * \EndDoc
- */
-
-/**
+ *
  * \BeginLib
  *
  * \Local variables:
@@ -204,41 +201,18 @@
     integer ierr;
     static integer iter;
     real temp;
-    extern doublereal sdot_(integer *, real *, integer *, real *, integer *);
     static logical getv0;
-    extern doublereal snrm2_(integer *, real *, integer *);
     static logical cnorm;
     static integer nconv;
     static logical initv;
     static real rnorm;
-    extern /* Subroutine */ int scopy_(integer *, real *, integer *, real *, 
-	    integer *), ivout_(integer *, integer *, integer *, integer *, 
-	    char *, ftnlen), smout_(integer *, integer *, integer *, real *, 
-	    integer *, integer *, char *, ftnlen), svout_(integer *, integer *
-	    , real *, integer *, char *, ftnlen), sgetv0_(integer *, char *, 
-	    integer *, logical *, integer *, integer *, real *, integer *, 
-	    real *, real *, integer *, real *, integer *);
-    extern doublereal slapy2_(real *, real *);
     static integer nevbef;
-    extern doublereal slamch_(char *);
-    extern /* Subroutine */ int arscnd_(real *);
     static logical update;
     char wprime[2];
     static logical ushift;
     static integer kplusp, msglvl;
     integer nptemp;
     static integer numcnv;
-    extern /* Subroutine */ int snaitr_(integer *, char *, integer *, integer 
-	    *, integer *, integer *, real *, real *, real *, integer *, real *
-	    , integer *, integer *, real *, integer *), snconv_(
-	    integer *, real *, real *, real *, real *, integer *), sneigh_(
-	    real *, integer *, real *, integer *, real *, real *, real *, 
-	    real *, integer *, real *, integer *), sngets_(integer *, char *, 
-	    integer *, integer *, real *, real *, real *, real *, real *),
-		snapps_(integer *, integer *, integer *, real *, real *,
-	    real *, integer *, real *, integer *, real *, real *, integer *, 
-	    real *, real *), ssortc_(char *, logical *, integer *, real *, 
-	    real *, real *);
 
 
 /*     %----------------------------------------------------% */

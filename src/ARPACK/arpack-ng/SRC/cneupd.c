@@ -2,7 +2,6 @@
 
 #include "arpack.h"
 
-
 /**
  * \BeginDoc
  *
@@ -186,8 +185,9 @@
  *                 probably made an error in passing data from CNAUPD to
  *                 CNEUPD or that the data was modified before entering
  *                 CNEUPD
- * \EndDoc */
-/** \BeginLib
+ * \EndDoc
+ *
+ * \BeginLib
  *
  * \References:
  *  1. D.C. Sorensen, "Implicit Application of Polynomial Filters in
@@ -283,49 +283,14 @@
     integer iwev;
     char type__[6];
     integer ritz, iheig;
-    extern /* Subroutine */ int cscal_(integer *, complex *, complex *, 
-	    integer *);
     integer ihbds;
-    extern /* Complex */ VOID cdotc_(complex *, integer *, complex *, integer 
-	    *, complex *, integer *);
-    extern /* Subroutine */ int cgeru_(integer *, integer *, complex *, 
-	    complex *, integer *, complex *, integer *, complex *, integer *);
     real conds;
     logical reord;
-    extern /* Subroutine */ int ccopy_(integer *, complex *, integer *, 
-	    complex *, integer *), ctrmm_(char *, char *, char *, char *, 
-	    integer *, integer *, complex *, complex *, integer *, complex *, 
-	    integer *);
     integer nconv;
     real rtemp;
-    extern /* Subroutine */ int cmout_(integer *, integer *, integer *, 
-	    complex *, integer *, integer *, char *, ftnlen);
     complex rnorm;
-    extern /* Subroutine */ int cvout_(integer *, integer *, complex *, 
-	    integer *, char *, ftnlen), ivout_(integer *, integer *, integer *
-	    , integer *, char *, ftnlen), cgeqr2_(integer *, integer *, 
-	    complex *, integer *, complex *, complex *, integer *);
-    extern doublereal scnrm2_(integer *, complex *, integer *);
     integer nconv2;
-    extern /* Subroutine */ int cunm2r_(char *, char *, integer *, integer *, 
-	    integer *, complex *, integer *, complex *, complex *, integer *, 
-	    complex *, integer *);
-    extern doublereal slapy2_(real *, real *), slamch_(char *);
-    extern /* Subroutine */ int clacpy_(char *, integer *, integer *, complex 
-	    *, integer *, complex *, integer *);
     integer bounds, invsub, iuptri, msglvl, outncv, numcnv, ishift;
-    extern /* Subroutine */ int clahqr_(logical *, logical *, integer *, 
-	    integer *, integer *, complex *, integer *, complex *, integer *, 
-	    integer *, complex *, integer *, integer *), cngets_(integer *, 
-	    char *, integer *, integer *, complex *, complex *), 
-	    claset_(char *, integer *, integer *, complex *, complex *, 
-	    complex *, integer *), ctrsen_(char *, char *, logical *, 
-	    integer *, complex *, integer *, complex *, integer *, complex *, 
-	    integer *, real *, real *, complex *, integer *, integer *), 
-	    ctrevc_(char *, char *, logical *, integer *, 
-	    complex *, integer *, complex *, integer *, complex *, integer *, 
-	    integer *, integer *, complex *, real *, integer *), 
-	    csscal_(integer *, real *, complex *, integer *);
 
 
 /*     %----------------------------------------------------% */

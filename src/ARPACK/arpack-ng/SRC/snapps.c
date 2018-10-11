@@ -2,8 +2,6 @@
 
 #include "arpack.h"
 
-
-
 /**
  * \BeginDoc
  *
@@ -88,9 +86,7 @@
  *          orthogonal matrix Q.
  *
  * \EndDoc
- */
-
-/**
+ *
  * \BeginLib
  *
  * \Local variables:
@@ -172,30 +168,10 @@
     integer iend;
     static real unfl, ovfl;
     logical cconj;
-    extern /* Subroutine */ int sscal_(integer *, real *, real *, integer *), 
-	    slarf_(char *, integer *, integer *, real *, integer *, real *, 
-	    real *, integer *, real *), sgemv_(char *, integer *, 
-	    integer *, real *, real *, integer *, real *, integer *, real *, 
-	    real *, integer *), scopy_(integer *, real *, integer *, 
-	    real *, integer *), saxpy_(integer *, real *, real *, integer *, 
-	    real *, integer *), ivout_(integer *, integer *, integer *, 
-	    integer *, char *, ftnlen), smout_(integer *, integer *, integer *
-	    , real *, integer *, integer *, char *, ftnlen), svout_(integer *,
-	     integer *, real *, integer *, char *, ftnlen);
-    extern doublereal slapy2_(real *, real *);
-    extern /* Subroutine */ int slabad_(real *, real *);
-    extern doublereal slamch_(char *);
     real sigmai;
-    extern /* Subroutine */ int arscnd_(real *);
     real sigmar;
     integer istart, kplusp, msglvl;
     static real smlnum;
-    extern /* Subroutine */ int slacpy_(char *, integer *, integer *, real *, 
-	    integer *, real *, integer *), slarfg_(integer *, real *, 
-	    real *, integer *, real *), slaset_(char *, integer *, integer *, 
-	    real *, real *, real *, integer *), slartg_(real *, real *
-	    , real *, real *, real *);
-    extern doublereal slanhs_(char *, integer *, real *, integer *, real *);
 
 
 /*     %----------------------------------------------------% */

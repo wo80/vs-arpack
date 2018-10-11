@@ -2,8 +2,6 @@
 
 #include "arpack.h"
 
-
-
 /**
  * \BeginDoc
  *
@@ -58,9 +56,7 @@
  *          Error exit flag from dlahqr or dtrevc.
  *
  * \EndDoc
- */
-
-/**
+ *
  * \BeginLib
  *
  * \Local variables:
@@ -115,28 +111,9 @@
     integer i__, j;
     static real t0, t1;
     doublereal vl[1], temp;
-    extern doublereal dnrm2_(integer *, doublereal *, integer *);
-    extern /* Subroutine */ int dscal_(integer *, doublereal *, doublereal *, 
-	    integer *);
     integer iconj;
-    extern /* Subroutine */ int dgemv_(char *, integer *, integer *, 
-	    doublereal *, doublereal *, integer *, doublereal *, integer *, 
-	    doublereal *, doublereal *, integer *), dmout_(integer *, 
-	    integer *, integer *, doublereal *, integer *, integer *, char *, 
-	    ftnlen), dvout_(integer *, integer *, doublereal *, integer *, 
-	    char *, ftnlen);
-    extern doublereal dlapy2_(doublereal *, doublereal *);
-    extern /* Subroutine */ int arscnd_(real *), dlahqr_(logical *, logical *,
-	     integer *, integer *, integer *, doublereal *, integer *, 
-	    doublereal *, doublereal *, integer *, integer *, doublereal *, 
-	    integer *, integer *);
     logical select[1];
     integer msglvl;
-    extern /* Subroutine */ int dlacpy_(char *, integer *, integer *, 
-	    doublereal *, integer *, doublereal *, integer *), 
-	    dtrevc_(char *, char *, logical *, integer *, doublereal *, 
-	    integer *, doublereal *, integer *, doublereal *, integer *, 
-	    integer *, integer *, doublereal *, integer *);
 
 
 /*     %----------------------------------------------------% */

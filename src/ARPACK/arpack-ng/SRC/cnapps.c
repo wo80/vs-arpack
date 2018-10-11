@@ -2,7 +2,6 @@
 
 #include "arpack.h"
 
-
 /**
  * \BeginDoc
  *
@@ -83,9 +82,7 @@
  *          orthogonal matrix Q.
  *
  * \EndDoc
- */
-
-/**
+ *
  * \BeginLib
  *
  * \Local variables:
@@ -167,30 +164,9 @@
     real tst1;
     integer iend;
     static real unfl, ovfl;
-    extern /* Subroutine */ int cscal_(integer *, complex *, complex *, 
-	    integer *);
     complex sigma;
-    extern /* Subroutine */ int cgemv_(char *, integer *, integer *, complex *
-	    , complex *, integer *, complex *, integer *, complex *, complex *
-	    , integer *), ccopy_(integer *, complex *, integer *, 
-	    complex *, integer *), caxpy_(integer *, complex *, complex *, 
-	    integer *, complex *, integer *), cmout_(integer *, integer *, 
-	    integer *, complex *, integer *, integer *, char *, ftnlen), 
-	    cvout_(integer *, integer *, complex *, integer *, char *, ftnlen)
-	    , ivout_(integer *, integer *, integer *, integer *, char *, 
-	    ftnlen);
-    extern doublereal slapy2_(real *, real *);
-    extern /* Subroutine */ int slabad_(real *, real *);
-    extern doublereal clanhs_(char *, integer *, complex *, integer *, 
-	    complex *);
-    extern /* Subroutine */ int arscnd_(real *), clacpy_(char *, integer *, 
-	    integer *, complex *, integer *, complex *, integer *);
     integer istart, kplusp, msglvl;
     static real smlnum;
-    extern /* Subroutine */ int clartg_(complex *, complex *, real *, complex 
-	    *, complex *), claset_(char *, integer *, integer *, complex *, 
-	    complex *, complex *, integer *);
-    extern doublereal slamch_(char *);
 
 
 /*     %----------------------------------------------------% */

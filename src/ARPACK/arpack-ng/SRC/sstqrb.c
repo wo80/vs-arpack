@@ -2,8 +2,6 @@
 
 #include "arpack.h"
 
-
-
 /**
  * \BeginDoc
  *
@@ -57,8 +55,9 @@
  *  1. None.
  *
  * -----------------------------------------------------------------------
- * \EndDoc */
-/** \BeginLib
+ * \EndDoc
+ *
+ * \BeginLib
  *
  * \Local variables:
  *     xxxxxx  real
@@ -127,27 +126,14 @@
     integer lsv;
     real tst, eps2;
     integer lend, jtot;
-    extern /* Subroutine */ int slae2_(real *, real *, real *, real *, real *)
-	    ;
     real anorm;
-    extern /* Subroutine */ int slasr_(char *, char *, char *, integer *, 
-	    integer *, real *, real *, real *, integer *);
     integer lendm1, lendp1;
-    extern /* Subroutine */ int slaev2_(real *, real *, real *, real *, real *
-	    , real *, real *);
-    extern doublereal slapy2_(real *, real *);
     integer iscale;
-    extern doublereal slamch_(char *);
     real safmin, safmax;
-    extern /* Subroutine */ int slascl_(char *, integer *, integer *, real *, 
-	    real *, integer *, integer *, real *, integer *, integer *);
     integer lendsv;
-    extern /* Subroutine */ int slartg_(real *, real *, real *, real *, real *);
     real ssfmin;
     integer nmaxit, icompz;
     real ssfmax;
-    extern doublereal slanst_(char *, integer *, real *, real *);
-    extern /* Subroutine */ int slasrt_(char *, integer *, real *, integer *);
 
 
 /*     %------------------% */

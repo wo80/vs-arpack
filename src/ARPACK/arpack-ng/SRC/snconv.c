@@ -2,8 +2,6 @@
 
 #include "arpack.h"
 
-
-
 /**
  * \BeginDoc
  *
@@ -34,9 +32,7 @@
  *          Number of "converged" Ritz values.
  *
  * \EndDoc
- */
-
-/**
+ *
  * \BeginLib
  *
  * \Local variables:
@@ -83,8 +79,6 @@
     integer i__;
     static real t0, t1;
     real eps23, temp;
-    extern doublereal slapy2_(real *, real *), slamch_(char *);
-    extern /* Subroutine */ int arscnd_(real *);
 
 
 /*     %----------------------------------------------------% */

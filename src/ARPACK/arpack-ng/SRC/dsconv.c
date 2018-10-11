@@ -2,8 +2,6 @@
 
 #include "arpack.h"
 
-
-
 /**
  * \BeginDoc
  *
@@ -34,9 +32,7 @@
  *          Number of "converged" Ritz values.
  *
  * \EndDoc
- */
-
-/**
+ *
  * \BeginLib
  *
  * \Routines called:
@@ -76,8 +72,6 @@
     integer i__;
     static real t0, t1;
     doublereal eps23, temp;
-    extern doublereal dlamch_(char *);
-    extern /* Subroutine */ int arscnd_(real *);
 
 
 /*     %----------------------------------------------------% */

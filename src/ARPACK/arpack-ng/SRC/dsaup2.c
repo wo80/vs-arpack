@@ -2,8 +2,6 @@
 
 #include "arpack.h"
 
-
-
 /**
  * \BeginDoc
  *
@@ -119,9 +117,7 @@
  *                   Size that was built in returned in NP.
  *
  * \EndDoc
- */
-
-/**
+ *
  * \BeginLib
  *
  * \References:
@@ -205,48 +201,23 @@
     static real t0, t1, t2, t3;
     integer kp[3];
     static integer np0, nev0;
-    extern doublereal ddot_(integer *, doublereal *, integer *, doublereal *, 
-	    integer *);
     static doublereal eps23;
     integer ierr;
     static integer iter;
     doublereal temp;
     integer nevd2;
-    extern doublereal dnrm2_(integer *, doublereal *, integer *);
     static logical getv0;
     integer nevm2;
     static logical cnorm;
-    extern /* Subroutine */ int dcopy_(integer *, doublereal *, integer *, 
-	    doublereal *, integer *), dswap_(integer *, doublereal *, integer 
-	    *, doublereal *, integer *);
     static integer nconv;
     static logical initv;
     static doublereal rnorm;
-    extern /* Subroutine */ int dvout_(integer *, integer *, doublereal *, 
-	    integer *, char *, ftnlen), ivout_(integer *, integer *, integer *
-	    , integer *, char *, ftnlen), dgetv0_(integer *, char *, integer *
-	    , logical *, integer *, integer *, doublereal *, integer *, 
-	    doublereal *, doublereal *, integer *, doublereal *, integer *);
-    extern doublereal dlamch_(char *);
     integer nevbef;
-    extern /* Subroutine */ int arscnd_(real *);
     static logical update;
     char wprime[2];
     static logical ushift;
     static integer kplusp, msglvl;
     integer nptemp;
-    extern /* Subroutine */ int dsaitr_(integer *, char *, integer *, integer 
-	    *, integer *, integer *, doublereal *, doublereal *, doublereal *,
-	     integer *, doublereal *, integer *, integer *, doublereal *, 
-	    integer *), dsconv_(integer *, doublereal *, doublereal *,
-	     doublereal *, integer *), dseigt_(doublereal *, integer *, 
-	    doublereal *, integer *, doublereal *, doublereal *, doublereal *,
-	     integer *), dsgets_(integer *, char *, integer *, integer *, 
-	    doublereal *, doublereal *, doublereal *), dsapps_(
-	    integer *, integer *, integer *, doublereal *, doublereal *, 
-	    integer *, doublereal *, integer *, doublereal *, doublereal *, 
-	    integer *, doublereal *), dsortr_(char *, logical *, integer *, 
-	    doublereal *, doublereal *);
 
 
 /*     %----------------------------------------------------% */

@@ -2,7 +2,6 @@
 
 #include "arpack.h"
 
-
 /**
  * \BeginDoc
  *
@@ -117,9 +116,7 @@
  *                   Size that was built in returned in NP.
  *
  * \EndDoc
- */
-
-/**
+ *
  * \BeginLib
  *
  * \Local variables:
@@ -201,44 +198,14 @@
     static integer iter;
     static logical getv0, cnorm;
     static integer nconv;
-    extern /* Double Complex */ VOID zdotc_(doublecomplex *, integer *, 
-	    doublecomplex *, integer *, doublecomplex *, integer *);
     doublereal rtemp;
     static logical initv;
     static doublereal rnorm;
-    extern /* Subroutine */ int dvout_(integer *, integer *, doublereal *, 
-	    integer *, char *, ftnlen), zcopy_(integer *, doublecomplex *, 
-	    integer *, doublecomplex *, integer *), ivout_(integer *, integer 
-	    *, integer *, integer *, char *, ftnlen), zmout_(integer *, 
-	    integer *, integer *, doublecomplex *, integer *, integer *, char 
-	    *, ftnlen), zvout_(integer *, integer *, doublecomplex *, integer 
-	    *, char *, ftnlen);
-    extern doublereal dlapy2_(doublereal *, doublereal *), dznrm2_(integer *, 
-	    doublecomplex *, integer *);
-    extern /* Subroutine */ int zgetv0_(integer *, char *, integer *, logical 
-	    *, integer *, integer *, doublecomplex *, integer *, 
-	    doublecomplex *, doublereal *, integer *, doublecomplex *, 
-	    integer *);
-    extern doublereal dlamch_(char *);
     static integer nevbef;
-    extern /* Subroutine */ int arscnd_(real *);
     static logical update, ushift;
     static integer kplusp, msglvl;
     integer nptemp;
     char wprime[2];
-    extern /* Subroutine */ int znaitr_(integer *, char *, integer *, integer 
-	    *, integer *, integer *, doublecomplex *, doublereal *, 
-	    doublecomplex *, integer *, doublecomplex *, integer *, integer *,
-	     doublecomplex *, integer *), zneigh_(doublereal *, 
-	    integer *, doublecomplex *, integer *, doublecomplex *, 
-	    doublecomplex *, doublecomplex *, integer *, doublecomplex *, 
-	    doublereal *, integer *), zngets_(integer *, char *, integer *, 
-	    integer *, doublecomplex *, doublecomplex *), znapps_(
-	    integer *, integer *, integer *, doublecomplex *, doublecomplex *,
-	     integer *, doublecomplex *, integer *, doublecomplex *, 
-	    doublecomplex *, integer *, doublecomplex *, doublecomplex *), 
-	    zsortc_(char *, logical *, integer *, doublecomplex *, 
-	    doublecomplex *);
     doublecomplex cmpnorm;
 
 

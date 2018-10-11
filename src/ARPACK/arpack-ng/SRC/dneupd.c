@@ -2,7 +2,6 @@
 
 #include "arpack.h"
 
-
 /**
  * \BeginDoc
  *
@@ -217,8 +216,9 @@
  *                 probably made an error in passing data from DNAUPD to
  *                 DNEUPD or that the data was modified before entering
  *                 DNEUPD
- * \EndDoc */
-/** \BeginLib
+ * \EndDoc
+ *
+ * \BeginLib
  *
  * \References:
  *  1. D.C. Sorensen, "Implicit Application of Polynomial Filters in
@@ -328,65 +328,24 @@
     integer ibd, ldh, ldq, iri;
     doublereal sep;
     integer irr, wri, wrr;
-    extern /* Subroutine */ int dger_(integer *, integer *, doublereal *, 
-	    doublereal *, integer *, doublereal *, integer *, doublereal *, 
-	    integer *);
     integer mode;
     doublereal eps23;
     integer ierr;
     doublereal temp;
     integer iwev;
     char type__[6];
-    extern doublereal dnrm2_(integer *, doublereal *, integer *);
     doublereal temp1;
-    extern /* Subroutine */ int dscal_(integer *, doublereal *, doublereal *, 
-	    integer *);
     integer ihbds, iconj;
-    extern /* Subroutine */ int dgemv_(char *, integer *, integer *, 
-	    doublereal *, doublereal *, integer *, doublereal *, integer *, 
-	    doublereal *, doublereal *, integer *);
     doublereal conds;
     logical reord;
-    extern /* Subroutine */ int dcopy_(integer *, doublereal *, integer *, 
-	    doublereal *, integer *);
     integer nconv;
-    extern /* Subroutine */ int dtrmm_(char *, char *, char *, char *, 
-	    integer *, integer *, doublereal *, doublereal *, integer *, 
-	    doublereal *, integer *), dmout_(
-	    integer *, integer *, integer *, doublereal *, integer *, integer 
-	    *, char *, ftnlen);
     integer iwork[1];
     doublereal rnorm;
     integer ritzi;
-    extern /* Subroutine */ int dvout_(integer *, integer *, doublereal *, 
-	    integer *, char *, ftnlen), ivout_(integer *, integer *, integer *
-	    , integer *, char *, ftnlen);
     integer ritzr;
-    extern /* Subroutine */ int dgeqr2_(integer *, integer *, doublereal *, 
-	    integer *, doublereal *, doublereal *, integer *);
-    extern doublereal dlapy2_(doublereal *, doublereal *);
     integer nconv2;
-    extern /* Subroutine */ int dorm2r_(char *, char *, integer *, integer *, 
-	    integer *, doublereal *, integer *, doublereal *, doublereal *, 
-	    integer *, doublereal *, integer *);
-    extern doublereal dlamch_(char *);
     integer iheigi, iheigr, bounds, invsub, iuptri, msglvl, outncv, ishift, 
 	    numcnv;
-    extern /* Subroutine */ int dlacpy_(char *, integer *, integer *, 
-	    doublereal *, integer *, doublereal *, integer *), 
-	    dlahqr_(logical *, logical *, integer *, integer *, integer *, 
-	    doublereal *, integer *, doublereal *, doublereal *, integer *, 
-	    integer *, doublereal *, integer *, integer *), dlaset_(char *, 
-	    integer *, integer *, doublereal *, doublereal *, doublereal *, 
-	    integer *), dtrevc_(char *, char *, logical *, integer *, 
-	    doublereal *, integer *, doublereal *, integer *, doublereal *, 
-	    integer *, integer *, integer *, doublereal *, integer *), 
-	    dtrsen_(char *, char *, logical *, integer *, doublereal 
-	    *, integer *, doublereal *, integer *, doublereal *, doublereal *,
-	     integer *, doublereal *, doublereal *, doublereal *, integer *, 
-	    integer *, integer *, integer *), dngets_(integer 
-	    *, char *, integer *, integer *, doublereal *, doublereal *, 
-	    doublereal *, doublereal *, doublereal *);
 
 
 /*     %----------------------------------------------------% */

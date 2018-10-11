@@ -2,8 +2,6 @@
 
 #include "arpack.h"
 
-
-
 /**
  * \BeginDoc
  *
@@ -43,9 +41,7 @@
  *          Leading dimension of A.
  *
  * \EndDoc
- */
-
-/**
+ *
  * \BeginLib
  *
  * \Routines
@@ -72,7 +68,7 @@
 
 
 /* Subroutine */ int ssesrt_(char *which, logical *apply, integer *n, real *x,
-	 integer *na, real *a, integer *lda, ftnlen which_len)
+	 integer *na, real *a, integer *lda)
 {
     /* System generated locals */
     integer a_dim1, a_offset, i__1;
@@ -84,8 +80,6 @@
     /* Local variables */
     integer i__, j, igap;
     real temp;
-    extern /* Subroutine */ int sswap_(integer *, real *, integer *, real *, 
-	    integer *);
 
 
 /*     %------------------% */

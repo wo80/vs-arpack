@@ -2,8 +2,6 @@
 
 #include "arpack.h"
 
-
-
 /**
  * \BeginDoc
  *
@@ -60,9 +58,7 @@
  *          BOUNDS. If ISHIFT = 0, SHIFTS is not modified on exit.
  *
  * \EndDoc
- */
-
-/**
+ *
  * \BeginLib
  *
  * \Local variables:
@@ -108,14 +104,7 @@
     /* Local variables */
     static real t0, t1;
     integer kevd2;
-    extern /* Subroutine */ int dswap_(integer *, doublereal *, integer *, 
-	    doublereal *, integer *), dcopy_(integer *, doublereal *, integer 
-	    *, doublereal *, integer *), dvout_(integer *, integer *, 
-	    doublereal *, integer *, char *, ftnlen), ivout_(integer *, 
-	    integer *, integer *, integer *, char *, ftnlen), arscnd_(real *);
     integer msglvl;
-    extern /* Subroutine */ int dsortr_(char *, logical *, integer *, 
-	    doublereal *, doublereal *);
 
 
 /*     %----------------------------------------------------% */

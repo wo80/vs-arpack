@@ -2,8 +2,6 @@
 
 #include "arpack.h"
 
-
-
 /**
  * \BeginDoc
  *
@@ -119,9 +117,7 @@
  *          > 0: Size of the spanning invariant subspace of OP found.
  *
  * \EndDoc
- */
-
-/**
+ *
  * \BeginLib
  *
  * \Local variables:
@@ -236,41 +232,16 @@
     static integer ipj, irj, ivj;
     static doublereal ulp;
     doublereal tst1;
-    extern doublereal ddot_(integer *, doublereal *, integer *, doublereal *, 
-	    integer *);
     static integer ierr, iter;
     static doublereal unfl, ovfl;
     static integer itry;
-    extern doublereal dnrm2_(integer *, doublereal *, integer *);
     doublereal temp1;
     static logical orth1, orth2, step3, step4;
     static doublereal betaj;
-    extern /* Subroutine */ int dscal_(integer *, doublereal *, doublereal *, 
-	    integer *), dgemv_(char *, integer *, integer *, doublereal *, 
-	    doublereal *, integer *, doublereal *, integer *, doublereal *, 
-	    doublereal *, integer *);
     integer infol;
-    extern /* Subroutine */ int dcopy_(integer *, doublereal *, integer *, 
-	    doublereal *, integer *), daxpy_(integer *, doublereal *, 
-	    doublereal *, integer *, doublereal *, integer *), dmout_(integer 
-	    *, integer *, integer *, doublereal *, integer *, integer *, char 
-	    *, ftnlen);
     doublereal xtemp[2];
-    extern /* Subroutine */ int dvout_(integer *, integer *, doublereal *, 
-	    integer *, char *, ftnlen);
     static doublereal wnorm;
-    extern /* Subroutine */ int ivout_(integer *, integer *, integer *, 
-	    integer *, char *, ftnlen), dgetv0_(integer *, char *, integer *, 
-	    logical *, integer *, integer *, doublereal *, integer *, 
-	    doublereal *, doublereal *, integer *, doublereal *, integer *),
-		dlabad_(doublereal *, doublereal *);
     static doublereal rnorm1;
-    extern doublereal dlamch_(char *);
-    extern /* Subroutine */ int dlascl_(char *, integer *, integer *, 
-	    doublereal *, doublereal *, integer *, integer *, doublereal *, 
-	    integer *, integer *), arscnd_(real *);
-    extern doublereal dlanhs_(char *, integer *, doublereal *, integer *, 
-	    doublereal *);
     static logical rstart;
     static integer msglvl;
     static doublereal smlnum;

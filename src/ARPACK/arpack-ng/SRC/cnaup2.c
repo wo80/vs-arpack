@@ -2,7 +2,6 @@
 
 #include "arpack.h"
 
-
 /**
  * \BeginDoc
  *
@@ -117,9 +116,7 @@
  *                   Size that was built in returned in NP.
  *
  * \EndDoc
- */
-
-/**
+ *
  * \BeginLib
  *
  * \Local variables:
@@ -200,43 +197,16 @@
     integer ierr;
     static integer iter;
     static logical getv0;
-    extern /* Complex */ VOID cdotc_(complex *, integer *, complex *, integer 
-	    *, complex *, integer *);
-    extern /* Subroutine */ int ccopy_(integer *, complex *, integer *, 
-	    complex *, integer *);
     static logical cnorm;
     static integer nconv;
     real rtemp;
-    extern /* Subroutine */ int cmout_(integer *, integer *, integer *, 
-	    complex *, integer *, integer *, char *, ftnlen);
     static logical initv;
     static real rnorm;
-    extern /* Subroutine */ int cvout_(integer *, integer *, complex *, 
-	    integer *, char *, ftnlen), ivout_(integer *, integer *, integer *
-	    , integer *, char *, ftnlen), svout_(integer *, integer *, real *,
-	     integer *, char *, ftnlen), cgetv0_(integer *, char *, integer *,
-	     logical *, integer *, integer *, complex *, integer *, complex *,
-	     real *, integer *, complex *, integer *);
-    extern doublereal scnrm2_(integer *, complex *, integer *), slapy2_(real *
-	    , real *);
-    extern /* Subroutine */ int cneigh_(real *, integer *, complex *, integer 
-	    *, complex *, complex *, complex *, integer *, complex *, real *, 
-	    integer *);
     static integer nevbef;
-    extern doublereal slamch_(char *);
-    extern /* Subroutine */ int arscnd_(real *);
     static logical update, ushift;
     static integer kplusp, msglvl;
     integer nptemp;
     char wprime[2];
-    extern /* Subroutine */ int cnaitr_(integer *, char *, integer *, integer 
-	    *, integer *, integer *, complex *, real *, complex *, integer *, 
-	    complex *, integer *, integer *, complex *, integer *), 
-	    cngets_(integer *, char *, integer *, integer *, complex *, 
-	    complex *), cnapps_(integer *, integer *, integer *, 
-	    complex *, complex *, integer *, complex *, integer *, complex *, 
-	    complex *, integer *, complex *, complex *), csortc_(char *, 
-	    logical *, integer *, complex *, complex *);
     complex cmpnorm;
 
 

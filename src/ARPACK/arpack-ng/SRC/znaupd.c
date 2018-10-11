@@ -2,7 +2,6 @@
 
 #include "arpack.h"
 
-
 /**
  * \BeginDoc
  *
@@ -339,8 +338,9 @@
  *     include   'ex-nonsym.doc'
  *
  * -----------------------------------------------------------------------
- * \EndDoc */
-/** \BeginLib
+ * \EndDoc
+ *
+ * \BeginLib
  *
  * \Local variables:
  *     xxxxxx  Complex*16
@@ -429,19 +429,7 @@
     static integer nb, ih, iq, np, iw, ldh, ldq, nev0, mode;
     integer ierr;
     static integer iupd, next, ritz;
-    extern /* Subroutine */ int ivout_(integer *, integer *, integer *, 
-	    integer *, char *, ftnlen), zvout_(integer *, integer *, 
-	    doublecomplex *, integer *, char *, ftnlen), znaup2_(integer *, 
-	    char *, integer *, char *, integer *, integer *, doublereal *, 
-	    doublecomplex *, integer *, integer *, integer *, integer *, 
-	    doublecomplex *, integer *, doublecomplex *, integer *, 
-	    doublecomplex *, doublecomplex *, doublecomplex *, integer *, 
-	    doublecomplex *, integer *, doublecomplex *, doublereal *, 
-	    integer *);
-    extern doublereal dlamch_(char *);
-    extern /* Subroutine */ int arscnd_(real *);
     static integer bounds, ishift, msglvl, mxiter;
-    extern /* Subroutine */ int zstatn_(void);
 
     /* Fortran I/O blocks */
     static cilist io___21 = { 0, 6, 0, fmt_1000, 0 };

@@ -36,9 +36,7 @@
  *          Only referenced if APPLY = .TRUE.
  *
  * \EndDoc
- */
-
-/**
+ *
  * \BeginLib
  *
  * \Author

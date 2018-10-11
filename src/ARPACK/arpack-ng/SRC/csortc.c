@@ -37,9 +37,7 @@
  *  Y       Complex array of length N.  (INPUT/OUTPUT)
  *
  * \EndDoc
- */
-
-/**
+ *
  * \BeginLib
  *
  * \Routines called:
@@ -77,7 +75,6 @@
     integer i__, j, igap;
     complex temp;
     real temp1, temp2;
-    extern doublereal slapy2_(real *, real *);
 
 
 /*     %------------------% */

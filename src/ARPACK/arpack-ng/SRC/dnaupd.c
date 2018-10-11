@@ -2,7 +2,6 @@
 
 #include "arpack.h"
 
-
 /**
  * \BeginDoc
  *
@@ -364,8 +363,9 @@
  *     include   'ex-nonsym.doc'
  *
  * -----------------------------------------------------------------------
- * \EndDoc */
-/** \BeginLib
+ * \EndDoc
+ *
+ * \BeginLib
  *
  * \Local variables:
  *     xxxxxx  real
@@ -455,20 +455,8 @@
     static integer nb, ih, iq, np, iw, ldh, ldq, nev0, mode;
     integer ierr;
     static integer iupd, next, ritzi;
-    extern /* Subroutine */ int dvout_(integer *, integer *, doublereal *, 
-	    integer *, char *, ftnlen), ivout_(integer *, integer *, integer *
-	    , integer *, char *, ftnlen);
     static integer ritzr;
-    extern /* Subroutine */ int dnaup2_(integer *, char *, integer *, char *, 
-	    integer *, integer *, doublereal *, doublereal *, integer *, 
-	    integer *, integer *, integer *, doublereal *, integer *, 
-	    doublereal *, integer *, doublereal *, doublereal *, doublereal *,
-	     doublereal *, integer *, doublereal *, integer *, doublereal *, 
-	    integer *);
-    extern doublereal dlamch_(char *);
-    extern /* Subroutine */ int arscnd_(real *);
     static integer bounds, ishift, msglvl, mxiter;
-    extern /* Subroutine */ int dstatn_(void);
 
     /* Fortran I/O blocks */
     static cilist io___22 = { 0, 6, 0, fmt_1000, 0 };

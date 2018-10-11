@@ -2,8 +2,6 @@
 
 #include "arpack.h"
 
-
-
 /**
  * \BeginDoc
  *
@@ -79,9 +77,7 @@
  *          orthogonal matrix Q.
  *
  * \EndDoc
- */
-
-/**
+ *
  * \BeginLib
  *
  * \Local variables:
@@ -156,23 +152,8 @@
     integer jj;
     doublereal big;
     integer iend, itop;
-    extern /* Subroutine */ int dscal_(integer *, doublereal *, doublereal *, 
-	    integer *), dgemv_(char *, integer *, integer *, doublereal *, 
-	    doublereal *, integer *, doublereal *, integer *, doublereal *, 
-	    doublereal *, integer *), dcopy_(integer *, doublereal *, 
-	    integer *, doublereal *, integer *), daxpy_(integer *, doublereal 
-	    *, doublereal *, integer *, doublereal *, integer *), dvout_(
-	    integer *, integer *, doublereal *, integer *, char *, ftnlen), 
-	    ivout_(integer *, integer *, integer *, integer *, char *, ftnlen)
-	    ;
-    extern doublereal dlamch_(char *);
-    extern /* Subroutine */ int arscnd_(real *);
     static doublereal epsmch;
     integer istart, kplusp, msglvl;
-    extern /* Subroutine */ int dlartg_(doublereal *, doublereal *, 
-	    doublereal *, doublereal *, doublereal *), dlaset_(char *, 
-	    integer *, integer *, doublereal *, doublereal *, doublereal *, 
-	    integer *);
 
 
 /*     %----------------------------------------------------% */

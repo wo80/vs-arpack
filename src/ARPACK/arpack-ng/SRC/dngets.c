@@ -2,8 +2,6 @@
 
 #include "arpack.h"
 
-
-
 /**
  * \BeginDoc
  *
@@ -65,9 +63,7 @@
  *
  *
  * \EndDoc
- */
-
-/**
+ *
  * \BeginLib
  *
  * \Local variables:
@@ -110,12 +106,7 @@
 
     /* Local variables */
     static real t0, t1;
-    extern /* Subroutine */ int dvout_(integer *, integer *, doublereal *, 
-	    integer *, char *, ftnlen), ivout_(integer *, integer *, integer *
-	    , integer *, char *, ftnlen), arscnd_(real *);
     integer msglvl;
-    extern /* Subroutine */ int dsortc_(char *, logical *, integer *, 
-	    doublereal *, doublereal *, doublereal *);
 
 
 /*     %----------------------------------------------------% */

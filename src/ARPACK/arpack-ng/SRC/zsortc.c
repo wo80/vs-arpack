@@ -37,9 +37,7 @@
  *  Y       Complex*16 array of length N.  (INPUT/OUTPUT)
  *
  * \EndDoc
- */
-
-/**
+ *
  * \BeginLib
  *
  * \Routines called:
@@ -77,7 +75,6 @@
     integer i__, j, igap;
     doublecomplex temp;
     doublereal temp1, temp2;
-    extern doublereal dlapy2_(doublereal *, doublereal *);
 
 
 /*     %------------------% */

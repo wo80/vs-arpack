@@ -43,9 +43,7 @@
  *  Y       Double precision array of length N.  (INPUT/OUTPUT)
  *
  * \EndDoc
- */
-
-/**
+ *
  * \BeginLib
  *
  * \Author
@@ -80,7 +78,6 @@
     /* Local variables */
     integer i__, j, igap;
     doublereal temp, temp1, temp2;
-    extern doublereal dlapy2_(doublereal *, doublereal *);
 
 
 /*     %------------------% */

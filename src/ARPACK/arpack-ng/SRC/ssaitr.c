@@ -2,8 +2,6 @@
 
 #include "arpack.h"
 
-
-
 /**
  * \BeginDoc
  *
@@ -126,9 +124,7 @@
  *               less than K + NP.
  *
  * \EndDoc
- */
-
-/**
+ *
  * \BeginLib
  *
  * \Local variables:
@@ -228,32 +224,16 @@
     static real t0, t1, t2, t3, t4, t5;
     integer jj;
     static integer ipj, irj, ivj, ierr, iter;
-    extern doublereal sdot_(integer *, real *, integer *, real *, integer *);
     static integer itry;
     real temp1;
     static logical orth1, orth2, step3, step4;
-    extern doublereal snrm2_(integer *, real *, integer *);
-    extern /* Subroutine */ int sscal_(integer *, real *, real *, integer *);
     integer infol;
-    extern /* Subroutine */ int sgemv_(char *, integer *, integer *, real *, 
-	    real *, integer *, real *, integer *, real *, real *, integer *);
     real xtemp[2];
-    extern /* Subroutine */ int scopy_(integer *, real *, integer *, real *, 
-	    integer *);
     static real wnorm;
-    extern /* Subroutine */ int ivout_(integer *, integer *, integer *, 
-	    integer *, char *, ftnlen), svout_(integer *, integer *, real *, 
-	    integer *, char *, ftnlen), sgetv0_(integer *, char *, integer *, 
-	    logical *, integer *, integer *, real *, integer *, real *, real *
-	    , integer *, real *, integer *);
     static real rnorm1;
-    extern doublereal slamch_(char *);
-    extern /* Subroutine */ int arscnd_(real *);
     static real safmin;
     static logical rstart;
     static integer msglvl;
-    extern /* Subroutine */ int slascl_(char *, integer *, integer *, real *, 
-	    real *, integer *, integer *, real *, integer *, integer *);
 
 
 /*     %----------------------------------------------------% */

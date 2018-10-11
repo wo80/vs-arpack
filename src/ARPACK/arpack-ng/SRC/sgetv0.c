@@ -2,8 +2,6 @@
 
 #include "arpack.h"
 
-
-
 /**
  * \BeginDoc
  *
@@ -82,9 +80,7 @@
  *                in the range of the operator OP.
  *
  * \EndDoc
- */
-
-/**
+ *
  * \BeginLib
  *
  * \Local variables:
@@ -140,22 +136,12 @@
     static real t0, t1, t2, t3;
     integer jj;
     static integer iter;
-    extern doublereal sdot_(integer *, real *, integer *, real *, integer *);
     static logical orth;
-    extern doublereal snrm2_(integer *, real *, integer *);
     static integer iseed[4];
     integer idist;
-    extern /* Subroutine */ int sgemv_(char *, integer *, integer *, real *, 
-	    real *, integer *, real *, integer *, real *, real *, integer *);
     static logical first;
-    extern /* Subroutine */ int scopy_(integer *, real *, integer *, real *, 
-	    integer *), svout_(integer *, integer *, real *, integer *, char *
-	    , ftnlen);
     static real rnorm0;
-    extern /* Subroutine */ int arscnd_(real *);
     static integer msglvl;
-    extern /* Subroutine */ int slarnv_(integer *, integer *, integer *, real 
-	    *);
 
 
 /*     %----------------------------------------------------% */

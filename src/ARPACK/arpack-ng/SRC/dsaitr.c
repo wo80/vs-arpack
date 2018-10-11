@@ -2,8 +2,6 @@
 
 #include "arpack.h"
 
-
-
 /**
  * \BeginDoc
  *
@@ -126,9 +124,7 @@
  *               less than K + NP.
  *
  * \EndDoc
- */
-
-/**
+ *
  * \BeginLib
  *
  * \Local variables:
@@ -228,32 +224,13 @@
     static real t0, t1, t2, t3, t4, t5;
     integer jj;
     static integer ipj, irj, ivj;
-    extern doublereal ddot_(integer *, doublereal *, integer *, doublereal *, 
-	    integer *);
     static integer ierr, iter, itry;
-    extern doublereal dnrm2_(integer *, doublereal *, integer *);
     doublereal temp1;
     static logical orth1, orth2, step3, step4;
-    extern /* Subroutine */ int dscal_(integer *, doublereal *, doublereal *, 
-	    integer *), dgemv_(char *, integer *, integer *, doublereal *, 
-	    doublereal *, integer *, doublereal *, integer *, doublereal *, 
-	    doublereal *, integer *);
     integer infol;
-    extern /* Subroutine */ int dcopy_(integer *, doublereal *, integer *, 
-	    doublereal *, integer *);
     doublereal xtemp[2];
-    extern /* Subroutine */ int dvout_(integer *, integer *, doublereal *, 
-	    integer *, char *, ftnlen);
     static doublereal wnorm;
-    extern /* Subroutine */ int ivout_(integer *, integer *, integer *, 
-	    integer *, char *, ftnlen), dgetv0_(integer *, char *, integer *, 
-	    logical *, integer *, integer *, doublereal *, integer *, 
-	    doublereal *, doublereal *, integer *, doublereal *, integer *);
     static doublereal rnorm1;
-    extern doublereal dlamch_(char *);
-    extern /* Subroutine */ int dlascl_(char *, integer *, integer *, 
-	    doublereal *, doublereal *, integer *, integer *, doublereal *, 
-	    integer *, integer *), arscnd_(real *);
     static doublereal safmin;
     static logical rstart;
     static integer msglvl;

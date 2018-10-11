@@ -2,8 +2,6 @@
 
 #include "arpack.h"
 
-
-
 /**
  * \BeginDoc
  *
@@ -58,9 +56,7 @@
  *          Error exit flag from slahqr or strevc.
  *
  * \EndDoc
- */
-
-/**
+ *
  * \BeginLib
  *
  * \Local variables:
@@ -115,25 +111,9 @@
     integer i__, j;
     static real t0, t1;
     real vl[1], temp;
-    extern doublereal snrm2_(integer *, real *, integer *);
     integer iconj;
-    extern /* Subroutine */ int sscal_(integer *, real *, real *, integer *), 
-	    sgemv_(char *, integer *, integer *, real *, real *, integer *, 
-	    real *, integer *, real *, real *, integer *), smout_(
-	    integer *, integer *, integer *, real *, integer *, integer *, 
-	    char *, ftnlen), svout_(integer *, integer *, real *, integer *, 
-	    char *, ftnlen);
-    extern doublereal slapy2_(real *, real *);
-    extern /* Subroutine */ int arscnd_(real *);
     logical select[1];
     integer msglvl;
-    extern /* Subroutine */ int slacpy_(char *, integer *, integer *, real *, 
-	    integer *, real *, integer *), slahqr_(logical *, logical 
-	    *, integer *, integer *, integer *, real *, integer *, real *, 
-	    real *, integer *, integer *, real *, integer *, integer *), 
-	    strevc_(char *, char *, logical *, integer *, real *, integer *, 
-	    real *, integer *, real *, integer *, integer *, integer *, real *
-	    , integer *);
 
 
 /*     %----------------------------------------------------% */

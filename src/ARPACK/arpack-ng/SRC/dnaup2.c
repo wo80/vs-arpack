@@ -2,7 +2,6 @@
 
 #include "arpack.h"
 
-
 /**
  * \BeginDoc
  *
@@ -124,9 +123,7 @@
  *                   Size that was built in returned in NP.
  *
  * \EndDoc
- */
-
-/**
+ *
  * \BeginLib
  *
  * \Local variables:
@@ -200,49 +197,21 @@
     static real t0, t1, t2, t3;
     integer kp[4];
     static integer np0, nev0;
-    extern doublereal ddot_(integer *, doublereal *, integer *, doublereal *, 
-	    integer *);
     static doublereal eps23;
     integer ierr;
     static integer iter;
     doublereal temp;
-    extern doublereal dnrm2_(integer *, doublereal *, integer *);
     static logical getv0, cnorm;
-    extern /* Subroutine */ int dcopy_(integer *, doublereal *, integer *, 
-	    doublereal *, integer *);
     static integer nconv;
-    extern /* Subroutine */ int dmout_(integer *, integer *, integer *, 
-	    doublereal *, integer *, integer *, char *, ftnlen);
     static logical initv;
     static doublereal rnorm;
-    extern /* Subroutine */ int dvout_(integer *, integer *, doublereal *, 
-	    integer *, char *, ftnlen), ivout_(integer *, integer *, integer *
-	    , integer *, char *, ftnlen), dgetv0_(integer *, char *, integer *
-	    , logical *, integer *, integer *, doublereal *, integer *, 
-	    doublereal *, doublereal *, integer *, doublereal *, integer *);
-    extern doublereal dlapy2_(doublereal *, doublereal *), dlamch_(char *);
-    extern /* Subroutine */ int dneigh_(doublereal *, integer *, doublereal *,
-	     integer *, doublereal *, doublereal *, doublereal *, doublereal *
-	    , integer *, doublereal *, integer *);
     static integer nevbef;
-    extern /* Subroutine */ int arscnd_(real *);
     static logical update;
     char wprime[2];
     static logical ushift;
     static integer kplusp, msglvl;
     integer nptemp;
     static integer numcnv;
-    extern /* Subroutine */ int dnaitr_(integer *, char *, integer *, integer 
-	    *, integer *, integer *, doublereal *, doublereal *, doublereal *,
-	     integer *, doublereal *, integer *, integer *, doublereal *, 
-	    integer *), dnconv_(integer *, doublereal *, doublereal *,
-	     doublereal *, doublereal *, integer *), dngets_(integer *, char *
-	    , integer *, integer *, doublereal *, doublereal *, doublereal *, 
-	    doublereal *, doublereal *), dnapps_(integer *, integer *,
-	     integer *, doublereal *, doublereal *, doublereal *, integer *, 
-	    doublereal *, integer *, doublereal *, doublereal *, integer *, 
-	    doublereal *, doublereal *), dsortc_(char *, logical *, integer *,
-	     doublereal *, doublereal *, doublereal *);
 
 
 /*     %----------------------------------------------------% */

@@ -2,7 +2,6 @@
 
 #include "arpack.h"
 
-
 /**
  * \BeginDoc
  *
@@ -81,9 +80,7 @@
  *                in the range of the operator OP.
  *
  * \EndDoc
- */
-
-/**
+ *
  * \BeginLib
  *
  * \Local variables:
@@ -143,23 +140,9 @@
     static integer iseed[4];
     integer idist;
     doublecomplex cnorm;
-    extern /* Double Complex */ VOID zdotc_(doublecomplex *, integer *, 
-	    doublecomplex *, integer *, doublecomplex *, integer *);
     static logical first;
-    extern /* Subroutine */ int zgemv_(char *, integer *, integer *, 
-	    doublecomplex *, doublecomplex *, integer *, doublecomplex *, 
-	    integer *, doublecomplex *, doublecomplex *, integer *), 
-	    dvout_(integer *, integer *, doublereal *, integer *, char *, 
-	    ftnlen), zcopy_(integer *, doublecomplex *, integer *, 
-	    doublecomplex *, integer *), zvout_(integer *, integer *, 
-	    doublecomplex *, integer *, char *, ftnlen);
-    extern doublereal dlapy2_(doublereal *, doublereal *), dznrm2_(integer *, 
-	    doublecomplex *, integer *);
     static doublereal rnorm0;
-    extern /* Subroutine */ int arscnd_(real *);
     static integer msglvl;
-    extern /* Subroutine */ int zlarnv_(integer *, integer *, integer *, 
-	    doublecomplex *);
 
 
 /*     %----------------------------------------------------% */

@@ -2,8 +2,6 @@
 
 #include "arpack.h"
 
-
-
 /**
  * \BeginDoc
  *
@@ -88,9 +86,7 @@
  *          orthogonal matrix Q.
  *
  * \EndDoc
- */
-
-/**
+ *
  * \BeginLib
  *
  * \Local variables:
@@ -172,35 +168,11 @@
     doublereal tst1;
     integer iend;
     static doublereal unfl, ovfl;
-    extern /* Subroutine */ int dscal_(integer *, doublereal *, doublereal *, 
-	    integer *), dlarf_(char *, integer *, integer *, doublereal *, 
-	    integer *, doublereal *, doublereal *, integer *, doublereal *);
     logical cconj;
-    extern /* Subroutine */ int dgemv_(char *, integer *, integer *, 
-	    doublereal *, doublereal *, integer *, doublereal *, integer *, 
-	    doublereal *, doublereal *, integer *), dcopy_(integer *, 
-	    doublereal *, integer *, doublereal *, integer *), daxpy_(integer 
-	    *, doublereal *, doublereal *, integer *, doublereal *, integer *)
-	    , dmout_(integer *, integer *, integer *, doublereal *, integer *,
-	     integer *, char *, ftnlen), dvout_(integer *, integer *, 
-	    doublereal *, integer *, char *, ftnlen), ivout_(integer *, 
-	    integer *, integer *, integer *, char *, ftnlen);
-    extern doublereal dlapy2_(doublereal *, doublereal *);
-    extern /* Subroutine */ int dlabad_(doublereal *, doublereal *);
-    extern doublereal dlamch_(char *);
-    extern /* Subroutine */ int dlarfg_(integer *, doublereal *, doublereal *,
-	     integer *, doublereal *);
     doublereal sigmai;
-    extern /* Subroutine */ int arscnd_(real *);
     integer istart, kplusp, msglvl;
     doublereal sigmar;
     static doublereal smlnum;
-    extern /* Subroutine */ int dlaset_(char *, integer *, integer *, 
-	    doublereal *, doublereal *, doublereal *, integer *), 
-	    dlartg_(doublereal *, doublereal *, doublereal *, doublereal *, 
-	    doublereal *);
-    extern doublereal dlanhs_(char *, integer *, doublereal *, integer *, 
-	    doublereal *);
 
 
 /*     %----------------------------------------------------% */

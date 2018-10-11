@@ -2,7 +2,6 @@
 
 #include "arpack.h"
 
-
 /**
  * \BeginDoc
  *
@@ -186,8 +185,9 @@
  *                 probably made an error in passing data from ZNAUPD to
  *                 ZNEUPD or that the data was modified before entering
  *                 ZNEUPD
- * \EndDoc */
-/** \BeginLib
+ * \EndDoc
+ *
+ * \BeginLib
  *
  * \References:
  *  1. D.C. Sorensen, "Implicit Application of Polynomial Filters in
@@ -285,48 +285,11 @@
     integer ritz, iheig, ihbds;
     doublereal conds;
     logical reord;
-    extern /* Subroutine */ int zscal_(integer *, doublecomplex *, 
-	    doublecomplex *, integer *);
     integer nconv;
-    extern /* Double Complex */ VOID zdotc_(doublecomplex *, integer *, 
-	    doublecomplex *, integer *, doublecomplex *, integer *);
     doublereal rtemp;
     doublecomplex rnorm;
-    extern /* Subroutine */ int zgeru_(integer *, integer *, doublecomplex *, 
-	    doublecomplex *, integer *, doublecomplex *, integer *, 
-	    doublecomplex *, integer *), zcopy_(integer *, doublecomplex *, 
-	    integer *, doublecomplex *, integer *), ivout_(integer *, integer 
-	    *, integer *, integer *, char *, ftnlen), ztrmm_(char *, char *, 
-	    char *, char *, integer *, integer *, doublecomplex *, 
-	    doublecomplex *, integer *, doublecomplex *, integer *), 
-	    zmout_(integer *, integer *, integer *, 
-	    doublecomplex *, integer *, integer *, char *, ftnlen), zvout_(
-	    integer *, integer *, doublecomplex *, integer *, char *, ftnlen);
-    extern doublereal dlapy2_(doublereal *, doublereal *);
     integer nconv2;
-    extern /* Subroutine */ int zgeqr2_(integer *, integer *, doublecomplex *,
-	     integer *, doublecomplex *, doublecomplex *, integer *);
-    extern doublereal dznrm2_(integer *, doublecomplex *, integer *), dlamch_(char *);
-    extern /* Subroutine */ int zunm2r_(char *, char *, integer *, integer *, 
-	    integer *, doublecomplex *, integer *, doublecomplex *, 
-	    doublecomplex *, integer *, doublecomplex *, integer *);
     integer bounds, invsub, iuptri, msglvl, outncv, numcnv, ishift;
-    extern /* Subroutine */ int zlacpy_(char *, integer *, integer *, 
-	    doublecomplex *, integer *, doublecomplex *, integer *), 
-	    zlahqr_(logical *, logical *, integer *, integer *, integer *, 
-	    doublecomplex *, integer *, doublecomplex *, integer *, integer *,
-	     doublecomplex *, integer *, integer *), zngets_(integer *, char *
-	    , integer *, integer *, doublecomplex *, doublecomplex *),
-	     zlaset_(char *, integer *, integer *, doublecomplex *, 
-	    doublecomplex *, doublecomplex *, integer *), ztrsen_(
-	    char *, char *, logical *, integer *, doublecomplex *, integer *, 
-	    doublecomplex *, integer *, doublecomplex *, integer *, 
-	    doublereal *, doublereal *, doublecomplex *, integer *, integer *),
-	    ztrevc_(char *, char *, logical *, integer *, 
-	    doublecomplex *, integer *, doublecomplex *, integer *, 
-	    doublecomplex *, integer *, integer *, integer *, doublecomplex *,
-	     doublereal *, integer *), zdscal_(integer *, 
-	    doublereal *, doublecomplex *, integer *);
 
 
 /*     %----------------------------------------------------% */

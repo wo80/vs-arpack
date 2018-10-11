@@ -2,8 +2,6 @@
 
 #include "arpack.h"
 
-
-
 /**
  * \BeginDoc
  *
@@ -53,9 +51,7 @@
  *          Error exit flag from sstqrb.
  *
  * \EndDoc
- */
-
-/**
+ *
  * \BeginLib
  *
  * \Local variables:
@@ -100,12 +96,7 @@
     /* Local variables */
     integer k;
     static real t0, t1;
-    extern /* Subroutine */ int scopy_(integer *, real *, integer *, real *, 
-	    integer *), svout_(integer *, integer *, real *, integer *, char *
-	    , ftnlen), arscnd_(real *);
     integer msglvl;
-    extern /* Subroutine */ int sstqrb_(integer *, real *, real *, real *, 
-	    real *, integer *);
 
 
 /*     %----------------------------------------------------% */

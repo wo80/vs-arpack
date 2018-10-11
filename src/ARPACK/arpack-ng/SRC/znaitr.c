@@ -2,7 +2,6 @@
 
 #include "arpack.h"
 
-
 /**
  * \BeginDoc
  *
@@ -118,9 +117,7 @@
  *          > 0: Size of the spanning invariant subspace of OP found.
  *
  * \EndDoc
- */
-
-/**
+ *
  * \BeginLib
  *
  * \Local variables:
@@ -244,40 +241,12 @@
     static doublereal betaj;
     integer infol;
     doublecomplex cnorm;
-    extern /* Double Complex */ VOID zdotc_(doublecomplex *, integer *, 
-	    doublecomplex *, integer *, doublecomplex *, integer *);
     doublereal rtemp[2];
-    extern /* Subroutine */ int zgemv_(char *, integer *, integer *, 
-	    doublecomplex *, doublecomplex *, integer *, doublecomplex *, 
-	    integer *, doublecomplex *, doublecomplex *, integer *);
     static doublereal wnorm;
-    extern /* Subroutine */ int dvout_(integer *, integer *, doublereal *, 
-	    integer *, char *, ftnlen), zcopy_(integer *, doublecomplex *, 
-	    integer *, doublecomplex *, integer *), ivout_(integer *, integer 
-	    *, integer *, integer *, char *, ftnlen), zaxpy_(integer *, 
-	    doublecomplex *, doublecomplex *, integer *, doublecomplex *, 
-	    integer *), zmout_(integer *, integer *, integer *, doublecomplex 
-	    *, integer *, integer *, char *, ftnlen), zvout_(integer *, 
-	    integer *, doublecomplex *, integer *, char *, ftnlen);
-    extern doublereal dlapy2_(doublereal *, doublereal *);
-    extern /* Subroutine */ int dlabad_(doublereal *, doublereal *);
-    extern doublereal dznrm2_(integer *, doublecomplex *, integer *);
     static doublereal rnorm1;
-    extern /* Subroutine */ int zgetv0_(integer *, char *, integer *, logical 
-	    *, integer *, integer *, doublecomplex *, integer *, 
-	    doublecomplex *, doublereal *, integer *, doublecomplex *, 
-	    integer *);
-    extern doublereal dlamch_(char *);
-    extern /* Subroutine */ int arscnd_(real *), zdscal_(integer *, 
-	    doublereal *, doublecomplex *, integer *);
     static logical rstart;
     static integer msglvl;
     static doublereal smlnum;
-    extern doublereal zlanhs_(char *, integer *, doublecomplex *, integer *, 
-	    doublecomplex *);
-    extern /* Subroutine */ int zlascl_(char *, integer *, integer *, 
-	    doublereal *, doublereal *, integer *, integer *, doublecomplex *,
-	     integer *, integer *);
 
 
 /*     %----------------------------------------------------% */

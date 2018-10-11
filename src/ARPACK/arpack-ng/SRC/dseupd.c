@@ -2,7 +2,6 @@
 
 #include "arpack.h"
 
-
 /**
  * \BeginDoc
  *
@@ -152,8 +151,9 @@
  *                 probably made an error in passing data from DSAUPD  to
  *                 DSEUPD  or that the data was modified before entering
  *                 DSEUPD .
- * \EndDoc */
-/** \BeginLib
+ * \EndDoc
+ *
+ * \BeginLib
  *
  * \References:
  *  1. D.C. Sorensen, "Implicit Application of Polynomial Filters in
@@ -238,9 +238,6 @@
 
     /* Local variables */
     integer j, k, ih, jj, iq, np, iw, ibd, ihb, ihd, ldh, ldq, irz;
-    extern /* Subroutine */ int dger_(integer *, integer *, doublereal *, 
-	    doublereal *, integer *, doublereal *, integer *, doublereal *, 
-	    integer *);
     integer mode;
     doublereal eps23;
     integer ierr;
@@ -248,33 +245,12 @@
     integer next;
     char type__[6];
     integer ritz;
-    extern doublereal dnrm2_(integer *, doublereal *, integer *);
     doublereal temp1;
-    extern /* Subroutine */ int dscal_(integer *, doublereal *, doublereal *, 
-	    integer *);
     logical reord;
-    extern /* Subroutine */ int dcopy_(integer *, doublereal *, integer *, 
-	    doublereal *, integer *);
     integer nconv;
     doublereal rnorm;
-    extern /* Subroutine */ int dvout_(integer *, integer *, doublereal *, 
-	    integer *, char *, ftnlen), ivout_(integer *, integer *, integer *
-	    , integer *, char *, ftnlen), dgeqr2_(integer *, integer *, 
-	    doublereal *, integer *, doublereal *, doublereal *, integer *);
     doublereal bnorm2;
-    extern /* Subroutine */ int dorm2r_(char *, char *, integer *, integer *, 
-	    integer *, doublereal *, integer *, doublereal *, doublereal *, 
-	    integer *, doublereal *, integer *);
-    extern doublereal dlamch_(char *);
     integer bounds, msglvl, ishift, numcnv;
-    extern /* Subroutine */ int dlacpy_(char *, integer *, integer *, 
-	    doublereal *, integer *, doublereal *, integer *), 
-	    dsesrt_(char *, logical *, integer *, doublereal *, integer *, 
-	    doublereal *, integer *), dsteqr_(char *, integer *, 
-	    doublereal *, doublereal *, doublereal *, integer *, doublereal *,
-	     integer *), dsortr_(char *, logical *, integer *, 
-	    doublereal *, doublereal *), dsgets_(integer *, char *, 
-	    integer *, integer *, doublereal *, doublereal *, doublereal *);
     integer leftptr, rghtptr;
 
 

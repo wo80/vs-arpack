@@ -2,8 +2,6 @@
 
 #include "arpack.h"
 
-
-
 /**
  * \BeginDoc
  *
@@ -119,9 +117,7 @@
  *          > 0: Size of the spanning invariant subspace of OP found.
  *
  * \EndDoc
- */
-
-/**
+ *
  * \BeginLib
  *
  * \Local variables:
@@ -238,37 +234,17 @@
     real tst1;
     static integer ierr, iter;
     static real unfl, ovfl;
-    extern doublereal sdot_(integer *, real *, integer *, real *, integer *);
     static integer itry;
     real temp1;
     static logical orth1, orth2, step3, step4;
-    extern doublereal snrm2_(integer *, real *, integer *);
     static real betaj;
-    extern /* Subroutine */ int sscal_(integer *, real *, real *, integer *);
     integer infol;
-    extern /* Subroutine */ int sgemv_(char *, integer *, integer *, real *, 
-	    real *, integer *, real *, integer *, real *, real *, integer *);
     real xtemp[2];
-    extern /* Subroutine */ int scopy_(integer *, real *, integer *, real *, 
-	    integer *);
     static real wnorm;
-    extern /* Subroutine */ int saxpy_(integer *, real *, real *, integer *, 
-	    real *, integer *), ivout_(integer *, integer *, integer *, 
-	    integer *, char *, ftnlen), smout_(integer *, integer *, integer *
-	    , real *, integer *, integer *, char *, ftnlen), svout_(integer *,
-	     integer *, real *, integer *, char *, ftnlen), sgetv0_(integer *,
-	     char *, integer *, logical *, integer *, integer *, real *, 
-	    integer *, real *, real *, integer *, real *, integer *);
     static real rnorm1;
-    extern /* Subroutine */ int slabad_(real *, real *);
-    extern doublereal slamch_(char *);
-    extern /* Subroutine */ int arscnd_(real *), slascl_(char *, integer *, 
-	    integer *, real *, real *, integer *, integer *, real *, integer *
-	    , integer *);
     static logical rstart;
     static integer msglvl;
     static real smlnum;
-    extern doublereal slanhs_(char *, integer *, real *, integer *, real *);
 
 
 /*     %----------------------------------------------------% */

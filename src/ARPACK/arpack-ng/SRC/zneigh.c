@@ -2,7 +2,6 @@
 
 #include "arpack.h"
 
-
 /**
  * \BeginDoc
  *
@@ -60,9 +59,7 @@
  *          Error exit flag from zlahqr or ztrevc.
  *
  * \EndDoc
- */
-
-/**
+ *
  * \BeginLib
  *
  * \Local variables:
@@ -117,25 +114,8 @@
     static real t0, t1;
     doublecomplex vl[1];
     doublereal temp;
-    extern /* Subroutine */ int zcopy_(integer *, doublecomplex *, integer *, 
-	    doublecomplex *, integer *), zmout_(integer *, integer *, integer 
-	    *, doublecomplex *, integer *, integer *, char *, ftnlen), zvout_(
-	    integer *, integer *, doublecomplex *, integer *, char *, ftnlen);
-    extern doublereal dznrm2_(integer *, doublecomplex *, integer *);
-    extern /* Subroutine */ int arscnd_(real *);
     logical select[1];
     integer msglvl;
-    extern /* Subroutine */ int zlacpy_(char *, integer *, integer *, 
-	    doublecomplex *, integer *, doublecomplex *, integer *), 
-	    zlahqr_(logical *, logical *, integer *, integer *, integer *, 
-	    doublecomplex *, integer *, doublecomplex *, integer *, integer *,
-	     doublecomplex *, integer *, integer *), ztrevc_(char *, char *, 
-	    logical *, integer *, doublecomplex *, integer *, doublecomplex *,
-	     integer *, doublecomplex *, integer *, integer *, integer *, 
-	    doublecomplex *, doublereal *, integer *), 
-	    zdscal_(integer *, doublereal *, doublecomplex *, integer *), 
-	    zlaset_(char *, integer *, integer *, doublecomplex *, 
-	    doublecomplex *, doublecomplex *, integer *);
 
 
 /*     %----------------------------------------------------% */
