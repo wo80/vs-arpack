@@ -3,105 +3,105 @@
 #include "arpack.h"
 
 
+/**
+ * \BeginDoc
+ *
+ * \Name: cneigh
+ *
+ * \Description:
+ *  Compute the eigenvalues of the current upper Hessenberg matrix
+ *  and the corresponding Ritz estimates given the current residual norm.
+ *
+ * \Usage:
+ *  call cneigh
+ *     ( RNORM, N, H, LDH, RITZ, BOUNDS, Q, LDQ, WORKL, RWORK, IERR )
+ *
+ * \Arguments
+ *  RNORM   Real scalar.  (INPUT)
+ *          Residual norm corresponding to the current upper Hessenberg
+ *          matrix H.
+ *
+ *  N       Integer.  (INPUT)
+ *          Size of the matrix H.
+ *
+ *  H       Complex N by N array.  (INPUT)
+ *          H contains the current upper Hessenberg matrix.
+ *
+ *  LDH     Integer.  (INPUT)
+ *          Leading dimension of H exactly as declared in the calling
+ *          program.
+ *
+ *  RITZ    Complex array of length N.  (OUTPUT)
+ *          On output, RITZ(1:N) contains the eigenvalues of H.
+ *
+ *  BOUNDS  Complex array of length N.  (OUTPUT)
+ *          On output, BOUNDS contains the Ritz estimates associated with
+ *          the eigenvalues held in RITZ.  This is equal to RNORM
+ *          times the last components of the eigenvectors corresponding
+ *          to the eigenvalues in RITZ.
+ *
+ *  Q       Complex N by N array.  (WORKSPACE)
+ *          Workspace needed to store the eigenvectors of H.
+ *
+ *  LDQ     Integer.  (INPUT)
+ *          Leading dimension of Q exactly as declared in the calling
+ *          program.
+ *
+ *  WORKL   Complex work array of length N**2 + 3*N.  (WORKSPACE)
+ *          Private (replicated) array on each PE or array allocated on
+ *          the front end.  This is needed to keep the full Schur form
+ *          of H and also in the calculation of the eigenvectors of H.
+ *
+ *  RWORK   Real  work array of length N (WORKSPACE)
+ *          Private (replicated) array on each PE or array allocated on
+ *          the front end.
+ *
+ *  IERR    Integer.  (OUTPUT)
+ *          Error exit flag from clahqr or ctrevc.
+ *
+ * \EndDoc
+ */
 
-/* \BeginDoc */
+/**
+ * \BeginLib
+ *
+ * \Local variables:
+ *     xxxxxx  Complex
+ *
+ * \Routines called:
+ *     ivout   ARPACK utility routine that prints integers.
+ *     arscnd  ARPACK utility routine for timing.
+ *     cmout   ARPACK utility routine that prints matrices
+ *     cvout   ARPACK utility routine that prints vectors.
+ *     svout   ARPACK utility routine that prints vectors.
+ *     clacpy  LAPACK matrix copy routine.
+ *     clahqr  LAPACK routine to compute the Schur form of an
+ *             upper Hessenberg matrix.
+ *     claset  LAPACK matrix initialization routine.
+ *     ctrevc  LAPACK routine to compute the eigenvectors of a matrix
+ *             in upper triangular form
+ *     ccopy   Level 1 BLAS that copies one vector to another.
+ *     csscal  Level 1 BLAS that scales a complex vector by a real number.
+ *     scnrm2  Level 1 BLAS that computes the norm of a vector.
+ *
+ *
+ * \Author
+ *     Danny Sorensen               Phuong Vu
+ *     Richard Lehoucq              CRPC / Rice University
+ *     Dept. of Computational &     Houston, Texas
+ *     Applied Mathematics
+ *     Rice University
+ *     Houston, Texas
+ *
+ * \SCCS Information: @(#)
+ * FILE: neigh.F   SID: 2.2   DATE OF SID: 4/20/96   RELEASE: 2
+ *
+ * \Remarks
+ *     None
+ *
+ * \EndLib
+ */
 
-/* \Name: cneigh */
-
-/* \Description: */
-/*  Compute the eigenvalues of the current upper Hessenberg matrix */
-/*  and the corresponding Ritz estimates given the current residual norm. */
-
-/* \Usage: */
-/*  call cneigh */
-/*     ( RNORM, N, H, LDH, RITZ, BOUNDS, Q, LDQ, WORKL, RWORK, IERR ) */
-
-/* \Arguments */
-/*  RNORM   Real scalar.  (INPUT) */
-/*          Residual norm corresponding to the current upper Hessenberg */
-/*          matrix H. */
-
-/*  N       Integer.  (INPUT) */
-/*          Size of the matrix H. */
-
-/*  H       Complex N by N array.  (INPUT) */
-/*          H contains the current upper Hessenberg matrix. */
-
-/*  LDH     Integer.  (INPUT) */
-/*          Leading dimension of H exactly as declared in the calling */
-/*          program. */
-
-/*  RITZ    Complex array of length N.  (OUTPUT) */
-/*          On output, RITZ(1:N) contains the eigenvalues of H. */
-
-/*  BOUNDS  Complex array of length N.  (OUTPUT) */
-/*          On output, BOUNDS contains the Ritz estimates associated with */
-/*          the eigenvalues held in RITZ.  This is equal to RNORM */
-/*          times the last components of the eigenvectors corresponding */
-/*          to the eigenvalues in RITZ. */
-
-/*  Q       Complex N by N array.  (WORKSPACE) */
-/*          Workspace needed to store the eigenvectors of H. */
-
-/*  LDQ     Integer.  (INPUT) */
-/*          Leading dimension of Q exactly as declared in the calling */
-/*          program. */
-
-/*  WORKL   Complex work array of length N**2 + 3*N.  (WORKSPACE) */
-/*          Private (replicated) array on each PE or array allocated on */
-/*          the front end.  This is needed to keep the full Schur form */
-/*          of H and also in the calculation of the eigenvectors of H. */
-
-/*  RWORK   Real  work array of length N (WORKSPACE) */
-/*          Private (replicated) array on each PE or array allocated on */
-/*          the front end. */
-
-/*  IERR    Integer.  (OUTPUT) */
-/*          Error exit flag from clahqr or ctrevc. */
-
-/* \EndDoc */
-
-/* ----------------------------------------------------------------------- */
-
-/* \BeginLib */
-
-/* \Local variables: */
-/*     xxxxxx  Complex */
-
-/* \Routines called: */
-/*     ivout   ARPACK utility routine that prints integers. */
-/*     arscnd  ARPACK utility routine for timing. */
-/*     cmout   ARPACK utility routine that prints matrices */
-/*     cvout   ARPACK utility routine that prints vectors. */
-/*     svout   ARPACK utility routine that prints vectors. */
-/*     clacpy  LAPACK matrix copy routine. */
-/*     clahqr  LAPACK routine to compute the Schur form of an */
-/*             upper Hessenberg matrix. */
-/*     claset  LAPACK matrix initialization routine. */
-/*     ctrevc  LAPACK routine to compute the eigenvectors of a matrix */
-/*             in upper triangular form */
-/*     ccopy   Level 1 BLAS that copies one vector to another. */
-/*     csscal  Level 1 BLAS that scales a complex vector by a real number. */
-/*     scnrm2  Level 1 BLAS that computes the norm of a vector. */
-
-
-/* \Author */
-/*     Danny Sorensen               Phuong Vu */
-/*     Richard Lehoucq              CRPC / Rice University */
-/*     Dept. of Computational &     Houston, Texas */
-/*     Applied Mathematics */
-/*     Rice University */
-/*     Houston, Texas */
-
-/* \SCCS Information: @(#) */
-/* FILE: neigh.F   SID: 2.2   DATE OF SID: 4/20/96   RELEASE: 2 */
-
-/* \Remarks */
-/*     None */
-
-/* \EndLib */
-
-/* ----------------------------------------------------------------------- */
 
 /* Subroutine */ int cneigh_(real *rnorm, integer *n, complex *h__, integer *
 	ldh, complex *ritz, complex *bounds, complex *q, integer *ldq, 

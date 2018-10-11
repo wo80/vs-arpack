@@ -4,99 +4,99 @@
 
 
 
-/* ----------------------------------------------------------------------- */
-/* \BeginDoc */
+/**
+ * \BeginDoc
+ *
+ * \Name: sngets
+ *
+ * \Description:
+ *  Given the eigenvalues of the upper Hessenberg matrix H,
+ *  computes the NP shifts AMU that are zeros of the polynomial of
+ *  degree NP which filters out components of the unwanted eigenvectors
+ *  corresponding to the AMU's based on some given criteria.
+ *
+ *  NOTE: call this even in the case of user specified shifts in order
+ *  to sort the eigenvalues, and error bounds of H for later use.
+ *
+ * \Usage:
+ *  call sngets
+ *     ( ISHIFT, WHICH, KEV, NP, RITZR, RITZI, BOUNDS, SHIFTR, SHIFTI )
+ *
+ * \Arguments
+ *  ISHIFT  Integer.  (INPUT)
+ *          Method for selecting the implicit shifts at each iteration.
+ *          ISHIFT = 0: user specified shifts
+ *          ISHIFT = 1: exact shift with respect to the matrix H.
+ *
+ *  WHICH   Character*2.  (INPUT)
+ *          Shift selection criteria.
+ *          'LM' -> want the KEV eigenvalues of largest magnitude.
+ *          'SM' -> want the KEV eigenvalues of smallest magnitude.
+ *          'LR' -> want the KEV eigenvalues of largest real part.
+ *          'SR' -> want the KEV eigenvalues of smallest real part.
+ *          'LI' -> want the KEV eigenvalues of largest imaginary part.
+ *          'SI' -> want the KEV eigenvalues of smallest imaginary part.
+ *
+ *  KEV      Integer.  (INPUT/OUTPUT)
+ *           INPUT: KEV+NP is the size of the matrix H.
+ *           OUTPUT: Possibly increases KEV by one to keep complex conjugate
+ *           pairs together.
+ *
+ *  NP       Integer.  (INPUT/OUTPUT)
+ *           Number of implicit shifts to be computed.
+ *           OUTPUT: Possibly decreases NP by one to keep complex conjugate
+ *           pairs together.
+ *
+ *  RITZR,  Real array of length KEV+NP.  (INPUT/OUTPUT)
+ *  RITZI   On INPUT, RITZR and RITZI contain the real and imaginary
+ *          parts of the eigenvalues of H.
+ *          On OUTPUT, RITZR and RITZI are sorted so that the unwanted
+ *          eigenvalues are in the first NP locations and the wanted
+ *          portion is in the last KEV locations.  When exact shifts are
+ *          selected, the unwanted part corresponds to the shifts to
+ *          be applied. Also, if ISHIFT .eq. 1, the unwanted eigenvalues
+ *          are further sorted so that the ones with largest Ritz values
+ *          are first.
+ *
+ *  BOUNDS  Real array of length KEV+NP.  (INPUT/OUTPUT)
+ *          Error bounds corresponding to the ordering in RITZ.
+ *
+ *  SHIFTR, SHIFTI  *** USE deprecated as of version 2.1. ***
+ *
+ *
+ * \EndDoc
+ */
 
-/* \Name: sngets */
+/**
+ * \BeginLib
+ *
+ * \Local variables:
+ *     xxxxxx  real
+ *
+ * \Routines called:
+ *     ssortc  ARPACK sorting routine.
+ *     scopy   Level 1 BLAS that copies one vector to another .
+ *
+ * \Author
+ *     Danny Sorensen               Phuong Vu
+ *     Richard Lehoucq              CRPC / Rice University
+ *     Dept. of Computational &     Houston, Texas
+ *     Applied Mathematics
+ *     Rice University
+ *     Houston, Texas
+ *
+ * \Revision history:
+ *     xx/xx/92: Version ' 2.1'
+ *
+ * \SCCS Information: @(#)
+ * FILE: ngets.F   SID: 2.3   DATE OF SID: 4/20/96   RELEASE: 2
+ *
+ * \Remarks
+ *     1. xxxx
+ *
+ * \EndLib
+ */
 
-/* \Description: */
-/*  Given the eigenvalues of the upper Hessenberg matrix H, */
-/*  computes the NP shifts AMU that are zeros of the polynomial of */
-/*  degree NP which filters out components of the unwanted eigenvectors */
-/*  corresponding to the AMU's based on some given criteria. */
-
-/*  NOTE: call this even in the case of user specified shifts in order */
-/*  to sort the eigenvalues, and error bounds of H for later use. */
-
-/* \Usage: */
-/*  call sngets */
-/*     ( ISHIFT, WHICH, KEV, NP, RITZR, RITZI, BOUNDS, SHIFTR, SHIFTI ) */
-
-/* \Arguments */
-/*  ISHIFT  Integer.  (INPUT) */
-/*          Method for selecting the implicit shifts at each iteration. */
-/*          ISHIFT = 0: user specified shifts */
-/*          ISHIFT = 1: exact shift with respect to the matrix H. */
-
-/*  WHICH   Character*2.  (INPUT) */
-/*          Shift selection criteria. */
-/*          'LM' -> want the KEV eigenvalues of largest magnitude. */
-/*          'SM' -> want the KEV eigenvalues of smallest magnitude. */
-/*          'LR' -> want the KEV eigenvalues of largest real part. */
-/*          'SR' -> want the KEV eigenvalues of smallest real part. */
-/*          'LI' -> want the KEV eigenvalues of largest imaginary part. */
-/*          'SI' -> want the KEV eigenvalues of smallest imaginary part. */
-
-/*  KEV      Integer.  (INPUT/OUTPUT) */
-/*           INPUT: KEV+NP is the size of the matrix H. */
-/*           OUTPUT: Possibly increases KEV by one to keep complex conjugate */
-/*           pairs together. */
-
-/*  NP       Integer.  (INPUT/OUTPUT) */
-/*           Number of implicit shifts to be computed. */
-/*           OUTPUT: Possibly decreases NP by one to keep complex conjugate */
-/*           pairs together. */
-
-/*  RITZR,  Real array of length KEV+NP.  (INPUT/OUTPUT) */
-/*  RITZI   On INPUT, RITZR and RITZI contain the real and imaginary */
-/*          parts of the eigenvalues of H. */
-/*          On OUTPUT, RITZR and RITZI are sorted so that the unwanted */
-/*          eigenvalues are in the first NP locations and the wanted */
-/*          portion is in the last KEV locations.  When exact shifts are */
-/*          selected, the unwanted part corresponds to the shifts to */
-/*          be applied. Also, if ISHIFT .eq. 1, the unwanted eigenvalues */
-/*          are further sorted so that the ones with largest Ritz values */
-/*          are first. */
-
-/*  BOUNDS  Real array of length KEV+NP.  (INPUT/OUTPUT) */
-/*          Error bounds corresponding to the ordering in RITZ. */
-
-/*  SHIFTR, SHIFTI  *** USE deprecated as of version 2.1. *** */
-
-
-/* \EndDoc */
-
-/* ----------------------------------------------------------------------- */
-
-/* \BeginLib */
-
-/* \Local variables: */
-/*     xxxxxx  real */
-
-/* \Routines called: */
-/*     ssortc  ARPACK sorting routine. */
-/*     scopy   Level 1 BLAS that copies one vector to another . */
-
-/* \Author */
-/*     Danny Sorensen               Phuong Vu */
-/*     Richard Lehoucq              CRPC / Rice University */
-/*     Dept. of Computational &     Houston, Texas */
-/*     Applied Mathematics */
-/*     Rice University */
-/*     Houston, Texas */
-
-/* \Revision history: */
-/*     xx/xx/92: Version ' 2.1' */
-
-/* \SCCS Information: @(#) */
-/* FILE: ngets.F   SID: 2.3   DATE OF SID: 4/20/96   RELEASE: 2 */
-
-/* \Remarks */
-/*     1. xxxx */
-
-/* \EndLib */
-
-/* ----------------------------------------------------------------------- */
 
 /* Subroutine */ int sngets_(integer *ishift, char *which, integer *kev, 
 	integer *np, real *ritzr, real *ritzi, real *bounds, real *shiftr, 

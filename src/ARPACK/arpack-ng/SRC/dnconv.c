@@ -4,69 +4,69 @@
 
 
 
-/* ----------------------------------------------------------------------- */
-/* \BeginDoc */
+/**
+ * \BeginDoc
+ *
+ * \Name: dnconv
+ *
+ * \Description:
+ *  Convergence testing for the nonsymmetric Arnoldi eigenvalue routine.
+ *
+ * \Usage:
+ *  call dnconv
+ *     ( N, RITZR, RITZI, BOUNDS, TOL, NCONV )
+ *
+ * \Arguments
+ *  N       Integer.  (INPUT)
+ *          Number of Ritz values to check for convergence.
+ *
+ *  RITZR,  Double precision arrays of length N.  (INPUT)
+ *  RITZI   Real and imaginary parts of the Ritz values to be checked
+ *          for convergence.
+ *  BOUNDS  Double precision array of length N.  (INPUT)
+ *          Ritz estimates for the Ritz values in RITZR and RITZI.
+ *
+ *  TOL     Double precision scalar.  (INPUT)
+ *          Desired backward error for a Ritz value to be considered
+ *          "converged".
+ *
+ *  NCONV   Integer scalar.  (OUTPUT)
+ *          Number of "converged" Ritz values.
+ *
+ * \EndDoc
+ */
 
-/* \Name: dnconv */
+/**
+ * \BeginLib
+ *
+ * \Local variables:
+ *     xxxxxx  real
+ *
+ * \Routines called:
+ *     arscnd  ARPACK utility routine for timing.
+ *     dlamch  LAPACK routine that determines machine constants.
+ *     dlapy2  LAPACK routine to compute sqrt(x**2+y**2) carefully.
+ *
+ * \Author
+ *     Danny Sorensen               Phuong Vu
+ *     Richard Lehoucq              CRPC / Rice University
+ *     Dept. of Computational &     Houston, Texas
+ *     Applied Mathematics
+ *     Rice University
+ *     Houston, Texas
+ *
+ * \Revision history:
+ *     xx/xx/92: Version ' 2.1'
+ *
+ * \SCCS Information: @(#)
+ * FILE: nconv.F   SID: 2.3   DATE OF SID: 4/20/96   RELEASE: 2
+ *
+ * \Remarks
+ *     1. xxxx
+ *
+ * \EndLib
+ */
 
-/* \Description: */
-/*  Convergence testing for the nonsymmetric Arnoldi eigenvalue routine. */
-
-/* \Usage: */
-/*  call dnconv */
-/*     ( N, RITZR, RITZI, BOUNDS, TOL, NCONV ) */
-
-/* \Arguments */
-/*  N       Integer.  (INPUT) */
-/*          Number of Ritz values to check for convergence. */
-
-/*  RITZR,  Double precision arrays of length N.  (INPUT) */
-/*  RITZI   Real and imaginary parts of the Ritz values to be checked */
-/*          for convergence. */
-/*  BOUNDS  Double precision array of length N.  (INPUT) */
-/*          Ritz estimates for the Ritz values in RITZR and RITZI. */
-
-/*  TOL     Double precision scalar.  (INPUT) */
-/*          Desired backward error for a Ritz value to be considered */
-/*          "converged". */
-
-/*  NCONV   Integer scalar.  (OUTPUT) */
-/*          Number of "converged" Ritz values. */
-
-/* \EndDoc */
-
-/* ----------------------------------------------------------------------- */
-
-/* \BeginLib */
-
-/* \Local variables: */
-/*     xxxxxx  real */
-
-/* \Routines called: */
-/*     arscnd  ARPACK utility routine for timing. */
-/*     dlamch  LAPACK routine that determines machine constants. */
-/*     dlapy2  LAPACK routine to compute sqrt(x**2+y**2) carefully. */
-
-/* \Author */
-/*     Danny Sorensen               Phuong Vu */
-/*     Richard Lehoucq              CRPC / Rice University */
-/*     Dept. of Computational &     Houston, Texas */
-/*     Applied Mathematics */
-/*     Rice University */
-/*     Houston, Texas */
-
-/* \Revision history: */
-/*     xx/xx/92: Version ' 2.1' */
-
-/* \SCCS Information: @(#) */
-/* FILE: nconv.F   SID: 2.3   DATE OF SID: 4/20/96   RELEASE: 2 */
-
-/* \Remarks */
-/*     1. xxxx */
-
-/* \EndLib */
-
-/* ----------------------------------------------------------------------- */
 
 /* Subroutine */ int dnconv_(integer *n, doublereal *ritzr, doublereal *ritzi,
 	 doublereal *bounds, doublereal *tol, integer *nconv)

@@ -3,139 +3,139 @@
 #include "arpack.h"
 
 
+/**
+ * \BeginDoc
+ *
+ * \Name: znapps
+ *
+ * \Description:
+ *  Given the Arnoldi factorization
+ *
+ *     A*V_{k} - V_{k}*H_{k} = r_{k+p}*e_{k+p}^T,
+ *
+ *  apply NP implicit shifts resulting in
+ *
+ *     A*(V_{k}*Q) - (V_{k}*Q)*(Q^T* H_{k}*Q) = r_{k+p}*e_{k+p}^T * Q
+ *
+ *  where Q is an orthogonal matrix which is the product of rotations
+ *  and reflections resulting from the NP bulge change sweeps.
+ *  The updated Arnoldi factorization becomes:
+ *
+ *     A*VNEW_{k} - VNEW_{k}*HNEW_{k} = rnew_{k}*e_{k}^T.
+ *
+ * \Usage:
+ *  call znapps
+ *     ( N, KEV, NP, SHIFT, V, LDV, H, LDH, RESID, Q, LDQ,
+ *       WORKL, WORKD )
+ *
+ * \Arguments
+ *  N       Integer.  (INPUT)
+ *          Problem size, i.e. size of matrix A.
+ *
+ *  KEV     Integer.  (INPUT/OUTPUT)
+ *          KEV+NP is the size of the input matrix H.
+ *          KEV is the size of the updated matrix HNEW.
+ *
+ *  NP      Integer.  (INPUT)
+ *          Number of implicit shifts to be applied.
+ *
+ *  SHIFT   Complex*16 array of length NP.  (INPUT)
+ *          The shifts to be applied.
+ *
+ *  V       Complex*16 N by (KEV+NP) array.  (INPUT/OUTPUT)
+ *          On INPUT, V contains the current KEV+NP Arnoldi vectors.
+ *          On OUTPUT, V contains the updated KEV Arnoldi vectors
+ *          in the first KEV columns of V.
+ *
+ *  LDV     Integer.  (INPUT)
+ *          Leading dimension of V exactly as declared in the calling
+ *          program.
+ *
+ *  H       Complex*16 (KEV+NP) by (KEV+NP) array.  (INPUT/OUTPUT)
+ *          On INPUT, H contains the current KEV+NP by KEV+NP upper
+ *          Hessenberg matrix of the Arnoldi factorization.
+ *          On OUTPUT, H contains the updated KEV by KEV upper Hessenberg
+ *          matrix in the KEV leading submatrix.
+ *
+ *  LDH     Integer.  (INPUT)
+ *          Leading dimension of H exactly as declared in the calling
+ *          program.
+ *
+ *  RESID   Complex*16 array of length N.  (INPUT/OUTPUT)
+ *          On INPUT, RESID contains the the residual vector r_{k+p}.
+ *          On OUTPUT, RESID is the update residual vector rnew_{k}
+ *          in the first KEV locations.
+ *
+ *  Q       Complex*16 KEV+NP by KEV+NP work array.  (WORKSPACE)
+ *          Work array used to accumulate the rotations and reflections
+ *          during the bulge chase sweep.
+ *
+ *  LDQ     Integer.  (INPUT)
+ *          Leading dimension of Q exactly as declared in the calling
+ *          program.
+ *
+ *  WORKL   Complex*16 work array of length (KEV+NP).  (WORKSPACE)
+ *          Private (replicated) array on each PE or array allocated on
+ *          the front end.
+ *
+ *  WORKD   Complex*16 work array of length 2*N.  (WORKSPACE)
+ *          Distributed array used in the application of the accumulated
+ *          orthogonal matrix Q.
+ *
+ * \EndDoc
+ */
 
-/* \BeginDoc */
+/**
+ * \BeginLib
+ *
+ * \Local variables:
+ *     xxxxxx  Complex*16
+ *
+ * \References:
+ *  1. D.C. Sorensen, "Implicit Application of Polynomial Filters in
+ *     a k-Step Arnoldi Method", SIAM J. Matr. Anal. Apps., 13 (1992),
+ *     pp 357-385.
+ *
+ * \Routines called:
+ *     ivout   ARPACK utility routine that prints integers.
+ *     arscnd  ARPACK utility routine for timing.
+ *     zmout   ARPACK utility routine that prints matrices
+ *     zvout   ARPACK utility routine that prints vectors.
+ *     zlacpy  LAPACK matrix copy routine.
+ *     zlanhs  LAPACK routine that computes various norms of a matrix.
+ *     zlartg  LAPACK Givens rotation construction routine.
+ *     zlaset  LAPACK matrix initialization routine.
+ *     dlabad  LAPACK routine for defining the underflow and overflow
+ *             limits.
+ *     dlamch  LAPACK routine that determines machine constants.
+ *     dlapy2  LAPACK routine to compute sqrt(x**2+y**2) carefully.
+ *     zgemv   Level 2 BLAS routine for matrix vector multiplication.
+ *     zaxpy   Level 1 BLAS that computes a vector triad.
+ *     zcopy   Level 1 BLAS that copies one vector to another.
+ *     zscal   Level 1 BLAS that scales a vector.
+ *
+ * \Author
+ *     Danny Sorensen               Phuong Vu
+ *     Richard Lehoucq              CRPC / Rice University
+ *     Dept. of Computational &     Houston, Texas
+ *     Applied Mathematics
+ *     Rice University
+ *     Houston, Texas
+ *
+ * \SCCS Information: @(#)
+ * FILE: napps.F   SID: 2.3   DATE OF SID: 3/28/97   RELEASE: 2
+ *
+ * \Remarks
+ *  1. In this version, each shift is applied to all the sublocks of
+ *     the Hessenberg matrix H and not just to the submatrix that it
+ *     comes from. Deflation as in LAPACK routine zlahqr (QR algorithm
+ *     for upper Hessenberg matrices ) is used.
+ *     Upon output, the subdiagonals of H are enforced to be non-negative
+ *     real numbers.
+ *
+ * \EndLib
+ */
 
-/* \Name: znapps */
-
-/* \Description: */
-/*  Given the Arnoldi factorization */
-
-/*     A*V_{k} - V_{k}*H_{k} = r_{k+p}*e_{k+p}^T, */
-
-/*  apply NP implicit shifts resulting in */
-
-/*     A*(V_{k}*Q) - (V_{k}*Q)*(Q^T* H_{k}*Q) = r_{k+p}*e_{k+p}^T * Q */
-
-/*  where Q is an orthogonal matrix which is the product of rotations */
-/*  and reflections resulting from the NP bulge change sweeps. */
-/*  The updated Arnoldi factorization becomes: */
-
-/*     A*VNEW_{k} - VNEW_{k}*HNEW_{k} = rnew_{k}*e_{k}^T. */
-
-/* \Usage: */
-/*  call znapps */
-/*     ( N, KEV, NP, SHIFT, V, LDV, H, LDH, RESID, Q, LDQ, */
-/*       WORKL, WORKD ) */
-
-/* \Arguments */
-/*  N       Integer.  (INPUT) */
-/*          Problem size, i.e. size of matrix A. */
-
-/*  KEV     Integer.  (INPUT/OUTPUT) */
-/*          KEV+NP is the size of the input matrix H. */
-/*          KEV is the size of the updated matrix HNEW. */
-
-/*  NP      Integer.  (INPUT) */
-/*          Number of implicit shifts to be applied. */
-
-/*  SHIFT   Complex*16 array of length NP.  (INPUT) */
-/*          The shifts to be applied. */
-
-/*  V       Complex*16 N by (KEV+NP) array.  (INPUT/OUTPUT) */
-/*          On INPUT, V contains the current KEV+NP Arnoldi vectors. */
-/*          On OUTPUT, V contains the updated KEV Arnoldi vectors */
-/*          in the first KEV columns of V. */
-
-/*  LDV     Integer.  (INPUT) */
-/*          Leading dimension of V exactly as declared in the calling */
-/*          program. */
-
-/*  H       Complex*16 (KEV+NP) by (KEV+NP) array.  (INPUT/OUTPUT) */
-/*          On INPUT, H contains the current KEV+NP by KEV+NP upper */
-/*          Hessenberg matrix of the Arnoldi factorization. */
-/*          On OUTPUT, H contains the updated KEV by KEV upper Hessenberg */
-/*          matrix in the KEV leading submatrix. */
-
-/*  LDH     Integer.  (INPUT) */
-/*          Leading dimension of H exactly as declared in the calling */
-/*          program. */
-
-/*  RESID   Complex*16 array of length N.  (INPUT/OUTPUT) */
-/*          On INPUT, RESID contains the the residual vector r_{k+p}. */
-/*          On OUTPUT, RESID is the update residual vector rnew_{k} */
-/*          in the first KEV locations. */
-
-/*  Q       Complex*16 KEV+NP by KEV+NP work array.  (WORKSPACE) */
-/*          Work array used to accumulate the rotations and reflections */
-/*          during the bulge chase sweep. */
-
-/*  LDQ     Integer.  (INPUT) */
-/*          Leading dimension of Q exactly as declared in the calling */
-/*          program. */
-
-/*  WORKL   Complex*16 work array of length (KEV+NP).  (WORKSPACE) */
-/*          Private (replicated) array on each PE or array allocated on */
-/*          the front end. */
-
-/*  WORKD   Complex*16 work array of length 2*N.  (WORKSPACE) */
-/*          Distributed array used in the application of the accumulated */
-/*          orthogonal matrix Q. */
-
-/* \EndDoc */
-
-/* ----------------------------------------------------------------------- */
-
-/* \BeginLib */
-
-/* \Local variables: */
-/*     xxxxxx  Complex*16 */
-
-/* \References: */
-/*  1. D.C. Sorensen, "Implicit Application of Polynomial Filters in */
-/*     a k-Step Arnoldi Method", SIAM J. Matr. Anal. Apps., 13 (1992), */
-/*     pp 357-385. */
-
-/* \Routines called: */
-/*     ivout   ARPACK utility routine that prints integers. */
-/*     arscnd  ARPACK utility routine for timing. */
-/*     zmout   ARPACK utility routine that prints matrices */
-/*     zvout   ARPACK utility routine that prints vectors. */
-/*     zlacpy  LAPACK matrix copy routine. */
-/*     zlanhs  LAPACK routine that computes various norms of a matrix. */
-/*     zlartg  LAPACK Givens rotation construction routine. */
-/*     zlaset  LAPACK matrix initialization routine. */
-/*     dlabad  LAPACK routine for defining the underflow and overflow */
-/*             limits. */
-/*     dlamch  LAPACK routine that determines machine constants. */
-/*     dlapy2  LAPACK routine to compute sqrt(x**2+y**2) carefully. */
-/*     zgemv   Level 2 BLAS routine for matrix vector multiplication. */
-/*     zaxpy   Level 1 BLAS that computes a vector triad. */
-/*     zcopy   Level 1 BLAS that copies one vector to another. */
-/*     zscal   Level 1 BLAS that scales a vector. */
-
-/* \Author */
-/*     Danny Sorensen               Phuong Vu */
-/*     Richard Lehoucq              CRPC / Rice University */
-/*     Dept. of Computational &     Houston, Texas */
-/*     Applied Mathematics */
-/*     Rice University */
-/*     Houston, Texas */
-
-/* \SCCS Information: @(#) */
-/* FILE: napps.F   SID: 2.3   DATE OF SID: 3/28/97   RELEASE: 2 */
-
-/* \Remarks */
-/*  1. In this version, each shift is applied to all the sublocks of */
-/*     the Hessenberg matrix H and not just to the submatrix that it */
-/*     comes from. Deflation as in LAPACK routine zlahqr (QR algorithm */
-/*     for upper Hessenberg matrices ) is used. */
-/*     Upon output, the subdiagonals of H are enforced to be non-negative */
-/*     real numbers. */
-
-/* \EndLib */
-
-/* ----------------------------------------------------------------------- */
 
 /* Subroutine */ int znapps_(integer *n, integer *kev, integer *np, 
 	doublecomplex *shift, doublecomplex *v, integer *ldv, doublecomplex *

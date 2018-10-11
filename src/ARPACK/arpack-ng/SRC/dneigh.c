@@ -4,104 +4,104 @@
 
 
 
-/* ----------------------------------------------------------------------- */
-/* \BeginDoc */
+/**
+ * \BeginDoc
+ *
+ * \Name: dneigh
+ *
+ * \Description:
+ *  Compute the eigenvalues of the current upper Hessenberg matrix
+ *  and the corresponding Ritz estimates given the current residual norm.
+ *
+ * \Usage:
+ *  call dneigh
+ *     ( RNORM, N, H, LDH, RITZR, RITZI, BOUNDS, Q, LDQ, WORKL, IERR )
+ *
+ * \Arguments
+ *  RNORM   Double precision scalar.  (INPUT)
+ *          Residual norm corresponding to the current upper Hessenberg
+ *          matrix H.
+ *
+ *  N       Integer.  (INPUT)
+ *          Size of the matrix H.
+ *
+ *  H       Double precision N by N array.  (INPUT)
+ *          H contains the current upper Hessenberg matrix.
+ *
+ *  LDH     Integer.  (INPUT)
+ *          Leading dimension of H exactly as declared in the calling
+ *          program.
+ *
+ *  RITZR,  Double precision arrays of length N.  (OUTPUT)
+ *  RITZI   On output, RITZR(1:N) (resp. RITZI(1:N)) contains the real
+ *          (respectively imaginary) parts of the eigenvalues of H.
+ *
+ *  BOUNDS  Double precision array of length N.  (OUTPUT)
+ *          On output, BOUNDS contains the Ritz estimates associated with
+ *          the eigenvalues RITZR and RITZI.  This is equal to RNORM
+ *          times the last components of the eigenvectors corresponding
+ *          to the eigenvalues in RITZR and RITZI.
+ *
+ *  Q       Double precision N by N array.  (WORKSPACE)
+ *          Workspace needed to store the eigenvectors of H.
+ *
+ *  LDQ     Integer.  (INPUT)
+ *          Leading dimension of Q exactly as declared in the calling
+ *          program.
+ *
+ *  WORKL   Double precision work array of length N**2 + 3*N.  (WORKSPACE)
+ *          Private (replicated) array on each PE or array allocated on
+ *          the front end.  This is needed to keep the full Schur form
+ *          of H and also in the calculation of the eigenvectors of H.
+ *
+ *  IERR    Integer.  (OUTPUT)
+ *          Error exit flag from dlahqr or dtrevc.
+ *
+ * \EndDoc
+ */
 
-/* \Name: dneigh */
+/**
+ * \BeginLib
+ *
+ * \Local variables:
+ *     xxxxxx  real
+ *
+ * \Routines called:
+ *     dlahqr  LAPACK routine to compute the real Schur form of an
+ *             upper Hessenberg matrix and last row of the Schur vectors.
+ *     arscnd  ARPACK utility routine for timing.
+ *     dmout   ARPACK utility routine that prints matrices
+ *     dvout   ARPACK utility routine that prints vectors.
+ *     dlacpy  LAPACK matrix copy routine.
+ *     dlapy2  LAPACK routine to compute sqrt(x**2+y**2) carefully.
+ *     dtrevc  LAPACK routine to compute the eigenvectors of a matrix
+ *             in upper quasi-triangular form
+ *     dgemv   Level 2 BLAS routine for matrix vector multiplication.
+ *     dcopy   Level 1 BLAS that copies one vector to another .
+ *     dnrm2   Level 1 BLAS that computes the norm of a vector.
+ *     dscal   Level 1 BLAS that scales a vector.
+ *
+ *
+ * \Author
+ *     Danny Sorensen               Phuong Vu
+ *     Richard Lehoucq              CRPC / Rice University
+ *     Dept. of Computational &     Houston, Texas
+ *     Applied Mathematics
+ *     Rice University
+ *     Houston, Texas
+ *
+ * \Revision history:
+ *     xx/xx/92: Version ' 2.1'
+ *
+ * \SCCS Information: @(#)
+ * FILE: neigh.F   SID: 2.3   DATE OF SID: 4/20/96   RELEASE: 2
+ *
+ * \Remarks
+ *     None
+ *
+ * \EndLib
+ */
 
-/* \Description: */
-/*  Compute the eigenvalues of the current upper Hessenberg matrix */
-/*  and the corresponding Ritz estimates given the current residual norm. */
-
-/* \Usage: */
-/*  call dneigh */
-/*     ( RNORM, N, H, LDH, RITZR, RITZI, BOUNDS, Q, LDQ, WORKL, IERR ) */
-
-/* \Arguments */
-/*  RNORM   Double precision scalar.  (INPUT) */
-/*          Residual norm corresponding to the current upper Hessenberg */
-/*          matrix H. */
-
-/*  N       Integer.  (INPUT) */
-/*          Size of the matrix H. */
-
-/*  H       Double precision N by N array.  (INPUT) */
-/*          H contains the current upper Hessenberg matrix. */
-
-/*  LDH     Integer.  (INPUT) */
-/*          Leading dimension of H exactly as declared in the calling */
-/*          program. */
-
-/*  RITZR,  Double precision arrays of length N.  (OUTPUT) */
-/*  RITZI   On output, RITZR(1:N) (resp. RITZI(1:N)) contains the real */
-/*          (respectively imaginary) parts of the eigenvalues of H. */
-
-/*  BOUNDS  Double precision array of length N.  (OUTPUT) */
-/*          On output, BOUNDS contains the Ritz estimates associated with */
-/*          the eigenvalues RITZR and RITZI.  This is equal to RNORM */
-/*          times the last components of the eigenvectors corresponding */
-/*          to the eigenvalues in RITZR and RITZI. */
-
-/*  Q       Double precision N by N array.  (WORKSPACE) */
-/*          Workspace needed to store the eigenvectors of H. */
-
-/*  LDQ     Integer.  (INPUT) */
-/*          Leading dimension of Q exactly as declared in the calling */
-/*          program. */
-
-/*  WORKL   Double precision work array of length N**2 + 3*N.  (WORKSPACE) */
-/*          Private (replicated) array on each PE or array allocated on */
-/*          the front end.  This is needed to keep the full Schur form */
-/*          of H and also in the calculation of the eigenvectors of H. */
-
-/*  IERR    Integer.  (OUTPUT) */
-/*          Error exit flag from dlahqr or dtrevc. */
-
-/* \EndDoc */
-
-/* ----------------------------------------------------------------------- */
-
-/* \BeginLib */
-
-/* \Local variables: */
-/*     xxxxxx  real */
-
-/* \Routines called: */
-/*     dlahqr  LAPACK routine to compute the real Schur form of an */
-/*             upper Hessenberg matrix and last row of the Schur vectors. */
-/*     arscnd  ARPACK utility routine for timing. */
-/*     dmout   ARPACK utility routine that prints matrices */
-/*     dvout   ARPACK utility routine that prints vectors. */
-/*     dlacpy  LAPACK matrix copy routine. */
-/*     dlapy2  LAPACK routine to compute sqrt(x**2+y**2) carefully. */
-/*     dtrevc  LAPACK routine to compute the eigenvectors of a matrix */
-/*             in upper quasi-triangular form */
-/*     dgemv   Level 2 BLAS routine for matrix vector multiplication. */
-/*     dcopy   Level 1 BLAS that copies one vector to another . */
-/*     dnrm2   Level 1 BLAS that computes the norm of a vector. */
-/*     dscal   Level 1 BLAS that scales a vector. */
-
-
-/* \Author */
-/*     Danny Sorensen               Phuong Vu */
-/*     Richard Lehoucq              CRPC / Rice University */
-/*     Dept. of Computational &     Houston, Texas */
-/*     Applied Mathematics */
-/*     Rice University */
-/*     Houston, Texas */
-
-/* \Revision history: */
-/*     xx/xx/92: Version ' 2.1' */
-
-/* \SCCS Information: @(#) */
-/* FILE: neigh.F   SID: 2.3   DATE OF SID: 4/20/96   RELEASE: 2 */
-
-/* \Remarks */
-/*     None */
-
-/* \EndLib */
-
-/* ----------------------------------------------------------------------- */
 
 /* Subroutine */ int dneigh_(doublereal *rnorm, integer *n, doublereal *h__, 
 	integer *ldh, doublereal *ritzr, doublereal *ritzi, doublereal *

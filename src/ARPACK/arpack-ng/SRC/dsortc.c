@@ -2,70 +2,70 @@
 
 #include "arpack.h"
 
-/* ----------------------------------------------------------------------- */
-/* \BeginDoc */
+/**
+ * \BeginDoc
+ *
+ * \Name: dsortc
+ *
+ * \Description:
+ *  Sorts the complex array in XREAL and XIMAG into the order
+ *  specified by WHICH and optionally applies the permutation to the
+ *  real array Y. It is assumed that if an element of XIMAG is
+ *  nonzero, then its negative is also an element. In other words,
+ *  both members of a complex conjugate pair are to be sorted and the
+ *  pairs are kept adjacent to each other.
+ *
+ * \Usage:
+ *  call dsortc
+ *     ( WHICH, APPLY, N, XREAL, XIMAG, Y )
+ *
+ * \Arguments
+ *  WHICH   Character*2.  (Input)
+ *          'LM' -> sort XREAL,XIMAG into increasing order of magnitude.
+ *          'SM' -> sort XREAL,XIMAG into decreasing order of magnitude.
+ *          'LR' -> sort XREAL into increasing order of algebraic.
+ *          'SR' -> sort XREAL into decreasing order of algebraic.
+ *          'LI' -> sort XIMAG into increasing order of magnitude.
+ *          'SI' -> sort XIMAG into decreasing order of magnitude.
+ *          NOTE: If an element of XIMAG is non-zero, then its negative
+ *                is also an element.
+ *
+ *  APPLY   Logical.  (Input)
+ *          APPLY = .TRUE.  -> apply the sorted order to array Y.
+ *          APPLY = .FALSE. -> do not apply the sorted order to array Y.
+ *
+ *  N       Integer.  (INPUT)
+ *          Size of the arrays.
+ *
+ *  XREAL,  Double precision array of length N.  (INPUT/OUTPUT)
+ *  XIMAG   Real and imaginary part of the array to be sorted.
+ *
+ *  Y       Double precision array of length N.  (INPUT/OUTPUT)
+ *
+ * \EndDoc
+ */
 
-/* \Name: dsortc */
+/**
+ * \BeginLib
+ *
+ * \Author
+ *     Danny Sorensen               Phuong Vu
+ *     Richard Lehoucq              CRPC / Rice University
+ *     Dept. of Computational &     Houston, Texas
+ *     Applied Mathematics
+ *     Rice University
+ *     Houston, Texas
+ *
+ * \Revision history:
+ *     xx/xx/92: Version ' 2.1'
+ *               Adapted from the sort routine in LANSO.
+ *
+ * \SCCS Information: @(#)
+ * FILE: sortc.F   SID: 2.3   DATE OF SID: 4/20/96   RELEASE: 2
+ *
+ * \EndLib
+ */
 
-/* \Description: */
-/*  Sorts the complex array in XREAL and XIMAG into the order */
-/*  specified by WHICH and optionally applies the permutation to the */
-/*  real array Y. It is assumed that if an element of XIMAG is */
-/*  nonzero, then its negative is also an element. In other words, */
-/*  both members of a complex conjugate pair are to be sorted and the */
-/*  pairs are kept adjacent to each other. */
-
-/* \Usage: */
-/*  call dsortc */
-/*     ( WHICH, APPLY, N, XREAL, XIMAG, Y ) */
-
-/* \Arguments */
-/*  WHICH   Character*2.  (Input) */
-/*          'LM' -> sort XREAL,XIMAG into increasing order of magnitude. */
-/*          'SM' -> sort XREAL,XIMAG into decreasing order of magnitude. */
-/*          'LR' -> sort XREAL into increasing order of algebraic. */
-/*          'SR' -> sort XREAL into decreasing order of algebraic. */
-/*          'LI' -> sort XIMAG into increasing order of magnitude. */
-/*          'SI' -> sort XIMAG into decreasing order of magnitude. */
-/*          NOTE: If an element of XIMAG is non-zero, then its negative */
-/*                is also an element. */
-
-/*  APPLY   Logical.  (Input) */
-/*          APPLY = .TRUE.  -> apply the sorted order to array Y. */
-/*          APPLY = .FALSE. -> do not apply the sorted order to array Y. */
-
-/*  N       Integer.  (INPUT) */
-/*          Size of the arrays. */
-
-/*  XREAL,  Double precision array of length N.  (INPUT/OUTPUT) */
-/*  XIMAG   Real and imaginary part of the array to be sorted. */
-
-/*  Y       Double precision array of length N.  (INPUT/OUTPUT) */
-
-/* \EndDoc */
-
-/* ----------------------------------------------------------------------- */
-
-/* \BeginLib */
-
-/* \Author */
-/*     Danny Sorensen               Phuong Vu */
-/*     Richard Lehoucq              CRPC / Rice University */
-/*     Dept. of Computational &     Houston, Texas */
-/*     Applied Mathematics */
-/*     Rice University */
-/*     Houston, Texas */
-
-/* \Revision history: */
-/*     xx/xx/92: Version ' 2.1' */
-/*               Adapted from the sort routine in LANSO. */
-
-/* \SCCS Information: @(#) */
-/* FILE: sortc.F   SID: 2.3   DATE OF SID: 4/20/96   RELEASE: 2 */
-
-/* \EndLib */
-
-/* ----------------------------------------------------------------------- */
 
 /* Subroutine */ int dsortc_(char *which, logical *apply, integer *n, 
 	doublereal *xreal, doublereal *ximag, doublereal *y)

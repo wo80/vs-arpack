@@ -3,173 +3,173 @@
 #include "arpack.h"
 
 
+/**
+ * \BeginDoc
+ *
+ * \Name: znaup2
+ *
+ * \Description:
+ *  Intermediate level interface called by znaupd .
+ *
+ * \Usage:
+ *  call znaup2
+ *     ( IDO, BMAT, N, WHICH, NEV, NP, TOL, RESID, MODE, IUPD,
+ *       ISHIFT, MXITER, V, LDV, H, LDH, RITZ, BOUNDS,
+ *       Q, LDQ, WORKL, IPNTR, WORKD, RWORK, INFO )
+ *
+ * \Arguments
+ *
+ *  IDO, BMAT, N, WHICH, NEV, TOL, RESID: same as defined in znaupd .
+ *  MODE, ISHIFT, MXITER: see the definition of IPARAM in znaupd .
+ *
+ *  NP      Integer.  (INPUT/OUTPUT)
+ *          Contains the number of implicit shifts to apply during
+ *          each Arnoldi iteration.
+ *          If ISHIFT=1, NP is adjusted dynamically at each iteration
+ *          to accelerate convergence and prevent stagnation.
+ *          This is also roughly equal to the number of matrix-vector
+ *          products (involving the operator OP) per Arnoldi iteration.
+ *          The logic for adjusting is contained within the current
+ *          subroutine.
+ *          If ISHIFT=0, NP is the number of shifts the user needs
+ *          to provide via reverse communication. 0 < NP < NCV-NEV.
+ *          NP may be less than NCV-NEV since a leading block of the current
+ *          upper Hessenberg matrix has split off and contains "unwanted"
+ *          Ritz values.
+ *          Upon termination of the IRA iteration, NP contains the number
+ *          of "converged" wanted Ritz values.
+ *
+ *  IUPD    Integer.  (INPUT)
+ *          IUPD .EQ. 0: use explicit restart instead implicit update.
+ *          IUPD .NE. 0: use implicit update.
+ *
+ *  V       Complex*16  N by (NEV+NP) array.  (INPUT/OUTPUT)
+ *          The Arnoldi basis vectors are returned in the first NEV
+ *          columns of V.
+ *
+ *  LDV     Integer.  (INPUT)
+ *          Leading dimension of V exactly as declared in the calling
+ *          program.
+ *
+ *  H       Complex*16  (NEV+NP) by (NEV+NP) array.  (OUTPUT)
+ *          H is used to store the generated upper Hessenberg matrix
+ *
+ *  LDH     Integer.  (INPUT)
+ *          Leading dimension of H exactly as declared in the calling
+ *          program.
+ *
+ *  RITZ    Complex*16  array of length NEV+NP.  (OUTPUT)
+ *          RITZ(1:NEV)  contains the computed Ritz values of OP.
+ *
+ *  BOUNDS  Complex*16  array of length NEV+NP.  (OUTPUT)
+ *          BOUNDS(1:NEV) contain the error bounds corresponding to
+ *          the computed Ritz values.
+ *
+ *  Q       Complex*16  (NEV+NP) by (NEV+NP) array.  (WORKSPACE)
+ *          Private (replicated) work array used to accumulate the
+ *          rotation in the shift application step.
+ *
+ *  LDQ     Integer.  (INPUT)
+ *          Leading dimension of Q exactly as declared in the calling
+ *          program.
+ *
+ *  WORKL   Complex*16  work array of length at least
+ *          (NEV+NP)**2 + 3*(NEV+NP).  (WORKSPACE)
+ *          Private (replicated) array on each PE or array allocated on
+ *          the front end.  It is used in shifts calculation, shifts
+ *          application and convergence checking.
+ *
+ *
+ *  IPNTR   Integer array of length 3.  (OUTPUT)
+ *          Pointer to mark the starting locations in the WORKD for
+ *          vectors used by the Arnoldi iteration.
+ *          -------------------------------------------------------------
+ *          IPNTR(1): pointer to the current operand vector X.
+ *          IPNTR(2): pointer to the current result vector Y.
+ *          IPNTR(3): pointer to the vector B * X when used in the
+ *                    shift-and-invert mode.  X is the current operand.
+ *          -------------------------------------------------------------
+ *
+ *  WORKD   Complex*16  work array of length 3*N.  (WORKSPACE)
+ *          Distributed array to be used in the basic Arnoldi iteration
+ *          for reverse communication.  The user should not use WORKD
+ *          as temporary workspace during the iteration !!!!!!!!!!
+ *          See Data Distribution Note in ZNAUPD .
+ *
+ *  RWORK   Double precision    work array of length  NEV+NP ( WORKSPACE)
+ *          Private (replicated) array on each PE or array allocated on
+ *          the front end.
+ *
+ *  INFO    Integer.  (INPUT/OUTPUT)
+ *          If INFO .EQ. 0, a randomly initial residual vector is used.
+ *          If INFO .NE. 0, RESID contains the initial residual vector,
+ *                          possibly from a previous run.
+ *          Error flag on output.
+ *          =     0: Normal return.
+ *          =     1: Maximum number of iterations taken.
+ *                   All possible eigenvalues of OP has been found.
+ *                   NP returns the number of converged Ritz values.
+ *          =     2: No shifts could be applied.
+ *          =    -8: Error return from LAPACK eigenvalue calculation;
+ *                   This should never happen.
+ *          =    -9: Starting vector is zero.
+ *          = -9999: Could not build an Arnoldi factorization.
+ *                   Size that was built in returned in NP.
+ *
+ * \EndDoc
+ */
 
-/* \BeginDoc */
+/**
+ * \BeginLib
+ *
+ * \Local variables:
+ *     xxxxxx  Complex*16
+ *
+ * \References:
+ *  1. D.C. Sorensen, "Implicit Application of Polynomial Filters in
+ *     a k-Step Arnoldi Method", SIAM J. Matr. Anal. Apps., 13 (1992),
+ *     pp 357-385.
+ *  2. R.B. Lehoucq, "Analysis and Implementation of an Implicitly
+ *     Restarted Arnoldi Iteration", Rice University Technical Report
+ *     TR95-13, Department of Computational and Applied Mathematics.
+ *
+ * \Routines called:
+ *     zgetv0   ARPACK initial vector generation routine.
+ *     znaitr   ARPACK Arnoldi factorization routine.
+ *     znapps   ARPACK application of implicit shifts routine.
+ *     zneigh   ARPACK compute Ritz values and error bounds routine.
+ *     zngets   ARPACK reorder Ritz values and error bounds routine.
+ *     zsortc   ARPACK sorting routine.
+ *     ivout   ARPACK utility routine that prints integers.
+ *     arscnd  ARPACK utility routine for timing.
+ *     zmout    ARPACK utility routine that prints matrices
+ *     zvout    ARPACK utility routine that prints vectors.
+ *     dvout    ARPACK utility routine that prints vectors.
+ *     dlamch   LAPACK routine that determines machine constants.
+ *     dlapy2   LAPACK routine to compute sqrt(x**2+y**2) carefully.
+ *     zcopy    Level 1 BLAS that copies one vector to another .
+ *     zdotc    Level 1 BLAS that computes the scalar product of two vectors.
+ *     zswap    Level 1 BLAS that swaps two vectors.
+ *     dznrm2   Level 1 BLAS that computes the norm of a vector.
+ *
+ * \Author
+ *     Danny Sorensen               Phuong Vu
+ *     Richard Lehoucq              CRPC / Rice Universitya
+ *     Chao Yang                    Houston, Texas
+ *     Dept. of Computational &
+ *     Applied Mathematics
+ *     Rice University
+ *     Houston, Texas
+ *
+ * \SCCS Information: @(#)
+ * FILE: naup2.F   SID: 2.6   DATE OF SID: 06/01/00   RELEASE: 2
+ *
+ * \Remarks
+ *     1. None
+ *
+ * \EndLib
+ */
 
-/* \Name: znaup2 */
-
-/* \Description: */
-/*  Intermediate level interface called by znaupd . */
-
-/* \Usage: */
-/*  call znaup2 */
-/*     ( IDO, BMAT, N, WHICH, NEV, NP, TOL, RESID, MODE, IUPD, */
-/*       ISHIFT, MXITER, V, LDV, H, LDH, RITZ, BOUNDS, */
-/*       Q, LDQ, WORKL, IPNTR, WORKD, RWORK, INFO ) */
-
-/* \Arguments */
-
-/*  IDO, BMAT, N, WHICH, NEV, TOL, RESID: same as defined in znaupd . */
-/*  MODE, ISHIFT, MXITER: see the definition of IPARAM in znaupd . */
-
-/*  NP      Integer.  (INPUT/OUTPUT) */
-/*          Contains the number of implicit shifts to apply during */
-/*          each Arnoldi iteration. */
-/*          If ISHIFT=1, NP is adjusted dynamically at each iteration */
-/*          to accelerate convergence and prevent stagnation. */
-/*          This is also roughly equal to the number of matrix-vector */
-/*          products (involving the operator OP) per Arnoldi iteration. */
-/*          The logic for adjusting is contained within the current */
-/*          subroutine. */
-/*          If ISHIFT=0, NP is the number of shifts the user needs */
-/*          to provide via reverse communication. 0 < NP < NCV-NEV. */
-/*          NP may be less than NCV-NEV since a leading block of the current */
-/*          upper Hessenberg matrix has split off and contains "unwanted" */
-/*          Ritz values. */
-/*          Upon termination of the IRA iteration, NP contains the number */
-/*          of "converged" wanted Ritz values. */
-
-/*  IUPD    Integer.  (INPUT) */
-/*          IUPD .EQ. 0: use explicit restart instead implicit update. */
-/*          IUPD .NE. 0: use implicit update. */
-
-/*  V       Complex*16  N by (NEV+NP) array.  (INPUT/OUTPUT) */
-/*          The Arnoldi basis vectors are returned in the first NEV */
-/*          columns of V. */
-
-/*  LDV     Integer.  (INPUT) */
-/*          Leading dimension of V exactly as declared in the calling */
-/*          program. */
-
-/*  H       Complex*16  (NEV+NP) by (NEV+NP) array.  (OUTPUT) */
-/*          H is used to store the generated upper Hessenberg matrix */
-
-/*  LDH     Integer.  (INPUT) */
-/*          Leading dimension of H exactly as declared in the calling */
-/*          program. */
-
-/*  RITZ    Complex*16  array of length NEV+NP.  (OUTPUT) */
-/*          RITZ(1:NEV)  contains the computed Ritz values of OP. */
-
-/*  BOUNDS  Complex*16  array of length NEV+NP.  (OUTPUT) */
-/*          BOUNDS(1:NEV) contain the error bounds corresponding to */
-/*          the computed Ritz values. */
-
-/*  Q       Complex*16  (NEV+NP) by (NEV+NP) array.  (WORKSPACE) */
-/*          Private (replicated) work array used to accumulate the */
-/*          rotation in the shift application step. */
-
-/*  LDQ     Integer.  (INPUT) */
-/*          Leading dimension of Q exactly as declared in the calling */
-/*          program. */
-
-/*  WORKL   Complex*16  work array of length at least */
-/*          (NEV+NP)**2 + 3*(NEV+NP).  (WORKSPACE) */
-/*          Private (replicated) array on each PE or array allocated on */
-/*          the front end.  It is used in shifts calculation, shifts */
-/*          application and convergence checking. */
-
-
-/*  IPNTR   Integer array of length 3.  (OUTPUT) */
-/*          Pointer to mark the starting locations in the WORKD for */
-/*          vectors used by the Arnoldi iteration. */
-/*          ------------------------------------------------------------- */
-/*          IPNTR(1): pointer to the current operand vector X. */
-/*          IPNTR(2): pointer to the current result vector Y. */
-/*          IPNTR(3): pointer to the vector B * X when used in the */
-/*                    shift-and-invert mode.  X is the current operand. */
-/*          ------------------------------------------------------------- */
-
-/*  WORKD   Complex*16  work array of length 3*N.  (WORKSPACE) */
-/*          Distributed array to be used in the basic Arnoldi iteration */
-/*          for reverse communication.  The user should not use WORKD */
-/*          as temporary workspace during the iteration !!!!!!!!!! */
-/*          See Data Distribution Note in ZNAUPD . */
-
-/*  RWORK   Double precision    work array of length  NEV+NP ( WORKSPACE) */
-/*          Private (replicated) array on each PE or array allocated on */
-/*          the front end. */
-
-/*  INFO    Integer.  (INPUT/OUTPUT) */
-/*          If INFO .EQ. 0, a randomly initial residual vector is used. */
-/*          If INFO .NE. 0, RESID contains the initial residual vector, */
-/*                          possibly from a previous run. */
-/*          Error flag on output. */
-/*          =     0: Normal return. */
-/*          =     1: Maximum number of iterations taken. */
-/*                   All possible eigenvalues of OP has been found. */
-/*                   NP returns the number of converged Ritz values. */
-/*          =     2: No shifts could be applied. */
-/*          =    -8: Error return from LAPACK eigenvalue calculation; */
-/*                   This should never happen. */
-/*          =    -9: Starting vector is zero. */
-/*          = -9999: Could not build an Arnoldi factorization. */
-/*                   Size that was built in returned in NP. */
-
-/* \EndDoc */
-
-/* ----------------------------------------------------------------------- */
-
-/* \BeginLib */
-
-/* \Local variables: */
-/*     xxxxxx  Complex*16 */
-
-/* \References: */
-/*  1. D.C. Sorensen, "Implicit Application of Polynomial Filters in */
-/*     a k-Step Arnoldi Method", SIAM J. Matr. Anal. Apps., 13 (1992), */
-/*     pp 357-385. */
-/*  2. R.B. Lehoucq, "Analysis and Implementation of an Implicitly */
-/*     Restarted Arnoldi Iteration", Rice University Technical Report */
-/*     TR95-13, Department of Computational and Applied Mathematics. */
-
-/* \Routines called: */
-/*     zgetv0   ARPACK initial vector generation routine. */
-/*     znaitr   ARPACK Arnoldi factorization routine. */
-/*     znapps   ARPACK application of implicit shifts routine. */
-/*     zneigh   ARPACK compute Ritz values and error bounds routine. */
-/*     zngets   ARPACK reorder Ritz values and error bounds routine. */
-/*     zsortc   ARPACK sorting routine. */
-/*     ivout   ARPACK utility routine that prints integers. */
-/*     arscnd  ARPACK utility routine for timing. */
-/*     zmout    ARPACK utility routine that prints matrices */
-/*     zvout    ARPACK utility routine that prints vectors. */
-/*     dvout    ARPACK utility routine that prints vectors. */
-/*     dlamch   LAPACK routine that determines machine constants. */
-/*     dlapy2   LAPACK routine to compute sqrt(x**2+y**2) carefully. */
-/*     zcopy    Level 1 BLAS that copies one vector to another . */
-/*     zdotc    Level 1 BLAS that computes the scalar product of two vectors. */
-/*     zswap    Level 1 BLAS that swaps two vectors. */
-/*     dznrm2   Level 1 BLAS that computes the norm of a vector. */
-
-/* \Author */
-/*     Danny Sorensen               Phuong Vu */
-/*     Richard Lehoucq              CRPC / Rice Universitya */
-/*     Chao Yang                    Houston, Texas */
-/*     Dept. of Computational & */
-/*     Applied Mathematics */
-/*     Rice University */
-/*     Houston, Texas */
-
-/* \SCCS Information: @(#) */
-/* FILE: naup2.F   SID: 2.6   DATE OF SID: 06/01/00   RELEASE: 2 */
-
-/* \Remarks */
-/*     1. None */
-
-/* \EndLib */
-
-/* ----------------------------------------------------------------------- */
 
 /* Subroutine */ int znaup2_(integer *ido, char *bmat, integer *n, char *
 	which, integer *nev, integer *np, doublereal *tol, doublecomplex *

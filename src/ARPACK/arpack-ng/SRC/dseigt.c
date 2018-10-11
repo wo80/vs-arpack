@@ -4,91 +4,91 @@
 
 
 
-/* ----------------------------------------------------------------------- */
-/* \BeginDoc */
+/**
+ * \BeginDoc
+ *
+ * \Name: dseigt
+ *
+ * \Description:
+ *  Compute the eigenvalues of the current symmetric tridiagonal matrix
+ *  and the corresponding error bounds given the current residual norm.
+ *
+ * \Usage:
+ *  call dseigt
+ *     ( RNORM, N, H, LDH, EIG, BOUNDS, WORKL, IERR )
+ *
+ * \Arguments
+ *  RNORM   Double precision scalar.  (INPUT)
+ *          RNORM contains the residual norm corresponding to the current
+ *          symmetric tridiagonal matrix H.
+ *
+ *  N       Integer.  (INPUT)
+ *          Size of the symmetric tridiagonal matrix H.
+ *
+ *  H       Double precision N by 2 array.  (INPUT)
+ *          H contains the symmetric tridiagonal matrix with the
+ *          subdiagonal in the first column starting at H(2,1) and the
+ *          main diagonal in second column.
+ *
+ *  LDH     Integer.  (INPUT)
+ *          Leading dimension of H exactly as declared in the calling
+ *          program.
+ *
+ *  EIG     Double precision array of length N.  (OUTPUT)
+ *          On output, EIG contains the N eigenvalues of H possibly
+ *          unsorted.  The BOUNDS arrays are returned in the
+ *          same sorted order as EIG.
+ *
+ *  BOUNDS  Double precision array of length N.  (OUTPUT)
+ *          On output, BOUNDS contains the error estimates corresponding
+ *          to the eigenvalues EIG.  This is equal to RNORM times the
+ *          last components of the eigenvectors corresponding to the
+ *          eigenvalues in EIG.
+ *
+ *  WORKL   Double precision work array of length 3*N.  (WORKSPACE)
+ *          Private (replicated) array on each PE or array allocated on
+ *          the front end.
+ *
+ *  IERR    Integer.  (OUTPUT)
+ *          Error exit flag from dstqrb.
+ *
+ * \EndDoc
+ */
 
-/* \Name: dseigt */
+/**
+ * \BeginLib
+ *
+ * \Local variables:
+ *     xxxxxx  real
+ *
+ * \Routines called:
+ *     dstqrb  ARPACK routine that computes the eigenvalues and the
+ *             last components of the eigenvectors of a symmetric
+ *             and tridiagonal matrix.
+ *     arscnd  ARPACK utility routine for timing.
+ *     dvout   ARPACK utility routine that prints vectors.
+ *     dcopy   Level 1 BLAS that copies one vector to another.
+ *
+ * \Author
+ *     Danny Sorensen               Phuong Vu
+ *     Richard Lehoucq              CRPC / Rice University
+ *     Dept. of Computational &     Houston, Texas
+ *     Applied Mathematics
+ *     Rice University
+ *     Houston, Texas
+ *
+ * \Revision history:
+ *     xx/xx/92: Version ' 2.4'
+ *
+ * \SCCS Information: @(#)
+ * FILE: seigt.F   SID: 2.4   DATE OF SID: 8/27/96   RELEASE: 2
+ *
+ * \Remarks
+ *     None
+ *
+ * \EndLib
+ */
 
-/* \Description: */
-/*  Compute the eigenvalues of the current symmetric tridiagonal matrix */
-/*  and the corresponding error bounds given the current residual norm. */
-
-/* \Usage: */
-/*  call dseigt */
-/*     ( RNORM, N, H, LDH, EIG, BOUNDS, WORKL, IERR ) */
-
-/* \Arguments */
-/*  RNORM   Double precision scalar.  (INPUT) */
-/*          RNORM contains the residual norm corresponding to the current */
-/*          symmetric tridiagonal matrix H. */
-
-/*  N       Integer.  (INPUT) */
-/*          Size of the symmetric tridiagonal matrix H. */
-
-/*  H       Double precision N by 2 array.  (INPUT) */
-/*          H contains the symmetric tridiagonal matrix with the */
-/*          subdiagonal in the first column starting at H(2,1) and the */
-/*          main diagonal in second column. */
-
-/*  LDH     Integer.  (INPUT) */
-/*          Leading dimension of H exactly as declared in the calling */
-/*          program. */
-
-/*  EIG     Double precision array of length N.  (OUTPUT) */
-/*          On output, EIG contains the N eigenvalues of H possibly */
-/*          unsorted.  The BOUNDS arrays are returned in the */
-/*          same sorted order as EIG. */
-
-/*  BOUNDS  Double precision array of length N.  (OUTPUT) */
-/*          On output, BOUNDS contains the error estimates corresponding */
-/*          to the eigenvalues EIG.  This is equal to RNORM times the */
-/*          last components of the eigenvectors corresponding to the */
-/*          eigenvalues in EIG. */
-
-/*  WORKL   Double precision work array of length 3*N.  (WORKSPACE) */
-/*          Private (replicated) array on each PE or array allocated on */
-/*          the front end. */
-
-/*  IERR    Integer.  (OUTPUT) */
-/*          Error exit flag from dstqrb. */
-
-/* \EndDoc */
-
-/* ----------------------------------------------------------------------- */
-
-/* \BeginLib */
-
-/* \Local variables: */
-/*     xxxxxx  real */
-
-/* \Routines called: */
-/*     dstqrb  ARPACK routine that computes the eigenvalues and the */
-/*             last components of the eigenvectors of a symmetric */
-/*             and tridiagonal matrix. */
-/*     arscnd  ARPACK utility routine for timing. */
-/*     dvout   ARPACK utility routine that prints vectors. */
-/*     dcopy   Level 1 BLAS that copies one vector to another. */
-
-/* \Author */
-/*     Danny Sorensen               Phuong Vu */
-/*     Richard Lehoucq              CRPC / Rice University */
-/*     Dept. of Computational &     Houston, Texas */
-/*     Applied Mathematics */
-/*     Rice University */
-/*     Houston, Texas */
-
-/* \Revision history: */
-/*     xx/xx/92: Version ' 2.4' */
-
-/* \SCCS Information: @(#) */
-/* FILE: seigt.F   SID: 2.4   DATE OF SID: 8/27/96   RELEASE: 2 */
-
-/* \Remarks */
-/*     None */
-
-/* \EndLib */
-
-/* ----------------------------------------------------------------------- */
 
 /* Subroutine */ int dseigt_(doublereal *rnorm, integer *n, doublereal *h__, 
 	integer *ldh, doublereal *eig, doublereal *bounds, doublereal *workl, 

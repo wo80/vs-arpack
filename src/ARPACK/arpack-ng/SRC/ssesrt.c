@@ -4,72 +4,72 @@
 
 
 
-/* ----------------------------------------------------------------------- */
-/* \BeginDoc */
+/**
+ * \BeginDoc
+ *
+ * \Name: ssesrt
+ *
+ * \Description:
+ *  Sort the array X in the order specified by WHICH and optionally
+ *  apply the permutation to the columns of the matrix A.
+ *
+ * \Usage:
+ *  call ssesrt
+ *     ( WHICH, APPLY, N, X, NA, A, LDA)
+ *
+ * \Arguments
+ *  WHICH   Character*2.  (Input)
+ *          'LM' -> X is sorted into increasing order of magnitude.
+ *          'SM' -> X is sorted into decreasing order of magnitude.
+ *          'LA' -> X is sorted into increasing order of algebraic.
+ *          'SA' -> X is sorted into decreasing order of algebraic.
+ *
+ *  APPLY   Logical.  (Input)
+ *          APPLY = .TRUE.  -> apply the sorted order to A.
+ *          APPLY = .FALSE. -> do not apply the sorted order to A.
+ *
+ *  N       Integer.  (INPUT)
+ *          Dimension of the array X.
+ *
+ *  X      Real array of length N.  (INPUT/OUTPUT)
+ *          The array to be sorted.
+ *
+ *  NA      Integer.  (INPUT)
+ *          Number of rows of the matrix A.
+ *
+ *  A      Real array of length NA by N.  (INPUT/OUTPUT)
+ *
+ *  LDA     Integer.  (INPUT)
+ *          Leading dimension of A.
+ *
+ * \EndDoc
+ */
 
-/* \Name: ssesrt */
+/**
+ * \BeginLib
+ *
+ * \Routines
+ *     sswap  Level 1 BLAS that swaps the contents of two vectors.
+ *
+ * \Authors
+ *     Danny Sorensen               Phuong Vu
+ *     Richard Lehoucq              CRPC / Rice University
+ *     Dept. of Computational &     Houston, Texas
+ *     Applied Mathematics
+ *     Rice University
+ *     Houston, Texas
+ *
+ * \Revision history:
+ *     12/15/93: Version ' 2.1'.
+ *               Adapted from the sort routine in LANSO and
+ *               the ARPACK code ssortr
+ *
+ * \SCCS Information: @(#)
+ * FILE: sesrt.F   SID: 2.3   DATE OF SID: 4/19/96   RELEASE: 2
+ *
+ * \EndLib
+ */
 
-/* \Description: */
-/*  Sort the array X in the order specified by WHICH and optionally */
-/*  apply the permutation to the columns of the matrix A. */
-
-/* \Usage: */
-/*  call ssesrt */
-/*     ( WHICH, APPLY, N, X, NA, A, LDA) */
-
-/* \Arguments */
-/*  WHICH   Character*2.  (Input) */
-/*          'LM' -> X is sorted into increasing order of magnitude. */
-/*          'SM' -> X is sorted into decreasing order of magnitude. */
-/*          'LA' -> X is sorted into increasing order of algebraic. */
-/*          'SA' -> X is sorted into decreasing order of algebraic. */
-
-/*  APPLY   Logical.  (Input) */
-/*          APPLY = .TRUE.  -> apply the sorted order to A. */
-/*          APPLY = .FALSE. -> do not apply the sorted order to A. */
-
-/*  N       Integer.  (INPUT) */
-/*          Dimension of the array X. */
-
-/*  X      Real array of length N.  (INPUT/OUTPUT) */
-/*          The array to be sorted. */
-
-/*  NA      Integer.  (INPUT) */
-/*          Number of rows of the matrix A. */
-
-/*  A      Real array of length NA by N.  (INPUT/OUTPUT) */
-
-/*  LDA     Integer.  (INPUT) */
-/*          Leading dimension of A. */
-
-/* \EndDoc */
-
-/* ----------------------------------------------------------------------- */
-
-/* \BeginLib */
-
-/* \Routines */
-/*     sswap  Level 1 BLAS that swaps the contents of two vectors. */
-
-/* \Authors */
-/*     Danny Sorensen               Phuong Vu */
-/*     Richard Lehoucq              CRPC / Rice University */
-/*     Dept. of Computational &     Houston, Texas */
-/*     Applied Mathematics */
-/*     Rice University */
-/*     Houston, Texas */
-
-/* \Revision history: */
-/*     12/15/93: Version ' 2.1'. */
-/*               Adapted from the sort routine in LANSO and */
-/*               the ARPACK code ssortr */
-
-/* \SCCS Information: @(#) */
-/* FILE: sesrt.F   SID: 2.3   DATE OF SID: 4/19/96   RELEASE: 2 */
-
-/* \EndLib */
-
-/* ----------------------------------------------------------------------- */
 
 /* Subroutine */ int ssesrt_(char *which, logical *apply, integer *n, real *x,
 	 integer *na, real *a, integer *lda, ftnlen which_len)

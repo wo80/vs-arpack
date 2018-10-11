@@ -4,63 +4,63 @@
 
 
 
-/* ----------------------------------------------------------------------- */
-/* \BeginDoc */
+/**
+ * \BeginDoc
+ *
+ * \Name: dsconv
+ *
+ * \Description:
+ *  Convergence testing for the symmetric Arnoldi eigenvalue routine.
+ *
+ * \Usage:
+ *  call dsconv
+ *     ( N, RITZ, BOUNDS, TOL, NCONV )
+ *
+ * \Arguments
+ *  N       Integer.  (INPUT)
+ *          Number of Ritz values to check for convergence.
+ *
+ *  RITZ    Double precision array of length N.  (INPUT)
+ *          The Ritz values to be checked for convergence.
+ *
+ *  BOUNDS  Double precision array of length N.  (INPUT)
+ *          Ritz estimates associated with the Ritz values in RITZ.
+ *
+ *  TOL     Double precision scalar.  (INPUT)
+ *          Desired relative accuracy for a Ritz value to be considered
+ *          "converged".
+ *
+ *  NCONV   Integer scalar.  (OUTPUT)
+ *          Number of "converged" Ritz values.
+ *
+ * \EndDoc
+ */
 
-/* \Name: dsconv */
+/**
+ * \BeginLib
+ *
+ * \Routines called:
+ *     arscnd  ARPACK utility routine for timing.
+ *     dlamch  LAPACK routine that determines machine constants.
+ *
+ * \Author
+ *     Danny Sorensen               Phuong Vu
+ *     Richard Lehoucq              CRPC / Rice University
+ *     Dept. of Computational &     Houston, Texas
+ *     Applied Mathematics
+ *     Rice University
+ *     Houston, Texas
+ *
+ * \SCCS Information: @(#)
+ * FILE: sconv.F   SID: 2.4   DATE OF SID: 4/19/96   RELEASE: 2
+ *
+ * \Remarks
+ *     1. Starting with version 2.4, this routine no longer uses the
+ *        Parlett strategy using the gap conditions.
+ *
+ * \EndLib
+ */
 
-/* \Description: */
-/*  Convergence testing for the symmetric Arnoldi eigenvalue routine. */
-
-/* \Usage: */
-/*  call dsconv */
-/*     ( N, RITZ, BOUNDS, TOL, NCONV ) */
-
-/* \Arguments */
-/*  N       Integer.  (INPUT) */
-/*          Number of Ritz values to check for convergence. */
-
-/*  RITZ    Double precision array of length N.  (INPUT) */
-/*          The Ritz values to be checked for convergence. */
-
-/*  BOUNDS  Double precision array of length N.  (INPUT) */
-/*          Ritz estimates associated with the Ritz values in RITZ. */
-
-/*  TOL     Double precision scalar.  (INPUT) */
-/*          Desired relative accuracy for a Ritz value to be considered */
-/*          "converged". */
-
-/*  NCONV   Integer scalar.  (OUTPUT) */
-/*          Number of "converged" Ritz values. */
-
-/* \EndDoc */
-
-/* ----------------------------------------------------------------------- */
-
-/* \BeginLib */
-
-/* \Routines called: */
-/*     arscnd  ARPACK utility routine for timing. */
-/*     dlamch  LAPACK routine that determines machine constants. */
-
-/* \Author */
-/*     Danny Sorensen               Phuong Vu */
-/*     Richard Lehoucq              CRPC / Rice University */
-/*     Dept. of Computational &     Houston, Texas */
-/*     Applied Mathematics */
-/*     Rice University */
-/*     Houston, Texas */
-
-/* \SCCS Information: @(#) */
-/* FILE: sconv.F   SID: 2.4   DATE OF SID: 4/19/96   RELEASE: 2 */
-
-/* \Remarks */
-/*     1. Starting with version 2.4, this routine no longer uses the */
-/*        Parlett strategy using the gap conditions. */
-
-/* \EndLib */
-
-/* ----------------------------------------------------------------------- */
 
 /* Subroutine */ int dsconv_(integer *n, doublereal *ritz, doublereal *bounds,
 	 doublereal *tol, integer *nconv)
