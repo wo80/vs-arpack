@@ -10,7 +10,7 @@
 		http://www.netlib.org/f2c/libf2c.zip
 */
 
-#include "f2c.h"
+#include "arpack.h"
 
 /* Subroutine */ int iswap_(integer *n, integer *sx, integer *incx, integer *
 	sy, integer *incy)
