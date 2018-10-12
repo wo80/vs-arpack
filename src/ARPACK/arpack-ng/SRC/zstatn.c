@@ -17,16 +17,6 @@
 /*     | See stat.doc for documentation | */
 /*     %--------------------------------% */
 
-/*     %-----------------------% */
-/*     | Executable Statements | */
-/*     %-----------------------% */
-/*     %--------------------------------% */
-/*     | See stat.doc for documentation | */
-/*     %--------------------------------% */
-
-/* \SCCS Information: @(#) */
-/* FILE: stat.h   SID: 2.2   DATE OF SID: 11/16/95   RELEASE: 2 */
-
 
     timing_1.nopx = 0;
     timing_1.nbx = 0;
