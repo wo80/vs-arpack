@@ -39,6 +39,7 @@ int ar_di_ss(char* which, int k, int ncv, int maxit, double tol,
 		}
 
 		result->iterations = prob.GetIter();
+		result->ncv = prob.GetNcv();
 		result->info = 0;
 	}
 	catch(const ArpackError& e)
@@ -75,6 +76,7 @@ int ar_di_ss_shift(char* which,  int k, int ncv, int maxit, double tol, double s
 		}
 
 		result->iterations = prob.GetIter();
+		result->ncv = prob.GetNcv();
 		result->info = 0;
 	}
 	catch(const ArpackError& e)
@@ -112,6 +114,7 @@ int ar_di_sg(char* which, int k, int ncv, int maxit, double tol,
 		}
 
 		result->iterations = prob.GetIter();
+		result->ncv = prob.GetNcv();
 		result->info = 0;
 	}
 	catch (const ArpackError& e)
@@ -149,6 +152,7 @@ int ar_di_sg_shift(char* which, char mode, int k, int ncv, int maxit, double tol
 		}
 
 		result->iterations = prob.GetIter();
+		result->ncv = prob.GetNcv();
 		result->info = 0;
 	}
 	catch (const ArpackError& e)
@@ -183,6 +187,7 @@ int ar_di_ns(char* which, int k, int ncv, int maxit, double tol,
 		}
 
 		result->iterations = prob.GetIter();
+		result->ncv = prob.GetNcv();
 		result->info = 0;
 	}
 	catch(const ArpackError& e)
@@ -217,6 +222,7 @@ int ar_di_ns_shift(char* which,  int k, int ncv, int maxit, double tol, double s
 		}
 
 		result->iterations = prob.GetIter();
+		result->ncv = prob.GetNcv();
 		result->info = 0;
 	}
 	catch(const ArpackError& e)
@@ -252,6 +258,7 @@ int ar_di_ng(char* which, int k, int ncv, int maxit, double tol,
 		}
 
 		result->iterations = prob.GetIter();
+		result->ncv = prob.GetNcv();
 		result->info = 0;
 	}
 	catch(const ArpackError& e)
@@ -287,6 +294,7 @@ int ar_di_ng_shift(char* which,  int k, int ncv, int maxit, double tol, double s
 		}
 
 		result->iterations = prob.GetIter();
+		result->ncv = prob.GetNcv();
 		result->info = 0;
 	}
 	catch(const ArpackError& e)
@@ -322,6 +330,7 @@ int ar_di_ng_shift_cx(char* which,  int k, int ncv, int maxit, double tol, char 
 		}
 
 		result->iterations = prob.GetIter();
+		result->ncv = prob.GetNcv();
 		result->info = 0;
 	}
 	catch(const ArpackError& e)

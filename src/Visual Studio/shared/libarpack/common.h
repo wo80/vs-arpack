@@ -23,6 +23,8 @@ typedef struct ar_result_t {
     void *eigvec;
 	/* Number of iterations taken. */
     int  iterations;
+	/* Number of Arnoldi vectors. */
+    int  ncv;
 	/* Error info. */
     int  info;
 } ar_result;
