@@ -56,6 +56,14 @@ extern "C"
 	EXPORT int ar_di_ng_shift_cx(char* which,  int k, int ncv, int maxit, double tol, char part, double sigma_r, double sigma_i,
 		ar_spmat *A, ar_spmat *B, ar_result *result);
 
+	// Find singular values of real matrix (rectangular)
+	EXPORT int ar_di_svd(char* which, int k, int ncv, int maxit, double tol,
+		ar_spmat *A, ar_result *result);
+
+	// Determine the truncated SVD of real matrix (rectangular)
+	EXPORT int ar_di_svd_trunc(char* which, int k, int ncv, int maxit, double tol,
+		ar_spmat *A, ar_result *result);
+
 #ifdef __cplusplus
 }
 #endif

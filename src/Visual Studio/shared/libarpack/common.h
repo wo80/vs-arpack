@@ -2,7 +2,9 @@
 
 /* Sparse matrix in column compressed format. */
 typedef struct ar_spmat_t {
-	/* Number of rows/columns. */
+	/* Number of rows. */
+    int  m;
+	/* Number of columns. */
     int  n;
 	/* Array of nonzero values. */
     void *x;

@@ -10,6 +10,7 @@
 #include "arlgnsym.h"
 #include "arlscomp.h"
 #include "arlgcomp.h"
+#include "arssym.h"
 
 #define AR_TYPE double
 
@@ -334,6 +335,85 @@ int ar_di_ng_shift_cx(char* which,  int k, int ncv, int maxit, double tol, char 
 		result->info = 0;
 	}
 	catch(const ArpackError& e)
+	{
+		result->info = e.Status();
+	}
+
+	return nconv;
+}
+
+
+int ar_di_svd(char* which, int k, int ncv, int maxit, double tol,
+	ar_spmat *A, ar_result *result)
+{
+	int nconv = 0; // Number of converged eigenvalues.
+
+	int m = A->m; // Number of rows in A.
+	int n = A->n; // Number of columns in A.
+
+	if (m < n)
+	{
+		result->info = ArpackError::INCONSISTENT_DATA;
+		return nconv;
+	}
+
+	AR_TYPE *sval = (AR_TYPE *)result->eigvalr;
+
+	try
+	{
+		// Defining the eigenvalue problem (A'*A)*v = sigma*v.
+		ARluNonSymMatrix<AR_TYPE, double> matrix(m, n, A->nnz, (AR_TYPE *)A->x, A->i, A->p);
+		ARSymStdEig<AR_TYPE, ARluNonSymMatrix<AR_TYPE, double>>
+			prob(n, k, &matrix, &ARluNonSymMatrix<AR_TYPE, double>::MultMtMv, which, ncv, tol, maxit);
+
+		// Finding singular values.
+		nconv = prob.Eigenvalues(sval);
+
+		result->iterations = prob.GetIter();
+		result->ncv = prob.GetNcv();
+		result->info = 0;
+	}
+	catch (const ArpackError& e)
+	{
+		result->info = e.Status();
+	}
+
+	return nconv;
+}
+
+int ar_di_svd_trunc(char* which, int k, int ncv, int maxit, double tol,
+	ar_spmat *A, ar_result *result)
+{
+	int nconv = 0; // Number of converged eigenvalues.
+
+	int m = A->m; // Number of rows in A.
+	int n = A->n; // Number of columns in A.
+
+	AR_TYPE *svec = (AR_TYPE *)result->eigvec;
+	AR_TYPE *sval = (AR_TYPE *)result->eigvalr;
+
+	try
+	{
+		// Defining the eigenvalue problem.
+		ARluNonSymMatrix<AR_TYPE, double> matrix(m, n, A->nnz, (AR_TYPE *)A->x, A->i, A->p);
+		ARSymStdEig<AR_TYPE, ARluNonSymMatrix<AR_TYPE, double>>
+			prob(m + n, k, &matrix, &ARluNonSymMatrix<double, double>::Mult0MMt0v, which, ncv, tol, maxit);
+
+		// Finding singular values.
+		if (svec == NULL)
+		{
+			nconv = prob.Eigenvalues(sval);
+		}
+		else
+		{
+			nconv = prob.EigenValVectors(svec, sval, 0);
+		}
+
+		result->iterations = prob.GetIter();
+		result->ncv = prob.GetNcv();
+		result->info = 0;
+	}
+	catch (const ArpackError& e)
 	{
 		result->info = e.Status();
 	}
