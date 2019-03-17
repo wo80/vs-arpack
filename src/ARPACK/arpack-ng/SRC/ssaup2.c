@@ -1,223 +1,182 @@
-/* D:\Projekte\ARPACK\arpack-ng\SRC\ssaup2.f -- translated by f2c (version 20100827).
-   You must link the resulting object file with libf2c:
-	on Microsoft Windows system, link with libf2c.lib;
-	on Linux or Unix systems, link with .../path/to/libf2c.a -lm
-	or, if you install libf2c.a in a standard place, with -lf2c -lm
-	-- in that order, at the end of the command line, as in
-		cc *.o -lf2c -lm
-	Source for libf2c is in /netlib/f2c/libf2c.zip, e.g.,
+/* D:\Projekte\ARPACK\arpack-ng\SRC\ssaup2.f -- translated by f2c (version 20100827). */
 
-		http://www.netlib.org/f2c/libf2c.zip
-*/
+#include "arpack.h"
 
-#include "f2c.h"
+/**
+ * \BeginDoc
+ *
+ * \Name: ssaup2
+ *
+ * \Description:
+ *  Intermediate level interface called by ssaupd.
+ *
+ * \Usage:
+ *  call ssaup2
+ *     ( IDO, BMAT, N, WHICH, NEV, NP, TOL, RESID, MODE, IUPD,
+ *       ISHIFT, MXITER, V, LDV, H, LDH, RITZ, BOUNDS, Q, LDQ, WORKL,
+ *       IPNTR, WORKD, INFO )
+ *
+ * \Arguments
+ *
+ *  IDO, BMAT, N, WHICH, NEV, TOL, RESID: same as defined in ssaupd.
+ *  MODE, ISHIFT, MXITER: see the definition of IPARAM in ssaupd.
+ *
+ *  NP      Integer.  (INPUT/OUTPUT)
+ *          Contains the number of implicit shifts to apply during
+ *          each Arnoldi/Lanczos iteration.
+ *          If ISHIFT=1, NP is adjusted dynamically at each iteration
+ *          to accelerate convergence and prevent stagnation.
+ *          This is also roughly equal to the number of matrix-vector
+ *          products (involving the operator OP) per Arnoldi iteration.
+ *          The logic for adjusting is contained within the current
+ *          subroutine.
+ *          If ISHIFT=0, NP is the number of shifts the user needs
+ *          to provide via reverse communication. 0 < NP < NCV-NEV.
+ *          NP may be less than NCV-NEV since a leading block of the current
+ *          upper Tridiagonal matrix has split off and contains "unwanted"
+ *          Ritz values.
+ *          Upon termination of the IRA iteration, NP contains the number
+ *          of "converged" wanted Ritz values.
+ *
+ *  IUPD    Integer.  (INPUT)
+ *          IUPD .EQ. 0: use explicit restart instead implicit update.
+ *          IUPD .NE. 0: use implicit update.
+ *
+ *  V       Real N by (NEV+NP) array.  (INPUT/OUTPUT)
+ *          The Lanczos basis vectors.
+ *
+ *  LDV     Integer.  (INPUT)
+ *          Leading dimension of V exactly as declared in the calling
+ *          program.
+ *
+ *  H       Real (NEV+NP) by 2 array.  (OUTPUT)
+ *          H is used to store the generated symmetric tridiagonal matrix
+ *          The subdiagonal is stored in the first column of H starting
+ *          at H(2,1).  The main diagonal is stored in the second column
+ *          of H starting at H(1,2). If ssaup2 converges store the
+ *          B-norm of the final residual vector in H(1,1).
+ *
+ *  LDH     Integer.  (INPUT)
+ *          Leading dimension of H exactly as declared in the calling
+ *          program.
+ *
+ *  RITZ    Real array of length NEV+NP.  (OUTPUT)
+ *          RITZ(1:NEV) contains the computed Ritz values of OP.
+ *
+ *  BOUNDS  Real array of length NEV+NP.  (OUTPUT)
+ *          BOUNDS(1:NEV) contain the error bounds corresponding to RITZ.
+ *
+ *  Q       Real (NEV+NP) by (NEV+NP) array.  (WORKSPACE)
+ *          Private (replicated) work array used to accumulate the
+ *          rotation in the shift application step.
+ *
+ *  LDQ     Integer.  (INPUT)
+ *          Leading dimension of Q exactly as declared in the calling
+ *          program.
+ *
+ *  WORKL   Real array of length at least 3*(NEV+NP).  (INPUT/WORKSPACE)
+ *          Private (replicated) array on each PE or array allocated on
+ *          the front end.  It is used in the computation of the
+ *          tridiagonal eigenvalue problem, the calculation and
+ *          application of the shifts and convergence checking.
+ *          If ISHIFT .EQ. O and IDO .EQ. 3, the first NP locations
+ *          of WORKL are used in reverse communication to hold the user
+ *          supplied shifts.
+ *
+ *  IPNTR   Integer array of length 3.  (OUTPUT)
+ *          Pointer to mark the starting locations in the WORKD for
+ *          vectors used by the Lanczos iteration.
+ *          -------------------------------------------------------------
+ *          IPNTR(1): pointer to the current operand vector X.
+ *          IPNTR(2): pointer to the current result vector Y.
+ *          IPNTR(3): pointer to the vector B * X when used in one of
+ *                    the spectral transformation modes.  X is the current
+ *                    operand.
+ *          -------------------------------------------------------------
+ *
+ *  WORKD   Real work array of length 3*N.  (REVERSE COMMUNICATION)
+ *          Distributed array to be used in the basic Lanczos iteration
+ *          for reverse communication.  The user should not use WORKD
+ *          as temporary workspace during the iteration !!!!!!!!!!
+ *          See Data Distribution Note in ssaupd.
+ *
+ *  INFO    Integer.  (INPUT/OUTPUT)
+ *          If INFO .EQ. 0, a randomly initial residual vector is used.
+ *          If INFO .NE. 0, RESID contains the initial residual vector,
+ *                          possibly from a previous run.
+ *          Error flag on output.
+ *          =     0: Normal return.
+ *          =     1: All possible eigenvalues of OP has been found.
+ *                   NP returns the size of the invariant subspace
+ *                   spanning the operator OP.
+ *          =     2: No shifts could be applied.
+ *          =    -8: Error return from trid. eigenvalue calculation;
+ *                   This should never happen.
+ *          =    -9: Starting vector is zero.
+ *          = -9999: Could not build an Lanczos factorization.
+ *                   Size that was built in returned in NP.
+ *
+ * \EndDoc
+ *
+ * \BeginLib
+ *
+ * \References:
+ *  1. D.C. Sorensen, "Implicit Application of Polynomial Filters in
+ *     a k-Step Arnoldi Method", SIAM J. Matr. Anal. Apps., 13 (1992),
+ *     pp 357-385.
+ *  2. R.B. Lehoucq, "Analysis and Implementation of an Implicitly
+ *     Restarted Arnoldi Iteration", Rice University Technical Report
+ *     TR95-13, Department of Computational and Applied Mathematics.
+ *  3. B.N. Parlett, "The Symmetric Eigenvalue Problem". Prentice-Hall,
+ *     1980.
+ *  4. B.N. Parlett, B. Nour-Omid, "Towards a Black Box Lanczos Program",
+ *     Computer Physics Communications, 53 (1989), pp 169-179.
+ *  5. B. Nour-Omid, B.N. Parlett, T. Ericson, P.S. Jensen, "How to
+ *     Implement the Spectral Transformation", Math. Comp., 48 (1987),
+ *     pp 663-673.
+ *  6. R.G. Grimes, J.G. Lewis and H.D. Simon, "A Shifted Block Lanczos
+ *     Algorithm for Solving Sparse Symmetric Generalized Eigenproblems",
+ *     SIAM J. Matr. Anal. Apps.,  January (1993).
+ *  7. L. Reichel, W.B. Gragg, "Algorithm 686: FORTRAN Subroutines
+ *     for Updating the QR decomposition", ACM TOMS, December 1990,
+ *     Volume 16 Number 4, pp 369-377.
+ *
+ * \Routines called:
+ *     sgetv0  ARPACK initial vector generation routine.
+ *     ssaitr  ARPACK Lanczos factorization routine.
+ *     ssapps  ARPACK application of implicit shifts routine.
+ *     ssconv  ARPACK convergence of Ritz values routine.
+ *     sseigt  ARPACK compute Ritz values and error bounds routine.
+ *     ssgets  ARPACK reorder Ritz values and error bounds routine.
+ *     ssortr  ARPACK sorting routine.
+ *     ivout   ARPACK utility routine that prints integers.
+ *     arscnd  ARPACK utility routine for timing.
+ *     svout   ARPACK utility routine that prints vectors.
+ *     slamch  LAPACK routine that determines machine constants.
+ *     scopy   Level 1 BLAS that copies one vector to another.
+ *     sdot    Level 1 BLAS that computes the scalar product of two vectors.
+ *     snrm2   Level 1 BLAS that computes the norm of a vector.
+ *     sscal   Level 1 BLAS that scales a vector.
+ *     sswap   Level 1 BLAS that swaps two vectors.
+ *
+ * \Author
+ *     Danny Sorensen               Phuong Vu
+ *     Richard Lehoucq              CRPC / Rice University
+ *     Dept. of Computational &     Houston, Texas
+ *     Applied Mathematics
+ *     Rice University
+ *     Houston, Texas
+ *
+ * \Revision history:
+ *     12/15/93: Version ' 2.4'
+ *     xx/xx/95: Version ' 2.4'.  (R.B. Lehoucq)
+ *
+ * \SCCS Information: @(#)
+ * FILE: saup2.F   SID: 2.7   DATE OF SID: 5/19/98   RELEASE: 2
+ *
+ * \EndLib
+ */
 
-/* Common Block Declarations */
-
-struct {
-    integer logfil, ndigit, mgetv0, msaupd, msaup2, msaitr, mseigt, msapps, 
-	    msgets, mseupd, mnaupd, mnaup2, mnaitr, mneigh, mnapps, mngets, 
-	    mneupd, mcaupd, mcaup2, mcaitr, mceigh, mcapps, mcgets, mceupd;
-} debug_;
-
-#define debug_1 debug_
-
-struct {
-    integer nopx, nbx, nrorth, nitref, nrstrt;
-    real tsaupd, tsaup2, tsaitr, tseigt, tsgets, tsapps, tsconv, tnaupd, 
-	    tnaup2, tnaitr, tneigh, tngets, tnapps, tnconv, tcaupd, tcaup2, 
-	    tcaitr, tceigh, tcgets, tcapps, tcconv, tmvopx, tmvbx, tgetv0, 
-	    titref, trvec;
-} timing_;
-
-#define timing_1 timing_
-
-/* Table of constant values */
-
-static doublereal c_b3 = .66666666666666663;
-static integer c__1 = 1;
-static integer c__0 = 0;
-static integer c__3 = 3;
-static logical c_true = TRUE_;
-static integer c__2 = 2;
-
-/* ----------------------------------------------------------------------- */
-/* \BeginDoc */
-
-/* \Name: ssaup2 */
-
-/* \Description: */
-/*  Intermediate level interface called by ssaupd. */
-
-/* \Usage: */
-/*  call ssaup2 */
-/*     ( IDO, BMAT, N, WHICH, NEV, NP, TOL, RESID, MODE, IUPD, */
-/*       ISHIFT, MXITER, V, LDV, H, LDH, RITZ, BOUNDS, Q, LDQ, WORKL, */
-/*       IPNTR, WORKD, INFO ) */
-
-/* \Arguments */
-
-/*  IDO, BMAT, N, WHICH, NEV, TOL, RESID: same as defined in ssaupd. */
-/*  MODE, ISHIFT, MXITER: see the definition of IPARAM in ssaupd. */
-
-/*  NP      Integer.  (INPUT/OUTPUT) */
-/*          Contains the number of implicit shifts to apply during */
-/*          each Arnoldi/Lanczos iteration. */
-/*          If ISHIFT=1, NP is adjusted dynamically at each iteration */
-/*          to accelerate convergence and prevent stagnation. */
-/*          This is also roughly equal to the number of matrix-vector */
-/*          products (involving the operator OP) per Arnoldi iteration. */
-/*          The logic for adjusting is contained within the current */
-/*          subroutine. */
-/*          If ISHIFT=0, NP is the number of shifts the user needs */
-/*          to provide via reverse communication. 0 < NP < NCV-NEV. */
-/*          NP may be less than NCV-NEV since a leading block of the current */
-/*          upper Tridiagonal matrix has split off and contains "unwanted" */
-/*          Ritz values. */
-/*          Upon termination of the IRA iteration, NP contains the number */
-/*          of "converged" wanted Ritz values. */
-
-/*  IUPD    Integer.  (INPUT) */
-/*          IUPD .EQ. 0: use explicit restart instead implicit update. */
-/*          IUPD .NE. 0: use implicit update. */
-
-/*  V       Real N by (NEV+NP) array.  (INPUT/OUTPUT) */
-/*          The Lanczos basis vectors. */
-
-/*  LDV     Integer.  (INPUT) */
-/*          Leading dimension of V exactly as declared in the calling */
-/*          program. */
-
-/*  H       Real (NEV+NP) by 2 array.  (OUTPUT) */
-/*          H is used to store the generated symmetric tridiagonal matrix */
-/*          The subdiagonal is stored in the first column of H starting */
-/*          at H(2,1).  The main diagonal is stored in the second column */
-/*          of H starting at H(1,2). If ssaup2 converges store the */
-/*          B-norm of the final residual vector in H(1,1). */
-
-/*  LDH     Integer.  (INPUT) */
-/*          Leading dimension of H exactly as declared in the calling */
-/*          program. */
-
-/*  RITZ    Real array of length NEV+NP.  (OUTPUT) */
-/*          RITZ(1:NEV) contains the computed Ritz values of OP. */
-
-/*  BOUNDS  Real array of length NEV+NP.  (OUTPUT) */
-/*          BOUNDS(1:NEV) contain the error bounds corresponding to RITZ. */
-
-/*  Q       Real (NEV+NP) by (NEV+NP) array.  (WORKSPACE) */
-/*          Private (replicated) work array used to accumulate the */
-/*          rotation in the shift application step. */
-
-/*  LDQ     Integer.  (INPUT) */
-/*          Leading dimension of Q exactly as declared in the calling */
-/*          program. */
-
-/*  WORKL   Real array of length at least 3*(NEV+NP).  (INPUT/WORKSPACE) */
-/*          Private (replicated) array on each PE or array allocated on */
-/*          the front end.  It is used in the computation of the */
-/*          tridiagonal eigenvalue problem, the calculation and */
-/*          application of the shifts and convergence checking. */
-/*          If ISHIFT .EQ. O and IDO .EQ. 3, the first NP locations */
-/*          of WORKL are used in reverse communication to hold the user */
-/*          supplied shifts. */
-
-/*  IPNTR   Integer array of length 3.  (OUTPUT) */
-/*          Pointer to mark the starting locations in the WORKD for */
-/*          vectors used by the Lanczos iteration. */
-/*          ------------------------------------------------------------- */
-/*          IPNTR(1): pointer to the current operand vector X. */
-/*          IPNTR(2): pointer to the current result vector Y. */
-/*          IPNTR(3): pointer to the vector B * X when used in one of */
-/*                    the spectral transformation modes.  X is the current */
-/*                    operand. */
-/*          ------------------------------------------------------------- */
-
-/*  WORKD   Real work array of length 3*N.  (REVERSE COMMUNICATION) */
-/*          Distributed array to be used in the basic Lanczos iteration */
-/*          for reverse communication.  The user should not use WORKD */
-/*          as temporary workspace during the iteration !!!!!!!!!! */
-/*          See Data Distribution Note in ssaupd. */
-
-/*  INFO    Integer.  (INPUT/OUTPUT) */
-/*          If INFO .EQ. 0, a randomly initial residual vector is used. */
-/*          If INFO .NE. 0, RESID contains the initial residual vector, */
-/*                          possibly from a previous run. */
-/*          Error flag on output. */
-/*          =     0: Normal return. */
-/*          =     1: All possible eigenvalues of OP has been found. */
-/*                   NP returns the size of the invariant subspace */
-/*                   spanning the operator OP. */
-/*          =     2: No shifts could be applied. */
-/*          =    -8: Error return from trid. eigenvalue calculation; */
-/*                   This should never happen. */
-/*          =    -9: Starting vector is zero. */
-/*          = -9999: Could not build an Lanczos factorization. */
-/*                   Size that was built in returned in NP. */
-
-/* \EndDoc */
-
-/* ----------------------------------------------------------------------- */
-
-/* \BeginLib */
-
-/* \References: */
-/*  1. D.C. Sorensen, "Implicit Application of Polynomial Filters in */
-/*     a k-Step Arnoldi Method", SIAM J. Matr. Anal. Apps., 13 (1992), */
-/*     pp 357-385. */
-/*  2. R.B. Lehoucq, "Analysis and Implementation of an Implicitly */
-/*     Restarted Arnoldi Iteration", Rice University Technical Report */
-/*     TR95-13, Department of Computational and Applied Mathematics. */
-/*  3. B.N. Parlett, "The Symmetric Eigenvalue Problem". Prentice-Hall, */
-/*     1980. */
-/*  4. B.N. Parlett, B. Nour-Omid, "Towards a Black Box Lanczos Program", */
-/*     Computer Physics Communications, 53 (1989), pp 169-179. */
-/*  5. B. Nour-Omid, B.N. Parlett, T. Ericson, P.S. Jensen, "How to */
-/*     Implement the Spectral Transformation", Math. Comp., 48 (1987), */
-/*     pp 663-673. */
-/*  6. R.G. Grimes, J.G. Lewis and H.D. Simon, "A Shifted Block Lanczos */
-/*     Algorithm for Solving Sparse Symmetric Generalized Eigenproblems", */
-/*     SIAM J. Matr. Anal. Apps.,  January (1993). */
-/*  7. L. Reichel, W.B. Gragg, "Algorithm 686: FORTRAN Subroutines */
-/*     for Updating the QR decomposition", ACM TOMS, December 1990, */
-/*     Volume 16 Number 4, pp 369-377. */
-
-/* \Routines called: */
-/*     sgetv0  ARPACK initial vector generation routine. */
-/*     ssaitr  ARPACK Lanczos factorization routine. */
-/*     ssapps  ARPACK application of implicit shifts routine. */
-/*     ssconv  ARPACK convergence of Ritz values routine. */
-/*     sseigt  ARPACK compute Ritz values and error bounds routine. */
-/*     ssgets  ARPACK reorder Ritz values and error bounds routine. */
-/*     ssortr  ARPACK sorting routine. */
-/*     ivout   ARPACK utility routine that prints integers. */
-/*     arscnd  ARPACK utility routine for timing. */
-/*     svout   ARPACK utility routine that prints vectors. */
-/*     slamch  LAPACK routine that determines machine constants. */
-/*     scopy   Level 1 BLAS that copies one vector to another. */
-/*     sdot    Level 1 BLAS that computes the scalar product of two vectors. */
-/*     snrm2   Level 1 BLAS that computes the norm of a vector. */
-/*     sscal   Level 1 BLAS that scales a vector. */
-/*     sswap   Level 1 BLAS that swaps two vectors. */
-
-/* \Author */
-/*     Danny Sorensen               Phuong Vu */
-/*     Richard Lehoucq              CRPC / Rice University */
-/*     Dept. of Computational &     Houston, Texas */
-/*     Applied Mathematics */
-/*     Rice University */
-/*     Houston, Texas */
-
-/* \Revision history: */
-/*     12/15/93: Version ' 2.4' */
-/*     xx/xx/95: Version ' 2.4'.  (R.B. Lehoucq) */
-
-/* \SCCS Information: @(#) */
-/* FILE: saup2.F   SID: 2.7   DATE OF SID: 5/19/98   RELEASE: 2 */
-
-/* \EndLib */
-
-/* ----------------------------------------------------------------------- */
 
 /* Subroutine */ int ssaup2_(integer *ido, char *bmat, integer *n, char *
 	which, integer *nev, integer *np, real *tol, real *resid, integer *
@@ -247,94 +206,21 @@ static integer c__2 = 2;
     integer ierr;
     static integer iter;
     real temp;
-    extern doublereal sdot_(integer *, real *, integer *, real *, integer *);
     integer nevd2;
     static logical getv0;
     integer nevm2;
-    extern doublereal snrm2_(integer *, real *, integer *);
     static logical cnorm;
     static integer nconv;
     static logical initv;
     static real rnorm;
-    extern /* Subroutine */ int scopy_(integer *, real *, integer *, real *, 
-	    integer *), sswap_(integer *, real *, integer *, real *, integer *
-	    ), ivout_(integer *, integer *, integer *, integer *, char *, 
-	    ftnlen), svout_(integer *, integer *, real *, integer *, char *, 
-	    ftnlen), sgetv0_(integer *, char *, integer *, logical *, integer 
-	    *, integer *, real *, integer *, real *, real *, integer *, real *
-	    , integer *);
     integer nevbef;
-    extern doublereal slamch_(char *);
-    extern /* Subroutine */ int arscnd_(real *);
     static logical update;
     char wprime[2];
     static logical ushift;
     static integer kplusp, msglvl;
     integer nptemp;
-    extern /* Subroutine */ int ssaitr_(integer *, char *, integer *, integer 
-	    *, integer *, integer *, real *, real *, real *, integer *, real *
-	    , integer *, integer *, real *, integer *), ssconv_(
-	    integer *, real *, real *, real *, integer *), sseigt_(real *, 
-	    integer *, real *, integer *, real *, real *, real *, integer *), 
-	    ssgets_(integer *, char *, integer *, integer *, real *, real *, 
-	    real *), ssapps_(integer *, integer *, integer *, real *, 
-	    real *, integer *, real *, integer *, real *, real *, integer *, 
-	    real *), ssortr_(char *, logical *, integer *, real *, real *);
 
 
-/*     %----------------------------------------------------% */
-/*     | Include files for debugging and timing information | */
-/*     %----------------------------------------------------% */
-
-
-/* \SCCS Information: @(#) */
-/* FILE: debug.h   SID: 2.3   DATE OF SID: 11/16/95   RELEASE: 2 */
-
-/*     %---------------------------------% */
-/*     | See debug.doc for documentation | */
-/*     %---------------------------------% */
-
-/*     %------------------% */
-/*     | Scalar Arguments | */
-/*     %------------------% */
-
-/*     %--------------------------------% */
-/*     | See stat.doc for documentation | */
-/*     %--------------------------------% */
-
-/* \SCCS Information: @(#) */
-/* FILE: stat.h   SID: 2.2   DATE OF SID: 11/16/95   RELEASE: 2 */
-
-
-
-/*     %-----------------% */
-/*     | Array Arguments | */
-/*     %-----------------% */
-
-
-/*     %------------% */
-/*     | Parameters | */
-/*     %------------% */
-
-
-/*     %---------------% */
-/*     | Local Scalars | */
-/*     %---------------% */
-
-
-/*     %----------------------% */
-/*     | External Subroutines | */
-/*     %----------------------% */
-
-
-/*     %--------------------% */
-/*     | External Functions | */
-/*     %--------------------% */
-
-
-/*     %---------------------% */
-/*     | Intrinsic Functions | */
-/*     %---------------------% */
 
 
 /*     %-----------------------% */
@@ -375,7 +261,7 @@ static integer c__2 = 2;
 
 	eps23 = slamch_("Epsilon-Machine");
 	d__1 = (doublereal) eps23;
-	eps23 = pow_dd(&d__1, &c_b3);
+	eps23 = pow_dd(&d__1, &d_23);
 
 /*        %-------------------------------------% */
 /*        | nev0 and np0 are integer variables  | */

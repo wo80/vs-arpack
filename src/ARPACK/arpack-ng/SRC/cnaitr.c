@@ -1,252 +1,212 @@
-/* D:\Projekte\ARPACK\arpack-ng\SRC\cnaitr.f -- translated by f2c (version 20100827).
-   You must link the resulting object file with libf2c:
-	on Microsoft Windows system, link with libf2c.lib;
-	on Linux or Unix systems, link with .../path/to/libf2c.a -lm
-	or, if you install libf2c.a in a standard place, with -lf2c -lm
-	-- in that order, at the end of the command line, as in
-		cc *.o -lf2c -lm
-	Source for libf2c is in /netlib/f2c/libf2c.zip, e.g.,
+/* D:\Projekte\ARPACK\arpack-ng\SRC\cnaitr.f -- translated by f2c (version 20100827). */
 
-		http://www.netlib.org/f2c/libf2c.zip
-*/
+#include "arpack.h"
 
-#include "f2c.h"
+/**
+ * \BeginDoc
+ *
+ * \Name: cnaitr
+ *
+ * \Description:
+ *  Reverse communication interface for applying NP additional steps to
+ *  a K step nonsymmetric Arnoldi factorization.
+ *
+ *  Input:  OP*V_{k}  -  V_{k}*H = r_{k}*e_{k}^T
+ *
+ *          with (V_{k}^T)*B*V_{k} = I, (V_{k}^T)*B*r_{k} = 0.
+ *
+ *  Output: OP*V_{k+p}  -  V_{k+p}*H = r_{k+p}*e_{k+p}^T
+ *
+ *          with (V_{k+p}^T)*B*V_{k+p} = I, (V_{k+p}^T)*B*r_{k+p} = 0.
+ *
+ *  where OP and B are as in cnaupd.  The B-norm of r_{k+p} is also
+ *  computed and returned.
+ *
+ * \Usage:
+ *  call cnaitr
+ *     ( IDO, BMAT, N, K, NP, NB, RESID, RNORM, V, LDV, H, LDH,
+ *       IPNTR, WORKD, INFO )
+ *
+ * \Arguments
+ *  IDO     Integer.  (INPUT/OUTPUT)
+ *          Reverse communication flag.
+ *          -------------------------------------------------------------
+ *          IDO =  0: first call to the reverse communication interface
+ *          IDO = -1: compute  Y = OP * X  where
+ *                    IPNTR(1) is the pointer into WORK for X,
+ *                    IPNTR(2) is the pointer into WORK for Y.
+ *                    This is for the restart phase to force the new
+ *                    starting vector into the range of OP.
+ *          IDO =  1: compute  Y = OP * X  where
+ *                    IPNTR(1) is the pointer into WORK for X,
+ *                    IPNTR(2) is the pointer into WORK for Y,
+ *                    IPNTR(3) is the pointer into WORK for B * X.
+ *          IDO =  2: compute  Y = B * X  where
+ *                    IPNTR(1) is the pointer into WORK for X,
+ *                    IPNTR(2) is the pointer into WORK for Y.
+ *          IDO = 99: done
+ *          -------------------------------------------------------------
+ *          When the routine is used in the "shift-and-invert" mode, the
+ *          vector B * Q is already available and do not need to be
+ *          recomputed in forming OP * Q.
+ *
+ *  BMAT    Character*1.  (INPUT)
+ *          BMAT specifies the type of the matrix B that defines the
+ *          semi-inner product for the operator OP.  See cnaupd.
+ *          B = 'I' -> standard eigenvalue problem A*x = lambda*x
+ *          B = 'G' -> generalized eigenvalue problem A*x = lambda*M**x
+ *
+ *  N       Integer.  (INPUT)
+ *          Dimension of the eigenproblem.
+ *
+ *  K       Integer.  (INPUT)
+ *          Current size of V and H.
+ *
+ *  NP      Integer.  (INPUT)
+ *          Number of additional Arnoldi steps to take.
+ *
+ *  NB      Integer.  (INPUT)
+ *          Blocksize to be used in the recurrence.
+ *          Only work for NB = 1 right now.  The goal is to have a
+ *          program that implement both the block and non-block method.
+ *
+ *  RESID   Complex array of length N.  (INPUT/OUTPUT)
+ *          On INPUT:  RESID contains the residual vector r_{k}.
+ *          On OUTPUT: RESID contains the residual vector r_{k+p}.
+ *
+ *  RNORM   Real scalar.  (INPUT/OUTPUT)
+ *          B-norm of the starting residual on input.
+ *          B-norm of the updated residual r_{k+p} on output.
+ *
+ *  V       Complex N by K+NP array.  (INPUT/OUTPUT)
+ *          On INPUT:  V contains the Arnoldi vectors in the first K
+ *          columns.
+ *          On OUTPUT: V contains the new NP Arnoldi vectors in the next
+ *          NP columns.  The first K columns are unchanged.
+ *
+ *  LDV     Integer.  (INPUT)
+ *          Leading dimension of V exactly as declared in the calling
+ *          program.
+ *
+ *  H       Complex (K+NP) by (K+NP) array.  (INPUT/OUTPUT)
+ *          H is used to store the generated upper Hessenberg matrix.
+ *
+ *  LDH     Integer.  (INPUT)
+ *          Leading dimension of H exactly as declared in the calling
+ *          program.
+ *
+ *  IPNTR   Integer array of length 3.  (OUTPUT)
+ *          Pointer to mark the starting locations in the WORK for
+ *          vectors used by the Arnoldi iteration.
+ *          -------------------------------------------------------------
+ *          IPNTR(1): pointer to the current operand vector X.
+ *          IPNTR(2): pointer to the current result vector Y.
+ *          IPNTR(3): pointer to the vector B * X when used in the
+ *                    shift-and-invert mode.  X is the current operand.
+ *          -------------------------------------------------------------
+ *
+ *  WORKD   Complex work array of length 3*N.  (REVERSE COMMUNICATION)
+ *          Distributed array to be used in the basic Arnoldi iteration
+ *          for reverse communication.  The calling program should not
+ *          use WORKD as temporary workspace during the iteration !!!!!!
+ *          On input, WORKD(1:N) = B*RESID and is used to save some
+ *          computation at the first step.
+ *
+ *  INFO    Integer.  (OUTPUT)
+ *          = 0: Normal exit.
+ *          > 0: Size of the spanning invariant subspace of OP found.
+ *
+ * \EndDoc
+ *
+ * \BeginLib
+ *
+ * \Local variables:
+ *     xxxxxx  Complex
+ *
+ * \References:
+ *  1. D.C. Sorensen, "Implicit Application of Polynomial Filters in
+ *     a k-Step Arnoldi Method", SIAM J. Matr. Anal. Apps., 13 (1992),
+ *     pp 357-385.
+ *  2. R.B. Lehoucq, "Analysis and Implementation of an Implicitly
+ *     Restarted Arnoldi Iteration", Rice University Technical Report
+ *     TR95-13, Department of Computational and Applied Mathematics.
+ *
+ * \Routines called:
+ *     cgetv0  ARPACK routine to generate the initial vector.
+ *     ivout   ARPACK utility routine that prints integers.
+ *     arscnd  ARPACK utility routine for timing.
+ *     cmout   ARPACK utility routine that prints matrices
+ *     cvout   ARPACK utility routine that prints vectors.
+ *     clanhs  LAPACK routine that computes various norms of a matrix.
+ *     clascl  LAPACK routine for careful scaling of a matrix.
+ *     slabad  LAPACK routine for defining the underflow and overflow
+ *             limits.
+ *     slamch  LAPACK routine that determines machine constants.
+ *     slapy2  LAPACK routine to compute sqrt(x**2+y**2) carefully.
+ *     cgemv   Level 2 BLAS routine for matrix vector multiplication.
+ *     caxpy   Level 1 BLAS that computes a vector triad.
+ *     ccopy   Level 1 BLAS that copies one vector to another .
+ *     cdotc   Level 1 BLAS that computes the scalar product of two vectors.
+ *     cscal   Level 1 BLAS that scales a vector.
+ *     csscal  Level 1 BLAS that scales a complex vector by a real number.
+ *     scnrm2  Level 1 BLAS that computes the norm of a vector.
+ *
+ * \Author
+ *     Danny Sorensen               Phuong Vu
+ *     Richard Lehoucq              CRPC / Rice University
+ *     Dept. of Computational &     Houston, Texas
+ *     Applied Mathematics
+ *     Rice University
+ *     Houston, Texas
+ *
+ * \SCCS Information: @(#)
+ * FILE: naitr.F   SID: 2.3   DATE OF SID: 8/27/96   RELEASE: 2
+ *
+ * \Remarks
+ *  The algorithm implemented is:
+ *
+ *  restart = .false.
+ *  Given V_{k} = [v_{1}, ..., v_{k}], r_{k};
+ *  r_{k} contains the initial residual vector even for k = 0;
+ *  Also assume that rnorm = || B*r_{k} || and B*r_{k} are already
+ *  computed by the calling program.
+ *
+ *  betaj = rnorm ; p_{k+1} = B*r_{k} ;
+ *  For  j = k+1, ..., k+np  Do
+ *     1) if ( betaj < tol ) stop or restart depending on j.
+ *        ( At present tol is zero )
+ *        if ( restart ) generate a new starting vector.
+ *     2) v_{j} = r(j-1)/betaj;  V_{j} = [V_{j-1}, v_{j}];
+ *        p_{j} = p_{j}/betaj
+ *     3) r_{j} = OP*v_{j} where OP is defined as in cnaupd
+ *        For shift-invert mode p_{j} = B*v_{j} is already available.
+ *        wnorm = || OP*v_{j} ||
+ *     4) Compute the j-th step residual vector.
+ *        w_{j} =  V_{j}^T * B * OP * v_{j}
+ *        r_{j} =  OP*v_{j} - V_{j} * w_{j}
+ *        H(:,j) = w_{j};
+ *        H(j,j-1) = rnorm
+ *        rnorm = || r_(j) ||
+ *        If (rnorm > 0.717*wnorm) accept step and go back to 1)
+ *     5) Re-orthogonalization step:
+ *        s = V_{j}'*B*r_{j}
+ *        r_{j} = r_{j} - V_{j}*s;  rnorm1 = || r_{j} ||
+ *        alphaj = alphaj + s_{j};
+ *     6) Iterative refinement step:
+ *        If (rnorm1 > 0.717*rnorm) then
+ *           rnorm = rnorm1
+ *           accept step and go back to 1)
+ *        Else
+ *           rnorm = rnorm1
+ *           If this is the first time in step 6), go to 5)
+ *           Else r_{j} lies in the span of V_{j} numerically.
+ *              Set r_{j} = 0 and rnorm = 0; go to 1)
+ *        EndIf
+ *  End Do
+ *
+ * \EndLib
+ */
 
-/* Common Block Declarations */
-
-struct {
-    integer logfil, ndigit, mgetv0, msaupd, msaup2, msaitr, mseigt, msapps, 
-	    msgets, mseupd, mnaupd, mnaup2, mnaitr, mneigh, mnapps, mngets, 
-	    mneupd, mcaupd, mcaup2, mcaitr, mceigh, mcapps, mcgets, mceupd;
-} debug_;
-
-#define debug_1 debug_
-
-struct {
-    integer nopx, nbx, nrorth, nitref, nrstrt;
-    real tsaupd, tsaup2, tsaitr, tseigt, tsgets, tsapps, tsconv, tnaupd, 
-	    tnaup2, tnaitr, tneigh, tngets, tnapps, tnconv, tcaupd, tcaup2, 
-	    tcaitr, tceigh, tcgets, tcapps, tcconv, tmvopx, tmvbx, tgetv0, 
-	    titref, trvec;
-} timing_;
-
-#define timing_1 timing_
-
-/* Table of constant values */
-
-static complex c_b1 = {1.f,0.f};
-static complex c_b2 = {0.f,0.f};
-static integer c__1 = 1;
-static logical c_false = FALSE_;
-static real c_b27 = 1.f;
-static integer c__2 = 2;
-
-/* \BeginDoc */
-
-/* \Name: cnaitr */
-
-/* \Description: */
-/*  Reverse communication interface for applying NP additional steps to */
-/*  a K step nonsymmetric Arnoldi factorization. */
-
-/*  Input:  OP*V_{k}  -  V_{k}*H = r_{k}*e_{k}^T */
-
-/*          with (V_{k}^T)*B*V_{k} = I, (V_{k}^T)*B*r_{k} = 0. */
-
-/*  Output: OP*V_{k+p}  -  V_{k+p}*H = r_{k+p}*e_{k+p}^T */
-
-/*          with (V_{k+p}^T)*B*V_{k+p} = I, (V_{k+p}^T)*B*r_{k+p} = 0. */
-
-/*  where OP and B are as in cnaupd.  The B-norm of r_{k+p} is also */
-/*  computed and returned. */
-
-/* \Usage: */
-/*  call cnaitr */
-/*     ( IDO, BMAT, N, K, NP, NB, RESID, RNORM, V, LDV, H, LDH, */
-/*       IPNTR, WORKD, INFO ) */
-
-/* \Arguments */
-/*  IDO     Integer.  (INPUT/OUTPUT) */
-/*          Reverse communication flag. */
-/*          ------------------------------------------------------------- */
-/*          IDO =  0: first call to the reverse communication interface */
-/*          IDO = -1: compute  Y = OP * X  where */
-/*                    IPNTR(1) is the pointer into WORK for X, */
-/*                    IPNTR(2) is the pointer into WORK for Y. */
-/*                    This is for the restart phase to force the new */
-/*                    starting vector into the range of OP. */
-/*          IDO =  1: compute  Y = OP * X  where */
-/*                    IPNTR(1) is the pointer into WORK for X, */
-/*                    IPNTR(2) is the pointer into WORK for Y, */
-/*                    IPNTR(3) is the pointer into WORK for B * X. */
-/*          IDO =  2: compute  Y = B * X  where */
-/*                    IPNTR(1) is the pointer into WORK for X, */
-/*                    IPNTR(2) is the pointer into WORK for Y. */
-/*          IDO = 99: done */
-/*          ------------------------------------------------------------- */
-/*          When the routine is used in the "shift-and-invert" mode, the */
-/*          vector B * Q is already available and do not need to be */
-/*          recomputed in forming OP * Q. */
-
-/*  BMAT    Character*1.  (INPUT) */
-/*          BMAT specifies the type of the matrix B that defines the */
-/*          semi-inner product for the operator OP.  See cnaupd. */
-/*          B = 'I' -> standard eigenvalue problem A*x = lambda*x */
-/*          B = 'G' -> generalized eigenvalue problem A*x = lambda*M**x */
-
-/*  N       Integer.  (INPUT) */
-/*          Dimension of the eigenproblem. */
-
-/*  K       Integer.  (INPUT) */
-/*          Current size of V and H. */
-
-/*  NP      Integer.  (INPUT) */
-/*          Number of additional Arnoldi steps to take. */
-
-/*  NB      Integer.  (INPUT) */
-/*          Blocksize to be used in the recurrence. */
-/*          Only work for NB = 1 right now.  The goal is to have a */
-/*          program that implement both the block and non-block method. */
-
-/*  RESID   Complex array of length N.  (INPUT/OUTPUT) */
-/*          On INPUT:  RESID contains the residual vector r_{k}. */
-/*          On OUTPUT: RESID contains the residual vector r_{k+p}. */
-
-/*  RNORM   Real scalar.  (INPUT/OUTPUT) */
-/*          B-norm of the starting residual on input. */
-/*          B-norm of the updated residual r_{k+p} on output. */
-
-/*  V       Complex N by K+NP array.  (INPUT/OUTPUT) */
-/*          On INPUT:  V contains the Arnoldi vectors in the first K */
-/*          columns. */
-/*          On OUTPUT: V contains the new NP Arnoldi vectors in the next */
-/*          NP columns.  The first K columns are unchanged. */
-
-/*  LDV     Integer.  (INPUT) */
-/*          Leading dimension of V exactly as declared in the calling */
-/*          program. */
-
-/*  H       Complex (K+NP) by (K+NP) array.  (INPUT/OUTPUT) */
-/*          H is used to store the generated upper Hessenberg matrix. */
-
-/*  LDH     Integer.  (INPUT) */
-/*          Leading dimension of H exactly as declared in the calling */
-/*          program. */
-
-/*  IPNTR   Integer array of length 3.  (OUTPUT) */
-/*          Pointer to mark the starting locations in the WORK for */
-/*          vectors used by the Arnoldi iteration. */
-/*          ------------------------------------------------------------- */
-/*          IPNTR(1): pointer to the current operand vector X. */
-/*          IPNTR(2): pointer to the current result vector Y. */
-/*          IPNTR(3): pointer to the vector B * X when used in the */
-/*                    shift-and-invert mode.  X is the current operand. */
-/*          ------------------------------------------------------------- */
-
-/*  WORKD   Complex work array of length 3*N.  (REVERSE COMMUNICATION) */
-/*          Distributed array to be used in the basic Arnoldi iteration */
-/*          for reverse communication.  The calling program should not */
-/*          use WORKD as temporary workspace during the iteration !!!!!! */
-/*          On input, WORKD(1:N) = B*RESID and is used to save some */
-/*          computation at the first step. */
-
-/*  INFO    Integer.  (OUTPUT) */
-/*          = 0: Normal exit. */
-/*          > 0: Size of the spanning invariant subspace of OP found. */
-
-/* \EndDoc */
-
-/* ----------------------------------------------------------------------- */
-
-/* \BeginLib */
-
-/* \Local variables: */
-/*     xxxxxx  Complex */
-
-/* \References: */
-/*  1. D.C. Sorensen, "Implicit Application of Polynomial Filters in */
-/*     a k-Step Arnoldi Method", SIAM J. Matr. Anal. Apps., 13 (1992), */
-/*     pp 357-385. */
-/*  2. R.B. Lehoucq, "Analysis and Implementation of an Implicitly */
-/*     Restarted Arnoldi Iteration", Rice University Technical Report */
-/*     TR95-13, Department of Computational and Applied Mathematics. */
-
-/* \Routines called: */
-/*     cgetv0  ARPACK routine to generate the initial vector. */
-/*     ivout   ARPACK utility routine that prints integers. */
-/*     arscnd  ARPACK utility routine for timing. */
-/*     cmout   ARPACK utility routine that prints matrices */
-/*     cvout   ARPACK utility routine that prints vectors. */
-/*     clanhs  LAPACK routine that computes various norms of a matrix. */
-/*     clascl  LAPACK routine for careful scaling of a matrix. */
-/*     slabad  LAPACK routine for defining the underflow and overflow */
-/*             limits. */
-/*     slamch  LAPACK routine that determines machine constants. */
-/*     slapy2  LAPACK routine to compute sqrt(x**2+y**2) carefully. */
-/*     cgemv   Level 2 BLAS routine for matrix vector multiplication. */
-/*     caxpy   Level 1 BLAS that computes a vector triad. */
-/*     ccopy   Level 1 BLAS that copies one vector to another . */
-/*     cdotc   Level 1 BLAS that computes the scalar product of two vectors. */
-/*     cscal   Level 1 BLAS that scales a vector. */
-/*     csscal  Level 1 BLAS that scales a complex vector by a real number. */
-/*     scnrm2  Level 1 BLAS that computes the norm of a vector. */
-
-/* \Author */
-/*     Danny Sorensen               Phuong Vu */
-/*     Richard Lehoucq              CRPC / Rice University */
-/*     Dept. of Computational &     Houston, Texas */
-/*     Applied Mathematics */
-/*     Rice University */
-/*     Houston, Texas */
-
-/* \SCCS Information: @(#) */
-/* FILE: naitr.F   SID: 2.3   DATE OF SID: 8/27/96   RELEASE: 2 */
-
-/* \Remarks */
-/*  The algorithm implemented is: */
-
-/*  restart = .false. */
-/*  Given V_{k} = [v_{1}, ..., v_{k}], r_{k}; */
-/*  r_{k} contains the initial residual vector even for k = 0; */
-/*  Also assume that rnorm = || B*r_{k} || and B*r_{k} are already */
-/*  computed by the calling program. */
-
-/*  betaj = rnorm ; p_{k+1} = B*r_{k} ; */
-/*  For  j = k+1, ..., k+np  Do */
-/*     1) if ( betaj < tol ) stop or restart depending on j. */
-/*        ( At present tol is zero ) */
-/*        if ( restart ) generate a new starting vector. */
-/*     2) v_{j} = r(j-1)/betaj;  V_{j} = [V_{j-1}, v_{j}]; */
-/*        p_{j} = p_{j}/betaj */
-/*     3) r_{j} = OP*v_{j} where OP is defined as in cnaupd */
-/*        For shift-invert mode p_{j} = B*v_{j} is already available. */
-/*        wnorm = || OP*v_{j} || */
-/*     4) Compute the j-th step residual vector. */
-/*        w_{j} =  V_{j}^T * B * OP * v_{j} */
-/*        r_{j} =  OP*v_{j} - V_{j} * w_{j} */
-/*        H(:,j) = w_{j}; */
-/*        H(j,j-1) = rnorm */
-/*        rnorm = || r_(j) || */
-/*        If (rnorm > 0.717*wnorm) accept step and go back to 1) */
-/*     5) Re-orthogonalization step: */
-/*        s = V_{j}'*B*r_{j} */
-/*        r_{j} = r_{j} - V_{j}*s;  rnorm1 = || r_{j} || */
-/*        alphaj = alphaj + s_{j}; */
-/*     6) Iterative refinement step: */
-/*        If (rnorm1 > 0.717*rnorm) then */
-/*           rnorm = rnorm1 */
-/*           accept step and go back to 1) */
-/*        Else */
-/*           rnorm = rnorm1 */
-/*           If this is the first time in step 6), go to 5) */
-/*           Else r_{j} lies in the span of V_{j} numerically. */
-/*              Set r_{j} = 0 and rnorm = 0; go to 1) */
-/*        EndIf */
-/*  End Do */
-
-/* \EndLib */
-
-/* ----------------------------------------------------------------------- */
 
 /* Subroutine */ int cnaitr_(integer *ido, char *bmat, integer *n, integer *k,
 	 integer *np, integer *nb, complex *resid, real *rnorm, complex *v, 
@@ -279,101 +239,17 @@ static integer c__2 = 2;
     real temp1;
     static logical orth1, orth2, step3, step4;
     static real betaj;
-    extern /* Complex */ VOID cdotc_(complex *, integer *, complex *, integer 
-	    *, complex *, integer *);
-    extern /* Subroutine */ int cgemv_(char *, integer *, integer *, complex *
-	    , complex *, integer *, complex *, integer *, complex *, complex *
-	    , integer *);
     integer infol;
-    extern /* Subroutine */ int ccopy_(integer *, complex *, integer *, 
-	    complex *, integer *);
     complex cnorm;
-    extern /* Subroutine */ int caxpy_(integer *, complex *, complex *, 
-	    integer *, complex *, integer *);
     real rtemp[2];
-    extern /* Subroutine */ int cmout_(integer *, integer *, integer *, 
-	    complex *, integer *, integer *, char *, ftnlen);
     static real wnorm;
-    extern /* Subroutine */ int cvout_(integer *, integer *, complex *, 
-	    integer *, char *, ftnlen), ivout_(integer *, integer *, integer *
-	    , integer *, char *, ftnlen), svout_(integer *, integer *, real *,
-	     integer *, char *, ftnlen), cgetv0_(integer *, char *, integer *,
-	     logical *, integer *, integer *, complex *, integer *, complex *,
-	     real *, integer *, complex *, integer *);
-    extern doublereal scnrm2_(integer *, complex *, integer *), slapy2_(real *
-	    , real *);
     static real rnorm1;
-    extern /* Subroutine */ int slabad_(real *, real *), clascl_(char *, 
-	    integer *, integer *, real *, real *, integer *, integer *, 
-	    complex *, integer *, integer *), csscal_(integer *, real 
-	    *, complex *, integer *), arscnd_(real *);
-    extern doublereal slamch_(char *);
     static logical rstart;
     static integer msglvl;
     static real smlnum;
-    extern doublereal clanhs_(char *, integer *, complex *, integer *, 
-	    complex *);
-
-
-/*     %----------------------------------------------------% */
-/*     | Include files for debugging and timing information | */
-/*     %----------------------------------------------------% */
-
-
-/* \SCCS Information: @(#) */
-/* FILE: debug.h   SID: 2.3   DATE OF SID: 11/16/95   RELEASE: 2 */
-
-/*     %---------------------------------% */
-/*     | See debug.doc for documentation | */
-/*     %---------------------------------% */
-
-/*     %------------------% */
-/*     | Scalar Arguments | */
-/*     %------------------% */
-
-/*     %--------------------------------% */
-/*     | See stat.doc for documentation | */
-/*     %--------------------------------% */
-
-/* \SCCS Information: @(#) */
-/* FILE: stat.h   SID: 2.2   DATE OF SID: 11/16/95   RELEASE: 2 */
 
 
 
-/*     %-----------------% */
-/*     | Array Arguments | */
-/*     %-----------------% */
-
-
-/*     %------------% */
-/*     | Parameters | */
-/*     %------------% */
-
-
-/*     %--------------% */
-/*     | Local Arrays | */
-/*     %--------------% */
-
-
-/*     %---------------% */
-/*     | Local Scalars | */
-/*     %---------------% */
-
-
-
-/*     %----------------------% */
-/*     | External Subroutines | */
-/*     %----------------------% */
-
-
-/*     %--------------------% */
-/*     | External Functions | */
-/*     %--------------------% */
-
-
-/*     %---------------------% */
-/*     | Intrinsic Functions | */
-/*     %---------------------% */
 
 
 /*     %-----------------% */
@@ -576,9 +452,9 @@ L40:
 /*            | use LAPACK routine clascl               | */
 /*            %-----------------------------------------% */
 
-	clascl_("General", &i__, &i__, rnorm, &c_b27, n, &c__1, &v[j * v_dim1 
+	clascl_("General", &i__, &i__, rnorm, &s_one, n, &c__1, &v[j * v_dim1 
 		+ 1], n, &infol);
-	clascl_("General", &i__, &i__, rnorm, &c_b27, n, &c__1, &workd[ipj], 
+	clascl_("General", &i__, &i__, rnorm, &s_one, n, &c__1, &workd[ipj], 
 		n, &infol);
     }
 
@@ -684,7 +560,7 @@ L60:
 /*        | WORKD(IPJ:IPJ+N-1) contains B*OP*v_{j}.  | */
 /*        %------------------------------------------% */
 
-    cgemv_("C", n, &j, &c_b1, &v[v_offset], ldv, &workd[ipj], &c__1, &c_b2, &
+    cgemv_("C", n, &j, &c_one, &v[v_offset], ldv, &workd[ipj], &c__1, &c_zero, &
 	    h__[j * h_dim1 + 1], &c__1);
 
 /*        %--------------------------------------% */
@@ -694,7 +570,7 @@ L60:
 
     q__1.r = -1.f, q__1.i = -0.f;
     cgemv_("N", n, &j, &q__1, &v[v_offset], ldv, &h__[j * h_dim1 + 1], &c__1, 
-	    &c_b1, &resid[1], &c__1);
+	    &c_one, &resid[1], &c__1);
 
     if (j > 1) {
 	i__1 = j + (j - 1) * h_dim1;
@@ -798,7 +674,7 @@ L80:
 /*        | WORKD(IRJ:IRJ+J-1) = v(:,1:J)'*WORKD(IPJ:IPJ+N-1). | */
 /*        %----------------------------------------------------% */
 
-    cgemv_("C", n, &j, &c_b1, &v[v_offset], ldv, &workd[ipj], &c__1, &c_b2, &
+    cgemv_("C", n, &j, &c_one, &v[v_offset], ldv, &workd[ipj], &c__1, &c_zero, &
 	    workd[irj], &c__1);
 
 /*        %---------------------------------------------% */
@@ -809,9 +685,9 @@ L80:
 /*        %---------------------------------------------% */
 
     q__1.r = -1.f, q__1.i = -0.f;
-    cgemv_("N", n, &j, &q__1, &v[v_offset], ldv, &workd[irj], &c__1, &c_b1, &
+    cgemv_("N", n, &j, &q__1, &v[v_offset], ldv, &workd[irj], &c__1, &c_one, &
 	    resid[1], &c__1);
-    caxpy_(&j, &c_b1, &workd[irj], &c__1, &h__[j * h_dim1 + 1], &c__1);
+    caxpy_(&j, &c_one, &workd[irj], &c__1, &h__[j * h_dim1 + 1], &c__1);
 
     orth2 = TRUE_;
     arscnd_(&t2);

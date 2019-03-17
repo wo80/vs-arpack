@@ -1,173 +1,134 @@
-/* D:\Projekte\ARPACK\arpack-ng\SRC\ssapps.f -- translated by f2c (version 20100827).
-   You must link the resulting object file with libf2c:
-	on Microsoft Windows system, link with libf2c.lib;
-	on Linux or Unix systems, link with .../path/to/libf2c.a -lm
-	or, if you install libf2c.a in a standard place, with -lf2c -lm
-	-- in that order, at the end of the command line, as in
-		cc *.o -lf2c -lm
-	Source for libf2c is in /netlib/f2c/libf2c.zip, e.g.,
+/* D:\Projekte\ARPACK\arpack-ng\SRC\ssapps.f -- translated by f2c (version 20100827). */
 
-		http://www.netlib.org/f2c/libf2c.zip
-*/
+#include "arpack.h"
 
-#include "f2c.h"
+/**
+ * \BeginDoc
+ *
+ * \Name: ssapps
+ *
+ * \Description:
+ *  Given the Arnoldi factorization
+ *
+ *     A*V_{k} - V_{k}*H_{k} = r_{k+p}*e_{k+p}^T,
+ *
+ *  apply NP shifts implicitly resulting in
+ *
+ *     A*(V_{k}*Q) - (V_{k}*Q)*(Q^T* H_{k}*Q) = r_{k+p}*e_{k+p}^T * Q
+ *
+ *  where Q is an orthogonal matrix of order KEV+NP. Q is the product of
+ *  rotations resulting from the NP bulge chasing sweeps.  The updated Arnoldi
+ *  factorization becomes:
+ *
+ *     A*VNEW_{k} - VNEW_{k}*HNEW_{k} = rnew_{k}*e_{k}^T.
+ *
+ * \Usage:
+ *  call ssapps
+ *     ( N, KEV, NP, SHIFT, V, LDV, H, LDH, RESID, Q, LDQ, WORKD )
+ *
+ * \Arguments
+ *  N       Integer.  (INPUT)
+ *          Problem size, i.e. dimension of matrix A.
+ *
+ *  KEV     Integer.  (INPUT)
+ *          INPUT: KEV+NP is the size of the input matrix H.
+ *          OUTPUT: KEV is the size of the updated matrix HNEW.
+ *
+ *  NP      Integer.  (INPUT)
+ *          Number of implicit shifts to be applied.
+ *
+ *  SHIFT   Real array of length NP.  (INPUT)
+ *          The shifts to be applied.
+ *
+ *  V       Real N by (KEV+NP) array.  (INPUT/OUTPUT)
+ *          INPUT: V contains the current KEV+NP Arnoldi vectors.
+ *          OUTPUT: VNEW = V(1:n,1:KEV); the updated Arnoldi vectors
+ *          are in the first KEV columns of V.
+ *
+ *  LDV     Integer.  (INPUT)
+ *          Leading dimension of V exactly as declared in the calling
+ *          program.
+ *
+ *  H       Real (KEV+NP) by 2 array.  (INPUT/OUTPUT)
+ *          INPUT: H contains the symmetric tridiagonal matrix of the
+ *          Arnoldi factorization with the subdiagonal in the 1st column
+ *          starting at H(2,1) and the main diagonal in the 2nd column.
+ *          OUTPUT: H contains the updated tridiagonal matrix in the
+ *          KEV leading submatrix.
+ *
+ *  LDH     Integer.  (INPUT)
+ *          Leading dimension of H exactly as declared in the calling
+ *          program.
+ *
+ *  RESID   Real array of length (N).  (INPUT/OUTPUT)
+ *          INPUT: RESID contains the the residual vector r_{k+p}.
+ *          OUTPUT: RESID is the updated residual vector rnew_{k}.
+ *
+ *  Q       Real KEV+NP by KEV+NP work array.  (WORKSPACE)
+ *          Work array used to accumulate the rotations during the bulge
+ *          chase sweep.
+ *
+ *  LDQ     Integer.  (INPUT)
+ *          Leading dimension of Q exactly as declared in the calling
+ *          program.
+ *
+ *  WORKD   Real work array of length 2*N.  (WORKSPACE)
+ *          Distributed array used in the application of the accumulated
+ *          orthogonal matrix Q.
+ *
+ * \EndDoc
+ *
+ * \BeginLib
+ *
+ * \Local variables:
+ *     xxxxxx  real
+ *
+ * \References:
+ *  1. D.C. Sorensen, "Implicit Application of Polynomial Filters in
+ *     a k-Step Arnoldi Method", SIAM J. Matr. Anal. Apps., 13 (1992),
+ *     pp 357-385.
+ *  2. R.B. Lehoucq, "Analysis and Implementation of an Implicitly
+ *     Restarted Arnoldi Iteration", Rice University Technical Report
+ *     TR95-13, Department of Computational and Applied Mathematics.
+ *
+ * \Routines called:
+ *     ivout   ARPACK utility routine that prints integers.
+ *     arscnd  ARPACK utility routine for timing.
+ *     svout   ARPACK utility routine that prints vectors.
+ *     slamch  LAPACK routine that determines machine constants.
+ *     slartg  LAPACK Givens rotation construction routine.
+ *     slacpy  LAPACK matrix copy routine.
+ *     slaset  LAPACK matrix initialization routine.
+ *     sgemv   Level 2 BLAS routine for matrix vector multiplication.
+ *     saxpy   Level 1 BLAS that computes a vector triad.
+ *     scopy   Level 1 BLAS that copies one vector to another.
+ *     sscal   Level 1 BLAS that scales a vector.
+ *
+ * \Author
+ *     Danny Sorensen               Phuong Vu
+ *     Richard Lehoucq              CRPC / Rice University
+ *     Dept. of Computational &     Houston, Texas
+ *     Applied Mathematics
+ *     Rice University
+ *     Houston, Texas
+ *
+ * \Revision history:
+ *     12/16/93: Version ' 2.4'
+ *
+ * \SCCS Information: @(#)
+ * FILE: sapps.F   SID: 2.6   DATE OF SID: 3/28/97   RELEASE: 2
+ *
+ * \Remarks
+ *  1. In this version, each shift is applied to all the subblocks of
+ *     the tridiagonal matrix H and not just to the submatrix that it
+ *     comes from. This routine assumes that the subdiagonal elements
+ *     of H that are stored in h(1:kev+np,1) are nonegative upon input
+ *     and enforce this condition upon output. This version incorporates
+ *     deflation. See code for documentation.
+ *
+ * \EndLib
+ */
 
-/* Common Block Declarations */
-
-struct {
-    integer logfil, ndigit, mgetv0, msaupd, msaup2, msaitr, mseigt, msapps, 
-	    msgets, mseupd, mnaupd, mnaup2, mnaitr, mneigh, mnapps, mngets, 
-	    mneupd, mcaupd, mcaup2, mcaitr, mceigh, mcapps, mcgets, mceupd;
-} debug_;
-
-#define debug_1 debug_
-
-struct {
-    integer nopx, nbx, nrorth, nitref, nrstrt;
-    real tsaupd, tsaup2, tsaitr, tseigt, tsgets, tsapps, tsconv, tnaupd, 
-	    tnaup2, tnaitr, tneigh, tngets, tnapps, tnconv, tcaupd, tcaup2, 
-	    tcaitr, tceigh, tcgets, tcapps, tcconv, tmvopx, tmvbx, tgetv0, 
-	    titref, trvec;
-} timing_;
-
-#define timing_1 timing_
-
-/* Table of constant values */
-
-static real c_b4 = 0.f;
-static real c_b5 = 1.f;
-static integer c__1 = 1;
-static real c_b20 = -1.f;
-
-/* ----------------------------------------------------------------------- */
-/* \BeginDoc */
-
-/* \Name: ssapps */
-
-/* \Description: */
-/*  Given the Arnoldi factorization */
-
-/*     A*V_{k} - V_{k}*H_{k} = r_{k+p}*e_{k+p}^T, */
-
-/*  apply NP shifts implicitly resulting in */
-
-/*     A*(V_{k}*Q) - (V_{k}*Q)*(Q^T* H_{k}*Q) = r_{k+p}*e_{k+p}^T * Q */
-
-/*  where Q is an orthogonal matrix of order KEV+NP. Q is the product of */
-/*  rotations resulting from the NP bulge chasing sweeps.  The updated Arnoldi */
-/*  factorization becomes: */
-
-/*     A*VNEW_{k} - VNEW_{k}*HNEW_{k} = rnew_{k}*e_{k}^T. */
-
-/* \Usage: */
-/*  call ssapps */
-/*     ( N, KEV, NP, SHIFT, V, LDV, H, LDH, RESID, Q, LDQ, WORKD ) */
-
-/* \Arguments */
-/*  N       Integer.  (INPUT) */
-/*          Problem size, i.e. dimension of matrix A. */
-
-/*  KEV     Integer.  (INPUT) */
-/*          INPUT: KEV+NP is the size of the input matrix H. */
-/*          OUTPUT: KEV is the size of the updated matrix HNEW. */
-
-/*  NP      Integer.  (INPUT) */
-/*          Number of implicit shifts to be applied. */
-
-/*  SHIFT   Real array of length NP.  (INPUT) */
-/*          The shifts to be applied. */
-
-/*  V       Real N by (KEV+NP) array.  (INPUT/OUTPUT) */
-/*          INPUT: V contains the current KEV+NP Arnoldi vectors. */
-/*          OUTPUT: VNEW = V(1:n,1:KEV); the updated Arnoldi vectors */
-/*          are in the first KEV columns of V. */
-
-/*  LDV     Integer.  (INPUT) */
-/*          Leading dimension of V exactly as declared in the calling */
-/*          program. */
-
-/*  H       Real (KEV+NP) by 2 array.  (INPUT/OUTPUT) */
-/*          INPUT: H contains the symmetric tridiagonal matrix of the */
-/*          Arnoldi factorization with the subdiagonal in the 1st column */
-/*          starting at H(2,1) and the main diagonal in the 2nd column. */
-/*          OUTPUT: H contains the updated tridiagonal matrix in the */
-/*          KEV leading submatrix. */
-
-/*  LDH     Integer.  (INPUT) */
-/*          Leading dimension of H exactly as declared in the calling */
-/*          program. */
-
-/*  RESID   Real array of length (N).  (INPUT/OUTPUT) */
-/*          INPUT: RESID contains the the residual vector r_{k+p}. */
-/*          OUTPUT: RESID is the updated residual vector rnew_{k}. */
-
-/*  Q       Real KEV+NP by KEV+NP work array.  (WORKSPACE) */
-/*          Work array used to accumulate the rotations during the bulge */
-/*          chase sweep. */
-
-/*  LDQ     Integer.  (INPUT) */
-/*          Leading dimension of Q exactly as declared in the calling */
-/*          program. */
-
-/*  WORKD   Real work array of length 2*N.  (WORKSPACE) */
-/*          Distributed array used in the application of the accumulated */
-/*          orthogonal matrix Q. */
-
-/* \EndDoc */
-
-/* ----------------------------------------------------------------------- */
-
-/* \BeginLib */
-
-/* \Local variables: */
-/*     xxxxxx  real */
-
-/* \References: */
-/*  1. D.C. Sorensen, "Implicit Application of Polynomial Filters in */
-/*     a k-Step Arnoldi Method", SIAM J. Matr. Anal. Apps., 13 (1992), */
-/*     pp 357-385. */
-/*  2. R.B. Lehoucq, "Analysis and Implementation of an Implicitly */
-/*     Restarted Arnoldi Iteration", Rice University Technical Report */
-/*     TR95-13, Department of Computational and Applied Mathematics. */
-
-/* \Routines called: */
-/*     ivout   ARPACK utility routine that prints integers. */
-/*     arscnd  ARPACK utility routine for timing. */
-/*     svout   ARPACK utility routine that prints vectors. */
-/*     slamch  LAPACK routine that determines machine constants. */
-/*     slartg  LAPACK Givens rotation construction routine. */
-/*     slacpy  LAPACK matrix copy routine. */
-/*     slaset  LAPACK matrix initialization routine. */
-/*     sgemv   Level 2 BLAS routine for matrix vector multiplication. */
-/*     saxpy   Level 1 BLAS that computes a vector triad. */
-/*     scopy   Level 1 BLAS that copies one vector to another. */
-/*     sscal   Level 1 BLAS that scales a vector. */
-
-/* \Author */
-/*     Danny Sorensen               Phuong Vu */
-/*     Richard Lehoucq              CRPC / Rice University */
-/*     Dept. of Computational &     Houston, Texas */
-/*     Applied Mathematics */
-/*     Rice University */
-/*     Houston, Texas */
-
-/* \Revision history: */
-/*     12/16/93: Version ' 2.4' */
-
-/* \SCCS Information: @(#) */
-/* FILE: sapps.F   SID: 2.6   DATE OF SID: 3/28/97   RELEASE: 2 */
-
-/* \Remarks */
-/*  1. In this version, each shift is applied to all the subblocks of */
-/*     the tridiagonal matrix H and not just to the submatrix that it */
-/*     comes from. This routine assumes that the subdiagonal elements */
-/*     of H that are stored in h(1:kev+np,1) are nonegative upon input */
-/*     and enforce this condition upon output. This version incorporates */
-/*     deflation. See code for documentation. */
-
-/* \EndLib */
-
-/* ----------------------------------------------------------------------- */
 
 /* Subroutine */ int ssapps_(integer *n, integer *kev, integer *np, real *
 	shift, real *v, integer *ldv, real *h__, integer *ldh, real *resid, 
@@ -190,77 +151,11 @@ static real c_b20 = -1.f;
     integer jj;
     real big;
     integer iend, itop;
-    extern /* Subroutine */ int sscal_(integer *, real *, real *, integer *), 
-	    sgemv_(char *, integer *, integer *, real *, real *, integer *, 
-	    real *, integer *, real *, real *, integer *), scopy_(
-	    integer *, real *, integer *, real *, integer *), saxpy_(integer *
-	    , real *, real *, integer *, real *, integer *), ivout_(integer *,
-	     integer *, integer *, integer *, char *, ftnlen), svout_(integer 
-	    *, integer *, real *, integer *, char *, ftnlen);
-    extern doublereal slamch_(char *);
-    extern /* Subroutine */ int arscnd_(real *);
     static real epsmch;
     integer istart, kplusp, msglvl;
-    extern /* Subroutine */ int slacpy_(char *, integer *, integer *, real *, 
-	    integer *, real *, integer *), slartg_(real *, real *, 
-	    real *, real *, real *), slaset_(char *, integer *, integer *, 
-	    real *, real *, real *, integer *);
-
-
-/*     %----------------------------------------------------% */
-/*     | Include files for debugging and timing information | */
-/*     %----------------------------------------------------% */
-
-
-/* \SCCS Information: @(#) */
-/* FILE: debug.h   SID: 2.3   DATE OF SID: 11/16/95   RELEASE: 2 */
-
-/*     %---------------------------------% */
-/*     | See debug.doc for documentation | */
-/*     %---------------------------------% */
-
-/*     %------------------% */
-/*     | Scalar Arguments | */
-/*     %------------------% */
-
-/*     %--------------------------------% */
-/*     | See stat.doc for documentation | */
-/*     %--------------------------------% */
-
-/* \SCCS Information: @(#) */
-/* FILE: stat.h   SID: 2.2   DATE OF SID: 11/16/95   RELEASE: 2 */
 
 
 
-/*     %-----------------% */
-/*     | Array Arguments | */
-/*     %-----------------% */
-
-
-/*     %------------% */
-/*     | Parameters | */
-/*     %------------% */
-
-
-/*     %---------------% */
-/*     | Local Scalars | */
-/*     %---------------% */
-
-
-
-/*     %----------------------% */
-/*     | External Subroutines | */
-/*     %----------------------% */
-
-
-/*     %--------------------% */
-/*     | External Functions | */
-/*     %--------------------% */
-
-
-/*     %----------------------% */
-/*     | Intrinsics Functions | */
-/*     %----------------------% */
 
 
 /*     %----------------% */
@@ -308,7 +203,7 @@ static real c_b20 = -1.f;
 /*     | kplusp used to accumulate the rotations.     | */
 /*     %----------------------------------------------% */
 
-    slaset_("All", &kplusp, &kplusp, &c_b4, &c_b5, &q[q_offset], ldq);
+    slaset_("All", &kplusp, &kplusp, &s_zero, &s_one, &q[q_offset], ldq);
 
 /*     %----------------------------------------------% */
 /*     | Quick return if there are no shifts to apply | */
@@ -514,7 +409,7 @@ L40:
 
 	if (h__[iend + h_dim1] < 0.f) {
 	    h__[iend + h_dim1] = -h__[iend + h_dim1];
-	    sscal_(&kplusp, &c_b20, &q[iend * q_dim1 + 1], &c__1);
+	    sscal_(&kplusp, &s_m1, &q[iend * q_dim1 + 1], &c__1);
 	}
 
 /*        %--------------------------------------------------------% */
@@ -576,8 +471,8 @@ L90:
 /*     %-------------------------------------------------% */
 
     if (h__[*kev + 1 + h_dim1] > 0.f) {
-	sgemv_("N", n, &kplusp, &c_b5, &v[v_offset], ldv, &q[(*kev + 1) * 
-		q_dim1 + 1], &c__1, &c_b4, &workd[*n + 1], &c__1);
+	sgemv_("N", n, &kplusp, &s_one, &v[v_offset], ldv, &q[(*kev + 1) * 
+		q_dim1 + 1], &c__1, &s_zero, &workd[*n + 1], &c__1);
     }
 
 /*     %-------------------------------------------------------% */
@@ -590,8 +485,8 @@ L90:
     i__1 = *kev;
     for (i__ = 1; i__ <= i__1; ++i__) {
 	i__2 = kplusp - i__ + 1;
-	sgemv_("N", n, &i__2, &c_b5, &v[v_offset], ldv, &q[(*kev - i__ + 1) * 
-		q_dim1 + 1], &c__1, &c_b4, &workd[1], &c__1);
+	sgemv_("N", n, &i__2, &s_one, &v[v_offset], ldv, &q[(*kev - i__ + 1) * 
+		q_dim1 + 1], &c__1, &s_zero, &workd[1], &c__1);
 	scopy_(n, &workd[1], &c__1, &v[(kplusp - i__ + 1) * v_dim1 + 1], &
 		c__1);
 /* L130: */

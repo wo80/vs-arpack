@@ -1,260 +1,225 @@
-/* D:\Projekte\ARPACK\arpack-ng\SRC\sseupd.f -- translated by f2c (version 20100827).
-   You must link the resulting object file with libf2c:
-	on Microsoft Windows system, link with libf2c.lib;
-	on Linux or Unix systems, link with .../path/to/libf2c.a -lm
-	or, if you install libf2c.a in a standard place, with -lf2c -lm
-	-- in that order, at the end of the command line, as in
-		cc *.o -lf2c -lm
-	Source for libf2c is in /netlib/f2c/libf2c.zip, e.g.,
+/* D:\Projekte\ARPACK\arpack-ng\SRC\sseupd.f -- translated by f2c (version 20100827). */
 
-		http://www.netlib.org/f2c/libf2c.zip
-*/
+#include "arpack.h"
 
-#include "f2c.h"
+/**
+ * \BeginDoc
+ *
+ * \Name: sseupd
+ *
+ * \Description:
+ *
+ *  This subroutine returns the converged approximations to eigenvalues
+ *  of A*z = lambda*B*z and (optionally):
+ *
+ *      (1) the corresponding approximate eigenvectors,
+ *
+ *      (2) an orthonormal (Lanczos) basis for the associated approximate
+ *          invariant subspace,
+ *
+ *      (3) Both.
+ *
+ *  There is negligible additional cost to obtain eigenvectors.  An orthonormal
+ *  (Lanczos) basis is always computed.  There is an additional storage cost
+ *  of n*nev if both are requested (in this case a separate array Z must be
+ *  supplied).
+ *
+ *  These quantities are obtained from the Lanczos factorization computed
+ *  by SSAUPD for the linear operator OP prescribed by the MODE selection
+ *  (see IPARAM(7) in SSAUPD documentation.)  SSAUPD must be called before
+ *  this routine is called. These approximate eigenvalues and vectors are
+ *  commonly called Ritz values and Ritz vectors respectively.  They are
+ *  referred to as such in the comments that follow.   The computed orthonormal
+ *  basis for the invariant subspace corresponding to these Ritz values is
+ *  referred to as a Lanczos basis.
+ *
+ *  See documentation in the header of the subroutine SSAUPD for a definition
+ *  of OP as well as other terms and the relation of computed Ritz values
+ *  and vectors of OP with respect to the given problem  A*z = lambda*B*z.
+ *
+ *  The approximate eigenvalues of the original problem are returned in
+ *  ascending algebraic order.  The user may elect to call this routine
+ *  once for each desired Ritz vector and store it peripherally if desired.
+ *  There is also the option of computing a selected set of these vectors
+ *  with a single call.
+ *
+ * \Usage:
+ *  call sseupd
+ *     ( RVEC, HOWMNY, SELECT, D, Z, LDZ, SIGMA, BMAT, N, WHICH, NEV, TOL,
+ *       RESID, NCV, V, LDV, IPARAM, IPNTR, WORKD, WORKL, LWORKL, INFO )
+ *
+ *  RVEC    LOGICAL  (INPUT)
+ *          Specifies whether Ritz vectors corresponding to the Ritz value
+ *          approximations to the eigenproblem A*z = lambda*B*z are computed.
+ *
+ *             RVEC = .FALSE.     Compute Ritz values only.
+ *
+ *             RVEC = .TRUE.      Compute Ritz vectors.
+ *
+ *  HOWMNY  Character*1  (INPUT)
+ *          Specifies how many Ritz vectors are wanted and the form of Z
+ *          the matrix of Ritz vectors. See remark 1 below.
+ *          = 'A': compute NEV Ritz vectors;
+ *          = 'S': compute some of the Ritz vectors, specified
+ *                 by the logical array SELECT.
+ *
+ *  SELECT  Logical array of dimension NCV.  (INPUT/WORKSPACE)
+ *          If HOWMNY = 'S', SELECT specifies the Ritz vectors to be
+ *          computed. To select the Ritz vector corresponding to a
+ *          Ritz value D(j), SELECT(j) must be set to .TRUE..
+ *          If HOWMNY = 'A' , SELECT is used as a workspace for
+ *          reordering the Ritz values.
+ *
+ *  D       Real  array of dimension NEV.  (OUTPUT)
+ *          On exit, D contains the Ritz value approximations to the
+ *          eigenvalues of A*z = lambda*B*z. The values are returned
+ *          in ascending order. If IPARAM(7) = 3,4,5 then D represents
+ *          the Ritz values of OP computed by ssaupd transformed to
+ *          those of the original eigensystem A*z = lambda*B*z. If
+ *          IPARAM(7) = 1,2 then the Ritz values of OP are the same
+ *          as the those of A*z = lambda*B*z.
+ *
+ *  Z       Real  N by NEV array if HOWMNY = 'A'.  (OUTPUT)
+ *          On exit, Z contains the B-orthonormal Ritz vectors of the
+ *          eigensystem A*z = lambda*B*z corresponding to the Ritz
+ *          value approximations.
+ *          If  RVEC = .FALSE. then Z is not referenced.
+ *          NOTE: The array Z may be set equal to first NEV columns of the
+ *          Arnoldi/Lanczos basis array V computed by SSAUPD.
+ *
+ *  LDZ     Integer.  (INPUT)
+ *          The leading dimension of the array Z.  If Ritz vectors are
+ *          desired, then  LDZ .ge.  max( 1, N ).  In any case,  LDZ .ge. 1.
+ *
+ *  SIGMA   Real   (INPUT)
+ *          If IPARAM(7) = 3,4,5 represents the shift. Not referenced if
+ *          IPARAM(7) = 1 or 2.
+ *
+ *
+ *  **** The remaining arguments MUST be the same as for the   ****
+ *  **** call to SSAUPD that was just completed.               ****
+ *
+ *  NOTE: The remaining arguments
+ *
+ *           BMAT, N, WHICH, NEV, TOL, RESID, NCV, V, LDV, IPARAM, IPNTR,
+ *           WORKD, WORKL, LWORKL, INFO
+ *
+ *         must be passed directly to SSEUPD following the last call
+ *         to SSAUPD.  These arguments MUST NOT BE MODIFIED between
+ *         the the last call to SSAUPD and the call to SSEUPD.
+ *
+ *  Two of these parameters (WORKL, INFO) are also output parameters:
+ *
+ *  WORKL   Real  work array of length LWORKL.  (OUTPUT/WORKSPACE)
+ *          WORKL(1:4*ncv) contains information obtained in
+ *          ssaupd.  They are not changed by sseupd.
+ *          WORKL(4*ncv+1:ncv*ncv+8*ncv) holds the
+ *          untransformed Ritz values, the computed error estimates,
+ *          and the associated eigenvector matrix of H.
+ *
+ *          Note: IPNTR(8:10) contains the pointer into WORKL for addresses
+ *          of the above information computed by sseupd.
+ *          -------------------------------------------------------------
+ *          IPNTR(8): pointer to the NCV RITZ values of the original system.
+ *          IPNTR(9): pointer to the NCV corresponding error bounds.
+ *          IPNTR(10): pointer to the NCV by NCV matrix of eigenvectors
+ *                     of the tridiagonal matrix T. Only referenced by
+ *                     sseupd if RVEC = .TRUE. See Remarks.
+ *          -------------------------------------------------------------
+ *
+ *  INFO    Integer.  (OUTPUT)
+ *          Error flag on output.
+ *          =  0: Normal exit.
+ *          = -1: N must be positive.
+ *          = -2: NEV must be positive.
+ *          = -3: NCV must be greater than NEV and less than or equal to N.
+ *          = -5: WHICH must be one of 'LM', 'SM', 'LA', 'SA' or 'BE'.
+ *          = -6: BMAT must be one of 'I' or 'G'.
+ *          = -7: Length of private work WORKL array is not sufficient.
+ *          = -8: Error return from trid. eigenvalue calculation;
+ *                Information error from LAPACK routine ssteqr.
+ *          = -9: Starting vector is zero.
+ *          = -10: IPARAM(7) must be 1,2,3,4,5.
+ *          = -11: IPARAM(7) = 1 and BMAT = 'G' are incompatible.
+ *          = -12: NEV and WHICH = 'BE' are incompatible.
+ *          = -14: SSAUPD did not find any eigenvalues to sufficient
+ *                 accuracy.
+ *          = -15: HOWMNY must be one of 'A' or 'S' if RVEC = .true.
+ *          = -16: HOWMNY = 'S' not yet implemented
+ *          = -17: SSEUPD got a different count of the number of converged
+ *                 Ritz values than SSAUPD got.  This indicates the user
+ *                 probably made an error in passing data from SSAUPD to
+ *                 SSEUPD or that the data was modified before entering
+ *                 SSEUPD.
+ * \EndDoc
+ *
+ * \BeginLib
+ *
+ * \References:
+ *  1. D.C. Sorensen, "Implicit Application of Polynomial Filters in
+ *     a k-Step Arnoldi Method", SIAM J. Matr. Anal. Apps., 13 (1992),
+ *     pp 357-385.
+ *  2. R.B. Lehoucq, "Analysis and Implementation of an Implicitly
+ *     Restarted Arnoldi Iteration", Rice University Technical Report
+ *     TR95-13, Department of Computational and Applied Mathematics.
+ *  3. B.N. Parlett, "The Symmetric Eigenvalue Problem". Prentice-Hall,
+ *     1980.
+ *  4. B.N. Parlett, B. Nour-Omid, "Towards a Black Box Lanczos Program",
+ *     Computer Physics Communications, 53 (1989), pp 169-179.
+ *  5. B. Nour-Omid, B.N. Parlett, T. Ericson, P.S. Jensen, "How to
+ *     Implement the Spectral Transformation", Math. Comp., 48 (1987),
+ *     pp 663-673.
+ *  6. R.G. Grimes, J.G. Lewis and H.D. Simon, "A Shifted Block Lanczos
+ *     Algorithm for Solving Sparse Symmetric Generalized Eigenproblems",
+ *     SIAM J. Matr. Anal. Apps.,  January (1993).
+ *  7. L. Reichel, W.B. Gragg, "Algorithm 686: FORTRAN Subroutines
+ *     for Updating the QR decomposition", ACM TOMS, December 1990,
+ *     Volume 16 Number 4, pp 369-377.
+ *
+ * \Remarks
+ *  1. The converged Ritz values are always returned in increasing
+ *     (algebraic) order.
+ *
+ *  2. Currently only HOWMNY = 'A' is implemented. It is included at this
+ *     stage for the user who wants to incorporate it.
+ *
+ * \Routines called:
+ *     ssesrt  ARPACK routine that sorts an array X, and applies the
+ *             corresponding permutation to a matrix A.
+ *     ssortr  ssortr  ARPACK sorting routine.
+ *     ivout   ARPACK utility routine that prints integers.
+ *     svout   ARPACK utility routine that prints vectors.
+ *     sgeqr2  LAPACK routine that computes the QR factorization of
+ *             a matrix.
+ *     slacpy  LAPACK matrix copy routine.
+ *     slamch  LAPACK routine that determines machine constants.
+ *     sorm2r  LAPACK routine that applies an orthogonal matrix in
+ *             factored form.
+ *     ssteqr  LAPACK routine that computes eigenvalues and eigenvectors
+ *             of a tridiagonal matrix.
+ *     sger    Level 2 BLAS rank one update to a matrix.
+ *     scopy   Level 1 BLAS that copies one vector to another .
+ *     snrm2   Level 1 BLAS that computes the norm of a vector.
+ *     sscal   Level 1 BLAS that scales a vector.
+ *     sswap   Level 1 BLAS that swaps the contents of two vectors.
+ * \Authors
+ *     Danny Sorensen               Phuong Vu
+ *     Richard Lehoucq              CRPC / Rice University
+ *     Chao Yang                    Houston, Texas
+ *     Dept. of Computational &
+ *     Applied Mathematics
+ *     Rice University
+ *     Houston, Texas
+ *
+ * \Revision history:
+ *     12/15/93: Version ' 2.1'
+ *
+ * \SCCS Information: @(#)
+ * FILE: seupd.F   SID: 2.11   DATE OF SID: 04/10/01   RELEASE: 2
+ *
+ * \EndLib
+ */
 
-/* Common Block Declarations */
-
-struct {
-    integer logfil, ndigit, mgetv0, msaupd, msaup2, msaitr, mseigt, msapps, 
-	    msgets, mseupd, mnaupd, mnaup2, mnaitr, mneigh, mnapps, mngets, 
-	    mneupd, mcaupd, mcaup2, mcaitr, mceigh, mcapps, mcgets, mceupd;
-} debug_;
-
-#define debug_1 debug_
-
-struct {
-    integer nopx, nbx, nrorth, nitref, nrstrt;
-    real tsaupd, tsaup2, tsaitr, tseigt, tsgets, tsapps, tsconv, tnaupd, 
-	    tnaup2, tnaitr, tneigh, tngets, tnapps, tnconv, tcaupd, tcaup2, 
-	    tcaitr, tceigh, tcgets, tcapps, tcconv, tmvopx, tmvbx, tgetv0, 
-	    titref, trvec;
-} timing_;
-
-#define timing_1 timing_
-
-/* Table of constant values */
-
-static doublereal c_b21 = .66666666666666663;
-static integer c__1 = 1;
-static logical c_true = TRUE_;
-static real c_b111 = 1.f;
-
-/* \BeginDoc */
-
-/* \Name: sseupd */
-
-/* \Description: */
-
-/*  This subroutine returns the converged approximations to eigenvalues */
-/*  of A*z = lambda*B*z and (optionally): */
-
-/*      (1) the corresponding approximate eigenvectors, */
-
-/*      (2) an orthonormal (Lanczos) basis for the associated approximate */
-/*          invariant subspace, */
-
-/*      (3) Both. */
-
-/*  There is negligible additional cost to obtain eigenvectors.  An orthonormal */
-/*  (Lanczos) basis is always computed.  There is an additional storage cost */
-/*  of n*nev if both are requested (in this case a separate array Z must be */
-/*  supplied). */
-
-/*  These quantities are obtained from the Lanczos factorization computed */
-/*  by SSAUPD for the linear operator OP prescribed by the MODE selection */
-/*  (see IPARAM(7) in SSAUPD documentation.)  SSAUPD must be called before */
-/*  this routine is called. These approximate eigenvalues and vectors are */
-/*  commonly called Ritz values and Ritz vectors respectively.  They are */
-/*  referred to as such in the comments that follow.   The computed orthonormal */
-/*  basis for the invariant subspace corresponding to these Ritz values is */
-/*  referred to as a Lanczos basis. */
-
-/*  See documentation in the header of the subroutine SSAUPD for a definition */
-/*  of OP as well as other terms and the relation of computed Ritz values */
-/*  and vectors of OP with respect to the given problem  A*z = lambda*B*z. */
-
-/*  The approximate eigenvalues of the original problem are returned in */
-/*  ascending algebraic order.  The user may elect to call this routine */
-/*  once for each desired Ritz vector and store it peripherally if desired. */
-/*  There is also the option of computing a selected set of these vectors */
-/*  with a single call. */
-
-/* \Usage: */
-/*  call sseupd */
-/*     ( RVEC, HOWMNY, SELECT, D, Z, LDZ, SIGMA, BMAT, N, WHICH, NEV, TOL, */
-/*       RESID, NCV, V, LDV, IPARAM, IPNTR, WORKD, WORKL, LWORKL, INFO ) */
-
-/*  RVEC    LOGICAL  (INPUT) */
-/*          Specifies whether Ritz vectors corresponding to the Ritz value */
-/*          approximations to the eigenproblem A*z = lambda*B*z are computed. */
-
-/*             RVEC = .FALSE.     Compute Ritz values only. */
-
-/*             RVEC = .TRUE.      Compute Ritz vectors. */
-
-/*  HOWMNY  Character*1  (INPUT) */
-/*          Specifies how many Ritz vectors are wanted and the form of Z */
-/*          the matrix of Ritz vectors. See remark 1 below. */
-/*          = 'A': compute NEV Ritz vectors; */
-/*          = 'S': compute some of the Ritz vectors, specified */
-/*                 by the logical array SELECT. */
-
-/*  SELECT  Logical array of dimension NCV.  (INPUT/WORKSPACE) */
-/*          If HOWMNY = 'S', SELECT specifies the Ritz vectors to be */
-/*          computed. To select the Ritz vector corresponding to a */
-/*          Ritz value D(j), SELECT(j) must be set to .TRUE.. */
-/*          If HOWMNY = 'A' , SELECT is used as a workspace for */
-/*          reordering the Ritz values. */
-
-/*  D       Real  array of dimension NEV.  (OUTPUT) */
-/*          On exit, D contains the Ritz value approximations to the */
-/*          eigenvalues of A*z = lambda*B*z. The values are returned */
-/*          in ascending order. If IPARAM(7) = 3,4,5 then D represents */
-/*          the Ritz values of OP computed by ssaupd transformed to */
-/*          those of the original eigensystem A*z = lambda*B*z. If */
-/*          IPARAM(7) = 1,2 then the Ritz values of OP are the same */
-/*          as the those of A*z = lambda*B*z. */
-
-/*  Z       Real  N by NEV array if HOWMNY = 'A'.  (OUTPUT) */
-/*          On exit, Z contains the B-orthonormal Ritz vectors of the */
-/*          eigensystem A*z = lambda*B*z corresponding to the Ritz */
-/*          value approximations. */
-/*          If  RVEC = .FALSE. then Z is not referenced. */
-/*          NOTE: The array Z may be set equal to first NEV columns of the */
-/*          Arnoldi/Lanczos basis array V computed by SSAUPD. */
-
-/*  LDZ     Integer.  (INPUT) */
-/*          The leading dimension of the array Z.  If Ritz vectors are */
-/*          desired, then  LDZ .ge.  max( 1, N ).  In any case,  LDZ .ge. 1. */
-
-/*  SIGMA   Real   (INPUT) */
-/*          If IPARAM(7) = 3,4,5 represents the shift. Not referenced if */
-/*          IPARAM(7) = 1 or 2. */
-
-
-/*  **** The remaining arguments MUST be the same as for the   **** */
-/*  **** call to SSAUPD that was just completed.               **** */
-
-/*  NOTE: The remaining arguments */
-
-/*           BMAT, N, WHICH, NEV, TOL, RESID, NCV, V, LDV, IPARAM, IPNTR, */
-/*           WORKD, WORKL, LWORKL, INFO */
-
-/*         must be passed directly to SSEUPD following the last call */
-/*         to SSAUPD.  These arguments MUST NOT BE MODIFIED between */
-/*         the the last call to SSAUPD and the call to SSEUPD. */
-
-/*  Two of these parameters (WORKL, INFO) are also output parameters: */
-
-/*  WORKL   Real  work array of length LWORKL.  (OUTPUT/WORKSPACE) */
-/*          WORKL(1:4*ncv) contains information obtained in */
-/*          ssaupd.  They are not changed by sseupd. */
-/*          WORKL(4*ncv+1:ncv*ncv+8*ncv) holds the */
-/*          untransformed Ritz values, the computed error estimates, */
-/*          and the associated eigenvector matrix of H. */
-
-/*          Note: IPNTR(8:10) contains the pointer into WORKL for addresses */
-/*          of the above information computed by sseupd. */
-/*          ------------------------------------------------------------- */
-/*          IPNTR(8): pointer to the NCV RITZ values of the original system. */
-/*          IPNTR(9): pointer to the NCV corresponding error bounds. */
-/*          IPNTR(10): pointer to the NCV by NCV matrix of eigenvectors */
-/*                     of the tridiagonal matrix T. Only referenced by */
-/*                     sseupd if RVEC = .TRUE. See Remarks. */
-/*          ------------------------------------------------------------- */
-
-/*  INFO    Integer.  (OUTPUT) */
-/*          Error flag on output. */
-/*          =  0: Normal exit. */
-/*          = -1: N must be positive. */
-/*          = -2: NEV must be positive. */
-/*          = -3: NCV must be greater than NEV and less than or equal to N. */
-/*          = -5: WHICH must be one of 'LM', 'SM', 'LA', 'SA' or 'BE'. */
-/*          = -6: BMAT must be one of 'I' or 'G'. */
-/*          = -7: Length of private work WORKL array is not sufficient. */
-/*          = -8: Error return from trid. eigenvalue calculation; */
-/*                Information error from LAPACK routine ssteqr. */
-/*          = -9: Starting vector is zero. */
-/*          = -10: IPARAM(7) must be 1,2,3,4,5. */
-/*          = -11: IPARAM(7) = 1 and BMAT = 'G' are incompatible. */
-/*          = -12: NEV and WHICH = 'BE' are incompatible. */
-/*          = -14: SSAUPD did not find any eigenvalues to sufficient */
-/*                 accuracy. */
-/*          = -15: HOWMNY must be one of 'A' or 'S' if RVEC = .true. */
-/*          = -16: HOWMNY = 'S' not yet implemented */
-/*          = -17: SSEUPD got a different count of the number of converged */
-/*                 Ritz values than SSAUPD got.  This indicates the user */
-/*                 probably made an error in passing data from SSAUPD to */
-/*                 SSEUPD or that the data was modified before entering */
-/*                 SSEUPD. */
-
-/* \BeginLib */
-
-/* \References: */
-/*  1. D.C. Sorensen, "Implicit Application of Polynomial Filters in */
-/*     a k-Step Arnoldi Method", SIAM J. Matr. Anal. Apps., 13 (1992), */
-/*     pp 357-385. */
-/*  2. R.B. Lehoucq, "Analysis and Implementation of an Implicitly */
-/*     Restarted Arnoldi Iteration", Rice University Technical Report */
-/*     TR95-13, Department of Computational and Applied Mathematics. */
-/*  3. B.N. Parlett, "The Symmetric Eigenvalue Problem". Prentice-Hall, */
-/*     1980. */
-/*  4. B.N. Parlett, B. Nour-Omid, "Towards a Black Box Lanczos Program", */
-/*     Computer Physics Communications, 53 (1989), pp 169-179. */
-/*  5. B. Nour-Omid, B.N. Parlett, T. Ericson, P.S. Jensen, "How to */
-/*     Implement the Spectral Transformation", Math. Comp., 48 (1987), */
-/*     pp 663-673. */
-/*  6. R.G. Grimes, J.G. Lewis and H.D. Simon, "A Shifted Block Lanczos */
-/*     Algorithm for Solving Sparse Symmetric Generalized Eigenproblems", */
-/*     SIAM J. Matr. Anal. Apps.,  January (1993). */
-/*  7. L. Reichel, W.B. Gragg, "Algorithm 686: FORTRAN Subroutines */
-/*     for Updating the QR decomposition", ACM TOMS, December 1990, */
-/*     Volume 16 Number 4, pp 369-377. */
-
-/* \Remarks */
-/*  1. The converged Ritz values are always returned in increasing */
-/*     (algebraic) order. */
-
-/*  2. Currently only HOWMNY = 'A' is implemented. It is included at this */
-/*     stage for the user who wants to incorporate it. */
-
-/* \Routines called: */
-/*     ssesrt  ARPACK routine that sorts an array X, and applies the */
-/*             corresponding permutation to a matrix A. */
-/*     ssortr  ssortr  ARPACK sorting routine. */
-/*     ivout   ARPACK utility routine that prints integers. */
-/*     svout   ARPACK utility routine that prints vectors. */
-/*     sgeqr2  LAPACK routine that computes the QR factorization of */
-/*             a matrix. */
-/*     slacpy  LAPACK matrix copy routine. */
-/*     slamch  LAPACK routine that determines machine constants. */
-/*     sorm2r  LAPACK routine that applies an orthogonal matrix in */
-/*             factored form. */
-/*     ssteqr  LAPACK routine that computes eigenvalues and eigenvectors */
-/*             of a tridiagonal matrix. */
-/*     sger    Level 2 BLAS rank one update to a matrix. */
-/*     scopy   Level 1 BLAS that copies one vector to another . */
-/*     snrm2   Level 1 BLAS that computes the norm of a vector. */
-/*     sscal   Level 1 BLAS that scales a vector. */
-/*     sswap   Level 1 BLAS that swaps the contents of two vectors. */
-/* \Authors */
-/*     Danny Sorensen               Phuong Vu */
-/*     Richard Lehoucq              CRPC / Rice University */
-/*     Chao Yang                    Houston, Texas */
-/*     Dept. of Computational & */
-/*     Applied Mathematics */
-/*     Rice University */
-/*     Houston, Texas */
-
-/* \Revision history: */
-/*     12/15/93: Version ' 2.1' */
-
-/* \SCCS Information: @(#) */
-/* FILE: seupd.F   SID: 2.11   DATE OF SID: 04/10/01   RELEASE: 2 */
-
-/* \EndLib */
-
-/* ----------------------------------------------------------------------- */
 /* Subroutine */ int sseupd_(logical *rvec, char *howmny, logical *select, 
 	real *d__, real *z__, integer *ldz, real *sigma, char *bmat, integer *
 	n, char *which, integer *nev, real *tol, real *resid, integer *ncv, 
@@ -274,93 +239,20 @@ static real c_b111 = 1.f;
     /* Local variables */
     integer j, k, ih, jj, iq, np, iw, ibd, ihb, ihd, ldh, ldq, irz, mode;
     real eps23;
-    extern /* Subroutine */ int sger_(integer *, integer *, real *, real *, 
-	    integer *, real *, integer *, real *, integer *);
     integer ierr;
     real temp;
     integer next;
     char type__[6];
     integer ritz;
     real temp1;
-    extern doublereal snrm2_(integer *, real *, integer *);
-    extern /* Subroutine */ int sscal_(integer *, real *, real *, integer *);
     logical reord;
     integer nconv;
     real rnorm;
-    extern /* Subroutine */ int scopy_(integer *, real *, integer *, real *, 
-	    integer *), ivout_(integer *, integer *, integer *, integer *, 
-	    char *, ftnlen), svout_(integer *, integer *, real *, integer *, 
-	    char *, ftnlen);
     real bnorm2;
-    extern /* Subroutine */ int sgeqr2_(integer *, integer *, real *, integer 
-	    *, real *, real *, integer *), sorm2r_(char *, char *, integer *, 
-	    integer *, integer *, real *, integer *, real *, real *, integer *
-	    , real *, integer *);
-    extern doublereal slamch_(char *);
     integer bounds, msglvl, ishift, numcnv;
-    extern /* Subroutine */ int slacpy_(char *, integer *, integer *, real *, 
-	    integer *, real *, integer *), ssesrt_(char *, logical *, 
-	    integer *, real *, integer *, real *, integer *), ssteqr_(
-	    char *, integer *, real *, real *, real *, integer *, real *, 
-	    integer *), ssortr_(char *, logical *, integer *, real *, 
-	    real *), ssgets_(integer *, char *, integer *, integer *, 
-	    real *, real *, real *);
     integer leftptr, rghtptr;
 
 
-/*     %----------------------------------------------------% */
-/*     | Include files for debugging and timing information | */
-/*     %----------------------------------------------------% */
-
-
-/* \SCCS Information: @(#) */
-/* FILE: debug.h   SID: 2.3   DATE OF SID: 11/16/95   RELEASE: 2 */
-
-/*     %---------------------------------% */
-/*     | See debug.doc for documentation | */
-/*     %---------------------------------% */
-
-/*     %------------------% */
-/*     | Scalar Arguments | */
-/*     %------------------% */
-
-/*     %--------------------------------% */
-/*     | See stat.doc for documentation | */
-/*     %--------------------------------% */
-
-/* \SCCS Information: @(#) */
-/* FILE: stat.h   SID: 2.2   DATE OF SID: 11/16/95   RELEASE: 2 */
-
-
-
-/*     %-----------------% */
-/*     | Array Arguments | */
-/*     %-----------------% */
-
-
-/*     %------------% */
-/*     | Parameters | */
-/*     %------------% */
-
-
-/*     %---------------% */
-/*     | Local Scalars | */
-/*     %---------------% */
-
-
-/*     %----------------------% */
-/*     | External Subroutines | */
-/*     %----------------------% */
-
-
-/*     %--------------------% */
-/*     | External Functions | */
-/*     %--------------------% */
-
-
-/*     %---------------------% */
-/*     | Intrinsic Functions | */
-/*     %---------------------% */
 
 
 /*     %-----------------------% */
@@ -539,7 +431,7 @@ static real c_b111 = 1.f;
 
     eps23 = slamch_("Epsilon-Machine");
     d__1 = (doublereal) eps23;
-    eps23 = pow_dd(&d__1, &c_b21);
+    eps23 = pow_dd(&d__1, &d_23);
 
 /*     %---------------------------------------% */
 /*     | RNORM is B-norm of the RESID(1:N).    | */
@@ -1000,7 +892,7 @@ L30:
     }
 
     if (s_cmp(type__, "REGULR", (ftnlen)6, (ftnlen)6) != 0) {
-	sger_(n, &nconv, &c_b111, &resid[1], &c__1, &workl[iw], &c__1, &z__[
+	sger_(n, &nconv, &s_one, &resid[1], &c__1, &workl[iw], &c__1, &z__[
 		z_offset], ldz);
     }
 

@@ -1,347 +1,310 @@
-/* D:\Projekte\ARPACK\arpack-ng\SRC\sneupd.f -- translated by f2c (version 20100827).
-   You must link the resulting object file with libf2c:
-	on Microsoft Windows system, link with libf2c.lib;
-	on Linux or Unix systems, link with .../path/to/libf2c.a -lm
-	or, if you install libf2c.a in a standard place, with -lf2c -lm
-	-- in that order, at the end of the command line, as in
-		cc *.o -lf2c -lm
-	Source for libf2c is in /netlib/f2c/libf2c.zip, e.g.,
+/* D:\Projekte\ARPACK\arpack-ng\SRC\sneupd.f -- translated by f2c (version 20100827). */
+
+#include "arpack.h"
+
+/**
+ * \BeginDoc
+ *
+ * \Name: sneupd
+ *
+ * \Description:
+ *
+ *  This subroutine returns the converged approximations to eigenvalues
+ *  of A*z = lambda*B*z and (optionally):
+ *
+ *      (1) The corresponding approximate eigenvectors;
+ *
+ *      (2) An orthonormal basis for the associated approximate
+ *          invariant subspace;
+ *
+ *      (3) Both.
+ *
+ *  There is negligible additional cost to obtain eigenvectors.  An orthonormal
+ *  basis is always computed.  There is an additional storage cost of n*nev
+ *  if both are requested (in this case a separate array Z must be supplied).
+ *
+ *  The approximate eigenvalues and eigenvectors of  A*z = lambda*B*z
+ *  are derived from approximate eigenvalues and eigenvectors of
+ *  of the linear operator OP prescribed by the MODE selection in the
+ *  call to SNAUPD.  SNAUPD must be called before this routine is called.
+ *  These approximate eigenvalues and vectors are commonly called Ritz
+ *  values and Ritz vectors respectively.  They are referred to as such
+ *  in the comments that follow.  The computed orthonormal basis for the
+ *  invariant subspace corresponding to these Ritz values is referred to as a
+ *  Schur basis.
+ *
+ *  See documentation in the header of the subroutine SNAUPD for
+ *  definition of OP as well as other terms and the relation of computed
+ *  Ritz values and Ritz vectors of OP with respect to the given problem
+ *  A*z = lambda*B*z.  For a brief description, see definitions of
+ *  IPARAM(7), MODE and WHICH in the documentation of SNAUPD.
+ *
+ * \Usage:
+ *  call sneupd
+ *     ( RVEC, HOWMNY, SELECT, DR, DI, Z, LDZ, SIGMAR, SIGMAI, WORKEV, BMAT,
+ *       N, WHICH, NEV, TOL, RESID, NCV, V, LDV, IPARAM, IPNTR, WORKD, WORKL,
+ *       LWORKL, INFO )
+ *
+ * \Arguments:
+ *  RVEC    LOGICAL  (INPUT)
+ *          Specifies whether a basis for the invariant subspace corresponding
+ *          to the converged Ritz value approximations for the eigenproblem
+ *          A*z = lambda*B*z is computed.
+ *
+ *             RVEC = .FALSE.     Compute Ritz values only.
+ *
+ *             RVEC = .TRUE.      Compute the Ritz vectors or Schur vectors.
+ *                                See Remarks below.
+ *
+ *  HOWMNY  Character*1  (INPUT)
+ *          Specifies the form of the basis for the invariant subspace
+ *          corresponding to the converged Ritz values that is to be computed.
+ *
+ *          = 'A': Compute NEV Ritz vectors;
+ *          = 'P': Compute NEV Schur vectors;
+ *          = 'S': compute some of the Ritz vectors, specified
+ *                 by the logical array SELECT.
+ *
+ *  SELECT  Logical array of dimension NCV.  (INPUT)
+ *          If HOWMNY = 'S', SELECT specifies the Ritz vectors to be
+ *          computed. To select the Ritz vector corresponding to a
+ *          Ritz value (DR(j), DI(j)), SELECT(j) must be set to .TRUE..
+ *          If HOWMNY = 'A' or 'P', SELECT is used as internal workspace.
+ *
+ *  DR      Real  array of dimension NEV+1.  (OUTPUT)
+ *          If IPARAM(7) = 1,2 or 3 and SIGMAI=0.0  then on exit: DR contains
+ *          the real part of the Ritz  approximations to the eigenvalues of
+ *          A*z = lambda*B*z.
+ *          If IPARAM(7) = 3, 4 and SIGMAI is not equal to zero, then on exit:
+ *          DR contains the real part of the Ritz values of OP computed by
+ *          SNAUPD. A further computation must be performed by the user
+ *          to transform the Ritz values computed for OP by SNAUPD to those
+ *          of the original system A*z = lambda*B*z. See remark 3 below.
+ *
+ *  DI      Real  array of dimension NEV+1.  (OUTPUT)
+ *          On exit, DI contains the imaginary part of the Ritz value
+ *          approximations to the eigenvalues of A*z = lambda*B*z associated
+ *          with DR.
+ *
+ *          NOTE: When Ritz values are complex, they will come in complex
+ *                conjugate pairs.  If eigenvectors are requested, the
+ *                corresponding Ritz vectors will also come in conjugate
+ *                pairs and the real and imaginary parts of these are
+ *                represented in two consecutive columns of the array Z
+ *                (see below).
+ *
+ *  Z       Real  N by NEV+1 array if RVEC = .TRUE. and HOWMNY = 'A'. (OUTPUT)
+ *          On exit, if RVEC = .TRUE. and HOWMNY = 'A', then the columns of
+ *          Z represent approximate eigenvectors (Ritz vectors) corresponding
+ *          to the NCONV=IPARAM(5) Ritz values for eigensystem
+ *          A*z = lambda*B*z.
+ *
+ *          The complex Ritz vector associated with the Ritz value
+ *          with positive imaginary part is stored in two consecutive
+ *          columns.  The first column holds the real part of the Ritz
+ *          vector and the second column holds the imaginary part.  The
+ *          Ritz vector associated with the Ritz value with negative
+ *          imaginary part is simply the complex conjugate of the Ritz vector
+ *          associated with the positive imaginary part.
+ *
+ *          If  RVEC = .FALSE. or HOWMNY = 'P', then Z is not referenced.
+ *
+ *          NOTE: If if RVEC = .TRUE. and a Schur basis is not required,
+ *          the array Z may be set equal to first NEV+1 columns of the Arnoldi
+ *          basis array V computed by SNAUPD.  In this case the Arnoldi basis
+ *          will be destroyed and overwritten with the eigenvector basis.
+ *
+ *  LDZ     Integer.  (INPUT)
+ *          The leading dimension of the array Z.  If Ritz vectors are
+ *          desired, then  LDZ >= max( 1, N ).  In any case,  LDZ >= 1.
+ *
+ *  SIGMAR  Real   (INPUT)
+ *          If IPARAM(7) = 3 or 4, represents the real part of the shift.
+ *          Not referenced if IPARAM(7) = 1 or 2.
+ *
+ *  SIGMAI  Real   (INPUT)
+ *          If IPARAM(7) = 3 or 4, represents the imaginary part of the shift.
+ *          Not referenced if IPARAM(7) = 1 or 2. See remark 3 below.
+ *
+ *  WORKEV  Real  work array of dimension 3*NCV.  (WORKSPACE)
+ *
+ *  **** The remaining arguments MUST be the same as for the   ****
+ *  **** call to SNAUPD that was just completed.               ****
+ *
+ *  NOTE: The remaining arguments
+ *
+ *           BMAT, N, WHICH, NEV, TOL, RESID, NCV, V, LDV, IPARAM, IPNTR,
+ *           WORKD, WORKL, LWORKL, INFO
+ *
+ *         must be passed directly to SNEUPD following the last call
+ *         to SNAUPD.  These arguments MUST NOT BE MODIFIED between
+ *         the the last call to SNAUPD and the call to SNEUPD.
+ *
+ *  Three of these parameters (V, WORKL, INFO) are also output parameters:
+ *
+ *  V       Real  N by NCV array.  (INPUT/OUTPUT)
+ *
+ *          Upon INPUT: the NCV columns of V contain the Arnoldi basis
+ *                      vectors for OP as constructed by SNAUPD .
+ *
+ *          Upon OUTPUT: If RVEC = .TRUE. the first NCONV=IPARAM(5) columns
+ *                       contain approximate Schur vectors that span the
+ *                       desired invariant subspace.  See Remark 2 below.
+ *
+ *          NOTE: If the array Z has been set equal to first NEV+1 columns
+ *          of the array V and RVEC=.TRUE. and HOWMNY= 'A', then the
+ *          Arnoldi basis held by V has been overwritten by the desired
+ *          Ritz vectors.  If a separate array Z has been passed then
+ *          the first NCONV=IPARAM(5) columns of V will contain approximate
+ *          Schur vectors that span the desired invariant subspace.
+ *
+ *  WORKL   Real  work array of length LWORKL.  (OUTPUT/WORKSPACE)
+ *          WORKL(1:ncv*ncv+3*ncv) contains information obtained in
+ *          snaupd.  They are not changed by sneupd.
+ *          WORKL(ncv*ncv+3*ncv+1:3*ncv*ncv+6*ncv) holds the
+ *          real and imaginary part of the untransformed Ritz values,
+ *          the upper quasi-triangular matrix for H, and the
+ *          associated matrix representation of the invariant subspace for H.
+ *
+ *          Note: IPNTR(9:13) contains the pointer into WORKL for addresses
+ *          of the above information computed by sneupd.
+ *          -------------------------------------------------------------
+ *          IPNTR(9):  pointer to the real part of the NCV RITZ values of the
+ *                     original system.
+ *          IPNTR(10): pointer to the imaginary part of the NCV RITZ values of
+ *                     the original system.
+ *          IPNTR(11): pointer to the NCV corresponding error bounds.
+ *          IPNTR(12): pointer to the NCV by NCV upper quasi-triangular
+ *                     Schur matrix for H.
+ *          IPNTR(13): pointer to the NCV by NCV matrix of eigenvectors
+ *                     of the upper Hessenberg matrix H. Only referenced by
+ *                     sneupd if RVEC = .TRUE. See Remark 2 below.
+ *          -------------------------------------------------------------
+ *
+ *  INFO    Integer.  (OUTPUT)
+ *          Error flag on output.
+ *
+ *          =  0: Normal exit.
+ *
+ *          =  1: The Schur form computed by LAPACK routine slahqr
+ *                could not be reordered by LAPACK routine strsen.
+ *                Re-enter subroutine sneupd with IPARAM(5)=NCV and
+ *                increase the size of the arrays DR and DI to have
+ *                dimension at least dimension NCV and allocate at least NCV
+ *                columns for Z. NOTE: Not necessary if Z and V share
+ *                the same space. Please notify the authors if this error
+ *                occurs.
+ *
+ *          = -1: N must be positive.
+ *          = -2: NEV must be positive.
+ *          = -3: NCV-NEV >= 2 and less than or equal to N.
+ *          = -5: WHICH must be one of 'LM', 'SM', 'LR', 'SR', 'LI', 'SI'
+ *          = -6: BMAT must be one of 'I' or 'G'.
+ *          = -7: Length of private work WORKL array is not sufficient.
+ *          = -8: Error return from calculation of a real Schur form.
+ *                Informational error from LAPACK routine slahqr.
+ *          = -9: Error return from calculation of eigenvectors.
+ *                Informational error from LAPACK routine strevc.
+ *          = -10: IPARAM(7) must be 1,2,3,4.
+ *          = -11: IPARAM(7) = 1 and BMAT = 'G' are incompatible.
+ *          = -12: HOWMNY = 'S' not yet implemented
+ *          = -13: HOWMNY must be one of 'A' or 'P' if RVEC = .true.
+ *          = -14: SNAUPD did not find any eigenvalues to sufficient
+ *                 accuracy.
+ *          = -15: DNEUPD got a different count of the number of converged
+ *                 Ritz values than DNAUPD got.  This indicates the user
+ *                 probably made an error in passing data from DNAUPD to
+ *                 DNEUPD or that the data was modified before entering
+ *                 DNEUPD
+ * \EndDoc
+ *
+ * \BeginLib
+ *
+ * \References:
+ *  1. D.C. Sorensen, "Implicit Application of Polynomial Filters in
+ *     a k-Step Arnoldi Method", SIAM J. Matr. Anal. Apps., 13 (1992),
+ *     pp 357-385.
+ *  2. R.B. Lehoucq, "Analysis and Implementation of an Implicitly
+ *     Restarted Arnoldi Iteration", Rice University Technical Report
+ *     TR95-13, Department of Computational and Applied Mathematics.
+ *  3. B.N. Parlett & Y. Saad, "Complex Shift and Invert Strategies for
+ *     Real Matrices", Linear Algebra and its Applications, vol 88/89,
+ *     pp 575-595, (1987).
+ *
+ * \Routines called:
+ *     ivout   ARPACK utility routine that prints integers.
+ *     smout   ARPACK utility routine that prints matrices
+ *     svout   ARPACK utility routine that prints vectors.
+ *     sgeqr2  LAPACK routine that computes the QR factorization of
+ *             a matrix.
+ *     slacpy  LAPACK matrix copy routine.
+ *     slahqr  LAPACK routine to compute the real Schur form of an
+ *             upper Hessenberg matrix.
+ *     slamch  LAPACK routine that determines machine constants.
+ *     slapy2  LAPACK routine to compute sqrt(x**2+y**2) carefully.
+ *     slaset  LAPACK matrix initialization routine.
+ *     sorm2r  LAPACK routine that applies an orthogonal matrix in
+ *             factored form.
+ *     strevc  LAPACK routine to compute the eigenvectors of a matrix
+ *             in upper quasi-triangular form.
+ *     strsen  LAPACK routine that re-orders the Schur form.
+ *     strmm   Level 3 BLAS matrix times an upper triangular matrix.
+ *     sger    Level 2 BLAS rank one update to a matrix.
+ *     scopy   Level 1 BLAS that copies one vector to another .
+ *     sdot    Level 1 BLAS that computes the scalar product of two vectors.
+ *     snrm2   Level 1 BLAS that computes the norm of a vector.
+ *     sscal   Level 1 BLAS that scales a vector.
+ *
+ * \Remarks
+ *
+ *  1. Currently only HOWMNY = 'A' and 'P' are implemented.
+ *
+ *     Let trans(X) denote the transpose of X.
+ *
+ *  2. Schur vectors are an orthogonal representation for the basis of
+ *     Ritz vectors. Thus, their numerical properties are often superior.
+ *     If RVEC = .TRUE. then the relationship
+ *             A * V(:,1:IPARAM(5)) = V(:,1:IPARAM(5)) * T, and
+ *     trans(V(:,1:IPARAM(5))) * V(:,1:IPARAM(5)) = I are approximately
+ *     satisfied. Here T is the leading submatrix of order IPARAM(5) of the
+ *     real upper quasi-triangular matrix stored workl(ipntr(12)). That is,
+ *     T is block upper triangular with 1-by-1 and 2-by-2 diagonal blocks;
+ *     each 2-by-2 diagonal block has its diagonal elements equal and its
+ *     off-diagonal elements of opposite sign.  Corresponding to each 2-by-2
+ *     diagonal block is a complex conjugate pair of Ritz values. The real
+ *     Ritz values are stored on the diagonal of T.
+ *
+ *  3. If IPARAM(7) = 3 or 4 and SIGMAI is not equal zero, then the user must
+ *     form the IPARAM(5) Rayleigh quotients in order to transform the Ritz
+ *     values computed by SNAUPD for OP to those of A*z = lambda*B*z.
+ *     Set RVEC = .true. and HOWMNY = 'A', and
+ *     compute
+ *           trans(Z(:,I)) * A * Z(:,I) if DI(I) = 0.
+ *     If DI(I) is not equal to zero and DI(I+1) = - D(I),
+ *     then the desired real and imaginary parts of the Ritz value are
+ *           trans(Z(:,I)) * A * Z(:,I) +  trans(Z(:,I+1)) * A * Z(:,I+1),
+ *           trans(Z(:,I)) * A * Z(:,I+1) -  trans(Z(:,I+1)) * A * Z(:,I),
+ *     respectively.
+ *     Another possibility is to set RVEC = .true. and HOWMNY = 'P' and
+ *     compute trans(V(:,1:IPARAM(5))) * A * V(:,1:IPARAM(5)) and then an upper
+ *     quasi-triangular matrix of order IPARAM(5) is computed. See remark
+ *     2 above.
+ *
+ * \Authors
+ *     Danny Sorensen               Phuong Vu
+ *     Richard Lehoucq              CRPC / Rice University
+ *     Chao Yang                    Houston, Texas
+ *     Dept. of Computational &
+ *     Applied Mathematics
+ *     Rice University
+ *     Houston, Texas
+ *
+ * \SCCS Information: @(#)
+ * FILE: neupd.F   SID: 2.7   DATE OF SID: 09/20/00   RELEASE: 2
+ *
+ * \EndLib
+ */
 
-		http://www.netlib.org/f2c/libf2c.zip
-*/
-
-#include "f2c.h"
-
-/* Common Block Declarations */
-
-struct {
-    integer logfil, ndigit, mgetv0, msaupd, msaup2, msaitr, mseigt, msapps, 
-	    msgets, mseupd, mnaupd, mnaup2, mnaitr, mneigh, mnapps, mngets, 
-	    mneupd, mcaupd, mcaup2, mcaitr, mceigh, mcapps, mcgets, mceupd;
-} debug_;
-
-#define debug_1 debug_
-
-struct {
-    integer nopx, nbx, nrorth, nitref, nrstrt;
-    real tsaupd, tsaup2, tsaitr, tseigt, tsgets, tsapps, tsconv, tnaupd, 
-	    tnaup2, tnaitr, tneigh, tngets, tnapps, tnconv, tcaupd, tcaup2, 
-	    tcaitr, tceigh, tcgets, tcapps, tcconv, tmvopx, tmvbx, tgetv0, 
-	    titref, trvec;
-} timing_;
-
-#define timing_1 timing_
-
-/* Table of constant values */
-
-static doublereal c_b3 = .66666666666666663;
-static integer c__1 = 1;
-static real c_b37 = 0.f;
-static real c_b38 = 1.f;
-static logical c_true = TRUE_;
-static real c_b64 = -1.f;
-
-/* \BeginDoc */
-
-/* \Name: sneupd */
-
-/* \Description: */
-
-/*  This subroutine returns the converged approximations to eigenvalues */
-/*  of A*z = lambda*B*z and (optionally): */
-
-/*      (1) The corresponding approximate eigenvectors; */
-
-/*      (2) An orthonormal basis for the associated approximate */
-/*          invariant subspace; */
-
-/*      (3) Both. */
-
-/*  There is negligible additional cost to obtain eigenvectors.  An orthonormal */
-/*  basis is always computed.  There is an additional storage cost of n*nev */
-/*  if both are requested (in this case a separate array Z must be supplied). */
-
-/*  The approximate eigenvalues and eigenvectors of  A*z = lambda*B*z */
-/*  are derived from approximate eigenvalues and eigenvectors of */
-/*  of the linear operator OP prescribed by the MODE selection in the */
-/*  call to SNAUPD.  SNAUPD must be called before this routine is called. */
-/*  These approximate eigenvalues and vectors are commonly called Ritz */
-/*  values and Ritz vectors respectively.  They are referred to as such */
-/*  in the comments that follow.  The computed orthonormal basis for the */
-/*  invariant subspace corresponding to these Ritz values is referred to as a */
-/*  Schur basis. */
-
-/*  See documentation in the header of the subroutine SNAUPD for */
-/*  definition of OP as well as other terms and the relation of computed */
-/*  Ritz values and Ritz vectors of OP with respect to the given problem */
-/*  A*z = lambda*B*z.  For a brief description, see definitions of */
-/*  IPARAM(7), MODE and WHICH in the documentation of SNAUPD. */
-
-/* \Usage: */
-/*  call sneupd */
-/*     ( RVEC, HOWMNY, SELECT, DR, DI, Z, LDZ, SIGMAR, SIGMAI, WORKEV, BMAT, */
-/*       N, WHICH, NEV, TOL, RESID, NCV, V, LDV, IPARAM, IPNTR, WORKD, WORKL, */
-/*       LWORKL, INFO ) */
-
-/* \Arguments: */
-/*  RVEC    LOGICAL  (INPUT) */
-/*          Specifies whether a basis for the invariant subspace corresponding */
-/*          to the converged Ritz value approximations for the eigenproblem */
-/*          A*z = lambda*B*z is computed. */
-
-/*             RVEC = .FALSE.     Compute Ritz values only. */
-
-/*             RVEC = .TRUE.      Compute the Ritz vectors or Schur vectors. */
-/*                                See Remarks below. */
-
-/*  HOWMNY  Character*1  (INPUT) */
-/*          Specifies the form of the basis for the invariant subspace */
-/*          corresponding to the converged Ritz values that is to be computed. */
-
-/*          = 'A': Compute NEV Ritz vectors; */
-/*          = 'P': Compute NEV Schur vectors; */
-/*          = 'S': compute some of the Ritz vectors, specified */
-/*                 by the logical array SELECT. */
-
-/*  SELECT  Logical array of dimension NCV.  (INPUT) */
-/*          If HOWMNY = 'S', SELECT specifies the Ritz vectors to be */
-/*          computed. To select the Ritz vector corresponding to a */
-/*          Ritz value (DR(j), DI(j)), SELECT(j) must be set to .TRUE.. */
-/*          If HOWMNY = 'A' or 'P', SELECT is used as internal workspace. */
-
-/*  DR      Real  array of dimension NEV+1.  (OUTPUT) */
-/*          If IPARAM(7) = 1,2 or 3 and SIGMAI=0.0  then on exit: DR contains */
-/*          the real part of the Ritz  approximations to the eigenvalues of */
-/*          A*z = lambda*B*z. */
-/*          If IPARAM(7) = 3, 4 and SIGMAI is not equal to zero, then on exit: */
-/*          DR contains the real part of the Ritz values of OP computed by */
-/*          SNAUPD. A further computation must be performed by the user */
-/*          to transform the Ritz values computed for OP by SNAUPD to those */
-/*          of the original system A*z = lambda*B*z. See remark 3 below. */
-
-/*  DI      Real  array of dimension NEV+1.  (OUTPUT) */
-/*          On exit, DI contains the imaginary part of the Ritz value */
-/*          approximations to the eigenvalues of A*z = lambda*B*z associated */
-/*          with DR. */
-
-/*          NOTE: When Ritz values are complex, they will come in complex */
-/*                conjugate pairs.  If eigenvectors are requested, the */
-/*                corresponding Ritz vectors will also come in conjugate */
-/*                pairs and the real and imaginary parts of these are */
-/*                represented in two consecutive columns of the array Z */
-/*                (see below). */
-
-/*  Z       Real  N by NEV+1 array if RVEC = .TRUE. and HOWMNY = 'A'. (OUTPUT) */
-/*          On exit, if RVEC = .TRUE. and HOWMNY = 'A', then the columns of */
-/*          Z represent approximate eigenvectors (Ritz vectors) corresponding */
-/*          to the NCONV=IPARAM(5) Ritz values for eigensystem */
-/*          A*z = lambda*B*z. */
-
-/*          The complex Ritz vector associated with the Ritz value */
-/*          with positive imaginary part is stored in two consecutive */
-/*          columns.  The first column holds the real part of the Ritz */
-/*          vector and the second column holds the imaginary part.  The */
-/*          Ritz vector associated with the Ritz value with negative */
-/*          imaginary part is simply the complex conjugate of the Ritz vector */
-/*          associated with the positive imaginary part. */
-
-/*          If  RVEC = .FALSE. or HOWMNY = 'P', then Z is not referenced. */
-
-/*          NOTE: If if RVEC = .TRUE. and a Schur basis is not required, */
-/*          the array Z may be set equal to first NEV+1 columns of the Arnoldi */
-/*          basis array V computed by SNAUPD.  In this case the Arnoldi basis */
-/*          will be destroyed and overwritten with the eigenvector basis. */
-
-/*  LDZ     Integer.  (INPUT) */
-/*          The leading dimension of the array Z.  If Ritz vectors are */
-/*          desired, then  LDZ >= max( 1, N ).  In any case,  LDZ >= 1. */
-
-/*  SIGMAR  Real   (INPUT) */
-/*          If IPARAM(7) = 3 or 4, represents the real part of the shift. */
-/*          Not referenced if IPARAM(7) = 1 or 2. */
-
-/*  SIGMAI  Real   (INPUT) */
-/*          If IPARAM(7) = 3 or 4, represents the imaginary part of the shift. */
-/*          Not referenced if IPARAM(7) = 1 or 2. See remark 3 below. */
-
-/*  WORKEV  Real  work array of dimension 3*NCV.  (WORKSPACE) */
-
-/*  **** The remaining arguments MUST be the same as for the   **** */
-/*  **** call to SNAUPD that was just completed.               **** */
-
-/*  NOTE: The remaining arguments */
-
-/*           BMAT, N, WHICH, NEV, TOL, RESID, NCV, V, LDV, IPARAM, IPNTR, */
-/*           WORKD, WORKL, LWORKL, INFO */
-
-/*         must be passed directly to SNEUPD following the last call */
-/*         to SNAUPD.  These arguments MUST NOT BE MODIFIED between */
-/*         the the last call to SNAUPD and the call to SNEUPD. */
-
-/*  Three of these parameters (V, WORKL, INFO) are also output parameters: */
-
-/*  V       Real  N by NCV array.  (INPUT/OUTPUT) */
-
-/*          Upon INPUT: the NCV columns of V contain the Arnoldi basis */
-/*                      vectors for OP as constructed by SNAUPD . */
-
-/*          Upon OUTPUT: If RVEC = .TRUE. the first NCONV=IPARAM(5) columns */
-/*                       contain approximate Schur vectors that span the */
-/*                       desired invariant subspace.  See Remark 2 below. */
-
-/*          NOTE: If the array Z has been set equal to first NEV+1 columns */
-/*          of the array V and RVEC=.TRUE. and HOWMNY= 'A', then the */
-/*          Arnoldi basis held by V has been overwritten by the desired */
-/*          Ritz vectors.  If a separate array Z has been passed then */
-/*          the first NCONV=IPARAM(5) columns of V will contain approximate */
-/*          Schur vectors that span the desired invariant subspace. */
-
-/*  WORKL   Real  work array of length LWORKL.  (OUTPUT/WORKSPACE) */
-/*          WORKL(1:ncv*ncv+3*ncv) contains information obtained in */
-/*          snaupd.  They are not changed by sneupd. */
-/*          WORKL(ncv*ncv+3*ncv+1:3*ncv*ncv+6*ncv) holds the */
-/*          real and imaginary part of the untransformed Ritz values, */
-/*          the upper quasi-triangular matrix for H, and the */
-/*          associated matrix representation of the invariant subspace for H. */
-
-/*          Note: IPNTR(9:13) contains the pointer into WORKL for addresses */
-/*          of the above information computed by sneupd. */
-/*          ------------------------------------------------------------- */
-/*          IPNTR(9):  pointer to the real part of the NCV RITZ values of the */
-/*                     original system. */
-/*          IPNTR(10): pointer to the imaginary part of the NCV RITZ values of */
-/*                     the original system. */
-/*          IPNTR(11): pointer to the NCV corresponding error bounds. */
-/*          IPNTR(12): pointer to the NCV by NCV upper quasi-triangular */
-/*                     Schur matrix for H. */
-/*          IPNTR(13): pointer to the NCV by NCV matrix of eigenvectors */
-/*                     of the upper Hessenberg matrix H. Only referenced by */
-/*                     sneupd if RVEC = .TRUE. See Remark 2 below. */
-/*          ------------------------------------------------------------- */
-
-/*  INFO    Integer.  (OUTPUT) */
-/*          Error flag on output. */
-
-/*          =  0: Normal exit. */
-
-/*          =  1: The Schur form computed by LAPACK routine slahqr */
-/*                could not be reordered by LAPACK routine strsen. */
-/*                Re-enter subroutine sneupd with IPARAM(5)=NCV and */
-/*                increase the size of the arrays DR and DI to have */
-/*                dimension at least dimension NCV and allocate at least NCV */
-/*                columns for Z. NOTE: Not necessary if Z and V share */
-/*                the same space. Please notify the authors if this error */
-/*                occurs. */
-
-/*          = -1: N must be positive. */
-/*          = -2: NEV must be positive. */
-/*          = -3: NCV-NEV >= 2 and less than or equal to N. */
-/*          = -5: WHICH must be one of 'LM', 'SM', 'LR', 'SR', 'LI', 'SI' */
-/*          = -6: BMAT must be one of 'I' or 'G'. */
-/*          = -7: Length of private work WORKL array is not sufficient. */
-/*          = -8: Error return from calculation of a real Schur form. */
-/*                Informational error from LAPACK routine slahqr. */
-/*          = -9: Error return from calculation of eigenvectors. */
-/*                Informational error from LAPACK routine strevc. */
-/*          = -10: IPARAM(7) must be 1,2,3,4. */
-/*          = -11: IPARAM(7) = 1 and BMAT = 'G' are incompatible. */
-/*          = -12: HOWMNY = 'S' not yet implemented */
-/*          = -13: HOWMNY must be one of 'A' or 'P' if RVEC = .true. */
-/*          = -14: SNAUPD did not find any eigenvalues to sufficient */
-/*                 accuracy. */
-/*          = -15: DNEUPD got a different count of the number of converged */
-/*                 Ritz values than DNAUPD got.  This indicates the user */
-/*                 probably made an error in passing data from DNAUPD to */
-/*                 DNEUPD or that the data was modified before entering */
-/*                 DNEUPD */
-
-/* \BeginLib */
-
-/* \References: */
-/*  1. D.C. Sorensen, "Implicit Application of Polynomial Filters in */
-/*     a k-Step Arnoldi Method", SIAM J. Matr. Anal. Apps., 13 (1992), */
-/*     pp 357-385. */
-/*  2. R.B. Lehoucq, "Analysis and Implementation of an Implicitly */
-/*     Restarted Arnoldi Iteration", Rice University Technical Report */
-/*     TR95-13, Department of Computational and Applied Mathematics. */
-/*  3. B.N. Parlett & Y. Saad, "Complex Shift and Invert Strategies for */
-/*     Real Matrices", Linear Algebra and its Applications, vol 88/89, */
-/*     pp 575-595, (1987). */
-
-/* \Routines called: */
-/*     ivout   ARPACK utility routine that prints integers. */
-/*     smout   ARPACK utility routine that prints matrices */
-/*     svout   ARPACK utility routine that prints vectors. */
-/*     sgeqr2  LAPACK routine that computes the QR factorization of */
-/*             a matrix. */
-/*     slacpy  LAPACK matrix copy routine. */
-/*     slahqr  LAPACK routine to compute the real Schur form of an */
-/*             upper Hessenberg matrix. */
-/*     slamch  LAPACK routine that determines machine constants. */
-/*     slapy2  LAPACK routine to compute sqrt(x**2+y**2) carefully. */
-/*     slaset  LAPACK matrix initialization routine. */
-/*     sorm2r  LAPACK routine that applies an orthogonal matrix in */
-/*             factored form. */
-/*     strevc  LAPACK routine to compute the eigenvectors of a matrix */
-/*             in upper quasi-triangular form. */
-/*     strsen  LAPACK routine that re-orders the Schur form. */
-/*     strmm   Level 3 BLAS matrix times an upper triangular matrix. */
-/*     sger    Level 2 BLAS rank one update to a matrix. */
-/*     scopy   Level 1 BLAS that copies one vector to another . */
-/*     sdot    Level 1 BLAS that computes the scalar product of two vectors. */
-/*     snrm2   Level 1 BLAS that computes the norm of a vector. */
-/*     sscal   Level 1 BLAS that scales a vector. */
-
-/* \Remarks */
-
-/*  1. Currently only HOWMNY = 'A' and 'P' are implemented. */
-
-/*     Let trans(X) denote the transpose of X. */
-
-/*  2. Schur vectors are an orthogonal representation for the basis of */
-/*     Ritz vectors. Thus, their numerical properties are often superior. */
-/*     If RVEC = .TRUE. then the relationship */
-/*             A * V(:,1:IPARAM(5)) = V(:,1:IPARAM(5)) * T, and */
-/*     trans(V(:,1:IPARAM(5))) * V(:,1:IPARAM(5)) = I are approximately */
-/*     satisfied. Here T is the leading submatrix of order IPARAM(5) of the */
-/*     real upper quasi-triangular matrix stored workl(ipntr(12)). That is, */
-/*     T is block upper triangular with 1-by-1 and 2-by-2 diagonal blocks; */
-/*     each 2-by-2 diagonal block has its diagonal elements equal and its */
-/*     off-diagonal elements of opposite sign.  Corresponding to each 2-by-2 */
-/*     diagonal block is a complex conjugate pair of Ritz values. The real */
-/*     Ritz values are stored on the diagonal of T. */
-
-/*  3. If IPARAM(7) = 3 or 4 and SIGMAI is not equal zero, then the user must */
-/*     form the IPARAM(5) Rayleigh quotients in order to transform the Ritz */
-/*     values computed by SNAUPD for OP to those of A*z = lambda*B*z. */
-/*     Set RVEC = .true. and HOWMNY = 'A', and */
-/*     compute */
-/*           trans(Z(:,I)) * A * Z(:,I) if DI(I) = 0. */
-/*     If DI(I) is not equal to zero and DI(I+1) = - D(I), */
-/*     then the desired real and imaginary parts of the Ritz value are */
-/*           trans(Z(:,I)) * A * Z(:,I) +  trans(Z(:,I+1)) * A * Z(:,I+1), */
-/*           trans(Z(:,I)) * A * Z(:,I+1) -  trans(Z(:,I+1)) * A * Z(:,I), */
-/*     respectively. */
-/*     Another possibility is to set RVEC = .true. and HOWMNY = 'P' and */
-/*     compute trans(V(:,1:IPARAM(5))) * A * V(:,1:IPARAM(5)) and then an upper */
-/*     quasi-triangular matrix of order IPARAM(5) is computed. See remark */
-/*     2 above. */
-
-/* \Authors */
-/*     Danny Sorensen               Phuong Vu */
-/*     Richard Lehoucq              CRPC / Rice University */
-/*     Chao Yang                    Houston, Texas */
-/*     Dept. of Computational & */
-/*     Applied Mathematics */
-/*     Rice University */
-/*     Houston, Texas */
-
-/* \SCCS Information: @(#) */
-/* FILE: neupd.F   SID: 2.7   DATE OF SID: 09/20/00   RELEASE: 2 */
-
-/* \EndLib */
-
-/* ----------------------------------------------------------------------- */
 /* Subroutine */ int sneupd_(logical *rvec, char *howmny, logical *select, 
 	real *dr, real *di, real *z__, integer *ldz, real *sigmar, real *
 	sigmai, real *workev, char *bmat, integer *n, char *which, integer *
@@ -366,110 +329,23 @@ static real c_b64 = -1.f;
     real sep;
     integer irr, wri, wrr, mode;
     real eps23;
-    extern /* Subroutine */ int sger_(integer *, integer *, real *, real *, 
-	    integer *, real *, integer *, real *, integer *);
     integer ierr;
     real temp;
     integer iwev;
     char type__[6];
     real temp1;
-    extern doublereal snrm2_(integer *, real *, integer *);
     integer ihbds, iconj;
-    extern /* Subroutine */ int sscal_(integer *, real *, real *, integer *);
     real conds;
     logical reord;
-    extern /* Subroutine */ int sgemv_(char *, integer *, integer *, real *, 
-	    real *, integer *, real *, integer *, real *, real *, integer *);
     integer nconv, iwork[1];
     real rnorm;
-    extern /* Subroutine */ int scopy_(integer *, real *, integer *, real *, 
-	    integer *);
     integer ritzi;
-    extern /* Subroutine */ int strmm_(char *, char *, char *, char *, 
-	    integer *, integer *, real *, real *, integer *, real *, integer *),
-	    ivout_(integer *, integer *, 
-	    integer *, integer *, char *, ftnlen), smout_(integer *, integer *
-	    , integer *, real *, integer *, integer *, char *, ftnlen);
     integer ritzr;
-    extern /* Subroutine */ int svout_(integer *, integer *, real *, integer *
-	    , char *, ftnlen), sgeqr2_(integer *, integer *, real *, integer *
-	    , real *, real *, integer *);
     integer nconv2;
-    extern doublereal slapy2_(real *, real *);
-    extern /* Subroutine */ int sorm2r_(char *, char *, integer *, integer *, 
-	    integer *, real *, integer *, real *, real *, integer *, real *, 
-	    integer *);
     integer iheigi, iheigr, bounds, invsub, iuptri, msglvl, outncv, ishift, 
 	    numcnv;
-    extern /* Subroutine */ int slacpy_(char *, integer *, integer *, real *, 
-	    integer *, real *, integer *), slahqr_(logical *, logical 
-	    *, integer *, integer *, integer *, real *, integer *, real *, 
-	    real *, integer *, integer *, real *, integer *, integer *), 
-	    slaset_(char *, integer *, integer *, real *, real *, real *, 
-	    integer *), strevc_(char *, char *, logical *, integer *, 
-	    real *, integer *, real *, integer *, real *, integer *, integer *
-	    , integer *, real *, integer *), strsen_(char *, 
-	    char *, logical *, integer *, real *, integer *, real *, integer *
-	    , real *, real *, integer *, real *, real *, real *, integer *, 
-	    integer *, integer *, integer *);
-    extern doublereal slamch_(char *);
-    extern /* Subroutine */ int sngets_(integer *, char *, integer *, integer 
-	    *, real *, real *, real *, real *, real *);
 
 
-/*     %----------------------------------------------------% */
-/*     | Include files for debugging and timing information | */
-/*     %----------------------------------------------------% */
-
-
-/* \SCCS Information: @(#) */
-/* FILE: debug.h   SID: 2.3   DATE OF SID: 11/16/95   RELEASE: 2 */
-
-/*     %---------------------------------% */
-/*     | See debug.doc for documentation | */
-/*     %---------------------------------% */
-
-/*     %------------------% */
-/*     | Scalar Arguments | */
-/*     %------------------% */
-
-/*     %--------------------------------% */
-/*     | See stat.doc for documentation | */
-/*     %--------------------------------% */
-
-/* \SCCS Information: @(#) */
-/* FILE: stat.h   SID: 2.2   DATE OF SID: 11/16/95   RELEASE: 2 */
-
-
-
-/*     %-----------------% */
-/*     | Array Arguments | */
-/*     %-----------------% */
-
-
-/*     %------------% */
-/*     | Parameters | */
-/*     %------------% */
-
-
-/*     %---------------% */
-/*     | Local Scalars | */
-/*     %---------------% */
-
-
-/*     %----------------------% */
-/*     | External Subroutines | */
-/*     %----------------------% */
-
-
-/*     %--------------------% */
-/*     | External Functions | */
-/*     %--------------------% */
-
-
-/*     %---------------------% */
-/*     | Intrinsic Functions | */
-/*     %---------------------% */
 
 
 /*     %-----------------------% */
@@ -509,7 +385,7 @@ static real c_b64 = -1.f;
 
     eps23 = slamch_("Epsilon-Machine");
     d__1 = (doublereal) eps23;
-    eps23 = pow_dd(&d__1, &c_b3);
+    eps23 = pow_dd(&d__1, &d_23);
 
 /*     %--------------% */
 /*     | Quick return | */
@@ -744,7 +620,7 @@ static real c_b64 = -1.f;
 
 	i__1 = ldh * *ncv;
 	scopy_(&i__1, &workl[ih], &c__1, &workl[iuptri], &c__1);
-	slaset_("All", ncv, ncv, &c_b37, &c_b38, &workl[invsub], &ldq);
+	slaset_("All", ncv, ncv, &s_zero, &s_one, &workl[invsub], &ldq);
 	slahqr_(&c_true, &c_true, ncv, &c__1, ncv, &workl[iuptri], &ldh, &
 		workl[iheigr], &workl[iheigi], &c__1, ncv, &workl[invsub], &
 		ldq, &ierr);
@@ -863,8 +739,8 @@ static real c_b64 = -1.f;
 /*           %---------------------------------------------------% */
 
 	    if (workl[invsub + (j - 1) * ldq + j - 1] < 0.f) {
-		sscal_(&nconv, &c_b64, &workl[iuptri + j - 1], &ldq);
-		sscal_(&nconv, &c_b64, &workl[iuptri + (j - 1) * ldq], &c__1);
+		sscal_(&nconv, &s_m1, &workl[iuptri + j - 1], &ldq);
+		sscal_(&nconv, &s_m1, &workl[iuptri + (j - 1) * ldq], &c__1);
 	    }
 
 /* L20: */
@@ -948,8 +824,8 @@ static real c_b64 = -1.f;
 /* L40: */
 	    }
 
-	    sgemv_("T", ncv, &nconv, &c_b38, &workl[invsub], &ldq, &workl[
-		    ihbds], &c__1, &c_b37, &workev[1], &c__1);
+	    sgemv_("T", ncv, &nconv, &s_one, &workl[invsub], &ldq, &workl[
+		    ihbds], &c__1, &s_zero, &workev[1], &c__1);
 
 	    iconj = 0;
 	    i__1 = nconv;
@@ -1014,7 +890,7 @@ static real c_b64 = -1.f;
 		    ierr, (ftnlen)5, (ftnlen)11);
 
 	    strmm_("Right", "Upper", "No transpose", "Non-unit", n, &nconv, &
-		    c_b38, &workl[invsub], &ldq, &z__[z_offset], ldz, (ftnlen)
+		    s_one, &workl[invsub], &ldq, &z__[z_offset], ldz, (ftnlen)
 		    5, (ftnlen)5, (ftnlen)12, (ftnlen)8);
 
 	}
@@ -1189,7 +1065,7 @@ static real c_b64 = -1.f;
 /*        | purify all the Ritz vectors together. | */
 /*        %---------------------------------------% */
 
-	sger_(n, &nconv, &c_b38, &resid[1], &c__1, &workev[1], &c__1, &z__[
+	sger_(n, &nconv, &s_one, &resid[1], &c__1, &workev[1], &c__1, &z__[
 		z_offset], ldz);
 
     }

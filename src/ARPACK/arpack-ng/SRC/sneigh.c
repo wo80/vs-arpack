@@ -1,142 +1,103 @@
-/* D:\Projekte\ARPACK\arpack-ng\SRC\sneigh.f -- translated by f2c (version 20100827).
-   You must link the resulting object file with libf2c:
-	on Microsoft Windows system, link with libf2c.lib;
-	on Linux or Unix systems, link with .../path/to/libf2c.a -lm
-	or, if you install libf2c.a in a standard place, with -lf2c -lm
-	-- in that order, at the end of the command line, as in
-		cc *.o -lf2c -lm
-	Source for libf2c is in /netlib/f2c/libf2c.zip, e.g.,
+/* D:\Projekte\ARPACK\arpack-ng\SRC\sneigh.f -- translated by f2c (version 20100827). */
 
-		http://www.netlib.org/f2c/libf2c.zip
-*/
+#include "arpack.h"
 
-#include "f2c.h"
+/**
+ * \BeginDoc
+ *
+ * \Name: sneigh
+ *
+ * \Description:
+ *  Compute the eigenvalues of the current upper Hessenberg matrix
+ *  and the corresponding Ritz estimates given the current residual norm.
+ *
+ * \Usage:
+ *  call sneigh
+ *     ( RNORM, N, H, LDH, RITZR, RITZI, BOUNDS, Q, LDQ, WORKL, IERR )
+ *
+ * \Arguments
+ *  RNORM   Real scalar.  (INPUT)
+ *          Residual norm corresponding to the current upper Hessenberg
+ *          matrix H.
+ *
+ *  N       Integer.  (INPUT)
+ *          Size of the matrix H.
+ *
+ *  H       Real N by N array.  (INPUT)
+ *          H contains the current upper Hessenberg matrix.
+ *
+ *  LDH     Integer.  (INPUT)
+ *          Leading dimension of H exactly as declared in the calling
+ *          program.
+ *
+ *  RITZR,  Real arrays of length N.  (OUTPUT)
+ *  RITZI   On output, RITZR(1:N) (resp. RITZI(1:N)) contains the real
+ *          (respectively imaginary) parts of the eigenvalues of H.
+ *
+ *  BOUNDS  Real array of length N.  (OUTPUT)
+ *          On output, BOUNDS contains the Ritz estimates associated with
+ *          the eigenvalues RITZR and RITZI.  This is equal to RNORM
+ *          times the last components of the eigenvectors corresponding
+ *          to the eigenvalues in RITZR and RITZI.
+ *
+ *  Q       Real N by N array.  (WORKSPACE)
+ *          Workspace needed to store the eigenvectors of H.
+ *
+ *  LDQ     Integer.  (INPUT)
+ *          Leading dimension of Q exactly as declared in the calling
+ *          program.
+ *
+ *  WORKL   Real work array of length N**2 + 3*N.  (WORKSPACE)
+ *          Private (replicated) array on each PE or array allocated on
+ *          the front end.  This is needed to keep the full Schur form
+ *          of H and also in the calculation of the eigenvectors of H.
+ *
+ *  IERR    Integer.  (OUTPUT)
+ *          Error exit flag from slahqr or strevc.
+ *
+ * \EndDoc
+ *
+ * \BeginLib
+ *
+ * \Local variables:
+ *     xxxxxx  real
+ *
+ * \Routines called:
+ *     slahqr  LAPACK routine to compute the real Schur form of an
+ *             upper Hessenberg matrix and last row of the Schur vectors.
+ *     arscnd  ARPACK utility routine for timing.
+ *     smout   ARPACK utility routine that prints matrices
+ *     svout   ARPACK utility routine that prints vectors.
+ *     slacpy  LAPACK matrix copy routine.
+ *     slapy2  LAPACK routine to compute sqrt(x**2+y**2) carefully.
+ *     strevc  LAPACK routine to compute the eigenvectors of a matrix
+ *             in upper quasi-triangular form
+ *     sgemv   Level 2 BLAS routine for matrix vector multiplication.
+ *     scopy   Level 1 BLAS that copies one vector to another .
+ *     snrm2   Level 1 BLAS that computes the norm of a vector.
+ *     sscal   Level 1 BLAS that scales a vector.
+ *
+ *
+ * \Author
+ *     Danny Sorensen               Phuong Vu
+ *     Richard Lehoucq              CRPC / Rice University
+ *     Dept. of Computational &     Houston, Texas
+ *     Applied Mathematics
+ *     Rice University
+ *     Houston, Texas
+ *
+ * \Revision history:
+ *     xx/xx/92: Version ' 2.1'
+ *
+ * \SCCS Information: @(#)
+ * FILE: neigh.F   SID: 2.3   DATE OF SID: 4/20/96   RELEASE: 2
+ *
+ * \Remarks
+ *     None
+ *
+ * \EndLib
+ */
 
-/* Common Block Declarations */
-
-struct {
-    integer logfil, ndigit, mgetv0, msaupd, msaup2, msaitr, mseigt, msapps, 
-	    msgets, mseupd, mnaupd, mnaup2, mnaitr, mneigh, mnapps, mngets, 
-	    mneupd, mcaupd, mcaup2, mcaitr, mceigh, mcapps, mcgets, mceupd;
-} debug_;
-
-#define debug_1 debug_
-
-struct {
-    integer nopx, nbx, nrorth, nitref, nrstrt;
-    real tsaupd, tsaup2, tsaitr, tseigt, tsgets, tsapps, tsconv, tnaupd, 
-	    tnaup2, tnaitr, tneigh, tngets, tnapps, tnconv, tcaupd, tcaup2, 
-	    tcaitr, tceigh, tcgets, tcapps, tcconv, tmvopx, tmvbx, tgetv0, 
-	    titref, trvec;
-} timing_;
-
-#define timing_1 timing_
-
-/* Table of constant values */
-
-static logical c_true = TRUE_;
-static integer c__1 = 1;
-static real c_b23 = 1.f;
-static real c_b25 = 0.f;
-
-/* ----------------------------------------------------------------------- */
-/* \BeginDoc */
-
-/* \Name: sneigh */
-
-/* \Description: */
-/*  Compute the eigenvalues of the current upper Hessenberg matrix */
-/*  and the corresponding Ritz estimates given the current residual norm. */
-
-/* \Usage: */
-/*  call sneigh */
-/*     ( RNORM, N, H, LDH, RITZR, RITZI, BOUNDS, Q, LDQ, WORKL, IERR ) */
-
-/* \Arguments */
-/*  RNORM   Real scalar.  (INPUT) */
-/*          Residual norm corresponding to the current upper Hessenberg */
-/*          matrix H. */
-
-/*  N       Integer.  (INPUT) */
-/*          Size of the matrix H. */
-
-/*  H       Real N by N array.  (INPUT) */
-/*          H contains the current upper Hessenberg matrix. */
-
-/*  LDH     Integer.  (INPUT) */
-/*          Leading dimension of H exactly as declared in the calling */
-/*          program. */
-
-/*  RITZR,  Real arrays of length N.  (OUTPUT) */
-/*  RITZI   On output, RITZR(1:N) (resp. RITZI(1:N)) contains the real */
-/*          (respectively imaginary) parts of the eigenvalues of H. */
-
-/*  BOUNDS  Real array of length N.  (OUTPUT) */
-/*          On output, BOUNDS contains the Ritz estimates associated with */
-/*          the eigenvalues RITZR and RITZI.  This is equal to RNORM */
-/*          times the last components of the eigenvectors corresponding */
-/*          to the eigenvalues in RITZR and RITZI. */
-
-/*  Q       Real N by N array.  (WORKSPACE) */
-/*          Workspace needed to store the eigenvectors of H. */
-
-/*  LDQ     Integer.  (INPUT) */
-/*          Leading dimension of Q exactly as declared in the calling */
-/*          program. */
-
-/*  WORKL   Real work array of length N**2 + 3*N.  (WORKSPACE) */
-/*          Private (replicated) array on each PE or array allocated on */
-/*          the front end.  This is needed to keep the full Schur form */
-/*          of H and also in the calculation of the eigenvectors of H. */
-
-/*  IERR    Integer.  (OUTPUT) */
-/*          Error exit flag from slahqr or strevc. */
-
-/* \EndDoc */
-
-/* ----------------------------------------------------------------------- */
-
-/* \BeginLib */
-
-/* \Local variables: */
-/*     xxxxxx  real */
-
-/* \Routines called: */
-/*     slahqr  LAPACK routine to compute the real Schur form of an */
-/*             upper Hessenberg matrix and last row of the Schur vectors. */
-/*     arscnd  ARPACK utility routine for timing. */
-/*     smout   ARPACK utility routine that prints matrices */
-/*     svout   ARPACK utility routine that prints vectors. */
-/*     slacpy  LAPACK matrix copy routine. */
-/*     slapy2  LAPACK routine to compute sqrt(x**2+y**2) carefully. */
-/*     strevc  LAPACK routine to compute the eigenvectors of a matrix */
-/*             in upper quasi-triangular form */
-/*     sgemv   Level 2 BLAS routine for matrix vector multiplication. */
-/*     scopy   Level 1 BLAS that copies one vector to another . */
-/*     snrm2   Level 1 BLAS that computes the norm of a vector. */
-/*     sscal   Level 1 BLAS that scales a vector. */
-
-
-/* \Author */
-/*     Danny Sorensen               Phuong Vu */
-/*     Richard Lehoucq              CRPC / Rice University */
-/*     Dept. of Computational &     Houston, Texas */
-/*     Applied Mathematics */
-/*     Rice University */
-/*     Houston, Texas */
-
-/* \Revision history: */
-/*     xx/xx/92: Version ' 2.1' */
-
-/* \SCCS Information: @(#) */
-/* FILE: neigh.F   SID: 2.3   DATE OF SID: 4/20/96   RELEASE: 2 */
-
-/* \Remarks */
-/*     None */
-
-/* \EndLib */
-
-/* ----------------------------------------------------------------------- */
 
 /* Subroutine */ int sneigh_(real *rnorm, integer *n, real *h__, integer *ldh,
 	 real *ritzr, real *ritzi, real *bounds, real *q, integer *ldq, real *
@@ -150,80 +111,11 @@ static real c_b25 = 0.f;
     integer i__, j;
     static real t0, t1;
     real vl[1], temp;
-    extern doublereal snrm2_(integer *, real *, integer *);
     integer iconj;
-    extern /* Subroutine */ int sscal_(integer *, real *, real *, integer *), 
-	    sgemv_(char *, integer *, integer *, real *, real *, integer *, 
-	    real *, integer *, real *, real *, integer *), smout_(
-	    integer *, integer *, integer *, real *, integer *, integer *, 
-	    char *, ftnlen), svout_(integer *, integer *, real *, integer *, 
-	    char *, ftnlen);
-    extern doublereal slapy2_(real *, real *);
-    extern /* Subroutine */ int arscnd_(real *);
     logical select[1];
     integer msglvl;
-    extern /* Subroutine */ int slacpy_(char *, integer *, integer *, real *, 
-	    integer *, real *, integer *), slahqr_(logical *, logical 
-	    *, integer *, integer *, integer *, real *, integer *, real *, 
-	    real *, integer *, integer *, real *, integer *, integer *), 
-	    strevc_(char *, char *, logical *, integer *, real *, integer *, 
-	    real *, integer *, real *, integer *, integer *, integer *, real *
-	    , integer *);
 
 
-/*     %----------------------------------------------------% */
-/*     | Include files for debugging and timing information | */
-/*     %----------------------------------------------------% */
-
-
-/* \SCCS Information: @(#) */
-/* FILE: debug.h   SID: 2.3   DATE OF SID: 11/16/95   RELEASE: 2 */
-
-/*     %---------------------------------% */
-/*     | See debug.doc for documentation | */
-/*     %---------------------------------% */
-
-/*     %------------------% */
-/*     | Scalar Arguments | */
-/*     %------------------% */
-
-/*     %--------------------------------% */
-/*     | See stat.doc for documentation | */
-/*     %--------------------------------% */
-
-/* \SCCS Information: @(#) */
-/* FILE: stat.h   SID: 2.2   DATE OF SID: 11/16/95   RELEASE: 2 */
-
-
-
-/*     %-----------------% */
-/*     | Array Arguments | */
-/*     %-----------------% */
-
-
-/*     %------------% */
-/*     | Parameters | */
-/*     %------------% */
-
-
-/*     %------------------------% */
-/*     | Local Scalars & Arrays | */
-/*     %------------------------% */
-
-
-/*     %----------------------% */
-/*     | External Subroutines | */
-/*     %----------------------% */
-
-
-/*     %--------------------% */
-/*     | External Functions | */
-/*     %--------------------% */
-
-
-/*     %---------------------% */
-/*     | Intrinsic Functions | */
-/*     %---------------------% */
 
 
 /*     %-----------------------% */
@@ -347,7 +239,7 @@ static real c_b25 = 0.f;
 /* L10: */
     }
 
-    sgemv_("T", n, n, &c_b23, &q[q_offset], ldq, &bounds[1], &c__1, &c_b25, &
+    sgemv_("T", n, n, &s_one, &q[q_offset], ldq, &bounds[1], &c__1, &s_zero, &
 	    workl[1], &c__1);
 
     if (msglvl > 1) {

@@ -1,156 +1,119 @@
-/* D:\Projekte\ARPACK\arpack-ng\SRC\cgetv0.f -- translated by f2c (version 20100827).
-   You must link the resulting object file with libf2c:
-	on Microsoft Windows system, link with libf2c.lib;
-	on Linux or Unix systems, link with .../path/to/libf2c.a -lm
-	or, if you install libf2c.a in a standard place, with -lf2c -lm
-	-- in that order, at the end of the command line, as in
-		cc *.o -lf2c -lm
-	Source for libf2c is in /netlib/f2c/libf2c.zip, e.g.,
+/* D:\Projekte\ARPACK\arpack-ng\SRC\cgetv0.f -- translated by f2c (version 20100827). */
 
-		http://www.netlib.org/f2c/libf2c.zip
-*/
+#include "arpack.h"
 
-#include "f2c.h"
+/**
+ * \BeginDoc
+ *
+ * \Name: cgetv0
+ *
+ * \Description:
+ *  Generate a random initial residual vector for the Arnoldi process.
+ *  Force the residual vector to be in the range of the operator OP.
+ *
+ * \Usage:
+ *  call cgetv0
+ *     ( IDO, BMAT, ITRY, INITV, N, J, V, LDV, RESID, RNORM,
+ *       IPNTR, WORKD, IERR )
+ *
+ * \Arguments
+ *  IDO     Integer.  (INPUT/OUTPUT)
+ *          Reverse communication flag.  IDO must be zero on the first
+ *          call to cgetv0.
+ *          -------------------------------------------------------------
+ *          IDO =  0: first call to the reverse communication interface
+ *          IDO = -1: compute  Y = OP * X  where
+ *                    IPNTR(1) is the pointer into WORKD for X,
+ *                    IPNTR(2) is the pointer into WORKD for Y.
+ *                    This is for the initialization phase to force the
+ *                    starting vector into the range of OP.
+ *          IDO =  2: compute  Y = B * X  where
+ *                    IPNTR(1) is the pointer into WORKD for X,
+ *                    IPNTR(2) is the pointer into WORKD for Y.
+ *          IDO = 99: done
+ *          -------------------------------------------------------------
+ *
+ *  BMAT    Character*1.  (INPUT)
+ *          BMAT specifies the type of the matrix B in the (generalized)
+ *          eigenvalue problem A*x = lambda*B*x.
+ *          B = 'I' -> standard eigenvalue problem A*x = lambda*x
+ *          B = 'G' -> generalized eigenvalue problem A*x = lambda*B*x
+ *
+ *  ITRY    Integer.  (INPUT)
+ *          ITRY counts the number of times that cgetv0 is called.
+ *          It should be set to 1 on the initial call to cgetv0.
+ *
+ *  INITV   Logical variable.  (INPUT)
+ *          .TRUE.  => the initial residual vector is given in RESID.
+ *          .FALSE. => generate a random initial residual vector.
+ *
+ *  N       Integer.  (INPUT)
+ *          Dimension of the problem.
+ *
+ *  J       Integer.  (INPUT)
+ *          Index of the residual vector to be generated, with respect to
+ *          the Arnoldi process.  J > 1 in case of a "restart".
+ *
+ *  V       Complex N by J array.  (INPUT)
+ *          The first J-1 columns of V contain the current Arnoldi basis
+ *          if this is a "restart".
+ *
+ *  LDV     Integer.  (INPUT)
+ *          Leading dimension of V exactly as declared in the calling
+ *          program.
+ *
+ *  RESID   Complex array of length N.  (INPUT/OUTPUT)
+ *          Initial residual vector to be generated.  If RESID is
+ *          provided, force RESID into the range of the operator OP.
+ *
+ *  RNORM   Real scalar.  (OUTPUT)
+ *          B-norm of the generated residual.
+ *
+ *  IPNTR   Integer array of length 3.  (OUTPUT)
+ *
+ *  WORKD   Complex work array of length 2*N.  (REVERSE COMMUNICATION).
+ *          On exit, WORK(1:N) = B*RESID to be used in SSAITR.
+ *
+ *  IERR    Integer.  (OUTPUT)
+ *          =  0: Normal exit.
+ *          = -1: Cannot generate a nontrivial restarted residual vector
+ *                in the range of the operator OP.
+ *
+ * \EndDoc
+ *
+ * \BeginLib
+ *
+ * \Local variables:
+ *     xxxxxx  Complex
+ *
+ * \References:
+ *  1. D.C. Sorensen, "Implicit Application of Polynomial Filters in
+ *     a k-Step Arnoldi Method", SIAM J. Matr. Anal. Apps., 13 (1992),
+ *     pp 357-385.
+ *
+ * \Routines called:
+ *     arscnd  ARPACK utility routine for timing.
+ *     cvout   ARPACK utility routine that prints vectors.
+ *     clarnv  LAPACK routine for generating a random vector.
+ *     cgemv   Level 2 BLAS routine for matrix vector multiplication.
+ *     ccopy   Level 1 BLAS that copies one vector to another.
+ *     cdotc   Level 1 BLAS that computes the scalar product of two vectors.
+ *     scnrm2  Level 1 BLAS that computes the norm of a vector.
+ *
+ * \Author
+ *     Danny Sorensen               Phuong Vu
+ *     Richard Lehoucq              CRPC / Rice University
+ *     Dept. of Computational &     Houston, Texas
+ *     Applied Mathematics
+ *     Rice University
+ *     Houston, Texas
+ *
+ * \SCCS Information: @(#)
+ * FILE: getv0.F   SID: 2.3   DATE OF SID: 08/27/96   RELEASE: 2
+ *
+ * \EndLib
+ */
 
-/* Common Block Declarations */
-
-struct {
-    integer logfil, ndigit, mgetv0, msaupd, msaup2, msaitr, mseigt, msapps, 
-	    msgets, mseupd, mnaupd, mnaup2, mnaitr, mneigh, mnapps, mngets, 
-	    mneupd, mcaupd, mcaup2, mcaitr, mceigh, mcapps, mcgets, mceupd;
-} debug_;
-
-#define debug_1 debug_
-
-struct {
-    integer nopx, nbx, nrorth, nitref, nrstrt;
-    real tsaupd, tsaup2, tsaitr, tseigt, tsgets, tsapps, tsconv, tnaupd, 
-	    tnaup2, tnaitr, tneigh, tngets, tnapps, tnconv, tcaupd, tcaup2, 
-	    tcaitr, tceigh, tcgets, tcapps, tcconv, tmvopx, tmvbx, tgetv0, 
-	    titref, trvec;
-} timing_;
-
-#define timing_1 timing_
-
-/* Table of constant values */
-
-static complex c_b1 = {1.f,0.f};
-static complex c_b2 = {0.f,0.f};
-static integer c__1 = 1;
-
-/* \BeginDoc */
-
-/* \Name: cgetv0 */
-
-/* \Description: */
-/*  Generate a random initial residual vector for the Arnoldi process. */
-/*  Force the residual vector to be in the range of the operator OP. */
-
-/* \Usage: */
-/*  call cgetv0 */
-/*     ( IDO, BMAT, ITRY, INITV, N, J, V, LDV, RESID, RNORM, */
-/*       IPNTR, WORKD, IERR ) */
-
-/* \Arguments */
-/*  IDO     Integer.  (INPUT/OUTPUT) */
-/*          Reverse communication flag.  IDO must be zero on the first */
-/*          call to cgetv0. */
-/*          ------------------------------------------------------------- */
-/*          IDO =  0: first call to the reverse communication interface */
-/*          IDO = -1: compute  Y = OP * X  where */
-/*                    IPNTR(1) is the pointer into WORKD for X, */
-/*                    IPNTR(2) is the pointer into WORKD for Y. */
-/*                    This is for the initialization phase to force the */
-/*                    starting vector into the range of OP. */
-/*          IDO =  2: compute  Y = B * X  where */
-/*                    IPNTR(1) is the pointer into WORKD for X, */
-/*                    IPNTR(2) is the pointer into WORKD for Y. */
-/*          IDO = 99: done */
-/*          ------------------------------------------------------------- */
-
-/*  BMAT    Character*1.  (INPUT) */
-/*          BMAT specifies the type of the matrix B in the (generalized) */
-/*          eigenvalue problem A*x = lambda*B*x. */
-/*          B = 'I' -> standard eigenvalue problem A*x = lambda*x */
-/*          B = 'G' -> generalized eigenvalue problem A*x = lambda*B*x */
-
-/*  ITRY    Integer.  (INPUT) */
-/*          ITRY counts the number of times that cgetv0 is called. */
-/*          It should be set to 1 on the initial call to cgetv0. */
-
-/*  INITV   Logical variable.  (INPUT) */
-/*          .TRUE.  => the initial residual vector is given in RESID. */
-/*          .FALSE. => generate a random initial residual vector. */
-
-/*  N       Integer.  (INPUT) */
-/*          Dimension of the problem. */
-
-/*  J       Integer.  (INPUT) */
-/*          Index of the residual vector to be generated, with respect to */
-/*          the Arnoldi process.  J > 1 in case of a "restart". */
-
-/*  V       Complex N by J array.  (INPUT) */
-/*          The first J-1 columns of V contain the current Arnoldi basis */
-/*          if this is a "restart". */
-
-/*  LDV     Integer.  (INPUT) */
-/*          Leading dimension of V exactly as declared in the calling */
-/*          program. */
-
-/*  RESID   Complex array of length N.  (INPUT/OUTPUT) */
-/*          Initial residual vector to be generated.  If RESID is */
-/*          provided, force RESID into the range of the operator OP. */
-
-/*  RNORM   Real scalar.  (OUTPUT) */
-/*          B-norm of the generated residual. */
-
-/*  IPNTR   Integer array of length 3.  (OUTPUT) */
-
-/*  WORKD   Complex work array of length 2*N.  (REVERSE COMMUNICATION). */
-/*          On exit, WORK(1:N) = B*RESID to be used in SSAITR. */
-
-/*  IERR    Integer.  (OUTPUT) */
-/*          =  0: Normal exit. */
-/*          = -1: Cannot generate a nontrivial restarted residual vector */
-/*                in the range of the operator OP. */
-
-/* \EndDoc */
-
-/* ----------------------------------------------------------------------- */
-
-/* \BeginLib */
-
-/* \Local variables: */
-/*     xxxxxx  Complex */
-
-/* \References: */
-/*  1. D.C. Sorensen, "Implicit Application of Polynomial Filters in */
-/*     a k-Step Arnoldi Method", SIAM J. Matr. Anal. Apps., 13 (1992), */
-/*     pp 357-385. */
-
-/* \Routines called: */
-/*     arscnd  ARPACK utility routine for timing. */
-/*     cvout   ARPACK utility routine that prints vectors. */
-/*     clarnv  LAPACK routine for generating a random vector. */
-/*     cgemv   Level 2 BLAS routine for matrix vector multiplication. */
-/*     ccopy   Level 1 BLAS that copies one vector to another. */
-/*     cdotc   Level 1 BLAS that computes the scalar product of two vectors. */
-/*     scnrm2  Level 1 BLAS that computes the norm of a vector. */
-
-/* \Author */
-/*     Danny Sorensen               Phuong Vu */
-/*     Richard Lehoucq              CRPC / Rice University */
-/*     Dept. of Computational &     Houston, Texas */
-/*     Applied Mathematics */
-/*     Rice University */
-/*     Houston, Texas */
-
-/* \SCCS Information: @(#) */
-/* FILE: getv0.F   SID: 2.3   DATE OF SID: 08/27/96   RELEASE: 2 */
-
-/* \EndLib */
-
-/* ----------------------------------------------------------------------- */
 
 /* Subroutine */ int cgetv0_(integer *ido, char *bmat, integer *itry, logical 
 	*initv, integer *n, integer *j, complex *v, integer *ldv, complex *
@@ -174,75 +137,13 @@ static integer c__1 = 1;
     static integer iter;
     static logical orth;
     static integer iseed[4];
-    extern /* Complex */ VOID cdotc_(complex *, integer *, complex *, integer 
-	    *, complex *, integer *);
-    extern /* Subroutine */ int cgemv_(char *, integer *, integer *, complex *
-	    , complex *, integer *, complex *, integer *, complex *, complex *
-	    , integer *);
     integer idist;
-    extern /* Subroutine */ int ccopy_(integer *, complex *, integer *, 
-	    complex *, integer *);
     complex cnorm;
     static logical first;
-    extern /* Subroutine */ int cvout_(integer *, integer *, complex *, 
-	    integer *, char *, ftnlen), svout_(integer *, integer *, real *, 
-	    integer *, char *, ftnlen);
-    extern doublereal scnrm2_(integer *, complex *, integer *), slapy2_(real *
-	    , real *);
     static real rnorm0;
-    extern /* Subroutine */ int arscnd_(real *), clarnv_(integer *, integer *,
-	     integer *, complex *);
     static integer msglvl;
 
 
-/*     %----------------------------------------------------% */
-/*     | Include files for debugging and timing information | */
-/*     %----------------------------------------------------% */
-
-
-/* \SCCS Information: @(#) */
-/* FILE: debug.h   SID: 2.3   DATE OF SID: 11/16/95   RELEASE: 2 */
-
-/*     %---------------------------------% */
-/*     | See debug.doc for documentation | */
-/*     %---------------------------------% */
-
-/*     %------------------% */
-/*     | Scalar Arguments | */
-/*     %------------------% */
-
-/*     %--------------------------------% */
-/*     | See stat.doc for documentation | */
-/*     %--------------------------------% */
-
-/* \SCCS Information: @(#) */
-/* FILE: stat.h   SID: 2.2   DATE OF SID: 11/16/95   RELEASE: 2 */
-
-
-
-/*     %-----------------% */
-/*     | Array Arguments | */
-/*     %-----------------% */
-
-
-/*     %------------% */
-/*     | Parameters | */
-/*     %------------% */
-
-
-/*     %------------------------% */
-/*     | Local Scalars & Arrays | */
-/*     %------------------------% */
-
-
-/*     %----------------------% */
-/*     | External Subroutines | */
-/*     %----------------------% */
-
-
-/*     %--------------------% */
-/*     | External Functions | */
-/*     %--------------------% */
 
 
 /*     %-----------------% */
@@ -406,12 +307,12 @@ L20:
 L30:
 
     i__1 = *j - 1;
-    cgemv_("C", n, &i__1, &c_b1, &v[v_offset], ldv, &workd[1], &c__1, &c_b2, &
+    cgemv_("C", n, &i__1, &c_one, &v[v_offset], ldv, &workd[1], &c__1, &c_zero, &
 	    workd[*n + 1], &c__1);
     i__1 = *j - 1;
     q__1.r = -1.f, q__1.i = -0.f;
     cgemv_("N", n, &i__1, &q__1, &v[v_offset], ldv, &workd[*n + 1], &c__1, &
-	    c_b1, &resid[1], &c__1);
+	    c_one, &resid[1], &c__1);
 
 /*     %----------------------------------------------------------% */
 /*     | Compute the B-norm of the orthogonalized starting vector | */

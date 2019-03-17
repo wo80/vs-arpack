@@ -1,173 +1,134 @@
-/* D:\Projekte\ARPACK\arpack-ng\SRC\dsapps.f -- translated by f2c (version 20100827).
-   You must link the resulting object file with libf2c:
-	on Microsoft Windows system, link with libf2c.lib;
-	on Linux or Unix systems, link with .../path/to/libf2c.a -lm
-	or, if you install libf2c.a in a standard place, with -lf2c -lm
-	-- in that order, at the end of the command line, as in
-		cc *.o -lf2c -lm
-	Source for libf2c is in /netlib/f2c/libf2c.zip, e.g.,
+/* D:\Projekte\ARPACK\arpack-ng\SRC\dsapps.f -- translated by f2c (version 20100827). */
 
-		http://www.netlib.org/f2c/libf2c.zip
-*/
+#include "arpack.h"
 
-#include "f2c.h"
+/**
+ * \BeginDoc
+ *
+ * \Name: dsapps
+ *
+ * \Description:
+ *  Given the Arnoldi factorization
+ *
+ *     A*V_{k} - V_{k}*H_{k} = r_{k+p}*e_{k+p}^T,
+ *
+ *  apply NP shifts implicitly resulting in
+ *
+ *     A*(V_{k}*Q) - (V_{k}*Q)*(Q^T* H_{k}*Q) = r_{k+p}*e_{k+p}^T * Q
+ *
+ *  where Q is an orthogonal matrix of order KEV+NP. Q is the product of
+ *  rotations resulting from the NP bulge chasing sweeps.  The updated Arnoldi
+ *  factorization becomes:
+ *
+ *     A*VNEW_{k} - VNEW_{k}*HNEW_{k} = rnew_{k}*e_{k}^T.
+ *
+ * \Usage:
+ *  call dsapps
+ *     ( N, KEV, NP, SHIFT, V, LDV, H, LDH, RESID, Q, LDQ, WORKD )
+ *
+ * \Arguments
+ *  N       Integer.  (INPUT)
+ *          Problem size, i.e. dimension of matrix A.
+ *
+ *  KEV     Integer.  (INPUT)
+ *          INPUT: KEV+NP is the size of the input matrix H.
+ *          OUTPUT: KEV is the size of the updated matrix HNEW.
+ *
+ *  NP      Integer.  (INPUT)
+ *          Number of implicit shifts to be applied.
+ *
+ *  SHIFT   Double precision array of length NP.  (INPUT)
+ *          The shifts to be applied.
+ *
+ *  V       Double precision N by (KEV+NP) array.  (INPUT/OUTPUT)
+ *          INPUT: V contains the current KEV+NP Arnoldi vectors.
+ *          OUTPUT: VNEW = V(1:n,1:KEV); the updated Arnoldi vectors
+ *          are in the first KEV columns of V.
+ *
+ *  LDV     Integer.  (INPUT)
+ *          Leading dimension of V exactly as declared in the calling
+ *          program.
+ *
+ *  H       Double precision (KEV+NP) by 2 array.  (INPUT/OUTPUT)
+ *          INPUT: H contains the symmetric tridiagonal matrix of the
+ *          Arnoldi factorization with the subdiagonal in the 1st column
+ *          starting at H(2,1) and the main diagonal in the 2nd column.
+ *          OUTPUT: H contains the updated tridiagonal matrix in the
+ *          KEV leading submatrix.
+ *
+ *  LDH     Integer.  (INPUT)
+ *          Leading dimension of H exactly as declared in the calling
+ *          program.
+ *
+ *  RESID   Double precision array of length (N).  (INPUT/OUTPUT)
+ *          INPUT: RESID contains the the residual vector r_{k+p}.
+ *          OUTPUT: RESID is the updated residual vector rnew_{k}.
+ *
+ *  Q       Double precision KEV+NP by KEV+NP work array.  (WORKSPACE)
+ *          Work array used to accumulate the rotations during the bulge
+ *          chase sweep.
+ *
+ *  LDQ     Integer.  (INPUT)
+ *          Leading dimension of Q exactly as declared in the calling
+ *          program.
+ *
+ *  WORKD   Double precision work array of length 2*N.  (WORKSPACE)
+ *          Distributed array used in the application of the accumulated
+ *          orthogonal matrix Q.
+ *
+ * \EndDoc
+ *
+ * \BeginLib
+ *
+ * \Local variables:
+ *     xxxxxx  real
+ *
+ * \References:
+ *  1. D.C. Sorensen, "Implicit Application of Polynomial Filters in
+ *     a k-Step Arnoldi Method", SIAM J. Matr. Anal. Apps., 13 (1992),
+ *     pp 357-385.
+ *  2. R.B. Lehoucq, "Analysis and Implementation of an Implicitly
+ *     Restarted Arnoldi Iteration", Rice University Technical Report
+ *     TR95-13, Department of Computational and Applied Mathematics.
+ *
+ * \Routines called:
+ *     ivout   ARPACK utility routine that prints integers.
+ *     arscnd  ARPACK utility routine for timing.
+ *     dvout   ARPACK utility routine that prints vectors.
+ *     dlamch  LAPACK routine that determines machine constants.
+ *     dlartg  LAPACK Givens rotation construction routine.
+ *     dlacpy  LAPACK matrix copy routine.
+ *     dlaset  LAPACK matrix initialization routine.
+ *     dgemv   Level 2 BLAS routine for matrix vector multiplication.
+ *     daxpy   Level 1 BLAS that computes a vector triad.
+ *     dcopy   Level 1 BLAS that copies one vector to another.
+ *     dscal   Level 1 BLAS that scales a vector.
+ *
+ * \Author
+ *     Danny Sorensen               Phuong Vu
+ *     Richard Lehoucq              CRPC / Rice University
+ *     Dept. of Computational &     Houston, Texas
+ *     Applied Mathematics
+ *     Rice University
+ *     Houston, Texas
+ *
+ * \Revision history:
+ *     12/16/93: Version ' 2.4'
+ *
+ * \SCCS Information: @(#)
+ * FILE: sapps.F   SID: 2.6   DATE OF SID: 3/28/97   RELEASE: 2
+ *
+ * \Remarks
+ *  1. In this version, each shift is applied to all the subblocks of
+ *     the tridiagonal matrix H and not just to the submatrix that it
+ *     comes from. This routine assumes that the subdiagonal elements
+ *     of H that are stored in h(1:kev+np,1) are nonegative upon input
+ *     and enforce this condition upon output. This version incorporates
+ *     deflation. See code for documentation.
+ *
+ * \EndLib
+ */
 
-/* Common Block Declarations */
-
-struct {
-    integer logfil, ndigit, mgetv0, msaupd, msaup2, msaitr, mseigt, msapps, 
-	    msgets, mseupd, mnaupd, mnaup2, mnaitr, mneigh, mnapps, mngets, 
-	    mneupd, mcaupd, mcaup2, mcaitr, mceigh, mcapps, mcgets, mceupd;
-} debug_;
-
-#define debug_1 debug_
-
-struct {
-    integer nopx, nbx, nrorth, nitref, nrstrt;
-    real tsaupd, tsaup2, tsaitr, tseigt, tsgets, tsapps, tsconv, tnaupd, 
-	    tnaup2, tnaitr, tneigh, tngets, tnapps, tnconv, tcaupd, tcaup2, 
-	    tcaitr, tceigh, tcgets, tcapps, tcconv, tmvopx, tmvbx, tgetv0, 
-	    titref, trvec;
-} timing_;
-
-#define timing_1 timing_
-
-/* Table of constant values */
-
-static doublereal c_b4 = 0.;
-static doublereal c_b5 = 1.;
-static integer c__1 = 1;
-static doublereal c_b20 = -1.;
-
-/* ----------------------------------------------------------------------- */
-/* \BeginDoc */
-
-/* \Name: dsapps */
-
-/* \Description: */
-/*  Given the Arnoldi factorization */
-
-/*     A*V_{k} - V_{k}*H_{k} = r_{k+p}*e_{k+p}^T, */
-
-/*  apply NP shifts implicitly resulting in */
-
-/*     A*(V_{k}*Q) - (V_{k}*Q)*(Q^T* H_{k}*Q) = r_{k+p}*e_{k+p}^T * Q */
-
-/*  where Q is an orthogonal matrix of order KEV+NP. Q is the product of */
-/*  rotations resulting from the NP bulge chasing sweeps.  The updated Arnoldi */
-/*  factorization becomes: */
-
-/*     A*VNEW_{k} - VNEW_{k}*HNEW_{k} = rnew_{k}*e_{k}^T. */
-
-/* \Usage: */
-/*  call dsapps */
-/*     ( N, KEV, NP, SHIFT, V, LDV, H, LDH, RESID, Q, LDQ, WORKD ) */
-
-/* \Arguments */
-/*  N       Integer.  (INPUT) */
-/*          Problem size, i.e. dimension of matrix A. */
-
-/*  KEV     Integer.  (INPUT) */
-/*          INPUT: KEV+NP is the size of the input matrix H. */
-/*          OUTPUT: KEV is the size of the updated matrix HNEW. */
-
-/*  NP      Integer.  (INPUT) */
-/*          Number of implicit shifts to be applied. */
-
-/*  SHIFT   Double precision array of length NP.  (INPUT) */
-/*          The shifts to be applied. */
-
-/*  V       Double precision N by (KEV+NP) array.  (INPUT/OUTPUT) */
-/*          INPUT: V contains the current KEV+NP Arnoldi vectors. */
-/*          OUTPUT: VNEW = V(1:n,1:KEV); the updated Arnoldi vectors */
-/*          are in the first KEV columns of V. */
-
-/*  LDV     Integer.  (INPUT) */
-/*          Leading dimension of V exactly as declared in the calling */
-/*          program. */
-
-/*  H       Double precision (KEV+NP) by 2 array.  (INPUT/OUTPUT) */
-/*          INPUT: H contains the symmetric tridiagonal matrix of the */
-/*          Arnoldi factorization with the subdiagonal in the 1st column */
-/*          starting at H(2,1) and the main diagonal in the 2nd column. */
-/*          OUTPUT: H contains the updated tridiagonal matrix in the */
-/*          KEV leading submatrix. */
-
-/*  LDH     Integer.  (INPUT) */
-/*          Leading dimension of H exactly as declared in the calling */
-/*          program. */
-
-/*  RESID   Double precision array of length (N).  (INPUT/OUTPUT) */
-/*          INPUT: RESID contains the the residual vector r_{k+p}. */
-/*          OUTPUT: RESID is the updated residual vector rnew_{k}. */
-
-/*  Q       Double precision KEV+NP by KEV+NP work array.  (WORKSPACE) */
-/*          Work array used to accumulate the rotations during the bulge */
-/*          chase sweep. */
-
-/*  LDQ     Integer.  (INPUT) */
-/*          Leading dimension of Q exactly as declared in the calling */
-/*          program. */
-
-/*  WORKD   Double precision work array of length 2*N.  (WORKSPACE) */
-/*          Distributed array used in the application of the accumulated */
-/*          orthogonal matrix Q. */
-
-/* \EndDoc */
-
-/* ----------------------------------------------------------------------- */
-
-/* \BeginLib */
-
-/* \Local variables: */
-/*     xxxxxx  real */
-
-/* \References: */
-/*  1. D.C. Sorensen, "Implicit Application of Polynomial Filters in */
-/*     a k-Step Arnoldi Method", SIAM J. Matr. Anal. Apps., 13 (1992), */
-/*     pp 357-385. */
-/*  2. R.B. Lehoucq, "Analysis and Implementation of an Implicitly */
-/*     Restarted Arnoldi Iteration", Rice University Technical Report */
-/*     TR95-13, Department of Computational and Applied Mathematics. */
-
-/* \Routines called: */
-/*     ivout   ARPACK utility routine that prints integers. */
-/*     arscnd  ARPACK utility routine for timing. */
-/*     dvout   ARPACK utility routine that prints vectors. */
-/*     dlamch  LAPACK routine that determines machine constants. */
-/*     dlartg  LAPACK Givens rotation construction routine. */
-/*     dlacpy  LAPACK matrix copy routine. */
-/*     dlaset  LAPACK matrix initialization routine. */
-/*     dgemv   Level 2 BLAS routine for matrix vector multiplication. */
-/*     daxpy   Level 1 BLAS that computes a vector triad. */
-/*     dcopy   Level 1 BLAS that copies one vector to another. */
-/*     dscal   Level 1 BLAS that scales a vector. */
-
-/* \Author */
-/*     Danny Sorensen               Phuong Vu */
-/*     Richard Lehoucq              CRPC / Rice University */
-/*     Dept. of Computational &     Houston, Texas */
-/*     Applied Mathematics */
-/*     Rice University */
-/*     Houston, Texas */
-
-/* \Revision history: */
-/*     12/16/93: Version ' 2.4' */
-
-/* \SCCS Information: @(#) */
-/* FILE: sapps.F   SID: 2.6   DATE OF SID: 3/28/97   RELEASE: 2 */
-
-/* \Remarks */
-/*  1. In this version, each shift is applied to all the subblocks of */
-/*     the tridiagonal matrix H and not just to the submatrix that it */
-/*     comes from. This routine assumes that the subdiagonal elements */
-/*     of H that are stored in h(1:kev+np,1) are nonegative upon input */
-/*     and enforce this condition upon output. This version incorporates */
-/*     deflation. See code for documentation. */
-
-/* \EndLib */
-
-/* ----------------------------------------------------------------------- */
 
 /* Subroutine */ int dsapps_(integer *n, integer *kev, integer *np, 
 	doublereal *shift, doublereal *v, integer *ldv, doublereal *h__, 
@@ -191,79 +152,11 @@ static doublereal c_b20 = -1.;
     integer jj;
     doublereal big;
     integer iend, itop;
-    extern /* Subroutine */ int dscal_(integer *, doublereal *, doublereal *, 
-	    integer *), dgemv_(char *, integer *, integer *, doublereal *, 
-	    doublereal *, integer *, doublereal *, integer *, doublereal *, 
-	    doublereal *, integer *), dcopy_(integer *, doublereal *, 
-	    integer *, doublereal *, integer *), daxpy_(integer *, doublereal 
-	    *, doublereal *, integer *, doublereal *, integer *), dvout_(
-	    integer *, integer *, doublereal *, integer *, char *, ftnlen), 
-	    ivout_(integer *, integer *, integer *, integer *, char *, ftnlen)
-	    ;
-    extern doublereal dlamch_(char *);
-    extern /* Subroutine */ int arscnd_(real *);
     static doublereal epsmch;
     integer istart, kplusp, msglvl;
-    extern /* Subroutine */ int dlartg_(doublereal *, doublereal *, 
-	    doublereal *, doublereal *, doublereal *), dlaset_(char *, 
-	    integer *, integer *, doublereal *, doublereal *, doublereal *, 
-	    integer *);
-
-
-/*     %----------------------------------------------------% */
-/*     | Include files for debugging and timing information | */
-/*     %----------------------------------------------------% */
-
-
-/* \SCCS Information: @(#) */
-/* FILE: debug.h   SID: 2.3   DATE OF SID: 11/16/95   RELEASE: 2 */
-
-/*     %---------------------------------% */
-/*     | See debug.doc for documentation | */
-/*     %---------------------------------% */
-
-/*     %------------------% */
-/*     | Scalar Arguments | */
-/*     %------------------% */
-
-/*     %--------------------------------% */
-/*     | See stat.doc for documentation | */
-/*     %--------------------------------% */
-
-/* \SCCS Information: @(#) */
-/* FILE: stat.h   SID: 2.2   DATE OF SID: 11/16/95   RELEASE: 2 */
 
 
 
-/*     %-----------------% */
-/*     | Array Arguments | */
-/*     %-----------------% */
-
-
-/*     %------------% */
-/*     | Parameters | */
-/*     %------------% */
-
-
-/*     %---------------% */
-/*     | Local Scalars | */
-/*     %---------------% */
-
-
-
-/*     %----------------------% */
-/*     | External Subroutines | */
-/*     %----------------------% */
-
-
-/*     %--------------------% */
-/*     | External Functions | */
-/*     %--------------------% */
-
-
-/*     %----------------------% */
-/*     | Intrinsics Functions | */
-/*     %----------------------% */
 
 
 /*     %----------------% */
@@ -311,7 +204,7 @@ static doublereal c_b20 = -1.;
 /*     | kplusp used to accumulate the rotations.     | */
 /*     %----------------------------------------------% */
 
-    dlaset_("All", &kplusp, &kplusp, &c_b4, &c_b5, &q[q_offset], ldq);
+    dlaset_("All", &kplusp, &kplusp, &d_zero, &d_one, &q[q_offset], ldq);
 
 /*     %----------------------------------------------% */
 /*     | Quick return if there are no shifts to apply | */
@@ -517,7 +410,7 @@ L40:
 
 	if (h__[iend + h_dim1] < 0.) {
 	    h__[iend + h_dim1] = -h__[iend + h_dim1];
-	    dscal_(&kplusp, &c_b20, &q[iend * q_dim1 + 1], &c__1);
+	    dscal_(&kplusp, &d_m1, &q[iend * q_dim1 + 1], &c__1);
 	}
 
 /*        %--------------------------------------------------------% */
@@ -579,8 +472,8 @@ L90:
 /*     %-------------------------------------------------% */
 
     if (h__[*kev + 1 + h_dim1] > 0.) {
-	dgemv_("N", n, &kplusp, &c_b5, &v[v_offset], ldv, &q[(*kev + 1) * 
-		q_dim1 + 1], &c__1, &c_b4, &workd[*n + 1], &c__1);
+	dgemv_("N", n, &kplusp, &d_one, &v[v_offset], ldv, &q[(*kev + 1) * 
+		q_dim1 + 1], &c__1, &d_zero, &workd[*n + 1], &c__1);
     }
 
 /*     %-------------------------------------------------------% */
@@ -593,8 +486,8 @@ L90:
     i__1 = *kev;
     for (i__ = 1; i__ <= i__1; ++i__) {
 	i__2 = kplusp - i__ + 1;
-	dgemv_("N", n, &i__2, &c_b5, &v[v_offset], ldv, &q[(*kev - i__ + 1) * 
-		q_dim1 + 1], &c__1, &c_b4, &workd[1], &c__1);
+	dgemv_("N", n, &i__2, &d_one, &v[v_offset], ldv, &q[(*kev - i__ + 1) * 
+		q_dim1 + 1], &c__1, &d_zero, &workd[1], &c__1);
 	dcopy_(n, &workd[1], &c__1, &v[(kplusp - i__ + 1) * v_dim1 + 1], &
 		c__1);
 /* L130: */

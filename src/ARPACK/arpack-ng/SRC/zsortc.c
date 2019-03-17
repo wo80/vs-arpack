@@ -1,76 +1,64 @@
-/* D:\Projekte\ARPACK\arpack-ng\SRC\zsortc.f -- translated by f2c (version 20100827).
-   You must link the resulting object file with libf2c:
-	on Microsoft Windows system, link with libf2c.lib;
-	on Linux or Unix systems, link with .../path/to/libf2c.a -lm
-	or, if you install libf2c.a in a standard place, with -lf2c -lm
-	-- in that order, at the end of the command line, as in
-		cc *.o -lf2c -lm
-	Source for libf2c is in /netlib/f2c/libf2c.zip, e.g.,
+/* D:\Projekte\ARPACK\arpack-ng\SRC\zsortc.f -- translated by f2c (version 20100827). */
 
-		http://www.netlib.org/f2c/libf2c.zip
-*/
+#include "arpack.h"
+/**
+ * \BeginDoc
+ *
+ * \Name: zsortc
+ *
+ * \Description:
+ *  Sorts the Complex*16 array in X into the order
+ *  specified by WHICH and optionally applies the permutation to the
+ *  Double precision  array Y.
+ *
+ * \Usage:
+ *  call zsortc
+ *     ( WHICH, APPLY, N, X, Y )
+ *
+ * \Arguments
+ *  WHICH   Character*2.  (Input)
+ *          'LM' -> sort X into increasing order of magnitude.
+ *          'SM' -> sort X into decreasing order of magnitude.
+ *          'LR' -> sort X with real(X) in increasing algebraic order
+ *          'SR' -> sort X with real(X) in decreasing algebraic order
+ *          'LI' -> sort X with imag(X) in increasing algebraic order
+ *          'SI' -> sort X with imag(X) in decreasing algebraic order
+ *
+ *  APPLY   Logical.  (Input)
+ *          APPLY = .TRUE.  -> apply the sorted order to array Y.
+ *          APPLY = .FALSE. -> do not apply the sorted order to array Y.
+ *
+ *  N       Integer.  (INPUT)
+ *          Size of the arrays.
+ *
+ *  X       Complex*16 array of length N.  (INPUT/OUTPUT)
+ *          This is the array to be sorted.
+ *
+ *  Y       Complex*16 array of length N.  (INPUT/OUTPUT)
+ *
+ * \EndDoc
+ *
+ * \BeginLib
+ *
+ * \Routines called:
+ *     dlapy2  LAPACK routine to compute sqrt(x**2+y**2) carefully.
+ *
+ * \Author
+ *     Danny Sorensen               Phuong Vu
+ *     Richard Lehoucq              CRPC / Rice University
+ *     Dept. of Computational &     Houston, Texas
+ *     Applied Mathematics
+ *     Rice University
+ *     Houston, Texas
+ *
+ *     Adapted from the sort routine in LANSO.
+ *
+ * \SCCS Information: @(#)
+ * FILE: sortc.F   SID: 2.2   DATE OF SID: 4/20/96   RELEASE: 2
+ *
+ * \EndLib
+ */
 
-#include "f2c.h"
-
-/* \BeginDoc */
-
-/* \Name: zsortc */
-
-/* \Description: */
-/*  Sorts the Complex*16 array in X into the order */
-/*  specified by WHICH and optionally applies the permutation to the */
-/*  Double precision  array Y. */
-
-/* \Usage: */
-/*  call zsortc */
-/*     ( WHICH, APPLY, N, X, Y ) */
-
-/* \Arguments */
-/*  WHICH   Character*2.  (Input) */
-/*          'LM' -> sort X into increasing order of magnitude. */
-/*          'SM' -> sort X into decreasing order of magnitude. */
-/*          'LR' -> sort X with real(X) in increasing algebraic order */
-/*          'SR' -> sort X with real(X) in decreasing algebraic order */
-/*          'LI' -> sort X with imag(X) in increasing algebraic order */
-/*          'SI' -> sort X with imag(X) in decreasing algebraic order */
-
-/*  APPLY   Logical.  (Input) */
-/*          APPLY = .TRUE.  -> apply the sorted order to array Y. */
-/*          APPLY = .FALSE. -> do not apply the sorted order to array Y. */
-
-/*  N       Integer.  (INPUT) */
-/*          Size of the arrays. */
-
-/*  X       Complex*16 array of length N.  (INPUT/OUTPUT) */
-/*          This is the array to be sorted. */
-
-/*  Y       Complex*16 array of length N.  (INPUT/OUTPUT) */
-
-/* \EndDoc */
-
-/* ----------------------------------------------------------------------- */
-
-/* \BeginLib */
-
-/* \Routines called: */
-/*     dlapy2  LAPACK routine to compute sqrt(x**2+y**2) carefully. */
-
-/* \Author */
-/*     Danny Sorensen               Phuong Vu */
-/*     Richard Lehoucq              CRPC / Rice University */
-/*     Dept. of Computational &     Houston, Texas */
-/*     Applied Mathematics */
-/*     Rice University */
-/*     Houston, Texas */
-
-/*     Adapted from the sort routine in LANSO. */
-
-/* \SCCS Information: @(#) */
-/* FILE: sortc.F   SID: 2.2   DATE OF SID: 4/20/96   RELEASE: 2 */
-
-/* \EndLib */
-
-/* ----------------------------------------------------------------------- */
 
 /* Subroutine */ int zsortc_(char *which, logical *apply, integer *n, 
 	doublecomplex *x, doublecomplex *y)
@@ -87,27 +75,11 @@
     integer i__, j, igap;
     doublecomplex temp;
     doublereal temp1, temp2;
-    extern doublereal dlapy2_(doublereal *, doublereal *);
 
 
 /*     %------------------% */
 /*     | Scalar Arguments | */
 /*     %------------------% */
-
-
-/*     %-----------------% */
-/*     | Array Arguments | */
-/*     %-----------------% */
-
-
-/*     %---------------% */
-/*     | Local Scalars | */
-/*     %---------------% */
-
-
-/*     %--------------------% */
-/*     | External functions | */
-/*     %--------------------% */
 
 
 /*     %--------------------% */

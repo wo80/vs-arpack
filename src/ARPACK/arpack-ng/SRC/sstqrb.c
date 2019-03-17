@@ -1,126 +1,111 @@
-/* D:\Projekte\ARPACK\arpack-ng\SRC\sstqrb.f -- translated by f2c (version 20100827).
-   You must link the resulting object file with libf2c:
-	on Microsoft Windows system, link with libf2c.lib;
-	on Linux or Unix systems, link with .../path/to/libf2c.a -lm
-	or, if you install libf2c.a in a standard place, with -lf2c -lm
-	-- in that order, at the end of the command line, as in
-		cc *.o -lf2c -lm
-	Source for libf2c is in /netlib/f2c/libf2c.zip, e.g.,
+/* D:\Projekte\ARPACK\arpack-ng\SRC\sstqrb.f -- translated by f2c (version 20100827). */
 
-		http://www.netlib.org/f2c/libf2c.zip
-*/
+#include "arpack.h"
 
-#include "f2c.h"
+/**
+ * \BeginDoc
+ *
+ * \Name: sstqrb
+ *
+ * \Description:
+ *  Computes all eigenvalues and the last component of the eigenvectors
+ *  of a symmetric tridiagonal matrix using the implicit QL or QR method.
+ *
+ *  This is mostly a modification of the LAPACK routine ssteqr.
+ *  See Remarks.
+ *
+ * \Usage:
+ *  call sstqrb
+ *     ( N, D, E, Z, WORK, INFO )
+ *
+ * \Arguments
+ *  N       Integer.  (INPUT)
+ *          The number of rows and columns in the matrix.  N >= 0.
+ *
+ *  D       Real array, dimension (N).  (INPUT/OUTPUT)
+ *          On entry, D contains the diagonal elements of the
+ *          tridiagonal matrix.
+ *          On exit, D contains the eigenvalues, in ascending order.
+ *          If an error exit is made, the eigenvalues are correct
+ *          for indices 1,2,...,INFO-1, but they are unordered and
+ *          may not be the smallest eigenvalues of the matrix.
+ *
+ *  E       Real array, dimension (N-1).  (INPUT/OUTPUT)
+ *          On entry, E contains the subdiagonal elements of the
+ *          tridiagonal matrix in positions 1 through N-1.
+ *          On exit, E has been destroyed.
+ *
+ *  Z       Real array, dimension (N).  (OUTPUT)
+ *          On exit, Z contains the last row of the orthonormal
+ *          eigenvector matrix of the symmetric tridiagonal matrix.
+ *          If an error exit is made, Z contains the last row of the
+ *          eigenvector matrix associated with the stored eigenvalues.
+ *
+ *  WORK    Real array, dimension (max(1,2*N-2)).  (WORKSPACE)
+ *          Workspace used in accumulating the transformation for
+ *          computing the last components of the eigenvectors.
+ *
+ *  INFO    Integer.  (OUTPUT)
+ *          = 0:  normal return.
+ *          < 0:  if INFO = -i, the i-th argument had an illegal value.
+ *          > 0:  if INFO = +i, the i-th eigenvalue has not converged
+ *                              after a total of  30*N  iterations.
+ *
+ * \Remarks
+ *  1. None.
+ *
+ * -----------------------------------------------------------------------
+ * \EndDoc
+ *
+ * \BeginLib
+ *
+ * \Local variables:
+ *     xxxxxx  real
+ *
+ * \Routines called:
+ *     saxpy   Level 1 BLAS that computes a vector triad.
+ *     scopy   Level 1 BLAS that copies one vector to another.
+ *     sswap   Level 1 BLAS that swaps the contents of two vectors.
+ *     lsame   LAPACK character comparison routine.
+ *     slae2   LAPACK routine that computes the eigenvalues of a 2-by-2
+ *             symmetric matrix.
+ *     slaev2  LAPACK routine that eigendecomposition of a 2-by-2 symmetric
+ *             matrix.
+ *     slamch  LAPACK routine that determines machine constants.
+ *     slanst  LAPACK routine that computes the norm of a matrix.
+ *     slapy2  LAPACK routine to compute sqrt(x**2+y**2) carefully.
+ *     slartg  LAPACK Givens rotation construction routine.
+ *     slascl  LAPACK routine for careful scaling of a matrix.
+ *     slaset  LAPACK matrix initialization routine.
+ *     slasr   LAPACK routine that applies an orthogonal transformation to
+ *             a matrix.
+ *     slasrt  LAPACK sorting routine.
+ *     ssteqr  LAPACK routine that computes eigenvalues and eigenvectors
+ *             of a symmetric tridiagonal matrix.
+ *     xerbla  LAPACK error handler routine.
+ *
+ * \Authors
+ *     Danny Sorensen               Phuong Vu
+ *     Richard Lehoucq              CRPC / Rice University
+ *     Dept. of Computational &     Houston, Texas
+ *     Applied Mathematics
+ *     Rice University
+ *     Houston, Texas
+ *
+ * \SCCS Information: @(#)
+ * FILE: stqrb.F   SID: 2.5   DATE OF SID: 8/27/96   RELEASE: 2
+ *
+ * \Remarks
+ *     1. Starting with version 2.5, this routine is a modified version
+ *        of LAPACK version 2.0 subroutine SSTEQR. No lines are deleted,
+ *        only commeted out and new lines inserted.
+ *        All lines commented out have "c$$$" at the beginning.
+ *        Note that the LAPACK version 1.0 subroutine SSTEQR contained
+ *        bugs.
+ *
+ * \EndLib
+ */
 
-/* Table of constant values */
-
-static integer c__0 = 0;
-static integer c__1 = 1;
-static real c_b31 = 1.f;
-
-/* ----------------------------------------------------------------------- */
-/* \BeginDoc */
-
-/* \Name: sstqrb */
-
-/* \Description: */
-/*  Computes all eigenvalues and the last component of the eigenvectors */
-/*  of a symmetric tridiagonal matrix using the implicit QL or QR method. */
-
-/*  This is mostly a modification of the LAPACK routine ssteqr. */
-/*  See Remarks. */
-
-/* \Usage: */
-/*  call sstqrb */
-/*     ( N, D, E, Z, WORK, INFO ) */
-
-/* \Arguments */
-/*  N       Integer.  (INPUT) */
-/*          The number of rows and columns in the matrix.  N >= 0. */
-
-/*  D       Real array, dimension (N).  (INPUT/OUTPUT) */
-/*          On entry, D contains the diagonal elements of the */
-/*          tridiagonal matrix. */
-/*          On exit, D contains the eigenvalues, in ascending order. */
-/*          If an error exit is made, the eigenvalues are correct */
-/*          for indices 1,2,...,INFO-1, but they are unordered and */
-/*          may not be the smallest eigenvalues of the matrix. */
-
-/*  E       Real array, dimension (N-1).  (INPUT/OUTPUT) */
-/*          On entry, E contains the subdiagonal elements of the */
-/*          tridiagonal matrix in positions 1 through N-1. */
-/*          On exit, E has been destroyed. */
-
-/*  Z       Real array, dimension (N).  (OUTPUT) */
-/*          On exit, Z contains the last row of the orthonormal */
-/*          eigenvector matrix of the symmetric tridiagonal matrix. */
-/*          If an error exit is made, Z contains the last row of the */
-/*          eigenvector matrix associated with the stored eigenvalues. */
-
-/*  WORK    Real array, dimension (max(1,2*N-2)).  (WORKSPACE) */
-/*          Workspace used in accumulating the transformation for */
-/*          computing the last components of the eigenvectors. */
-
-/*  INFO    Integer.  (OUTPUT) */
-/*          = 0:  normal return. */
-/*          < 0:  if INFO = -i, the i-th argument had an illegal value. */
-/*          > 0:  if INFO = +i, the i-th eigenvalue has not converged */
-/*                              after a total of  30*N  iterations. */
-
-/* \Remarks */
-/*  1. None. */
-
-/* ----------------------------------------------------------------------- */
-
-/* \BeginLib */
-
-/* \Local variables: */
-/*     xxxxxx  real */
-
-/* \Routines called: */
-/*     saxpy   Level 1 BLAS that computes a vector triad. */
-/*     scopy   Level 1 BLAS that copies one vector to another. */
-/*     sswap   Level 1 BLAS that swaps the contents of two vectors. */
-/*     lsame   LAPACK character comparison routine. */
-/*     slae2   LAPACK routine that computes the eigenvalues of a 2-by-2 */
-/*             symmetric matrix. */
-/*     slaev2  LAPACK routine that eigendecomposition of a 2-by-2 symmetric */
-/*             matrix. */
-/*     slamch  LAPACK routine that determines machine constants. */
-/*     slanst  LAPACK routine that computes the norm of a matrix. */
-/*     slapy2  LAPACK routine to compute sqrt(x**2+y**2) carefully. */
-/*     slartg  LAPACK Givens rotation construction routine. */
-/*     slascl  LAPACK routine for careful scaling of a matrix. */
-/*     slaset  LAPACK matrix initialization routine. */
-/*     slasr   LAPACK routine that applies an orthogonal transformation to */
-/*             a matrix. */
-/*     slasrt  LAPACK sorting routine. */
-/*     ssteqr  LAPACK routine that computes eigenvalues and eigenvectors */
-/*             of a symmetric tridiagonal matrix. */
-/*     xerbla  LAPACK error handler routine. */
-
-/* \Authors */
-/*     Danny Sorensen               Phuong Vu */
-/*     Richard Lehoucq              CRPC / Rice University */
-/*     Dept. of Computational &     Houston, Texas */
-/*     Applied Mathematics */
-/*     Rice University */
-/*     Houston, Texas */
-
-/* \SCCS Information: @(#) */
-/* FILE: stqrb.F   SID: 2.5   DATE OF SID: 8/27/96   RELEASE: 2 */
-
-/* \Remarks */
-/*     1. Starting with version 2.5, this routine is a modified version */
-/*        of LAPACK version 2.0 subroutine SSTEQR. No lines are deleted, */
-/*        only commeted out and new lines inserted. */
-/*        All lines commented out have "c$$$" at the beginning. */
-/*        Note that the LAPACK version 1.0 subroutine SSTEQR contained */
-/*        bugs. */
-
-/* \EndLib */
-
-/* ----------------------------------------------------------------------- */
 
 /* Subroutine */ int sstqrb_(integer *n, real *d__, real *e, real *z__, real *
 	work, integer *info)
@@ -141,37 +126,19 @@ static real c_b31 = 1.f;
     integer lsv;
     real tst, eps2;
     integer lend, jtot;
-    extern /* Subroutine */ int slae2_(real *, real *, real *, real *, real *)
-	    ;
     real anorm;
-    extern /* Subroutine */ int slasr_(char *, char *, char *, integer *, 
-	    integer *, real *, real *, real *, integer *);
     integer lendm1, lendp1;
-    extern /* Subroutine */ int slaev2_(real *, real *, real *, real *, real *
-	    , real *, real *);
-    extern doublereal slapy2_(real *, real *);
     integer iscale;
-    extern doublereal slamch_(char *);
     real safmin, safmax;
-    extern /* Subroutine */ int slascl_(char *, integer *, integer *, real *, 
-	    real *, integer *, integer *, real *, integer *, integer *);
     integer lendsv;
-    extern /* Subroutine */ int slartg_(real *, real *, real *, real *, real *);
     real ssfmin;
     integer nmaxit, icompz;
     real ssfmax;
-    extern doublereal slanst_(char *, integer *, real *, real *);
-    extern /* Subroutine */ int slasrt_(char *, integer *, real *, integer *);
 
 
 /*     %------------------% */
 /*     | Scalar Arguments | */
 /*     %------------------% */
-
-
-/*     %-----------------% */
-/*     | Array Arguments | */
-/*     %-----------------% */
 
 
 /*     .. parameters .. */
@@ -410,7 +377,7 @@ L60:
 /*        form shift. */
 
 	g = (d__[l + 1] - p) / (e[l] * 2.f);
-	r__ = slapy2_(&g, &c_b31);
+	r__ = slapy2_(&g, &s_one);
 	g = d__[m] - p + e[l] / (g + r_sign(&r__, &g));
 
 	s = 1.f;
@@ -545,7 +512,7 @@ L110:
 /*        form shift. */
 
 	g = (d__[l - 1] - p) / (e[l - 1] * 2.f);
-	r__ = slapy2_(&g, &c_b31);
+	r__ = slapy2_(&g, &s_one);
 	g = d__[m] - p + e[l - 1] / (g + r_sign(&r__, &g));
 
 	s = 1.f;

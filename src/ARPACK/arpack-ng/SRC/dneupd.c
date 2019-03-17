@@ -1,347 +1,310 @@
-/* D:\Projekte\ARPACK\arpack-ng\SRC\dneupd.f -- translated by f2c (version 20100827).
-   You must link the resulting object file with libf2c:
-	on Microsoft Windows system, link with libf2c.lib;
-	on Linux or Unix systems, link with .../path/to/libf2c.a -lm
-	or, if you install libf2c.a in a standard place, with -lf2c -lm
-	-- in that order, at the end of the command line, as in
-		cc *.o -lf2c -lm
-	Source for libf2c is in /netlib/f2c/libf2c.zip, e.g.,
+/* D:\Projekte\ARPACK\arpack-ng\SRC\dneupd.f -- translated by f2c (version 20100827). */
+
+#include "arpack.h"
+
+/**
+ * \BeginDoc
+ *
+ * \Name: dneupd
+ *
+ * \Description:
+ *
+ *  This subroutine returns the converged approximations to eigenvalues
+ *  of A*z = lambda*B*z and (optionally):
+ *
+ *      (1) The corresponding approximate eigenvectors;
+ *
+ *      (2) An orthonormal basis for the associated approximate
+ *          invariant subspace;
+ *
+ *      (3) Both.
+ *
+ *  There is negligible additional cost to obtain eigenvectors.  An orthonormal
+ *  basis is always computed.  There is an additional storage cost of n*nev
+ *  if both are requested (in this case a separate array Z must be supplied).
+ *
+ *  The approximate eigenvalues and eigenvectors of  A*z = lambda*B*z
+ *  are derived from approximate eigenvalues and eigenvectors of
+ *  of the linear operator OP prescribed by the MODE selection in the
+ *  call to DNAUPD .  DNAUPD  must be called before this routine is called.
+ *  These approximate eigenvalues and vectors are commonly called Ritz
+ *  values and Ritz vectors respectively.  They are referred to as such
+ *  in the comments that follow.  The computed orthonormal basis for the
+ *  invariant subspace corresponding to these Ritz values is referred to as a
+ *  Schur basis.
+ *
+ *  See documentation in the header of the subroutine DNAUPD  for
+ *  definition of OP as well as other terms and the relation of computed
+ *  Ritz values and Ritz vectors of OP with respect to the given problem
+ *  A*z = lambda*B*z.  For a brief description, see definitions of
+ *  IPARAM(7), MODE and WHICH in the documentation of DNAUPD .
+ *
+ * \Usage:
+ *  call dneupd
+ *     ( RVEC, HOWMNY, SELECT, DR, DI, Z, LDZ, SIGMAR, SIGMAI, WORKEV, BMAT,
+ *       N, WHICH, NEV, TOL, RESID, NCV, V, LDV, IPARAM, IPNTR, WORKD, WORKL,
+ *       LWORKL, INFO )
+ *
+ * \Arguments:
+ *  RVEC    LOGICAL  (INPUT)
+ *          Specifies whether a basis for the invariant subspace corresponding
+ *          to the converged Ritz value approximations for the eigenproblem
+ *          A*z = lambda*B*z is computed.
+ *
+ *             RVEC = .FALSE.     Compute Ritz values only.
+ *
+ *             RVEC = .TRUE.      Compute the Ritz vectors or Schur vectors.
+ *                                See Remarks below.
+ *
+ *  HOWMNY  Character*1  (INPUT)
+ *          Specifies the form of the basis for the invariant subspace
+ *          corresponding to the converged Ritz values that is to be computed.
+ *
+ *          = 'A': Compute NEV Ritz vectors;
+ *          = 'P': Compute NEV Schur vectors;
+ *          = 'S': compute some of the Ritz vectors, specified
+ *                 by the logical array SELECT.
+ *
+ *  SELECT  Logical array of dimension NCV.  (INPUT)
+ *          If HOWMNY = 'S', SELECT specifies the Ritz vectors to be
+ *          computed. To select the Ritz vector corresponding to a
+ *          Ritz value (DR(j), DI(j)), SELECT(j) must be set to .TRUE..
+ *          If HOWMNY = 'A' or 'P', SELECT is used as internal workspace.
+ *
+ *  DR      Double precision  array of dimension NEV+1.  (OUTPUT)
+ *          If IPARAM(7) = 1,2 or 3 and SIGMAI=0.0  then on exit: DR contains
+ *          the real part of the Ritz  approximations to the eigenvalues of
+ *          A*z = lambda*B*z.
+ *          If IPARAM(7) = 3, 4 and SIGMAI is not equal to zero, then on exit:
+ *          DR contains the real part of the Ritz values of OP computed by
+ *          DNAUPD . A further computation must be performed by the user
+ *          to transform the Ritz values computed for OP by DNAUPD  to those
+ *          of the original system A*z = lambda*B*z. See remark 3 below.
+ *
+ *  DI      Double precision  array of dimension NEV+1.  (OUTPUT)
+ *          On exit, DI contains the imaginary part of the Ritz value
+ *          approximations to the eigenvalues of A*z = lambda*B*z associated
+ *          with DR.
+ *
+ *          NOTE: When Ritz values are complex, they will come in complex
+ *                conjugate pairs.  If eigenvectors are requested, the
+ *                corresponding Ritz vectors will also come in conjugate
+ *                pairs and the real and imaginary parts of these are
+ *                represented in two consecutive columns of the array Z
+ *                (see below).
+ *
+ *  Z       Double precision  N by NEV+1 array if RVEC = .TRUE. and HOWMNY = 'A'. (OUTPUT)
+ *          On exit, if RVEC = .TRUE. and HOWMNY = 'A', then the columns of
+ *          Z represent approximate eigenvectors (Ritz vectors) corresponding
+ *          to the NCONV=IPARAM(5) Ritz values for eigensystem
+ *          A*z = lambda*B*z.
+ *
+ *          The complex Ritz vector associated with the Ritz value
+ *          with positive imaginary part is stored in two consecutive
+ *          columns.  The first column holds the real part of the Ritz
+ *          vector and the second column holds the imaginary part.  The
+ *          Ritz vector associated with the Ritz value with negative
+ *          imaginary part is simply the complex conjugate of the Ritz vector
+ *          associated with the positive imaginary part.
+ *
+ *          If  RVEC = .FALSE. or HOWMNY = 'P', then Z is not referenced.
+ *
+ *          NOTE: If if RVEC = .TRUE. and a Schur basis is not required,
+ *          the array Z may be set equal to first NEV+1 columns of the Arnoldi
+ *          basis array V computed by DNAUPD .  In this case the Arnoldi basis
+ *          will be destroyed and overwritten with the eigenvector basis.
+ *
+ *  LDZ     Integer.  (INPUT)
+ *          The leading dimension of the array Z.  If Ritz vectors are
+ *          desired, then  LDZ >= max( 1, N ).  In any case,  LDZ >= 1.
+ *
+ *  SIGMAR  Double precision   (INPUT)
+ *          If IPARAM(7) = 3 or 4, represents the real part of the shift.
+ *          Not referenced if IPARAM(7) = 1 or 2.
+ *
+ *  SIGMAI  Double precision   (INPUT)
+ *          If IPARAM(7) = 3 or 4, represents the imaginary part of the shift.
+ *          Not referenced if IPARAM(7) = 1 or 2. See remark 3 below.
+ *
+ *  WORKEV  Double precision  work array of dimension 3*NCV.  (WORKSPACE)
+ *
+ *  **** The remaining arguments MUST be the same as for the   ****
+ *  **** call to DNAUPD  that was just completed.               ****
+ *
+ *  NOTE: The remaining arguments
+ *
+ *           BMAT, N, WHICH, NEV, TOL, RESID, NCV, V, LDV, IPARAM, IPNTR,
+ *           WORKD, WORKL, LWORKL, INFO
+ *
+ *         must be passed directly to DNEUPD  following the last call
+ *         to DNAUPD .  These arguments MUST NOT BE MODIFIED between
+ *         the the last call to DNAUPD  and the call to DNEUPD .
+ *
+ *  Three of these parameters (V, WORKL, INFO) are also output parameters:
+ *
+ *  V       Double precision  N by NCV array.  (INPUT/OUTPUT)
+ *
+ *          Upon INPUT: the NCV columns of V contain the Arnoldi basis
+ *                      vectors for OP as constructed by DNAUPD  .
+ *
+ *          Upon OUTPUT: If RVEC = .TRUE. the first NCONV=IPARAM(5) columns
+ *                       contain approximate Schur vectors that span the
+ *                       desired invariant subspace.  See Remark 2 below.
+ *
+ *          NOTE: If the array Z has been set equal to first NEV+1 columns
+ *          of the array V and RVEC=.TRUE. and HOWMNY= 'A', then the
+ *          Arnoldi basis held by V has been overwritten by the desired
+ *          Ritz vectors.  If a separate array Z has been passed then
+ *          the first NCONV=IPARAM(5) columns of V will contain approximate
+ *          Schur vectors that span the desired invariant subspace.
+ *
+ *  WORKL   Double precision  work array of length LWORKL.  (OUTPUT/WORKSPACE)
+ *          WORKL(1:ncv*ncv+3*ncv) contains information obtained in
+ *          dnaupd .  They are not changed by dneupd .
+ *          WORKL(ncv*ncv+3*ncv+1:3*ncv*ncv+6*ncv) holds the
+ *          real and imaginary part of the untransformed Ritz values,
+ *          the upper quasi-triangular matrix for H, and the
+ *          associated matrix representation of the invariant subspace for H.
+ *
+ *          Note: IPNTR(9:13) contains the pointer into WORKL for addresses
+ *          of the above information computed by dneupd .
+ *          -------------------------------------------------------------
+ *          IPNTR(9):  pointer to the real part of the NCV RITZ values of the
+ *                     original system.
+ *          IPNTR(10): pointer to the imaginary part of the NCV RITZ values of
+ *                     the original system.
+ *          IPNTR(11): pointer to the NCV corresponding error bounds.
+ *          IPNTR(12): pointer to the NCV by NCV upper quasi-triangular
+ *                     Schur matrix for H.
+ *          IPNTR(13): pointer to the NCV by NCV matrix of eigenvectors
+ *                     of the upper Hessenberg matrix H. Only referenced by
+ *                     dneupd  if RVEC = .TRUE. See Remark 2 below.
+ *          -------------------------------------------------------------
+ *
+ *  INFO    Integer.  (OUTPUT)
+ *          Error flag on output.
+ *
+ *          =  0: Normal exit.
+ *
+ *          =  1: The Schur form computed by LAPACK routine dlahqr
+ *                could not be reordered by LAPACK routine dtrsen .
+ *                Re-enter subroutine dneupd  with IPARAM(5)=NCV and
+ *                increase the size of the arrays DR and DI to have
+ *                dimension at least dimension NCV and allocate at least NCV
+ *                columns for Z. NOTE: Not necessary if Z and V share
+ *                the same space. Please notify the authors if this error
+ *                occurs.
+ *
+ *          = -1: N must be positive.
+ *          = -2: NEV must be positive.
+ *          = -3: NCV-NEV >= 2 and less than or equal to N.
+ *          = -5: WHICH must be one of 'LM', 'SM', 'LR', 'SR', 'LI', 'SI'
+ *          = -6: BMAT must be one of 'I' or 'G'.
+ *          = -7: Length of private work WORKL array is not sufficient.
+ *          = -8: Error return from calculation of a real Schur form.
+ *                Informational error from LAPACK routine dlahqr .
+ *          = -9: Error return from calculation of eigenvectors.
+ *                Informational error from LAPACK routine dtrevc .
+ *          = -10: IPARAM(7) must be 1,2,3,4.
+ *          = -11: IPARAM(7) = 1 and BMAT = 'G' are incompatible.
+ *          = -12: HOWMNY = 'S' not yet implemented
+ *          = -13: HOWMNY must be one of 'A' or 'P' if RVEC = .true.
+ *          = -14: DNAUPD  did not find any eigenvalues to sufficient
+ *                 accuracy.
+ *          = -15: DNEUPD got a different count of the number of converged
+ *                 Ritz values than DNAUPD got.  This indicates the user
+ *                 probably made an error in passing data from DNAUPD to
+ *                 DNEUPD or that the data was modified before entering
+ *                 DNEUPD
+ * \EndDoc
+ *
+ * \BeginLib
+ *
+ * \References:
+ *  1. D.C. Sorensen, "Implicit Application of Polynomial Filters in
+ *     a k-Step Arnoldi Method", SIAM J. Matr. Anal. Apps., 13 (1992),
+ *     pp 357-385.
+ *  2. R.B. Lehoucq, "Analysis and Implementation of an Implicitly
+ *     Restarted Arnoldi Iteration", Rice University Technical Report
+ *     TR95-13, Department of Computational and Applied Mathematics.
+ *  3. B.N. Parlett & Y. Saad, "Complex Shift and Invert Strategies for
+ *     Real Matrices", Linear Algebra and its Applications, vol 88/89,
+ *     pp 575-595, (1987).
+ *
+ * \Routines called:
+ *     ivout   ARPACK utility routine that prints integers.
+ *     dmout    ARPACK utility routine that prints matrices
+ *     dvout    ARPACK utility routine that prints vectors.
+ *     dgeqr2   LAPACK routine that computes the QR factorization of
+ *             a matrix.
+ *     dlacpy   LAPACK matrix copy routine.
+ *     dlahqr   LAPACK routine to compute the real Schur form of an
+ *             upper Hessenberg matrix.
+ *     dlamch   LAPACK routine that determines machine constants.
+ *     dlapy2   LAPACK routine to compute sqrt(x**2+y**2) carefully.
+ *     dlaset   LAPACK matrix initialization routine.
+ *     dorm2r   LAPACK routine that applies an orthogonal matrix in
+ *             factored form.
+ *     dtrevc   LAPACK routine to compute the eigenvectors of a matrix
+ *             in upper quasi-triangular form.
+ *     dtrsen   LAPACK routine that re-orders the Schur form.
+ *     dtrmm    Level 3 BLAS matrix times an upper triangular matrix.
+ *     dger     Level 2 BLAS rank one update to a matrix.
+ *     dcopy    Level 1 BLAS that copies one vector to another .
+ *     ddot     Level 1 BLAS that computes the scalar product of two vectors.
+ *     dnrm2    Level 1 BLAS that computes the norm of a vector.
+ *     dscal    Level 1 BLAS that scales a vector.
+ *
+ * \Remarks
+ *
+ *  1. Currently only HOWMNY = 'A' and 'P' are implemented.
+ *
+ *     Let trans(X) denote the transpose of X.
+ *
+ *  2. Schur vectors are an orthogonal representation for the basis of
+ *     Ritz vectors. Thus, their numerical properties are often superior.
+ *     If RVEC = .TRUE. then the relationship
+ *             A * V(:,1:IPARAM(5)) = V(:,1:IPARAM(5)) * T, and
+ *     trans(V(:,1:IPARAM(5))) * V(:,1:IPARAM(5)) = I are approximately
+ *     satisfied. Here T is the leading submatrix of order IPARAM(5) of the
+ *     real upper quasi-triangular matrix stored workl(ipntr(12)). That is,
+ *     T is block upper triangular with 1-by-1 and 2-by-2 diagonal blocks;
+ *     each 2-by-2 diagonal block has its diagonal elements equal and its
+ *     off-diagonal elements of opposite sign.  Corresponding to each 2-by-2
+ *     diagonal block is a complex conjugate pair of Ritz values. The real
+ *     Ritz values are stored on the diagonal of T.
+ *
+ *  3. If IPARAM(7) = 3 or 4 and SIGMAI is not equal zero, then the user must
+ *     form the IPARAM(5) Rayleigh quotients in order to transform the Ritz
+ *     values computed by DNAUPD  for OP to those of A*z = lambda*B*z.
+ *     Set RVEC = .true. and HOWMNY = 'A', and
+ *     compute
+ *           trans(Z(:,I)) * A * Z(:,I) if DI(I) = 0.
+ *     If DI(I) is not equal to zero and DI(I+1) = - D(I),
+ *     then the desired real and imaginary parts of the Ritz value are
+ *           trans(Z(:,I)) * A * Z(:,I) +  trans(Z(:,I+1)) * A * Z(:,I+1),
+ *           trans(Z(:,I)) * A * Z(:,I+1) -  trans(Z(:,I+1)) * A * Z(:,I),
+ *     respectively.
+ *     Another possibility is to set RVEC = .true. and HOWMNY = 'P' and
+ *     compute trans(V(:,1:IPARAM(5))) * A * V(:,1:IPARAM(5)) and then an upper
+ *     quasi-triangular matrix of order IPARAM(5) is computed. See remark
+ *     2 above.
+ *
+ * \Authors
+ *     Danny Sorensen               Phuong Vu
+ *     Richard Lehoucq              CRPC / Rice University
+ *     Chao Yang                    Houston, Texas
+ *     Dept. of Computational &
+ *     Applied Mathematics
+ *     Rice University
+ *     Houston, Texas
+ *
+ * \SCCS Information: @(#)
+ * FILE: neupd.F   SID: 2.7   DATE OF SID: 09/20/00   RELEASE: 2
+ *
+ * \EndLib
+ */
 
-		http://www.netlib.org/f2c/libf2c.zip
-*/
-
-#include "f2c.h"
-
-/* Common Block Declarations */
-
-struct {
-    integer logfil, ndigit, mgetv0, msaupd, msaup2, msaitr, mseigt, msapps, 
-	    msgets, mseupd, mnaupd, mnaup2, mnaitr, mneigh, mnapps, mngets, 
-	    mneupd, mcaupd, mcaup2, mcaitr, mceigh, mcapps, mcgets, mceupd;
-} debug_;
-
-#define debug_1 debug_
-
-struct {
-    integer nopx, nbx, nrorth, nitref, nrstrt;
-    real tsaupd, tsaup2, tsaitr, tseigt, tsgets, tsapps, tsconv, tnaupd, 
-	    tnaup2, tnaitr, tneigh, tngets, tnapps, tnconv, tcaupd, tcaup2, 
-	    tcaitr, tceigh, tcgets, tcapps, tcconv, tmvopx, tmvbx, tgetv0, 
-	    titref, trvec;
-} timing_;
-
-#define timing_1 timing_
-
-/* Table of constant values */
-
-static doublereal c_b3 = .66666666666666663;
-static integer c__1 = 1;
-static doublereal c_b37 = 0.;
-static doublereal c_b38 = 1.;
-static logical c_true = TRUE_;
-static doublereal c_b64 = -1.;
-
-/* \BeginDoc */
-
-/* \Name: dneupd */
-
-/* \Description: */
-
-/*  This subroutine returns the converged approximations to eigenvalues */
-/*  of A*z = lambda*B*z and (optionally): */
-
-/*      (1) The corresponding approximate eigenvectors; */
-
-/*      (2) An orthonormal basis for the associated approximate */
-/*          invariant subspace; */
-
-/*      (3) Both. */
-
-/*  There is negligible additional cost to obtain eigenvectors.  An orthonormal */
-/*  basis is always computed.  There is an additional storage cost of n*nev */
-/*  if both are requested (in this case a separate array Z must be supplied). */
-
-/*  The approximate eigenvalues and eigenvectors of  A*z = lambda*B*z */
-/*  are derived from approximate eigenvalues and eigenvectors of */
-/*  of the linear operator OP prescribed by the MODE selection in the */
-/*  call to DNAUPD .  DNAUPD  must be called before this routine is called. */
-/*  These approximate eigenvalues and vectors are commonly called Ritz */
-/*  values and Ritz vectors respectively.  They are referred to as such */
-/*  in the comments that follow.  The computed orthonormal basis for the */
-/*  invariant subspace corresponding to these Ritz values is referred to as a */
-/*  Schur basis. */
-
-/*  See documentation in the header of the subroutine DNAUPD  for */
-/*  definition of OP as well as other terms and the relation of computed */
-/*  Ritz values and Ritz vectors of OP with respect to the given problem */
-/*  A*z = lambda*B*z.  For a brief description, see definitions of */
-/*  IPARAM(7), MODE and WHICH in the documentation of DNAUPD . */
-
-/* \Usage: */
-/*  call dneupd */
-/*     ( RVEC, HOWMNY, SELECT, DR, DI, Z, LDZ, SIGMAR, SIGMAI, WORKEV, BMAT, */
-/*       N, WHICH, NEV, TOL, RESID, NCV, V, LDV, IPARAM, IPNTR, WORKD, WORKL, */
-/*       LWORKL, INFO ) */
-
-/* \Arguments: */
-/*  RVEC    LOGICAL  (INPUT) */
-/*          Specifies whether a basis for the invariant subspace corresponding */
-/*          to the converged Ritz value approximations for the eigenproblem */
-/*          A*z = lambda*B*z is computed. */
-
-/*             RVEC = .FALSE.     Compute Ritz values only. */
-
-/*             RVEC = .TRUE.      Compute the Ritz vectors or Schur vectors. */
-/*                                See Remarks below. */
-
-/*  HOWMNY  Character*1  (INPUT) */
-/*          Specifies the form of the basis for the invariant subspace */
-/*          corresponding to the converged Ritz values that is to be computed. */
-
-/*          = 'A': Compute NEV Ritz vectors; */
-/*          = 'P': Compute NEV Schur vectors; */
-/*          = 'S': compute some of the Ritz vectors, specified */
-/*                 by the logical array SELECT. */
-
-/*  SELECT  Logical array of dimension NCV.  (INPUT) */
-/*          If HOWMNY = 'S', SELECT specifies the Ritz vectors to be */
-/*          computed. To select the Ritz vector corresponding to a */
-/*          Ritz value (DR(j), DI(j)), SELECT(j) must be set to .TRUE.. */
-/*          If HOWMNY = 'A' or 'P', SELECT is used as internal workspace. */
-
-/*  DR      Double precision  array of dimension NEV+1.  (OUTPUT) */
-/*          If IPARAM(7) = 1,2 or 3 and SIGMAI=0.0  then on exit: DR contains */
-/*          the real part of the Ritz  approximations to the eigenvalues of */
-/*          A*z = lambda*B*z. */
-/*          If IPARAM(7) = 3, 4 and SIGMAI is not equal to zero, then on exit: */
-/*          DR contains the real part of the Ritz values of OP computed by */
-/*          DNAUPD . A further computation must be performed by the user */
-/*          to transform the Ritz values computed for OP by DNAUPD  to those */
-/*          of the original system A*z = lambda*B*z. See remark 3 below. */
-
-/*  DI      Double precision  array of dimension NEV+1.  (OUTPUT) */
-/*          On exit, DI contains the imaginary part of the Ritz value */
-/*          approximations to the eigenvalues of A*z = lambda*B*z associated */
-/*          with DR. */
-
-/*          NOTE: When Ritz values are complex, they will come in complex */
-/*                conjugate pairs.  If eigenvectors are requested, the */
-/*                corresponding Ritz vectors will also come in conjugate */
-/*                pairs and the real and imaginary parts of these are */
-/*                represented in two consecutive columns of the array Z */
-/*                (see below). */
-
-/*  Z       Double precision  N by NEV+1 array if RVEC = .TRUE. and HOWMNY = 'A'. (OUTPUT) */
-/*          On exit, if RVEC = .TRUE. and HOWMNY = 'A', then the columns of */
-/*          Z represent approximate eigenvectors (Ritz vectors) corresponding */
-/*          to the NCONV=IPARAM(5) Ritz values for eigensystem */
-/*          A*z = lambda*B*z. */
-
-/*          The complex Ritz vector associated with the Ritz value */
-/*          with positive imaginary part is stored in two consecutive */
-/*          columns.  The first column holds the real part of the Ritz */
-/*          vector and the second column holds the imaginary part.  The */
-/*          Ritz vector associated with the Ritz value with negative */
-/*          imaginary part is simply the complex conjugate of the Ritz vector */
-/*          associated with the positive imaginary part. */
-
-/*          If  RVEC = .FALSE. or HOWMNY = 'P', then Z is not referenced. */
-
-/*          NOTE: If if RVEC = .TRUE. and a Schur basis is not required, */
-/*          the array Z may be set equal to first NEV+1 columns of the Arnoldi */
-/*          basis array V computed by DNAUPD .  In this case the Arnoldi basis */
-/*          will be destroyed and overwritten with the eigenvector basis. */
-
-/*  LDZ     Integer.  (INPUT) */
-/*          The leading dimension of the array Z.  If Ritz vectors are */
-/*          desired, then  LDZ >= max( 1, N ).  In any case,  LDZ >= 1. */
-
-/*  SIGMAR  Double precision   (INPUT) */
-/*          If IPARAM(7) = 3 or 4, represents the real part of the shift. */
-/*          Not referenced if IPARAM(7) = 1 or 2. */
-
-/*  SIGMAI  Double precision   (INPUT) */
-/*          If IPARAM(7) = 3 or 4, represents the imaginary part of the shift. */
-/*          Not referenced if IPARAM(7) = 1 or 2. See remark 3 below. */
-
-/*  WORKEV  Double precision  work array of dimension 3*NCV.  (WORKSPACE) */
-
-/*  **** The remaining arguments MUST be the same as for the   **** */
-/*  **** call to DNAUPD  that was just completed.               **** */
-
-/*  NOTE: The remaining arguments */
-
-/*           BMAT, N, WHICH, NEV, TOL, RESID, NCV, V, LDV, IPARAM, IPNTR, */
-/*           WORKD, WORKL, LWORKL, INFO */
-
-/*         must be passed directly to DNEUPD  following the last call */
-/*         to DNAUPD .  These arguments MUST NOT BE MODIFIED between */
-/*         the the last call to DNAUPD  and the call to DNEUPD . */
-
-/*  Three of these parameters (V, WORKL, INFO) are also output parameters: */
-
-/*  V       Double precision  N by NCV array.  (INPUT/OUTPUT) */
-
-/*          Upon INPUT: the NCV columns of V contain the Arnoldi basis */
-/*                      vectors for OP as constructed by DNAUPD  . */
-
-/*          Upon OUTPUT: If RVEC = .TRUE. the first NCONV=IPARAM(5) columns */
-/*                       contain approximate Schur vectors that span the */
-/*                       desired invariant subspace.  See Remark 2 below. */
-
-/*          NOTE: If the array Z has been set equal to first NEV+1 columns */
-/*          of the array V and RVEC=.TRUE. and HOWMNY= 'A', then the */
-/*          Arnoldi basis held by V has been overwritten by the desired */
-/*          Ritz vectors.  If a separate array Z has been passed then */
-/*          the first NCONV=IPARAM(5) columns of V will contain approximate */
-/*          Schur vectors that span the desired invariant subspace. */
-
-/*  WORKL   Double precision  work array of length LWORKL.  (OUTPUT/WORKSPACE) */
-/*          WORKL(1:ncv*ncv+3*ncv) contains information obtained in */
-/*          dnaupd .  They are not changed by dneupd . */
-/*          WORKL(ncv*ncv+3*ncv+1:3*ncv*ncv+6*ncv) holds the */
-/*          real and imaginary part of the untransformed Ritz values, */
-/*          the upper quasi-triangular matrix for H, and the */
-/*          associated matrix representation of the invariant subspace for H. */
-
-/*          Note: IPNTR(9:13) contains the pointer into WORKL for addresses */
-/*          of the above information computed by dneupd . */
-/*          ------------------------------------------------------------- */
-/*          IPNTR(9):  pointer to the real part of the NCV RITZ values of the */
-/*                     original system. */
-/*          IPNTR(10): pointer to the imaginary part of the NCV RITZ values of */
-/*                     the original system. */
-/*          IPNTR(11): pointer to the NCV corresponding error bounds. */
-/*          IPNTR(12): pointer to the NCV by NCV upper quasi-triangular */
-/*                     Schur matrix for H. */
-/*          IPNTR(13): pointer to the NCV by NCV matrix of eigenvectors */
-/*                     of the upper Hessenberg matrix H. Only referenced by */
-/*                     dneupd  if RVEC = .TRUE. See Remark 2 below. */
-/*          ------------------------------------------------------------- */
-
-/*  INFO    Integer.  (OUTPUT) */
-/*          Error flag on output. */
-
-/*          =  0: Normal exit. */
-
-/*          =  1: The Schur form computed by LAPACK routine dlahqr */
-/*                could not be reordered by LAPACK routine dtrsen . */
-/*                Re-enter subroutine dneupd  with IPARAM(5)=NCV and */
-/*                increase the size of the arrays DR and DI to have */
-/*                dimension at least dimension NCV and allocate at least NCV */
-/*                columns for Z. NOTE: Not necessary if Z and V share */
-/*                the same space. Please notify the authors if this error */
-/*                occurs. */
-
-/*          = -1: N must be positive. */
-/*          = -2: NEV must be positive. */
-/*          = -3: NCV-NEV >= 2 and less than or equal to N. */
-/*          = -5: WHICH must be one of 'LM', 'SM', 'LR', 'SR', 'LI', 'SI' */
-/*          = -6: BMAT must be one of 'I' or 'G'. */
-/*          = -7: Length of private work WORKL array is not sufficient. */
-/*          = -8: Error return from calculation of a real Schur form. */
-/*                Informational error from LAPACK routine dlahqr . */
-/*          = -9: Error return from calculation of eigenvectors. */
-/*                Informational error from LAPACK routine dtrevc . */
-/*          = -10: IPARAM(7) must be 1,2,3,4. */
-/*          = -11: IPARAM(7) = 1 and BMAT = 'G' are incompatible. */
-/*          = -12: HOWMNY = 'S' not yet implemented */
-/*          = -13: HOWMNY must be one of 'A' or 'P' if RVEC = .true. */
-/*          = -14: DNAUPD  did not find any eigenvalues to sufficient */
-/*                 accuracy. */
-/*          = -15: DNEUPD got a different count of the number of converged */
-/*                 Ritz values than DNAUPD got.  This indicates the user */
-/*                 probably made an error in passing data from DNAUPD to */
-/*                 DNEUPD or that the data was modified before entering */
-/*                 DNEUPD */
-
-/* \BeginLib */
-
-/* \References: */
-/*  1. D.C. Sorensen, "Implicit Application of Polynomial Filters in */
-/*     a k-Step Arnoldi Method", SIAM J. Matr. Anal. Apps., 13 (1992), */
-/*     pp 357-385. */
-/*  2. R.B. Lehoucq, "Analysis and Implementation of an Implicitly */
-/*     Restarted Arnoldi Iteration", Rice University Technical Report */
-/*     TR95-13, Department of Computational and Applied Mathematics. */
-/*  3. B.N. Parlett & Y. Saad, "Complex Shift and Invert Strategies for */
-/*     Real Matrices", Linear Algebra and its Applications, vol 88/89, */
-/*     pp 575-595, (1987). */
-
-/* \Routines called: */
-/*     ivout   ARPACK utility routine that prints integers. */
-/*     dmout    ARPACK utility routine that prints matrices */
-/*     dvout    ARPACK utility routine that prints vectors. */
-/*     dgeqr2   LAPACK routine that computes the QR factorization of */
-/*             a matrix. */
-/*     dlacpy   LAPACK matrix copy routine. */
-/*     dlahqr   LAPACK routine to compute the real Schur form of an */
-/*             upper Hessenberg matrix. */
-/*     dlamch   LAPACK routine that determines machine constants. */
-/*     dlapy2   LAPACK routine to compute sqrt(x**2+y**2) carefully. */
-/*     dlaset   LAPACK matrix initialization routine. */
-/*     dorm2r   LAPACK routine that applies an orthogonal matrix in */
-/*             factored form. */
-/*     dtrevc   LAPACK routine to compute the eigenvectors of a matrix */
-/*             in upper quasi-triangular form. */
-/*     dtrsen   LAPACK routine that re-orders the Schur form. */
-/*     dtrmm    Level 3 BLAS matrix times an upper triangular matrix. */
-/*     dger     Level 2 BLAS rank one update to a matrix. */
-/*     dcopy    Level 1 BLAS that copies one vector to another . */
-/*     ddot     Level 1 BLAS that computes the scalar product of two vectors. */
-/*     dnrm2    Level 1 BLAS that computes the norm of a vector. */
-/*     dscal    Level 1 BLAS that scales a vector. */
-
-/* \Remarks */
-
-/*  1. Currently only HOWMNY = 'A' and 'P' are implemented. */
-
-/*     Let trans(X) denote the transpose of X. */
-
-/*  2. Schur vectors are an orthogonal representation for the basis of */
-/*     Ritz vectors. Thus, their numerical properties are often superior. */
-/*     If RVEC = .TRUE. then the relationship */
-/*             A * V(:,1:IPARAM(5)) = V(:,1:IPARAM(5)) * T, and */
-/*     trans(V(:,1:IPARAM(5))) * V(:,1:IPARAM(5)) = I are approximately */
-/*     satisfied. Here T is the leading submatrix of order IPARAM(5) of the */
-/*     real upper quasi-triangular matrix stored workl(ipntr(12)). That is, */
-/*     T is block upper triangular with 1-by-1 and 2-by-2 diagonal blocks; */
-/*     each 2-by-2 diagonal block has its diagonal elements equal and its */
-/*     off-diagonal elements of opposite sign.  Corresponding to each 2-by-2 */
-/*     diagonal block is a complex conjugate pair of Ritz values. The real */
-/*     Ritz values are stored on the diagonal of T. */
-
-/*  3. If IPARAM(7) = 3 or 4 and SIGMAI is not equal zero, then the user must */
-/*     form the IPARAM(5) Rayleigh quotients in order to transform the Ritz */
-/*     values computed by DNAUPD  for OP to those of A*z = lambda*B*z. */
-/*     Set RVEC = .true. and HOWMNY = 'A', and */
-/*     compute */
-/*           trans(Z(:,I)) * A * Z(:,I) if DI(I) = 0. */
-/*     If DI(I) is not equal to zero and DI(I+1) = - D(I), */
-/*     then the desired real and imaginary parts of the Ritz value are */
-/*           trans(Z(:,I)) * A * Z(:,I) +  trans(Z(:,I+1)) * A * Z(:,I+1), */
-/*           trans(Z(:,I)) * A * Z(:,I+1) -  trans(Z(:,I+1)) * A * Z(:,I), */
-/*     respectively. */
-/*     Another possibility is to set RVEC = .true. and HOWMNY = 'P' and */
-/*     compute trans(V(:,1:IPARAM(5))) * A * V(:,1:IPARAM(5)) and then an upper */
-/*     quasi-triangular matrix of order IPARAM(5) is computed. See remark */
-/*     2 above. */
-
-/* \Authors */
-/*     Danny Sorensen               Phuong Vu */
-/*     Richard Lehoucq              CRPC / Rice University */
-/*     Chao Yang                    Houston, Texas */
-/*     Dept. of Computational & */
-/*     Applied Mathematics */
-/*     Rice University */
-/*     Houston, Texas */
-
-/* \SCCS Information: @(#) */
-/* FILE: neupd.F   SID: 2.7   DATE OF SID: 09/20/00   RELEASE: 2 */
-
-/* \EndLib */
-
-/* ----------------------------------------------------------------------- */
 /* Subroutine */ int dneupd_(logical *rvec, char *howmny, logical *select, 
 	doublereal *dr, doublereal *di, doublereal *z__, integer *ldz, 
 	doublereal *sigmar, doublereal *sigmai, doublereal *workev, char *
@@ -365,120 +328,26 @@ static doublereal c_b64 = -1.;
     integer ibd, ldh, ldq, iri;
     doublereal sep;
     integer irr, wri, wrr;
-    extern /* Subroutine */ int dger_(integer *, integer *, doublereal *, 
-	    doublereal *, integer *, doublereal *, integer *, doublereal *, 
-	    integer *);
     integer mode;
     doublereal eps23;
     integer ierr;
     doublereal temp;
     integer iwev;
     char type__[6];
-    extern doublereal dnrm2_(integer *, doublereal *, integer *);
     doublereal temp1;
-    extern /* Subroutine */ int dscal_(integer *, doublereal *, doublereal *, 
-	    integer *);
     integer ihbds, iconj;
-    extern /* Subroutine */ int dgemv_(char *, integer *, integer *, 
-	    doublereal *, doublereal *, integer *, doublereal *, integer *, 
-	    doublereal *, doublereal *, integer *);
     doublereal conds;
     logical reord;
-    extern /* Subroutine */ int dcopy_(integer *, doublereal *, integer *, 
-	    doublereal *, integer *);
     integer nconv;
-    extern /* Subroutine */ int dtrmm_(char *, char *, char *, char *, 
-	    integer *, integer *, doublereal *, doublereal *, integer *, 
-	    doublereal *, integer *), dmout_(
-	    integer *, integer *, integer *, doublereal *, integer *, integer 
-	    *, char *, ftnlen);
     integer iwork[1];
     doublereal rnorm;
     integer ritzi;
-    extern /* Subroutine */ int dvout_(integer *, integer *, doublereal *, 
-	    integer *, char *, ftnlen), ivout_(integer *, integer *, integer *
-	    , integer *, char *, ftnlen);
     integer ritzr;
-    extern /* Subroutine */ int dgeqr2_(integer *, integer *, doublereal *, 
-	    integer *, doublereal *, doublereal *, integer *);
-    extern doublereal dlapy2_(doublereal *, doublereal *);
     integer nconv2;
-    extern /* Subroutine */ int dorm2r_(char *, char *, integer *, integer *, 
-	    integer *, doublereal *, integer *, doublereal *, doublereal *, 
-	    integer *, doublereal *, integer *);
-    extern doublereal dlamch_(char *);
     integer iheigi, iheigr, bounds, invsub, iuptri, msglvl, outncv, ishift, 
 	    numcnv;
-    extern /* Subroutine */ int dlacpy_(char *, integer *, integer *, 
-	    doublereal *, integer *, doublereal *, integer *), 
-	    dlahqr_(logical *, logical *, integer *, integer *, integer *, 
-	    doublereal *, integer *, doublereal *, doublereal *, integer *, 
-	    integer *, doublereal *, integer *, integer *), dlaset_(char *, 
-	    integer *, integer *, doublereal *, doublereal *, doublereal *, 
-	    integer *), dtrevc_(char *, char *, logical *, integer *, 
-	    doublereal *, integer *, doublereal *, integer *, doublereal *, 
-	    integer *, integer *, integer *, doublereal *, integer *), 
-	    dtrsen_(char *, char *, logical *, integer *, doublereal 
-	    *, integer *, doublereal *, integer *, doublereal *, doublereal *,
-	     integer *, doublereal *, doublereal *, doublereal *, integer *, 
-	    integer *, integer *, integer *), dngets_(integer 
-	    *, char *, integer *, integer *, doublereal *, doublereal *, 
-	    doublereal *, doublereal *, doublereal *);
 
 
-/*     %----------------------------------------------------% */
-/*     | Include files for debugging and timing information | */
-/*     %----------------------------------------------------% */
-
-
-/* \SCCS Information: @(#) */
-/* FILE: debug.h   SID: 2.3   DATE OF SID: 11/16/95   RELEASE: 2 */
-
-/*     %---------------------------------% */
-/*     | See debug.doc for documentation | */
-/*     %---------------------------------% */
-
-/*     %------------------% */
-/*     | Scalar Arguments | */
-/*     %------------------% */
-
-/*     %--------------------------------% */
-/*     | See stat.doc for documentation | */
-/*     %--------------------------------% */
-
-/* \SCCS Information: @(#) */
-/* FILE: stat.h   SID: 2.2   DATE OF SID: 11/16/95   RELEASE: 2 */
-
-
-
-/*     %-----------------% */
-/*     | Array Arguments | */
-/*     %-----------------% */
-
-
-/*     %------------% */
-/*     | Parameters | */
-/*     %------------% */
-
-
-/*     %---------------% */
-/*     | Local Scalars | */
-/*     %---------------% */
-
-
-/*     %----------------------% */
-/*     | External Subroutines | */
-/*     %----------------------% */
-
-
-/*     %--------------------% */
-/*     | External Functions | */
-/*     %--------------------% */
-
-
-/*     %---------------------% */
-/*     | Intrinsic Functions | */
-/*     %---------------------% */
 
 
 /*     %-----------------------% */
@@ -517,7 +386,7 @@ static doublereal c_b64 = -1.;
 /*     %---------------------------------% */
 
     eps23 = dlamch_("Epsilon-Machine");
-    eps23 = pow_dd(&eps23, &c_b3);
+    eps23 = pow_dd(&eps23, &d_23);
 
 /*     %--------------% */
 /*     | Quick return | */
@@ -752,7 +621,7 @@ static doublereal c_b64 = -1.;
 
 	i__1 = ldh * *ncv;
 	dcopy_(&i__1, &workl[ih], &c__1, &workl[iuptri], &c__1);
-	dlaset_("All", ncv, ncv, &c_b37, &c_b38, &workl[invsub], &ldq);
+	dlaset_("All", ncv, ncv, &d_zero, &d_one, &workl[invsub], &ldq);
 	dlahqr_(&c_true, &c_true, ncv, &c__1, ncv, &workl[iuptri], &ldh, &
 		workl[iheigr], &workl[iheigi], &c__1, ncv, &workl[invsub], &
 		ldq, &ierr);
@@ -871,8 +740,8 @@ static doublereal c_b64 = -1.;
 /*           %---------------------------------------------------% */
 
 	    if (workl[invsub + (j - 1) * ldq + j - 1] < 0.) {
-		dscal_(&nconv, &c_b64, &workl[iuptri + j - 1], &ldq);
-		dscal_(&nconv, &c_b64, &workl[iuptri + (j - 1) * ldq], &c__1);
+		dscal_(&nconv, &d_m1, &workl[iuptri + j - 1], &ldq);
+		dscal_(&nconv, &d_m1, &workl[iuptri + (j - 1) * ldq], &c__1);
 	    }
 
 /* L20: */
@@ -956,8 +825,8 @@ static doublereal c_b64 = -1.;
 /* L40: */
 	    }
 
-	    dgemv_("T", ncv, &nconv, &c_b38, &workl[invsub], &ldq, &workl[
-		    ihbds], &c__1, &c_b37, &workev[1], &c__1);
+	    dgemv_("T", ncv, &nconv, &d_one, &workl[invsub], &ldq, &workl[
+		    ihbds], &c__1, &d_zero, &workev[1], &c__1);
 
 	    iconj = 0;
 	    i__1 = nconv;
@@ -1022,7 +891,7 @@ static doublereal c_b64 = -1.;
 		    ierr, (ftnlen)5, (ftnlen)11);
 
 	    dtrmm_("Right", "Upper", "No transpose", "Non-unit", n, &nconv, &
-		    c_b38, &workl[invsub], &ldq, &z__[z_offset], ldz, (ftnlen)
+		    d_one, &workl[invsub], &ldq, &z__[z_offset], ldz, (ftnlen)
 		    5, (ftnlen)5, (ftnlen)12, (ftnlen)8);
 
 	}
@@ -1196,7 +1065,7 @@ static doublereal c_b64 = -1.;
 /*        | purify all the Ritz vectors together. | */
 /*        %---------------------------------------% */
 
-	dger_(n, &nconv, &c_b38, &resid[1], &c__1, &workev[1], &c__1, &z__[
+	dger_(n, &nconv, &d_one, &resid[1], &c__1, &workev[1], &c__1, &z__[
 		z_offset], ldz);
 
     }
