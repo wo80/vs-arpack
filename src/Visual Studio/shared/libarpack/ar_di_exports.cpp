@@ -343,7 +343,7 @@ int ar_di_ng_shift_cx(char* which,  int k, int ncv, int maxit, double tol, char 
 }
 
 
-int ar_di_svd(char* which, int k, int ncv, int maxit, double tol,
+int ar_di_svd_nrm(char* which, int k, int ncv, int maxit, double tol,
 	ar_spmat *A, ar_result *result)
 {
 	int nconv = 0; // Number of converged eigenvalues.
@@ -357,6 +357,7 @@ int ar_di_svd(char* which, int k, int ncv, int maxit, double tol,
 		return nconv;
 	}
 
+	AR_TYPE *svec = (AR_TYPE *)result->eigvec;
 	AR_TYPE *sval = (AR_TYPE *)result->eigvalr;
 
 	try
@@ -367,7 +368,14 @@ int ar_di_svd(char* which, int k, int ncv, int maxit, double tol,
 			prob(n, k, &matrix, &ARluNonSymMatrix<AR_TYPE, double>::MultMtMv, which, ncv, tol, maxit);
 
 		// Finding singular values.
+		if (svec == NULL)
+		{
 		nconv = prob.Eigenvalues(sval);
+		}
+		else
+		{
+			nconv = prob.EigenValVectors(svec, sval, 0);
+		}
 
 		result->iterations = prob.GetIter();
 		result->ncv = prob.GetNcv();
@@ -381,7 +389,7 @@ int ar_di_svd(char* which, int k, int ncv, int maxit, double tol,
 	return nconv;
 }
 
-int ar_di_svd_trunc(char* which, int k, int ncv, int maxit, double tol,
+int ar_di_svd(char* which, int k, int ncv, int maxit, double tol,
 	ar_spmat *A, ar_result *result)
 {
 	int nconv = 0; // Number of converged eigenvalues.
@@ -397,7 +405,7 @@ int ar_di_svd_trunc(char* which, int k, int ncv, int maxit, double tol,
 		// Defining the eigenvalue problem.
 		ARluNonSymMatrix<AR_TYPE, double> matrix(m, n, A->nnz, (AR_TYPE *)A->x, A->i, A->p);
 		ARSymStdEig<AR_TYPE, ARluNonSymMatrix<AR_TYPE, double>>
-			prob(m + n, k, &matrix, &ARluNonSymMatrix<double, double>::Mult0MMt0v, which, ncv, tol, maxit);
+			prob(m + n, k, &matrix, &ARluNonSymMatrix<AR_TYPE, double>::Mult0MMt0v, which, ncv, tol, maxit);
 
 		// Finding singular values.
 		if (svec == NULL)
