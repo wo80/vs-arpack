@@ -26,7 +26,7 @@ int ar_si_ss(char* which, int k, int ncv, int maxit, double tol,
 	{
 		// Defining the eigenvalue problem.
 		ARluSymMatrix<AR_TYPE> matrix(A->n, A->nnz, (AR_TYPE *)A->x, A->i, A->p, uplo);
-		ARluSymStdEig<AR_TYPE> prob(k, matrix, which, ncv, tol, maxit);
+		ARluSymStdEig<AR_TYPE> prob(k, matrix, which, ncv, static_cast<float>(tol), maxit);
 
 		// Finding eigenvalues.
 		if (eigvec == NULL)
@@ -63,7 +63,7 @@ int ar_si_ss_shift(char* which,  int k, int ncv, int maxit, double tol, float si
 	{
 		// Defining the eigenvalue problem.
 		ARluSymMatrix<AR_TYPE> matrix(A->n, A->nnz, (AR_TYPE *)A->x, A->i, A->p, uplo);
-		ARluSymStdEig<AR_TYPE> prob(k, matrix, sigma, which, ncv, tol, maxit);
+		ARluSymStdEig<AR_TYPE> prob(k, matrix, sigma, which, ncv, static_cast<float>(tol), maxit);
 
 		// Finding eigenvalues.
 		if (eigvec == NULL)
@@ -101,7 +101,7 @@ int ar_si_sg(char* which, int k, int ncv, int maxit, double tol,
 		// Defining the eigenvalue problem.
 		ARluSymMatrix<AR_TYPE> matrixA(A->n, A->nnz, (AR_TYPE *)A->x, A->i, A->p, uplo);
 		ARluSymMatrix<AR_TYPE> matrixB(B->n, B->nnz, (AR_TYPE *)B->x, B->i, B->p, uplo);
-		ARluSymGenEig<AR_TYPE> prob(k, matrixA, matrixB, which, ncv, tol, maxit);
+		ARluSymGenEig<AR_TYPE> prob(k, matrixA, matrixB, which, ncv, static_cast<float>(tol), maxit);
 
 		// Finding eigenvalues.
 		if (eigvec == NULL)
@@ -139,7 +139,7 @@ int ar_si_sg_shift(char* which, char mode, int k, int ncv, int maxit, double tol
 		// Defining the eigenvalue problem.
 		ARluSymMatrix<AR_TYPE> matrixA(A->n, A->nnz, (AR_TYPE *)A->x, A->i, A->p, uplo);
 		ARluSymMatrix<AR_TYPE> matrixB(B->n, B->nnz, (AR_TYPE *)B->x, B->i, B->p, uplo);
-		ARluSymGenEig<AR_TYPE> prob(mode, k, matrixA, matrixB, sigma, which, ncv, tol, maxit);
+		ARluSymGenEig<AR_TYPE> prob(mode, k, matrixA, matrixB, sigma, which, ncv, static_cast<float>(tol), maxit);
 
 		// Finding eigenvalues.
 		if (eigvec == NULL)
@@ -175,7 +175,7 @@ int ar_si_ns(char* which, int k, int ncv, int maxit, double tol,
 	try
 	{
 		ARluNonSymMatrix<AR_TYPE, float> matrix(A->n, A->nnz, (AR_TYPE *)A->x, A->i, A->p);
-		ARluNonSymStdEig<AR_TYPE> prob(k, matrix, which, ncv, tol, maxit);
+		ARluNonSymStdEig<AR_TYPE> prob(k, matrix, which, ncv, static_cast<float>(tol), maxit);
 
 		if (eigvec == NULL)
 		{
@@ -210,7 +210,7 @@ int ar_si_ns_shift(char* which,  int k, int ncv, int maxit, double tol, float si
 	try
 	{
 		ARluNonSymMatrix<AR_TYPE, float> matrix(A->n, A->nnz, (AR_TYPE *)A->x, A->i, A->p);
-		ARluNonSymStdEig<AR_TYPE> prob(k, matrix, sigma, which, ncv, tol, maxit);
+		ARluNonSymStdEig<AR_TYPE> prob(k, matrix, sigma, which, ncv, static_cast<float>(tol), maxit);
 
 		if (eigvec == NULL)
 		{
@@ -246,7 +246,7 @@ int ar_si_ng(char* which, int k, int ncv, int maxit, double tol,
 	{
 		ARluNonSymMatrix<AR_TYPE, float> matrixA(A->n, A->nnz, (AR_TYPE *)A->x, A->i, A->p);
 		ARluNonSymMatrix<AR_TYPE, float> matrixB(B->n, B->nnz, (AR_TYPE *)B->x, B->i, B->p);
-		ARluNonSymGenEig<AR_TYPE> prob(k, matrixA, matrixB, which, ncv, tol, maxit);
+		ARluNonSymGenEig<AR_TYPE> prob(k, matrixA, matrixB, which, ncv, static_cast<float>(tol), maxit);
 
 		if (eigvec == NULL)
 		{
@@ -282,7 +282,7 @@ int ar_si_ng_shift(char* which,  int k, int ncv, int maxit, double tol, float si
 	{
 		ARluNonSymMatrix<AR_TYPE, float> matrixA(A->n, A->nnz, (AR_TYPE *)A->x, A->i, A->p);
 		ARluNonSymMatrix<AR_TYPE, float> matrixB(B->n, B->nnz, (AR_TYPE *)B->x, B->i, B->p);
-		ARluNonSymGenEig<AR_TYPE> prob(k, matrixA, matrixB, sigma, which, ncv, tol, maxit);
+		ARluNonSymGenEig<AR_TYPE> prob(k, matrixA, matrixB, sigma, which, ncv, static_cast<float>(tol), maxit);
 
 		if (eigvec == NULL)
 		{
@@ -318,7 +318,7 @@ int ar_si_ng_shift_cx(char* which,  int k, int ncv, int maxit, double tol, char 
 	{
 		ARluNonSymMatrix<AR_TYPE, float> matrixA(A->n, A->nnz, (AR_TYPE *)A->x, A->i, A->p);
 		ARluNonSymMatrix<AR_TYPE, float> matrixB(B->n, B->nnz, (AR_TYPE *)B->x, B->i, B->p);
-		ARluNonSymGenEig<AR_TYPE> prob(k, matrixA, matrixB, part, sigma_r, sigma_i, which, ncv, tol, maxit);
+		ARluNonSymGenEig<AR_TYPE> prob(k, matrixA, matrixB, part, sigma_r, sigma_i, which, ncv, static_cast<float>(tol), maxit);
 
 		if (eigvec == NULL)
 		{

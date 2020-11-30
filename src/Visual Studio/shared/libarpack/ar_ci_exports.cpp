@@ -24,7 +24,7 @@ int ar_ci_ns(char* which, int k, int ncv, int maxit, double tol,
 	try
 	{
 		ARluNonSymMatrix<AR_TYPE, float> matrix(A->n, A->nnz, (AR_TYPE *)A->x, A->i, A->p);
-		ARluCompStdEig<float> prob(k, matrix, which, ncv, tol, maxit);
+		ARluCompStdEig<float> prob(k, matrix, which, ncv, static_cast<float>(tol), maxit);
 
 		if (eigvec == NULL)
 		{
@@ -58,7 +58,7 @@ int ar_ci_ns_shift(char* which,  int k, int ncv, int maxit, double tol, arcomple
 	try
 	{
 		ARluNonSymMatrix<AR_TYPE, float> matrix(A->n, A->nnz, (AR_TYPE *)A->x, A->i, A->p);
-		ARluCompStdEig<float> prob(k, matrix, sigma, which, ncv, tol, maxit);
+		ARluCompStdEig<float> prob(k, matrix, sigma, which, ncv, static_cast<float>(tol), maxit);
 
 		if (eigvec == NULL)
 		{
@@ -93,7 +93,7 @@ int ar_ci_ng(char* which, int k, int ncv, int maxit, double tol,
 	{
 		ARluNonSymMatrix<AR_TYPE, float> matrixA(A->n, A->nnz, (AR_TYPE *)A->x, A->i, A->p);
 		ARluNonSymMatrix<AR_TYPE, float> matrixB(B->n, B->nnz, (AR_TYPE *)B->x, B->i, B->p);
-		ARluCompGenEig<float> prob(k, matrixA, matrixB, which, ncv, tol, maxit);
+		ARluCompGenEig<float> prob(k, matrixA, matrixB, which, ncv, static_cast<float>(tol), maxit);
 
 		if (eigvec == NULL)
 		{
@@ -128,7 +128,7 @@ int ar_ci_ng_shift(char* which,  int k, int ncv, int maxit, double tol, arcomple
 	{
 		ARluNonSymMatrix<AR_TYPE, float> matrixA(A->n, A->nnz, (AR_TYPE *)A->x, A->i, A->p);
 		ARluNonSymMatrix<AR_TYPE, float> matrixB(B->n, B->nnz, (AR_TYPE *)B->x, B->i, B->p);
-		ARluCompGenEig<float> prob(k, matrixA, matrixB, sigma, which, ncv, tol, maxit);
+		ARluCompGenEig<float> prob(k, matrixA, matrixB, sigma, which, ncv, static_cast<float>(tol), maxit);
 
 		if (eigvec == NULL)
 		{
