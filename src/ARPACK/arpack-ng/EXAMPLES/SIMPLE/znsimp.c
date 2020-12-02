@@ -2,14 +2,6 @@
 
 #include "arpack.h"
 
-struct {
-    integer logfil, ndigit, mgetv0, msaupd, msaup2, msaitr, mseigt, msapps, 
-	    msgets, mseupd, mnaupd, mnaup2, mnaitr, mneigh, mnapps, mngets, 
-	    mneupd, mcaupd, mcaup2, mcaitr, mceigh, mcapps, mcgets, mceupd;
-} debug_;
-
-#define debug_1 debug_
-
 int znsimp()
 {
     /* System generated locals */
@@ -366,7 +358,7 @@ L10:
 /*           | array workd(ipntr(2)).                    | */
 /*           %-------------------------------------------% */
 
-	av_(&nx, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
+    znsimp_av_(&nx, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
 
 /*           %-----------------------------------------% */
 /*           | L O O P   B A C K to call ZNAUPD  again. | */
@@ -480,7 +472,7 @@ L10:
 /*                | tolerance)                | */
 /*                %---------------------------% */
 
-		av_(&nx, &v[(j << 8) - 256], ax);
+        znsimp_av_(&nx, &v[(j << 8) - 256], ax);
 		i__2 = j - 1;
 		z__1.r = -d__[i__2].r, z__1.i = -d__[i__2].i;
 		zaxpy_(&n, &z__1, &v[(j << 8) - 256], &c__1, ax, &c__1);
@@ -602,7 +594,7 @@ L9000:
 /*     The matrix used is the convection-diffusion operator */
 /*     discretized using centered difference. */
 
-int av_(integer *nx, doublecomplex *v, doublecomplex *w)
+int znsimp_av_(integer *nx, doublecomplex *v, doublecomplex *w)
 {
     /* System generated locals */
     integer i__1;
@@ -642,7 +634,7 @@ int av_(integer *nx, doublecomplex *v, doublecomplex *w)
     z_div(&z__1, &c_b137, &z__2);
     h2.r = z__1.r, h2.i = z__1.i;
 
-    tv_(nx, &v[1], &w[1]);
+    znsimp_tv_(nx, &v[1], &w[1]);
     z__2.r = -1., z__2.i = -0.;
     z_div(&z__1, &z__2, &h2);
     zaxpy_(nx, &z__1, &v[*nx + 1], &c__1, &w[1], &c__1);
@@ -650,7 +642,7 @@ int av_(integer *nx, doublecomplex *v, doublecomplex *w)
     i__1 = *nx - 1;
     for (j = 2; j <= i__1; ++j) {
 	lo = (j - 1) * *nx;
-	tv_(nx, &v[lo + 1], &w[lo + 1]);
+    znsimp_tv_(nx, &v[lo + 1], &w[lo + 1]);
 	z__2.r = -1., z__2.i = -0.;
 	z_div(&z__1, &z__2, &h2);
 	zaxpy_(nx, &z__1, &v[lo - *nx + 1], &c__1, &w[lo + 1], &c__1);
@@ -661,7 +653,7 @@ int av_(integer *nx, doublecomplex *v, doublecomplex *w)
     }
 
     lo = (*nx - 1) * *nx;
-    tv_(nx, &v[lo + 1], &w[lo + 1]);
+    znsimp_tv_(nx, &v[lo + 1], &w[lo + 1]);
     z__2.r = -1., z__2.i = -0.;
     z_div(&z__1, &z__2, &h2);
     zaxpy_(nx, &z__1, &v[lo - *nx + 1], &c__1, &w[lo + 1], &c__1);
@@ -670,7 +662,7 @@ int av_(integer *nx, doublecomplex *v, doublecomplex *w)
 } /* av_ */
 
 /* ========================================================================= */
-int tv_(integer *nx, doublecomplex *x, doublecomplex *y)
+int znsimp_tv_(integer *nx, doublecomplex *x, doublecomplex *y)
 {
     /* System generated locals */
     integer i__1, i__2, i__3, i__4, i__5;

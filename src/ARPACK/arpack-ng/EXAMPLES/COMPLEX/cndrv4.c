@@ -332,7 +332,7 @@ L20:
 /*           | workd(ipntr(2)).                          | */
 /*           %-------------------------------------------% */
 
-	mv_(&n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
+	cndrv4_mv_(&n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
 	cgttrs_("N", &n, &c__1, dl, dd, du, du2, ipiv, &workd[ipntr[1] - 1], &
 		n, &ierr, (ftnlen)1);
 	if (ierr != 0) {
@@ -396,7 +396,7 @@ L20:
 /*           | and returns the result to workd(ipntr(2)).  | */
 /*           %---------------------------------------------% */
 
-	mv_(&n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
+	cndrv4_mv_(&n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
 
 /*           %-----------------------------------------% */
 /*           | L O O P   B A C K to call CNAUPD again. | */
@@ -491,8 +491,8 @@ L20:
 	    i__1 = nconv;
 	    for (j = 1; j <= i__1; ++j) {
 
-		av_(&n, &v[(j << 8) - 256], ax);
-		mv_(&n, &v[(j << 8) - 256], mx);
+		cndrv4_av_(&n, &v[(j << 8) - 256], ax);
+		cndrv4_mv_(&n, &v[(j << 8) - 256], mx);
 		i__2 = j - 1;
 		q__1.r = -d__[i__2].r, q__1.i = -d__[i__2].i;
 		caxpy_(&n, &q__1, mx, &c__1, ax, &c__1);
@@ -608,7 +608,7 @@ L9000:
 
 /*     matrix vector multiplication subroutine */
 
-int mv_(integer *n, complex *v, complex *w)
+int cndrv4_mv_(integer *n, complex *v, complex *w)
 {
     /* System generated locals */
     integer i__1, i__2, i__3, i__4, i__5;
@@ -675,7 +675,7 @@ int mv_(integer *n, complex *v, complex *w)
 } /* mv_ */
 
 /* ------------------------------------------------------------------ */
-int av_(integer *n, complex *v, complex *w)
+int cndrv4_av_(integer *n, complex *v, complex *w)
 {
     /* System generated locals */
     integer i__1, i__2, i__3, i__4, i__5;

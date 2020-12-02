@@ -382,7 +382,7 @@ L10:
 /*              | tolerance)                | */
 /*              %---------------------------% */
 
-		av_(&n, &v[(j << 8) - 256], ax);
+		ssdrv2_av_(&n, &v[(j << 8) - 256], ax);
 		r__1 = -d__[j - 1];
 		saxpy_(&n, &r__1, &v[(j << 8) - 256], &c__1, ax, &c__1);
 		d__[j + 24] = snrm2_(&n, ax, &c__1);
@@ -499,7 +499,7 @@ L9000:
 /*     where the matrix is the 1 dimensional discrete Laplacian on */
 /*     the interval [0,1] with zero Dirichlet boundary condition. */
 
-int av_(integer *n, real *v, real *w)
+int ssdrv2_av_(integer *n, real *v, real *w)
 {
     /* System generated locals */
     integer i__1;

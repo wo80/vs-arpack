@@ -432,7 +432,7 @@ L20:
 /*              | tolerance)                | */
 /*              %---------------------------% */
 
-		av_(&n, &v[(j << 8) - 256], ax);
+		cndrv2_av_(&n, &v[(j << 8) - 256], ax);
 		i__2 = j - 1;
 		q__1.r = -d__[i__2].r, q__1.i = -d__[i__2].i;
 		caxpy_(&n, &q__1, &v[(j << 8) - 256], &c__1, ax, &c__1);
@@ -552,7 +552,7 @@ L9000:
 
 /*     matrix vector multiplication subroutine */
 
-int av_(integer *n, complex *v, complex *w)
+int cndrv2_av_(integer *n, complex *v, complex *w)
 {
     /* System generated locals */
     integer i__1, i__2, i__3, i__4, i__5;

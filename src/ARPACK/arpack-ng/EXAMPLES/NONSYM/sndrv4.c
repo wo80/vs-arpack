@@ -302,7 +302,7 @@ L20:
 /*           | workd(ipntr(2)).                          | */
 /*           %-------------------------------------------% */
 
-	mv_(&n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
+	sndrv4_mv_(&n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
 	sgttrs_("N", &n, &c__1, dl, dd, du, du2, ipiv, &workd[ipntr[1] - 1], &
 		n, &ierr, (ftnlen)1);
 	if (ierr != 0) {
@@ -366,7 +366,7 @@ L20:
 /*           | and returns the result to workd(ipntr(2)).  | */
 /*           %---------------------------------------------% */
 
-	mv_(&n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
+	sndrv4_mv_(&n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
 
 /*           %-----------------------------------------% */
 /*           | L O O P   B A C K to call SNAUPD again. | */
@@ -481,8 +481,8 @@ L20:
 /*                    | Ritz value is real | */
 /*                    %--------------------% */
 
-		    av_(&n, &v[(j << 8) - 256], ax);
-		    mv_(&n, &v[(j << 8) - 256], mx);
+			sndrv4_av_(&n, &v[(j << 8) - 256], ax);
+			sndrv4_mv_(&n, &v[(j << 8) - 256], mx);
 		    r__1 = -d__[j - 1];
 		    saxpy_(&n, &r__1, mx, &c__1, ax, &c__1);
 		    d__[j + 49] = snrm2_(&n, ax, &c__1);
@@ -497,18 +497,18 @@ L20:
 /*                    | pair is computed.      | */
 /*                    %------------------------% */
 
-		    av_(&n, &v[(j << 8) - 256], ax);
-		    mv_(&n, &v[(j << 8) - 256], mx);
+			sndrv4_av_(&n, &v[(j << 8) - 256], ax);
+			sndrv4_mv_(&n, &v[(j << 8) - 256], mx);
 		    r__1 = -d__[j - 1];
 		    saxpy_(&n, &r__1, mx, &c__1, ax, &c__1);
-		    mv_(&n, &v[(j + 1 << 8) - 256], mx);
+			sndrv4_mv_(&n, &v[(j + 1 << 8) - 256], mx);
 		    saxpy_(&n, &d__[j + 24], mx, &c__1, ax, &c__1);
 		    d__[j + 49] = snrm2_(&n, ax, &c__1);
-		    av_(&n, &v[(j + 1 << 8) - 256], ax);
-		    mv_(&n, &v[(j + 1 << 8) - 256], mx);
+			sndrv4_av_(&n, &v[(j + 1 << 8) - 256], ax);
+			sndrv4_mv_(&n, &v[(j + 1 << 8) - 256], mx);
 		    r__1 = -d__[j - 1];
 		    saxpy_(&n, &r__1, mx, &c__1, ax, &c__1);
-		    mv_(&n, &v[(j << 8) - 256], mx);
+			sndrv4_mv_(&n, &v[(j << 8) - 256], mx);
 		    r__1 = -d__[j + 24];
 		    saxpy_(&n, &r__1, mx, &c__1, ax, &c__1);
 		    r__1 = snrm2_(&n, ax, &c__1);
@@ -631,7 +631,7 @@ L9000:
 
 /*     matrix vector multiplication subroutine */
 
-int mv_(integer *n, real *v, real *w)
+int sndrv4_mv_(integer *n, real *v, real *w)
 {
     /* System generated locals */
     integer i__1;
@@ -663,7 +663,7 @@ int mv_(integer *n, real *v, real *w)
 } /* mv_ */
 
 /* ------------------------------------------------------------------ */
-int av_(integer *n, real *v, real *w)
+int sndrv4_av_(integer *n, real *v, real *w)
 {
     /* System generated locals */
     integer i__1;

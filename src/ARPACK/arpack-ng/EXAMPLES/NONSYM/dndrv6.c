@@ -307,7 +307,7 @@ L20:
 /*           | returned to workd(ipntr(2)).                               | */
 /*           %------------------------------------------------------------% */
 
-	mv_(&n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
+	dndrv6_mv_(&n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
 	i__1 = n;
 	for (j = 1; j <= i__1; ++j) {
 	    i__2 = j - 1;
@@ -397,7 +397,7 @@ L20:
 /*           | and returns the result to workd(ipntr(2)).  | */
 /*           %---------------------------------------------% */
 
-	mv_(&n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
+	dndrv6_mv_(&n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
 
 /*           %-----------------------------------------% */
 /*           | L O O P   B A C K to call DNAUPD again. | */
@@ -505,9 +505,9 @@ L20:
 /*                  | Compute d = x'(Ax)/x'(Mx). | */
 /*                  %----------------------------% */
 
-		    av_(&n, &v[(j << 8) - 256], ax);
+			dndrv6_av_(&n, &v[(j << 8) - 256], ax);
 		    numr = ddot_(&n, &v[(j << 8) - 256], &c__1, ax, &c__1);
-		    mv_(&n, &v[(j << 8) - 256], ax);
+			dndrv6_mv_(&n, &v[(j << 8) - 256], ax);
 		    denr = ddot_(&n, &v[(j << 8) - 256], &c__1, ax, &c__1);
 		    d__[j - 1] = numr / denr;
 
@@ -523,11 +523,11 @@ L20:
 /*                  | Compute x'(Ax) | */
 /*                  %----------------% */
 
-		    av_(&n, &v[(j << 8) - 256], ax);
+			dndrv6_av_(&n, &v[(j << 8) - 256], ax);
 		    numr = ddot_(&n, &v[(j << 8) - 256], &c__1, ax, &c__1);
 		    numi = ddot_(&n, &v[(j + 1 << 8) - 256], &c__1, ax, &c__1)
 			    ;
-		    av_(&n, &v[(j + 1 << 8) - 256], ax);
+			dndrv6_av_(&n, &v[(j + 1 << 8) - 256], ax);
 		    numr += ddot_(&n, &v[(j + 1 << 8) - 256], &c__1, ax, &
 			    c__1);
 		    numi = -numi + ddot_(&n, &v[(j << 8) - 256], &c__1, ax, &
@@ -537,11 +537,11 @@ L20:
 /*                  | Compute x'(Mx) | */
 /*                  %----------------% */
 
-		    mv_(&n, &v[(j << 8) - 256], ax);
+			dndrv6_mv_(&n, &v[(j << 8) - 256], ax);
 		    denr = ddot_(&n, &v[(j << 8) - 256], &c__1, ax, &c__1);
 		    deni = ddot_(&n, &v[(j + 1 << 8) - 256], &c__1, ax, &c__1)
 			    ;
-		    mv_(&n, &v[(j + 1 << 8) - 256], ax);
+			dndrv6_mv_(&n, &v[(j + 1 << 8) - 256], ax);
 		    denr += ddot_(&n, &v[(j + 1 << 8) - 256], &c__1, ax, &
 			    c__1);
 		    deni = -deni + ddot_(&n, &v[(j << 8) - 256], &c__1, ax, &
@@ -599,8 +599,8 @@ L20:
 /*                 | Ritz value is real | */
 /*                 %--------------------% */
 
-		    av_(&n, &v[(j << 8) - 256], ax);
-		    mv_(&n, &v[(j << 8) - 256], mx);
+			dndrv6_av_(&n, &v[(j << 8) - 256], ax);
+			dndrv6_mv_(&n, &v[(j << 8) - 256], mx);
 		    d__1 = -d__[j - 1];
 		    daxpy_(&n, &d__1, mx, &c__1, ax, &c__1);
 		    d__[j + 49] = dnrm2_(&n, ax, &c__1);
@@ -615,18 +615,18 @@ L20:
 /*                 | pair is computed.      | */
 /*                 %------------------------% */
 
-		    av_(&n, &v[(j << 8) - 256], ax);
-		    mv_(&n, &v[(j << 8) - 256], mx);
+			dndrv6_av_(&n, &v[(j << 8) - 256], ax);
+			dndrv6_mv_(&n, &v[(j << 8) - 256], mx);
 		    d__1 = -d__[j - 1];
 		    daxpy_(&n, &d__1, mx, &c__1, ax, &c__1);
-		    mv_(&n, &v[(j + 1 << 8) - 256], mx);
+			dndrv6_mv_(&n, &v[(j + 1 << 8) - 256], mx);
 		    daxpy_(&n, &d__[j + 24], mx, &c__1, ax, &c__1);
 		    d__[j + 49] = dnrm2_(&n, ax, &c__1);
-		    av_(&n, &v[(j + 1 << 8) - 256], ax);
-		    mv_(&n, &v[(j + 1 << 8) - 256], mx);
+			dndrv6_av_(&n, &v[(j + 1 << 8) - 256], ax);
+			dndrv6_mv_(&n, &v[(j + 1 << 8) - 256], mx);
 		    d__1 = -d__[j - 1];
 		    daxpy_(&n, &d__1, mx, &c__1, ax, &c__1);
-		    mv_(&n, &v[(j << 8) - 256], mx);
+			dndrv6_mv_(&n, &v[(j << 8) - 256], mx);
 		    d__1 = -d__[j + 24];
 		    daxpy_(&n, &d__1, mx, &c__1, ax, &c__1);
 		    d__1 = dnrm2_(&n, ax, &c__1);
@@ -749,7 +749,7 @@ L9000:
 
 /*     matrix vector multiplication subroutine */
 
-int mv_(integer *n, doublereal *v, doublereal *w)
+int dndrv6_mv_(integer *n, doublereal *v, doublereal *w)
 {
     /* System generated locals */
     integer i__1;
@@ -777,7 +777,7 @@ int mv_(integer *n, doublereal *v, doublereal *w)
 } /* mv_ */
 
 /* ------------------------------------------------------------------ */
-int av_(integer *n, doublereal *v, doublereal *w)
+int dndrv6_av_(integer *n, doublereal *v, doublereal *w)
 {
     /* System generated locals */
     integer i__1;

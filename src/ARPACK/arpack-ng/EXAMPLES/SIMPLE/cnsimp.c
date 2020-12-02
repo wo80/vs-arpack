@@ -2,14 +2,6 @@
 
 #include "arpack.h"
 
-struct {
-    integer logfil, ndigit, mgetv0, msaupd, msaup2, msaitr, mseigt, msapps, 
-	    msgets, mseupd, mnaupd, mnaup2, mnaitr, mneigh, mnapps, mngets, 
-	    mneupd, mcaupd, mcaup2, mcaitr, mceigh, mcapps, mcgets, mceupd;
-} debug_;
-
-#define debug_1 debug_
-
 int cnsimp()
 {
     /* System generated locals */
@@ -17,9 +9,6 @@ int cnsimp()
     complex q__1;
 
     /* Builtin functions */
-    int s_copy(char *, char *, ftnlen, ftnlen);
-    integer s_wsle(cilist *), do_lio(integer *, integer *, char *, ftnlen), 
-	    e_wsle(void);
     double r_imag(complex *);
 
     /* Local variables */
@@ -365,7 +354,7 @@ L10:
 /*           | array workd(ipntr(2)).                    | */
 /*           %-------------------------------------------% */
 
-	av_(&nx, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
+    cnsimp_av_(&nx, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
 
 /*           %-----------------------------------------% */
 /*           | L O O P   B A C K to call CNAUPD again. | */
@@ -479,7 +468,7 @@ L10:
 /*                | tolerance)                | */
 /*                %---------------------------% */
 
-		av_(&nx, &v[(j << 8) - 256], ax);
+        cnsimp_av_(&nx, &v[(j << 8) - 256], ax);
 		i__2 = j - 1;
 		q__1.r = -d__[i__2].r, q__1.i = -d__[i__2].i;
 		caxpy_(&n, &q__1, &v[(j << 8) - 256], &c__1, ax, &c__1);
@@ -601,7 +590,7 @@ L9000:
 /*     The matrix used is the convection-diffusion operator */
 /*     discretized using centered difference. */
 
-int av_(integer *nx, complex *v, complex *w)
+int cnsimp_av_(integer *nx, complex *v, complex *w)
 {
     /* System generated locals */
     integer i__1;
@@ -641,7 +630,7 @@ int av_(integer *nx, complex *v, complex *w)
     c_div(&q__1, &c_one, &q__2);
     h2.r = q__1.r, h2.i = q__1.i;
 
-    tv_(nx, &v[1], &w[1]);
+    cnsimp_tv_(nx, &v[1], &w[1]);
     q__2.r = -1.f, q__2.i = -0.f;
     c_div(&q__1, &q__2, &h2);
     caxpy_(nx, &q__1, &v[*nx + 1], &c__1, &w[1], &c__1);
@@ -649,7 +638,7 @@ int av_(integer *nx, complex *v, complex *w)
     i__1 = *nx - 1;
     for (j = 2; j <= i__1; ++j) {
 	lo = (j - 1) * *nx;
-	tv_(nx, &v[lo + 1], &w[lo + 1]);
+    cnsimp_tv_(nx, &v[lo + 1], &w[lo + 1]);
 	q__2.r = -1.f, q__2.i = -0.f;
 	c_div(&q__1, &q__2, &h2);
 	caxpy_(nx, &q__1, &v[lo - *nx + 1], &c__1, &w[lo + 1], &c__1);
@@ -660,7 +649,7 @@ int av_(integer *nx, complex *v, complex *w)
     }
 
     lo = (*nx - 1) * *nx;
-    tv_(nx, &v[lo + 1], &w[lo + 1]);
+    cnsimp_tv_(nx, &v[lo + 1], &w[lo + 1]);
     q__2.r = -1.f, q__2.i = -0.f;
     c_div(&q__1, &q__2, &h2);
     caxpy_(nx, &q__1, &v[lo - *nx + 1], &c__1, &w[lo + 1], &c__1);
@@ -669,7 +658,7 @@ int av_(integer *nx, complex *v, complex *w)
 } /* av_ */
 
 /* ========================================================================= */
-int tv_(integer *nx, complex *x, complex *y)
+int cnsimp_tv_(integer *nx, complex *x, complex *y)
 {
     /* System generated locals */
     integer i__1, i__2, i__3, i__4, i__5;

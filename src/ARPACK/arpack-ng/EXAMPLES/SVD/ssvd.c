@@ -2,14 +2,6 @@
 
 #include "arpack.h"
 
-struct {
-    integer logfil, ndigit, mgetv0, msaupd, msaup2, msaitr, mseigt, msapps, 
-	    msgets, mseupd, mnaupd, mnaup2, mnaitr, mneigh, mnapps, mngets, 
-	    mneupd, mcaupd, mcaup2, mcaitr, mceigh, mcapps, mcgets, mceupd;
-} debug_;
-
-#define debug_1 debug_
-
 int ssvd()
 {
     /* System generated locals */
@@ -394,8 +386,8 @@ L10:
 /*           | workd(ipntr(2)).                      | */
 /*           %---------------------------------------% */
 
-	av_(&m, &n, &workd[ipntr[0] - 1], ax);
-	atv_(&m, &n, ax, &workd[ipntr[1] - 1]);
+	ssvd_av_(&m, &n, &workd[ipntr[0] - 1], ax);
+	ssvd_atv_(&m, &n, ax, &workd[ipntr[1] - 1]);
 
 /*           %-----------------------------------------% */
 /*           | L O O P   B A C K to call SSAUPD again. | */
@@ -500,7 +492,7 @@ L10:
 /*              | divide by norm(Av) instead. | */
 /*              %-----------------------------% */
 
-		av_(&m, &n, &v[j * 250 - 250], ax);
+		ssvd_av_(&m, &n, &v[j * 250 - 250], ax);
 		scopy_(&m, ax, &c__1, &u[j * 500 - 500], &c__1);
 		temp = 1.f / snrm2_(&m, &u[j * 500 - 500], &c__1);
 		sscal_(&m, &temp, &u[j * 500 - 500], &c__1);
@@ -654,7 +646,7 @@ L9000:
 
 /* ------------------------------------------------------------------- */
 
-int av_(integer *m, integer *n, real *x, real *w)
+int ssvd_av_(integer *m, integer *n, real *x, real *w)
 {
     /* System generated locals */
     integer i__1, i__2;
@@ -704,7 +696,7 @@ int av_(integer *m, integer *n, real *x, real *w)
 
 /* ------------------------------------------------------------------- */
 
-int atv_(integer *m, integer *n, real *w, real *y)
+int ssvd_atv_(integer *m, integer *n, real *w, real *y)
 {
     /* System generated locals */
     integer i__1, i__2;

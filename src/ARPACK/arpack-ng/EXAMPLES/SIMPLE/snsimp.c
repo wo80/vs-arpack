@@ -2,14 +2,6 @@
 
 #include "arpack.h"
 
-struct {
-    integer logfil, ndigit, mgetv0, msaupd, msaup2, msaitr, mseigt, msapps, 
-	    msgets, mseupd, mnaupd, mnaup2, mnaitr, mneigh, mnapps, mngets, 
-	    mneupd, mcaupd, mcaup2, mcaitr, mceigh, mcapps, mcgets, mceupd;
-} debug_;
-
-#define debug_1 debug_
-
 int snsimp()
 {
     /* System generated locals */
@@ -368,7 +360,7 @@ L10:
 /*           | product to workd(ipntr(2)).               | */
 /*           %-------------------------------------------% */
 
-	av_(&nx, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
+	snsimp_av_(&nx, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
 
 /*           %-----------------------------------------% */
 /*           | L O O P   B A C K to call SNAUPD again. | */
@@ -491,7 +483,7 @@ L10:
 /*                 | Ritz value is real | */
 /*                 %--------------------% */
 
-		    av_(&nx, &v[(j << 8) - 256], ax);
+			snsimp_av_(&nx, &v[(j << 8) - 256], ax);
 		    r__1 = -d__[j - 1];
 		    saxpy_(&n, &r__1, &v[(j << 8) - 256], &c__1, ax, &c__1);
 		    d__[j + 59] = snrm2_(&n, ax, &c__1);
@@ -506,13 +498,13 @@ L10:
 /*                 | pair is computed.      | */
 /*                 %------------------------% */
 
-		    av_(&nx, &v[(j << 8) - 256], ax);
+			snsimp_av_(&nx, &v[(j << 8) - 256], ax);
 		    r__1 = -d__[j - 1];
 		    saxpy_(&n, &r__1, &v[(j << 8) - 256], &c__1, ax, &c__1);
 		    saxpy_(&n, &d__[j + 29], &v[(j + 1 << 8) - 256], &c__1, 
 			    ax, &c__1);
 		    d__[j + 59] = snrm2_(&n, ax, &c__1);
-		    av_(&nx, &v[(j + 1 << 8) - 256], ax);
+			snsimp_av_(&nx, &v[(j + 1 << 8) - 256], ax);
 		    r__1 = -d__[j + 29];
 		    saxpy_(&n, &r__1, &v[(j << 8) - 256], &c__1, ax, &c__1);
 		    r__1 = -d__[j - 1];
@@ -640,7 +632,7 @@ L9000:
 /*     The matrix used is the 2 dimensional convection-diffusion */
 /*     operator discretized using central difference. */
 
-int av_(integer *nx, real *v, real *w)
+int snsimp_av_(integer *nx, real *v, real *w)
 {
     /* System generated locals */
     integer i__1;
@@ -678,14 +670,14 @@ int av_(integer *nx, real *v, real *w)
     /* Function Body */
     h2 = 1.f / (real) ((*nx + 1) * (*nx + 1));
 
-    tv_(nx, &v[1], &w[1]);
+	snsimp_tv_(nx, &v[1], &w[1]);
     r__1 = -1.f / h2;
     saxpy_(nx, &r__1, &v[*nx + 1], &c__1, &w[1], &c__1);
 
     i__1 = *nx - 1;
     for (j = 2; j <= i__1; ++j) {
 	lo = (j - 1) * *nx;
-	tv_(nx, &v[lo + 1], &w[lo + 1]);
+	snsimp_tv_(nx, &v[lo + 1], &w[lo + 1]);
 	r__1 = -1.f / h2;
 	saxpy_(nx, &r__1, &v[lo - *nx + 1], &c__1, &w[lo + 1], &c__1);
 	r__1 = -1.f / h2;
@@ -694,7 +686,7 @@ int av_(integer *nx, real *v, real *w)
     }
 
     lo = (*nx - 1) * *nx;
-    tv_(nx, &v[lo + 1], &w[lo + 1]);
+	snsimp_tv_(nx, &v[lo + 1], &w[lo + 1]);
     r__1 = -1.f / h2;
     saxpy_(nx, &r__1, &v[lo - *nx + 1], &c__1, &w[lo + 1], &c__1);
 
@@ -702,7 +694,7 @@ int av_(integer *nx, real *v, real *w)
 } /* av_ */
 
 /* ========================================================================= */
-int tv_(integer *nx, real *x, real *y)
+int snsimp_tv_(integer *nx, real *x, real *y)
 {
     /* System generated locals */
     integer i__1;

@@ -334,7 +334,7 @@ L20:
 /*           | workd(ipntr(2)).                          | */
 /*           %-------------------------------------------% */
 
-	mv_(&n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
+	zndrv4_mv_(&n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
 	zgttrs_("N", &n, &c__1, dl, dd, du, du2, ipiv, &workd[ipntr[1] - 1], &
 		n, &ierr, (ftnlen)1);
 	if (ierr != 0) {
@@ -398,7 +398,7 @@ L20:
 /*           | and returns the result to workd(ipntr(2)).  | */
 /*           %---------------------------------------------% */
 
-	mv_(&n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
+	zndrv4_mv_(&n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
 
 /*           %-----------------------------------------% */
 /*           | L O O P   B A C K to call ZNAUPD  again. | */
@@ -493,8 +493,8 @@ L20:
 	    i__1 = nconv;
 	    for (j = 1; j <= i__1; ++j) {
 
-		av_(&n, &v[(j << 8) - 256], ax);
-		mv_(&n, &v[(j << 8) - 256], mx);
+		zndrv4_av_(&n, &v[(j << 8) - 256], ax);
+		zndrv4_mv_(&n, &v[(j << 8) - 256], mx);
 		i__2 = j - 1;
 		z__1.r = -d__[i__2].r, z__1.i = -d__[i__2].i;
 		zaxpy_(&n, &z__1, mx, &c__1, ax, &c__1);
@@ -610,7 +610,7 @@ L9000:
 
 /*     matrix vector multiplication subroutine */
 
-int mv_(integer *n, doublecomplex *v, doublecomplex *w)
+int zndrv4_mv_(integer *n, doublecomplex *v, doublecomplex *w)
 {
     /* System generated locals */
     integer i__1, i__2, i__3, i__4, i__5;
@@ -675,7 +675,7 @@ int mv_(integer *n, doublecomplex *v, doublecomplex *w)
 } /* mv_ */
 
 /* ------------------------------------------------------------------ */
-int av_(integer *n, doublecomplex *v, doublecomplex *w)
+int zndrv4_av_(integer *n, doublecomplex *v, doublecomplex *w)
 {
     /* System generated locals */
     integer i__1, i__2, i__3, i__4, i__5;

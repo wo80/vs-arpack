@@ -419,7 +419,7 @@ L20:
 /*                 | Ritz value is real | */
 /*                 %--------------------% */
 
-		    av_(&n, &v[(j << 8) - 256], ax);
+			dndrv2_av_(&n, &v[(j << 8) - 256], ax);
 		    d__1 = -d__[j - 1];
 		    daxpy_(&n, &d__1, &v[(j << 8) - 256], &c__1, ax, &c__1);
 		    d__[j + 49] = dnrm2_(&n, ax, &c__1);
@@ -434,13 +434,13 @@ L20:
 /*                 | pair is computed.      | */
 /*                 %------------------------% */
 
-		    av_(&n, &v[(j << 8) - 256], ax);
+			dndrv2_av_(&n, &v[(j << 8) - 256], ax);
 		    d__1 = -d__[j - 1];
 		    daxpy_(&n, &d__1, &v[(j << 8) - 256], &c__1, ax, &c__1);
 		    daxpy_(&n, &d__[j + 24], &v[(j + 1 << 8) - 256], &c__1, 
 			    ax, &c__1);
 		    d__[j + 49] = dnrm2_(&n, ax, &c__1);
-		    av_(&n, &v[(j + 1 << 8) - 256], ax);
+			dndrv2_av_(&n, &v[(j + 1 << 8) - 256], ax);
 		    d__1 = -d__[j + 24];
 		    daxpy_(&n, &d__1, &v[(j << 8) - 256], &c__1, ax, &c__1);
 		    d__1 = -d__[j - 1];
@@ -565,7 +565,7 @@ L9000:
 
 /*     matrix vector multiplication subroutine */
 
-int av_(integer *n, doublereal *v, doublereal *w)
+int dndrv2_av_(integer *n, doublereal *v, doublereal *w)
 {
     /* System generated locals */
     integer i__1;

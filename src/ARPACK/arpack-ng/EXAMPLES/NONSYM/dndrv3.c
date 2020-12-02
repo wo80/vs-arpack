@@ -267,7 +267,7 @@ L10:
 /*           | be returned to workd(ipntr(2)).        | */
 /*           %----------------------------------------% */
 
-	av_(&n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
+	dndrv3_av_(&n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
 	dpttrs_(&n, &c__1, md, me, &workd[ipntr[1] - 1], &n, &ierr);
 	if (ierr != 0) {
 	    s_wsle(&io___30);
@@ -298,7 +298,7 @@ L10:
 /*           | workd(ipntr(2)).                    | */
 /*           %-------------------------------------% */
 
-	mv_(&n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
+	dndrv3_mv_(&n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
 
 /*           %-----------------------------------------% */
 /*           | L O O P   B A C K to call DNAUPD again. | */
@@ -413,8 +413,8 @@ L10:
 /*                 | Ritz value is real | */
 /*                 %--------------------% */
 
-		    av_(&n, &v[(j << 8) - 256], ax);
-		    mv_(&n, &v[(j << 8) - 256], mx);
+			dndrv3_av_(&n, &v[(j << 8) - 256], ax);
+			dndrv3_mv_(&n, &v[(j << 8) - 256], mx);
 		    d__1 = -d__[j - 1];
 		    daxpy_(&n, &d__1, mx, &c__1, ax, &c__1);
 		    d__[j + 49] = dnrm2_(&n, ax, &c__1);
@@ -429,20 +429,20 @@ L10:
 /*                 | pair is computed.      | */
 /*                 %------------------------% */
 
-		    av_(&n, &v[(j << 8) - 256], ax);
-		    mv_(&n, &v[(j << 8) - 256], mx);
+			dndrv3_av_(&n, &v[(j << 8) - 256], ax);
+			dndrv3_mv_(&n, &v[(j << 8) - 256], mx);
 		    d__1 = -d__[j - 1];
 		    daxpy_(&n, &d__1, mx, &c__1, ax, &c__1);
-		    mv_(&n, &v[(j + 1 << 8) - 256], mx);
+			dndrv3_mv_(&n, &v[(j + 1 << 8) - 256], mx);
 		    daxpy_(&n, &d__[j + 24], mx, &c__1, ax, &c__1);
 /* Computing 2nd power */
 		    d__1 = dnrm2_(&n, ax, &c__1);
 		    d__[j + 49] = d__1 * d__1;
-		    av_(&n, &v[(j + 1 << 8) - 256], ax);
-		    mv_(&n, &v[(j + 1 << 8) - 256], mx);
+			dndrv3_av_(&n, &v[(j + 1 << 8) - 256], ax);
+			dndrv3_mv_(&n, &v[(j + 1 << 8) - 256], mx);
 		    d__1 = -d__[j - 1];
 		    daxpy_(&n, &d__1, mx, &c__1, ax, &c__1);
-		    mv_(&n, &v[(j << 8) - 256], mx);
+			dndrv3_mv_(&n, &v[(j << 8) - 256], mx);
 		    d__1 = -d__[j + 24];
 		    daxpy_(&n, &d__1, mx, &c__1, ax, &c__1);
 		    d__1 = dnrm2_(&n, ax, &c__1);
@@ -565,7 +565,7 @@ L9000:
 
 /*     matrix vector multiplication subroutine */
 
-int av_(integer *n, doublereal *v, doublereal *w)
+int dndrv3_av_(integer *n, doublereal *v, doublereal *w)
 {
     /* System generated locals */
     integer i__1;
@@ -604,7 +604,7 @@ int av_(integer *n, doublereal *v, doublereal *w)
 } /* av_ */
 
 /* ------------------------------------------------------------------------ */
-int mv_(integer *n, doublereal *v, doublereal *w)
+int dndrv3_mv_(integer *n, doublereal *v, doublereal *w)
 {
     /* System generated locals */
     integer i__1;

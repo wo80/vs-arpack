@@ -434,7 +434,7 @@ L20:
 /*              | tolerance)                | */
 /*              %---------------------------% */
 
-		av_(&n, &v[(j << 8) - 256], ax);
+		zndrv2_av_(&n, &v[(j << 8) - 256], ax);
 		i__2 = j - 1;
 		z__1.r = -d__[i__2].r, z__1.i = -d__[i__2].i;
 		zaxpy_(&n, &z__1, &v[(j << 8) - 256], &c__1, ax, &c__1);
@@ -554,7 +554,7 @@ L9000:
 
 /*     matrix vector multiplication subroutine */
 
-int av_(integer *n, doublecomplex *v, doublecomplex *w)
+int zndrv2_av_(integer *n, doublecomplex *v, doublecomplex *w)
 {
     /* System generated locals */
     integer i__1, i__2, i__3, i__4, i__5;

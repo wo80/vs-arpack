@@ -284,8 +284,8 @@ L10:
 /*           | result is returned to workd(ipntr(2)).                | */
 /*           %-------------------------------------------------------% */
 
-	av_(&n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
-	mv_(&n, &workd[ipntr[0] - 1], temp);
+	ssdrv6_av_(&n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
+	ssdrv6_mv_(&n, &workd[ipntr[0] - 1], temp);
 	saxpy_(&n, &sigma, temp, &c__1, &workd[ipntr[1] - 1], &c__1);
 
 	sgttrs_("Notranspose", &n, &c__1, adl, ad, adu, adu2, ipiv, &workd[
@@ -323,7 +323,7 @@ L10:
 /*           | returned to workd(ipntr(2)).                       | */
 /*           %----------------------------------------------------% */
 
-	av_(&n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
+	ssdrv6_av_(&n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
 	saxpy_(&n, &sigma, &workd[ipntr[2] - 1], &c__1, &workd[ipntr[1] - 1], 
 		&c__1);
 	sgttrs_("Notranspose", &n, &c__1, adl, ad, adu, adu2, ipiv, &workd[
@@ -357,7 +357,7 @@ L10:
 /*           | and returns the result to workd(ipntr(2)). | */
 /*           %--------------------------------------------% */
 
-	mv_(&n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
+	ssdrv6_mv_(&n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
 
 /*           %-----------------------------------------% */
 /*           | L O O P   B A C K to call SSAUPD again. | */
@@ -464,8 +464,8 @@ L10:
 	    nconv = iparam[4];
 	    i__1 = nconv;
 	    for (j = 1; j <= i__1; ++j) {
-		av_(&n, &v[(j << 8) - 256], ax);
-		mv_(&n, &v[(j << 8) - 256], mx);
+		ssdrv6_av_(&n, &v[(j << 8) - 256], ax);
+		ssdrv6_mv_(&n, &v[(j << 8) - 256], mx);
 		r__1 = -d__[j - 1];
 		saxpy_(&n, &r__1, mx, &c__1, ax, &c__1);
 		d__[j + 24] = snrm2_(&n, ax, &c__1);
@@ -579,7 +579,7 @@ L9000:
 /*     arising from using the piecewise linear finite element */
 /*     on the interval [0,1]. */
 
-int mv_(integer *n, real *v, real *w)
+int ssdrv6_mv_(integer *n, real *v, real *w)
 {
     /* System generated locals */
     integer i__1;
@@ -616,7 +616,7 @@ int mv_(integer *n, real *v, real *w)
 /*     on the interval [0,1] with zero Dirichlet boundary condition */
 /*     using piecewise linear elements. */
 
-int av_(integer *n, real *v, real *w)
+int ssdrv6_av_(integer *n, real *v, real *w)
 {
     /* System generated locals */
     integer i__1;

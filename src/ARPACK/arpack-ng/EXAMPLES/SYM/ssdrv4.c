@@ -270,7 +270,7 @@ L10:
 /*           | workd(ipntr(2)).                           | */
 /*           %--------------------------------------------% */
 
-	mv_(&n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
+	ssdrv4_mv_(&n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
 
 	sgttrs_("Notranspose", &n, &c__1, adl, ad, adu, adu2, ipiv, &workd[
 		ipntr[1] - 1], &n, &ierr, (ftnlen)11);
@@ -337,7 +337,7 @@ L10:
 /*           | workd(ipntr(2)).                        | */
 /*           %-----------------------------------------% */
 
-	mv_(&n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
+	ssdrv4_mv_(&n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
 
 /*           %-----------------------------------------% */
 /*           | L O O P   B A C K to call SSAUPD again. | */
@@ -445,8 +445,8 @@ L10:
 /*              | tolerance)                | */
 /*              %---------------------------% */
 
-		av_(&n, &v[(j << 8) - 256], workd);
-		mv_(&n, &v[(j << 8) - 256], &workd[n]);
+		ssdrv4_av_(&n, &v[(j << 8) - 256], workd);
+		ssdrv4_mv_(&n, &v[(j << 8) - 256], &workd[n]);
 		r__1 = -d__[j - 1];
 		saxpy_(&n, &r__1, &workd[n], &c__1, workd, &c__1);
 		d__[j + 24] = snrm2_(&n, workd, &c__1);
@@ -560,7 +560,7 @@ L9000:
 /*     The matrix used is the 1 dimensional mass matrix */
 /*     on the interval [0,1]. */
 
-int mv_(integer *n, real *v, real *w)
+int ssdrv4_mv_(integer *n, real *v, real *w)
 {
     /* System generated locals */
     integer i__1;
@@ -596,7 +596,7 @@ int mv_(integer *n, real *v, real *w)
 /*     1 dimensional discrete Laplacian on [0,1] with zero Dirichlet */
 /*     boundary condition using piecewise linear elements. */
 
-int av_(integer *n, real *v, real *w)
+int ssdrv4_av_(integer *n, real *v, real *w)
 {
     /* System generated locals */
     integer i__1;

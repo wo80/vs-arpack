@@ -2,14 +2,6 @@
 
 #include "arpack.h"
 
-struct {
-    integer logfil, ndigit, mgetv0, msaupd, msaup2, msaitr, mseigt, msapps, 
-	    msgets, mseupd, mnaupd, mnaup2, mnaitr, mneigh, mnapps, mngets, 
-	    mneupd, mcaupd, mcaup2, mcaitr, mceigh, mcapps, mcgets, mceupd;
-} debug_;
-
-#define debug_1 debug_
-
 int dnsimp()
 {
     /* System generated locals */
@@ -367,7 +359,7 @@ L10:
 /*           | product to workd(ipntr(2)).               | */
 /*           %-------------------------------------------% */
 
-	av_(&nx, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
+	dnsimp_av_(&nx, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
 
 /*           %-----------------------------------------% */
 /*           | L O O P   B A C K to call DNAUPD again. | */
@@ -490,7 +482,7 @@ L10:
 /*                 | Ritz value is real | */
 /*                 %--------------------% */
 
-		    av_(&nx, &v[(j << 8) - 256], ax);
+			dnsimp_av_(&nx, &v[(j << 8) - 256], ax);
 		    d__1 = -d__[j - 1];
 		    daxpy_(&n, &d__1, &v[(j << 8) - 256], &c__1, ax, &c__1);
 		    d__[j + 59] = dnrm2_(&n, ax, &c__1);
@@ -505,13 +497,13 @@ L10:
 /*                 | pair is computed.      | */
 /*                 %------------------------% */
 
-		    av_(&nx, &v[(j << 8) - 256], ax);
+			dnsimp_av_(&nx, &v[(j << 8) - 256], ax);
 		    d__1 = -d__[j - 1];
 		    daxpy_(&n, &d__1, &v[(j << 8) - 256], &c__1, ax, &c__1);
 		    daxpy_(&n, &d__[j + 29], &v[(j + 1 << 8) - 256], &c__1, 
 			    ax, &c__1);
 		    d__[j + 59] = dnrm2_(&n, ax, &c__1);
-		    av_(&nx, &v[(j + 1 << 8) - 256], ax);
+			dnsimp_av_(&nx, &v[(j + 1 << 8) - 256], ax);
 		    d__1 = -d__[j + 29];
 		    daxpy_(&n, &d__1, &v[(j << 8) - 256], &c__1, ax, &c__1);
 		    d__1 = -d__[j - 1];
@@ -639,7 +631,7 @@ L9000:
 /*     The matrix used is the 2 dimensional convection-diffusion */
 /*     operator discretized using central difference. */
 
-int av_(integer *nx, doublereal *v, doublereal *w)
+int dnsimp_av_(integer *nx, doublereal *v, doublereal *w)
 {
     /* System generated locals */
     integer i__1;
@@ -677,14 +669,14 @@ int av_(integer *nx, doublereal *v, doublereal *w)
     /* Function Body */
     h2 = 1. / (doublereal) ((*nx + 1) * (*nx + 1));
 
-    tv_(nx, &v[1], &w[1]);
+	dnsimp_tv_(nx, &v[1], &w[1]);
     d__1 = -1. / h2;
     daxpy_(nx, &d__1, &v[*nx + 1], &c__1, &w[1], &c__1);
 
     i__1 = *nx - 1;
     for (j = 2; j <= i__1; ++j) {
 	lo = (j - 1) * *nx;
-	tv_(nx, &v[lo + 1], &w[lo + 1]);
+	dnsimp_tv_(nx, &v[lo + 1], &w[lo + 1]);
 	d__1 = -1. / h2;
 	daxpy_(nx, &d__1, &v[lo - *nx + 1], &c__1, &w[lo + 1], &c__1);
 	d__1 = -1. / h2;
@@ -693,7 +685,7 @@ int av_(integer *nx, doublereal *v, doublereal *w)
     }
 
     lo = (*nx - 1) * *nx;
-    tv_(nx, &v[lo + 1], &w[lo + 1]);
+	dnsimp_tv_(nx, &v[lo + 1], &w[lo + 1]);
     d__1 = -1. / h2;
     daxpy_(nx, &d__1, &v[lo - *nx + 1], &c__1, &w[lo + 1], &c__1);
 
@@ -701,7 +693,7 @@ int av_(integer *nx, doublereal *v, doublereal *w)
 } /* av_ */
 
 /* ========================================================================= */
-int tv_(integer *nx, doublereal *x, doublereal *y)
+int dnsimp_tv_(integer *nx, doublereal *x, doublereal *y)
 {
     /* System generated locals */
     integer i__1;
