@@ -1,45 +1,17 @@
-/* EXAMPLES\SYM\ssdrv2.f -- translated by f2c (version 20100827).
-   You must link the resulting object file with libf2c:
-	on Microsoft Windows system, link with libf2c.lib;
-	on Linux or Unix systems, link with .../path/to/libf2c.a -lm
-	or, if you install libf2c.a in a standard place, with -lf2c -lm
-	-- in that order, at the end of the command line, as in
-		cc *.o -lf2c -lm
-	Source for libf2c is in /netlib/f2c/libf2c.zip, e.g.,
+/* EXAMPLES\SYM\ssdrv2.f -- translated by f2c (version 20100827). */
 
-		http://www.netlib.org/f2c/libf2c.zip
-*/
+#include "arpack.h"
 
-#include "f2c.h"
-
-/* Table of constant values */
-
-static integer c__9 = 9;
-static integer c__1 = 1;
-static integer c__256 = 256;
-static integer c__3 = 3;
-static integer c__6 = 6;
-static integer c__2 = 2;
-static integer c__25 = 25;
-static integer c_n6 = -6;
-static integer c__4 = 4;
-
-/* Main program */ int MAIN__(void)
+int main()
 {
     /* System generated locals */
     integer i__1;
     real r__1;
 
-    /* Builtin functions */
-    integer s_wsle(cilist *), do_lio(integer *, integer *, char *, ftnlen), 
-	    e_wsle(void);
-    /* Subroutine */ int s_copy(char *, char *, ftnlen, ftnlen);
-
     /* Local variables */
     real d__[50]	/* was [25][2] */;
     integer j, n;
     real v[6400]	/* was [256][25] */, h2, ad[256];
-    extern /* Subroutine */ int av_(integer *, real *, real *);
     real ax[256], adl[256], adu[256];
     integer ido, ncv, nev;
     real tol, adu2[256];
@@ -47,37 +19,18 @@ static integer c__4 = 4;
     integer mode, info;
     logical rvec;
     integer ierr, ipiv[256];
-    extern doublereal snrm2_(integer *, real *, integer *);
     real sigma;
     char which[2];
     real resid[256];
     integer nconv;
     real workd[768];
     integer ipntr[11];
-    extern /* Subroutine */ int scopy_(integer *, real *, integer *, real *, 
-	    integer *);
     real workl[825];
-    extern /* Subroutine */ int saxpy_(integer *, real *, real *, integer *, 
-	    real *, integer *), smout_(integer *, integer *, integer *, real *
-	    , integer *, integer *, char *, ftnlen);
     integer iparam[11];
     logical select[25];
-    extern /* Subroutine */ int ssaupd_(integer *, char *, integer *, char *, 
-	    integer *, real *, real *, integer *, real *, integer *, integer *
-	    , integer *, real *, real *, integer *, integer *, ftnlen, ftnlen)
-	    ;
     integer ishfts;
-    extern /* Subroutine */ int sseupd_(logical *, char *, logical *, real *, 
-	    real *, integer *, real *, char *, integer *, char *, integer *, 
-	    real *, real *, integer *, real *, integer *, integer *, integer *
-	    , real *, real *, integer *, integer *, ftnlen, ftnlen, ftnlen);
     integer maxitr;
-    extern /* Subroutine */ int sgttrf_(integer *, real *, real *, real *, 
-	    real *, integer *, integer *);
     integer lworkl;
-    extern /* Subroutine */ int sgttrs_(char *, integer *, integer *, real *, 
-	    real *, real *, real *, integer *, real *, integer *, integer *, 
-	    ftnlen);
 
     /* Fortran I/O blocks */
     static cilist io___4 = { 0, 6, 0, 0, 0 };
@@ -116,8 +69,6 @@ static integer c__4 = 4;
     static cilist io___66 = { 0, 6, 0, 0, 0 };
     static cilist io___67 = { 0, 6, 0, 0, 0 };
     static cilist io___68 = { 0, 6, 0, 0, 0 };
-
-
 
 /*     Program to illustrate the idea of reverse communication */
 /*     in shift and invert mode for a standard symmetric eigenvalue */
@@ -173,32 +124,6 @@ static integer c__4 = 4;
 /*     | MAXNEV: Maximum NEV allowed | */
 /*     | MAXNCV: Maximum NCV allowed | */
 /*     %-----------------------------% */
-
-
-/*     %--------------% */
-/*     | Local Arrays | */
-/*     %--------------% */
-
-
-/*     %---------------% */
-/*     | Local Scalars | */
-/*     %---------------% */
-
-
-/*     %------------% */
-/*     | Parameters | */
-/*     %------------% */
-
-
-/*     %-----------------------------% */
-/*     | BLAS & LAPACK routines used | */
-/*     %-----------------------------% */
-
-
-/*     %--------------------% */
-/*     | Intrinsic function | */
-/*     %--------------------% */
-
 
 /*     %-----------------------% */
 /*     | Executable Statements | */
@@ -569,13 +494,12 @@ L9000:
     return 0;
 } /* MAIN__ */
 
-
 /* ------------------------------------------------------------------------ */
 /*     Matrix vector subroutine */
 /*     where the matrix is the 1 dimensional discrete Laplacian on */
 /*     the interval [0,1] with zero Dirichlet boundary condition. */
 
-/* Subroutine */ int av_(integer *n, real *v, real *w)
+int av_(integer *n, real *v, real *w)
 {
     /* System generated locals */
     integer i__1;
@@ -584,8 +508,6 @@ L9000:
     /* Local variables */
     integer j;
     real h2;
-    extern /* Subroutine */ int sscal_(integer *, real *, real *, integer *);
-
 
     /* Parameter adjustments */
     --w;
@@ -609,4 +531,3 @@ L9000:
     return 0;
 } /* av_ */
 
-/* Main program alias */ int ssdrv2_ () { MAIN__ (); return 0; }

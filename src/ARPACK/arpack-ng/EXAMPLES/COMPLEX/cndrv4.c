@@ -1,18 +1,6 @@
-/* EXAMPLES\COMPLEX\cndrv4.f -- translated by f2c (version 20100827).
-   You must link the resulting object file with libf2c:
-	on Microsoft Windows system, link with libf2c.lib;
-	on Linux or Unix systems, link with .../path/to/libf2c.a -lm
-	or, if you install libf2c.a in a standard place, with -lf2c -lm
-	-- in that order, at the end of the command line, as in
-		cc *.o -lf2c -lm
-	Source for libf2c is in /netlib/f2c/libf2c.zip, e.g.,
+/* EXAMPLES\COMPLEX\cndrv4.f -- translated by f2c (version 20100827). */
 
-		http://www.netlib.org/f2c/libf2c.zip
-*/
-
-#include "f2c.h"
-
-/* Common Block Declarations */
+#include "arpack.h"
 
 struct {
     complex rho;
@@ -20,30 +8,12 @@ struct {
 
 #define convct_1 convct_
 
-/* Table of constant values */
-
-static complex c_b1 = {1.f,0.f};
-static complex c_b3 = {2.f,0.f};
-static complex c_b5 = {6.f,0.f};
-static integer c__9 = 9;
-static integer c__1 = 1;
-static integer c__256 = 256;
-static integer c__3 = 3;
-static integer c__6 = 6;
-static integer c__25 = 25;
-static integer c_n6 = -6;
-static integer c__4 = 4;
-
-/* Main program */ int MAIN__(void)
+int main()
 {
     /* System generated locals */
     integer i__1, i__2;
     complex q__1, q__2, q__3, q__4, q__5, q__6;
 
-    /* Builtin functions */
-    integer s_wsle(cilist *), do_lio(integer *, integer *, char *, ftnlen), 
-	    e_wsle(void);
-    /* Subroutine */ int s_copy(char *, char *, ftnlen, ftnlen);
     void c_div(complex *, complex *, complex *);
     double r_imag(complex *);
 
@@ -52,9 +22,7 @@ static integer c__4 = 4;
     integer j, n;
     complex s, v[6400]	/* was [256][25] */, s1, s2, s3, dd[256], dl[256];
     real rd[75]	/* was [25][3] */;
-    extern /* Subroutine */ int av_(integer *, complex *, complex *);
     complex ax[256], du[256];
-    extern /* Subroutine */ int mv_(integer *, complex *, complex *);
     complex mx[256], du2[256];
     integer ido, ncv, nev;
     real tol;
@@ -65,35 +33,14 @@ static integer c__4 = 4;
     complex sigma;
     char which[2];
     complex resid[256];
-    extern /* Subroutine */ int ccopy_(integer *, complex *, integer *, 
-	    complex *, integer *);
     integer nconv;
-    extern /* Subroutine */ int caxpy_(integer *, complex *, complex *, 
-	    integer *, complex *, integer *);
     complex workd[768];
     integer ipntr[14];
     complex workl[2000];
     real rwork[256];
-    extern /* Subroutine */ int smout_(integer *, integer *, integer *, real *
-	    , integer *, integer *, char *, ftnlen);
-    extern doublereal scnrm2_(integer *, complex *, integer *), slapy2_(real *
-	    , real *);
     integer iparam[11];
-    extern /* Subroutine */ int cnaupd_(integer *, char *, integer *, char *, 
-	    integer *, real *, complex *, integer *, complex *, integer *, 
-	    integer *, integer *, complex *, complex *, integer *, real *, 
-	    integer *, ftnlen, ftnlen), cneupd_(logical *, char *, logical *, 
-	    complex *, complex *, integer *, complex *, complex *, char *, 
-	    integer *, char *, integer *, real *, complex *, integer *, 
-	    complex *, integer *, integer *, integer *, complex *, complex *, 
-	    integer *, real *, integer *, ftnlen, ftnlen, ftnlen);
     logical select[25];
-    extern /* Subroutine */ int cgttrf_(integer *, complex *, complex *, 
-	    complex *, complex *, integer *, integer *);
     integer ishfts, maxitr;
-    extern /* Subroutine */ int cgttrs_(char *, integer *, integer *, complex 
-	    *, complex *, complex *, complex *, integer *, complex *, integer 
-	    *, integer *, ftnlen);
     integer lworkl;
     complex workev[50];
 
@@ -137,8 +84,6 @@ static integer c__4 = 4;
     static cilist io___77 = { 0, 6, 0, 0, 0 };
     static cilist io___78 = { 0, 6, 0, 0, 0 };
     static cilist io___79 = { 0, 6, 0, 0, 0 };
-
-
 
 /*     Simple program to illustrate the idea of reverse communication */
 /*     in shift and invert mode for a generalized complex nonsymmetric */
@@ -202,30 +147,8 @@ static integer c__4 = 4;
 /*     | MAXNCV: Maximum NCV allowed | */
 /*     %-----------------------------% */
 
-
-/*     %--------------% */
-/*     | Local Arrays | */
-/*     %--------------% */
-
-
-/*     %---------------% */
-/*     | Local Scalars | */
-/*     %---------------% */
-
-
-
-/*     %-----------------------------% */
-/*     | BLAS & LAPACK routines used | */
-/*     %-----------------------------% */
-
-
-/*     %------------% */
-/*     | Parameters | */
-/*     %------------% */
-
-
 /*     %-----------------------% */
-/*     | Executable statements | */
+/*     | Executable Statements | */
 /*     %-----------------------% */
 
 /*     %----------------------------------------------------% */
@@ -285,7 +208,7 @@ static integer c__4 = 4;
     convct_1.rho.r = 10.f, convct_1.rho.i = 0.f;
     i__1 = n + 1;
     q__2.r = (real) i__1, q__2.i = 0.f;
-    c_div(&q__1, &c_b1, &q__2);
+    c_div(&q__1, &c_one, &q__2);
     h__.r = q__1.r, h__.i = q__1.i;
     c_div(&q__1, &convct_1.rho, &c_b3);
     s.r = q__1.r, s.i = q__1.i;
@@ -681,12 +604,11 @@ L9000:
     return 0;
 } /* MAIN__ */
 
-
 /* ========================================================================== */
 
 /*     matrix vector multiplication subroutine */
 
-/* Subroutine */ int mv_(integer *n, complex *v, complex *w)
+int mv_(integer *n, complex *v, complex *w)
 {
     /* System generated locals */
     integer i__1, i__2, i__3, i__4, i__5;
@@ -698,9 +620,6 @@ L9000:
     /* Local variables */
     complex h__;
     integer j;
-    extern /* Subroutine */ int cscal_(integer *, complex *, complex *, 
-	    integer *);
-
 
 /*     Compute the matrix vector multiplication y<---M*x */
 /*     where M is a n by n symmetric tridiagonal matrix with 4 on the */
@@ -749,14 +668,14 @@ L9000:
 
     i__1 = *n + 1;
     q__2.r = (real) i__1, q__2.i = 0.f;
-    c_div(&q__1, &c_b1, &q__2);
+    c_div(&q__1, &c_one, &q__2);
     h__.r = q__1.r, h__.i = q__1.i;
     cscal_(n, &h__, &w[1], &c__1);
     return 0;
 } /* mv_ */
 
 /* ------------------------------------------------------------------ */
-/* Subroutine */ int av_(integer *n, complex *v, complex *w)
+int av_(integer *n, complex *v, complex *w)
 {
     /* System generated locals */
     integer i__1, i__2, i__3, i__4, i__5;
@@ -770,7 +689,6 @@ L9000:
     integer j;
     complex s, dd, dl, du;
 
-
     /* Parameter adjustments */
     --w;
     --v;
@@ -778,7 +696,7 @@ L9000:
     /* Function Body */
     i__1 = *n + 1;
     q__2.r = (real) i__1, q__2.i = 0.f;
-    c_div(&q__1, &c_b1, &q__2);
+    c_div(&q__1, &c_one, &q__2);
     h__.r = q__1.r, h__.i = q__1.i;
     c_div(&q__1, &convct_1.rho, &c_b3);
     s.r = q__1.r, s.i = q__1.i;
@@ -828,4 +746,3 @@ L9000:
     return 0;
 } /* av_ */
 
-/* Main program alias */ int cndrv4_ () { MAIN__ (); return 0; }

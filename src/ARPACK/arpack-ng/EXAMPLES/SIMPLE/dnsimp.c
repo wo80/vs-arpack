@@ -1,18 +1,6 @@
-/* EXAMPLES\SIMPLE\dnsimp.f -- translated by f2c (version 20100827).
-   You must link the resulting object file with libf2c:
-	on Microsoft Windows system, link with libf2c.lib;
-	on Linux or Unix systems, link with .../path/to/libf2c.a -lm
-	or, if you install libf2c.a in a standard place, with -lf2c -lm
-	-- in that order, at the end of the command line, as in
-		cc *.o -lf2c -lm
-	Source for libf2c is in /netlib/f2c/libf2c.zip, e.g.,
+/* EXAMPLES\SIMPLE\dnsimp.f -- translated by f2c (version 20100827). */
 
-		http://www.netlib.org/f2c/libf2c.zip
-*/
-
-#include "f2c.h"
-
-/* Common Block Declarations */
+#include "arpack.h"
 
 struct {
     integer logfil, ndigit, mgetv0, msaupd, msaup2, msaitr, mseigt, msapps, 
@@ -22,25 +10,14 @@ struct {
 
 #define debug_1 debug_
 
-/* Table of constant values */
-
-static integer c__9 = 9;
-static integer c__1 = 1;
-static integer c__256 = 256;
-static integer c__3 = 3;
-static integer c__6 = 6;
-static integer c__30 = 30;
-static integer c_n6 = -6;
-static integer c__5 = 5;
-
-/* Main program */ int MAIN__(void)
+int main()
 {
     /* System generated locals */
     integer i__1;
     doublereal d__1;
 
     /* Builtin functions */
-    /* Subroutine */ int s_copy(char *, char *, ftnlen, ftnlen);
+    int s_copy(char *, char *, ftnlen, ftnlen);
     integer s_wsle(cilist *), do_lio(integer *, integer *, char *, ftnlen), 
 	    e_wsle(void);
 
@@ -48,7 +25,6 @@ static integer c__5 = 5;
     doublereal d__[90]	/* was [30][3] */;
     integer j, n;
     doublereal v[7680]	/* was [256][30] */;
-    extern /* Subroutine */ int av_(integer *, doublereal *, doublereal *);
     doublereal ax[256];
     integer nx, ido, ncv, nev;
     doublereal tol;
@@ -56,33 +32,17 @@ static integer c__5 = 5;
     integer info;
     logical rvec;
     integer ierr, mode1;
-    extern doublereal dnrm2_(integer *, doublereal *, integer *);
     char which[2];
     doublereal resid[256];
     integer nconv;
-    extern /* Subroutine */ int daxpy_(integer *, doublereal *, doublereal *, 
-	    integer *, doublereal *, integer *);
     doublereal workd[768];
     logical first;
-    extern /* Subroutine */ int dmout_(integer *, integer *, integer *, 
-	    doublereal *, integer *, integer *, char *, ftnlen);
     integer ipntr[14];
     doublereal workl[2880];
-    extern doublereal dlapy2_(doublereal *, doublereal *);
     integer iparam[11];
     doublereal sigmai;
     logical select[30];
-    extern /* Subroutine */ int dnaupd_(integer *, char *, integer *, char *, 
-	    integer *, doublereal *, doublereal *, integer *, doublereal *, 
-	    integer *, integer *, integer *, doublereal *, doublereal *, 
-	    integer *, integer *, ftnlen, ftnlen);
     doublereal sigmar;
-    extern /* Subroutine */ int dneupd_(logical *, char *, logical *, 
-	    doublereal *, doublereal *, doublereal *, integer *, doublereal *,
-	     doublereal *, doublereal *, char *, integer *, char *, integer *,
-	     doublereal *, doublereal *, integer *, doublereal *, integer *, 
-	    integer *, integer *, doublereal *, doublereal *, integer *, 
-	    integer *, ftnlen, ftnlen, ftnlen);
     integer ishfts, maxitr, lworkl;
     doublereal workev[90];
 
@@ -117,9 +77,6 @@ static integer c__5 = 5;
     static cilist io___58 = { 0, 6, 0, 0, 0 };
     static cilist io___59 = { 0, 6, 0, 0, 0 };
     static cilist io___60 = { 0, 6, 0, 0, 0 };
-
-
-
 
 /*     This example program is intended to illustrate the */
 /*     simplest case of using ARPACK in considerable detail. */
@@ -227,32 +184,6 @@ static integer c__5 = 5;
 /*     | MAXNCV: Maximum NCV allowed.                         | */
 /*     %------------------------------------------------------% */
 
-
-/*     %--------------% */
-/*     | Local Arrays | */
-/*     %--------------% */
-
-
-/*     %---------------% */
-/*     | Local Scalars | */
-/*     %---------------% */
-
-
-/*     %------------% */
-/*     | Parameters | */
-/*     %------------% */
-
-
-/*     %-----------------------------% */
-/*     | BLAS & LAPACK routines used | */
-/*     %-----------------------------% */
-
-
-/*     %--------------------% */
-/*     | Intrinsic function | */
-/*     %--------------------% */
-
-
 /*     %-----------------------% */
 /*     | Executable Statements | */
 /*     %-----------------------% */
@@ -266,7 +197,6 @@ static integer c__5 = 5;
 /*     | time spent in the various stages of computation | */
 /*     | given by setting mnaupd = 1.                    | */
 /*     %-------------------------------------------------% */
-
 
 /* \SCCS Information: @(#) */
 /* FILE: debug.h   SID: 2.3   DATE OF SID: 11/16/95   RELEASE: 2 */
@@ -702,7 +632,6 @@ L9000:
     return 0;
 } /* MAIN__ */
 
-
 /* ========================================================================== */
 
 /*     matrix vector subroutine */
@@ -710,7 +639,7 @@ L9000:
 /*     The matrix used is the 2 dimensional convection-diffusion */
 /*     operator discretized using central difference. */
 
-/* Subroutine */ int av_(integer *nx, doublereal *v, doublereal *w)
+int av_(integer *nx, doublereal *v, doublereal *w)
 {
     /* System generated locals */
     integer i__1;
@@ -720,10 +649,6 @@ L9000:
     integer j;
     doublereal h2;
     integer lo;
-    extern /* Subroutine */ int tv_(integer *, doublereal *, doublereal *), 
-	    daxpy_(integer *, doublereal *, doublereal *, integer *, 
-	    doublereal *, integer *);
-
 
 /*     Computes w <--- OP*v, where OP is the nx*nx by nx*nx block */
 /*     tridiagonal matrix */
@@ -744,7 +669,6 @@ L9000:
 /*     eigenvalues. */
 
 /*     The subroutine TV is called to computed y<---T*x. */
-
 
     /* Parameter adjustments */
     --w;
@@ -777,7 +701,7 @@ L9000:
 } /* av_ */
 
 /* ========================================================================= */
-/* Subroutine */ int tv_(integer *nx, doublereal *x, doublereal *y)
+int tv_(integer *nx, doublereal *x, doublereal *y)
 {
     /* System generated locals */
     integer i__1;
@@ -786,9 +710,6 @@ L9000:
     doublereal h__;
     integer j;
     doublereal h2, dd, dl, du;
-
-
-
 
 /*     Compute the matrix vector multiplication y<---T*x */
 /*     where T is a nx by nx tridiagonal matrix with DD on the */
@@ -819,4 +740,3 @@ L9000:
     return 0;
 } /* tv_ */
 
-/* Main program alias */ int dnsimp_ () { MAIN__ (); return 0; }

@@ -1,40 +1,13 @@
-/* EXAMPLES\COMPLEX\zndrv1.f -- translated by f2c (version 20100827).
-   You must link the resulting object file with libf2c:
-	on Microsoft Windows system, link with libf2c.lib;
-	on Linux or Unix systems, link with .../path/to/libf2c.a -lm
-	or, if you install libf2c.a in a standard place, with -lf2c -lm
-	-- in that order, at the end of the command line, as in
-		cc *.o -lf2c -lm
-	Source for libf2c is in /netlib/f2c/libf2c.zip, e.g.,
+/* EXAMPLES\COMPLEX\zndrv1.f -- translated by f2c (version 20100827). */
 
-		http://www.netlib.org/f2c/libf2c.zip
-*/
+#include "arpack.h"
 
-#include "f2c.h"
-
-/* Table of constant values */
-
-static integer c__9 = 9;
-static integer c__1 = 1;
-static integer c__256 = 256;
-static integer c__3 = 3;
-static integer c__6 = 6;
-static integer c__30 = 30;
-static integer c_n6 = -6;
-static integer c__5 = 5;
-static doublecomplex c_b137 = {1.,0.};
-static doublecomplex c_b151 = {4.,0.};
-
-/* Main program */ int MAIN__(void)
+int main()
 {
     /* System generated locals */
     integer i__1, i__2;
     doublecomplex z__1;
 
-    /* Builtin functions */
-    integer s_wsle(cilist *), do_lio(integer *, integer *, char *, ftnlen), 
-	    e_wsle(void);
-    /* Subroutine */ int s_copy(char *, char *, ftnlen, ftnlen);
     double d_imag(doublecomplex *);
 
     /* Local variables */
@@ -42,8 +15,6 @@ static doublecomplex c_b151 = {4.,0.};
     integer j, n;
     doublecomplex v[7680]	/* was [256][30] */;
     doublereal rd[90]	/* was [30][3] */;
-    extern /* Subroutine */ int av_(integer *, doublecomplex *, doublecomplex 
-	    *);
     doublecomplex ax[256];
     integer nx, ido, ncv, nev;
     doublereal tol;
@@ -56,30 +27,13 @@ static doublecomplex c_b151 = {4.,0.};
     doublecomplex resid[256];
     integer nconv;
     doublecomplex workd[768];
-    extern /* Subroutine */ int dmout_(integer *, integer *, integer *, 
-	    doublereal *, integer *, integer *, char *, ftnlen);
     integer ipntr[14];
     doublecomplex workl[2850];
     doublereal rwork[30];
-    extern /* Subroutine */ int zaxpy_(integer *, doublecomplex *, 
-	    doublecomplex *, integer *, doublecomplex *, integer *);
-    extern doublereal dlapy2_(doublereal *, doublereal *), dznrm2_(integer *, 
-	    doublecomplex *, integer *);
     integer iparam[11];
     logical select[30];
     integer ishfts;
-    extern /* Subroutine */ int znaupd_(integer *, char *, integer *, char *, 
-	    integer *, doublereal *, doublecomplex *, integer *, 
-	    doublecomplex *, integer *, integer *, integer *, doublecomplex *,
-	     doublecomplex *, integer *, doublereal *, integer *, ftnlen, 
-	    ftnlen);
     integer maxitr;
-    extern /* Subroutine */ int zneupd_(logical *, char *, logical *, 
-	    doublecomplex *, doublecomplex *, integer *, doublecomplex *, 
-	    doublecomplex *, char *, integer *, char *, integer *, doublereal 
-	    *, doublecomplex *, integer *, doublecomplex *, integer *, 
-	    integer *, integer *, doublecomplex *, doublecomplex *, integer *,
-	     doublereal *, integer *, ftnlen, ftnlen, ftnlen);
     integer lworkl;
     doublecomplex workev[90];
 
@@ -114,8 +68,6 @@ static doublecomplex c_b151 = {4.,0.};
     static cilist io___58 = { 0, 6, 0, 0, 0 };
     static cilist io___59 = { 0, 6, 0, 0, 0 };
     static cilist io___60 = { 0, 6, 0, 0, 0 };
-
-
 
 /*     Example program to illustrate the idea of reverse communication */
 /*     for a standard complex nonsymmetric eigenvalue problem. */
@@ -176,22 +128,6 @@ static doublecomplex c_b151 = {4.,0.};
 /*     | MAXNEV: Maximum NEV allowed | */
 /*     | MAXNCV: Maximum NCV allowed | */
 /*     %-----------------------------% */
-
-
-/*     %--------------% */
-/*     | Local Arrays | */
-/*     %--------------% */
-
-
-/*     %---------------% */
-/*     | Local Scalars | */
-/*     %---------------% */
-
-
-/*     %-----------------------------% */
-/*     | BLAS & LAPACK routines used | */
-/*     %-----------------------------% */
-
 
 /*     %-----------------------% */
 /*     | Executable Statements | */
@@ -528,7 +464,6 @@ L9000:
     return 0;
 } /* MAIN__ */
 
-
 /* ========================================================================== */
 
 /*     matrix vector subroutine */
@@ -536,7 +471,7 @@ L9000:
 /*     The matrix used is the convection-diffusion operator */
 /*     discretized using centered difference. */
 
-/* Subroutine */ int av_(integer *nx, doublecomplex *v, doublecomplex *w)
+int av_(integer *nx, doublecomplex *v, doublecomplex *w)
 {
     /* System generated locals */
     integer i__1;
@@ -549,10 +484,6 @@ L9000:
     integer j;
     doublecomplex h2;
     integer lo;
-    extern /* Subroutine */ int tv_(integer *, doublecomplex *, doublecomplex 
-	    *), zaxpy_(integer *, doublecomplex *, doublecomplex *, integer *,
-	     doublecomplex *, integer *);
-
 
 /*     Computes w <--- OP*v, where OP is the nx*nx by nx*nx block */
 /*     tridiagonal matrix */
@@ -568,7 +499,6 @@ L9000:
 /*     with zero boundary condition. */
 
 /*     The subroutine TV is called to computed y<---T*x. */
-
 
     /* Parameter adjustments */
     --w;
@@ -608,7 +538,7 @@ L9000:
 } /* av_ */
 
 /* ========================================================================= */
-/* Subroutine */ int tv_(integer *nx, doublecomplex *x, doublecomplex *y)
+int tv_(integer *nx, doublecomplex *x, doublecomplex *y)
 {
     /* System generated locals */
     integer i__1, i__2, i__3, i__4, i__5;
@@ -621,9 +551,6 @@ L9000:
     doublecomplex h__;
     integer j;
     doublecomplex h2, dd, dl, du;
-
-
-
 
 /*     Compute the matrix vector multiplication y<---T*x */
 /*     where T is a nx by nx tridiagonal matrix with DD on the */
@@ -641,7 +568,7 @@ L9000:
     z__1.r = h__.r * h__.r - h__.i * h__.i, z__1.i = h__.r * h__.i + h__.i * 
 	    h__.r;
     h2.r = z__1.r, h2.i = z__1.i;
-    z_div(&z__1, &c_b151, &h2);
+    z_div(&z__1, &c_b151_dx, &h2);
     dd.r = z__1.r, dd.i = z__1.i;
     z__3.r = -1., z__3.i = -0.;
     z_div(&z__2, &z__3, &h2);
@@ -691,4 +618,3 @@ L9000:
     return 0;
 } /* tv_ */
 
-/* Main program alias */ int zndrv1_ () { MAIN__ (); return 0; }

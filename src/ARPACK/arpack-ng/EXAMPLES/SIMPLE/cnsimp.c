@@ -1,18 +1,6 @@
-/* EXAMPLES\SIMPLE\cnsimp.f -- translated by f2c (version 20100827).
-   You must link the resulting object file with libf2c:
-	on Microsoft Windows system, link with libf2c.lib;
-	on Linux or Unix systems, link with .../path/to/libf2c.a -lm
-	or, if you install libf2c.a in a standard place, with -lf2c -lm
-	-- in that order, at the end of the command line, as in
-		cc *.o -lf2c -lm
-	Source for libf2c is in /netlib/f2c/libf2c.zip, e.g.,
+/* EXAMPLES\SIMPLE\cnsimp.f -- translated by f2c (version 20100827). */
 
-		http://www.netlib.org/f2c/libf2c.zip
-*/
-
-#include "f2c.h"
-
-/* Common Block Declarations */
+#include "arpack.h"
 
 struct {
     integer logfil, ndigit, mgetv0, msaupd, msaup2, msaitr, mseigt, msapps, 
@@ -22,27 +10,14 @@ struct {
 
 #define debug_1 debug_
 
-/* Table of constant values */
-
-static integer c__9 = 9;
-static integer c__1 = 1;
-static integer c__256 = 256;
-static integer c__3 = 3;
-static integer c__6 = 6;
-static integer c__30 = 30;
-static integer c_n6 = -6;
-static integer c__4 = 4;
-static complex c_b137 = {1.f,0.f};
-static complex c_b151 = {4.f,0.f};
-
-/* Main program */ int MAIN__(void)
+int main()
 {
     /* System generated locals */
     integer i__1, i__2;
     complex q__1;
 
     /* Builtin functions */
-    /* Subroutine */ int s_copy(char *, char *, ftnlen, ftnlen);
+    int s_copy(char *, char *, ftnlen, ftnlen);
     integer s_wsle(cilist *), do_lio(integer *, integer *, char *, ftnlen), 
 	    e_wsle(void);
     double r_imag(complex *);
@@ -52,7 +27,6 @@ static complex c_b151 = {4.f,0.f};
     integer j, n;
     complex v[7680]	/* was [256][30] */;
     real rd[90]	/* was [30][3] */;
-    extern /* Subroutine */ int av_(integer *, complex *, complex *);
     complex ax[256];
     integer nx, ido, ncv, nev;
     real tol;
@@ -64,27 +38,12 @@ static complex c_b151 = {4.f,0.f};
     char which[2];
     complex resid[256];
     integer nconv;
-    extern /* Subroutine */ int caxpy_(integer *, complex *, complex *, 
-	    integer *, complex *, integer *);
     complex workd[768];
     integer ipntr[14];
     complex workl[2850];
     real rwork[30];
-    extern /* Subroutine */ int smout_(integer *, integer *, integer *, real *
-	    , integer *, integer *, char *, ftnlen);
-    extern doublereal scnrm2_(integer *, complex *, integer *), slapy2_(real *
-	    , real *);
     integer iparam[11];
-    extern /* Subroutine */ int cnaupd_(integer *, char *, integer *, char *, 
-	    integer *, real *, complex *, integer *, complex *, integer *, 
-	    integer *, integer *, complex *, complex *, integer *, real *, 
-	    integer *, ftnlen, ftnlen);
     logical select[30];
-    extern /* Subroutine */ int cneupd_(logical *, char *, logical *, complex 
-	    *, complex *, integer *, complex *, complex *, char *, integer *, 
-	    char *, integer *, real *, complex *, integer *, complex *, 
-	    integer *, integer *, integer *, complex *, complex *, integer *, 
-	    real *, integer *, ftnlen, ftnlen, ftnlen);
     integer ishfts, maxitr, lworkl;
     complex workev[60];
 
@@ -119,8 +78,6 @@ static complex c_b151 = {4.f,0.f};
     static cilist io___58 = { 0, 6, 0, 0, 0 };
     static cilist io___59 = { 0, 6, 0, 0, 0 };
     static cilist io___60 = { 0, 6, 0, 0, 0 };
-
-
 
 /*     This example program is intended to illustrate the */
 /*     simplest case of using ARPACK in considerable detail. */
@@ -158,12 +115,10 @@ static complex c_b151 = {4.f,0.f};
 
 /*     in place of the call to AV( )  below. */
 
-
 /*     Once usage of this routine is understood, you may wish to explore */
 /*     the other available options to improve convergence, to solve generalized */
 /*     problems, etc.  Look at the file ex-complex.doc in DOCUMENTS directory. */
 /*     This codes implements */
-
 
 /* \Example-1 */
 /*     ... Suppose we want to solve A*x = lambda*x in regular mode, */
@@ -225,22 +180,6 @@ static complex c_b151 = {4.f,0.f};
 /*     | MAXNCV: Maximum NCV allowed.                         | */
 /*     %------------------------------------------------------% */
 
-
-/*     %--------------% */
-/*     | Local Arrays | */
-/*     %--------------% */
-
-
-/*     %---------------% */
-/*     | Local Scalars | */
-/*     %---------------% */
-
-
-/*     %-----------------------------% */
-/*     | BLAS & LAPACK routines used | */
-/*     %-----------------------------% */
-
-
 /*     %-----------------------% */
 /*     | Executable Statements | */
 /*     %-----------------------% */
@@ -254,7 +193,6 @@ static complex c_b151 = {4.f,0.f};
 /*     | time spent in the various stages of computation | */
 /*     | given by setting mcaupd = 1                     | */
 /*     %-------------------------------------------------% */
-
 
 /* \SCCS Information: @(#) */
 /* FILE: debug.h   SID: 2.3   DATE OF SID: 11/16/95   RELEASE: 2 */
@@ -656,7 +594,6 @@ L9000:
     return 0;
 } /* MAIN__ */
 
-
 /* ========================================================================== */
 
 /*     matrix vector subroutine */
@@ -664,7 +601,7 @@ L9000:
 /*     The matrix used is the convection-diffusion operator */
 /*     discretized using centered difference. */
 
-/* Subroutine */ int av_(integer *nx, complex *v, complex *w)
+int av_(integer *nx, complex *v, complex *w)
 {
     /* System generated locals */
     integer i__1;
@@ -677,9 +614,6 @@ L9000:
     integer j;
     complex h2;
     integer lo;
-    extern /* Subroutine */ int tv_(integer *, complex *, complex *), caxpy_(
-	    integer *, complex *, complex *, integer *, complex *, integer *);
-
 
 /*     Computes w <--- OP*v, where OP is the nx*nx by nx*nx block */
 /*     tridiagonal matrix */
@@ -697,7 +631,6 @@ L9000:
 
 /*     The subroutine TV is called to computed y<---T*x. */
 
-
     /* Parameter adjustments */
     --w;
     --v;
@@ -705,7 +638,7 @@ L9000:
     /* Function Body */
     i__1 = (*nx + 1) * (*nx + 1);
     q__2.r = (real) i__1, q__2.i = 0.f;
-    c_div(&q__1, &c_b137, &q__2);
+    c_div(&q__1, &c_one, &q__2);
     h2.r = q__1.r, h2.i = q__1.i;
 
     tv_(nx, &v[1], &w[1]);
@@ -736,7 +669,7 @@ L9000:
 } /* av_ */
 
 /* ========================================================================= */
-/* Subroutine */ int tv_(integer *nx, complex *x, complex *y)
+int tv_(integer *nx, complex *x, complex *y)
 {
     /* System generated locals */
     integer i__1, i__2, i__3, i__4, i__5;
@@ -750,9 +683,6 @@ L9000:
     integer j;
     complex h2, dd, dl, du;
 
-
-
-
 /*     Compute the matrix vector multiplication y<---T*x */
 /*     where T is a nx by nx tridiagonal matrix with DD on the */
 /*     diagonal, DL on the subdiagonal, and DU on the superdiagonal */
@@ -764,7 +694,7 @@ L9000:
     /* Function Body */
     i__1 = *nx + 1;
     q__2.r = (real) i__1, q__2.i = 0.f;
-    c_div(&q__1, &c_b137, &q__2);
+    c_div(&q__1, &c_one, &q__2);
     h__.r = q__1.r, h__.i = q__1.i;
     q__1.r = h__.r * h__.r - h__.i * h__.i, q__1.i = h__.r * h__.i + h__.i * 
 	    h__.r;
@@ -819,4 +749,3 @@ L9000:
     return 0;
 } /* tv_ */
 
-/* Main program alias */ int cnsimp_ () { MAIN__ (); return 0; }

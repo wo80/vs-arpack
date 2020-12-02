@@ -1,18 +1,6 @@
-/* EXAMPLES\COMPLEX\zndrv4.f -- translated by f2c (version 20100827).
-   You must link the resulting object file with libf2c:
-	on Microsoft Windows system, link with libf2c.lib;
-	on Linux or Unix systems, link with .../path/to/libf2c.a -lm
-	or, if you install libf2c.a in a standard place, with -lf2c -lm
-	-- in that order, at the end of the command line, as in
-		cc *.o -lf2c -lm
-	Source for libf2c is in /netlib/f2c/libf2c.zip, e.g.,
+/* EXAMPLES\COMPLEX\zndrv4.f -- translated by f2c (version 20100827). */
 
-		http://www.netlib.org/f2c/libf2c.zip
-*/
-
-#include "f2c.h"
-
-/* Common Block Declarations */
+#include "arpack.h"
 
 struct {
     doublecomplex rho;
@@ -20,30 +8,12 @@ struct {
 
 #define convct_1 convct_
 
-/* Table of constant values */
-
-static doublecomplex c_b1 = {1.,0.};
-static doublecomplex c_b3 = {2.,0.};
-static doublecomplex c_b5 = {6.,0.};
-static integer c__9 = 9;
-static integer c__1 = 1;
-static integer c__256 = 256;
-static integer c__3 = 3;
-static integer c__6 = 6;
-static integer c__25 = 25;
-static integer c_n6 = -6;
-static integer c__5 = 5;
-
-/* Main program */ int MAIN__(void)
+int main()
 {
     /* System generated locals */
     integer i__1, i__2;
     doublecomplex z__1, z__2, z__3, z__4, z__5, z__6;
 
-    /* Builtin functions */
-    integer s_wsle(cilist *), do_lio(integer *, integer *, char *, ftnlen), 
-	    e_wsle(void);
-    /* Subroutine */ int s_copy(char *, char *, ftnlen, ftnlen);
     void z_div(doublecomplex *, doublecomplex *, doublecomplex *);
     double d_imag(doublecomplex *);
 
@@ -53,11 +23,7 @@ static integer c__5 = 5;
     doublecomplex s, v[6400]	/* was [256][25] */, s1, s2, s3, dd[256], dl[
 	    256];
     doublereal rd[75]	/* was [25][3] */;
-    extern /* Subroutine */ int av_(integer *, doublecomplex *, doublecomplex 
-	    *);
     doublecomplex ax[256], du[256];
-    extern /* Subroutine */ int mv_(integer *, doublecomplex *, doublecomplex 
-	    *);
     doublecomplex mx[256], du2[256];
     integer ido, ncv, nev;
     doublereal tol;
@@ -70,38 +36,15 @@ static integer c__5 = 5;
     doublecomplex resid[256];
     integer nconv;
     doublecomplex workd[768];
-    extern /* Subroutine */ int dmout_(integer *, integer *, integer *, 
-	    doublereal *, integer *, integer *, char *, ftnlen);
     integer ipntr[14];
     doublecomplex workl[2000];
     doublereal rwork[256];
-    extern /* Subroutine */ int zcopy_(integer *, doublecomplex *, integer *, 
-	    doublecomplex *, integer *), zaxpy_(integer *, doublecomplex *, 
-	    doublecomplex *, integer *, doublecomplex *, integer *);
-    extern doublereal dlapy2_(doublereal *, doublereal *), dznrm2_(integer *, 
-	    doublecomplex *, integer *);
     integer iparam[11];
     logical select[25];
     integer ishfts;
-    extern /* Subroutine */ int znaupd_(integer *, char *, integer *, char *, 
-	    integer *, doublereal *, doublecomplex *, integer *, 
-	    doublecomplex *, integer *, integer *, integer *, doublecomplex *,
-	     doublecomplex *, integer *, doublereal *, integer *, ftnlen, 
-	    ftnlen);
     integer maxitr;
-    extern /* Subroutine */ int zneupd_(logical *, char *, logical *, 
-	    doublecomplex *, doublecomplex *, integer *, doublecomplex *, 
-	    doublecomplex *, char *, integer *, char *, integer *, doublereal 
-	    *, doublecomplex *, integer *, doublecomplex *, integer *, 
-	    integer *, integer *, doublecomplex *, doublecomplex *, integer *,
-	     doublereal *, integer *, ftnlen, ftnlen, ftnlen);
     integer lworkl;
     doublecomplex workev[50];
-    extern /* Subroutine */ int zgttrf_(integer *, doublecomplex *, 
-	    doublecomplex *, doublecomplex *, doublecomplex *, integer *, 
-	    integer *), zgttrs_(char *, integer *, integer *, doublecomplex *,
-	     doublecomplex *, doublecomplex *, doublecomplex *, integer *, 
-	    doublecomplex *, integer *, integer *, ftnlen);
 
     /* Fortran I/O blocks */
     static cilist io___4 = { 0, 6, 0, 0, 0 };
@@ -143,8 +86,6 @@ static integer c__5 = 5;
     static cilist io___77 = { 0, 6, 0, 0, 0 };
     static cilist io___78 = { 0, 6, 0, 0, 0 };
     static cilist io___79 = { 0, 6, 0, 0, 0 };
-
-
 
 /*     Simple program to illustrate the idea of reverse communication */
 /*     in shift and invert mode for a generalized complex nonsymmetric */
@@ -208,30 +149,8 @@ static integer c__5 = 5;
 /*     | MAXNCV: Maximum NCV allowed | */
 /*     %-----------------------------% */
 
-
-/*     %--------------% */
-/*     | Local Arrays | */
-/*     %--------------% */
-
-
-/*     %---------------% */
-/*     | Local Scalars | */
-/*     %---------------% */
-
-
-
-/*     %-----------------------------% */
-/*     | BLAS & LAPACK routines used | */
-/*     %-----------------------------% */
-
-
-/*     %------------% */
-/*     | Parameters | */
-/*     %------------% */
-
-
 /*     %-----------------------% */
-/*     | Executable statements | */
+/*     | Executable Statements | */
 /*     %-----------------------% */
 
 /*     %----------------------------------------------------% */
@@ -291,9 +210,9 @@ static integer c__5 = 5;
     convct_1.rho.r = 10., convct_1.rho.i = 0.;
     i__1 = n + 1;
     z__2.r = (doublereal) i__1, z__2.i = 0.;
-    z_div(&z__1, &c_b1, &z__2);
+    z_div(&z__1, &c_b137, &z__2);
     h__.r = z__1.r, h__.i = z__1.i;
-    z_div(&z__1, &convct_1.rho, &c_b3);
+    z_div(&z__1, &convct_1.rho, &c_b3_dx);
     s.r = z__1.r, s.i = z__1.i;
 
     z__4.r = -1., z__4.i = -0.;
@@ -301,15 +220,15 @@ static integer c__5 = 5;
     z__2.r = z__3.r - s.r, z__2.i = z__3.i - s.i;
     z__6.r = sigma.r * h__.r - sigma.i * h__.i, z__6.i = sigma.r * h__.i + 
 	    sigma.i * h__.r;
-    z_div(&z__5, &z__6, &c_b5);
+    z_div(&z__5, &z__6, &c_b5_dx);
     z__1.r = z__2.r - z__5.r, z__1.i = z__2.i - z__5.i;
     s1.r = z__1.r, s1.i = z__1.i;
-    z_div(&z__2, &c_b3, &h__);
+    z_div(&z__2, &c_b3_dx, &h__);
     z__5.r = sigma.r * 4. - sigma.i * 0., z__5.i = sigma.i * 4. + sigma.r * 
 	    0.;
     z__4.r = z__5.r * h__.r - z__5.i * h__.i, z__4.i = z__5.r * h__.i + 
 	    z__5.i * h__.r;
-    z_div(&z__3, &z__4, &c_b5);
+    z_div(&z__3, &z__4, &c_b5_dx);
     z__1.r = z__2.r - z__3.r, z__1.i = z__2.i - z__3.i;
     s2.r = z__1.r, s2.i = z__1.i;
     z__4.r = -1., z__4.i = -0.;
@@ -317,7 +236,7 @@ static integer c__5 = 5;
     z__2.r = z__3.r + s.r, z__2.i = z__3.i + s.i;
     z__6.r = sigma.r * h__.r - sigma.i * h__.i, z__6.i = sigma.r * h__.i + 
 	    sigma.i * h__.r;
-    z_div(&z__5, &z__6, &c_b5);
+    z_div(&z__5, &z__6, &c_b5_dx);
     z__1.r = z__2.r - z__5.r, z__1.i = z__2.i - z__5.i;
     s3.r = z__1.r, s3.i = z__1.i;
 
@@ -687,12 +606,11 @@ L9000:
     return 0;
 } /* MAIN__ */
 
-
 /* ========================================================================== */
 
 /*     matrix vector multiplication subroutine */
 
-/* Subroutine */ int mv_(integer *n, doublecomplex *v, doublecomplex *w)
+int mv_(integer *n, doublecomplex *v, doublecomplex *w)
 {
     /* System generated locals */
     integer i__1, i__2, i__3, i__4, i__5;
@@ -704,9 +622,6 @@ L9000:
     /* Local variables */
     doublecomplex h__;
     integer j;
-    extern /* Subroutine */ int zscal_(integer *, doublecomplex *, 
-	    doublecomplex *, integer *);
-
 
 /*     Compute the matrix vector multiplication y<---M*x */
 /*     where M is a n by n symmetric tridiagonal matrix with 4 on the */
@@ -720,7 +635,7 @@ L9000:
     z__3.r = v[1].r * 4. - v[1].i * 0., z__3.i = v[1].i * 4. + v[1].r * 0.;
     z__4.r = v[2].r * 1. - v[2].i * 0., z__4.i = v[2].i * 1. + v[2].r * 0.;
     z__2.r = z__3.r + z__4.r, z__2.i = z__3.i + z__4.i;
-    z_div(&z__1, &z__2, &c_b5);
+    z_div(&z__1, &z__2, &c_b5_dx);
     w[1].r = z__1.r, w[1].i = z__1.i;
     i__1 = *n - 1;
     for (j = 2; j <= i__1; ++j) {
@@ -736,7 +651,7 @@ L9000:
 	z__6.r = v[i__5].r * 1. - v[i__5].i * 0., z__6.i = v[i__5].i * 1. + v[
 		i__5].r * 0.;
 	z__2.r = z__3.r + z__6.r, z__2.i = z__3.i + z__6.i;
-	z_div(&z__1, &z__2, &c_b5);
+	z_div(&z__1, &z__2, &c_b5_dx);
 	w[i__2].r = z__1.r, w[i__2].i = z__1.i;
 /* L40: */
     }
@@ -748,19 +663,19 @@ L9000:
     z__4.r = v[i__3].r * 4. - v[i__3].i * 0., z__4.i = v[i__3].i * 4. + v[
 	    i__3].r * 0.;
     z__2.r = z__3.r + z__4.r, z__2.i = z__3.i + z__4.i;
-    z_div(&z__1, &z__2, &c_b5);
+    z_div(&z__1, &z__2, &c_b5_dx);
     w[i__1].r = z__1.r, w[i__1].i = z__1.i;
 
     i__1 = *n + 1;
     z__2.r = (doublereal) i__1, z__2.i = 0.;
-    z_div(&z__1, &c_b1, &z__2);
+    z_div(&z__1, &c_b137, &z__2);
     h__.r = z__1.r, h__.i = z__1.i;
     zscal_(n, &h__, &w[1], &c__1);
     return 0;
 } /* mv_ */
 
 /* ------------------------------------------------------------------ */
-/* Subroutine */ int av_(integer *n, doublecomplex *v, doublecomplex *w)
+int av_(integer *n, doublecomplex *v, doublecomplex *w)
 {
     /* System generated locals */
     integer i__1, i__2, i__3, i__4, i__5;
@@ -774,7 +689,6 @@ L9000:
     integer j;
     doublecomplex s, dd, dl, du;
 
-
     /* Parameter adjustments */
     --w;
     --v;
@@ -782,11 +696,11 @@ L9000:
     /* Function Body */
     i__1 = *n + 1;
     z__2.r = (doublereal) i__1, z__2.i = 0.;
-    z_div(&z__1, &c_b1, &z__2);
+    z_div(&z__1, &c_b137, &z__2);
     h__.r = z__1.r, h__.i = z__1.i;
-    z_div(&z__1, &convct_1.rho, &c_b3);
+    z_div(&z__1, &convct_1.rho, &c_b3_dx);
     s.r = z__1.r, s.i = z__1.i;
-    z_div(&z__1, &c_b3, &h__);
+    z_div(&z__1, &c_b3_dx, &h__);
     dd.r = z__1.r, dd.i = z__1.i;
     z__3.r = -1., z__3.i = -0.;
     z_div(&z__2, &z__3, &h__);
@@ -832,4 +746,3 @@ L9000:
     return 0;
 } /* av_ */
 
-/* Main program alias */ int zndrv4_ () { MAIN__ (); return 0; }

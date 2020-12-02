@@ -1,18 +1,6 @@
-/* EXAMPLES\SVD\dsvd.f -- translated by f2c (version 20100827).
-   You must link the resulting object file with libf2c:
-	on Microsoft Windows system, link with libf2c.lib;
-	on Linux or Unix systems, link with .../path/to/libf2c.a -lm
-	or, if you install libf2c.a in a standard place, with -lf2c -lm
-	-- in that order, at the end of the command line, as in
-		cc *.o -lf2c -lm
-	Source for libf2c is in /netlib/f2c/libf2c.zip, e.g.,
+/* EXAMPLES\SVD\dsvd.f -- translated by f2c (version 20100827). */
 
-		http://www.netlib.org/f2c/libf2c.zip
-*/
-
-#include "f2c.h"
-
-/* Common Block Declarations */
+#include "arpack.h"
 
 struct {
     integer logfil, ndigit, mgetv0, msaupd, msaup2, msaitr, mseigt, msapps, 
@@ -22,26 +10,14 @@ struct {
 
 #define debug_1 debug_
 
-/* Table of constant values */
-
-static integer c__9 = 9;
-static integer c__1 = 1;
-static integer c__250 = 250;
-static integer c__3 = 3;
-static integer c__6 = 6;
-static integer c__2 = 2;
-static integer c__25 = 25;
-static integer c_n6 = -6;
-static integer c__5 = 5;
-
-/* Main program */ int MAIN__(void)
+int main()
 {
     /* System generated locals */
     integer i__1;
     doublereal d__1;
 
     /* Builtin functions */
-    /* Subroutine */ int s_copy(char *, char *, ftnlen, ftnlen);
+    int s_copy(char *, char *, ftnlen, ftnlen);
     integer s_wsle(cilist *), do_lio(integer *, integer *, char *, ftnlen), 
 	    e_wsle(void);
     double sqrt(doublereal);
@@ -50,12 +26,8 @@ static integer c__5 = 5;
     integer j, m, n;
     doublereal s[50]	/* was [25][2] */, u[5000]	/* was [500][10] */, 
 	    v[6250]	/* was [250][25] */;
-    extern /* Subroutine */ int av_(integer *, integer *, doublereal *, 
-	    doublereal *);
     doublereal ax[500];
     integer ido, ncv, nev;
-    extern /* Subroutine */ int atv_(integer *, integer *, doublereal *, 
-	    doublereal *);
     doublereal tol;
     char bmat[1];
     integer info;
@@ -63,33 +35,15 @@ static integer c__5 = 5;
     integer ierr;
     doublereal temp;
     integer mode1;
-    extern doublereal dnrm2_(integer *, doublereal *, integer *);
-    extern /* Subroutine */ int dscal_(integer *, doublereal *, doublereal *, 
-	    integer *);
     doublereal sigma;
     char which[2];
     doublereal resid[250];
-    extern /* Subroutine */ int dcopy_(integer *, doublereal *, integer *, 
-	    doublereal *, integer *);
     integer nconv;
-    extern /* Subroutine */ int daxpy_(integer *, doublereal *, doublereal *, 
-	    integer *, doublereal *, integer *);
     doublereal workd[750];
-    extern /* Subroutine */ int dmout_(integer *, integer *, integer *, 
-	    doublereal *, integer *, integer *, char *, ftnlen);
     integer ipntr[11];
     doublereal workl[825];
     integer iparam[11];
     logical select[25];
-    extern /* Subroutine */ int dsaupd_(integer *, char *, integer *, char *, 
-	    integer *, doublereal *, doublereal *, integer *, doublereal *, 
-	    integer *, integer *, integer *, doublereal *, doublereal *, 
-	    integer *, integer *, ftnlen, ftnlen), dseupd_(logical *, char *, 
-	    logical *, doublereal *, doublereal *, integer *, doublereal *, 
-	    char *, integer *, char *, integer *, doublereal *, doublereal *, 
-	    integer *, doublereal *, integer *, integer *, integer *, 
-	    doublereal *, doublereal *, integer *, integer *, ftnlen, ftnlen, 
-	    ftnlen);
     integer ishfts, maxitr, lworkl;
 
     /* Fortran I/O blocks */
@@ -124,8 +78,6 @@ static integer c__5 = 5;
     static cilist io___58 = { 0, 6, 0, 0, 0 };
     static cilist io___59 = { 0, 6, 0, 0, 0 };
     static cilist io___60 = { 0, 6, 0, 0, 0 };
-
-
 
 /*     This example program is intended to illustrate the */
 /*     the use of ARPACK to compute the Singular Value Decomposition. */
@@ -259,27 +211,6 @@ static integer c__5 = 5;
 /*     | MAXNCV: Maximum NCV allowed                          | */
 /*     %------------------------------------------------------% */
 
-
-/*     %--------------% */
-/*     | Local Arrays | */
-/*     %--------------% */
-
-
-/*     %---------------% */
-/*     | Local Scalars | */
-/*     %---------------% */
-
-
-/*     %------------% */
-/*     | Parameters | */
-/*     %------------% */
-
-
-/*     %-----------------------------% */
-/*     | BLAS & LAPACK routines used | */
-/*     %-----------------------------% */
-
-
 /*     %-----------------------% */
 /*     | Executable Statements | */
 /*     %-----------------------% */
@@ -293,7 +224,6 @@ static integer c__5 = 5;
 /*     | time spent in the various stages of computation | */
 /*     | given by setting msaupd = 1.                    | */
 /*     %-------------------------------------------------% */
-
 
 /* \SCCS Information: @(#) */
 /* FILE: debug.h   SID: 2.3   DATE OF SID: 11/16/95   RELEASE: 2 */
@@ -700,7 +630,6 @@ L9000:
     return 0;
 } /* MAIN__ */
 
-
 /* ------------------------------------------------------------------ */
 /*     matrix vector subroutines */
 
@@ -724,7 +653,7 @@ L9000:
 
 /* ------------------------------------------------------------------- */
 
-/* Subroutine */ int av_(integer *m, integer *n, doublereal *x, doublereal *w)
+int av_(integer *m, integer *n, doublereal *x, doublereal *w)
 {
     /* System generated locals */
     integer i__1, i__2;
@@ -734,9 +663,7 @@ L9000:
     integer i__, j;
     doublereal k, s, t;
 
-
 /*     computes  w <- A*x */
-
 
     /* Parameter adjustments */
     --w;
@@ -774,10 +701,9 @@ L9000:
     return 0;
 } /* av_ */
 
-
 /* ------------------------------------------------------------------- */
 
-/* Subroutine */ int atv_(integer *m, integer *n, doublereal *w, doublereal *
+int atv_(integer *m, integer *n, doublereal *w, doublereal *
 	y)
 {
     /* System generated locals */
@@ -788,9 +714,7 @@ L9000:
     integer i__, j;
     doublereal k, s, t;
 
-
 /*     computes  y <- A'*w */
-
 
     /* Parameter adjustments */
     --w;
@@ -828,4 +752,3 @@ L9000:
     return 0;
 } /* atv_ */
 
-/* Main program alias */ int dsvd_ () { MAIN__ (); return 0; }

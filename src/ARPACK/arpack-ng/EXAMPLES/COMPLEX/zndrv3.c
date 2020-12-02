@@ -1,41 +1,13 @@
-/* EXAMPLES\COMPLEX\zndrv3.f -- translated by f2c (version 20100827).
-   You must link the resulting object file with libf2c:
-	on Microsoft Windows system, link with libf2c.lib;
-	on Linux or Unix systems, link with .../path/to/libf2c.a -lm
-	or, if you install libf2c.a in a standard place, with -lf2c -lm
-	-- in that order, at the end of the command line, as in
-		cc *.o -lf2c -lm
-	Source for libf2c is in /netlib/f2c/libf2c.zip, e.g.,
+/* EXAMPLES\COMPLEX\zndrv3.f -- translated by f2c (version 20100827). */
 
-		http://www.netlib.org/f2c/libf2c.zip
-*/
+#include "arpack.h"
 
-#include "f2c.h"
-
-/* Table of constant values */
-
-static doublecomplex c_b2 = {1.,0.};
-static integer c__9 = 9;
-static integer c__1 = 1;
-static integer c__256 = 256;
-static integer c__3 = 3;
-static integer c__6 = 6;
-static integer c__25 = 25;
-static integer c_n6 = -6;
-static integer c__5 = 5;
-static doublecomplex c_b163 = {2.,0.};
-static doublecomplex c_b164 = {10.,0.};
-
-/* Main program */ int MAIN__(void)
+int main()
 {
     /* System generated locals */
     integer i__1, i__2;
     doublecomplex z__1, z__2;
 
-    /* Builtin functions */
-    integer s_wsle(cilist *), do_lio(integer *, integer *, char *, ftnlen), 
-	    e_wsle(void);
-    /* Subroutine */ int s_copy(char *, char *, ftnlen, ftnlen);
     void z_div(doublecomplex *, doublecomplex *, doublecomplex *);
     double d_imag(doublecomplex *);
 
@@ -44,11 +16,7 @@ static doublecomplex c_b164 = {10.,0.};
     integer j, n;
     doublecomplex v[6400]	/* was [256][25] */, dd[256], dl[256];
     doublereal rd[75]	/* was [25][3] */;
-    extern /* Subroutine */ int av_(integer *, doublecomplex *, doublecomplex 
-	    *);
     doublecomplex ax[256], du[256];
-    extern /* Subroutine */ int mv_(integer *, doublecomplex *, doublecomplex 
-	    *);
     doublecomplex mx[256], du2[256];
     integer ido, ncv, nev;
     doublereal tol;
@@ -61,37 +29,15 @@ static doublecomplex c_b164 = {10.,0.};
     doublecomplex resid[256];
     integer nconv;
     doublecomplex workd[768];
-    extern /* Subroutine */ int dmout_(integer *, integer *, integer *, 
-	    doublereal *, integer *, integer *, char *, ftnlen);
     integer ipntr[14];
     doublecomplex workl[2000];
     doublereal rwork[256];
-    extern /* Subroutine */ int zaxpy_(integer *, doublecomplex *, 
-	    doublecomplex *, integer *, doublecomplex *, integer *);
-    extern doublereal dlapy2_(doublereal *, doublereal *), dznrm2_(integer *, 
-	    doublecomplex *, integer *);
     integer iparam[11];
     logical select[25];
     integer ishfts;
-    extern /* Subroutine */ int znaupd_(integer *, char *, integer *, char *, 
-	    integer *, doublereal *, doublecomplex *, integer *, 
-	    doublecomplex *, integer *, integer *, integer *, doublecomplex *,
-	     doublecomplex *, integer *, doublereal *, integer *, ftnlen, 
-	    ftnlen);
     integer maxitr;
-    extern /* Subroutine */ int zneupd_(logical *, char *, logical *, 
-	    doublecomplex *, doublecomplex *, integer *, doublecomplex *, 
-	    doublecomplex *, char *, integer *, char *, integer *, doublereal 
-	    *, doublecomplex *, integer *, doublecomplex *, integer *, 
-	    integer *, integer *, doublecomplex *, doublecomplex *, integer *,
-	     doublereal *, integer *, ftnlen, ftnlen, ftnlen);
     integer lworkl;
     doublecomplex workev[50];
-    extern /* Subroutine */ int zgttrf_(integer *, doublecomplex *, 
-	    doublecomplex *, doublecomplex *, doublecomplex *, integer *, 
-	    integer *), zgttrs_(char *, integer *, integer *, doublecomplex *,
-	     doublecomplex *, doublecomplex *, doublecomplex *, integer *, 
-	    doublecomplex *, integer *, integer *, ftnlen);
 
     /* Fortran I/O blocks */
     static cilist io___4 = { 0, 6, 0, 0, 0 };
@@ -130,8 +76,6 @@ static doublecomplex c_b164 = {10.,0.};
     static cilist io___70 = { 0, 6, 0, 0, 0 };
     static cilist io___71 = { 0, 6, 0, 0, 0 };
     static cilist io___72 = { 0, 6, 0, 0, 0 };
-
-
 
 /*     Simple program to illustrate the idea of reverse communication */
 /*     in inverse mode for a generalized complex nonsymmetric eigenvalue */
@@ -192,27 +136,6 @@ static doublecomplex c_b164 = {10.,0.};
 /*     | MAXNCV: Maximum NCV allowed | */
 /*     %-----------------------------% */
 
-
-/*     %--------------% */
-/*     | Local Arrays | */
-/*     %--------------% */
-
-
-/*     %---------------% */
-/*     | Local Scalars | */
-/*     %---------------% */
-
-
-/*     %------------% */
-/*     | Parameters | */
-/*     %------------% */
-
-
-/*     %-----------------------------% */
-/*     | BLAS & LAPACK routines used | */
-/*     %-----------------------------% */
-
-
 /*     %-----------------------% */
 /*     | Executable Statements | */
 /*     %-----------------------% */
@@ -265,7 +188,7 @@ static doublecomplex c_b164 = {10.,0.};
 
     i__1 = n + 1;
     z__2.r = (doublereal) i__1, z__2.i = 0.;
-    z_div(&z__1, &c_b2, &z__2);
+    z_div(&z__1, &c_b137, &z__2);
     h__.r = z__1.r, h__.i = z__1.i;
     i__1 = n - 1;
     for (j = 1; j <= i__1; ++j) {
@@ -616,12 +539,11 @@ L9000:
     return 0;
 } /* MAIN__ */
 
-
 /* ========================================================================== */
 
 /*     matrix vector multiplication subroutine */
 
-/* Subroutine */ int av_(integer *n, doublecomplex *v, doublecomplex *w)
+int av_(integer *n, doublecomplex *v, doublecomplex *w)
 {
     /* System generated locals */
     integer i__1, i__2, i__3, i__4, i__5;
@@ -635,7 +557,6 @@ L9000:
     integer j;
     doublecomplex s, dd, dl, du;
 
-
 /*     Compute the matrix vector multiplication y<---A*x */
 /*     where A is the stiffness matrix formed by using piecewise linear */
 /*     elements on [0,1]. */
@@ -647,11 +568,11 @@ L9000:
     /* Function Body */
     i__1 = *n + 1;
     z__2.r = (doublereal) i__1, z__2.i = 0.;
-    z_div(&z__1, &c_b2, &z__2);
+    z_div(&z__1, &c_b137, &z__2);
     h__.r = z__1.r, h__.i = z__1.i;
-    z_div(&z__1, &c_b164, &c_b163);
+    z_div(&z__1, &c_b164_dx, &c_b3_dx);
     s.r = z__1.r, s.i = z__1.i;
-    z_div(&z__1, &c_b163, &h__);
+    z_div(&z__1, &c_b3_dx, &h__);
     dd.r = z__1.r, dd.i = z__1.i;
     z__3.r = -1., z__3.i = -0.;
     z_div(&z__2, &z__3, &h__);
@@ -698,7 +619,7 @@ L9000:
 } /* av_ */
 
 /* ------------------------------------------------------------------------ */
-/* Subroutine */ int mv_(integer *n, doublecomplex *v, doublecomplex *w)
+int mv_(integer *n, doublecomplex *v, doublecomplex *w)
 {
     /* System generated locals */
     integer i__1, i__2, i__3, i__4, i__5;
@@ -710,9 +631,6 @@ L9000:
     /* Local variables */
     doublecomplex h__;
     integer j;
-    extern /* Subroutine */ int zscal_(integer *, doublecomplex *, 
-	    doublecomplex *, integer *);
-
 
 /*     Compute the matrix vector multiplication y<---M*x */
 /*     where M is the mass matrix formed by using piecewise linear elements */
@@ -756,10 +674,9 @@ L9000:
 
     i__1 = *n + 1;
     z__2.r = (doublereal) i__1, z__2.i = 0.;
-    z_div(&z__1, &c_b2, &z__2);
+    z_div(&z__1, &c_b137, &z__2);
     h__.r = z__1.r, h__.i = z__1.i;
     zscal_(n, &h__, &w[1], &c__1);
     return 0;
 } /* mv_ */
 
-/* Main program alias */ int zndrv3_ () { MAIN__ (); return 0; }

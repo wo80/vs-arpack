@@ -1,46 +1,18 @@
-/* EXAMPLES\NONSYM\sndrv3.f -- translated by f2c (version 20100827).
-   You must link the resulting object file with libf2c:
-	on Microsoft Windows system, link with libf2c.lib;
-	on Linux or Unix systems, link with .../path/to/libf2c.a -lm
-	or, if you install libf2c.a in a standard place, with -lf2c -lm
-	-- in that order, at the end of the command line, as in
-		cc *.o -lf2c -lm
-	Source for libf2c is in /netlib/f2c/libf2c.zip, e.g.,
+/* EXAMPLES\NONSYM\sndrv3.f -- translated by f2c (version 20100827). */
 
-		http://www.netlib.org/f2c/libf2c.zip
-*/
+#include "arpack.h"
 
-#include "f2c.h"
-
-/* Table of constant values */
-
-static integer c__9 = 9;
-static integer c__1 = 1;
-static integer c__256 = 256;
-static integer c__3 = 3;
-static integer c__6 = 6;
-static integer c__25 = 25;
-static integer c_n6 = -6;
-static integer c__4 = 4;
-
-/* Main program */ int MAIN__(void)
+int main()
 {
     /* System generated locals */
     integer i__1;
     real r__1;
 
-    /* Builtin functions */
-    integer s_wsle(cilist *), do_lio(integer *, integer *, char *, ftnlen), 
-	    e_wsle(void);
-    /* Subroutine */ int s_copy(char *, char *, ftnlen, ftnlen);
-
     /* Local variables */
     real d__[75]	/* was [25][3] */, h__;
     integer j, n;
     real v[6400]	/* was [256][25] */, md[256], me[255];
-    extern /* Subroutine */ int av_(integer *, real *, real *);
     real ax[256];
-    extern /* Subroutine */ int mv_(integer *, real *, real *);
     real mx[256];
     integer ido, ncv, nev;
     real tol;
@@ -48,7 +20,6 @@ static integer c__4 = 4;
     integer mode, info;
     logical rvec;
     integer ierr;
-    extern doublereal snrm2_(integer *, real *, integer *);
     char which[2];
     real resid[256];
     integer nconv;
@@ -56,27 +27,12 @@ static integer c__4 = 4;
     logical first;
     integer ipntr[14];
     real workl[2025];
-    extern /* Subroutine */ int saxpy_(integer *, real *, real *, integer *, 
-	    real *, integer *), smout_(integer *, integer *, integer *, real *
-	    , integer *, integer *, char *, ftnlen);
-    extern doublereal slapy2_(real *, real *);
     integer iparam[11];
     real sigmai;
     logical select[25];
     real sigmar;
-    extern /* Subroutine */ int snaupd_(integer *, char *, integer *, char *, 
-	    integer *, real *, real *, integer *, real *, integer *, integer *
-	    , integer *, real *, real *, integer *, integer *, ftnlen, ftnlen)
-	    , sneupd_(logical *, char *, logical *, real *, real *, real *, 
-	    integer *, real *, real *, real *, char *, integer *, char *, 
-	    integer *, real *, real *, integer *, real *, integer *, integer *
-	    , integer *, real *, real *, integer *, integer *, ftnlen, ftnlen,
-	     ftnlen);
     integer ishfts, maxitr, lworkl;
     real workev[75];
-    extern /* Subroutine */ int spttrf_(integer *, real *, real *, integer *),
-	     spttrs_(integer *, integer *, real *, real *, real *, integer *, 
-	    integer *);
 
     /* Fortran I/O blocks */
     static cilist io___4 = { 0, 6, 0, 0, 0 };
@@ -115,8 +71,6 @@ static integer c__4 = 4;
     static cilist io___67 = { 0, 6, 0, 0, 0 };
     static cilist io___68 = { 0, 6, 0, 0, 0 };
     static cilist io___69 = { 0, 6, 0, 0, 0 };
-
-
 
 /*     Simple program to illustrate the idea of reverse communication */
 /*     in inverse mode for a generalized nonsymmetric eigenvalue problem. */
@@ -176,31 +130,6 @@ static integer c__4 = 4;
 /*     | MAXNEV: Maximum NEV allowed | */
 /*     | MAXNCV: Maximum NCV allowed | */
 /*     %-----------------------------% */
-
-
-/*     %--------------% */
-/*     | Local Arrays | */
-/*     %--------------% */
-
-
-/*     %---------------% */
-/*     | Local Scalars | */
-/*     %---------------% */
-
-
-/*     %------------% */
-/*     | Parameters | */
-/*     %------------% */
-
-
-/*     %-----------------------------% */
-/*     | BLAS & LAPACK routines used | */
-/*     %-----------------------------% */
-
-/*     %--------------------% */
-/*     | Intrinsic function | */
-/*     %--------------------% */
-
 
 /*     %-----------------------% */
 /*     | Executable Statements | */
@@ -377,7 +306,6 @@ L10:
 	goto L10;
 
     }
-
 
 /*     %-----------------------------------------% */
 /*     | Either we have convergence, or there is | */
@@ -632,12 +560,11 @@ L9000:
     return 0;
 } /* MAIN__ */
 
-
 /* ========================================================================== */
 
 /*     matrix vector multiplication subroutine */
 
-/* Subroutine */ int av_(integer *n, real *v, real *w)
+int av_(integer *n, real *v, real *w)
 {
     /* System generated locals */
     integer i__1;
@@ -646,7 +573,6 @@ L9000:
     real h__;
     integer j;
     real s, dd, dl, du;
-
 
 /*     Compute the matrix vector multiplication y<---A*x */
 /*     where A is stiffness matrix obtained from the finite element */
@@ -677,7 +603,7 @@ L9000:
 } /* av_ */
 
 /* ------------------------------------------------------------------------ */
-/* Subroutine */ int mv_(integer *n, real *v, real *w)
+int mv_(integer *n, real *v, real *w)
 {
     /* System generated locals */
     integer i__1;
@@ -685,8 +611,6 @@ L9000:
     /* Local variables */
     real h__;
     integer j;
-    extern /* Subroutine */ int sscal_(integer *, real *, real *, integer *);
-
 
 /*     Compute the matrix vector multiplication y<---M*x */
 /*     where M is the mass matrix formed by using piecewise linear */
@@ -710,4 +634,3 @@ L9000:
     return 0;
 } /* mv_ */
 
-/* Main program alias */ int sndrv3_ () { MAIN__ (); return 0; }

@@ -1,18 +1,6 @@
-/* EXAMPLES\NONSYM\dndrv4.f -- translated by f2c (version 20100827).
-   You must link the resulting object file with libf2c:
-	on Microsoft Windows system, link with libf2c.lib;
-	on Linux or Unix systems, link with .../path/to/libf2c.a -lm
-	or, if you install libf2c.a in a standard place, with -lf2c -lm
-	-- in that order, at the end of the command line, as in
-		cc *.o -lf2c -lm
-	Source for libf2c is in /netlib/f2c/libf2c.zip, e.g.,
+/* EXAMPLES\NONSYM\dndrv4.f -- translated by f2c (version 20100827). */
 
-		http://www.netlib.org/f2c/libf2c.zip
-*/
-
-#include "f2c.h"
-
-/* Common Block Declarations */
+#include "arpack.h"
 
 struct {
     doublereal rho;
@@ -20,36 +8,18 @@ struct {
 
 #define convct_1 convct_
 
-/* Table of constant values */
-
-static integer c__9 = 9;
-static integer c__1 = 1;
-static integer c__256 = 256;
-static integer c__3 = 3;
-static integer c__6 = 6;
-static integer c__25 = 25;
-static integer c_n6 = -6;
-static integer c__5 = 5;
-
-/* Main program */ int MAIN__(void)
+int main()
 {
     /* System generated locals */
     integer i__1;
     doublereal d__1;
-
-    /* Builtin functions */
-    integer s_wsle(cilist *), do_lio(integer *, integer *, char *, ftnlen), 
-	    e_wsle(void);
-    /* Subroutine */ int s_copy(char *, char *, ftnlen, ftnlen);
 
     /* Local variables */
     doublereal d__[75]	/* was [25][3] */, h__;
     integer j, n;
     doublereal s, v[6400]	/* was [256][25] */, s1, s2, s3, dd[256], dl[
 	    256];
-    extern /* Subroutine */ int av_(integer *, doublereal *, doublereal *);
     doublereal ax[256], du[256];
-    extern /* Subroutine */ int mv_(integer *, doublereal *, doublereal *);
     doublereal mx[256], du2[256];
     integer ido, ncv, nev;
     doublereal tol;
@@ -57,41 +27,18 @@ static integer c__5 = 5;
     integer mode, info;
     logical rvec;
     integer ierr, ipiv[256];
-    extern doublereal dnrm2_(integer *, doublereal *, integer *);
     char which[2];
     doublereal resid[256];
-    extern /* Subroutine */ int dcopy_(integer *, doublereal *, integer *, 
-	    doublereal *, integer *);
     integer nconv;
-    extern /* Subroutine */ int daxpy_(integer *, doublereal *, doublereal *, 
-	    integer *, doublereal *, integer *);
     doublereal workd[768];
     logical first;
-    extern /* Subroutine */ int dmout_(integer *, integer *, integer *, 
-	    doublereal *, integer *, integer *, char *, ftnlen);
     integer ipntr[14];
     doublereal workl[2025];
-    extern doublereal dlapy2_(doublereal *, doublereal *);
     integer iparam[11];
     doublereal sigmai;
-    extern /* Subroutine */ int dnaupd_(integer *, char *, integer *, char *, 
-	    integer *, doublereal *, doublereal *, integer *, doublereal *, 
-	    integer *, integer *, integer *, doublereal *, doublereal *, 
-	    integer *, integer *, ftnlen, ftnlen);
     logical select[25];
-    extern /* Subroutine */ int dneupd_(logical *, char *, logical *, 
-	    doublereal *, doublereal *, doublereal *, integer *, doublereal *,
-	     doublereal *, doublereal *, char *, integer *, char *, integer *,
-	     doublereal *, doublereal *, integer *, doublereal *, integer *, 
-	    integer *, integer *, doublereal *, doublereal *, integer *, 
-	    integer *, ftnlen, ftnlen, ftnlen);
     doublereal sigmar;
-    extern /* Subroutine */ int dgttrf_(integer *, doublereal *, doublereal *,
-	     doublereal *, doublereal *, integer *, integer *);
     integer ishfts, maxitr;
-    extern /* Subroutine */ int dgttrs_(char *, integer *, integer *, 
-	    doublereal *, doublereal *, doublereal *, doublereal *, integer *,
-	     doublereal *, integer *, integer *, ftnlen);
     integer lworkl;
     doublereal workev[75];
 
@@ -135,8 +82,6 @@ static integer c__5 = 5;
     static cilist io___77 = { 0, 6, 0, 0, 0 };
     static cilist io___78 = { 0, 6, 0, 0, 0 };
     static cilist io___79 = { 0, 6, 0, 0, 0 };
-
-
 
 /*     Simple program to illustrate the idea of reverse communication */
 /*     in shift-invert mode for a generalized nonsymmetric eigenvalue */
@@ -201,34 +146,8 @@ static integer c__5 = 5;
 /*     | MAXNCV: Maximum NCV allowed | */
 /*     %-----------------------------% */
 
-
-/*     %--------------% */
-/*     | Local Arrays | */
-/*     %--------------% */
-
-
-/*     %---------------% */
-/*     | Local Scalars | */
-/*     %---------------% */
-
-
-/*     %-----------------------------% */
-/*     | BLAS & LAPACK routines used | */
-/*     %-----------------------------% */
-
-
-/*     %--------------------% */
-/*     | Intrinsic function | */
-/*     %--------------------% */
-
-
-/*     %------------% */
-/*     | Parameters | */
-/*     %------------% */
-
-
 /*     %-----------------------% */
-/*     | Executable statements | */
+/*     | Executable Statements | */
 /*     %-----------------------% */
 
 /*     %----------------------------------------------------% */
@@ -457,7 +376,6 @@ L20:
 	goto L20;
 
     }
-
 
 /*     %-----------------------------------------% */
 /*     | Either we have convergence, or there is | */
@@ -710,12 +628,11 @@ L9000:
     return 0;
 } /* MAIN__ */
 
-
 /* ========================================================================== */
 
 /*     matrix vector multiplication subroutine */
 
-/* Subroutine */ int mv_(integer *n, doublereal *v, doublereal *w)
+int mv_(integer *n, doublereal *v, doublereal *w)
 {
     /* System generated locals */
     integer i__1;
@@ -723,9 +640,6 @@ L9000:
     /* Local variables */
     doublereal h__;
     integer j;
-    extern /* Subroutine */ int dscal_(integer *, doublereal *, doublereal *, 
-	    integer *);
-
 
 /*     Compute the matrix vector multiplication y<---M*x */
 /*     where M is mass matrix formed by using piecewise linear elements */
@@ -750,7 +664,7 @@ L9000:
 } /* mv_ */
 
 /* ------------------------------------------------------------------ */
-/* Subroutine */ int av_(integer *n, doublereal *v, doublereal *w)
+int av_(integer *n, doublereal *v, doublereal *w)
 {
     /* System generated locals */
     integer i__1;
@@ -759,7 +673,6 @@ L9000:
     doublereal h__;
     integer j;
     doublereal s, dd, dl, du;
-
 
 /*     Compute the matrix vector multiplication y<---A*x */
 /*     where A is obtained from the finite element discretization of the */
@@ -790,4 +703,3 @@ L9000:
     return 0;
 } /* av_ */
 
-/* Main program alias */ int dndrv4_ () { MAIN__ (); return 0; }
