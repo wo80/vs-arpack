@@ -2,7 +2,7 @@
 
 #include "arpack.h"
 
-int main()
+int dndrv1()
 {
     /* System generated locals */
     integer i__1;

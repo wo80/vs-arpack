@@ -8,7 +8,7 @@ struct {
 
 #define convct_1 convct_
 
-int main()
+int sndrv4()
 {
     /* System generated locals */
     integer i__1;

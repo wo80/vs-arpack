@@ -10,7 +10,7 @@ struct {
 
 #define debug_1 debug_
 
-int main()
+int znsimp()
 {
     /* System generated locals */
     integer i__1, i__2;

@@ -2,7 +2,7 @@
 
 #include "arpack.h"
 
-int main()
+int ssdrv4()
 {
     /* System generated locals */
     integer i__1;
