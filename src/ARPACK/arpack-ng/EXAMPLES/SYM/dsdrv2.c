@@ -84,64 +84,63 @@ int dsdrv2()
 /*         boundary condition. */
 /*     ... OP = (inv[A - sigma*I]) and  B = I. */
 /*     ... Use mode 3 of DSAUPD. */
+/**
+ * \BeginLib
+ *
+ * \Routines called:
+ *     dsaupd  ARPACK reverse communication interface routine.
+ *     dseupd  ARPACK routine that returns Ritz values and (optionally)
+ *             Ritz vectors.
+ *     dgttrf  LAPACK tridiagonal factorization routine.
+ *     dgttrs  LAPACK tridiagonal solve routine.
+ *     daxpy   daxpy   Level 1 BLAS that computes y <- alpha*x+y.
+ *     dnrm2   Level 1 BLAS that computes the norm of a vector.
+ *     av      Matrix vector multiplication routine that computes A*x.
+ *
+ * \Author
+ *     Richard Lehoucq
+ *     Danny Sorensen
+ *     Chao Yang
+ *     Dept. of Computational &
+ *     Applied Mathematics
+ *     Rice University
+ *     Houston, Texas
+ *
+ * \SCCS Information: @(#)
+ * FILE: sdrv2.F   SID: 2.5   DATE OF SID: 10/17/00   RELEASE: 2
+ *
+ * \Remarks
+ *     1. None
+ *
+ * \EndLib
+ */
+     /* --------------------------- */
+     /* Define leading dimensions   */
+     /* for all arrays.             */
+     /* MAXN:   Maximum dimension   */
+     /*         of the A allowed.   */
+     /* MAXNEV: Maximum NEV allowed */
+     /* MAXNCV: Maximum NCV allowed */
+     /* --------------------------- */
 
-/* \BeginLib */
+     /* --------------------- */
+     /* Executable Statements */
+     /* --------------------- */
 
-/* \Routines called: */
-/*     dsaupd  ARPACK reverse communication interface routine. */
-/*     dseupd  ARPACK routine that returns Ritz values and (optionally) */
-/*             Ritz vectors. */
-/*     dgttrf  LAPACK tridiagonal factorization routine. */
-/*     dgttrs  LAPACK tridiagonal solve routine. */
-/*     daxpy   daxpy   Level 1 BLAS that computes y <- alpha*x+y. */
-/*     dnrm2   Level 1 BLAS that computes the norm of a vector. */
-/*     av      Matrix vector multiplication routine that computes A*x. */
-
-/* \Author */
-/*     Richard Lehoucq */
-/*     Danny Sorensen */
-/*     Chao Yang */
-/*     Dept. of Computational & */
-/*     Applied Mathematics */
-/*     Rice University */
-/*     Houston, Texas */
-
-/* \SCCS Information: @(#) */
-/* FILE: sdrv2.F   SID: 2.5   DATE OF SID: 10/17/00   RELEASE: 2 */
-
-/* \Remarks */
-/*     1. None */
-
-/* \EndLib */
-/* ---------------------------------------------------------------------- */
-
-/*     %-----------------------------% */
-/*     | Define leading dimensions   | */
-/*     | for all arrays.             | */
-/*     | MAXN:   Maximum dimension   | */
-/*     |         of the A allowed.   | */
-/*     | MAXNEV: Maximum NEV allowed | */
-/*     | MAXNCV: Maximum NCV allowed | */
-/*     %-----------------------------% */
-
-/*     %-----------------------% */
-/*     | Executable Statements | */
-/*     %-----------------------% */
-
-/*     %----------------------------------------------------% */
-/*     | The number N is the dimension of the matrix.  A    | */
-/*     | standard eigenvalue problem is solved (BMAT = 'I'. | */
-/*     | NEV is the number of eigenvalues (closest to       | */
-/*     | SIGMA) to be approximated.  Since the shift-invert | */
-/*     | mode is used, WHICH is set to 'LM'.  The user can  | */
-/*     | modify NEV, NCV, SIGMA to solve problems of        | */
-/*     | different sizes, and to get different parts of the | */
-/*     | spectrum.  However, The following conditions must  | */
-/*     | be satisfied:                                      | */
-/*     |                   N <= MAXN,                       | */
-/*     |                 NEV <= MAXNEV,                     | */
-/*     |             NEV + 1 <= NCV <= MAXNCV               | */
-/*     %----------------------------------------------------% */
+     /* -------------------------------------------------- */
+     /* The number N is the dimension of the matrix.  A    */
+     /* standard eigenvalue problem is solved (BMAT = 'I'. */
+     /* NEV is the number of eigenvalues (closest to       */
+     /* SIGMA) to be approximated.  Since the shift-invert */
+     /* mode is used, WHICH is set to 'LM'.  The user can  */
+     /* modify NEV, NCV, SIGMA to solve problems of        */
+     /* different sizes, and to get different parts of the */
+     /* spectrum.  However, The following conditions must  */
+     /* be satisfied:                                      */
+     /*                   N <= MAXN,                       */
+     /*                 NEV <= MAXNEV,                     */
+     /*             NEV + 1 <= NCV <= MAXNCV               */
+     /* -------------------------------------------------- */
 
     n = 100;
     nev = 4;
@@ -170,32 +169,32 @@ int dsdrv2()
     s_copy(which, "LM", (ftnlen)2, (ftnlen)2);
     sigma = 0.;
 
-/*     %--------------------------------------------------% */
-/*     | The work array WORKL is used in DSAUPD as        | */
-/*     | workspace.  Its dimension LWORKL is set as       | */
-/*     | illustrated below.  The parameter TOL determines | */
-/*     | the stopping criterion.  If TOL<=0, machine      | */
-/*     | precision is used.  The variable IDO is used for | */
-/*     | reverse communication and is initially set to 0. | */
-/*     | Setting INFO=0 indicates that a random vector is | */
-/*     | generated in DSAUPD to start the Arnoldi         | */
-/*     | iteration.                                       | */
-/*     %--------------------------------------------------% */
+     /* ------------------------------------------------ */
+     /* The work array WORKL is used in DSAUPD as        */
+     /* workspace.  Its dimension LWORKL is set as       */
+     /* illustrated below.  The parameter TOL determines */
+     /* the stopping criterion.  If TOL<=0, machine      */
+     /* precision is used.  The variable IDO is used for */
+     /* reverse communication and is initially set to 0. */
+     /* Setting INFO=0 indicates that a random vector is */
+     /* generated in DSAUPD to start the Arnoldi         */
+     /* iteration.                                       */
+     /* ------------------------------------------------ */
 
     lworkl = ncv * (ncv + 8);
     tol = 0.;
     ido = 0;
     info = 0;
 
-/*     %---------------------------------------------------% */
-/*     | This program uses exact shifts with respect to    | */
-/*     | the current Hessenberg matrix (IPARAM(1) = 1).    | */
-/*     | IPARAM(3) specifies the maximum number of Arnoldi | */
-/*     | iterations allowed.  Mode 3 of DSAUPD is used     | */
-/*     | (IPARAM(7) = 3).  All these options may be        | */
-/*     | changed by the user. For details, see the         | */
-/*     | documentation in DSAUPD.                          | */
-/*     %---------------------------------------------------% */
+     /* ------------------------------------------------- */
+     /* This program uses exact shifts with respect to    */
+     /* the current Hessenberg matrix (IPARAM(1) = 1).    */
+     /* IPARAM(3) specifies the maximum number of Arnoldi */
+     /* iterations allowed.  Mode 3 of DSAUPD is used     */
+     /* (IPARAM(7) = 3).  All these options may be        */
+     /* changed by the user. For details, see the         */
+     /* documentation in DSAUPD.                          */
+     /* ------------------------------------------------- */
 
     ishfts = 1;
     maxitr = 300;
@@ -205,10 +204,10 @@ int dsdrv2()
     iparam[2] = maxitr;
     iparam[6] = mode;
 
-/*     %-----------------------------------------------------% */
-/*     | Call LAPACK routine to factor (A-SIGMA*I), where A  | */
-/*     | is the 1-d Laplacian.                               | */
-/*     %-----------------------------------------------------% */
+     /* --------------------------------------------------- */
+     /* Call LAPACK routine to factor (A-SIGMA*I), where A  */
+     /* is the 1-d Laplacian.                               */
+     /* --------------------------------------------------- */
 
     h2 = 1. / (double) ((n + 1) * (n + 1));
     i__1 = n;
@@ -232,18 +231,18 @@ int dsdrv2()
 	goto L9000;
     }
 
-/*     %-------------------------------------------% */
-/*     | M A I N   L O O P (Reverse communication) | */
-/*     %-------------------------------------------% */
+     /* ----------------------------------------- */
+     /* M A I N   L O O P (Reverse communication) */
+     /* ----------------------------------------- */
 
 L10:
 
-/*        %---------------------------------------------% */
-/*        | Repeatedly call the routine DSAUPD and take | */
-/*        | actions indicated by parameter IDO until    | */
-/*        | either convergence is indicated or maxitr   | */
-/*        | has been exceeded.                          | */
-/*        %---------------------------------------------% */
+        /* ------------------------------------------- */
+        /* Repeatedly call the routine DSAUPD and take */
+        /* actions indicated by parameter IDO until    */
+        /* either convergence is indicated or maxitr   */
+        /* has been exceeded.                          */
+        /* ------------------------------------------- */
 
     dsaupd_(&ido, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, 
 	    iparam, ipntr, workd, workl, &lworkl, &info, (ftnlen)1, (ftnlen)2)
@@ -251,13 +250,13 @@ L10:
 
     if (ido == -1 || ido == 1) {
 
-/*           %----------------------------------------% */
-/*           | Perform y <-- OP*x = inv[A-sigma*I]*x. | */
-/*           | The user only need the linear system   | */
-/*           | solver here that takes workd(ipntr(1)) | */
-/*           | as input, and returns the result to    | */
-/*           | workd(ipntr(2)).                       | */
-/*           %----------------------------------------% */
+           /* -------------------------------------- */
+           /* Perform y <-- OP*x = inv[A-sigma*I]*x. */
+           /* The user only need the linear system   */
+           /* solver here that takes workd(ipntr(1)) */
+           /* as input, and returns the result to    */
+           /* workd(ipntr(2)).                       */
+           /* -------------------------------------- */
 
 	dcopy_(&n, &workd[ipntr[0] - 1], &c__1, &workd[ipntr[1] - 1], &c__1);
 
@@ -277,25 +276,25 @@ L10:
 	    goto L9000;
 	}
 
-/*           %-----------------------------------------% */
-/*           | L O O P   B A C K to call DSAUPD again. | */
-/*           %-----------------------------------------% */
+           /* --------------------------------------- */
+           /* L O O P   B A C K to call DSAUPD again. */
+           /* --------------------------------------- */
 
 	goto L10;
 
     }
 
-/*     %----------------------------------------% */
-/*     | Either we have convergence or there is | */
-/*     | an error.                              | */
-/*     %----------------------------------------% */
+     /* -------------------------------------- */
+     /* Either we have convergence or there is */
+     /* an error.                              */
+     /* -------------------------------------- */
 
     if (info < 0) {
 
-/*        %----------------------------% */
-/*        | Error message.  Check the  | */
-/*        | documentation in DSAUPD    | */
-/*        %----------------------------% */
+        /* -------------------------- */
+        /* Error message.  Check the  */
+        /* documentation in DSAUPD    */
+        /* -------------------------- */
 
 	s_wsle(&io___37);
 	do_lio(&c__9, &c__1, " ", (ftnlen)1);
@@ -313,15 +312,15 @@ L10:
 
     } else {
 
-/*        %-------------------------------------------% */
-/*        | No fatal errors occurred.                 | */
-/*        | Post-Process using DSEUPD.                | */
-/*        |                                           | */
-/*        | Computed eigenvalues may be extracted.    | */
-/*        |                                           | */
-/*        | Eigenvectors may also be computed now if  | */
-/*        | desired.  (indicated by rvec = .true.)    | */
-/*        %-------------------------------------------% */
+        /* ----------------------------------------- */
+        /* No fatal errors occurred.                 */
+        /* Post-Process using DSEUPD.                */
+        /*                                           */
+        /* Computed eigenvalues may be extracted.    */
+        /*                                           */
+        /* Eigenvectors may also be computed now if  */
+        /* desired.  (indicated by rvec = .true.)    */
+        /* ----------------------------------------- */
 
 	rvec = true;
 
@@ -330,22 +329,22 @@ L10:
 		workd, workl, &lworkl, &ierr, (ftnlen)3, (ftnlen)1, (ftnlen)2)
 		;
 
-/*        %----------------------------------------------% */
-/*        | Eigenvalues are returned in the first column | */
-/*        | of the two dimensional array D and the       | */
-/*        | corresponding eigenvectors are returned in   | */
-/*        | the first NEV columns of the two dimensional | */
-/*        | array V if requested.  Otherwise, an         | */
-/*        | orthogonal basis for the invariant subspace  | */
-/*        | corresponding to the eigenvalues in D is     | */
-/*        | returned in V.                               | */
-/*        %----------------------------------------------% */
+        /* -------------------------------------------- */
+        /* Eigenvalues are returned in the first column */
+        /* of the two dimensional array D and the       */
+        /* corresponding eigenvectors are returned in   */
+        /* the first NEV columns of the two dimensional */
+        /* array V if requested.  Otherwise, an         */
+        /* orthogonal basis for the invariant subspace  */
+        /* corresponding to the eigenvalues in D is     */
+        /* returned in V.                               */
+        /* -------------------------------------------- */
 	if (ierr != 0) {
 
-/*           %------------------------------------% */
-/*           | Error condition:                   | */
-/*           | Check the documentation of DSEUPD. | */
-/*           %------------------------------------% */
+           /* ---------------------------------- */
+           /* Error condition:                   */
+           /* Check the documentation of DSEUPD. */
+           /* ---------------------------------- */
 
 	    s_wsle(&io___44);
 	    do_lio(&c__9, &c__1, " ", (ftnlen)1);
@@ -368,18 +367,18 @@ L10:
 	    i__1 = nconv;
 	    for (j = 1; j <= i__1; ++j) {
 
-/*              %---------------------------% */
-/*              | Compute the residual norm | */
-/*              |                           | */
-/*              |   ||  A*x - lambda*x ||   | */
-/*              |                           | */
-/*              | for the NCONV accurately  | */
-/*              | computed eigenvalues and  | */
-/*              | eigenvectors.  (iparam(5) | */
-/*              | indicates how many are    | */
-/*              | accurate to the requested | */
-/*              | tolerance)                | */
-/*              %---------------------------% */
+              /* ------------------------- */
+              /* Compute the residual norm */
+              /*                           */
+              /*   ||  A*x - lambda*x ||   */
+              /*                           */
+              /* for the NCONV accurately  */
+              /* computed eigenvalues and  */
+              /* eigenvectors.  (iparam(5) */
+              /* indicates how many are    */
+              /* accurate to the requested */
+              /* tolerance)                */
+              /* ------------------------- */
 
 		dsdrv2_av_(&n, &v[(j << 8) - 256], ax);
 		d__1 = -d__[j - 1];
@@ -390,17 +389,17 @@ L10:
 /* L30: */
 	    }
 
-/*           %-------------------------------% */
-/*           | Display computed residuals    | */
-/*           %-------------------------------% */
+           /* ----------------------------- */
+           /* Display computed residuals    */
+           /* ----------------------------- */
 
 	    dmout_(&c__6, &nconv, &c__2, d__, &c__25, &c_n6, "Ritz values an"
 		    "d relative residuals", (ftnlen)34);
 	}
 
-/*        %------------------------------------------% */
-/*        | Print additional convergence information | */
-/*        %------------------------------------------% */
+        /* ---------------------------------------- */
+        /* Print additional convergence information */
+        /* ---------------------------------------- */
 
 	if (info == 1) {
 	    s_wsle(&io___50);
@@ -484,9 +483,9 @@ L10:
 
     }
 
-/*     %---------------------------% */
-/*     | Done with program dsdrv2. | */
-/*     %---------------------------% */
+     /* ------------------------- */
+     /* Done with program dsdrv2. */
+     /* ------------------------- */
 
 L9000:
 

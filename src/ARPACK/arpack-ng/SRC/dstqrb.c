@@ -133,24 +133,6 @@ int dstqrb_(int32_t *n, double *d__, double *e,
     int32_t lendsv, nmaxit, icompz;
     double ssfmax, ssfmin;
 
-/*     %------------------% */
-/*     | Scalar Arguments | */
-/*     %------------------% */
-
-/*     .. parameters .. */
-/*     .. */
-/*     .. local scalars .. */
-/*     .. */
-/*     .. external functions .. */
-/*     .. */
-/*     .. external subroutines .. */
-/*     .. */
-/*     .. intrinsic functions .. */
-/*     .. */
-/*     .. executable statements .. */
-
-/*     test the input parameters. */
-
     /* Parameter adjustments */
     --work;
     --z__;
@@ -647,9 +629,9 @@ L160:
 L190:
     return 0;
 
-/*     %---------------% */
-/*     | End of dstqrb | */
-/*     %---------------% */
+     /* ------------- */
+     /* End of dstqrb */
+     /* ------------- */
 
 } /* dstqrb_ */
 

@@ -80,13 +80,13 @@ int ssesrt_(char *which, bool *apply, int32_t *n, float *x,
     int32_t i__, j, igap;
     float temp;
 
-/*     %------------------% */
-/*     | Scalar Arguments | */
-/*     %------------------% */
+     /* ---------------- */
+     /* Scalar Arguments */
+     /* ---------------- */
 
-/*     %-----------------------% */
-/*     | Executable Statements | */
-/*     %-----------------------% */
+     /* --------------------- */
+     /* Executable Statements */
+     /* --------------------- */
 
     /* Parameter adjustments */
     a_dim1 = *lda;
@@ -246,9 +246,9 @@ L120:
 L9000:
     return 0;
 
-/*     %---------------% */
-/*     | End of ssesrt | */
-/*     %---------------% */
+     /* ------------- */
+     /* End of ssesrt */
+     /* ------------- */
 
 } /* ssesrt_ */
 

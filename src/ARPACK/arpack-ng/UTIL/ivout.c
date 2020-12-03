@@ -58,8 +58,6 @@ int ivout_(int32_t *lout, int32_t *n, int32_t *ix, int32_t *
 /*     ... SPECIFICATIONS FOR ARGUMENTS */
 /*     ... */
 /*     ... SPECIFICATIONS FOR LOCAL VARIABLES */
-/*     ... */
-/*     ... SPECIFICATIONS INTRINSICS */
 
     /* Parameter adjustments */
     --ix;

@@ -67,8 +67,6 @@ int dvout_(int32_t *lout, int32_t *n, double *sx,
 /*     .. Intrinsic Functions .. */
 /*     .. */
 /*     .. Executable Statements .. */
-/*     ... */
-/*     ... FIRST EXECUTABLE STATEMENT */
 
     /* Parameter adjustments */
     --sx;

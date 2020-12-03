@@ -97,14 +97,14 @@ int cngets_(int32_t *ishift, char *which, int32_t *kev,
     static float t0, t1;
     int32_t msglvl;
 
-/*     %-----------------------% */
-/*     | Executable Statements | */
-/*     %-----------------------% */
+     /* --------------------- */
+     /* Executable Statements */
+     /* --------------------- */
 
-/*     %-------------------------------% */
-/*     | Initialize timing statistics  | */
-/*     | & message level for debugging | */
-/*     %-------------------------------% */
+     /* ----------------------------- */
+     /* Initialize timing statistics  */
+     /* & message level for debugging */
+     /* ----------------------------- */
 
     /* Parameter adjustments */
     --bounds;
@@ -119,14 +119,14 @@ int cngets_(int32_t *ishift, char *which, int32_t *kev,
 
     if (*ishift == 1) {
 
-/*        %-------------------------------------------------------% */
-/*        | Sort the unwanted Ritz values used as shifts so that  | */
-/*        | the ones with largest Ritz estimates are first        | */
-/*        | This will tend to minimize the effects of the         | */
-/*        | forward instability of the iteration when the shifts  | */
-/*        | are applied in subroutine cnapps.                     | */
-/*        | Be careful and use 'SM' since we want to sort BOUNDS! | */
-/*        %-------------------------------------------------------% */
+        /* ----------------------------------------------------- */
+        /* Sort the unwanted Ritz values used as shifts so that  */
+        /* the ones with largest Ritz estimates are first        */
+        /* This will tend to minimize the effects of the         */
+        /* forward instability of the iteration when the shifts  */
+        /* are applied in subroutine cnapps.                     */
+        /* Be careful and use 'SM' since we want to sort BOUNDS! */
+        /* ----------------------------------------------------- */
 
 	csortc_("SM", &c_true, np, &bounds[1], &ritz[1]);
 
@@ -151,9 +151,9 @@ int cngets_(int32_t *ishift, char *which, int32_t *kev,
 
     return 0;
 
-/*     %---------------% */
-/*     | End of cngets | */
-/*     %---------------% */
+     /* ------------- */
+     /* End of cngets */
+     /* ------------- */
 
 } /* cngets_ */
 

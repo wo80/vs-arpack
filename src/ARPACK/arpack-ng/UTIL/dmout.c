@@ -96,8 +96,6 @@ int dmout_(int32_t *lout, int32_t *m, int32_t *n, double
     /* Function Body */
 /*     .. */
 /*     .. Executable Statements .. */
-/*     ... */
-/*     ... FIRST EXECUTABLE STATEMENT */
 
 /* Computing MIN */
     i__1 = i_len(ifmt, ifmt_len);

@@ -345,13 +345,13 @@ int sneupd_(bool *rvec, char *howmny, bool *select,
     int32_t iheigi, iheigr, bounds, invsub, iuptri, msglvl, outncv, ishift, 
 	    numcnv;
 
-/*     %-----------------------% */
-/*     | Executable Statements | */
-/*     %-----------------------% */
+     /* --------------------- */
+     /* Executable Statements */
+     /* --------------------- */
 
-/*     %------------------------% */
-/*     | Set default parameters | */
-/*     %------------------------% */
+     /* ---------------------- */
+     /* Set default parameters */
+     /* ---------------------- */
 
     /* Parameter adjustments */
     z_dim1 = *ldz;
@@ -376,17 +376,17 @@ int sneupd_(bool *rvec, char *howmny, bool *select,
     nconv = iparam[5];
     *info = 0;
 
-/*     %---------------------------------% */
-/*     | Get machine dependent constant. | */
-/*     %---------------------------------% */
+     /* ------------------------------- */
+     /* Get machine dependent constant. */
+     /* ------------------------------- */
 
     eps23 = slamch_("Epsilon-Machine");
     d__1 = (double) eps23;
     eps23 = pow_dd(&d__1, &d_23);
 
-/*     %--------------% */
-/*     | Quick return | */
-/*     %--------------% */
+     /* ------------ */
+     /* Quick return */
+     /* ------------ */
 
     ierr = 0;
 
@@ -435,41 +435,41 @@ int sneupd_(bool *rvec, char *howmny, bool *select,
 	ierr = -11;
     }
 
-/*     %------------% */
-/*     | Error Exit | */
-/*     %------------% */
+     /* ---------- */
+     /* Error Exit */
+     /* ---------- */
 
     if (ierr != 0) {
 	*info = ierr;
 	goto L9000;
     }
 
-/*     %--------------------------------------------------------% */
-/*     | Pointer into WORKL for address of H, RITZ, BOUNDS, Q   | */
-/*     | etc... and the remaining workspace.                    | */
-/*     | Also update pointer to be used on output.              | */
-/*     | Memory is laid out as follows:                         | */
-/*     | workl(1:ncv*ncv) := generated Hessenberg matrix        | */
-/*     | workl(ncv*ncv+1:ncv*ncv+2*ncv) := real and imaginary   | */
-/*     |                                   parts of ritz values | */
-/*     | workl(ncv*ncv+2*ncv+1:ncv*ncv+3*ncv) := error bounds   | */
-/*     %--------------------------------------------------------% */
+     /* ------------------------------------------------------ */
+     /* Pointer into WORKL for address of H, RITZ, BOUNDS, Q   */
+     /* etc... and the remaining workspace.                    */
+     /* Also update pointer to be used on output.              */
+     /* Memory is laid out as follows:                         */
+     /* workl(1:ncv*ncv) := generated Hessenberg matrix        */
+     /* workl(ncv*ncv+1:ncv*ncv+2*ncv) := real and imaginary   */
+     /*                                   parts of ritz values */
+     /* workl(ncv*ncv+2*ncv+1:ncv*ncv+3*ncv) := error bounds   */
+     /* ------------------------------------------------------ */
 
-/*     %-----------------------------------------------------------% */
-/*     | The following is used and set by SNEUPD.                  | */
-/*     | workl(ncv*ncv+3*ncv+1:ncv*ncv+4*ncv) := The untransformed | */
-/*     |                             real part of the Ritz values. | */
-/*     | workl(ncv*ncv+4*ncv+1:ncv*ncv+5*ncv) := The untransformed | */
-/*     |                        imaginary part of the Ritz values. | */
-/*     | workl(ncv*ncv+5*ncv+1:ncv*ncv+6*ncv) := The untransformed | */
-/*     |                           error bounds of the Ritz values | */
-/*     | workl(ncv*ncv+6*ncv+1:2*ncv*ncv+6*ncv) := Holds the upper | */
-/*     |                             quasi-triangular matrix for H | */
-/*     | workl(2*ncv*ncv+6*ncv+1: 3*ncv*ncv+6*ncv) := Holds the    | */
-/*     |       associated matrix representation of the invariant   | */
-/*     |       subspace for H.                                     | */
-/*     | GRAND total of NCV * ( 3 * NCV + 6 ) locations.           | */
-/*     %-----------------------------------------------------------% */
+     /* --------------------------------------------------------- */
+     /* The following is used and set by SNEUPD.                  */
+     /* workl(ncv*ncv+3*ncv+1:ncv*ncv+4*ncv) := The untransformed */
+     /*                             real part of the Ritz values. */
+     /* workl(ncv*ncv+4*ncv+1:ncv*ncv+5*ncv) := The untransformed */
+     /*                        imaginary part of the Ritz values. */
+     /* workl(ncv*ncv+5*ncv+1:ncv*ncv+6*ncv) := The untransformed */
+     /*                           error bounds of the Ritz values */
+     /* workl(ncv*ncv+6*ncv+1:2*ncv*ncv+6*ncv) := Holds the upper */
+     /*                             quasi-triangular matrix for H */
+     /* workl(2*ncv*ncv+6*ncv+1: 3*ncv*ncv+6*ncv) := Holds the    */
+     /*       associated matrix representation of the invariant   */
+     /*       subspace for H.                                     */
+     /* GRAND total of NCV * ( 3 * NCV + 6 ) locations.           */
+     /* --------------------------------------------------------- */
 
     ih = ipntr[5];
     ritzr = ipntr[6];
@@ -491,25 +491,25 @@ int sneupd_(bool *rvec, char *howmny, bool *select,
     wri = *ncv + 1;
     iwev = wri + *ncv;
 
-/*     %-----------------------------------------% */
-/*     | irr points to the REAL part of the Ritz | */
-/*     |     values computed by _neigh before    | */
-/*     |     exiting _naup2.                     | */
-/*     | iri points to the IMAGINARY part of the | */
-/*     |     Ritz values computed by _neigh      | */
-/*     |     before exiting _naup2.              | */
-/*     | ibd points to the Ritz estimates        | */
-/*     |     computed by _neigh before exiting   | */
-/*     |     _naup2.                             | */
-/*     %-----------------------------------------% */
+     /* --------------------------------------- */
+     /* irr points to the REAL part of the Ritz */
+     /*     values computed by _neigh before    */
+     /*     exiting _naup2.                     */
+     /* iri points to the IMAGINARY part of the */
+     /*     Ritz values computed by _neigh      */
+     /*     before exiting _naup2.              */
+     /* ibd points to the Ritz estimates        */
+     /*     computed by _neigh before exiting   */
+     /*     _naup2.                             */
+     /* --------------------------------------- */
 
     irr = ipntr[14] + *ncv * *ncv;
     iri = irr + *ncv;
     ibd = iri + *ncv;
 
-/*     %------------------------------------% */
-/*     | RNORM is B-norm of the RESID(1:N). | */
-/*     %------------------------------------% */
+     /* ---------------------------------- */
+     /* RNORM is B-norm of the RESID(1:N). */
+     /* ---------------------------------- */
 
     rnorm = workl[ih + 2];
     workl[ih + 2] = 0.f;
@@ -527,10 +527,10 @@ int sneupd_(bool *rvec, char *howmny, bool *select,
 
 	reord = false;
 
-/*        %---------------------------------------------------% */
-/*        | Use the temporary bounds array to store indices   | */
-/*        | These will be used to mark the select array later | */
-/*        %---------------------------------------------------% */
+        /* ------------------------------------------------- */
+        /* Use the temporary bounds array to store indices   */
+        /* These will be used to mark the select array later */
+        /* ------------------------------------------------- */
 
 	i__1 = *ncv;
 	for (j = 1; j <= i__1; ++j) {
@@ -539,15 +539,15 @@ int sneupd_(bool *rvec, char *howmny, bool *select,
 /* L10: */
 	}
 
-/*        %-------------------------------------% */
-/*        | Select the wanted Ritz values.      | */
-/*        | Sort the Ritz values so that the    | */
-/*        | wanted ones appear at the tailing   | */
-/*        | NEV positions of workl(irr) and     | */
-/*        | workl(iri).  Move the corresponding | */
-/*        | error estimates in workl(bound)     | */
-/*        | accordingly.                        | */
-/*        %-------------------------------------% */
+        /* ----------------------------------- */
+        /* Select the wanted Ritz values.      */
+        /* Sort the Ritz values so that the    */
+        /* wanted ones appear at the tailing   */
+        /* NEV positions of workl(irr) and     */
+        /* workl(iri).  Move the corresponding */
+        /* error estimates in workl(bound)     */
+        /* accordingly.                        */
+        /* ----------------------------------- */
 
 	np = *ncv - *nev;
 	ishift = 0;
@@ -566,10 +566,10 @@ int sneupd_(bool *rvec, char *howmny, bool *select,
 		    ftnlen)48);
 	}
 
-/*        %-----------------------------------------------------% */
-/*        | Record indices of the converged wanted Ritz values  | */
-/*        | Mark the select array for possible reordering       | */
-/*        %-----------------------------------------------------% */
+        /* --------------------------------------------------- */
+        /* Record indices of the converged wanted Ritz values  */
+        /* Mark the select array for possible reordering       */
+        /* --------------------------------------------------- */
 
 	numcnv = 0;
 	i__1 = *ncv;
@@ -589,12 +589,12 @@ int sneupd_(bool *rvec, char *howmny, bool *select,
 /* L11: */
 	}
 
-/*        %-----------------------------------------------------------% */
-/*        | Check the count (numcnv) of converged Ritz values with    | */
-/*        | the number (nconv) reported by dnaupd.  If these two      | */
-/*        | are different then there has probably been an error       | */
-/*        | caused by incorrect passing of the dnaupd data.           | */
-/*        %-----------------------------------------------------------% */
+        /* --------------------------------------------------------- */
+        /* Check the count (numcnv) of converged Ritz values with    */
+        /* the number (nconv) reported by dnaupd.  If these two      */
+        /* are different then there has probably been an error       */
+        /* caused by incorrect passing of the dnaupd data.           */
+        /* --------------------------------------------------------- */
 
 	if (msglvl > 2) {
 	    ivout_(&debug_1.logfil, &c__1, &numcnv, &debug_1.ndigit, "_neupd"
@@ -608,12 +608,12 @@ int sneupd_(bool *rvec, char *howmny, bool *select,
 	    goto L9000;
 	}
 
-/*        %-----------------------------------------------------------% */
-/*        | Call LAPACK routine slahqr to compute the real Schur form | */
-/*        | of the upper Hessenberg matrix returned by SNAUPD.        | */
-/*        | Make a copy of the upper Hessenberg matrix.               | */
-/*        | Initialize the Schur vector matrix Q to the identity.     | */
-/*        %-----------------------------------------------------------% */
+        /* --------------------------------------------------------- */
+        /* Call LAPACK routine slahqr to compute the real Schur form */
+        /* of the upper Hessenberg matrix returned by SNAUPD.        */
+        /* Make a copy of the upper Hessenberg matrix.               */
+        /* Initialize the Schur vector matrix Q to the identity.     */
+        /* --------------------------------------------------------- */
 
 	i__1 = ldh * *ncv;
 	scopy_(&i__1, &workl[ih], &c__1, &workl[iuptri], &c__1);
@@ -646,9 +646,9 @@ int sneupd_(bool *rvec, char *howmny, bool *select,
 
 	if (reord) {
 
-/*           %-----------------------------------------------------% */
-/*           | Reorder the computed upper quasi-triangular matrix. | */
-/*           %-----------------------------------------------------% */
+           /* --------------------------------------------------- */
+           /* Reorder the computed upper quasi-triangular matrix. */
+           /* --------------------------------------------------- */
 
 	    strsen_("None", "V", &select[1], ncv, &workl[iuptri], &ldh, &
 		    workl[invsub], &ldq, &workl[iheigr], &workl[iheigi], &
@@ -679,45 +679,45 @@ int sneupd_(bool *rvec, char *howmny, bool *select,
 
 	}
 
-/*        %---------------------------------------% */
-/*        | Copy the last row of the Schur vector | */
-/*        | into workl(ihbds).  This will be used | */
-/*        | to compute the Ritz estimates of      | */
-/*        | converged Ritz values.                | */
-/*        %---------------------------------------% */
+        /* ------------------------------------- */
+        /* Copy the last row of the Schur vector */
+        /* into workl(ihbds).  This will be used */
+        /* to compute the Ritz estimates of      */
+        /* converged Ritz values.                */
+        /* ------------------------------------- */
 
 	scopy_(ncv, &workl[invsub + *ncv - 1], &ldq, &workl[ihbds], &c__1);
 
-/*        %----------------------------------------------------% */
-/*        | Place the computed eigenvalues of H into DR and DI | */
-/*        | if a spectral transformation was not used.         | */
-/*        %----------------------------------------------------% */
+        /* -------------------------------------------------- */
+        /* Place the computed eigenvalues of H into DR and DI */
+        /* if a spectral transformation was not used.         */
+        /* -------------------------------------------------- */
 
 	if (s_cmp(type__, "REGULR", (ftnlen)6, (ftnlen)6) == 0) {
 	    scopy_(&nconv, &workl[iheigr], &c__1, &dr[1], &c__1);
 	    scopy_(&nconv, &workl[iheigi], &c__1, &di[1], &c__1);
 	}
 
-/*        %----------------------------------------------------------% */
-/*        | Compute the QR factorization of the matrix representing  | */
-/*        | the wanted invariant subspace located in the first NCONV | */
-/*        | columns of workl(invsub,ldq).                            | */
-/*        %----------------------------------------------------------% */
+        /* -------------------------------------------------------- */
+        /* Compute the QR factorization of the matrix representing  */
+        /* the wanted invariant subspace located in the first NCONV */
+        /* columns of workl(invsub,ldq).                            */
+        /* -------------------------------------------------------- */
 
 	sgeqr2_(ncv, &nconv, &workl[invsub], &ldq, &workev[1], &workev[*ncv + 
 		1], &ierr);
 
-/*        %---------------------------------------------------------% */
-/*        | * Postmultiply V by Q using sorm2r.                     | */
-/*        | * Copy the first NCONV columns of VQ into Z.            | */
-/*        | * Postmultiply Z by R.                                  | */
-/*        | The N by NCONV matrix Z is now a matrix representation  | */
-/*        | of the approximate invariant subspace associated with   | */
-/*        | the Ritz values in workl(iheigr) and workl(iheigi)      | */
-/*        | The first NCONV columns of V are now approximate Schur  | */
-/*        | vectors associated with the real upper quasi-triangular | */
-/*        | matrix of order NCONV in workl(iuptri)                  | */
-/*        %---------------------------------------------------------% */
+        /* ------------------------------------------------------- */
+        /* * Postmultiply V by Q using sorm2r.                     */
+        /* * Copy the first NCONV columns of VQ into Z.            */
+        /* * Postmultiply Z by R.                                  */
+        /* The N by NCONV matrix Z is now a matrix representation  */
+        /* of the approximate invariant subspace associated with   */
+        /* the Ritz values in workl(iheigr) and workl(iheigi)      */
+        /* The first NCONV columns of V are now approximate Schur  */
+        /* vectors associated with the real upper quasi-triangular */
+        /* matrix of order NCONV in workl(iuptri)                  */
+        /* ------------------------------------------------------- */
 
 	sorm2r_("Right", "Notranspose", n, ncv, &nconv, &workl[invsub], &ldq, 
 		&workev[1], &v[v_offset], ldv, &workd[*n + 1], &ierr);
@@ -726,14 +726,14 @@ int sneupd_(bool *rvec, char *howmny, bool *select,
 	i__1 = nconv;
 	for (j = 1; j <= i__1; ++j) {
 
-/*           %---------------------------------------------------% */
-/*           | Perform both a column and row scaling if the      | */
-/*           | diagonal element of workl(invsub,ldq) is negative | */
-/*           | I'm lazy and don't take advantage of the upper    | */
-/*           | quasi-triangular form of workl(iuptri,ldq)        | */
-/*           | Note that since Q is orthogonal, R is a diagonal  | */
-/*           | matrix consisting of plus or minus ones           | */
-/*           %---------------------------------------------------% */
+           /* ------------------------------------------------- */
+           /* Perform both a column and row scaling if the      */
+           /* diagonal element of workl(invsub,ldq) is negative */
+           /* I'm lazy and don't take advantage of the upper    */
+           /* quasi-triangular form of workl(iuptri,ldq)        */
+           /* Note that since Q is orthogonal, R is a diagonal  */
+           /* matrix consisting of plus or minus ones           */
+           /* ------------------------------------------------- */
 
 	    if (workl[invsub + (j - 1) * ldq + j - 1] < 0.f) {
 		sscal_(&nconv, &s_m1, &workl[iuptri + j - 1], &ldq);
@@ -745,10 +745,10 @@ int sneupd_(bool *rvec, char *howmny, bool *select,
 
 	if (*(unsigned char *)howmny == 'A') {
 
-/*           %--------------------------------------------% */
-/*           | Compute the NCONV wanted eigenvectors of T | */
-/*           | located in workl(iuptri,ldq).              | */
-/*           %--------------------------------------------% */
+           /* ------------------------------------------ */
+           /* Compute the NCONV wanted eigenvectors of T */
+           /* located in workl(iuptri,ldq).              */
+           /* ------------------------------------------ */
 
 	    i__1 = *ncv;
 	    for (j = 1; j <= i__1; ++j) {
@@ -769,13 +769,13 @@ int sneupd_(bool *rvec, char *howmny, bool *select,
 		goto L9000;
 	    }
 
-/*           %------------------------------------------------% */
-/*           | Scale the returning eigenvectors so that their | */
-/*           | Euclidean norms are all one. LAPACK subroutine | */
-/*           | strevc returns each eigenvector normalized so  | */
-/*           | that the element of largest magnitude has      | */
-/*           | magnitude 1;                                   | */
-/*           %------------------------------------------------% */
+           /* ---------------------------------------------- */
+           /* Scale the returning eigenvectors so that their */
+           /* Euclidean norms are all one. LAPACK subroutine */
+           /* strevc returns each eigenvector normalized so  */
+           /* that the element of largest magnitude has      */
+           /* magnitude 1;                                   */
+           /* ---------------------------------------------- */
 
 	    iconj = 0;
 	    i__1 = nconv;
@@ -783,9 +783,9 @@ int sneupd_(bool *rvec, char *howmny, bool *select,
 
 		if (workl[iheigi + j - 1] == 0.f) {
 
-/*                 %----------------------% */
-/*                 | real eigenvalue case | */
-/*                 %----------------------% */
+                 /* -------------------- */
+                 /* real eigenvalue case */
+                 /* -------------------- */
 
 		    temp = snrm2_(ncv, &workl[invsub + (j - 1) * ldq], &c__1);
 		    r__1 = 1.f / temp;
@@ -793,13 +793,13 @@ int sneupd_(bool *rvec, char *howmny, bool *select,
 
 		} else {
 
-/*                 %-------------------------------------------% */
-/*                 | Complex conjugate pair case. Note that    | */
-/*                 | since the real and imaginary part of      | */
-/*                 | the eigenvector are stored in consecutive | */
-/*                 | columns, we further normalize by the      | */
-/*                 | square root of two.                       | */
-/*                 %-------------------------------------------% */
+                 /* ----------------------------------------- */
+                 /* Complex conjugate pair case. Note that    */
+                 /* since the real and imaginary part of      */
+                 /* the eigenvector are stored in consecutive */
+                 /* columns, we further normalize by the      */
+                 /* square root of two.                       */
+                 /* ----------------------------------------- */
 
 		    if (iconj == 0) {
 			r__1 = snrm2_(ncv, &workl[invsub + (j - 1) * ldq], &
@@ -829,11 +829,11 @@ int sneupd_(bool *rvec, char *howmny, bool *select,
 	    for (j = 1; j <= i__1; ++j) {
 		if (workl[iheigi + j - 1] != 0.f) {
 
-/*                 %-------------------------------------------% */
-/*                 | Complex conjugate pair case. Note that    | */
-/*                 | since the real and imaginary part of      | */
-/*                 | the eigenvector are stored in consecutive | */
-/*                 %-------------------------------------------% */
+                 /* ----------------------------------------- */
+                 /* Complex conjugate pair case. Note that    */
+                 /* since the real and imaginary part of      */
+                 /* the eigenvector are stored in consecutive */
+                 /* ----------------------------------------- */
 
 		    if (iconj == 0) {
 			workev[j] = slapy2_(&workev[j], &workev[j + 1]);
@@ -859,28 +859,28 @@ int sneupd_(bool *rvec, char *howmny, bool *select,
 		}
 	    }
 
-/*           %---------------------------------------% */
-/*           | Copy Ritz estimates into workl(ihbds) | */
-/*           %---------------------------------------% */
+           /* ------------------------------------- */
+           /* Copy Ritz estimates into workl(ihbds) */
+           /* ------------------------------------- */
 
 	    scopy_(&nconv, &workev[1], &c__1, &workl[ihbds], &c__1);
 
-/*           %---------------------------------------------------------% */
-/*           | Compute the QR factorization of the eigenvector matrix  | */
-/*           | associated with leading portion of T in the first NCONV | */
-/*           | columns of workl(invsub,ldq).                           | */
-/*           %---------------------------------------------------------% */
+           /* ------------------------------------------------------- */
+           /* Compute the QR factorization of the eigenvector matrix  */
+           /* associated with leading portion of T in the first NCONV */
+           /* columns of workl(invsub,ldq).                           */
+           /* ------------------------------------------------------- */
 
 	    sgeqr2_(ncv, &nconv, &workl[invsub], &ldq, &workev[1], &workev[*
 		    ncv + 1], &ierr);
 
-/*           %----------------------------------------------% */
-/*           | * Postmultiply Z by Q.                       | */
-/*           | * Postmultiply Z by R.                       | */
-/*           | The N by NCONV matrix Z is now contains the  | */
-/*           | Ritz vectors associated with the Ritz values | */
-/*           | in workl(iheigr) and workl(iheigi).          | */
-/*           %----------------------------------------------% */
+           /* -------------------------------------------- */
+           /* * Postmultiply Z by Q.                       */
+           /* * Postmultiply Z by R.                       */
+           /* The N by NCONV matrix Z is now contains the  */
+           /* Ritz vectors associated with the Ritz values */
+           /* in workl(iheigr) and workl(iheigi).          */
+           /* -------------------------------------------- */
 
 	    sorm2r_("Right", "Notranspose", n, ncv, &nconv, &workl[invsub], &
 		    ldq, &workev[1], &z__[z_offset], ldz, &workd[*n + 1], &
@@ -894,10 +894,10 @@ int sneupd_(bool *rvec, char *howmny, bool *select,
 
     } else {
 
-/*        %------------------------------------------------------% */
-/*        | An approximate invariant subspace is not needed.     | */
-/*        | Place the Ritz values computed SNAUPD into DR and DI | */
-/*        %------------------------------------------------------% */
+        /* ---------------------------------------------------- */
+        /* An approximate invariant subspace is not needed.     */
+        /* Place the Ritz values computed SNAUPD into DR and DI */
+        /* ---------------------------------------------------- */
 
 	scopy_(&nconv, &workl[ritzr], &c__1, &dr[1], &c__1);
 	scopy_(&nconv, &workl[ritzi], &c__1, &di[1], &c__1);
@@ -906,11 +906,11 @@ int sneupd_(bool *rvec, char *howmny, bool *select,
 	scopy_(&nconv, &workl[bounds], &c__1, &workl[ihbds], &c__1);
     }
 
-/*     %------------------------------------------------% */
-/*     | Transform the Ritz values and possibly vectors | */
-/*     | and corresponding error bounds of OP to those  | */
-/*     | of A*x = lambda*B*x.                           | */
-/*     %------------------------------------------------% */
+     /* ---------------------------------------------- */
+     /* Transform the Ritz values and possibly vectors */
+     /* and corresponding error bounds of OP to those  */
+     /* of A*x = lambda*B*x.                           */
+     /* ---------------------------------------------- */
 
     if (s_cmp(type__, "REGULR", (ftnlen)6, (ftnlen)6) == 0) {
 
@@ -920,11 +920,11 @@ int sneupd_(bool *rvec, char *howmny, bool *select,
 
     } else {
 
-/*        %---------------------------------------% */
-/*        |   A spectral transformation was used. | */
-/*        | * Determine the Ritz estimates of the | */
-/*        |   Ritz values in the original system. | */
-/*        %---------------------------------------% */
+        /* ------------------------------------- */
+        /*   A spectral transformation was used. */
+        /* * Determine the Ritz estimates of the */
+        /*   Ritz values in the original system. */
+        /* ------------------------------------- */
 
 	if (s_cmp(type__, "SHIFTI", (ftnlen)6, (ftnlen)6) == 0) {
 
@@ -957,15 +957,15 @@ int sneupd_(bool *rvec, char *howmny, bool *select,
 
 	}
 
-/*        %-----------------------------------------------------------% */
-/*        | *  Transform the Ritz values back to the original system. | */
-/*        |    For TYPE = 'SHIFTI' the transformation is              | */
-/*        |             lambda = 1/theta + sigma                      | */
-/*        |    For TYPE = 'REALPT' or 'IMAGPT' the user must from     | */
-/*        |    Rayleigh quotients or a projection. See remark 3 above.| */
-/*        | NOTES:                                                    | */
-/*        | *The Ritz vectors are not affected by the transformation. | */
-/*        %-----------------------------------------------------------% */
+        /* --------------------------------------------------------- */
+        /* *  Transform the Ritz values back to the original system. */
+        /*    For TYPE = 'SHIFTI' the transformation is              */
+        /*             lambda = 1/theta + sigma                      */
+        /*    For TYPE = 'REALPT' or 'IMAGPT' the user must from     */
+        /*    Rayleigh quotients or a projection. See remark 3 above.*/
+        /* NOTES:                                                    */
+        /* *The Ritz vectors are not affected by the transformation. */
+        /* --------------------------------------------------------- */
 
 	if (s_cmp(type__, "SHIFTI", (ftnlen)6, (ftnlen)6) == 0) {
 
@@ -1011,25 +1011,25 @@ int sneupd_(bool *rvec, char *howmny, bool *select,
 		"upd: Associated Ritz estimates.", (ftnlen)34);
     }
 
-/*     %-------------------------------------------------% */
-/*     | Eigenvector Purification step. Formally perform | */
-/*     | one of inverse subspace iteration. Only used    | */
-/*     | for MODE = 2.                                   | */
-/*     %-------------------------------------------------% */
+     /* ----------------------------------------------- */
+     /* Eigenvector Purification step. Formally perform */
+     /* one of inverse subspace iteration. Only used    */
+     /* for MODE = 2.                                   */
+     /* ----------------------------------------------- */
 
     if (*rvec && *(unsigned char *)howmny == 'A' && s_cmp(type__, "SHIFTI", (
 	    ftnlen)6, (ftnlen)6) == 0) {
 
-/*        %------------------------------------------------% */
-/*        | Purify the computed Ritz vectors by adding a   | */
-/*        | little bit of the residual vector:             | */
-/*        |                      T                         | */
-/*        |          resid(:)*( e    s ) / theta           | */
-/*        |                      NCV                       | */
-/*        | where H s = s theta. Remember that when theta  | */
-/*        | has nonzero imaginary part, the corresponding  | */
-/*        | Ritz vector is stored across two columns of Z. | */
-/*        %------------------------------------------------% */
+        /* ---------------------------------------------- */
+        /* Purify the computed Ritz vectors by adding a   */
+        /* little bit of the residual vector:             */
+        /*                      T                         */
+        /*          resid(:)*( e    s ) / theta           */
+        /*                      NCV                       */
+        /* where H s = s theta. Remember that when theta  */
+        /* has nonzero imaginary part, the corresponding  */
+        /* Ritz vector is stored across two columns of Z. */
+        /* ---------------------------------------------- */
 
 	iconj = 0;
 	i__1 = nconv;
@@ -1057,10 +1057,10 @@ int sneupd_(bool *rvec, char *howmny, bool *select,
 /* L110: */
 	}
 
-/*        %---------------------------------------% */
-/*        | Perform a rank one update to Z and    | */
-/*        | purify all the Ritz vectors together. | */
-/*        %---------------------------------------% */
+        /* ------------------------------------- */
+        /* Perform a rank one update to Z and    */
+        /* purify all the Ritz vectors together. */
+        /* ------------------------------------- */
 
 	sger_(n, &nconv, &s_one, &resid[1], &c__1, &workev[1], &c__1, &z__[
 		z_offset], ldz);
@@ -1071,9 +1071,9 @@ L9000:
 
     return 0;
 
-/*     %---------------% */
-/*     | End of SNEUPD | */
-/*     %---------------% */
+     /* ------------- */
+     /* End of SNEUPD */
+     /* ------------- */
 
 } /* sneupd_ */
 

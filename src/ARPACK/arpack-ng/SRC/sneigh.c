@@ -114,14 +114,14 @@ int sneigh_(float *rnorm, int32_t *n, float *h__, int32_t *ldh,
     bool select[1];
     int32_t msglvl;
 
-/*     %-----------------------% */
-/*     | Executable Statements | */
-/*     %-----------------------% */
+     /* --------------------- */
+     /* Executable Statements */
+     /* --------------------- */
 
-/*     %-------------------------------% */
-/*     | Initialize timing statistics  | */
-/*     | & message level for debugging | */
-/*     %-------------------------------% */
+     /* ----------------------------- */
+     /* Initialize timing statistics  */
+     /* & message level for debugging */
+     /* ----------------------------- */
 
     /* Parameter adjustments */
     --workl;
@@ -144,13 +144,13 @@ int sneigh_(float *rnorm, int32_t *n, float *h__, int32_t *ldh,
 		"_neigh: Entering upper Hessenberg matrix H ", (ftnlen)43);
     }
 
-/*     %-----------------------------------------------------------% */
-/*     | 1. Compute the eigenvalues, the last components of the    | */
-/*     |    corresponding Schur vectors and the full Schur form T  | */
-/*     |    of the current upper Hessenberg matrix H.              | */
-/*     | slahqr returns the full Schur form of H in WORKL(1:N**2)  | */
-/*     | and the last components of the Schur vectors in BOUNDS.   | */
-/*     %-----------------------------------------------------------% */
+     /* --------------------------------------------------------- */
+     /* 1. Compute the eigenvalues, the last components of the    */
+     /*    corresponding Schur vectors and the full Schur form T  */
+     /*    of the current upper Hessenberg matrix H.              */
+     /* slahqr returns the full Schur form of H in WORKL(1:N**2)  */
+     /* and the last components of the Schur vectors in BOUNDS.   */
+     /* --------------------------------------------------------- */
 
     slacpy_("All", n, n, &h__[h_offset], ldh, &workl[1], n);
     i__1 = *n - 1;
@@ -170,15 +170,15 @@ int sneigh_(float *rnorm, int32_t *n, float *h__, int32_t *ldh,
 		"t row of the Schur matrix for H", (ftnlen)42);
     }
 
-/*     %-----------------------------------------------------------% */
-/*     | 2. Compute the eigenvectors of the full Schur form T and  | */
-/*     |    apply the last components of the Schur vectors to get  | */
-/*     |    the last components of the corresponding eigenvectors. | */
-/*     | Remember that if the i-th and (i+1)-st eigenvalues are    | */
-/*     | complex conjugate pairs, then the real & imaginary part   | */
-/*     | of the eigenvector components are split across adjacent   | */
-/*     | columns of Q.                                             | */
-/*     %-----------------------------------------------------------% */
+     /* --------------------------------------------------------- */
+     /* 2. Compute the eigenvectors of the full Schur form T and  */
+     /*    apply the last components of the Schur vectors to get  */
+     /*    the last components of the corresponding eigenvectors. */
+     /* Remember that if the i-th and (i+1)-st eigenvalues are    */
+     /* complex conjugate pairs, then the real & imaginary part   */
+     /* of the eigenvector components are split across adjacent   */
+     /* columns of Q.                                             */
+     /* --------------------------------------------------------- */
 
     strevc_("R", "A", select, n, &workl[1], n, vl, n, &q[q_offset], ldq, n, n,
 	     &workl[*n * *n + 1], ierr);
@@ -187,36 +187,36 @@ int sneigh_(float *rnorm, int32_t *n, float *h__, int32_t *ldh,
 	goto L9000;
     }
 
-/*     %------------------------------------------------% */
-/*     | Scale the returning eigenvectors so that their | */
-/*     | euclidean norms are all one. LAPACK subroutine | */
-/*     | strevc returns each eigenvector normalized so  | */
-/*     | that the element of largest magnitude has      | */
-/*     | magnitude 1; here the magnitude of a complex   | */
-/*     | number (x,y) is taken to be |x| + |y|.         | */
-/*     %------------------------------------------------% */
+     /* ---------------------------------------------- */
+     /* Scale the returning eigenvectors so that their */
+     /* euclidean norms are all one. LAPACK subroutine */
+     /* strevc returns each eigenvector normalized so  */
+     /* that the element of largest magnitude has      */
+     /* magnitude 1; here the magnitude of a complex   */
+     /* number (x,y) is taken to be |x| + |y|.         */
+     /* ---------------------------------------------- */
 
     iconj = 0;
     i__1 = *n;
     for (i__ = 1; i__ <= i__1; ++i__) {
 	if ((r__1 = ritzi[i__], dabs(r__1)) <= 0.f) {
 
-/*           %----------------------% */
-/*           | Real eigenvalue case | */
-/*           %----------------------% */
+           /* -------------------- */
+           /* Real eigenvalue case */
+           /* -------------------- */
 
 	    temp = snrm2_(n, &q[i__ * q_dim1 + 1], &c__1);
 	    r__1 = 1.f / temp;
 	    sscal_(n, &r__1, &q[i__ * q_dim1 + 1], &c__1);
 	} else {
 
-/*           %-------------------------------------------% */
-/*           | Complex conjugate pair case. Note that    | */
-/*           | since the real and imaginary part of      | */
-/*           | the eigenvector are stored in consecutive | */
-/*           | columns, we further normalize by the      | */
-/*           | square root of two.                       | */
-/*           %-------------------------------------------% */
+           /* ----------------------------------------- */
+           /* Complex conjugate pair case. Note that    */
+           /* since the real and imaginary part of      */
+           /* the eigenvector are stored in consecutive */
+           /* columns, we further normalize by the      */
+           /* square root of two.                       */
+           /* ----------------------------------------- */
 
 	    if (iconj == 0) {
 		r__1 = snrm2_(n, &q[i__ * q_dim1 + 1], &c__1);
@@ -242,29 +242,29 @@ int sneigh_(float *rnorm, int32_t *n, float *h__, int32_t *ldh,
 		" row of the eigenvector matrix for H", (ftnlen)48);
     }
 
-/*     %----------------------------% */
-/*     | Compute the Ritz estimates | */
-/*     %----------------------------% */
+     /* -------------------------- */
+     /* Compute the Ritz estimates */
+     /* -------------------------- */
 
     iconj = 0;
     i__1 = *n;
     for (i__ = 1; i__ <= i__1; ++i__) {
 	if ((r__1 = ritzi[i__], dabs(r__1)) <= 0.f) {
 
-/*           %----------------------% */
-/*           | Real eigenvalue case | */
-/*           %----------------------% */
+           /* -------------------- */
+           /* Real eigenvalue case */
+           /* -------------------- */
 
 	    bounds[i__] = *rnorm * (r__1 = workl[i__], dabs(r__1));
 	} else {
 
-/*           %-------------------------------------------% */
-/*           | Complex conjugate pair case. Note that    | */
-/*           | since the real and imaginary part of      | */
-/*           | the eigenvector are stored in consecutive | */
-/*           | columns, we need to take the magnitude    | */
-/*           | of the last components of the two vectors | */
-/*           %-------------------------------------------% */
+           /* ----------------------------------------- */
+           /* Complex conjugate pair case. Note that    */
+           /* since the real and imaginary part of      */
+           /* the eigenvector are stored in consecutive */
+           /* columns, we need to take the magnitude    */
+           /* of the last components of the two vectors */
+           /* ----------------------------------------- */
 
 	    if (iconj == 0) {
 		bounds[i__] = *rnorm * slapy2_(&workl[i__], &workl[i__ + 1]);
@@ -292,9 +292,9 @@ int sneigh_(float *rnorm, int32_t *n, float *h__, int32_t *ldh,
 L9000:
     return 0;
 
-/*     %---------------% */
-/*     | End of sneigh | */
-/*     %---------------% */
+     /* ------------- */
+     /* End of sneigh */
+     /* ------------- */
 
 } /* sneigh_ */
 

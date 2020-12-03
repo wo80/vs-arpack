@@ -79,29 +79,21 @@ int snconv_(int32_t *n, float *ritzr, float *ritzi, float *
     static float t0, t1;
     float eps23, temp;
 
-/*     %-----------------% */
-/*     | Array Arguments | */
-/*     %-----------------% */
+     /* --------------------- */
+     /* Executable Statements */
+     /* --------------------- */
 
-/*     %--------------------% */
-/*     | External Functions | */
-/*     %--------------------% */
-
-/*     %-----------------------% */
-/*     | Executable Statements | */
-/*     %-----------------------% */
-
-/*     %-------------------------------------------------------------% */
-/*     | Convergence test: unlike in the symmetric code, I am not    | */
-/*     | using things like refined error bounds and gap condition    | */
-/*     | because I don't know the exact equivalent concept.          | */
-/*     |                                                             | */
-/*     | Instead the i-th Ritz value is considered "converged" when: | */
-/*     |                                                             | */
-/*     |     bounds(i) .le. ( TOL * | ritz | )                       | */
-/*     |                                                             | */
-/*     | for some appropriate choice of norm.                        | */
-/*     %-------------------------------------------------------------% */
+     /* ----------------------------------------------------------- */
+     /* Convergence test: unlike in the symmetric code, I am not    */
+     /* using things like refined error bounds and gap condition    */
+     /* because I don't know the exact equivalent concept.          */
+     /*                                                             */
+     /* Instead the i-th Ritz value is considered "converged" when: */
+     /*                                                             */
+     /*     bounds(i) .le. ( TOL * | ritz | )                       */
+     /*                                                             */
+     /* for some appropriate choice of norm.                        */
+     /* ----------------------------------------------------------- */
 
     /* Parameter adjustments */
     --bounds;
@@ -111,9 +103,9 @@ int snconv_(int32_t *n, float *ritzr, float *ritzi, float *
     /* Function Body */
     arscnd_(&t0);
 
-/*     %---------------------------------% */
-/*     | Get machine dependent constant. | */
-/*     %---------------------------------% */
+     /* ------------------------------- */
+     /* Get machine dependent constant. */
+     /* ------------------------------- */
 
     eps23 = slamch_("Epsilon-Machine");
     d__1 = (double) eps23;
@@ -136,9 +128,9 @@ int snconv_(int32_t *n, float *ritzr, float *ritzi, float *
 
     return 0;
 
-/*     %---------------% */
-/*     | End of snconv | */
-/*     %---------------% */
+     /* ------------- */
+     /* End of snconv */
+     /* ------------- */
 
 } /* snconv_ */
 

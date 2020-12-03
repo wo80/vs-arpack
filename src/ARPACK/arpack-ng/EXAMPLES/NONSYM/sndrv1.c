@@ -83,69 +83,68 @@ int sndrv1()
 /*     ... Assume "call av (nx,x,y)" computes y = A*x.c */
 
 /*     ... Use mode 1 of SNAUPD. */
+/**
+ * \BeginLib
+ *
+ * \Routines called:
+ *     snaupd  ARPACK reverse communication interface routine.
+ *     sneupd  ARPACK routine that returns Ritz values and (optionally)
+ *             Ritz vectors.
+ *     slapy2  LAPACK routine to compute sqrt(x**2+y**2) carefully.
+ *     saxpy   Level 1 BLAS that computes y <- alpha*x+y.
+ *     snrm2   Level 1 BLAS that computes the norm of a vector.
+ *     av      Matrix vector multiplication routine that computes A*x.
+ *     tv      Matrix vector multiplication routine that computes T*x,
+ *             where T is a tridiagonal matrix.  It is used in routine
+ *             av.
+ *
+ * \Author
+ *     Richard Lehoucq
+ *     Danny Sorensen
+ *     Chao Yang
+ *     Dept. of Computational &
+ *     Applied Mathematics
+ *     Rice University
+ *     Houston, Texas
+ *
+ * \SCCS Information: @(#)
+ * FILE: ndrv1.F   SID: 2.5   DATE OF SID: 10/17/00   RELEASE: 2
+ *
+ * \Remarks
+ *     1. None
+ *
+ * \EndLib
+ */
+     /* --------------------------- */
+     /* Define maximum dimensions   */
+     /* for all arrays.             */
+     /* MAXN:   Maximum dimension   */
+     /*         of the A allowed.   */
+     /* MAXNEV: Maximum NEV allowed */
+     /* MAXNCV: Maximum NCV allowed */
+     /* --------------------------- */
 
-/* \BeginLib */
+     /* --------------------- */
+     /* Executable Statements */
+     /* --------------------- */
 
-/* \Routines called: */
-/*     snaupd  ARPACK reverse communication interface routine. */
-/*     sneupd  ARPACK routine that returns Ritz values and (optionally) */
-/*             Ritz vectors. */
-/*     slapy2  LAPACK routine to compute sqrt(x**2+y**2) carefully. */
-/*     saxpy   Level 1 BLAS that computes y <- alpha*x+y. */
-/*     snrm2   Level 1 BLAS that computes the norm of a vector. */
-/*     av      Matrix vector multiplication routine that computes A*x. */
-/*     tv      Matrix vector multiplication routine that computes T*x, */
-/*             where T is a tridiagonal matrix.  It is used in routine */
-/*             av. */
-
-/* \Author */
-/*     Richard Lehoucq */
-/*     Danny Sorensen */
-/*     Chao Yang */
-/*     Dept. of Computational & */
-/*     Applied Mathematics */
-/*     Rice University */
-/*     Houston, Texas */
-
-/* \SCCS Information: @(#) */
-/* FILE: ndrv1.F   SID: 2.5   DATE OF SID: 10/17/00   RELEASE: 2 */
-
-/* \Remarks */
-/*     1. None */
-
-/* \EndLib */
-/* --------------------------------------------------------------------------- */
-
-/*     %-----------------------------% */
-/*     | Define maximum dimensions   | */
-/*     | for all arrays.             | */
-/*     | MAXN:   Maximum dimension   | */
-/*     |         of the A allowed.   | */
-/*     | MAXNEV: Maximum NEV allowed | */
-/*     | MAXNCV: Maximum NCV allowed | */
-/*     %-----------------------------% */
-
-/*     %-----------------------% */
-/*     | Executable Statements | */
-/*     %-----------------------% */
-
-/*     %--------------------------------------------------% */
-/*     | The number NX is the number of interior points   | */
-/*     | in the discretization of the 2-dimensional       | */
-/*     | convection-diffusion operator on the unit        | */
-/*     | square with zero Dirichlet boundary condition.   | */
-/*     | The number N(=NX*NX) is the dimension of the     | */
-/*     | matrix.  A standard eigenvalue problem is        | */
-/*     | solved (BMAT = 'I').  NEV is the number of       | */
-/*     | eigenvalues to be approximated.  The user can    | */
-/*     | modify NX, NEV, NCV, WHICH to solve problems of  | */
-/*     | different sizes, and to get different parts of   | */
-/*     | the spectrum.  However, The following            | */
-/*     | conditions must be satisfied:                    | */
-/*     |                   N <= MAXN                      | */
-/*     |                 NEV <= MAXNEV                    | */
-/*     |           NEV + 2 <= NCV <= MAXNCV               | */
-/*     %--------------------------------------------------% */
+     /* ------------------------------------------------ */
+     /* The number NX is the number of interior points   */
+     /* in the discretization of the 2-dimensional       */
+     /* convection-diffusion operator on the unit        */
+     /* square with zero Dirichlet boundary condition.   */
+     /* The number N(=NX*NX) is the dimension of the     */
+     /* matrix.  A standard eigenvalue problem is        */
+     /* solved (BMAT = 'I').  NEV is the number of       */
+     /* eigenvalues to be approximated.  The user can    */
+     /* modify NX, NEV, NCV, WHICH to solve problems of  */
+     /* different sizes, and to get different parts of   */
+     /* the spectrum.  However, The following            */
+     /* conditions must be satisfied:                    */
+     /*                   N <= MAXN                      */
+     /*                 NEV <= MAXNEV                    */
+     /*           NEV + 2 <= NCV <= MAXNCV               */
+     /* ------------------------------------------------ */
 
     nx = 10;
     n = nx * nx;
@@ -173,16 +172,16 @@ int sndrv1()
     *(unsigned char *)bmat = 'I';
     s_copy(which, "SM", (ftnlen)2, (ftnlen)2);
 
-/*     %-----------------------------------------------------% */
-/*     | The work array WORKL is used in SNAUPD as           | */
-/*     | workspace.  Its dimension LWORKL is set as          | */
-/*     | illustrated below.  The parameter TOL determines    | */
-/*     | the stopping criterion. If TOL<=0, machine          | */
-/*     | precision is used.  The variable IDO is used for    | */
-/*     | reverse communication, and is initially set to 0.   | */
-/*     | Setting INFO=0 indicates that a random vector is    | */
-/*     | generated in SNAUPD to start the Arnoldi iteration. | */
-/*     %-----------------------------------------------------% */
+     /* --------------------------------------------------- */
+     /* The work array WORKL is used in SNAUPD as           */
+     /* workspace.  Its dimension LWORKL is set as          */
+     /* illustrated below.  The parameter TOL determines    */
+     /* the stopping criterion. If TOL<=0, machine          */
+     /* precision is used.  The variable IDO is used for    */
+     /* reverse communication, and is initially set to 0.   */
+     /* Setting INFO=0 indicates that a random vector is    */
+     /* generated in SNAUPD to start the Arnoldi iteration. */
+     /* --------------------------------------------------- */
 
 /* Computing 2nd power */
     i__1 = ncv;
@@ -191,15 +190,15 @@ int sndrv1()
     ido = 0;
     info = 0;
 
-/*     %---------------------------------------------------% */
-/*     | This program uses exact shifts with respect to    | */
-/*     | the current Hessenberg matrix (IPARAM(1) = 1).    | */
-/*     | IPARAM(3) specifies the maximum number of Arnoldi | */
-/*     | iterations allowed.  Mode 1 of SNAUPD is used     | */
-/*     | (IPARAM(7) = 1). All these options can be changed | */
-/*     | by the user. For details see the documentation in | */
-/*     | SNAUPD.                                           | */
-/*     %---------------------------------------------------% */
+     /* ------------------------------------------------- */
+     /* This program uses exact shifts with respect to    */
+     /* the current Hessenberg matrix (IPARAM(1) = 1).    */
+     /* IPARAM(3) specifies the maximum number of Arnoldi */
+     /* iterations allowed.  Mode 1 of SNAUPD is used     */
+     /* (IPARAM(7) = 1). All these options can be changed */
+     /* by the user. For details see the documentation in */
+     /* SNAUPD.                                           */
+     /* ------------------------------------------------- */
 
     ishfts = 1;
     maxitr = 300;
@@ -209,18 +208,18 @@ int sndrv1()
     iparam[2] = maxitr;
     iparam[6] = mode;
 
-/*     %-------------------------------------------% */
-/*     | M A I N   L O O P (Reverse communication) | */
-/*     %-------------------------------------------% */
+     /* ----------------------------------------- */
+     /* M A I N   L O O P (Reverse communication) */
+     /* ----------------------------------------- */
 
 L10:
 
-/*        %---------------------------------------------% */
-/*        | Repeatedly call the routine SNAUPD and take | */
-/*        | actions indicated by parameter IDO until    | */
-/*        | either convergence is indicated or maxitr   | */
-/*        | has been exceeded.                          | */
-/*        %---------------------------------------------% */
+        /* ------------------------------------------- */
+        /* Repeatedly call the routine SNAUPD and take */
+        /* actions indicated by parameter IDO until    */
+        /* either convergence is indicated or maxitr   */
+        /* has been exceeded.                          */
+        /* ------------------------------------------- */
 
     snaupd_(&ido, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, 
 	    iparam, ipntr, workd, workl, &lworkl, &info, (ftnlen)1, (ftnlen)2)
@@ -228,37 +227,37 @@ L10:
 
     if (ido == -1 || ido == 1) {
 
-/*           %-------------------------------------------% */
-/*           | Perform matrix vector multiplication      | */
-/*           |                y <--- OP*x                | */
-/*           | The user should supply his/her own        | */
-/*           | matrix vector multiplication routine here | */
-/*           | that takes workd(ipntr(1)) as the input   | */
-/*           | vector, and return the matrix vector      | */
-/*           | product to workd(ipntr(2)).               | */
-/*           %-------------------------------------------% */
+           /* ----------------------------------------- */
+           /* Perform matrix vector multiplication      */
+           /*                y <--- OP*x                */
+           /* The user should supply his/her own        */
+           /* matrix vector multiplication routine here */
+           /* that takes workd(ipntr(1)) as the input   */
+           /* vector, and return the matrix vector      */
+           /* product to workd(ipntr(2)).               */
+           /* ----------------------------------------- */
 
 	sndrv1_av_(&nx, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
 
-/*           %-----------------------------------------% */
-/*           | L O O P   B A C K to call SNAUPD again. | */
-/*           %-----------------------------------------% */
+           /* --------------------------------------- */
+           /* L O O P   B A C K to call SNAUPD again. */
+           /* --------------------------------------- */
 
 	goto L10;
 
     }
 
-/*     %----------------------------------------% */
-/*     | Either we have convergence or there is | */
-/*     | an error.                              | */
-/*     %----------------------------------------% */
+     /* -------------------------------------- */
+     /* Either we have convergence or there is */
+     /* an error.                              */
+     /* -------------------------------------- */
 
     if (info < 0) {
 
-/*        %--------------------------% */
-/*        | Error message, check the | */
-/*        | documentation in SNAUPD. | */
-/*        %--------------------------% */
+        /* ------------------------ */
+        /* Error message, check the */
+        /* documentation in SNAUPD. */
+        /* ------------------------ */
 
 	s_wsle(&io___23);
 	do_lio(&c__9, &c__1, " ", (ftnlen)1);
@@ -277,15 +276,15 @@ L10:
 
     } else {
 
-/*        %-------------------------------------------% */
-/*        | No fatal errors occurred.                 | */
-/*        | Post-Process using SNEUPD.                | */
-/*        |                                           | */
-/*        | Computed eigenvalues may be extracted.    | */
-/*        |                                           | */
-/*        | Eigenvectors may also be computed now if  | */
-/*        | desired.  (indicated by rvec = .true.)    | */
-/*        %-------------------------------------------% */
+        /* ----------------------------------------- */
+        /* No fatal errors occurred.                 */
+        /* Post-Process using SNEUPD.                */
+        /*                                           */
+        /* Computed eigenvalues may be extracted.    */
+        /*                                           */
+        /* Eigenvectors may also be computed now if  */
+        /* desired.  (indicated by rvec = .true.)    */
+        /* ----------------------------------------- */
 
 	rvec = true;
 
@@ -294,24 +293,24 @@ L10:
 		c__256, iparam, ipntr, workd, workl, &lworkl, &ierr, (ftnlen)
 		1, (ftnlen)1, (ftnlen)2);
 
-/*        %-----------------------------------------------% */
-/*        | The real part of the eigenvalue is returned   | */
-/*        | in the first column of the two dimensional    | */
-/*        | array D, and the imaginary part is returned   | */
-/*        | in the second column of D.  The corresponding | */
-/*        | eigenvectors are returned in the first NEV    | */
-/*        | columns of the two dimensional array V if     | */
-/*        | requested.  Otherwise, an orthogonal basis    | */
-/*        | for the invariant subspace corresponding to   | */
-/*        | the eigenvalues in D is returned in V.        | */
-/*        %-----------------------------------------------% */
+        /* --------------------------------------------- */
+        /* The real part of the eigenvalue is returned   */
+        /* in the first column of the two dimensional    */
+        /* array D, and the imaginary part is returned   */
+        /* in the second column of D.  The corresponding */
+        /* eigenvectors are returned in the first NEV    */
+        /* columns of the two dimensional array V if     */
+        /* requested.  Otherwise, an orthogonal basis    */
+        /* for the invariant subspace corresponding to   */
+        /* the eigenvalues in D is returned in V.        */
+        /* --------------------------------------------- */
 
 	if (ierr != 0) {
 
-/*           %------------------------------------% */
-/*           | Error condition:                   | */
-/*           | Check the documentation of SNEUPD. | */
-/*           %------------------------------------% */
+           /* ---------------------------------- */
+           /* Error condition:                   */
+           /* Check the documentation of SNEUPD. */
+           /* ---------------------------------- */
 
 	    s_wsle(&io___34);
 	    do_lio(&c__9, &c__1, " ", (ftnlen)1);
@@ -335,24 +334,24 @@ L10:
 	    i__1 = nconv;
 	    for (j = 1; j <= i__1; ++j) {
 
-/*               %---------------------------% */
-/*               | Compute the residual norm | */
-/*               |                           | */
-/*               |   ||  A*x - lambda*x ||   | */
-/*               |                           | */
-/*               | for the NCONV accurately  | */
-/*               | computed eigenvalues and  | */
-/*               | eigenvectors.  (iparam(5) | */
-/*               | indicates how many are    | */
-/*               | accurate to the requested | */
-/*               | tolerance)                | */
-/*               %---------------------------% */
+               /* ------------------------- */
+               /* Compute the residual norm */
+               /*                           */
+               /*   ||  A*x - lambda*x ||   */
+               /*                           */
+               /* for the NCONV accurately  */
+               /* computed eigenvalues and  */
+               /* eigenvectors.  (iparam(5) */
+               /* indicates how many are    */
+               /* accurate to the requested */
+               /* tolerance)                */
+               /* ------------------------- */
 
 		if (d__[j + 29] == 0.f) {
 
-/*                  %--------------------% */
-/*                  | Ritz value is real | */
-/*                  %--------------------% */
+                  /* ------------------ */
+                  /* Ritz value is real */
+                  /* ------------------ */
 
 			sndrv1_av_(&nx, &v[(j << 8) - 256], ax);
 		    r__1 = -d__[j - 1];
@@ -362,12 +361,12 @@ L10:
 
 		} else if (first) {
 
-/*                  %------------------------% */
-/*                  | Ritz value is complex. | */
-/*                  | Residual of one Ritz   | */
-/*                  | value of the conjugate | */
-/*                  | pair is computed.      | */
-/*                  %------------------------% */
+                  /* ---------------------- */
+                  /* Ritz value is complex. */
+                  /* Residual of one Ritz   */
+                  /* value of the conjugate */
+                  /* pair is computed.      */
+                  /* ---------------------- */
 
 			sndrv1_av_(&nx, &v[(j << 8) - 256], ax);
 		    r__1 = -d__[j - 1];
@@ -393,17 +392,17 @@ L10:
 /* L20: */
 	    }
 
-/*            %-----------------------------% */
-/*            | Display computed residuals. | */
-/*            %-----------------------------% */
+            /* --------------------------- */
+            /* Display computed residuals. */
+            /* --------------------------- */
 
 	    smout_(&c__6, &nconv, &c__3, d__, &c__30, &c_n6, "Ritz values (R"
 		    "eal,Imag) and relative residuals", (ftnlen)46);
 	}
 
-/*        %-------------------------------------------% */
-/*        | Print additional convergence information. | */
-/*        %-------------------------------------------% */
+        /* ----------------------------------------- */
+        /* Print additional convergence information. */
+        /* ----------------------------------------- */
 
 	if (info == 1) {
 	    s_wsle(&io___42);
@@ -487,9 +486,9 @@ L10:
 
     }
 
-/*     %---------------------------% */
-/*     | Done with program sndrv1. | */
-/*     %---------------------------% */
+     /* ------------------------- */
+     /* Done with program sndrv1. */
+     /* ------------------------- */
 
 L9000:
 

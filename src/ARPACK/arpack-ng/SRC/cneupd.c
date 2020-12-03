@@ -292,13 +292,13 @@ int cneupd_(bool *rvec, char *howmny, bool *select,
     int32_t nconv2;
     int32_t bounds, invsub, iuptri, msglvl, outncv, numcnv, ishift;
 
-/*     %-----------------------% */
-/*     | Executable Statements | */
-/*     %-----------------------% */
+     /* --------------------- */
+     /* Executable Statements */
+     /* --------------------- */
 
-/*     %------------------------% */
-/*     | Set default parameters | */
-/*     %------------------------% */
+     /* ---------------------- */
+     /* Set default parameters */
+     /* ---------------------- */
 
     /* Parameter adjustments */
     --workd;
@@ -323,18 +323,18 @@ int cneupd_(bool *rvec, char *howmny, bool *select,
     nconv = iparam[5];
     *info = 0;
 
-/*     %---------------------------------% */
-/*     | Get machine dependent constant. | */
-/*     %---------------------------------% */
+     /* ------------------------------- */
+     /* Get machine dependent constant. */
+     /* ------------------------------- */
 
     eps23 = slamch_("Epsilon-Machine");
     d__1 = (double) eps23;
     eps23 = pow_dd(&d__1, &d_23);
 
-/*     %-------------------------------% */
-/*     | Quick return                  | */
-/*     | Check for incompatible input  | */
-/*     %-------------------------------% */
+     /* ----------------------------- */
+     /* Quick return                  */
+     /* Check for incompatible input  */
+     /* ----------------------------- */
 
     ierr = 0;
 
@@ -379,42 +379,42 @@ int cneupd_(bool *rvec, char *howmny, bool *select,
 	ierr = -11;
     }
 
-/*     %------------% */
-/*     | Error Exit | */
-/*     %------------% */
+     /* ---------- */
+     /* Error Exit */
+     /* ---------- */
 
     if (ierr != 0) {
 	*info = ierr;
 	goto L9000;
     }
 
-/*     %--------------------------------------------------------% */
-/*     | Pointer into WORKL for address of H, RITZ, WORKEV, Q   | */
-/*     | etc... and the remaining workspace.                    | */
-/*     | Also update pointer to be used on output.              | */
-/*     | Memory is laid out as follows:                         | */
-/*     | workl(1:ncv*ncv) := generated Hessenberg matrix        | */
-/*     | workl(ncv*ncv+1:ncv*ncv+ncv) := ritz values            | */
-/*     | workl(ncv*ncv+ncv+1:ncv*ncv+2*ncv) := error bounds     | */
-/*     %--------------------------------------------------------% */
+     /* ------------------------------------------------------ */
+     /* Pointer into WORKL for address of H, RITZ, WORKEV, Q   */
+     /* etc... and the remaining workspace.                    */
+     /* Also update pointer to be used on output.              */
+     /* Memory is laid out as follows:                         */
+     /* workl(1:ncv*ncv) := generated Hessenberg matrix        */
+     /* workl(ncv*ncv+1:ncv*ncv+ncv) := ritz values            */
+     /* workl(ncv*ncv+ncv+1:ncv*ncv+2*ncv) := error bounds     */
+     /* ------------------------------------------------------ */
 
-/*     %-----------------------------------------------------------% */
-/*     | The following is used and set by CNEUPD.                 | */
-/*     | workl(ncv*ncv+2*ncv+1:ncv*ncv+3*ncv) := The untransformed | */
-/*     |                                      Ritz values.         | */
-/*     | workl(ncv*ncv+3*ncv+1:ncv*ncv+4*ncv) := The untransformed | */
-/*     |                                      error bounds of      | */
-/*     |                                      the Ritz values      | */
-/*     | workl(ncv*ncv+4*ncv+1:2*ncv*ncv+4*ncv) := Holds the upper | */
-/*     |                                      triangular matrix    | */
-/*     |                                      for H.               | */
-/*     | workl(2*ncv*ncv+4*ncv+1: 3*ncv*ncv+4*ncv) := Holds the    | */
-/*     |                                      associated matrix    | */
-/*     |                                      representation of    | */
-/*     |                                      the invariant        | */
-/*     |                                      subspace for H.      | */
-/*     | GRAND total of NCV * ( 3 * NCV + 4 ) locations.           | */
-/*     %-----------------------------------------------------------% */
+     /* --------------------------------------------------------- */
+     /* The following is used and set by CNEUPD.                  */
+     /* workl(ncv*ncv+2*ncv+1:ncv*ncv+3*ncv) := The untransformed */
+     /*                                      Ritz values.         */
+     /* workl(ncv*ncv+3*ncv+1:ncv*ncv+4*ncv) := The untransformed */
+     /*                                      error bounds of      */
+     /*                                      the Ritz values      */
+     /* workl(ncv*ncv+4*ncv+1:2*ncv*ncv+4*ncv) := Holds the upper */
+     /*                                      triangular matrix    */
+     /*                                      for H.               */
+     /* workl(2*ncv*ncv+4*ncv+1: 3*ncv*ncv+4*ncv) := Holds the    */
+     /*                                      associated matrix    */
+     /*                                      representation of    */
+     /*                                      the invariant        */
+     /*                                      subspace for H.      */
+     /* GRAND total of NCV * ( 3 * NCV + 4 ) locations.           */
+     /* --------------------------------------------------------- */
 
     ih = ipntr[5];
     ritz = ipntr[6];
@@ -433,20 +433,20 @@ int cneupd_(bool *rvec, char *howmny, bool *select,
     wr = 1;
     iwev = wr + *ncv;
 
-/*     %-----------------------------------------% */
-/*     | irz points to the Ritz values computed  | */
-/*     |     by _neigh before exiting _naup2.    | */
-/*     | ibd points to the Ritz estimates        | */
-/*     |     computed by _neigh before exiting   | */
-/*     |     _naup2.                             | */
-/*     %-----------------------------------------% */
+     /* --------------------------------------- */
+     /* irz points to the Ritz values computed  */
+     /*     by _neigh before exiting _naup2.    */
+     /* ibd points to the Ritz estimates        */
+     /*     computed by _neigh before exiting   */
+     /*     _naup2.                             */
+     /* --------------------------------------- */
 
     irz = ipntr[14] + *ncv * *ncv;
     ibd = irz + *ncv;
 
-/*     %------------------------------------% */
-/*     | RNORM is B-norm of the RESID(1:N). | */
-/*     %------------------------------------% */
+     /* ---------------------------------- */
+     /* RNORM is B-norm of the RESID(1:N). */
+     /* ---------------------------------- */
 
     i__1 = ih + 2;
     rnorm.r = workl[i__1].r, rnorm.i = workl[i__1].i;
@@ -464,10 +464,10 @@ int cneupd_(bool *rvec, char *howmny, bool *select,
 
 	reord = false;
 
-/*        %---------------------------------------------------% */
-/*        | Use the temporary bounds array to store indices   | */
-/*        | These will be used to mark the select array later | */
-/*        %---------------------------------------------------% */
+        /* ------------------------------------------------- */
+        /* Use the temporary bounds array to store indices   */
+        /* These will be used to mark the select array later */
+        /* ------------------------------------------------- */
 
 	i__1 = *ncv;
 	for (j = 1; j <= i__1; ++j) {
@@ -477,15 +477,15 @@ int cneupd_(bool *rvec, char *howmny, bool *select,
 /* L10: */
 	}
 
-/*        %-------------------------------------% */
-/*        | Select the wanted Ritz values.      | */
-/*        | Sort the Ritz values so that the    | */
-/*        | wanted ones appear at the tailing   | */
-/*        | NEV positions of workl(irr) and     | */
-/*        | workl(iri).  Move the corresponding | */
-/*        | error estimates in workl(ibd)       | */
-/*        | accordingly.                        | */
-/*        %-------------------------------------% */
+        /* ----------------------------------- */
+        /* Select the wanted Ritz values.      */
+        /* Sort the Ritz values so that the    */
+        /* wanted ones appear at the tailing   */
+        /* NEV positions of workl(irr) and     */
+        /* workl(iri).  Move the corresponding */
+        /* error estimates in workl(ibd)       */
+        /* accordingly.                        */
+        /* ----------------------------------- */
 
 	np = *ncv - *nev;
 	ishift = 0;
@@ -499,10 +499,10 @@ int cneupd_(bool *rvec, char *howmny, bool *select,
 		    ftnlen)48);
 	}
 
-/*        %-----------------------------------------------------% */
-/*        | Record indices of the converged wanted Ritz values  | */
-/*        | Mark the select array for possible reordering       | */
-/*        %-----------------------------------------------------% */
+        /* --------------------------------------------------- */
+        /* Record indices of the converged wanted Ritz values  */
+        /* Mark the select array for possible reordering       */
+        /* --------------------------------------------------- */
 
 	numcnv = 0;
 	i__1 = *ncv;
@@ -528,12 +528,12 @@ int cneupd_(bool *rvec, char *howmny, bool *select,
 /* L11: */
 	}
 
-/*        %-----------------------------------------------------------% */
-/*        | Check the count (numcnv) of converged Ritz values with    | */
-/*        | the number (nconv) reported by dnaupd.  If these two      | */
-/*        | are different then there has probably been an error       | */
-/*        | caused by incorrect passing of the dnaupd data.           | */
-/*        %-----------------------------------------------------------% */
+        /* --------------------------------------------------------- */
+        /* Check the count (numcnv) of converged Ritz values with    */
+        /* the number (nconv) reported by dnaupd.  If these two      */
+        /* are different then there has probably been an error       */
+        /* caused by incorrect passing of the dnaupd data.           */
+        /* --------------------------------------------------------- */
 
 	if (msglvl > 2) {
 	    ivout_(&debug_1.logfil, &c__1, &numcnv, &debug_1.ndigit, "_neupd"
@@ -547,12 +547,12 @@ int cneupd_(bool *rvec, char *howmny, bool *select,
 	    goto L9000;
 	}
 
-/*        %-------------------------------------------------------% */
-/*        | Call LAPACK routine clahqr to compute the Schur form | */
-/*        | of the upper Hessenberg matrix returned by CNAUPD.   | */
-/*        | Make a copy of the upper Hessenberg matrix.           | */
-/*        | Initialize the Schur vector matrix Q to the identity. | */
-/*        %-------------------------------------------------------% */
+        /* ----------------------------------------------------- */
+        /* Call LAPACK routine clahqr to compute the Schur form  */
+        /* of the upper Hessenberg matrix returned by CNAUPD.    */
+        /* Make a copy of the upper Hessenberg matrix.           */
+        /* Initialize the Schur vector matrix Q to the identity. */
+        /* ----------------------------------------------------- */
 
 	i__1 = ldh * *ncv;
 	ccopy_(&i__1, &workl[ih], &c__1, &workl[iuptri], &c__1);
@@ -581,9 +581,9 @@ int cneupd_(bool *rvec, char *howmny, bool *select,
 
 	if (reord) {
 
-/*           %-----------------------------------------------% */
-/*           | Reorder the computed upper triangular matrix. | */
-/*           %-----------------------------------------------% */
+           /* --------------------------------------------- */
+           /* Reorder the computed upper triangular matrix. */
+           /* --------------------------------------------- */
 
 	    ctrsen_("None", "V", &select[1], ncv, &workl[iuptri], &ldh, &
 		    workl[invsub], &ldq, &workl[iheig], &nconv2, &conds, &sep,
@@ -609,44 +609,44 @@ int cneupd_(bool *rvec, char *howmny, bool *select,
 
 	}
 
-/*        %---------------------------------------------% */
-/*        | Copy the last row of the Schur basis matrix | */
-/*        | to workl(ihbds).  This vector will be used  | */
-/*        | to compute the Ritz estimates of converged  | */
-/*        | Ritz values.                                | */
-/*        %---------------------------------------------% */
+        /* ------------------------------------------- */
+        /* Copy the last row of the Schur basis matrix */
+        /* to workl(ihbds).  This vector will be used  */
+        /* to compute the Ritz estimates of converged  */
+        /* Ritz values.                                */
+        /* ------------------------------------------- */
 
 	ccopy_(ncv, &workl[invsub + *ncv - 1], &ldq, &workl[ihbds], &c__1);
 
-/*        %--------------------------------------------% */
-/*        | Place the computed eigenvalues of H into D | */
-/*        | if a spectral transformation was not used. | */
-/*        %--------------------------------------------% */
+        /* ------------------------------------------ */
+        /* Place the computed eigenvalues of H into D */
+        /* if a spectral transformation was not used. */
+        /* ------------------------------------------ */
 
 	if (s_cmp(type__, "REGULR", (ftnlen)6, (ftnlen)6) == 0) {
 	    ccopy_(&nconv, &workl[iheig], &c__1, &d__[1], &c__1);
 	}
 
-/*        %----------------------------------------------------------% */
-/*        | Compute the QR factorization of the matrix representing  | */
-/*        | the wanted invariant subspace located in the first NCONV | */
-/*        | columns of workl(invsub,ldq).                            | */
-/*        %----------------------------------------------------------% */
+        /* -------------------------------------------------------- */
+        /* Compute the QR factorization of the matrix representing  */
+        /* the wanted invariant subspace located in the first NCONV */
+        /* columns of workl(invsub,ldq).                            */
+        /* -------------------------------------------------------- */
 
 	cgeqr2_(ncv, &nconv, &workl[invsub], &ldq, &workev[1], &workev[*ncv + 
 		1], &ierr);
 
-/*        %--------------------------------------------------------% */
-/*        | * Postmultiply V by Q using cunm2r.                    | */
-/*        | * Copy the first NCONV columns of VQ into Z.           | */
-/*        | * Postmultiply Z by R.                                 | */
-/*        | The N by NCONV matrix Z is now a matrix representation | */
-/*        | of the approximate invariant subspace associated with  | */
-/*        | the Ritz values in workl(iheig). The first NCONV       | */
-/*        | columns of V are now approximate Schur vectors         | */
-/*        | associated with the upper triangular matrix of order   | */
-/*        | NCONV in workl(iuptri).                                | */
-/*        %--------------------------------------------------------% */
+        /* ------------------------------------------------------ */
+        /* * Postmultiply V by Q using cunm2r.                    */
+        /* * Copy the first NCONV columns of VQ into Z.           */
+        /* * Postmultiply Z by R.                                 */
+        /* The N by NCONV matrix Z is now a matrix representation */
+        /* of the approximate invariant subspace associated with  */
+        /* the Ritz values in workl(iheig). The first NCONV       */
+        /* columns of V are now approximate Schur vectors         */
+        /* associated with the upper triangular matrix of order   */
+        /* NCONV in workl(iuptri).                                */
+        /* ------------------------------------------------------ */
 
 	cunm2r_("Right", "Notranspose", n, ncv, &nconv, &workl[invsub], &ldq, 
 		&workev[1], &v[v_offset], ldv, &workd[*n + 1], &ierr);
@@ -655,14 +655,14 @@ int cneupd_(bool *rvec, char *howmny, bool *select,
 	i__1 = nconv;
 	for (j = 1; j <= i__1; ++j) {
 
-/*           %---------------------------------------------------% */
-/*           | Perform both a column and row scaling if the      | */
-/*           | diagonal element of workl(invsub,ldq) is negative | */
-/*           | I'm lazy and don't take advantage of the upper    | */
-/*           | triangular form of workl(iuptri,ldq).             | */
-/*           | Note that since Q is orthogonal, R is a diagonal  | */
-/*           | matrix consisting of plus or minus ones.          | */
-/*           %---------------------------------------------------% */
+           /* ------------------------------------------------- */
+           /* Perform both a column and row scaling if the      */
+           /* diagonal element of workl(invsub,ldq) is negative */
+           /* I'm lazy and don't take advantage of the upper    */
+           /* triangular form of workl(iuptri,ldq).             */
+           /* Note that since Q is orthogonal, R is a diagonal  */
+           /* matrix consisting of plus or minus ones.          */
+           /* ------------------------------------------------- */
 
 	    i__2 = invsub + (j - 1) * ldq + j - 1;
 	    if (workl[i__2].r < 0.f) {
@@ -677,10 +677,10 @@ int cneupd_(bool *rvec, char *howmny, bool *select,
 
 	if (*(unsigned char *)howmny == 'A') {
 
-/*           %--------------------------------------------% */
-/*           | Compute the NCONV wanted eigenvectors of T | */
-/*           | located in workl(iuptri,ldq).              | */
-/*           %--------------------------------------------% */
+           /* ------------------------------------------ */
+           /* Compute the NCONV wanted eigenvectors of T */
+           /* located in workl(iuptri,ldq).              */
+           /* ------------------------------------------ */
 
 	    i__1 = *ncv;
 	    for (j = 1; j <= i__1; ++j) {
@@ -701,13 +701,13 @@ int cneupd_(bool *rvec, char *howmny, bool *select,
 		goto L9000;
 	    }
 
-/*           %------------------------------------------------% */
-/*           | Scale the returning eigenvectors so that their | */
-/*           | Euclidean norms are all one. LAPACK subroutine | */
-/*           | ctrevc returns each eigenvector normalized so  | */
-/*           | that the element of largest magnitude has      | */
-/*           | magnitude 1.                                   | */
-/*           %------------------------------------------------% */
+           /* ---------------------------------------------- */
+           /* Scale the returning eigenvectors so that their */
+           /* Euclidean norms are all one. LAPACK subroutine */
+           /* ctrevc returns each eigenvector normalized so  */
+           /* that the element of largest magnitude has      */
+           /* magnitude 1.                                   */
+           /* ---------------------------------------------- */
 
 	    i__1 = nconv;
 	    for (j = 1; j <= i__1; ++j) {
@@ -715,14 +715,14 @@ int cneupd_(bool *rvec, char *howmny, bool *select,
 		rtemp = 1.f / rtemp;
 		csscal_(ncv, &rtemp, &workl[invsub + (j - 1) * ldq], &c__1);
 
-/*                 %------------------------------------------% */
-/*                 | Ritz estimates can be obtained by taking | */
-/*                 | the inner product of the last row of the | */
-/*                 | Schur basis of H with eigenvectors of T. | */
-/*                 | Note that the eigenvector matrix of T is | */
-/*                 | upper triangular, thus the length of the | */
-/*                 | inner product can be set to j.           | */
-/*                 %------------------------------------------% */
+                 /* ---------------------------------------- */
+                 /* Ritz estimates can be obtained by taking */
+                 /* the inner product of the last row of the */
+                 /* Schur basis of H with eigenvectors of T. */
+                 /* Note that the eigenvector matrix of T is */
+                 /* upper triangular, thus the length of the */
+                 /* inner product can be set to j.           */
+                 /* ---------------------------------------- */
 
 		i__2 = j;
 		cdotc_(&q__1, &j, &workl[ihbds], &c__1, &workl[invsub + (j - 
@@ -744,16 +744,16 @@ int cneupd_(bool *rvec, char *howmny, bool *select,
 		}
 	    }
 
-/*           %---------------------------------------% */
-/*           | Copy Ritz estimates into workl(ihbds) | */
-/*           %---------------------------------------% */
+           /* ------------------------------------- */
+           /* Copy Ritz estimates into workl(ihbds) */
+           /* ------------------------------------- */
 
 	    ccopy_(&nconv, &workev[1], &c__1, &workl[ihbds], &c__1);
 
-/*           %----------------------------------------------% */
-/*           | The eigenvector matrix Q of T is triangular. | */
-/*           | Form Z*Q.                                    | */
-/*           %----------------------------------------------% */
+           /* -------------------------------------------- */
+           /* The eigenvector matrix Q of T is triangular. */
+           /* Form Z*Q.                                    */
+           /* -------------------------------------------- */
 
 	    ctrmm_("Right", "Upper", "No transpose", "Non-unit", n, &nconv, &
 		    c_one, &workl[invsub], &ldq, &z__[z_offset], ldz);
@@ -761,10 +761,10 @@ int cneupd_(bool *rvec, char *howmny, bool *select,
 
     } else {
 
-/*        %--------------------------------------------------% */
-/*        | An approximate invariant subspace is not needed. | */
-/*        | Place the Ritz values computed CNAUPD into D.    | */
-/*        %--------------------------------------------------% */
+        /* ------------------------------------------------ */
+        /* An approximate invariant subspace is not needed. */
+        /* Place the Ritz values computed CNAUPD into D.    */
+        /* ------------------------------------------------ */
 
 	ccopy_(&nconv, &workl[ritz], &c__1, &d__[1], &c__1);
 	ccopy_(&nconv, &workl[ritz], &c__1, &workl[iheig], &c__1);
@@ -772,11 +772,11 @@ int cneupd_(bool *rvec, char *howmny, bool *select,
 
     }
 
-/*     %------------------------------------------------% */
-/*     | Transform the Ritz values and possibly vectors | */
-/*     | and corresponding error bounds of OP to those  | */
-/*     | of A*x = lambda*B*x.                           | */
-/*     %------------------------------------------------% */
+     /* ---------------------------------------------- */
+     /* Transform the Ritz values and possibly vectors */
+     /* and corresponding error bounds of OP to those  */
+     /* of A*x = lambda*B*x.                           */
+     /* ---------------------------------------------- */
 
     if (s_cmp(type__, "REGULR", (ftnlen)6, (ftnlen)6) == 0) {
 
@@ -786,11 +786,11 @@ int cneupd_(bool *rvec, char *howmny, bool *select,
 
     } else {
 
-/*        %---------------------------------------% */
-/*        |   A spectral transformation was used. | */
-/*        | * Determine the Ritz estimates of the | */
-/*        |   Ritz values in the original system. | */
-/*        %---------------------------------------% */
+        /* ------------------------------------- */
+        /*   A spectral transformation was used. */
+        /* * Determine the Ritz estimates of the */
+        /*   Ritz values in the original system. */
+        /* ------------------------------------- */
 
 	if (*rvec) {
 	    cscal_(ncv, &rnorm, &workl[ihbds], &c__1);
@@ -809,13 +809,13 @@ int cneupd_(bool *rvec, char *howmny, bool *select,
 
     }
 
-/*     %-----------------------------------------------------------% */
-/*     | *  Transform the Ritz values back to the original system. | */
-/*     |    For TYPE = 'SHIFTI' the transformation is              | */
-/*     |             lambda = 1/theta + sigma                      | */
-/*     | NOTES:                                                    | */
-/*     | *The Ritz vectors are not affected by the transformation. | */
-/*     %-----------------------------------------------------------% */
+     /* --------------------------------------------------------- */
+     /* *  Transform the Ritz values back to the original system. */
+     /*    For TYPE = 'SHIFTI' the transformation is              */
+     /*             lambda = 1/theta + sigma                      */
+     /* NOTES:                                                    */
+     /* *The Ritz vectors are not affected by the transformation. */
+     /* --------------------------------------------------------- */
 
     if (s_cmp(type__, "SHIFTI", (ftnlen)6, (ftnlen)6) == 0) {
 	i__1 = nconv;
@@ -841,23 +841,23 @@ int cneupd_(bool *rvec, char *howmny, bool *select,
 		"upd: Associated Ritz estimates.", (ftnlen)34);
     }
 
-/*     %-------------------------------------------------% */
-/*     | Eigenvector Purification step. Formally perform | */
-/*     | one of inverse subspace iteration. Only used    | */
-/*     | for MODE = 3. See reference 3.                  | */
-/*     %-------------------------------------------------% */
+     /* ----------------------------------------------- */
+     /* Eigenvector Purification step. Formally perform */
+     /* one of inverse subspace iteration. Only used    */
+     /* for MODE = 3. See reference 3.                  */
+     /* ----------------------------------------------- */
 
     if (*rvec && *(unsigned char *)howmny == 'A' && s_cmp(type__, "SHIFTI", (
 	    ftnlen)6, (ftnlen)6) == 0) {
 
-/*        %------------------------------------------------% */
-/*        | Purify the computed Ritz vectors by adding a   | */
-/*        | little bit of the residual vector:             | */
-/*        |                      T                         | */
-/*        |          resid(:)*( e    s ) / theta           | */
-/*        |                      NCV                       | */
-/*        | where H s = s theta.                           | */
-/*        %------------------------------------------------% */
+        /* ---------------------------------------------- */
+        /* Purify the computed Ritz vectors by adding a   */
+        /* little bit of the residual vector:             */
+        /*                      T                         */
+        /*          resid(:)*( e    s ) / theta           */
+        /*                      NCV                       */
+        /* where H s = s theta.                           */
+        /* ---------------------------------------------- */
 
 	i__1 = nconv;
 	for (j = 1; j <= i__1; ++j) {
@@ -870,10 +870,10 @@ int cneupd_(bool *rvec, char *howmny, bool *select,
 	    }
 /* L100: */
 	}
-/*        %---------------------------------------% */
-/*        | Perform a rank one update to Z and    | */
-/*        | purify all the Ritz vectors together. | */
-/*        %---------------------------------------% */
+        /* ------------------------------------- */
+        /* Perform a rank one update to Z and    */
+        /* purify all the Ritz vectors together. */
+        /* ------------------------------------- */
 
 	cgeru_(n, &nconv, &c_one, &resid[1], &c__1, &workev[1], &c__1, &z__[
 		z_offset], ldz);
@@ -884,9 +884,9 @@ L9000:
 
     return 0;
 
-/*     %---------------% */
-/*     | End of cneupd| */
-/*     %---------------% */
+     /* ------------- */
+     /* End of cneupd */
+     /* ------------- */
 
 } /* cneupd_ */
 

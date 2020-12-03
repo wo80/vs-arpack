@@ -142,9 +142,9 @@ int sgetv0_(int32_t *ido, char *bmat, int32_t *itry, bool
     static float rnorm0;
     static int32_t msglvl;
 
-/*     %-----------------% */
-/*     | Data Statements | */
-/*     %-----------------% */
+     /* --------------- */
+     /* Data Statements */
+     /* --------------- */
 
     /* Parameter adjustments */
     --workd;
@@ -156,14 +156,14 @@ int sgetv0_(int32_t *ido, char *bmat, int32_t *itry, bool
 
     /* Function Body */
 
-/*     %-----------------------% */
-/*     | Executable Statements | */
-/*     %-----------------------% */
+     /* --------------------- */
+     /* Executable Statements */
+     /* --------------------- */
 
-/*     %-----------------------------------% */
-/*     | Initialize the seed of the LAPACK | */
-/*     | random number generator           | */
-/*     %-----------------------------------% */
+     /* --------------------------------- */
+     /* Initialize the seed of the LAPACK */
+     /* random number generator           */
+     /* --------------------------------- */
 
     if (inits) {
 	iseed[0] = 1;
@@ -175,10 +175,10 @@ int sgetv0_(int32_t *ido, char *bmat, int32_t *itry, bool
 
     if (*ido == 0) {
 
-/*        %-------------------------------% */
-/*        | Initialize timing statistics  | */
-/*        | & message level for debugging | */
-/*        %-------------------------------% */
+        /* ----------------------------- */
+        /* Initialize timing statistics  */
+        /* & message level for debugging */
+        /* ----------------------------- */
 
 	arscnd_(&t0);
 	msglvl = debug_1.mgetv0;
@@ -188,24 +188,24 @@ int sgetv0_(int32_t *ido, char *bmat, int32_t *itry, bool
 	first = false;
 	orth = false;
 
-/*        %-----------------------------------------------------% */
-/*        | Possibly generate a random starting vector in RESID | */
-/*        | Use a LAPACK random number generator used by the    | */
-/*        | matrix generation routines.                         | */
-/*        |    idist = 1: uniform (0,1)  distribution;          | */
-/*        |    idist = 2: uniform (-1,1) distribution;          | */
-/*        |    idist = 3: normal  (0,1)  distribution;          | */
-/*        %-----------------------------------------------------% */
+        /* --------------------------------------------------- */
+        /* Possibly generate a random starting vector in RESID */
+        /* Use a LAPACK random number generator used by the    */
+        /* matrix generation routines.                         */
+        /*    idist = 1: uniform (0,1)  distribution;          */
+        /*    idist = 2: uniform (-1,1) distribution;          */
+        /*    idist = 3: normal  (0,1)  distribution;          */
+        /* --------------------------------------------------- */
 
 	if (! (*initv)) {
 	    idist = 2;
 	    slarnv_(&idist, iseed, n, &resid[1]);
 	}
 
-/*        %----------------------------------------------------------% */
-/*        | Force the starting vector into the range of OP to handle | */
-/*        | the generalized problem when B is possibly (singular).   | */
-/*        %----------------------------------------------------------% */
+        /* -------------------------------------------------------- */
+        /* Force the starting vector into the range of OP to handle */
+        /* the generalized problem when B is possibly (singular).   */
+        /* -------------------------------------------------------- */
 
 	arscnd_(&t2);
 	if (*itry == 1) {
@@ -220,17 +220,17 @@ int sgetv0_(int32_t *ido, char *bmat, int32_t *itry, bool
 	}
     }
 
-/*     %-----------------------------------------% */
-/*     | Back from computing OP*(initial-vector) | */
-/*     %-----------------------------------------% */
+     /* --------------------------------------- */
+     /* Back from computing OP*(initial-vector) */
+     /* --------------------------------------- */
 
     if (first) {
 	goto L20;
     }
 
-/*     %-----------------------------------------------% */
-/*     | Back from computing OP*(orthogonalized-vector) | */
-/*     %-----------------------------------------------% */
+     /* --------------------------------------------- */
+     /* Back from computing OP*(orthogonalized-vector) */
+     /* --------------------------------------------- */
 
     if (orth) {
 	goto L40;
@@ -241,10 +241,10 @@ int sgetv0_(int32_t *ido, char *bmat, int32_t *itry, bool
 	timing_1.tmvopx += t3 - t2;
     }
 
-/*     %------------------------------------------------------% */
-/*     | Starting vector is now in the range of OP; r = OP*r; | */
-/*     | Compute B-norm of starting vector.                   | */
-/*     %------------------------------------------------------% */
+     /* ---------------------------------------------------- */
+     /* Starting vector is now in the range of OP; r = OP*r; */
+     /* Compute B-norm of starting vector.                   */
+     /* ---------------------------------------------------- */
 
     arscnd_(&t2);
     first = true;
@@ -277,25 +277,25 @@ L20:
     }
     *rnorm = rnorm0;
 
-/*     %---------------------------------------------% */
-/*     | Exit if this is the very first Arnoldi step | */
-/*     %---------------------------------------------% */
+     /* ------------------------------------------- */
+     /* Exit if this is the very first Arnoldi step */
+     /* ------------------------------------------- */
 
     if (*j == 1) {
 	goto L50;
     }
 
-/*     %---------------------------------------------------------------- */
-/*     | Otherwise need to B-orthogonalize the starting vector against | */
-/*     | the current Arnoldi basis using Gram-Schmidt with iter. ref.  | */
-/*     | This is the case where an invariant subspace is encountered   | */
-/*     | in the middle of the Arnoldi factorization.                   | */
-/*     |                                                               | */
-/*     |       s = V^{T}*B*r;   r = r - V*s;                           | */
-/*     |                                                               | */
-/*     | Stopping criteria used for iter. ref. is discussed in         | */
-/*     | Parlett's book, page 107 and in Gragg & Reichel TOMS paper.   | */
-/*     %---------------------------------------------------------------% */
+     /* ------------------------------------------------------------- */
+     /* Otherwise need to B-orthogonalize the starting vector against */
+     /* the current Arnoldi basis using Gram-Schmidt with iter. ref.  */
+     /* This is the case where an invariant subspace is encountered   */
+     /* in the middle of the Arnoldi factorization.                   */
+     /*                                                               */
+     /*       s = V^{T}*B*r;   r = r - V*s;                           */
+     /*                                                               */
+     /* Stopping criteria used for iter. ref. is discussed in         */
+     /* Parlett's book, page 107 and in Gragg & Reichel TOMS paper.   */
+     /* ------------------------------------------------------------- */
 
     orth = true;
 L30:
@@ -307,9 +307,9 @@ L30:
     sgemv_("N", n, &i__1, &s_m1, &v[v_offset], ldv, &workd[*n + 1], &c__1, &
 	    s_one, &resid[1], &c__1);
 
-/*     %----------------------------------------------------------% */
-/*     | Compute the B-norm of the orthogonalized starting vector | */
-/*     %----------------------------------------------------------% */
+     /* -------------------------------------------------------- */
+     /* Compute the B-norm of the orthogonalized starting vector */
+     /* -------------------------------------------------------- */
 
     arscnd_(&t2);
     if (*(unsigned char *)bmat == 'G') {
@@ -337,9 +337,9 @@ L40:
 	*rnorm = snrm2_(n, &resid[1], &c__1);
     }
 
-/*     %--------------------------------------% */
-/*     | Check for further orthogonalization. | */
-/*     %--------------------------------------% */
+     /* ------------------------------------ */
+     /* Check for further orthogonalization. */
+     /* ------------------------------------ */
 
     if (msglvl > 2) {
 	svout_(&debug_1.logfil, &c__1, &rnorm0, &debug_1.ndigit, "_getv0: re"
@@ -355,17 +355,17 @@ L40:
     ++iter;
     if (iter <= 5) {
 
-/*        %-----------------------------------% */
-/*        | Perform iterative refinement step | */
-/*        %-----------------------------------% */
+        /* --------------------------------- */
+        /* Perform iterative refinement step */
+        /* --------------------------------- */
 
 	rnorm0 = *rnorm;
 	goto L30;
     } else {
 
-/*        %------------------------------------% */
-/*        | Iterative refinement step "failed" | */
-/*        %------------------------------------% */
+        /* ---------------------------------- */
+        /* Iterative refinement step "failed" */
+        /* ---------------------------------- */
 
 	i__1 = *n;
 	for (jj = 1; jj <= i__1; ++jj) {
@@ -394,9 +394,9 @@ L50:
 L9000:
     return 0;
 
-/*     %---------------% */
-/*     | End of sgetv0 | */
-/*     %---------------% */
+     /* ------------- */
+     /* End of sgetv0 */
+     /* ------------- */
 
 } /* sgetv0_ */
 

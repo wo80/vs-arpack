@@ -107,14 +107,14 @@ int dngets_(int32_t *ishift, char *which, int32_t *kev,
     static float t0, t1;
     int32_t msglvl;
 
-/*     %-----------------------% */
-/*     | Executable Statements | */
-/*     %-----------------------% */
+     /* --------------------- */
+     /* Executable Statements */
+     /* --------------------- */
 
-/*     %-------------------------------% */
-/*     | Initialize timing statistics  | */
-/*     | & message level for debugging | */
-/*     %-------------------------------% */
+     /* ----------------------------- */
+     /* Initialize timing statistics  */
+     /* & message level for debugging */
+     /* ----------------------------- */
 
     /* Parameter adjustments */
     --bounds;
@@ -127,15 +127,15 @@ int dngets_(int32_t *ishift, char *which, int32_t *kev,
     arscnd_(&t0);
     msglvl = debug_1.mngets;
 
-/*     %----------------------------------------------------% */
-/*     | LM, SM, LR, SR, LI, SI case.                       | */
-/*     | Sort the eigenvalues of H into the desired order   | */
-/*     | and apply the resulting order to BOUNDS.           | */
-/*     | The eigenvalues are sorted so that the wanted part | */
-/*     | are always in the last KEV locations.              | */
-/*     | We first do a pre-processing sort in order to keep | */
-/*     | complex conjugate pairs together                   | */
-/*     %----------------------------------------------------% */
+     /* -------------------------------------------------- */
+     /* LM, SM, LR, SR, LI, SI case.                       */
+     /* Sort the eigenvalues of H into the desired order   */
+     /* and apply the resulting order to BOUNDS.           */
+     /* The eigenvalues are sorted so that the wanted part */
+     /* are always in the last KEV locations.              */
+     /* We first do a pre-processing sort in order to keep */
+     /* complex conjugate pairs together                   */
+     /* -------------------------------------------------- */
 
     if (s_cmp(which, "LM", (ftnlen)2, (ftnlen)2) == 0) {
 	i__1 = *kev + *np;
@@ -160,12 +160,12 @@ int dngets_(int32_t *ishift, char *which, int32_t *kev,
     i__1 = *kev + *np;
     dsortc_(which, &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1]);
 
-/*     %-------------------------------------------------------% */
-/*     | Increase KEV by one if the ( ritzr(np),ritzi(np) )    | */
-/*     | = ( ritzr(np+1),-ritzi(np+1) ) and ritz(np) .ne. zero | */
-/*     | Accordingly decrease NP by one. In other words keep   | */
-/*     | complex conjugate pairs together.                     | */
-/*     %-------------------------------------------------------% */
+     /* ----------------------------------------------------- */
+     /* Increase KEV by one if the ( ritzr(np),ritzi(np) )    */
+     /* = ( ritzr(np+1),-ritzi(np+1) ) and ritz(np) .ne. zero */
+     /* Accordingly decrease NP by one. In other words keep   */
+     /* complex conjugate pairs together.                     */
+     /* ----------------------------------------------------- */
 
     if (ritzr[*np + 1] - ritzr[*np] == 0. && ritzi[*np + 1] + ritzi[*np] == 
 	    0.) {
@@ -175,14 +175,14 @@ int dngets_(int32_t *ishift, char *which, int32_t *kev,
 
     if (*ishift == 1) {
 
-/*        %-------------------------------------------------------% */
-/*        | Sort the unwanted Ritz values used as shifts so that  | */
-/*        | the ones with largest Ritz estimates are first        | */
-/*        | This will tend to minimize the effects of the         | */
-/*        | forward instability of the iteration when they shifts | */
-/*        | are applied in subroutine dnapps.                     | */
-/*        | Be careful and use 'SR' since we want to sort BOUNDS! | */
-/*        %-------------------------------------------------------% */
+        /* ----------------------------------------------------- */
+        /* Sort the unwanted Ritz values used as shifts so that  */
+        /* the ones with largest Ritz estimates are first        */
+        /* This will tend to minimize the effects of the         */
+        /* forward instability of the iteration when they shifts */
+        /* are applied in subroutine dnapps.                     */
+        /* Be careful and use 'SR' since we want to sort BOUNDS! */
+        /* ----------------------------------------------------- */
 
 	dsortc_("SR", &c_true, np, &bounds[1], &ritzr[1], &ritzi[1]);
     }
@@ -209,9 +209,9 @@ int dngets_(int32_t *ishift, char *which, int32_t *kev,
 
     return 0;
 
-/*     %---------------% */
-/*     | End of dngets | */
-/*     %---------------% */
+     /* ------------- */
+     /* End of dngets */
+     /* ------------- */
 
 } /* dngets_ */
 

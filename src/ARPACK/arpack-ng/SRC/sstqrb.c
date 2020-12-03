@@ -134,24 +134,6 @@ int sstqrb_(int32_t *n, float *d__, float *e, float *z__, float *
     int32_t nmaxit, icompz;
     float ssfmax;
 
-/*     %------------------% */
-/*     | Scalar Arguments | */
-/*     %------------------% */
-
-/*     .. parameters .. */
-/*     .. */
-/*     .. local scalars .. */
-/*     .. */
-/*     .. external functions .. */
-/*     .. */
-/*     .. external subroutines .. */
-/*     .. */
-/*     .. intrinsic functions .. */
-/*     .. */
-/*     .. executable statements .. */
-
-/*     test the input parameters. */
-
     /* Parameter adjustments */
     --work;
     --z__;
@@ -648,9 +630,9 @@ L160:
 L190:
     return 0;
 
-/*     %---------------% */
-/*     | End of sstqrb | */
-/*     %---------------% */
+     /* ------------- */
+     /* End of sstqrb */
+     /* ------------- */
 
 } /* sstqrb_ */
 

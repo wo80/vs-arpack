@@ -98,66 +98,65 @@ int cndrv2()
 /*     ... OP = inv[A-sigma*I] and  B = I. */
 
 /*     ... Use mode 3 of CNAUPD. */
+/**
+ * \BeginLib
+ *
+ * \Routines called:
+ *     cnaupd  ARPACK reverse communication interface routine.
+ *     cneupd  ARPACK routine that returns Ritz values and (optionally)
+ *             Ritz vectors.
+ *     cgttrf  LAPACK tridiagonal factorization routine.
+ *     cgttrs  LAPACK tridiagonal solve routine.
+ *     slapy2  LAPACK routine to compute sqrt(x**2+y**2) carefully.
+ *     caxpy   Level 1 BLAS that computes y <- alpha*x+y.
+ *     ccopy   Level 1 BLAS that copies one vector to another.
+ *     scnrm2  Level 1 BLAS that computes the norm of a vector.
+ *     av      Matrix vector multiplication routine that computes A*x.
+ *
+ * \Author
+ *     Richard Lehoucq
+ *     Danny Sorensen
+ *     Chao Yang
+ *     Dept. of Computational &
+ *     Applied Mathematics
+ *     Rice University
+ *     Houston, Texas
+ *
+ * \SCCS Information: @(#)
+ * FILE: ndrv2.F   SID: 2.6   DATE OF SID: 10/18/00   RELEASE: 2
+ *
+ * \Remarks
+ *     1. None
+ *
+ * \EndLib
+ */
+     /* --------------------------- */
+     /* Define leading dimensions   */
+     /* for all arrays.             */
+     /* MAXN:   Maximum dimension   */
+     /*         of the A allowed.   */
+     /* MAXNEV: Maximum NEV allowed */
+     /* MAXNCV: Maximum NCV allowed */
+     /* --------------------------- */
 
-/* \BeginLib */
+     /* --------------------- */
+     /* Executable Statements */
+     /* --------------------- */
 
-/* \Routines called: */
-/*     cnaupd  ARPACK reverse communication interface routine. */
-/*     cneupd  ARPACK routine that returns Ritz values and (optionally) */
-/*             Ritz vectors. */
-/*     cgttrf  LAPACK tridiagonal factorization routine. */
-/*     cgttrs  LAPACK tridiagonal solve routine. */
-/*     slapy2  LAPACK routine to compute sqrt(x**2+y**2) carefully. */
-/*     caxpy   Level 1 BLAS that computes y <- alpha*x+y. */
-/*     ccopy   Level 1 BLAS that copies one vector to another. */
-/*     scnrm2  Level 1 BLAS that computes the norm of a vector. */
-/*     av      Matrix vector multiplication routine that computes A*x. */
-
-/* \Author */
-/*     Richard Lehoucq */
-/*     Danny Sorensen */
-/*     Chao Yang */
-/*     Dept. of Computational & */
-/*     Applied Mathematics */
-/*     Rice University */
-/*     Houston, Texas */
-
-/* \SCCS Information: @(#) */
-/* FILE: ndrv2.F   SID: 2.6   DATE OF SID: 10/18/00   RELEASE: 2 */
-
-/* \Remarks */
-/*     1. None */
-
-/* \EndLib */
-/* -------------------------------------------------------------------------- */
-
-/*     %-----------------------------% */
-/*     | Define leading dimensions   | */
-/*     | for all arrays.             | */
-/*     | MAXN:   Maximum dimension   | */
-/*     |         of the A allowed.   | */
-/*     | MAXNEV: Maximum NEV allowed | */
-/*     | MAXNCV: Maximum NCV allowed | */
-/*     %-----------------------------% */
-
-/*     %-----------------------% */
-/*     | Executable Statements | */
-/*     %-----------------------% */
-
-/*     %--------------------------------------------------% */
-/*     | The number N is the dimension of the matrix.  A  | */
-/*     | standard eigenvalue problem is solved (BMAT =    | */
-/*     | 'I').  NEV is the number of eigenvalues (closest | */
-/*     | to the shift SIGMA) to be approximated.  Since   | */
-/*     | the shift-invert mode is used, WHICH is set to   | */
-/*     | 'LM'.  The user can modify NEV, NCV, SIGMA to    | */
-/*     | solve problems of different sizes, and to get    | */
-/*     | different parts of the spectrum.  However, The   | */
-/*     | following conditions must be satisfied:          | */
-/*     |                 N <= MAXN,                       | */
-/*     |               NEV <= MAXNEV,                     | */
-/*     |           NEV + 2 <= NCV <= MAXNCV               | */
-/*     %--------------------------------------------------% */
+     /* ------------------------------------------------ */
+     /* The number N is the dimension of the matrix.  A  */
+     /* standard eigenvalue problem is solved (BMAT =    */
+     /* 'I').  NEV is the number of eigenvalues (closest */
+     /* to the shift SIGMA) to be approximated.  Since   */
+     /* the shift-invert mode is used, WHICH is set to   */
+     /* 'LM'.  The user can modify NEV, NCV, SIGMA to    */
+     /* solve problems of different sizes, and to get    */
+     /* different parts of the spectrum.  However, The   */
+     /* following conditions must be satisfied:          */
+     /*                 N <= MAXN,                       */
+     /*               NEV <= MAXNEV,                     */
+     /*           NEV + 2 <= NCV <= MAXNCV               */
+     /* ------------------------------------------------ */
 
     n = 100;
     nev = 4;
@@ -185,15 +184,15 @@ int cndrv2()
     s_copy(which, "LM", (ftnlen)2, (ftnlen)2);
     sigma.r = 0.f, sigma.i = 0.f;
 
-/*     %----------------------------------------------------% */
-/*     | Construct C = A - SIGMA*I, factor C in complex     | */
-/*     | arithmetic (using LAPACK subroutine cgttrf). The   | */
-/*     | matrix A is chosen to be the tridiagonal matrix    | */
-/*     | derived from standard central difference of the    | */
-/*     | 1-d convection diffusion operator - u``+ rho*u` on | */
-/*     | the interval [0, 1] with zero Dirichlet boundary   | */
-/*     | condition.                                         | */
-/*     %----------------------------------------------------% */
+     /* -------------------------------------------------- */
+     /* Construct C = A - SIGMA*I, factor C in complex     */
+     /* arithmetic (using LAPACK subroutine cgttrf). The   */
+     /* matrix A is chosen to be the tridiagonal matrix    */
+     /* derived from standard central difference of the    */
+     /* 1-d convection diffusion operator - u``+ rho*u` on */
+     /* the interval [0, 1] with zero Dirichlet boundary   */
+     /* condition.                                         */
+     /* -------------------------------------------------- */
 
     convct_1.rho.r = 10.f, convct_1.rho.i = 0.f;
     i__1 = n + 1;
@@ -247,16 +246,16 @@ int cndrv2()
 	goto L9000;
     }
 
-/*     %-----------------------------------------------------% */
-/*     | The work array WORKL is used in CNAUPD as           | */
-/*     | workspace.  Its dimension LWORKL is set as          | */
-/*     | illustrated below.  The parameter TOL determines    | */
-/*     | the stopping criterion. If TOL<=0, machine          | */
-/*     | precision is used.  The variable IDO is used for    | */
-/*     | reverse communication, and is initially set to 0.   | */
-/*     | Setting INFO=0 indicates that a random vector is    | */
-/*     | generated in CNAUPD to start the Arnoldi iteration. | */
-/*     %-----------------------------------------------------% */
+     /* --------------------------------------------------- */
+     /* The work array WORKL is used in CNAUPD as           */
+     /* workspace.  Its dimension LWORKL is set as          */
+     /* illustrated below.  The parameter TOL determines    */
+     /* the stopping criterion. If TOL<=0, machine          */
+     /* precision is used.  The variable IDO is used for    */
+     /* reverse communication, and is initially set to 0.   */
+     /* Setting INFO=0 indicates that a random vector is    */
+     /* generated in CNAUPD to start the Arnoldi iteration. */
+     /* --------------------------------------------------- */
 
 /* Computing 2nd power */
     i__1 = ncv;
@@ -265,15 +264,15 @@ int cndrv2()
     ido = 0;
     info = 0;
 
-/*     %---------------------------------------------------% */
-/*     | This program uses exact shifts with respect to    | */
-/*     | the current Hessenberg matrix (IPARAM(1) = 1).    | */
-/*     | IPARAM(3) specifies the maximum number of Arnoldi | */
-/*     | iterations allowed. Mode 3 of CNAUPD is used      | */
-/*     | (IPARAM(7) = 3).  All these options can be        | */
-/*     | changed by the user. For details see the          | */
-/*     | documentation in CNAUPD.                          | */
-/*     %---------------------------------------------------% */
+     /* ------------------------------------------------- */
+     /* This program uses exact shifts with respect to    */
+     /* the current Hessenberg matrix (IPARAM(1) = 1).    */
+     /* IPARAM(3) specifies the maximum number of Arnoldi */
+     /* iterations allowed. Mode 3 of CNAUPD is used      */
+     /* (IPARAM(7) = 3).  All these options can be        */
+     /* changed by the user. For details see the          */
+     /* documentation in CNAUPD.                          */
+     /* ------------------------------------------------- */
 
     ishfts = 1;
     maxitr = 300;
@@ -283,18 +282,18 @@ int cndrv2()
     iparam[2] = maxitr;
     iparam[6] = mode;
 
-/*     %-------------------------------------------% */
-/*     | M A I N   L O O P (Reverse communication) | */
-/*     %-------------------------------------------% */
+     /* ----------------------------------------- */
+     /* M A I N   L O O P (Reverse communication) */
+     /* ----------------------------------------- */
 
 L20:
 
-/*        %---------------------------------------------% */
-/*        | Repeatedly call the routine CNAUPD and take | */
-/*        | actions indicated by parameter IDO until    | */
-/*        | either convergence is indicated or maxitr   | */
-/*        | has been exceeded.                          | */
-/*        %---------------------------------------------% */
+        /* ------------------------------------------- */
+        /* Repeatedly call the routine CNAUPD and take */
+        /* actions indicated by parameter IDO until    */
+        /* either convergence is indicated or maxitr   */
+        /* has been exceeded.                          */
+        /* ------------------------------------------- */
 
     cnaupd_(&ido, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, 
 	    iparam, ipntr, workd, workl, &lworkl, rwork, &info, (ftnlen)1, (
@@ -302,13 +301,13 @@ L20:
 
     if (ido == -1 || ido == 1) {
 
-/*           %-------------------------------------------% */
-/*           | Perform  y <--- OP*x = inv[A-SIGMA*I]*x   | */
-/*           | The user should supply his/her own linear | */
-/*           | system solver here that takes             | */
-/*           | workd(ipntr(1)) as the input, and returns | */
-/*           | the result to workd(ipntr(2)).            | */
-/*           %-------------------------------------------% */
+           /* ----------------------------------------- */
+           /* Perform  y <--- OP*x = inv[A-SIGMA*I]*x   */
+           /* The user should supply his/her own linear */
+           /* system solver here that takes             */
+           /* workd(ipntr(1)) as the input, and returns */
+           /* the result to workd(ipntr(2)).            */
+           /* ----------------------------------------- */
 
 	ccopy_(&n, &workd[ipntr[0] - 1], &c__1, &workd[ipntr[1] - 1], &c__1);
 
@@ -327,25 +326,25 @@ L20:
 	    goto L9000;
 	}
 
-/*           %-----------------------------------------% */
-/*           | L O O P   B A C K to call CNAUPD again. | */
-/*           %-----------------------------------------% */
+           /* --------------------------------------- */
+           /* L O O P   B A C K to call CNAUPD again. */
+           /* --------------------------------------- */
 
 	goto L20;
 
     }
 
-/*     %-----------------------------------------% */
-/*     | Either we have convergence, or there is | */
-/*     | an error.                               | */
-/*     %-----------------------------------------% */
+     /* --------------------------------------- */
+     /* Either we have convergence, or there is */
+     /* an error.                               */
+     /* --------------------------------------- */
 
     if (info < 0) {
 
-/*        %--------------------------% */
-/*        | Error message, check the | */
-/*        | documentation in CNAUPD  | */
-/*        %--------------------------% */
+        /* ------------------------ */
+        /* Error message, check the */
+        /* documentation in CNAUPD  */
+        /* ------------------------ */
 
 	s_wsle(&io___43);
 	do_lio(&c__9, &c__1, " ", (ftnlen)1);
@@ -364,15 +363,15 @@ L20:
 
     } else {
 
-/*        %-------------------------------------------% */
-/*        | No fatal errors occurred.                 | */
-/*        | Post-Process using CNEUPD.                | */
-/*        |                                           | */
-/*        | Computed eigenvalues may be extracted.    | */
-/*        |                                           | */
-/*        | Eigenvectors may also be computed now if  | */
-/*        | desired.  (indicated by rvec = .true.)    | */
-/*        %-------------------------------------------% */
+        /* ----------------------------------------- */
+        /* No fatal errors occurred.                 */
+        /* Post-Process using CNEUPD.                */
+        /*                                           */
+        /* Computed eigenvalues may be extracted.    */
+        /*                                           */
+        /* Eigenvectors may also be computed now if  */
+        /* desired.  (indicated by rvec = .true.)    */
+        /* ----------------------------------------- */
 
 	rvec = true;
 
@@ -381,23 +380,23 @@ L20:
 		workd, workl, &lworkl, rwork, &ierr, (ftnlen)1, (ftnlen)1, (
 		ftnlen)2);
 
-/*        %----------------------------------------------% */
-/*        | Eigenvalues are returned in the one          | */
-/*        | dimensional array D.  The corresponding      | */
-/*        | eigenvectors are returned in the first NCONV | */
-/*        | (=IPARAM(5)) columns of the two dimensional  | */
-/*        | array V if requested.  Otherwise, an         | */
-/*        | orthogonal basis for the invariant subspace  | */
-/*        | corresponding to the eigenvalues in D is     | */
-/*        | returned in V.                               | */
-/*        %----------------------------------------------% */
+        /* -------------------------------------------- */
+        /* Eigenvalues are returned in the one          */
+        /* dimensional array D.  The corresponding      */
+        /* eigenvectors are returned in the first NCONV */
+        /* (=IPARAM(5)) columns of the two dimensional  */
+        /* array V if requested.  Otherwise, an         */
+        /* orthogonal basis for the invariant subspace  */
+        /* corresponding to the eigenvalues in D is     */
+        /* returned in V.                               */
+        /* -------------------------------------------- */
 
 	if (ierr != 0) {
 
-/*           %------------------------------------% */
-/*           | Error condition:                   | */
-/*           | Check the documentation of CNEUPD. | */
-/*           %------------------------------------% */
+           /* ---------------------------------- */
+           /* Error condition:                   */
+           /* Check the documentation of CNEUPD. */
+           /* ---------------------------------- */
 
 	    s_wsle(&io___51);
 	    do_lio(&c__9, &c__1, " ", (ftnlen)1);
@@ -419,18 +418,18 @@ L20:
 	    i__1 = nconv;
 	    for (j = 1; j <= i__1; ++j) {
 
-/*              %---------------------------% */
-/*              | Compute the residual norm | */
-/*              |                           | */
-/*              |   ||  A*x - lambda*x ||   | */
-/*              |                           | */
-/*              | for the NCONV accurately  | */
-/*              | computed eigenvalues and  | */
-/*              | eigenvectors.  (iparam(5) | */
-/*              | indicates how many are    | */
-/*              | accurate to the requested | */
-/*              | tolerance)                | */
-/*              %---------------------------% */
+              /* ------------------------- */
+              /* Compute the residual norm */
+              /*                           */
+              /*   ||  A*x - lambda*x ||   */
+              /*                           */
+              /* for the NCONV accurately  */
+              /* computed eigenvalues and  */
+              /* eigenvectors.  (iparam(5) */
+              /* indicates how many are    */
+              /* accurate to the requested */
+              /* tolerance)                */
+              /* ------------------------- */
 
 		cndrv2_av_(&n, &v[(j << 8) - 256], ax);
 		i__2 = j - 1;
@@ -444,18 +443,18 @@ L20:
 /* L60: */
 	    }
 
-/*           %-----------------------------% */
-/*           | Display computed residuals. | */
-/*           %-----------------------------% */
+           /* --------------------------- */
+           /* Display computed residuals. */
+           /* --------------------------- */
 
 	    smout_(&c__6, &nconv, &c__3, rd, &c__25, &c_n6, "Ritz values (Re"
 		    "al, Imag) and relative residuals", (ftnlen)47);
 
 	}
 
-/*        %-------------------------------------------% */
-/*        | Print additional convergence information. | */
-/*        %-------------------------------------------% */
+        /* ----------------------------------------- */
+        /* Print additional convergence information. */
+        /* ----------------------------------------- */
 
 	if (info == 1) {
 	    s_wsle(&io___58);
@@ -539,9 +538,9 @@ L20:
 
     }
 
-/*     %---------------------------% */
-/*     | Done with program cndrv2. | */
-/*     %---------------------------% */
+     /* ------------------------- */
+     /* Done with program cndrv2. */
+     /* ------------------------- */
 
 L9000:
 

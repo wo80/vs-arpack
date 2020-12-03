@@ -97,14 +97,14 @@ int sseigt_(float *rnorm, int32_t *n, float *h__, int32_t *ldh,
     static float t0, t1;
     int32_t msglvl;
 
-/*     %-----------------------% */
-/*     | Executable Statements | */
-/*     %-----------------------% */
+     /* --------------------- */
+     /* Executable Statements */
+     /* --------------------- */
 
-/*     %-------------------------------% */
-/*     | Initialize timing statistics  | */
-/*     | & message level for debugging | */
-/*     %-------------------------------% */
+     /* ----------------------------- */
+     /* Initialize timing statistics  */
+     /* & message level for debugging */
+     /* ----------------------------- */
 
     /* Parameter adjustments */
     --workl;
@@ -140,10 +140,10 @@ int sseigt_(float *rnorm, int32_t *n, float *h__, int32_t *ldh,
 		"t row of the eigenvector matrix for H", (ftnlen)48);
     }
 
-/*     %-----------------------------------------------% */
-/*     | Finally determine the error bounds associated | */
-/*     | with the n Ritz values of H.                  | */
-/*     %-----------------------------------------------% */
+     /* --------------------------------------------- */
+     /* Finally determine the error bounds associated */
+     /* with the n Ritz values of H.                  */
+     /* --------------------------------------------- */
 
     i__1 = *n;
     for (k = 1; k <= i__1; ++k) {
@@ -157,9 +157,9 @@ int sseigt_(float *rnorm, int32_t *n, float *h__, int32_t *ldh,
 L9000:
     return 0;
 
-/*     %---------------% */
-/*     | End of sseigt | */
-/*     %---------------% */
+     /* ------------- */
+     /* End of sseigt */
+     /* ------------- */
 
 } /* sseigt_ */
 

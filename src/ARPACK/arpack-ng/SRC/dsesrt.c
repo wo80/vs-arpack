@@ -80,13 +80,13 @@ int dsesrt_(char *which, bool *apply, int32_t *n,
     int32_t i__, j, igap;
     double temp;
 
-/*     %------------------% */
-/*     | Scalar Arguments | */
-/*     %------------------% */
+     /* ---------------- */
+     /* Scalar Arguments */
+     /* ---------------- */
 
-/*     %-----------------------% */
-/*     | Executable Statements | */
-/*     %-----------------------% */
+     /* --------------------- */
+     /* Executable Statements */
+     /* --------------------- */
 
     /* Parameter adjustments */
     a_dim1 = *lda;
@@ -244,9 +244,9 @@ L120:
 L9000:
     return 0;
 
-/*     %---------------% */
-/*     | End of dsesrt | */
-/*     %---------------% */
+     /* ------------- */
+     /* End of dsesrt */
+     /* ------------- */
 
 } /* dsesrt_ */
 

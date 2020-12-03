@@ -108,8 +108,6 @@ int cvout_(int32_t *lout, int32_t *n, complex *cx, int32_t *
 /*     ... SPECIFICATIONS FOR ARGUMENTS */
 /*     ... */
 /*     ... SPECIFICATIONS FOR LOCAL VARIABLES */
-/*     ... */
-/*     ... FIRST EXECUTABLE STATEMENT */
 
     /* Parameter adjustments */
     --cx;

@@ -78,29 +78,21 @@ int dnconv_(int32_t *n, double *ritzr, double *ritzi,
     static float t0, t1;
     double eps23, temp;
 
-/*     %-----------------% */
-/*     | Array Arguments | */
-/*     %-----------------% */
+     /* --------------------- */
+     /* Executable Statements */
+     /* --------------------- */
 
-/*     %--------------------% */
-/*     | External Functions | */
-/*     %--------------------% */
-
-/*     %-----------------------% */
-/*     | Executable Statements | */
-/*     %-----------------------% */
-
-/*     %-------------------------------------------------------------% */
-/*     | Convergence test: unlike in the symmetric code, I am not    | */
-/*     | using things like refined error bounds and gap condition    | */
-/*     | because I don't know the exact equivalent concept.          | */
-/*     |                                                             | */
-/*     | Instead the i-th Ritz value is considered "converged" when: | */
-/*     |                                                             | */
-/*     |     bounds(i) .le. ( TOL * | ritz | )                       | */
-/*     |                                                             | */
-/*     | for some appropriate choice of norm.                        | */
-/*     %-------------------------------------------------------------% */
+     /* ----------------------------------------------------------- */
+     /* Convergence test: unlike in the symmetric code, I am not    */
+     /* using things like refined error bounds and gap condition    */
+     /* because I don't know the exact equivalent concept.          */
+     /*                                                             */
+     /* Instead the i-th Ritz value is considered "converged" when: */
+     /*                                                             */
+     /*     bounds(i) .le. ( TOL * | ritz | )                       */
+     /*                                                             */
+     /* for some appropriate choice of norm.                        */
+     /* ----------------------------------------------------------- */
 
     /* Parameter adjustments */
     --bounds;
@@ -110,9 +102,9 @@ int dnconv_(int32_t *n, double *ritzr, double *ritzi,
     /* Function Body */
     arscnd_(&t0);
 
-/*     %---------------------------------% */
-/*     | Get machine dependent constant. | */
-/*     %---------------------------------% */
+     /* ------------------------------- */
+     /* Get machine dependent constant. */
+     /* ------------------------------- */
 
     eps23 = dlamch_("Epsilon-Machine");
     eps23 = pow_dd(&eps23, &d_23);
@@ -134,9 +126,9 @@ int dnconv_(int32_t *n, double *ritzr, double *ritzi,
 
     return 0;
 
-/*     %---------------% */
-/*     | End of dnconv | */
-/*     %---------------% */
+     /* ------------- */
+     /* End of dnconv */
+     /* ------------- */
 
 } /* dnconv_ */
 

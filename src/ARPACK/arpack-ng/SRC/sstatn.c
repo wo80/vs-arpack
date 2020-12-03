@@ -2,10 +2,10 @@
 
 #include "arpack.h"
 
-/*     %---------------------------------------------% */
-/*     | Initialize statistic and timing information | */
-/*     | for nonsymmetric Arnoldi code.              | */
-/*     %---------------------------------------------% */
+     /* ------------------------------------------- */
+     /* Initialize statistic and timing information */
+     /* for nonsymmetric Arnoldi code.              */
+     /* ------------------------------------------- */
 
 /* \Author */
 /*     Danny Sorensen               Phuong Vu */
@@ -21,17 +21,17 @@
 int sstatn_(void)
 {
 
-/*     %--------------------------------% */
-/*     | See stat.doc for documentation | */
-/*     %--------------------------------% */
+     /* ------------------------------ */
+     /* See stat.doc for documentation */
+     /* ------------------------------ */
 
-/*     %-----------------------% */
-/*     | Executable Statements | */
-/*     %-----------------------% */
+     /* --------------------- */
+     /* Executable Statements */
+     /* --------------------- */
 
-/*     %--------------------------------% */
-/*     | See stat.doc for documentation | */
-/*     %--------------------------------% */
+     /* ------------------------------ */
+     /* See stat.doc for documentation */
+     /* ------------------------------ */
 
     timing_1.nopx = 0;
     timing_1.nbx = 0;
@@ -50,18 +50,18 @@ int sstatn_(void)
     timing_1.tgetv0 = 0.f;
     timing_1.trvec = 0.f;
 
-/*     %----------------------------------------------------% */
-/*     | User time including reverse communication overhead | */
-/*     %----------------------------------------------------% */
+     /* -------------------------------------------------- */
+     /* User time including reverse communication overhead */
+     /* -------------------------------------------------- */
 
     timing_1.tmvopx = 0.f;
     timing_1.tmvbx = 0.f;
 
     return 0;
 
-/*     %---------------% */
-/*     | End of sstatn | */
-/*     %---------------% */
+     /* ------------- */
+     /* End of sstatn */
+     /* ------------- */
 
 } /* sstatn_ */
 

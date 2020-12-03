@@ -72,13 +72,13 @@ int dsconv_(int32_t *n, double *ritz, double *bounds,
     static float t0, t1;
     double eps23, temp;
 
-/*     %-------------------% */
-/*     | External routines | */
-/*     %-------------------% */
+     /* ----------------- */
+     /* External routines */
+     /* ----------------- */
 
-/*     %-----------------------% */
-/*     | Executable Statements | */
-/*     %-----------------------% */
+     /* --------------------- */
+     /* Executable Statements */
+     /* --------------------- */
 
     /* Parameter adjustments */
     --bounds;
@@ -94,10 +94,10 @@ int dsconv_(int32_t *n, double *ritz, double *bounds,
     i__1 = *n;
     for (i__ = 1; i__ <= i__1; ++i__) {
 
-/*        %-----------------------------------------------------% */
-/*        | The i-th Ritz value is considered "converged"       | */
-/*        | when: bounds(i) .le. TOL*max(eps23, abs(ritz(i)))   | */
-/*        %-----------------------------------------------------% */
+        /* --------------------------------------------------- */
+        /* The i-th Ritz value is considered "converged"       */
+        /* when: bounds(i) .le. TOL*max(eps23, abs(ritz(i)))   */
+        /* --------------------------------------------------- */
 
 /* Computing MAX */
 	d__2 = eps23, d__3 = (d__1 = ritz[i__], abs(d__1));
@@ -114,9 +114,9 @@ int dsconv_(int32_t *n, double *ritz, double *bounds,
 
     return 0;
 
-/*     %---------------% */
-/*     | End of dsconv | */
-/*     %---------------% */
+     /* ------------- */
+     /* End of dsconv */
+     /* ------------- */
 
 } /* dsconv_ */
 

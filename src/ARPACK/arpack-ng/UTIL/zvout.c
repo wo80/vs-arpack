@@ -108,8 +108,6 @@ int zvout_(int32_t *lout, int32_t *n, zomplex *cx,
 /*     ... SPECIFICATIONS FOR ARGUMENTS */
 /*     ... */
 /*     ... SPECIFICATIONS FOR LOCAL VARIABLES */
-/*     ... */
-/*     ... FIRST EXECUTABLE STATEMENT */
 
     /* Parameter adjustments */
     --cx;

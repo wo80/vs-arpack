@@ -105,14 +105,14 @@ int ssgets_(int32_t *ishift, char *which, int32_t *kev,
     int32_t kevd2;
     int32_t msglvl;
 
-/*     %-----------------------% */
-/*     | Executable Statements | */
-/*     %-----------------------% */
+     /* --------------------- */
+     /* Executable Statements */
+     /* --------------------- */
 
-/*     %-------------------------------% */
-/*     | Initialize timing statistics  | */
-/*     | & message level for debugging | */
-/*     %-------------------------------% */
+     /* ----------------------------- */
+     /* Initialize timing statistics  */
+     /* & message level for debugging */
+     /* ----------------------------- */
 
     /* Parameter adjustments */
     --shifts;
@@ -125,14 +125,14 @@ int ssgets_(int32_t *ishift, char *which, int32_t *kev,
 
     if (s_cmp(which, "BE", (ftnlen)2, (ftnlen)2) == 0) {
 
-/*        %-----------------------------------------------------% */
-/*        | Both ends of the spectrum are requested.            | */
-/*        | Sort the eigenvalues into algebraically increasing  | */
-/*        | order first then swap high end of the spectrum next | */
-/*        | to low end in appropriate locations.                | */
-/*        | NOTE: when np < floor(kev/2) be careful not to swap | */
-/*        | overlapping locations.                              | */
-/*        %-----------------------------------------------------% */
+        /* --------------------------------------------------- */
+        /* Both ends of the spectrum are requested.            */
+        /* Sort the eigenvalues into algebraically increasing  */
+        /* order first then swap high end of the spectrum next */
+        /* to low end in appropriate locations.                */
+        /* NOTE: when np < floor(kev/2) be careful not to swap */
+        /* overlapping locations.                              */
+        /* --------------------------------------------------- */
 
 	i__1 = *kev + *np;
 	ssortr_("LA", &c_true, &i__1, &ritz[1], &bounds[1]);
@@ -147,13 +147,13 @@ int ssgets_(int32_t *ishift, char *which, int32_t *kev,
 
     } else {
 
-/*        %----------------------------------------------------% */
-/*        | LM, SM, LA, SA case.                               | */
-/*        | Sort the eigenvalues of H into the desired order   | */
-/*        | and apply the resulting order to BOUNDS.           | */
-/*        | The eigenvalues are sorted so that the wanted part | */
-/*        | are always in the last KEV locations.               | */
-/*        %----------------------------------------------------% */
+        /* -------------------------------------------------- */
+        /* LM, SM, LA, SA case.                               */
+        /* Sort the eigenvalues of H into the desired order   */
+        /* and apply the resulting order to BOUNDS.           */
+        /* The eigenvalues are sorted so that the wanted part */
+        /* are always in the last KEV locations.              */
+        /* -------------------------------------------------- */
 
 	i__1 = *kev + *np;
 	ssortr_(which, &c_true, &i__1, &ritz[1], &bounds[1]);
@@ -161,13 +161,13 @@ int ssgets_(int32_t *ishift, char *which, int32_t *kev,
 
     if (*ishift == 1 && *np > 0) {
 
-/*        %-------------------------------------------------------% */
-/*        | Sort the unwanted Ritz values used as shifts so that  | */
-/*        | the ones with largest Ritz estimates are first.       | */
-/*        | This will tend to minimize the effects of the         | */
-/*        | forward instability of the iteration when the shifts  | */
-/*        | are applied in subroutine ssapps.                     | */
-/*        %-------------------------------------------------------% */
+        /* ----------------------------------------------------- */
+        /* Sort the unwanted Ritz values used as shifts so that  */
+        /* the ones with largest Ritz estimates are first.       */
+        /* This will tend to minimize the effects of the         */
+        /* forward instability of the iteration when the shifts  */
+        /* are applied in subroutine ssapps.                     */
+        /* ----------------------------------------------------- */
 
 	ssortr_("SM", &c_true, np, &bounds[1], &ritz[1]);
 	scopy_(np, &ritz[1], &c__1, &shifts[1], &c__1);
@@ -191,9 +191,9 @@ int ssgets_(int32_t *ishift, char *which, int32_t *kev,
 
     return 0;
 
-/*     %---------------% */
-/*     | End of ssgets | */
-/*     %---------------% */
+     /* ------------- */
+     /* End of ssgets */
+     /* ------------- */
 
 } /* ssgets_ */
 

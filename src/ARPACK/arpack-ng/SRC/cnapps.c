@@ -167,9 +167,9 @@ int cnapps_(int32_t *n, int32_t *kev, int32_t *np, complex *
     int32_t istart, kplusp, msglvl;
     static float smlnum;
 
-/*     %----------------% */
-/*     | Data statements | */
-/*     %----------------% */
+     /* -------------- */
+     /* Data statements */
+     /* -------------- */
 
     /* Parameter adjustments */
     --workd;
@@ -188,18 +188,18 @@ int cnapps_(int32_t *n, int32_t *kev, int32_t *np, complex *
 
     /* Function Body */
 
-/*     %-----------------------% */
-/*     | Executable Statements | */
-/*     %-----------------------% */
+     /* --------------------- */
+     /* Executable Statements */
+     /* --------------------- */
 
     if (first) {
 
-/*        %-----------------------------------------------% */
-/*        | Set machine-dependent constants for the       | */
-/*        | stopping criterion. If norm(H) <= sqrt(OVFL), | */
-/*        | overflow should not occur.                    | */
-/*        | REFERENCE: LAPACK subroutine clahqr           | */
-/*        %-----------------------------------------------% */
+        /* --------------------------------------------- */
+        /* Set machine-dependent constants for the       */
+        /* stopping criterion. If norm(H) <= sqrt(OVFL), */
+        /* overflow should not occur.                    */
+        /* REFERENCE: LAPACK subroutine clahqr           */
+        /* --------------------------------------------- */
 
 	unfl = slamch_("safe minimum");
 	q__1.r = 1.f / unfl, q__1.i = 0.f / unfl;
@@ -210,36 +210,36 @@ int cnapps_(int32_t *n, int32_t *kev, int32_t *np, complex *
 	first = false;
     }
 
-/*     %-------------------------------% */
-/*     | Initialize timing statistics  | */
-/*     | & message level for debugging | */
-/*     %-------------------------------% */
+     /* ----------------------------- */
+     /* Initialize timing statistics  */
+     /* & message level for debugging */
+     /* ----------------------------- */
 
     arscnd_(&t0);
     msglvl = debug_1.mcapps;
 
     kplusp = *kev + *np;
 
-/*     %--------------------------------------------% */
-/*     | Initialize Q to the identity to accumulate | */
-/*     | the rotations and reflections              | */
-/*     %--------------------------------------------% */
+     /* ------------------------------------------ */
+     /* Initialize Q to the identity to accumulate */
+     /* the rotations and reflections              */
+     /* ------------------------------------------ */
 
     claset_("All", &kplusp, &kplusp, &c_zero, &c_one, &q[q_offset], ldq);
 
-/*     %----------------------------------------------% */
-/*     | Quick return if there are no shifts to apply | */
-/*     %----------------------------------------------% */
+     /* -------------------------------------------- */
+     /* Quick return if there are no shifts to apply */
+     /* -------------------------------------------- */
 
     if (*np == 0) {
 	goto L9000;
     }
 
-/*     %----------------------------------------------% */
-/*     | Chase the bulge with the application of each | */
-/*     | implicit shift. Each shift is applied to the | */
-/*     | whole matrix including each block.           | */
-/*     %----------------------------------------------% */
+     /* -------------------------------------------- */
+     /* Chase the bulge with the application of each */
+     /* implicit shift. Each shift is applied to the */
+     /* whole matrix including each block.           */
+     /* -------------------------------------------- */
 
     i__1 = *np;
     for (jj = 1; jj <= i__1; ++jj) {
@@ -259,11 +259,11 @@ L20:
 	i__2 = kplusp - 1;
 	for (i__ = istart; i__ <= i__2; ++i__) {
 
-/*           %----------------------------------------% */
-/*           | Check for splitting and deflation. Use | */
-/*           | a standard test as in the QR algorithm | */
-/*           | REFERENCE: LAPACK subroutine clahqr    | */
-/*           %----------------------------------------% */
+           /* -------------------------------------- */
+           /* Check for splitting and deflation. Use */
+           /* a standard test as in the QR algorithm */
+           /* REFERENCE: LAPACK subroutine clahqr    */
+           /* -------------------------------------- */
 
 	    i__3 = i__ + i__ * h_dim1;
 	    i__4 = i__ + 1 + (i__ + 1) * h_dim1;
@@ -307,11 +307,11 @@ L40:
 		    "End of current block ", (ftnlen)29);
 	}
 
-/*        %------------------------------------------------% */
-/*        | No reason to apply a shift to block of order 1 | */
-/*        | or if the current block starts after the point | */
-/*        | of compression since we'll discard this stuff  | */
-/*        %------------------------------------------------% */
+        /* ---------------------------------------------- */
+        /* No reason to apply a shift to block of order 1 */
+        /* or if the current block starts after the point */
+        /* of compression since we'll discard this stuff  */
+        /* ---------------------------------------------- */
 
 	if (istart == iend || istart > *kev) {
 	    goto L100;
@@ -328,9 +328,9 @@ L40:
 	i__2 = iend - 1;
 	for (i__ = istart; i__ <= i__2; ++i__) {
 
-/*           %------------------------------------------------------% */
-/*           | Construct the plane rotation G to zero out the bulge | */
-/*           %------------------------------------------------------% */
+           /* ---------------------------------------------------- */
+           /* Construct the plane rotation G to zero out the bulge */
+           /* ---------------------------------------------------- */
 
 	    clartg_(&f, &g, &c__, &s, &r__);
 	    if (i__ > istart) {
@@ -340,9 +340,9 @@ L40:
 		h__[i__3].r = 0.f, h__[i__3].i = 0.f;
 	    }
 
-/*           %---------------------------------------------% */
-/*           | Apply rotation to the left of H;  H <- G'*H | */
-/*           %---------------------------------------------% */
+           /* ------------------------------------------- */
+           /* Apply rotation to the left of H;  H <- G'*H */
+           /* ------------------------------------------- */
 
 	    i__3 = kplusp;
 	    for (j = i__; j <= i__3; ++j) {
@@ -368,9 +368,9 @@ L40:
 /* L50: */
 	    }
 
-/*           %---------------------------------------------% */
-/*           | Apply rotation to the right of H;  H <- H*G | */
-/*           %---------------------------------------------% */
+           /* ------------------------------------------- */
+           /* Apply rotation to the right of H;  H <- H*G */
+           /* ------------------------------------------- */
 
 /* Computing MIN */
 	    i__4 = i__ + 2;
@@ -398,9 +398,9 @@ L40:
 /* L60: */
 	    }
 
-/*           %-----------------------------------------------------% */
-/*           | Accumulate the rotation in the matrix Q;  Q <- Q*G' | */
-/*           %-----------------------------------------------------% */
+           /* --------------------------------------------------- */
+           /* Accumulate the rotation in the matrix Q;  Q <- Q*G' */
+           /* --------------------------------------------------- */
 
 /* Computing MIN */
 	    i__4 = i__ + jj;
@@ -428,9 +428,9 @@ L40:
 /* L70: */
 	    }
 
-/*           %---------------------------% */
-/*           | Prepare for next rotation | */
-/*           %---------------------------% */
+           /* ------------------------- */
+           /* Prepare for next rotation */
+           /* ------------------------- */
 
 	    if (i__ < iend - 1) {
 		i__3 = i__ + 1 + i__ * h_dim1;
@@ -441,33 +441,33 @@ L40:
 /* L80: */
 	}
 
-/*        %-------------------------------% */
-/*        | Finished applying the shift.  | */
-/*        %-------------------------------% */
+        /* ----------------------------- */
+        /* Finished applying the shift.  */
+        /* ----------------------------- */
 
 L100:
 
-/*        %---------------------------------------------------------% */
-/*        | Apply the same shift to the next block if there is any. | */
-/*        %---------------------------------------------------------% */
+        /* ------------------------------------------------------- */
+        /* Apply the same shift to the next block if there is any. */
+        /* ------------------------------------------------------- */
 
 	istart = iend + 1;
 	if (iend < kplusp) {
 	    goto L20;
 	}
 
-/*        %---------------------------------------------% */
-/*        | Loop back to the top to get the next shift. | */
-/*        %---------------------------------------------% */
+        /* ------------------------------------------- */
+        /* Loop back to the top to get the next shift. */
+        /* ------------------------------------------- */
 
 /* L110: */
     }
 
-/*     %---------------------------------------------------% */
-/*     | Perform a similarity transformation that makes    | */
-/*     | sure that the compressed H will have non-negative | */
-/*     | real subdiagonal elements.                        | */
-/*     %---------------------------------------------------% */
+     /* ------------------------------------------------- */
+     /* Perform a similarity transformation that makes    */
+     /* sure that the compressed H will have non-negative */
+     /* real subdiagonal elements.                        */
+     /* ------------------------------------------------- */
 
     i__1 = *kev;
     for (j = 1; j <= i__1; ++j) {
@@ -503,14 +503,14 @@ L100:
     i__1 = *kev;
     for (i__ = 1; i__ <= i__1; ++i__) {
 
-/*        %--------------------------------------------% */
-/*        | Final check for splitting and deflation.   | */
-/*        | Use a standard test as in the QR algorithm | */
-/*        | REFERENCE: LAPACK subroutine clahqr.       | */
-/*        | Note: Since the subdiagonals of the        | */
-/*        | compressed H are nonnegative real numbers, | */
-/*        | we take advantage of this.                 | */
-/*        %--------------------------------------------% */
+        /* ------------------------------------------ */
+        /* Final check for splitting and deflation.   */
+        /* Use a standard test as in the QR algorithm */
+        /* REFERENCE: LAPACK subroutine clahqr.       */
+        /* Note: Since the subdiagonals of the        */
+        /* compressed H are nonnegative real numbers, */
+        /* we take advantage of this.                 */
+        /* ------------------------------------------ */
 
 	i__2 = i__ + i__ * h_dim1;
 	i__3 = i__ + 1 + (i__ + 1) * h_dim1;
@@ -531,13 +531,13 @@ L100:
 /* L130: */
     }
 
-/*     %-------------------------------------------------% */
-/*     | Compute the (kev+1)-st column of (V*Q) and      | */
-/*     | temporarily store the result in WORKD(N+1:2*N). | */
-/*     | This is needed in the residual update since we  | */
-/*     | cannot GUARANTEE that the corresponding entry   | */
-/*     | of H would be zero as in exact arithmetic.      | */
-/*     %-------------------------------------------------% */
+     /* ----------------------------------------------- */
+     /* Compute the (kev+1)-st column of (V*Q) and      */
+     /* temporarily store the result in WORKD(N+1:2*N). */
+     /* This is needed in the residual update since we  */
+     /* cannot GUARANTEE that the corresponding entry   */
+     /* of H would be zero as in exact arithmetic.      */
+     /* ----------------------------------------------- */
 
     i__1 = *kev + 1 + *kev * h_dim1;
     if (h__[i__1].r > 0.f) {
@@ -545,10 +545,10 @@ L100:
 		q_dim1 + 1], &c__1, &c_zero, &workd[*n + 1], &c__1);
     }
 
-/*     %----------------------------------------------------------% */
-/*     | Compute column 1 to kev of (V*Q) in backward order       | */
-/*     | taking advantage of the upper Hessenberg structure of Q. | */
-/*     %----------------------------------------------------------% */
+     /* -------------------------------------------------------- */
+     /* Compute column 1 to kev of (V*Q) in backward order       */
+     /* taking advantage of the upper Hessenberg structure of Q. */
+     /* -------------------------------------------------------- */
 
     i__1 = *kev;
     for (i__ = 1; i__ <= i__1; ++i__) {
@@ -560,29 +560,29 @@ L100:
 /* L140: */
     }
 
-/*     %-------------------------------------------------% */
-/*     |  Move v(:,kplusp-kev+1:kplusp) into v(:,1:kev). | */
-/*     %-------------------------------------------------% */
+     /* ----------------------------------------------- */
+     /*  Move v(:,kplusp-kev+1:kplusp) into v(:,1:kev). */
+     /* ----------------------------------------------- */
 
     clacpy_("A", n, kev, &v[(kplusp - *kev + 1) * v_dim1 + 1], ldv, &v[
 	    v_offset], ldv);
 
-/*     %--------------------------------------------------------------% */
-/*     | Copy the (kev+1)-st column of (V*Q) in the appropriate place | */
-/*     %--------------------------------------------------------------% */
+     /* ------------------------------------------------------------ */
+     /* Copy the (kev+1)-st column of (V*Q) in the appropriate place */
+     /* ------------------------------------------------------------ */
 
     i__1 = *kev + 1 + *kev * h_dim1;
     if (h__[i__1].r > 0.f) {
 	ccopy_(n, &workd[*n + 1], &c__1, &v[(*kev + 1) * v_dim1 + 1], &c__1);
     }
 
-/*     %-------------------------------------% */
-/*     | Update the residual vector:         | */
-/*     |    r <- sigmak*r + betak*v(:,kev+1) | */
-/*     | where                               | */
-/*     |    sigmak = (e_{kev+p}'*Q)*e_{kev}  | */
-/*     |    betak = e_{kev+1}'*H*e_{kev}     | */
-/*     %-------------------------------------% */
+     /* ----------------------------------- */
+     /* Update the residual vector:         */
+     /*    r <- sigmak*r + betak*v(:,kev+1) */
+     /* where                               */
+     /*    sigmak = (e_{kev+p}'*Q)*e_{kev}  */
+     /*    betak = e_{kev+1}'*H*e_{kev}     */
+     /* ----------------------------------- */
 
     cscal_(n, &q[kplusp + *kev * q_dim1], &resid[1], &c__1);
     i__1 = *kev + 1 + *kev * h_dim1;
@@ -614,9 +614,9 @@ L9000:
 
     return 0;
 
-/*     %---------------% */
-/*     | End of cnapps | */
-/*     %---------------% */
+     /* ------------- */
+     /* End of cnapps */
+     /* ------------- */
 
 } /* cnapps_ */
 

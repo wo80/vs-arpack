@@ -90,67 +90,66 @@ int ssdrv4()
 /*     ... OP = (inv[A - sigma*M])*M  and  B = M. */
 
 /*     ... Use mode 3 of SSAUPD. */
+/**
+ * \BeginLib
+ *
+ * \Routines called:
+ *     ssaupd  ARPACK reverse communication interface routine.
+ *     sseupd  ARPACK routine that returns Ritz values and (optionally)
+ *             Ritz vectors.
+ *     sgttrf  LAPACK tridiagonal factorization routine.
+ *     sgttrs  LAPACK tridiagonal solve routine.
+ *     saxpy   Level 1 BLAS that computes y <- alpha*x+y.
+ *     scopy   Level 1 BLAS that copies one vector to another.
+ *     sscal   Level 1 BLAS that scales a vector by a scalar.
+ *     snrm2   Level 1 BLAS that computes the norm of a vector.
+ *     av      Matrix vector multiplication routine that computes A*x.
+ *     mv      Matrix vector multiplication routine that computes M*x.
+ *
+ * \Author
+ *     Richard Lehoucq
+ *     Danny Sorensen
+ *     Chao Yang
+ *     Dept. of Computational &
+ *     Applied Mathematics
+ *     Rice University
+ *     Houston, Texas
+ *
+ * \SCCS Information: @(#)
+ * FILE: sdrv4.F   SID: 2.5   DATE OF SID: 10/17/00   RELEASE: 2
+ *
+ * \Remarks
+ *     1. None
+ *
+ * \EndLib
+ */
+     /* --------------------------- */
+     /* Define leading dimensions   */
+     /* for all arrays.             */
+     /* MAXN:   Maximum dimension   */
+     /*         of the A allowed.   */
+     /* MAXNEV: Maximum NEV allowed */
+     /* MAXNCV: Maximum NCV allowed */
+     /* --------------------------- */
 
-/* \BeginLib */
+     /* --------------------- */
+     /* Executable Statements */
+     /* --------------------- */
 
-/* \Routines called: */
-/*     ssaupd  ARPACK reverse communication interface routine. */
-/*     sseupd  ARPACK routine that returns Ritz values and (optionally) */
-/*             Ritz vectors. */
-/*     sgttrf  LAPACK tridiagonal factorization routine. */
-/*     sgttrs  LAPACK tridiagonal solve routine. */
-/*     saxpy   Level 1 BLAS that computes y <- alpha*x+y. */
-/*     scopy   Level 1 BLAS that copies one vector to another. */
-/*     sscal   Level 1 BLAS that scales a vector by a scalar. */
-/*     snrm2   Level 1 BLAS that computes the norm of a vector. */
-/*     av      Matrix vector multiplication routine that computes A*x. */
-/*     mv      Matrix vector multiplication routine that computes M*x. */
-
-/* \Author */
-/*     Richard Lehoucq */
-/*     Danny Sorensen */
-/*     Chao Yang */
-/*     Dept. of Computational & */
-/*     Applied Mathematics */
-/*     Rice University */
-/*     Houston, Texas */
-
-/* \SCCS Information: @(#) */
-/* FILE: sdrv4.F   SID: 2.5   DATE OF SID: 10/17/00   RELEASE: 2 */
-
-/* \Remarks */
-/*     1. None */
-
-/* \EndLib */
-/* ---------------------------------------------------------------------- */
-
-/*     %-----------------------------% */
-/*     | Define leading dimensions   | */
-/*     | for all arrays.             | */
-/*     | MAXN:   Maximum dimension   | */
-/*     |         of the A allowed.   | */
-/*     | MAXNEV: Maximum NEV allowed | */
-/*     | MAXNCV: Maximum NCV allowed | */
-/*     %-----------------------------% */
-
-/*     %-----------------------% */
-/*     | Executable Statements | */
-/*     %-----------------------% */
-
-/*     %----------------------------------------------------% */
-/*     | The number N is the dimension of the matrix.  A    | */
-/*     | generalized eigenvalue problem is solved (BMAT =   | */
-/*     | 'G'.) NEV is the number of eigenvalues (closest to | */
-/*     | the shift SIGMA) to be approximated.  Since the    | */
-/*     | shift-invert mode is used, WHICH is set to 'LM'.   | */
-/*     | The user can modify NEV, NCV, SIGMA to solve       | */
-/*     | problems of different sizes, and to get different  | */
-/*     | parts of the spectrum. However, The following      | */
-/*     | conditions must be satisfied:                      | */
-/*     |                   N <= MAXN,                       | */
-/*     |                 NEV <= MAXNEV,                     | */
-/*     |             NEV + 1 <= NCV <= MAXNCV               | */
-/*     %----------------------------------------------------% */
+     /* -------------------------------------------------- */
+     /* The number N is the dimension of the matrix.  A    */
+     /* generalized eigenvalue problem is solved (BMAT =   */
+     /* 'G'.) NEV is the number of eigenvalues (closest to */
+     /* the shift SIGMA) to be approximated.  Since the    */
+     /* shift-invert mode is used, WHICH is set to 'LM'.   */
+     /* The user can modify NEV, NCV, SIGMA to solve       */
+     /* problems of different sizes, and to get different  */
+     /* parts of the spectrum. However, The following      */
+     /* conditions must be satisfied:                      */
+     /*                   N <= MAXN,                       */
+     /*                 NEV <= MAXNEV,                     */
+     /*             NEV + 1 <= NCV <= MAXNCV               */
+     /* -------------------------------------------------- */
 
     n = 100;
     nev = 4;
@@ -178,32 +177,32 @@ int ssdrv4()
     s_copy(which, "LM", (ftnlen)2, (ftnlen)2);
     sigma = 0.f;
 
-/*     %--------------------------------------------------% */
-/*     | The work array WORKL is used in SSAUPD as        | */
-/*     | workspace.  Its dimension LWORKL is set as       | */
-/*     | illustrated below.  The parameter TOL determines | */
-/*     | the stopping criterion.  If TOL<=0, machine      | */
-/*     | precision is used.  The variable IDO is used for | */
-/*     | reverse communication and is initially set to 0. | */
-/*     | Setting INFO=0 indicates that a random vector is | */
-/*     | generated in SSAUPD to start the Arnoldi         | */
-/*     | iteration.                                       | */
-/*     %--------------------------------------------------% */
+     /* ------------------------------------------------ */
+     /* The work array WORKL is used in SSAUPD as        */
+     /* workspace.  Its dimension LWORKL is set as       */
+     /* illustrated below.  The parameter TOL determines */
+     /* the stopping criterion.  If TOL<=0, machine      */
+     /* precision is used.  The variable IDO is used for */
+     /* reverse communication and is initially set to 0. */
+     /* Setting INFO=0 indicates that a random vector is */
+     /* generated in SSAUPD to start the Arnoldi         */
+     /* iteration.                                       */
+     /* ------------------------------------------------ */
 
     lworkl = ncv * (ncv + 8);
     tol = 0.f;
     ido = 0;
     info = 0;
 
-/*     %---------------------------------------------------% */
-/*     | This program uses exact shifts with respect to    | */
-/*     | the current Hessenberg matrix (IPARAM(1) = 1).    | */
-/*     | IPARAM(3) specifies the maximum number of Arnoldi | */
-/*     | iterations allowed.  Mode 3 specified in the      | */
-/*     | documentation of SSAUPD is used (IPARAM(7) = 3).  | */
-/*     | All these options may be changed by the user.     | */
-/*     | For details, see the documentation in SSAUPD.     | */
-/*     %---------------------------------------------------% */
+     /* ------------------------------------------------- */
+     /* This program uses exact shifts with respect to    */
+     /* the current Hessenberg matrix (IPARAM(1) = 1).    */
+     /* IPARAM(3) specifies the maximum number of Arnoldi */
+     /* iterations allowed.  Mode 3 specified in the      */
+     /* documentation of SSAUPD is used (IPARAM(7) = 3).  */
+     /* All these options may be changed by the user.     */
+     /* For details, see the documentation in SSAUPD.     */
+     /* ------------------------------------------------- */
 
     ishfts = 1;
     maxitr = 300;
@@ -213,13 +212,13 @@ int ssdrv4()
     iparam[2] = maxitr;
     iparam[6] = mode;
 
-/*     %-------------------------------------------------------% */
-/*     | Call LAPACK routine to factor the tridiagonal matrix  | */
-/*     | (A-SIGMA*M).  The matrix A is the 1-d discrete        | */
-/*     | Laplacian. The matrix M is the associated mass matrix | */
-/*     | arising from using piecewise linear finite elements   | */
-/*     | on the interval [0, 1].                               | */
-/*     %-------------------------------------------------------% */
+     /* ----------------------------------------------------- */
+     /* Call LAPACK routine to factor the tridiagonal matrix  */
+     /* (A-SIGMA*M).  The matrix A is the 1-d discrete        */
+     /* Laplacian. The matrix M is the associated mass matrix */
+     /* arising from using piecewise linear finite elements   */
+     /* on the interval [0, 1].                               */
+     /* ----------------------------------------------------- */
 
     h__ = 1.f / (float) (n + 1);
     r1 = h__ * .66666666666666663f;
@@ -239,18 +238,18 @@ int ssdrv4()
 	goto L9000;
     }
 
-/*     %-------------------------------------------% */
-/*     | M A I N   L O O P (Reverse communication) | */
-/*     %-------------------------------------------% */
+     /* ----------------------------------------- */
+     /* M A I N   L O O P (Reverse communication) */
+     /* ----------------------------------------- */
 
 L10:
 
-/*        %---------------------------------------------% */
-/*        | Repeatedly call the routine SSAUPD and take | */
-/*        | actions indicated by parameter IDO until    | */
-/*        | either convergence is indicated or maxitr   | */
-/*        | has been exceeded.                          | */
-/*        %---------------------------------------------% */
+        /* ------------------------------------------- */
+        /* Repeatedly call the routine SSAUPD and take */
+        /* actions indicated by parameter IDO until    */
+        /* either convergence is indicated or maxitr   */
+        /* has been exceeded.                          */
+        /* ------------------------------------------- */
 
     ssaupd_(&ido, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, 
 	    iparam, ipntr, workd, workl, &lworkl, &info, (ftnlen)1, (ftnlen)2)
@@ -258,17 +257,17 @@ L10:
 
     if (ido == -1) {
 
-/*           %--------------------------------------------% */
-/*           | Perform  y <--- OP*x = inv[A-SIGMA*M]*M*x  | */
-/*           | to force the starting vector into the      | */
-/*           | range of OP.  The user should supply       | */
-/*           | his/her own matrix vector multiplication   | */
-/*           | routine and a linear system solver here.   | */
-/*           | The matrix vector multiplication routine   | */
-/*           | takes workd(ipntr(1)) as the input vector. | */
-/*           | The final result is returned to            | */
-/*           | workd(ipntr(2)).                           | */
-/*           %--------------------------------------------% */
+           /* ------------------------------------------ */
+           /* Perform  y <--- OP*x = inv[A-SIGMA*M]*M*x  */
+           /* to force the starting vector into the      */
+           /* range of OP.  The user should supply       */
+           /* his/her own matrix vector multiplication   */
+           /* routine and a linear system solver here.   */
+           /* The matrix vector multiplication routine   */
+           /* takes workd(ipntr(1)) as the input vector. */
+           /* The final result is returned to            */
+           /* workd(ipntr(2)).                           */
+           /* ------------------------------------------ */
 
 	ssdrv4_mv_(&n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
 
@@ -288,22 +287,22 @@ L10:
 	    goto L9000;
 	}
 
-/*           %-----------------------------------------% */
-/*           | L O O P   B A C K to call SSAUPD again. | */
-/*           %-----------------------------------------% */
+           /* --------------------------------------- */
+           /* L O O P   B A C K to call SSAUPD again. */
+           /* --------------------------------------- */
 
 	goto L10;
 
     } else if (ido == 1) {
 
-/*           %-----------------------------------------% */
-/*           | Perform y <-- OP*x = inv[A-sigma*M]*M*x | */
-/*           | M*x has been saved in workd(ipntr(3)).  | */
-/*           | the user only needs the linear system   | */
-/*           | solver here that takes workd(ipntr(3)   | */
-/*           | as input, and returns the result to     | */
-/*           | workd(ipntr(2)).                        | */
-/*           %-----------------------------------------% */
+           /* --------------------------------------- */
+           /* Perform y <-- OP*x = inv[A-sigma*M]*M*x */
+           /* M*x has been saved in workd(ipntr(3)).  */
+           /* the user only needs the linear system   */
+           /* solver here that takes workd(ipntr(3)   */
+           /* as input, and returns the result to     */
+           /* workd(ipntr(2)).                        */
+           /* --------------------------------------- */
 
 	scopy_(&n, &workd[ipntr[2] - 1], &c__1, &workd[ipntr[1] - 1], &c__1);
 	sgttrs_("Notranspose", &n, &c__1, adl, ad, adu, adu2, ipiv, &workd[
@@ -321,43 +320,43 @@ L10:
 	    goto L9000;
 	}
 
-/*           %-----------------------------------------% */
-/*           | L O O P   B A C K to call SSAUPD again. | */
-/*           %-----------------------------------------% */
+           /* --------------------------------------- */
+           /* L O O P   B A C K to call SSAUPD again. */
+           /* --------------------------------------- */
 
 	goto L10;
 
     } else if (ido == 2) {
 
-/*           %-----------------------------------------% */
-/*           |          Perform  y <--- M*x            | */
-/*           | Need the matrix vector multiplication   | */
-/*           | routine here that takes workd(ipntr(1)) | */
-/*           | as the input and returns the result to  | */
-/*           | workd(ipntr(2)).                        | */
-/*           %-----------------------------------------% */
+           /* --------------------------------------- */
+           /*          Perform  y <--- M*x            */
+           /* Need the matrix vector multiplication   */
+           /* routine here that takes workd(ipntr(1)) */
+           /* as the input and returns the result to  */
+           /* workd(ipntr(2)).                        */
+           /* --------------------------------------- */
 
 	ssdrv4_mv_(&n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
 
-/*           %-----------------------------------------% */
-/*           | L O O P   B A C K to call SSAUPD again. | */
-/*           %-----------------------------------------% */
+           /* --------------------------------------- */
+           /* L O O P   B A C K to call SSAUPD again. */
+           /* --------------------------------------- */
 
 	goto L10;
 
     }
 
-/*     %-----------------------------------------% */
-/*     | Either we have convergence, or there is | */
-/*     | an error.                               | */
-/*     %-----------------------------------------% */
+     /* --------------------------------------- */
+     /* Either we have convergence, or there is */
+     /* an error.                               */
+     /* --------------------------------------- */
 
     if (info < 0) {
 
-/*        %--------------------------% */
-/*        | Error message, check the | */
-/*        | documentation in SSAUPD. | */
-/*        %--------------------------% */
+        /* ------------------------ */
+        /* Error message, check the */
+        /* documentation in SSAUPD. */
+        /* ------------------------ */
 
 	s_wsle(&io___40);
 	do_lio(&c__9, &c__1, " ", (ftnlen)1);
@@ -376,15 +375,15 @@ L10:
 
     } else {
 
-/*        %-------------------------------------------% */
-/*        | No fatal errors occurred.                 | */
-/*        | Post-Process using SSEUPD.                | */
-/*        |                                           | */
-/*        | Computed eigenvalues may be extracted.    | */
-/*        |                                           | */
-/*        | Eigenvectors may also be computed now if  | */
-/*        | desired.  (indicated by rvec = .true.)    | */
-/*        %-------------------------------------------% */
+        /* ----------------------------------------- */
+        /* No fatal errors occurred.                 */
+        /* Post-Process using SSEUPD.                */
+        /*                                           */
+        /* Computed eigenvalues may be extracted.    */
+        /*                                           */
+        /* Eigenvectors may also be computed now if  */
+        /* desired.  (indicated by rvec = .true.)    */
+        /* ----------------------------------------- */
 
 	rvec = true;
 
@@ -393,23 +392,23 @@ L10:
 		workd, workl, &lworkl, &ierr, (ftnlen)3, (ftnlen)1, (ftnlen)2)
 		;
 
-/*        %----------------------------------------------% */
-/*        | Eigenvalues are returned in the first column | */
-/*        | of the two dimensional array D and the       | */
-/*        | corresponding eigenvectors are returned in   | */
-/*        | the first NEV columns of the two dimensional | */
-/*        | array V if requested.  Otherwise, an         | */
-/*        | orthogonal basis for the invariant subspace  | */
-/*        | corresponding to the eigenvalues in D is     | */
-/*        | returned in V.                               | */
-/*        %----------------------------------------------% */
+        /* -------------------------------------------- */
+        /* Eigenvalues are returned in the first column */
+        /* of the two dimensional array D and the       */
+        /* corresponding eigenvectors are returned in   */
+        /* the first NEV columns of the two dimensional */
+        /* array V if requested.  Otherwise, an         */
+        /* orthogonal basis for the invariant subspace  */
+        /* corresponding to the eigenvalues in D is     */
+        /* returned in V.                               */
+        /* -------------------------------------------- */
 
 	if (ierr != 0) {
 
-/*           %------------------------------------% */
-/*           | Error condition:                   | */
-/*           | Check the documentation of SSEUPD. | */
-/*           %------------------------------------% */
+           /* ---------------------------------- */
+           /* Error condition:                   */
+           /* Check the documentation of SSEUPD. */
+           /* ---------------------------------- */
 
 	    s_wsle(&io___47);
 	    do_lio(&c__9, &c__1, " ", (ftnlen)1);
@@ -432,18 +431,18 @@ L10:
 	    i__1 = nconv;
 	    for (j = 1; j <= i__1; ++j) {
 
-/*              %---------------------------% */
-/*              | Compute the residual norm | */
-/*              |                           | */
-/*              |   ||  A*x - lambda*x ||   | */
-/*              |                           | */
-/*              | for the NCONV accurately  | */
-/*              | computed eigenvalues and  | */
-/*              | eigenvectors.  (iparam(5) | */
-/*              | indicates how many are    | */
-/*              | accurate to the requested | */
-/*              | tolerance)                | */
-/*              %---------------------------% */
+              /* ------------------------- */
+              /* Compute the residual norm */
+              /*                           */
+              /*   ||  A*x - lambda*x ||   */
+              /*                           */
+              /* for the NCONV accurately  */
+              /* computed eigenvalues and  */
+              /* eigenvectors.  (iparam(5) */
+              /* indicates how many are    */
+              /* accurate to the requested */
+              /* tolerance)                */
+              /* ------------------------- */
 
 		ssdrv4_av_(&n, &v[(j << 8) - 256], workd);
 		ssdrv4_mv_(&n, &v[(j << 8) - 256], &workd[n]);
@@ -460,9 +459,9 @@ L10:
 
 	}
 
-/*       %------------------------------------------% */
-/*       | Print additional convergence information | */
-/*       %------------------------------------------% */
+       /* ---------------------------------------- */
+       /* Print additional convergence information */
+       /* ---------------------------------------- */
 
 	if (info == 1) {
 	    s_wsle(&io___52);
@@ -546,9 +545,9 @@ L10:
 
     }
 
-/*     %---------------------------% */
-/*     | Done with program ssdrv4. | */
-/*     %---------------------------% */
+     /* ------------------------- */
+     /* Done with program ssdrv4. */
+     /* ------------------------- */
 
 L9000:
 

@@ -94,72 +94,71 @@ int dsdrv6()
 /*     ... OP = (inv[A-sigma*M])*(A+sigma*M)  and  B = M. */
 
 /*     ... Use mode 5 of DSAUPD. */
+/**
+ * \BeginLib
+ *
+ * \References:
+ *  1. R.G. Grimes, J.G. Lewis and H.D. Simon, "A Shifted Block Lanczos
+ *     Algorithm for Solving Sparse Symmetric Generalized Eigenproblems",
+ *     SIAM J. Matr. Anal. Apps.,  January (1993).
+ *
+ * \Routines called:
+ *     dsaupd  ARPACK reverse communication interface routine.
+ *     dseupd  ARPACK routine that returns Ritz values and (optionally)
+ *             Ritz vectors.
+ *     dgttrf  LAPACK tridiagonal factorization routine.
+ *     dgttrs  LAPACK tridiagonal solve routine.
+ *     daxpy   Level 1 BLAS that computes y <- alpha*x+y.
+ *     dcopy   Level 1 BLAS that copies one vector to another.
+ *     dscal   Level 1 BLAS that scales a vector by a scalar.
+ *     dnrm2   Level 1 BLAS that computes the norm of a vector.
+ *     av      Matrix vector multiplication routine that computes A*x.
+ *     mv      Matrix vector multiplication routine that computes M*x.
+ *
+ * \Author
+ *     Danny Sorensen
+ *     Richard Lehoucq
+ *     Chao Yang
+ *     Dept. of Computational &
+ *     Applied Mathematics
+ *     Rice University
+ *     Houston, Texas
+ *
+ * \SCCS Information: @(#)
+ * FILE: sdrv6.F   SID: 2.5   DATE OF SID: 10/17/00   RELEASE: 2
+ *
+ * \Remarks
+ *     1. None
+ *
+ * \EndLib
+ */
+     /* --------------------------- */
+     /* Define leading dimensions   */
+     /* for all arrays.             */
+     /* MAXN:   Maximum dimension   */
+     /*         of the A allowed.   */
+     /* MAXNEV: Maximum NEV allowed */
+     /* MAXNCV: Maximum NCV allowed */
+     /* --------------------------- */
 
-/* \BeginLib */
+     /* --------------------- */
+     /* Executable Statements */
+     /* --------------------- */
 
-/* \References: */
-/*  1. R.G. Grimes, J.G. Lewis and H.D. Simon, "A Shifted Block Lanczos */
-/*     Algorithm for Solving Sparse Symmetric Generalized Eigenproblems", */
-/*     SIAM J. Matr. Anal. Apps.,  January (1993). */
-
-/* \Routines called: */
-/*     dsaupd  ARPACK reverse communication interface routine. */
-/*     dseupd  ARPACK routine that returns Ritz values and (optionally) */
-/*             Ritz vectors. */
-/*     dgttrf  LAPACK tridiagonal factorization routine. */
-/*     dgttrs  LAPACK tridiagonal solve routine. */
-/*     daxpy   Level 1 BLAS that computes y <- alpha*x+y. */
-/*     dcopy   Level 1 BLAS that copies one vector to another. */
-/*     dscal   Level 1 BLAS that scales a vector by a scalar. */
-/*     dnrm2   Level 1 BLAS that computes the norm of a vector. */
-/*     av      Matrix vector multiplication routine that computes A*x. */
-/*     mv      Matrix vector multiplication routine that computes M*x. */
-
-/* \Author */
-/*     Danny Sorensen */
-/*     Richard Lehoucq */
-/*     Chao Yang */
-/*     Dept. of Computational & */
-/*     Applied Mathematics */
-/*     Rice University */
-/*     Houston, Texas */
-
-/* \SCCS Information: @(#) */
-/* FILE: sdrv6.F   SID: 2.5   DATE OF SID: 10/17/00   RELEASE: 2 */
-
-/* \Remarks */
-/*     1. None */
-
-/* \EndLib */
-/* ------------------------------------------------------------------------ */
-
-/*     %-----------------------------% */
-/*     | Define leading dimensions   | */
-/*     | for all arrays.             | */
-/*     | MAXN:   Maximum dimension   | */
-/*     |         of the A allowed.   | */
-/*     | MAXNEV: Maximum NEV allowed | */
-/*     | MAXNCV: Maximum NCV allowed | */
-/*     %-----------------------------% */
-
-/*     %-----------------------% */
-/*     | Executable Statements | */
-/*     %-----------------------% */
-
-/*     %--------------------------------------------------% */
-/*     | The number N is the dimension of the matrix. A   | */
-/*     | generalized eigenvalue problem is solved (BMAT = | */
-/*     | 'G'.) NEV is the number of eigenvalues to be     | */
-/*     | approximated.  Since the Cayley mode is used,    | */
-/*     | WHICH is set to 'LM'.  The user can modify NEV,  | */
-/*     | NCV, SIGMA to solve problems of different sizes, | */
-/*     | and to get different parts of the spectrum.      | */
-/*     | However, The following conditions must be        | */
-/*     | satisfied:                                       | */
-/*     |                 N <= MAXN,                       | */
-/*     |               NEV <= MAXNEV,                     | */
-/*     |           NEV + 1 <= NCV <= MAXNCV               | */
-/*     %--------------------------------------------------% */
+     /* ------------------------------------------------ */
+     /* The number N is the dimension of the matrix. A   */
+     /* generalized eigenvalue problem is solved (BMAT = */
+     /* 'G'.) NEV is the number of eigenvalues to be     */
+     /* approximated.  Since the Cayley mode is used,    */
+     /* WHICH is set to 'LM'.  The user can modify NEV,  */
+     /* NCV, SIGMA to solve problems of different sizes, */
+     /* and to get different parts of the spectrum.      */
+     /* However, The following conditions must be        */
+     /* satisfied:                                       */
+     /*                 N <= MAXN,                       */
+     /*               NEV <= MAXNEV,                     */
+     /*           NEV + 1 <= NCV <= MAXNCV               */
+     /* ------------------------------------------------ */
 
     n = 100;
     nev = 4;
@@ -187,32 +186,32 @@ int dsdrv6()
     s_copy(which, "LM", (ftnlen)2, (ftnlen)2);
     sigma = 150.;
 
-/*     %--------------------------------------------------% */
-/*     | The work array WORKL is used in DSAUPD as        | */
-/*     | workspace.  Its dimension LWORKL is set as       | */
-/*     | illustrated below.  The parameter TOL determines | */
-/*     | the stopping criterion.  If TOL<=0, machine      | */
-/*     | precision is used.  The variable IDO is used for | */
-/*     | reverse communication and is initially set to 0. | */
-/*     | Setting INFO=0 indicates that a random vector is | */
-/*     | generated in DSAUPD to start the Arnoldi         | */
-/*     | iteration.                                       | */
-/*     %--------------------------------------------------% */
+     /* ------------------------------------------------ */
+     /* The work array WORKL is used in DSAUPD as        */
+     /* workspace.  Its dimension LWORKL is set as       */
+     /* illustrated below.  The parameter TOL determines */
+     /* the stopping criterion.  If TOL<=0, machine      */
+     /* precision is used.  The variable IDO is used for */
+     /* reverse communication and is initially set to 0. */
+     /* Setting INFO=0 indicates that a random vector is */
+     /* generated in DSAUPD to start the Arnoldi         */
+     /* iteration.                                       */
+     /* ------------------------------------------------ */
 
     lworkl = ncv * (ncv + 8);
     tol = 0.;
     ido = 0;
     info = 0;
 
-/*     %---------------------------------------------------% */
-/*     | This program uses exact shifts with respect to    | */
-/*     | the current Hessenberg matrix (IPARAM(1) = 1).    | */
-/*     | IPARAM(3) specifies the maximum number of Arnoldi | */
-/*     | iterations allowed.  Mode 5 specified in the      | */
-/*     | documentation of DSAUPD is used (IPARAM(7) = 5).  | */
-/*     | All these options may be changed by the user. For | */
-/*     | details, see the documentation in DSAUPD.         | */
-/*     %---------------------------------------------------% */
+     /* ------------------------------------------------- */
+     /* This program uses exact shifts with respect to    */
+     /* the current Hessenberg matrix (IPARAM(1) = 1).    */
+     /* IPARAM(3) specifies the maximum number of Arnoldi */
+     /* iterations allowed.  Mode 5 specified in the      */
+     /* documentation of DSAUPD is used (IPARAM(7) = 5).  */
+     /* All these options may be changed by the user. For */
+     /* details, see the documentation in DSAUPD.         */
+     /* ------------------------------------------------- */
 
     ishfts = 1;
     maxitr = 300;
@@ -222,13 +221,13 @@ int dsdrv6()
     iparam[2] = maxitr;
     iparam[6] = mode;
 
-/*     %------------------------------------------------------% */
-/*     | Call LAPACK routine to factor (A-sigma*M).  The      | */
-/*     | stiffness matrix A is the 1-d discrete Laplacian.    | */
-/*     | The mass matrix M is the associated mass matrix      | */
-/*     | arising from using piecewise linear finite elements  | */
-/*     | on the interval [0, 1].                              | */
-/*     %------------------------------------------------------% */
+     /* ---------------------------------------------------- */
+     /* Call LAPACK routine to factor (A-sigma*M).  The      */
+     /* stiffness matrix A is the 1-d discrete Laplacian.    */
+     /* The mass matrix M is the associated mass matrix      */
+     /* arising from using piecewise linear finite elements  */
+     /* on the interval [0, 1].                              */
+     /* ---------------------------------------------------- */
 
     h__ = 1. / (double) (n + 1);
     r1 = h__ * .66666666666666663;
@@ -254,18 +253,18 @@ int dsdrv6()
 	goto L9000;
     }
 
-/*     %-------------------------------------------% */
-/*     | M A I N   L O O P (Reverse communication) | */
-/*     %-------------------------------------------% */
+     /* ----------------------------------------- */
+     /* M A I N   L O O P (Reverse communication) */
+     /* ----------------------------------------- */
 
 L10:
 
-/*        %---------------------------------------------% */
-/*        | Repeatedly call the routine DSAUPD and take | */
-/*        | actions indicated by parameter IDO until    | */
-/*        | either convergence is indicated or maxitr   | */
-/*        | has been exceeded.                          | */
-/*        %---------------------------------------------% */
+        /* ------------------------------------------- */
+        /* Repeatedly call the routine DSAUPD and take */
+        /* actions indicated by parameter IDO until    */
+        /* either convergence is indicated or maxitr   */
+        /* has been exceeded.                          */
+        /* ------------------------------------------- */
 
     dsaupd_(&ido, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, 
 	    iparam, ipntr, workd, workl, &lworkl, &info, (ftnlen)1, (ftnlen)2)
@@ -273,15 +272,15 @@ L10:
 
     if (ido == -1) {
 
-/*           %-------------------------------------------------------% */
-/*           | Perform  y <--- OP*x = (inv[A-SIGMA*M])*(A+SIGMA*M)*x | */
-/*           | to force starting vector into the range of OP.  The   | */
-/*           | user should provide his/her matrix vector (A*x, M*x)  | */
-/*           | multiplication routines and a linear system solver    | */
-/*           | here.  The matrix vector multiplication routine takes | */
-/*           | workd(ipntr(1)) as the input vector.  The final       | */
-/*           | result is returned to workd(ipntr(2)).                | */
-/*           %-------------------------------------------------------% */
+           /* ----------------------------------------------------- */
+           /* Perform  y <--- OP*x = (inv[A-SIGMA*M])*(A+SIGMA*M)*x */
+           /* to force starting vector into the range of OP.  The   */
+           /* user should provide his/her matrix vector (A*x, M*x)  */
+           /* multiplication routines and a linear system solver    */
+           /* here.  The matrix vector multiplication routine takes */
+           /* workd(ipntr(1)) as the input vector.  The final       */
+           /* result is returned to workd(ipntr(2)).                */
+           /* ----------------------------------------------------- */
 
 	dsdrv6_av_(&n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
 	dsdrv6_mv_(&n, &workd[ipntr[0] - 1], temp);
@@ -302,25 +301,25 @@ L10:
 	    goto L9000;
 	}
 
-/*           %-----------------------------------------% */
-/*           | L O O P   B A C K to call DSAUPD again. | */
-/*           %-----------------------------------------% */
+           /* --------------------------------------- */
+           /* L O O P   B A C K to call DSAUPD again. */
+           /* --------------------------------------- */
 
 	goto L10;
 
     } else if (ido == 1) {
 
-/*           %----------------------------------------------------% */
-/*           | Perform y <-- OP*x = inv[A-SIGMA*M]*(A+SIGMA*M)*x. | */
-/*           | M*x has been saved in workd(ipntr(3)).  The user   | */
-/*           | need the matrix vector multiplication (A*x)        | */
-/*           | routine and a linear system solver here.  The      | */
-/*           | matrix vector multiplication routine takes         | */
-/*           | workd(ipntr(1)) as the input, and the result is    | */
-/*           | combined with workd(ipntr(3)) to form the input    | */
-/*           | for the linear system solver.  The final result is | */
-/*           | returned to workd(ipntr(2)).                       | */
-/*           %----------------------------------------------------% */
+           /* -------------------------------------------------- */
+           /* Perform y <-- OP*x = inv[A-SIGMA*M]*(A+SIGMA*M)*x. */
+           /* M*x has been saved in workd(ipntr(3)).  The user   */
+           /* need the matrix vector multiplication (A*x)        */
+           /* routine and a linear system solver here.  The      */
+           /* matrix vector multiplication routine takes         */
+           /* workd(ipntr(1)) as the input, and the result is    */
+           /* combined with workd(ipntr(3)) to form the input    */
+           /* for the linear system solver.  The final result is */
+           /* returned to workd(ipntr(2)).                       */
+           /* -------------------------------------------------- */
 
 	dsdrv6_av_(&n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
 	daxpy_(&n, &sigma, &workd[ipntr[2] - 1], &c__1, &workd[ipntr[1] - 1], 
@@ -341,42 +340,42 @@ L10:
 	    goto L9000;
 	}
 
-/*           %-----------------------------------------% */
-/*           | L O O P   B A C K to call DSAUPD again. | */
-/*           %-----------------------------------------% */
+           /* --------------------------------------- */
+           /* L O O P   B A C K to call DSAUPD again. */
+           /* --------------------------------------- */
 
 	goto L10;
 
     } else if (ido == 2) {
 
-/*           %--------------------------------------------% */
-/*           |             Perform  y <--- M*x.           | */
-/*           | Need matrix vector multiplication routine  | */
-/*           | here that takes workd(ipntr(1)) as input   | */
-/*           | and returns the result to workd(ipntr(2)). | */
-/*           %--------------------------------------------% */
+           /* ------------------------------------------ */
+           /*             Perform  y <--- M*x.           */
+           /* Need matrix vector multiplication routine  */
+           /* here that takes workd(ipntr(1)) as input   */
+           /* and returns the result to workd(ipntr(2)). */
+           /* ------------------------------------------ */
 
 	dsdrv6_mv_(&n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
 
-/*           %-----------------------------------------% */
-/*           | L O O P   B A C K to call DSAUPD again. | */
-/*           %-----------------------------------------% */
+           /* --------------------------------------- */
+           /* L O O P   B A C K to call DSAUPD again. */
+           /* --------------------------------------- */
 
 	goto L10;
 
     }
 
-/*     %-----------------------------------------% */
-/*     | Either we have convergence, or there is | */
-/*     | an error.                               | */
-/*     %-----------------------------------------% */
+     /* --------------------------------------- */
+     /* Either we have convergence, or there is */
+     /* an error.                               */
+     /* --------------------------------------- */
 
     if (info < 0) {
 
-/*        %--------------------------% */
-/*        | Error message, check the | */
-/*        | documentation in DSAUPD  | */
-/*        %--------------------------% */
+        /* ------------------------ */
+        /* Error message, check the */
+        /* documentation in DSAUPD  */
+        /* ------------------------ */
 
 	s_wsle(&io___43);
 	do_lio(&c__9, &c__1, " ", (ftnlen)1);
@@ -395,15 +394,15 @@ L10:
 
     } else {
 
-/*        %-------------------------------------------% */
-/*        | No fatal errors occurred.                 | */
-/*        | Post-Process using DSEUPD.                | */
-/*        |                                           | */
-/*        | Computed eigenvalues may be extracted.    | */
-/*        |                                           | */
-/*        | Eigenvectors may also be computed now if  | */
-/*        | desired.  (indicated by rvec = .true.)    | */
-/*        %-------------------------------------------% */
+        /* ----------------------------------------- */
+        /* No fatal errors occurred.                 */
+        /* Post-Process using DSEUPD.                */
+        /*                                           */
+        /* Computed eigenvalues may be extracted.    */
+        /*                                           */
+        /* Eigenvectors may also be computed now if  */
+        /* desired.  (indicated by rvec = .true.)    */
+        /* ----------------------------------------- */
 
 	rvec = true;
 
@@ -412,23 +411,23 @@ L10:
 		workd, workl, &lworkl, &ierr, (ftnlen)3, (ftnlen)1, (ftnlen)2)
 		;
 
-/*        %----------------------------------------------% */
-/*        | Eigenvalues are returned in the first column | */
-/*        | of the two dimensional array D and the       | */
-/*        | corresponding eigenvectors are returned in   | */
-/*        | the first NEV columns of the two dimensional | */
-/*        | array V if requested.  Otherwise, an         | */
-/*        | orthogonal basis for the invariant subspace  | */
-/*        | corresponding to the eigenvalues in D is     | */
-/*        | returned in V.                               | */
-/*        %----------------------------------------------% */
+        /* -------------------------------------------- */
+        /* Eigenvalues are returned in the first column */
+        /* of the two dimensional array D and the       */
+        /* corresponding eigenvectors are returned in   */
+        /* the first NEV columns of the two dimensional */
+        /* array V if requested.  Otherwise, an         */
+        /* orthogonal basis for the invariant subspace  */
+        /* corresponding to the eigenvalues in D is     */
+        /* returned in V.                               */
+        /* -------------------------------------------- */
 
 	if (ierr != 0) {
 
-/*           %------------------------------------% */
-/*           | Error condition:                   | */
-/*           | Check the documentation of DSEUPD. | */
-/*           %------------------------------------% */
+           /* ---------------------------------- */
+           /* Error condition:                   */
+           /* Check the documentation of DSEUPD. */
+           /* ---------------------------------- */
 
 	    s_wsle(&io___50);
 	    do_lio(&c__9, &c__1, " ", (ftnlen)1);
@@ -447,18 +446,18 @@ L10:
 
 	} else {
 
-/*           %---------------------------% */
-/*           | Compute the residual norm | */
-/*           |                           | */
-/*           |   ||  A*x - lambda*x ||   | */
-/*           |                           | */
-/*           | for the NCONV accurately  | */
-/*           | computed eigenvalues and  | */
-/*           | eigenvectors.  (iparam(5) | */
-/*           | indicates how many are    | */
-/*           | accurate to the requested | */
-/*           | tolerance)                | */
-/*           %---------------------------% */
+           /* ------------------------- */
+           /* Compute the residual norm */
+           /*                           */
+           /*   ||  A*x - lambda*x ||   */
+           /*                           */
+           /* for the NCONV accurately  */
+           /* computed eigenvalues and  */
+           /* eigenvectors.  (iparam(5) */
+           /* indicates how many are    */
+           /* accurate to the requested */
+           /* tolerance)                */
+           /* ------------------------- */
 
 	    nconv = iparam[4];
 	    i__1 = nconv;
@@ -477,9 +476,9 @@ L10:
 
 	}
 
-/*        %------------------------------------------% */
-/*        | Print additional convergence information | */
-/*        %------------------------------------------% */
+        /* ---------------------------------------- */
+        /* Print additional convergence information */
+        /* ---------------------------------------- */
 
 	if (info == 1) {
 	    s_wsle(&io___57);
@@ -563,9 +562,9 @@ L10:
 
     }
 
-/*     %---------------------------% */
-/*     | Done with program dsdrv6. | */
-/*     %---------------------------% */
+     /* ------------------------- */
+     /* Done with program dsdrv6. */
+     /* ------------------------- */
 
 L9000:
 

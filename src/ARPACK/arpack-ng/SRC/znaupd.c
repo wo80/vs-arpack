@@ -434,9 +434,9 @@ int znaupd_(int32_t *ido, char *bmat, int32_t *n, char *
     static cilist io___21 = { 0, 6, 0, fmt_1000, 0 };
     static cilist io___22 = { 0, 6, 0, fmt_1100, 0 };
 
-/*     %-----------------------% */
-/*     | Executable Statements | */
-/*     %-----------------------% */
+     /* --------------------- */
+     /* Executable Statements */
+     /* --------------------- */
 
     /* Parameter adjustments */
     --workd;
@@ -452,18 +452,18 @@ int znaupd_(int32_t *ido, char *bmat, int32_t *n, char *
     /* Function Body */
     if (*ido == 0) {
 
-/*        %-------------------------------% */
-/*        | Initialize timing statistics  | */
-/*        | & message level for debugging | */
-/*        %-------------------------------% */
+        /* ----------------------------- */
+        /* Initialize timing statistics  */
+        /* & message level for debugging */
+        /* ----------------------------- */
 
 	zstatn_();
 	arscnd_(&t0);
 	msglvl = debug_1.mcaupd;
 
-/*        %----------------% */
-/*        | Error checking | */
-/*        %----------------% */
+        /* -------------- */
+        /* Error checking */
+        /* -------------- */
 
 	ierr = 0;
 	ishift = iparam[1];
@@ -472,9 +472,9 @@ int znaupd_(int32_t *ido, char *bmat, int32_t *n, char *
 /*         nb     = iparam(4) */
 	nb = 1;
 
-/*        %--------------------------------------------% */
-/*        | Revision 2 performs only implicit restart. | */
-/*        %--------------------------------------------% */
+        /* ------------------------------------------ */
+        /* Revision 2 performs only implicit restart. */
+        /* ------------------------------------------ */
 
 	iupd = 1;
 	mode = iparam[7];
@@ -508,9 +508,9 @@ int znaupd_(int32_t *ido, char *bmat, int32_t *n, char *
 	    }
 	}
 
-/*        %------------% */
-/*        | Error Exit | */
-/*        %------------% */
+        /* ---------- */
+        /* Error Exit */
+        /* ---------- */
 
 	if (ierr != 0) {
 	    *info = ierr;
@@ -518,9 +518,9 @@ int znaupd_(int32_t *ido, char *bmat, int32_t *n, char *
 	    goto L9000;
 	}
 
-/*        %------------------------% */
-/*        | Set default parameters | */
-/*        %------------------------% */
+        /* ---------------------- */
+        /* Set default parameters */
+        /* ---------------------- */
 
 	if (nb <= 0) {
 	    nb = 1;
@@ -532,19 +532,19 @@ int znaupd_(int32_t *ido, char *bmat, int32_t *n, char *
 	    ishift = 1;
 	}
 
-/*        %----------------------------------------------% */
-/*        | NP is the number of additional steps to      | */
-/*        | extend the length NEV Lanczos factorization. | */
-/*        | NEV0 is the local variable designating the   | */
-/*        | size of the invariant subspace desired.      | */
-/*        %----------------------------------------------% */
+        /* -------------------------------------------- */
+        /* NP is the number of additional steps to      */
+        /* extend the length NEV Lanczos factorization. */
+        /* NEV0 is the local variable designating the   */
+        /* size of the invariant subspace desired.      */
+        /* -------------------------------------------- */
 
 	np = *ncv - *nev;
 	nev0 = *nev;
 
-/*        %-----------------------------% */
-/*        | Zero out internal workspace | */
-/*        %-----------------------------% */
+        /* --------------------------- */
+        /* Zero out internal workspace */
+        /* --------------------------- */
 
 /* Computing 2nd power */
 	i__2 = *ncv;
@@ -555,21 +555,21 @@ int znaupd_(int32_t *ido, char *bmat, int32_t *n, char *
 /* L10: */
 	}
 
-/*        %-------------------------------------------------------------% */
-/*        | Pointer into WORKL for address of H, RITZ, BOUNDS, Q        | */
-/*        | etc... and the remaining workspace.                         | */
-/*        | Also update pointer to be used on output.                   | */
-/*        | Memory is laid out as follows:                              | */
-/*        | workl(1:ncv*ncv) := generated Hessenberg matrix             | */
-/*        | workl(ncv*ncv+1:ncv*ncv+ncv) := the ritz values             | */
-/*        | workl(ncv*ncv+ncv+1:ncv*ncv+2*ncv)   := error bounds        | */
-/*        | workl(ncv*ncv+2*ncv+1:2*ncv*ncv+2*ncv) := rotation matrix Q | */
-/*        | workl(2*ncv*ncv+2*ncv+1:3*ncv*ncv+5*ncv) := workspace       | */
-/*        | The final workspace is needed by subroutine zneigh  called   | */
-/*        | by znaup2 . Subroutine zneigh  calls LAPACK routines for      | */
-/*        | calculating eigenvalues and the last row of the eigenvector | */
-/*        | matrix.                                                     | */
-/*        %-------------------------------------------------------------% */
+        /* ----------------------------------------------------------- */
+        /* Pointer into WORKL for address of H, RITZ, BOUNDS, Q        */
+        /* etc... and the remaining workspace.                         */
+        /* Also update pointer to be used on output.                   */
+        /* Memory is laid out as follows:                              */
+        /* workl(1:ncv*ncv) := generated Hessenberg matrix             */
+        /* workl(ncv*ncv+1:ncv*ncv+ncv) := the ritz values             */
+        /* workl(ncv*ncv+ncv+1:ncv*ncv+2*ncv)   := error bounds        */
+        /* workl(ncv*ncv+2*ncv+1:2*ncv*ncv+2*ncv) := rotation matrix Q */
+        /* workl(2*ncv*ncv+2*ncv+1:3*ncv*ncv+5*ncv) := workspace       */
+        /* The final workspace is needed by subroutine zneigh  called  */
+        /* by znaup2 . Subroutine zneigh  calls LAPACK routines for    */
+        /* calculating eigenvalues and the last row of the eigenvector */
+        /* matrix.                                                     */
+        /* ----------------------------------------------------------- */
 
 	ldh = *ncv;
 	ldq = *ncv;
@@ -590,19 +590,19 @@ int znaupd_(int32_t *ido, char *bmat, int32_t *n, char *
 	ipntr[14] = iw;
     }
 
-/*     %-------------------------------------------------------% */
-/*     | Carry out the Implicitly restarted Arnoldi Iteration. | */
-/*     %-------------------------------------------------------% */
+     /* ----------------------------------------------------- */
+     /* Carry out the Implicitly restarted Arnoldi Iteration. */
+     /* ----------------------------------------------------- */
 
     znaup2_(ido, bmat, n, which, &nev0, &np, tol, &resid[1], &mode, &iupd, &
 	    ishift, &mxiter, &v[v_offset], ldv, &workl[ih], &ldh, &workl[ritz]
 	    , &workl[bounds], &workl[iq], &ldq, &workl[iw], &ipntr[1], &workd[
 	    1], &rwork[1], info);
 
-/*     %--------------------------------------------------% */
-/*     | ido .ne. 99 implies use of reverse communication | */
-/*     | to compute operations involving OP.              | */
-/*     %--------------------------------------------------% */
+     /* ------------------------------------------------ */
+     /* ido .ne. 99 implies use of reverse communication */
+     /* to compute operations involving OP.              */
+     /* ------------------------------------------------ */
 
     if (*ido == 3) {
 	iparam[8] = np;
@@ -617,10 +617,10 @@ int znaupd_(int32_t *ido, char *bmat, int32_t *n, char *
     iparam[10] = timing_1.nbx;
     iparam[11] = timing_1.nrorth;
 
-/*     %------------------------------------% */
-/*     | Exit if there was an informational | */
-/*     | error within znaup2 .               | */
-/*     %------------------------------------% */
+     /* ---------------------------------- */
+     /* Exit if there was an informational */
+     /* error within znaup2 .               */
+     /* ---------------------------------- */
 
     if (*info < 0) {
 	goto L9000;
@@ -645,9 +645,9 @@ int znaupd_(int32_t *ido, char *bmat, int32_t *n, char *
 
     if (msglvl > 0) {
 
-/*        %--------------------------------------------------------% */
-/*        | Version Number & Version Date are defined in version.h | */
-/*        %--------------------------------------------------------% */
+        /* ------------------------------------------------------ */
+        /* Version Number & Version Date are defined in version.h */
+        /* ------------------------------------------------------ */
 
 	s_wsfe(&io___21);
 	e_wsfe();
@@ -677,9 +677,9 @@ L9000:
 
     return 0;
 
-/*     %---------------% */
-/*     | End of znaupd  | */
-/*     %---------------% */
+     /* ------------- */
+     /* End of znaupd */
+     /* ------------- */
 
 } /* znaupd_ */
 

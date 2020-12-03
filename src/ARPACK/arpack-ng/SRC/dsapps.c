@@ -154,9 +154,9 @@ int dsapps_(int32_t *n, int32_t *kev, int32_t *np,
     static double epsmch;
     int32_t istart, kplusp, msglvl;
 
-/*     %----------------% */
-/*     | Data statements | */
-/*     %----------------% */
+     /* -------------- */
+     /* Data statements */
+     /* -------------- */
 
     /* Parameter adjustments */
     --workd;
@@ -174,9 +174,9 @@ int dsapps_(int32_t *n, int32_t *kev, int32_t *np,
 
     /* Function Body */
 
-/*     %-----------------------% */
-/*     | Executable Statements | */
-/*     %-----------------------% */
+     /* --------------------- */
+     /* Executable Statements */
+     /* --------------------- */
 
     if (first) {
 	epsmch = dlamch_("Epsilon-Machine");
@@ -184,57 +184,57 @@ int dsapps_(int32_t *n, int32_t *kev, int32_t *np,
     }
     itop = 1;
 
-/*     %-------------------------------% */
-/*     | Initialize timing statistics  | */
-/*     | & message level for debugging | */
-/*     %-------------------------------% */
+     /* ----------------------------- */
+     /* Initialize timing statistics  */
+     /* & message level for debugging */
+     /* ----------------------------- */
 
     arscnd_(&t0);
     msglvl = debug_1.msapps;
 
     kplusp = *kev + *np;
 
-/*     %----------------------------------------------% */
-/*     | Initialize Q to the identity matrix of order | */
-/*     | kplusp used to accumulate the rotations.     | */
-/*     %----------------------------------------------% */
+     /* -------------------------------------------- */
+     /* Initialize Q to the identity matrix of order */
+     /* kplusp used to accumulate the rotations.     */
+     /* -------------------------------------------- */
 
     dlaset_("All", &kplusp, &kplusp, &d_zero, &d_one, &q[q_offset], ldq);
 
-/*     %----------------------------------------------% */
-/*     | Quick return if there are no shifts to apply | */
-/*     %----------------------------------------------% */
+     /* -------------------------------------------- */
+     /* Quick return if there are no shifts to apply */
+     /* -------------------------------------------- */
 
     if (*np == 0) {
 	goto L9000;
     }
 
-/*     %----------------------------------------------------------% */
-/*     | Apply the np shifts implicitly. Apply each shift to the  | */
-/*     | whole matrix and not just to the submatrix from which it | */
-/*     | comes.                                                   | */
-/*     %----------------------------------------------------------% */
+     /* -------------------------------------------------------- */
+     /* Apply the np shifts implicitly. Apply each shift to the  */
+     /* whole matrix and not just to the submatrix from which it */
+     /* comes.                                                   */
+     /* -------------------------------------------------------- */
 
     i__1 = *np;
     for (jj = 1; jj <= i__1; ++jj) {
 
 	istart = itop;
 
-/*        %----------------------------------------------------------% */
-/*        | Check for splitting and deflation. Currently we consider | */
-/*        | an off-diagonal element h(i+1,1) negligible if           | */
-/*        |         h(i+1,1) .le. epsmch*( |h(i,2)| + |h(i+1,2)| )   | */
-/*        | for i=1:KEV+NP-1.                                        | */
-/*        | If above condition tests true then we set h(i+1,1) = 0.  | */
-/*        | Note that h(1:KEV+NP,1) are assumed to be non negative.  | */
-/*        %----------------------------------------------------------% */
+        /* -------------------------------------------------------- */
+        /* Check for splitting and deflation. Currently we consider */
+        /* an off-diagonal element h(i+1,1) negligible if           */
+        /*         h(i+1,1) .le. epsmch*( |h(i,2)| + |h(i+1,2)| )   */
+        /* for i=1:KEV+NP-1.                                        */
+        /* If above condition tests true then we set h(i+1,1) = 0.  */
+        /* Note that h(1:KEV+NP,1) are assumed to be non negative.  */
+        /* -------------------------------------------------------- */
 
 L20:
 
-/*        %------------------------------------------------% */
-/*        | The following loop exits early if we encounter | */
-/*        | a negligible off diagonal element.             | */
-/*        %------------------------------------------------% */
+        /* ---------------------------------------------- */
+        /* The following loop exits early if we encounter */
+        /* a negligible off diagonal element.             */
+        /* ---------------------------------------------- */
 
 	i__2 = kplusp - 1;
 	for (i__ = istart; i__ <= i__2; ++i__) {
@@ -263,20 +263,20 @@ L40:
 
 	if (istart < iend) {
 
-/*           %--------------------------------------------------------% */
-/*           | Construct the plane rotation G'(istart,istart+1,theta) | */
-/*           | that attempts to drive h(istart+1,1) to zero.          | */
-/*           %--------------------------------------------------------% */
+           /* ------------------------------------------------------ */
+           /* Construct the plane rotation G'(istart,istart+1,theta) */
+           /* that attempts to drive h(istart+1,1) to zero.          */
+           /* ------------------------------------------------------ */
 
 	    f = h__[istart + (h_dim1 << 1)] - shift[jj];
 	    g = h__[istart + 1 + h_dim1];
 	    dlartg_(&f, &g, &c__, &s, &r__);
 
-/*            %-------------------------------------------------------% */
-/*            | Apply rotation to the left and right of H;            | */
-/*            | H <- G' * H * G,  where G = G(istart,istart+1,theta). | */
-/*            | This will create a "bulge".                           | */
-/*            %-------------------------------------------------------% */
+            /* ----------------------------------------------------- */
+            /* Apply rotation to the left and right of H;            */
+            /* H <- G' * H * G,  where G = G(istart,istart+1,theta). */
+            /* This will create a "bulge".                           */
+            /* ----------------------------------------------------- */
 
 	    a1 = c__ * h__[istart + (h_dim1 << 1)] + s * h__[istart + 1 + 
 		    h_dim1];
@@ -290,9 +290,9 @@ L40:
 	    h__[istart + 1 + (h_dim1 << 1)] = c__ * a4 - s * a3;
 	    h__[istart + 1 + h_dim1] = c__ * a3 + s * a4;
 
-/*            %----------------------------------------------------% */
-/*            | Accumulate the rotation in the matrix Q;  Q <- Q*G | */
-/*            %----------------------------------------------------% */
+            /* -------------------------------------------------- */
+            /* Accumulate the rotation in the matrix Q;  Q <- Q*G */
+            /* -------------------------------------------------- */
 
 /* Computing MIN */
 	    i__3 = istart + jj;
@@ -306,40 +306,40 @@ L40:
 /* L60: */
 	    }
 
-/*            %----------------------------------------------% */
-/*            | The following loop chases the bulge created. | */
-/*            | Note that the previous rotation may also be  | */
-/*            | done within the following loop. But it is    | */
-/*            | kept separate to make the distinction among  | */
-/*            | the bulge chasing sweeps and the first plane | */
-/*            | rotation designed to drive h(istart+1,1) to  | */
-/*            | zero.                                        | */
-/*            %----------------------------------------------% */
+            /* -------------------------------------------- */
+            /* The following loop chases the bulge created. */
+            /* Note that the previous rotation may also be  */
+            /* done within the following loop. But it is    */
+            /* kept separate to make the distinction among  */
+            /* the bulge chasing sweeps and the first plane */
+            /* rotation designed to drive h(istart+1,1) to  */
+            /* zero.                                        */
+            /* -------------------------------------------- */
 
 	    i__2 = iend - 1;
 	    for (i__ = istart + 1; i__ <= i__2; ++i__) {
 
-/*               %----------------------------------------------% */
-/*               | Construct the plane rotation G'(i,i+1,theta) | */
-/*               | that zeros the i-th bulge that was created   | */
-/*               | by G(i-1,i,theta). g represents the bulge.   | */
-/*               %----------------------------------------------% */
+               /* -------------------------------------------- */
+               /* Construct the plane rotation G'(i,i+1,theta) */
+               /* that zeros the i-th bulge that was created   */
+               /* by G(i-1,i,theta). g represents the bulge.   */
+               /* -------------------------------------------- */
 
 		f = h__[i__ + h_dim1];
 		g = s * h__[i__ + 1 + h_dim1];
 
-/*               %----------------------------------% */
-/*               | Final update with G(i-1,i,theta) | */
-/*               %----------------------------------% */
+               /* -------------------------------- */
+               /* Final update with G(i-1,i,theta) */
+               /* -------------------------------- */
 
 		h__[i__ + 1 + h_dim1] = c__ * h__[i__ + 1 + h_dim1];
 		dlartg_(&f, &g, &c__, &s, &r__);
 
-/*               %-------------------------------------------% */
-/*               | The following ensures that h(1:iend-1,1), | */
-/*               | the first iend-2 off diagonal of elements | */
-/*               | H, remain non negative.                   | */
-/*               %-------------------------------------------% */
+               /* ----------------------------------------- */
+               /* The following ensures that h(1:iend-1,1), */
+               /* the first iend-2 off diagonal of elements */
+               /* H, remain non negative.                   */
+               /* ----------------------------------------- */
 
 		if (r__ < 0.) {
 		    r__ = -r__;
@@ -347,10 +347,10 @@ L40:
 		    s = -s;
 		}
 
-/*               %--------------------------------------------% */
-/*               | Apply rotation to the left and right of H; | */
-/*               | H <- G * H * G',  where G = G(i,i+1,theta) | */
-/*               %--------------------------------------------% */
+               /* ------------------------------------------ */
+               /* Apply rotation to the left and right of H; */
+               /* H <- G * H * G',  where G = G(i,i+1,theta) */
+               /* ------------------------------------------ */
 
 		h__[i__ + h_dim1] = r__;
 
@@ -367,9 +367,9 @@ L40:
 		h__[i__ + 1 + (h_dim1 << 1)] = c__ * a4 - s * a3;
 		h__[i__ + 1 + h_dim1] = c__ * a3 + s * a4;
 
-/*               %----------------------------------------------------% */
-/*               | Accumulate the rotation in the matrix Q;  Q <- Q*G | */
-/*               %----------------------------------------------------% */
+               /* -------------------------------------------------- */
+               /* Accumulate the rotation in the matrix Q;  Q <- Q*G */
+               /* -------------------------------------------------- */
 
 /* Computing MIN */
 		i__4 = i__ + jj;
@@ -388,36 +388,36 @@ L40:
 
 	}
 
-/*        %--------------------------% */
-/*        | Update the block pointer | */
-/*        %--------------------------% */
+        /* ------------------------ */
+        /* Update the block pointer */
+        /* ------------------------ */
 
 	istart = iend + 1;
 
-/*        %------------------------------------------% */
-/*        | Make sure that h(iend,1) is non-negative | */
-/*        | If not then set h(iend,1) <-- -h(iend,1) | */
-/*        | and negate the last column of Q.         | */
-/*        | We have effectively carried out a        | */
-/*        | similarity on transformation H           | */
-/*        %------------------------------------------% */
+        /* ---------------------------------------- */
+        /* Make sure that h(iend,1) is non-negative */
+        /* If not then set h(iend,1) <-- -h(iend,1) */
+        /* and negate the last column of Q.         */
+        /* We have effectively carried out a        */
+        /* similarity on transformation H           */
+        /* ---------------------------------------- */
 
 	if (h__[iend + h_dim1] < 0.) {
 	    h__[iend + h_dim1] = -h__[iend + h_dim1];
 	    dscal_(&kplusp, &d_m1, &q[iend * q_dim1 + 1], &c__1);
 	}
 
-/*        %--------------------------------------------------------% */
-/*        | Apply the same shift to the next block if there is any | */
-/*        %--------------------------------------------------------% */
+        /* ------------------------------------------------------ */
+        /* Apply the same shift to the next block if there is any */
+        /* ------------------------------------------------------ */
 
 	if (iend < kplusp) {
 	    goto L20;
 	}
 
-/*        %-----------------------------------------------------% */
-/*        | Check if we can increase the the start of the block | */
-/*        %-----------------------------------------------------% */
+        /* --------------------------------------------------- */
+        /* Check if we can increase the the start of the block */
+        /* --------------------------------------------------- */
 
 	i__2 = kplusp - 1;
 	for (i__ = itop; i__ <= i__2; ++i__) {
@@ -428,19 +428,19 @@ L40:
 /* L80: */
 	}
 
-/*        %-----------------------------------% */
-/*        | Finished applying the jj-th shift | */
-/*        %-----------------------------------% */
+        /* --------------------------------- */
+        /* Finished applying the jj-th shift */
+        /* --------------------------------- */
 
 L90:
 	;
     }
 
-/*     %------------------------------------------% */
-/*     | All shifts have been applied. Check for  | */
-/*     | more possible deflation that might occur | */
-/*     | after the last shift is applied.         | */
-/*     %------------------------------------------% */
+     /* ---------------------------------------- */
+     /* All shifts have been applied. Check for  */
+     /* more possible deflation that might occur */
+     /* after the last shift is applied.         */
+     /* ---------------------------------------- */
 
     i__1 = kplusp - 1;
     for (i__ = itop; i__ <= i__1; ++i__) {
@@ -459,23 +459,23 @@ L90:
 /* L100: */
     }
 
-/*     %-------------------------------------------------% */
-/*     | Compute the (kev+1)-st column of (V*Q) and      | */
-/*     | temporarily store the result in WORKD(N+1:2*N). | */
-/*     | This is not necessary if h(kev+1,1) = 0.         | */
-/*     %-------------------------------------------------% */
+     /* ----------------------------------------------- */
+     /* Compute the (kev+1)-st column of (V*Q) and      */
+     /* temporarily store the result in WORKD(N+1:2*N). */
+     /* This is not necessary if h(kev+1,1) = 0.        */
+     /* ----------------------------------------------- */
 
     if (h__[*kev + 1 + h_dim1] > 0.) {
 	dgemv_("N", n, &kplusp, &d_one, &v[v_offset], ldv, &q[(*kev + 1) * 
 		q_dim1 + 1], &c__1, &d_zero, &workd[*n + 1], &c__1);
     }
 
-/*     %-------------------------------------------------------% */
-/*     | Compute column 1 to kev of (V*Q) in backward order    | */
-/*     | taking advantage that Q is an upper triangular matrix | */
-/*     | with lower bandwidth np.                              | */
-/*     | Place results in v(:,kplusp-kev:kplusp) temporarily.  | */
-/*     %-------------------------------------------------------% */
+     /* ----------------------------------------------------- */
+     /* Compute column 1 to kev of (V*Q) in backward order    */
+     /* taking advantage that Q is an upper triangular matrix */
+     /* with lower bandwidth np.                              */
+     /* Place results in v(:,kplusp-kev:kplusp) temporarily.  */
+     /* ----------------------------------------------------- */
 
     i__1 = *kev;
     for (i__ = 1; i__ <= i__1; ++i__) {
@@ -487,9 +487,9 @@ L90:
 /* L130: */
     }
 
-/*     %-------------------------------------------------% */
-/*     |  Move v(:,kplusp-kev+1:kplusp) into v(:,1:kev). | */
-/*     %-------------------------------------------------% */
+     /* ----------------------------------------------- */
+     /*  Move v(:,kplusp-kev+1:kplusp) into v(:,1:kev). */
+     /* ----------------------------------------------- */
 
     i__1 = *kev;
     for (i__ = 1; i__ <= i__1; ++i__) {
@@ -498,22 +498,22 @@ L90:
 /* L140: */
     }
 
-/*     %--------------------------------------------% */
-/*     | Copy the (kev+1)-st column of (V*Q) in the | */
-/*     | appropriate place if h(kev+1,1) .ne. zero. | */
-/*     %--------------------------------------------% */
+     /* ------------------------------------------ */
+     /* Copy the (kev+1)-st column of (V*Q) in the */
+     /* appropriate place if h(kev+1,1) .ne. zero. */
+     /* ------------------------------------------ */
 
     if (h__[*kev + 1 + h_dim1] > 0.) {
 	dcopy_(n, &workd[*n + 1], &c__1, &v[(*kev + 1) * v_dim1 + 1], &c__1);
     }
 
-/*     %-------------------------------------% */
-/*     | Update the residual vector:         | */
-/*     |    r <- sigmak*r + betak*v(:,kev+1) | */
-/*     | where                               | */
-/*     |    sigmak = (e_{kev+p}'*Q)*e_{kev}  | */
-/*     |    betak = e_{kev+1}'*H*e_{kev}     | */
-/*     %-------------------------------------% */
+     /* ----------------------------------- */
+     /* Update the residual vector:         */
+     /*    r <- sigmak*r + betak*v(:,kev+1) */
+     /* where                               */
+     /*    sigmak = (e_{kev+p}'*Q)*e_{kev}  */
+     /*    betak = e_{kev+1}'*H*e_{kev}     */
+     /* ----------------------------------- */
 
     dscal_(n, &q[kplusp + *kev * q_dim1], &resid[1], &c__1);
     if (h__[*kev + 1 + h_dim1] > 0.) {
@@ -545,9 +545,9 @@ L90:
 L9000:
     return 0;
 
-/*     %---------------% */
-/*     | End of dsapps | */
-/*     %---------------% */
+     /* ------------- */
+     /* End of dsapps */
+     /* ------------- */
 
 } /* dsapps_ */
 

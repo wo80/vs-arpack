@@ -115,14 +115,14 @@ int cneigh_(float *rnorm, int32_t *n, complex *h__, int32_t *
     bool select[1];
     int32_t msglvl;
 
-/*     %-----------------------% */
-/*     | Executable Statements | */
-/*     %-----------------------% */
+     /* --------------------- */
+     /* Executable Statements */
+     /* --------------------- */
 
-/*     %-------------------------------% */
-/*     | Initialize timing statistics  | */
-/*     | & message level for debugging | */
-/*     %-------------------------------% */
+     /* ----------------------------- */
+     /* Initialize timing statistics  */
+     /* & message level for debugging */
+     /* ----------------------------- */
 
     /* Parameter adjustments */
     --rwork;
@@ -145,13 +145,13 @@ int cneigh_(float *rnorm, int32_t *n, complex *h__, int32_t *
 		"_neigh: Entering upper Hessenberg matrix H ", (ftnlen)43);
     }
 
-/*     %----------------------------------------------------------% */
-/*     | 1. Compute the eigenvalues, the last components of the   | */
-/*     |    corresponding Schur vectors and the full Schur form T | */
-/*     |    of the current upper Hessenberg matrix H.             | */
-/*     |    clahqr returns the full Schur form of H               | */
-/*     |    in WORKL(1:N**2), and the Schur vectors in q.         | */
-/*     %----------------------------------------------------------% */
+     /* -------------------------------------------------------- */
+     /* 1. Compute the eigenvalues, the last components of the   */
+     /*    corresponding Schur vectors and the full Schur form T */
+     /*    of the current upper Hessenberg matrix H.             */
+     /*    clahqr returns the full Schur form of H               */
+     /*    in WORKL(1:N**2), and the Schur vectors in q.         */
+     /* -------------------------------------------------------- */
 
     clacpy_("All", n, n, &h__[h_offset], ldh, &workl[1], n);
     claset_("All", n, n, &c_zero, &c_one, &q[q_offset], ldq);
@@ -167,11 +167,11 @@ int cneigh_(float *rnorm, int32_t *n, complex *h__, int32_t *
 		"t row of the Schur matrix for H", (ftnlen)42);
     }
 
-/*     %----------------------------------------------------------% */
-/*     | 2. Compute the eigenvectors of the full Schur form T and | */
-/*     |    apply the Schur vectors to get the corresponding      | */
-/*     |    eigenvectors.                                         | */
-/*     %----------------------------------------------------------% */
+     /* -------------------------------------------------------- */
+     /* 2. Compute the eigenvectors of the full Schur form T and */
+     /*    apply the Schur vectors to get the corresponding      */
+     /*    eigenvectors.                                         */
+     /* -------------------------------------------------------- */
 
     ctrevc_("Right", "Back", select, n, &workl[1], n, vl, n, &q[q_offset], 
 	    ldq, n, n, &workl[*n * *n + 1], &rwork[1], ierr);
@@ -180,14 +180,14 @@ int cneigh_(float *rnorm, int32_t *n, complex *h__, int32_t *
 	goto L9000;
     }
 
-/*     %------------------------------------------------% */
-/*     | Scale the returning eigenvectors so that their | */
-/*     | Euclidean norms are all one. LAPACK subroutine | */
-/*     | ctrevc returns each eigenvector normalized so  | */
-/*     | that the element of largest magnitude has      | */
-/*     | magnitude 1; here the magnitude of a complex   | */
-/*     | number (x,y) is taken to be |x| + |y|.         | */
-/*     %------------------------------------------------% */
+     /* ---------------------------------------------- */
+     /* Scale the returning eigenvectors so that their */
+     /* Euclidean norms are all one. LAPACK subroutine */
+     /* ctrevc returns each eigenvector normalized so  */
+     /* that the element of largest magnitude has      */
+     /* magnitude 1; here the magnitude of a complex   */
+     /* number (x,y) is taken to be |x| + |y|.         */
+     /* ---------------------------------------------- */
 
     i__1 = *n;
     for (j = 1; j <= i__1; ++j) {
@@ -203,9 +203,9 @@ int cneigh_(float *rnorm, int32_t *n, complex *h__, int32_t *
 		" row of the eigenvector matrix for H", (ftnlen)48);
     }
 
-/*     %----------------------------% */
-/*     | Compute the Ritz estimates | */
-/*     %----------------------------% */
+     /* -------------------------- */
+     /* Compute the Ritz estimates */
+     /* -------------------------- */
 
     ccopy_(n, &q[*n + q_dim1], n, &bounds[1], &c__1);
     csscal_(n, rnorm, &bounds[1], &c__1);
@@ -223,9 +223,9 @@ int cneigh_(float *rnorm, int32_t *n, complex *h__, int32_t *
 L9000:
     return 0;
 
-/*     %---------------% */
-/*     | End of cneigh | */
-/*     %---------------% */
+     /* ------------- */
+     /* End of cneigh */
+     /* ------------- */
 
 } /* cneigh_ */
 

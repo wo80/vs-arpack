@@ -77,8 +77,6 @@ int smout_(int32_t *lout, int32_t *m, int32_t *n, float *a,
 /*     ... SPECIFICATIONS FOR ARGUMENTS */
 /*     ... */
 /*     ... SPECIFICATIONS FOR LOCAL VARIABLES */
-/*     ... */
-/*     ... SPECIFICATIONS INTRINSICS */
 
     /* Parameter adjustments */
     a_dim1 = *lda;
@@ -86,8 +84,6 @@ int smout_(int32_t *lout, int32_t *m, int32_t *n, float *a,
     a -= a_offset;
 
     /* Function Body */
-/*     ... */
-/*     ... FIRST EXECUTABLE STATEMENT */
 
 /* Computing MIN */
     i__1 = i_len(ifmt, ifmt_len);

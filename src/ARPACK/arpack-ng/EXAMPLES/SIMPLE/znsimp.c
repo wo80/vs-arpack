@@ -118,81 +118,80 @@ int znsimp()
 /*     ... OP = A  and  B = I. */
 /*     ... Assume "call av (nx,x,y)" computes y = A*x */
 /*     ... Use mode 1 of ZNAUPD . */
+/**
+ * \BeginLib
+ *
+ * \Routines called
+ *     znaupd   ARPACK reverse communication interface routine.
+ *     zneupd   ARPACK routine that returns Ritz values and (optionally)
+ *             Ritz vectors.
+ *     dlapy2   LAPACK routine to compute sqrt(x**2+y**2) carefully.
+ *     dznrm2   Level 1 BLAS that computes the norm of a complex vector.
+ *     zaxpy    Level 1 BLAS that computes y <- alpha*x+y.
+ *     av      Matrix vector multiplication routine that computes A*x.
+ *     tv      Matrix vector multiplication routine that computes T*x,
+ *             where T is a tridiagonal matrix.  It is used in routine
+ *             av.
+ *
+ * \Author
+ *     Richard Lehoucq
+ *     Danny Sorensen
+ *     Chao Yang
+ *     Dept. of Computational &
+ *     Applied Mathematics
+ *     Rice University
+ *     Houston, Texas
+ *
+ * \SCCS Information: @(#)
+ * FILE: nsimp.F   SID: 2.4   DATE OF SID: 10/20/00   RELEASE: 2
+ *
+ * \Remarks
+ *     1. None
+ *
+ * \EndLib
+ */
+     /* ---------------------------------------------------- */
+     /* Storage Declarations:                                */
+     /*                                                      */
+     /* The maximum dimensions for all arrays are            */
+     /* set here to accommodate a problem size of            */
+     /* N .le. MAXN                                          */
+     /*                                                      */
+     /* NEV is the number of eigenvalues requested.          */
+     /*     See specifications for ARPACK usage below.       */
+     /*                                                      */
+     /* NCV is the largest number of basis vectors that will */
+     /*     be used in the Implicitly Restarted Arnoldi      */
+     /*     Process.  Work per major iteration is            */
+     /*     proportional to N*NCV*NCV.                       */
+     /*                                                      */
+     /* You must set:                                        */
+     /*                                                      */
+     /* MAXN:   Maximum dimension of the A allowed.          */
+     /* MAXNEV: Maximum NEV allowed.                         */
+     /* MAXNCV: Maximum NCV allowed.                         */
+     /* ---------------------------------------------------- */
 
-/* \BeginLib */
+     /* --------------------- */
+     /* Executable Statements */
+     /* --------------------- */
 
-/* \Routines called */
-/*     znaupd   ARPACK reverse communication interface routine. */
-/*     zneupd   ARPACK routine that returns Ritz values and (optionally) */
-/*             Ritz vectors. */
-/*     dlapy2   LAPACK routine to compute sqrt(x**2+y**2) carefully. */
-/*     dznrm2   Level 1 BLAS that computes the norm of a complex vector. */
-/*     zaxpy    Level 1 BLAS that computes y <- alpha*x+y. */
-/*     av      Matrix vector multiplication routine that computes A*x. */
-/*     tv      Matrix vector multiplication routine that computes T*x, */
-/*             where T is a tridiagonal matrix.  It is used in routine */
-/*             av. */
-
-/* \Author */
-/*     Richard Lehoucq */
-/*     Danny Sorensen */
-/*     Chao Yang */
-/*     Dept. of Computational & */
-/*     Applied Mathematics */
-/*     Rice University */
-/*     Houston, Texas */
-
-/* \SCCS Information: @(#) */
-/* FILE: nsimp.F   SID: 2.4   DATE OF SID: 10/20/00   RELEASE: 2 */
-
-/* \Remarks */
-/*     1. None */
-
-/* \EndLib */
-/* --------------------------------------------------------------------------- */
-
-/*     %------------------------------------------------------% */
-/*     | Storage Declarations:                                | */
-/*     |                                                      | */
-/*     | The maximum dimensions for all arrays are            | */
-/*     | set here to accommodate a problem size of            | */
-/*     | N .le. MAXN                                          | */
-/*     |                                                      | */
-/*     | NEV is the number of eigenvalues requested.          | */
-/*     |     See specifications for ARPACK usage below.       | */
-/*     |                                                      | */
-/*     | NCV is the largest number of basis vectors that will | */
-/*     |     be used in the Implicitly Restarted Arnoldi      | */
-/*     |     Process.  Work per major iteration is            | */
-/*     |     proportional to N*NCV*NCV.                       | */
-/*     |                                                      | */
-/*     | You must set:                                        | */
-/*     |                                                      | */
-/*     | MAXN:   Maximum dimension of the A allowed.          | */
-/*     | MAXNEV: Maximum NEV allowed.                         | */
-/*     | MAXNCV: Maximum NCV allowed.                         | */
-/*     %------------------------------------------------------% */
-
-/*     %-----------------------% */
-/*     | Executable Statements | */
-/*     %-----------------------% */
-
-/*     %-------------------------------------------------% */
-/*     | The following include statement and assignments | */
-/*     | initiate trace output from the internal         | */
-/*     | actions of ARPACK.  See debug.doc in the        | */
-/*     | DOCUMENTS directory for usage.  Initially, the  | */
-/*     | most useful information will be a breakdown of  | */
-/*     | time spent in the various stages of computation | */
-/*     | given by setting mcaupd = 1                     | */
-/*     %-------------------------------------------------% */
+     /* ----------------------------------------------- */
+     /* The following include statement and assignments */
+     /* initiate trace output from the internal         */
+     /* actions of ARPACK.  See debug.doc in the        */
+     /* DOCUMENTS directory for usage.  Initially, the  */
+     /* most useful information will be a breakdown of  */
+     /* time spent in the various stages of computation */
+     /* given by setting mcaupd = 1                     */
+     /* ----------------------------------------------- */
 
 /* \SCCS Information: @(#) */
 /* FILE: debug.h   SID: 2.3   DATE OF SID: 11/16/95   RELEASE: 2 */
 
-/*     %---------------------------------% */
-/*     | See debug.doc for documentation | */
-/*     %---------------------------------% */
+     /* ------------------------------- */
+     /* See debug.doc for documentation */
+     /* ------------------------------- */
     debug_1.ndigit = -3;
     debug_1.logfil = 6;
     debug_1.mcaitr = 0;
@@ -202,39 +201,39 @@ int znsimp()
     debug_1.mceigh = 0;
     debug_1.mceupd = 0;
 
-/*     %-------------------------------------------------% */
-/*     | The following sets dimensions for this problem. | */
-/*     %-------------------------------------------------% */
+     /* ----------------------------------------------- */
+     /* The following sets dimensions for this problem. */
+     /* ----------------------------------------------- */
 
     nx = 10;
     n = nx * nx;
 
-/*     %-----------------------------------------------% */
-/*     |                                               | */
-/*     | Specifications for ARPACK usage are set       | */
-/*     | below:                                        | */
-/*     |                                               | */
-/*     |    1) NEV = 4  asks for 4 eigenvalues to be   | */
-/*     |       computed.                               | */
-/*     |                                               | */
-/*     |    2) NCV = 20 sets the length of the Arnoldi | */
-/*     |       factorization                           | */
-/*     |                                               | */
-/*     |    3) This is a standard problem              | */
-/*     |         (indicated by bmat  = 'I')            | */
-/*     |                                               | */
-/*     |    4) Ask for the NEV eigenvalues of          | */
-/*     |       largest magnitude                       | */
-/*     |         (indicated by which = 'LM')           | */
-/*     |       See documentation in ZNAUPD  for the     | */
-/*     |       other options SM, LR, SR, LI, SI.       | */
-/*     |                                               | */
-/*     | Note: NEV and NCV must satisfy the following  | */
-/*     | conditions:                                   | */
-/*     |              NEV <= MAXNEV                    | */
-/*     |          NEV + 2 <= NCV <= MAXNCV             | */
-/*     |                                               | */
-/*     %-----------------------------------------------% */
+     /* --------------------------------------------- */
+     /*                                               */
+     /* Specifications for ARPACK usage are set       */
+     /* below:                                        */
+     /*                                               */
+     /*    1) NEV = 4  asks for 4 eigenvalues to be   */
+     /*       computed.                               */
+     /*                                               */
+     /*    2) NCV = 20 sets the length of the Arnoldi */
+     /*       factorization                           */
+     /*                                               */
+     /*    3) This is a standard problem              */
+     /*         (indicated by bmat  = 'I')            */
+     /*                                               */
+     /*    4) Ask for the NEV eigenvalues of          */
+     /*       largest magnitude                       */
+     /*         (indicated by which = 'LM')           */
+     /*       See documentation in ZNAUPD  for the     */
+     /*       other options SM, LR, SR, LI, SI.       */
+     /*                                               */
+     /* Note: NEV and NCV must satisfy the following  */
+     /* conditions:                                   */
+     /*              NEV <= MAXNEV                    */
+     /*          NEV + 2 <= NCV <= MAXNCV             */
+     /*                                               */
+     /* --------------------------------------------- */
 
     nev = 4;
     ncv = 20;
@@ -261,42 +260,42 @@ int znsimp()
 	goto L9000;
     }
 
-/*     %-----------------------------------------------------% */
-/*     |                                                     | */
-/*     | Specification of stopping rules and initial         | */
-/*     | conditions before calling ZNAUPD                     | */
-/*     |                                                     | */
-/*     | TOL  determines the stopping criterion.             | */
-/*     |                                                     | */
-/*     |      Expect                                         | */
-/*     |           abs(lambdaC - lambdaT) < TOL*abs(lambdaC) | */
-/*     |               computed   true                       | */
-/*     |                                                     | */
-/*     |      If TOL .le. 0,  then TOL <- macheps            | */
-/*     |           (machine precision) is used.              | */
-/*     |                                                     | */
-/*     | IDO  is the REVERSE COMMUNICATION parameter         | */
-/*     |      used to specify actions to be taken on return  | */
-/*     |      from ZNAUPD . (see usage below)                 | */
-/*     |                                                     | */
-/*     |      It MUST initially be set to 0 before the first | */
-/*     |      call to ZNAUPD .                                | */
-/*     |                                                     | */
-/*     | INFO on entry specifies starting vector information | */
-/*     |      and on return indicates error codes            | */
-/*     |                                                     | */
-/*     |      Initially, setting INFO=0 indicates that a     | */
-/*     |      random starting vector is requested to         | */
-/*     |      start the ARNOLDI iteration.  Setting INFO to  | */
-/*     |      a nonzero value on the initial call is used    | */
-/*     |      if you want to specify your own starting       | */
-/*     |      vector (This vector must be placed in RESID).  | */
-/*     |                                                     | */
-/*     | The work array WORKL is used in ZNAUPD  as           | */
-/*     | workspace.  Its dimension LWORKL is set as          | */
-/*     | illustrated below.                                  | */
-/*     |                                                     | */
-/*     %-----------------------------------------------------% */
+     /* --------------------------------------------------- */
+     /*                                                     */
+     /* Specification of stopping rules and initial         */
+     /* conditions before calling ZNAUPD                     */
+     /*                                                     */
+     /* TOL  determines the stopping criterion.             */
+     /*                                                     */
+     /*      Expect                                         */
+     /*           abs(lambdaC - lambdaT) < TOL*abs(lambdaC) */
+     /*               computed   true                       */
+     /*                                                     */
+     /*      If TOL .le. 0,  then TOL <- macheps            */
+     /*           (machine precision) is used.              */
+     /*                                                     */
+     /* IDO  is the REVERSE COMMUNICATION parameter         */
+     /*      used to specify actions to be taken on return  */
+     /*      from ZNAUPD . (see usage below)                 */
+     /*                                                     */
+     /*      It MUST initially be set to 0 before the first */
+     /*      call to ZNAUPD .                                */
+     /*                                                     */
+     /* INFO on entry specifies starting vector information */
+     /*      and on return indicates error codes            */
+     /*                                                     */
+     /*      Initially, setting INFO=0 indicates that a     */
+     /*      random starting vector is requested to         */
+     /*      start the ARNOLDI iteration.  Setting INFO to  */
+     /*      a nonzero value on the initial call is used    */
+     /*      if you want to specify your own starting       */
+     /*      vector (This vector must be placed in RESID).  */
+     /*                                                     */
+     /* The work array WORKL is used in ZNAUPD  as           */
+     /* workspace.  Its dimension LWORKL is set as          */
+     /* illustrated below.                                  */
+     /*                                                     */
+     /* --------------------------------------------------- */
 
 /* Computing 2nd power */
     i__1 = ncv;
@@ -305,17 +304,17 @@ int znsimp()
     ido = 0;
     info = 0;
 
-/*     %---------------------------------------------------% */
-/*     | Specification of Algorithm Mode:                  | */
-/*     |                                                   | */
-/*     | This program uses the exact shift strategy        | */
-/*     | (indicated by setting IPARAM(1) = 1).             | */
-/*     | IPARAM(3) specifies the maximum number of Arnoldi | */
-/*     | iterations allowed.  Mode 1 of ZNAUPD  is used     | */
-/*     | (IPARAM(7) = 1). All these options can be changed | */
-/*     | by the user. For details see the documentation in | */
-/*     | ZNAUPD .                                           | */
-/*     %---------------------------------------------------% */
+     /* ------------------------------------------------- */
+     /* Specification of Algorithm Mode:                  */
+     /*                                                   */
+     /* This program uses the exact shift strategy        */
+     /* (indicated by setting IPARAM(1) = 1).             */
+     /* IPARAM(3) specifies the maximum number of Arnoldi */
+     /* iterations allowed.  Mode 1 of ZNAUPD  is used     */
+     /* (IPARAM(7) = 1). All these options can be changed */
+     /* by the user. For details see the documentation in */
+     /* ZNAUPD .                                           */
+     /* ------------------------------------------------- */
 
     ishfts = 1;
     maxitr = 300;
@@ -327,58 +326,58 @@ int znsimp()
 
     iparam[6] = mode1;
 
-/*     %------------------------------------------------% */
-/*     | M A I N   L O O P (Reverse Communication Loop) | */
-/*     %------------------------------------------------% */
+     /* ---------------------------------------------- */
+     /* M A I N   L O O P (Reverse Communication Loop) */
+     /* ---------------------------------------------- */
 
 L10:
 
-/*        %---------------------------------------------% */
-/*        | Repeatedly call the routine ZNAUPD  and take | */
-/*        | actions indicated by parameter IDO until    | */
-/*        | either convergence is indicated or maxitr   | */
-/*        | has been exceeded.                          | */
-/*        %---------------------------------------------% */
+        /* ------------------------------------------- */
+        /* Repeatedly call the routine ZNAUPD  and take */
+        /* actions indicated by parameter IDO until    */
+        /* either convergence is indicated or maxitr   */
+        /* has been exceeded.                          */
+        /* ------------------------------------------- */
     znaupd_(&ido, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, 
 	    iparam, ipntr, workd, workl, &lworkl, rwork, &info, (ftnlen)1, (
 	    ftnlen)2);
 
     if (ido == -1 || ido == 1) {
 
-/*           %-------------------------------------------% */
-/*           | Perform matrix vector multiplication      | */
-/*           |                                           | */
-/*           |                y <--- A*x                 | */
-/*           |                                           | */
-/*           | The user should supply his/her own        | */
-/*           | matrix vector multiplication routine here | */
-/*           | that takes workd(ipntr(1)) as the input   | */
-/*           | vector x , and returns the resulting      | */
-/*           | matrix-vector product y = A*x in the      | */
-/*           | array workd(ipntr(2)).                    | */
-/*           %-------------------------------------------% */
+           /* ----------------------------------------- */
+           /* Perform matrix vector multiplication      */
+           /*                                           */
+           /*                y <--- A*x                 */
+           /*                                           */
+           /* The user should supply his/her own        */
+           /* matrix vector multiplication routine here */
+           /* that takes workd(ipntr(1)) as the input   */
+           /* vector x , and returns the resulting      */
+           /* matrix-vector product y = A*x in the      */
+           /* array workd(ipntr(2)).                    */
+           /* ----------------------------------------- */
 
     znsimp_av_(&nx, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
 
-/*           %-----------------------------------------% */
-/*           | L O O P   B A C K to call ZNAUPD  again. | */
-/*           %-----------------------------------------% */
+           /* --------------------------------------- */
+           /* L O O P   B A C K to call ZNAUPD  again. */
+           /* --------------------------------------- */
 
 	goto L10;
 
     }
 
-/*     %----------------------------------------% */
-/*     | Either we have convergence or there is | */
-/*     | an error.                              | */
-/*     %----------------------------------------% */
+     /* -------------------------------------- */
+     /* Either we have convergence or there is */
+     /* an error.                              */
+     /* -------------------------------------- */
 
     if (info < 0) {
 
-/*        %--------------------------% */
-/*        | Error message, check the | */
-/*        | documentation in ZNAUPD   | */
-/*        %--------------------------% */
+        /* ------------------------ */
+        /* Error message, check the */
+        /* documentation in ZNAUPD   */
+        /* ------------------------ */
 
 	s_wsle(&io___24);
 	do_lio(&c__9, &c__1, " ", (ftnlen)1);
@@ -397,21 +396,21 @@ L10:
 
     } else {
 
-/*        %-------------------------------------------% */
-/*        | No fatal errors occurred.                 | */
-/*        | Post-Process using ZNEUPD .                | */
-/*        |                                           | */
-/*        | Computed eigenvalues may be extracted.    | */
-/*        |                                           | */
-/*        | Eigenvectors may be also computed now if  | */
-/*        | desired.  (indicated by rvec = .true.)    | */
-/*        |                                           | */
-/*        | The routine ZNEUPD  now called to do this  | */
-/*        | post processing (Other modes may require  | */
-/*        | more complicated post processing than     | */
-/*        | mode1.)                                   | */
-/*        |                                           | */
-/*        %-------------------------------------------% */
+        /* ----------------------------------------- */
+        /* No fatal errors occurred.                 */
+        /* Post-Process using ZNEUPD .                */
+        /*                                           */
+        /* Computed eigenvalues may be extracted.    */
+        /*                                           */
+        /* Eigenvectors may be also computed now if  */
+        /* desired.  (indicated by rvec = .true.)    */
+        /*                                           */
+        /* The routine ZNEUPD  now called to do this  */
+        /* post processing (Other modes may require  */
+        /* more complicated post processing than     */
+        /* mode1.)                                   */
+        /*                                           */
+        /* ----------------------------------------- */
 
 	rvec = true;
 
@@ -420,23 +419,23 @@ L10:
 		workd, workl, &lworkl, rwork, &ierr, (ftnlen)1, (ftnlen)1, (
 		ftnlen)2);
 
-/*        %-----------------------------------------------% */
-/*        | Eigenvalues are returned in the one           | */
-/*        | dimensional array D and the corresponding     | */
-/*        | eigenvectors are returned in the first        | */
-/*        | NCONV (=IPARAM(5)) columns of the two         | */
-/*        | dimensional array V if requested.  Otherwise, | */
-/*        | an orthogonal basis for the invariant         | */
-/*        | subspace corresponding to the eigenvalues in  | */
-/*        | D is returned in V.                           | */
-/*        %-----------------------------------------------% */
+        /* --------------------------------------------- */
+        /* Eigenvalues are returned in the one           */
+        /* dimensional array D and the corresponding     */
+        /* eigenvectors are returned in the first        */
+        /* NCONV (=IPARAM(5)) columns of the two         */
+        /* dimensional array V if requested.  Otherwise, */
+        /* an orthogonal basis for the invariant         */
+        /* subspace corresponding to the eigenvalues in  */
+        /* D is returned in V.                           */
+        /* --------------------------------------------- */
 
 	if (ierr != 0) {
 
-/*            %------------------------------------% */
-/*            | Error condition:                   | */
-/*            | Check the documentation of ZNEUPD . | */
-/*            %------------------------------------% */
+            /* ---------------------------------- */
+            /* Error condition:                   */
+            /* Check the documentation of ZNEUPD . */
+            /* ---------------------------------- */
 
 	    s_wsle(&io___34);
 	    do_lio(&c__9, &c__1, " ", (ftnlen)1);
@@ -459,18 +458,18 @@ L10:
 	    i__1 = nconv;
 	    for (j = 1; j <= i__1; ++j) {
 
-/*                %---------------------------% */
-/*                | Compute the residual norm | */
-/*                |                           | */
-/*                |   ||  A*x - lambda*x ||   | */
-/*                |                           | */
-/*                | for the NCONV accurately  | */
-/*                | computed eigenvalues and  | */
-/*                | eigenvectors.  (iparam(5) | */
-/*                | indicates how many are    | */
-/*                | accurate to the requested | */
-/*                | tolerance)                | */
-/*                %---------------------------% */
+                /* ------------------------- */
+                /* Compute the residual norm */
+                /*                           */
+                /*   ||  A*x - lambda*x ||   */
+                /*                           */
+                /* for the NCONV accurately  */
+                /* computed eigenvalues and  */
+                /* eigenvectors.  (iparam(5) */
+                /* indicates how many are    */
+                /* accurate to the requested */
+                /* tolerance)                */
+                /* ------------------------- */
 
         znsimp_av_(&nx, &v[(j << 8) - 256], ax);
 		i__2 = j - 1;
@@ -484,17 +483,17 @@ L10:
 /* L20: */
 	    }
 
-/*            %-----------------------------% */
-/*            | Display computed residuals. | */
-/*            %-----------------------------% */
+            /* --------------------------- */
+            /* Display computed residuals. */
+            /* --------------------------- */
 
 	    dmout_(&c__6, &nconv, &c__3, rd, &c__30, &c_n6, "Ritz values (Re"
 		    "al, Imag) and relative residuals", (ftnlen)47);
 	}
 
-/*        %-------------------------------------------% */
-/*        | Print additional convergence information. | */
-/*        %-------------------------------------------% */
+        /* ----------------------------------------- */
+        /* Print additional convergence information. */
+        /* ----------------------------------------- */
 
 	if (info == 1) {
 	    s_wsle(&io___42);
@@ -578,9 +577,9 @@ L10:
 
     }
 
-/*     %---------------------------% */
-/*     | Done with program znsimp . | */
-/*     %---------------------------% */
+     /* ------------------------- */
+     /* Done with program znsimp . */
+     /* ------------------------- */
 
 L9000:
 
