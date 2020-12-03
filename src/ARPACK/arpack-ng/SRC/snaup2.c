@@ -60,7 +60,7 @@
  *          program.
  *
  *  RITZR,  Real  arrays of length NEV+NP.  (OUTPUT)
- *  RITZI   RITZR(1:NEV) (resp. RITZI(1:NEV)) contains the real (resp.
+ *  RITZI   RITZR(1:NEV) (resp. RITZI(1:NEV)) contains the float (resp.
  *          imaginary) part of the computed Ritz values of OP.
  *
  *  BOUNDS  Real  array of length NEV+NP.  (OUTPUT)
@@ -82,7 +82,7 @@
  *          application and convergence checking.
  *
  *          On exit, the last 3*(NEV+NP) locations of WORKL contain
- *          the Ritz values (real,imaginary) and associated Ritz
+ *          the Ritz values (float,imaginary) and associated Ritz
  *          estimates of the current Hessenberg matrix.  They are
  *          listed in the same order as returned from sneigh.
  *
@@ -127,7 +127,7 @@
  * \BeginLib
  *
  * \Local variables:
- *     xxxxxx  real
+ *     xxxxxx  float
  *
  * \References:
  *  1. D.C. Sorensen, "Implicit Application of Polynomial Filters in
@@ -145,7 +145,7 @@
  *     sneigh  ARPACK compute Ritz values and error bounds routine.
  *     sngets  ARPACK reorder Ritz values and error bounds routine.
  *     ssortc  ARPACK sorting routine.
- *     ivout   ARPACK utility routine that prints integers.
+ *     ivout   ARPACK utility routine that prints int32_ts.
  *     arscnd  ARPACK utility routine for timing.
  *     smout   ARPACK utility routine that prints matrices
  *     svout   ARPACK utility routine that prints vectors.
@@ -173,49 +173,45 @@
  * \EndLib
  */
 
-
-/* Subroutine */ int snaup2_(integer *ido, char *bmat, integer *n, char *
-	which, integer *nev, integer *np, real *tol, real *resid, integer *
-	mode, integer *iupd, integer *ishift, integer *mxiter, real *v, 
-	integer *ldv, real *h__, integer *ldh, real *ritzr, real *ritzi, real 
-	*bounds, real *q, integer *ldq, real *workl, integer *ipntr, real *
-	workd, integer *info)
+int snaup2_(int32_t *ido, char *bmat, int32_t *n, char *
+	which, int32_t *nev, int32_t *np, float *tol, float *resid, int32_t *
+	mode, int32_t *iupd, int32_t *ishift, int32_t *mxiter, float *v, 
+	int32_t *ldv, float *h__, int32_t *ldh, float *ritzr, float *ritzi, float 
+	*bounds, float *q, int32_t *ldq, float *workl, int32_t *ipntr, float *
+	workd, int32_t *info)
 {
     /* System generated locals */
-    integer h_dim1, h_offset, q_dim1, q_offset, v_dim1, v_offset, i__1, i__2;
-    real r__1, r__2;
-    doublereal d__1;
+    int32_t h_dim1, h_offset, q_dim1, q_offset, v_dim1, v_offset, i__1, i__2;
+    float r__1, r__2;
+    double d__1;
 
     /* Builtin functions */
-    double pow_dd(doublereal *, doublereal *);
-    integer s_cmp(char *, char *, ftnlen, ftnlen);
-    /* Subroutine */ int s_copy(char *, char *, ftnlen, ftnlen);
-    double sqrt(doublereal);
+    double pow_dd(double *, double *);
+    int32_t s_cmp(char *, char *, ftnlen, ftnlen);
+    int s_copy(char *, char *, ftnlen, ftnlen);
+    double sqrt(double);
 
     /* Local variables */
-    integer j;
-    static real t0, t1, t2, t3;
-    integer kp[4];
-    static integer np0, nev0;
-    static real eps23;
-    integer ierr;
-    static integer iter;
-    real temp;
-    static logical getv0;
-    static logical cnorm;
-    static integer nconv;
-    static logical initv;
-    static real rnorm;
-    static integer nevbef;
-    static logical update;
+    int32_t j;
+    static float t0, t1, t2, t3;
+    int32_t kp[4];
+    static int32_t np0, nev0;
+    static float eps23;
+    int32_t ierr;
+    static int32_t iter;
+    float temp;
+    static bool getv0;
+    static bool cnorm;
+    static int32_t nconv;
+    static bool initv;
+    static float rnorm;
+    static int32_t nevbef;
+    static bool update;
     char wprime[2];
-    static logical ushift;
-    static integer kplusp, msglvl;
-    integer nptemp;
-    static integer numcnv;
-
-
-
+    static bool ushift;
+    static int32_t kplusp, msglvl;
+    int32_t nptemp;
+    static int32_t numcnv;
 
 /*     %-----------------------% */
 /*     | Executable Statements | */
@@ -251,7 +247,7 @@
 /*        %-------------------------------------% */
 
 	eps23 = slamch_("Epsilon-Machine");
-	d__1 = (doublereal) eps23;
+	d__1 = (double) eps23;
 	eps23 = pow_dd(&d__1, &d_23);
 
 	nev0 = *nev;
@@ -275,10 +271,10 @@
 /*        | steps of the Arnoldi factorization.   | */
 /*        %---------------------------------------% */
 
-	getv0 = TRUE_;
-	update = FALSE_;
-	ushift = FALSE_;
-	cnorm = FALSE_;
+	getv0 = true;
+	update = false;
+	ushift = false;
+	cnorm = false;
 
 	if (*info != 0) {
 
@@ -286,10 +282,10 @@
 /*           | User provides the initial residual vector. | */
 /*           %--------------------------------------------% */
 
-	    initv = TRUE_;
+	    initv = true;
 	    *info = 0;
 	} else {
-	    initv = FALSE_;
+	    initv = false;
 	}
     }
 
@@ -317,7 +313,7 @@
 	    *info = -9;
 	    goto L1100;
 	}
-	getv0 = FALSE_;
+	getv0 = false;
 	*ido = 0;
     }
 
@@ -408,7 +404,7 @@ L1000:
 
     *ido = 0;
 L20:
-    update = TRUE_;
+    update = true;
 
     snaitr_(ido, bmat, n, nev, np, mode, &resid[1], &rnorm, &v[v_offset], ldv,
 	     &h__[h_offset], ldh, &ipntr[1], &workd[1], info);
@@ -428,7 +424,7 @@ L20:
 	*info = -9999;
 	goto L1200;
     }
-    update = FALSE_;
+    update = false;
 
     if (msglvl > 1) {
 	svout_(&debug_1.logfil, &c__1, &rnorm, &debug_1.ndigit, "_naup2: Cor"
@@ -670,7 +666,7 @@ L20:
 
 	if (msglvl > 1) {
 	    svout_(&debug_1.logfil, &kplusp, &ritzr[1], &debug_1.ndigit, 
-		    "_naup2: Sorted real part of the eigenvalues", (ftnlen)43)
+		    "_naup2: Sorted float part of the eigenvalues", (ftnlen)43)
 		    ;
 	    svout_(&debug_1.logfil, &kplusp, &ritzi[1], &debug_1.ndigit, 
 		    "_naup2: Sorted imaginary part of the eigenvalues", (
@@ -749,7 +745,7 @@ L20:
 	    ivout_(&debug_1.logfil, &c__2, kp, &debug_1.ndigit, "_naup2: NEV"
 		    " and NP are", (ftnlen)22);
 	    svout_(&debug_1.logfil, nev, &ritzr[*np + 1], &debug_1.ndigit, 
-		    "_naup2: \"wanted\" Ritz values -- real part", (ftnlen)41)
+		    "_naup2: \"wanted\" Ritz values -- float part", (ftnlen)41)
 		    ;
 	    svout_(&debug_1.logfil, nev, &ritzi[*np + 1], &debug_1.ndigit, 
 		    "_naup2: \"wanted\" Ritz values -- imag part", (ftnlen)41)
@@ -768,7 +764,7 @@ L20:
 /*           | 2*NP locations of WORKL.                              | */
 /*           %-------------------------------------------------------% */
 
-	ushift = TRUE_;
+	ushift = true;
 	*ido = 3;
 	goto L9000;
     }
@@ -781,7 +777,7 @@ L50:
 /*        | in WORKL(1:2*NP)                   | */
 /*        %------------------------------------% */
 
-    ushift = FALSE_;
+    ushift = false;
 
     if (*ishift == 0) {
 
@@ -825,7 +821,7 @@ L50:
 /*        | the first step of the next call to snaitr.  | */
 /*        %---------------------------------------------% */
 
-    cnorm = TRUE_;
+    cnorm = true;
     arscnd_(&t2);
     if (*(unsigned char *)bmat == 'G') {
 	++timing_1.nbx;
@@ -861,7 +857,7 @@ L100:
     } else if (*(unsigned char *)bmat == 'I') {
 	rnorm = snrm2_(n, &resid[1], &c__1);
     }
-    cnorm = FALSE_;
+    cnorm = false;
 
     if (msglvl > 2) {
 	svout_(&debug_1.logfil, &c__1, &rnorm, &debug_1.ndigit, "_naup2: B-n"

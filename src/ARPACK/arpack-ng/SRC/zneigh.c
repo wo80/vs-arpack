@@ -66,7 +66,7 @@
  *     xxxxxx  Complex*16
  *
  * \Routines called:
- *     ivout   ARPACK utility routine that prints integers.
+ *     ivout   ARPACK utility routine that prints int32_ts.
  *     arscnd  ARPACK utility routine for timing.
  *     zmout   ARPACK utility routine that prints matrices
  *     zvout   ARPACK utility routine that prints vectors.
@@ -78,7 +78,7 @@
  *     ztrevc  LAPACK routine to compute the eigenvectors of a matrix
  *             in upper triangular form
  *     zcopy   Level 1 BLAS that copies one vector to another.
- *     zdscal  Level 1 BLAS that scales a complex vector by a real number.
+ *     zdscal  Level 1 BLAS that scales a complex vector by a float number.
  *     dznrm2  Level 1 BLAS that computes the norm of a vector.
  *
  *
@@ -99,26 +99,22 @@
  * \EndLib
  */
 
-
-/* Subroutine */ int zneigh_(doublereal *rnorm, integer *n, doublecomplex *
-	h__, integer *ldh, doublecomplex *ritz, doublecomplex *bounds, 
-	doublecomplex *q, integer *ldq, doublecomplex *workl, doublereal *
-	rwork, integer *ierr)
+int zneigh_(double *rnorm, int32_t *n, zomplex *
+	h__, int32_t *ldh, zomplex *ritz, zomplex *bounds, 
+	zomplex *q, int32_t *ldq, zomplex *workl, double *
+	rwork, int32_t *ierr)
 {
     /* System generated locals */
-    integer h_dim1, h_offset, q_dim1, q_offset, i__1;
-    doublereal d__1;
+    int32_t h_dim1, h_offset, q_dim1, q_offset, i__1;
+    double d__1;
 
     /* Local variables */
-    integer j;
-    static real t0, t1;
-    doublecomplex vl[1];
-    doublereal temp;
-    logical select[1];
-    integer msglvl;
-
-
-
+    int32_t j;
+    static float t0, t1;
+    zomplex vl[1];
+    double temp;
+    bool select[1];
+    int32_t msglvl;
 
 /*     %-----------------------% */
 /*     | Executable Statements | */

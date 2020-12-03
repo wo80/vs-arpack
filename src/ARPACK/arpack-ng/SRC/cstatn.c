@@ -2,7 +2,6 @@
 
 #include "arpack.h"
 
-
 /* \SCCS Information: @(#) */
 /* FILE: statn.F   SID: 2.2   DATE OF SID: 4/20/96   RELEASE: 2 */
 
@@ -10,13 +9,12 @@
 /*     | Initialize statistic and timing information | */
 /*     | for complex nonsymmetric Arnoldi code.      | */
 /*     %---------------------------------------------% */
-/* Subroutine */ int cstatn_(void)
+int cstatn_(void)
 {
 
 /*     %--------------------------------% */
 /*     | See stat.doc for documentation | */
 /*     %--------------------------------% */
-
 
     timing_1.nopx = 0;
     timing_1.nbx = 0;

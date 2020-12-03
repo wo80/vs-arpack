@@ -214,8 +214,8 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\ARPACK\arpack-ng\arpack.h" />
     <ClInclude Include="..\..\..\ARPACK\arpack-ng\arpack_internal.h" />
-    <ClInclude Include="..\..\..\ARPACK\arpack-ng\common_blocks.h" />
-    <ClInclude Include="..\..\..\ARPACK\arpack-ng\constants.h" />
+    <ClInclude Include="..\..\..\ARPACK\arpack-ng\arpack_types.h" />
+    <ClInclude Include="..\..\..\ARPACK\arpack-ng\arpack_constants.h" />
     <ClInclude Include="..\..\..\ARPACK\arpack-ng\lapack.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

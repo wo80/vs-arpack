@@ -5,36 +5,36 @@
 int sssimp()
 {
     /* System generated locals */
-    integer i__1;
-    real r__1;
+    int32_t i__1;
+    float r__1;
 
     /* Builtin functions */
     int s_copy(char *, char *, ftnlen, ftnlen);
-    integer s_wsle(cilist *), do_lio(integer *, integer *, char *, ftnlen), 
+    int32_t s_wsle(cilist *), do_lio(int32_t *, int32_t *, char *, ftnlen), 
 	    e_wsle(void);
 
     /* Local variables */
-    real d__[50]	/* was [25][2] */;
-    integer j, n;
-    real v[6400]	/* was [256][25] */;
-    real ax[256];
-    integer nx, ido, ncv, nev;
-    real tol;
+    float d__[50]	/* was [25][2] */;
+    int32_t j, n;
+    float v[6400]	/* was [256][25] */;
+    float ax[256];
+    int32_t nx, ido, ncv, nev;
+    float tol;
     char bmat[1];
-    integer info;
-    logical rvec;
-    integer ierr, mode1;
-    real sigma;
+    int32_t info;
+    bool rvec;
+    int32_t ierr, mode1;
+    float sigma;
     char which[2];
-    real resid[256];
-    integer nconv;
-    real workd[768];
-    integer ipntr[11];
-    real workl[825];
-    integer iparam[11];
-    logical select[25];
-    integer ishfts, maxitr;
-    integer lworkl;
+    float resid[256];
+    int32_t nconv;
+    float workd[768];
+    int32_t ipntr[11];
+    float workl[825];
+    int32_t iparam[11];
+    bool select[25];
+    int32_t ishfts, maxitr;
+    int32_t lworkl;
 
     /* Fortran I/O blocks */
     static cilist io___7 = { 0, 6, 0, 0, 0 };
@@ -376,7 +376,7 @@ L10:
 	e_wsle();
 	s_wsle(&io___24);
 	do_lio(&c__9, &c__1, " Error with _saupd, info = ", (ftnlen)27);
-	do_lio(&c__3, &c__1, (char *)&info, (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&info, (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___25);
 	do_lio(&c__9, &c__1, " Check documentation in _saupd ", (ftnlen)31);
@@ -403,7 +403,7 @@ L10:
 /*        |                                           | */
 /*        %-------------------------------------------% */
 
-	rvec = TRUE_;
+	rvec = true;
 
 	sseupd_(&rvec, "All", select, d__, v, &c__256, &sigma, bmat, &n, 
 		which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, 
@@ -433,7 +433,7 @@ L10:
 	    e_wsle();
 	    s_wsle(&io___33);
 	    do_lio(&c__9, &c__1, " Error with _seupd, info = ", (ftnlen)27);
-	    do_lio(&c__3, &c__1, (char *)&ierr, (ftnlen)sizeof(integer));
+	    do_lio(&c__3, &c__1, (char *)&ierr, (ftnlen)sizeof(int32_t));
 	    e_wsle();
 	    s_wsle(&io___34);
 	    do_lio(&c__9, &c__1, " Check the documentation of _seupd. ", (
@@ -523,18 +523,18 @@ L10:
 	e_wsle();
 	s_wsle(&io___49);
 	do_lio(&c__9, &c__1, " Size of the matrix is ", (ftnlen)23);
-	do_lio(&c__3, &c__1, (char *)&n, (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&n, (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___50);
 	do_lio(&c__9, &c__1, " The number of Ritz values requested is ", (
 		ftnlen)40);
-	do_lio(&c__3, &c__1, (char *)&nev, (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&nev, (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___51);
 	do_lio(&c__9, &c__1, " The number of Arnoldi vectors generated", (
 		ftnlen)40);
 	do_lio(&c__9, &c__1, " (NCV) is ", (ftnlen)10);
-	do_lio(&c__3, &c__1, (char *)&ncv, (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&ncv, (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___52);
 	do_lio(&c__9, &c__1, " What portion of the spectrum: ", (ftnlen)31);
@@ -543,21 +543,21 @@ L10:
 	s_wsle(&io___53);
 	do_lio(&c__9, &c__1, " The number of converged Ritz values is ", (
 		ftnlen)40);
-	do_lio(&c__3, &c__1, (char *)&nconv, (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&nconv, (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___54);
 	do_lio(&c__9, &c__1, " The number of Implicit Arnoldi update", (
 		ftnlen)38);
 	do_lio(&c__9, &c__1, " iterations taken is ", (ftnlen)21);
-	do_lio(&c__3, &c__1, (char *)&iparam[2], (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&iparam[2], (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___55);
 	do_lio(&c__9, &c__1, " The number of OP*x is ", (ftnlen)23);
-	do_lio(&c__3, &c__1, (char *)&iparam[8], (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&iparam[8], (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___56);
 	do_lio(&c__9, &c__1, " The convergence criterion is ", (ftnlen)30);
-	do_lio(&c__4, &c__1, (char *)&tol, (ftnlen)sizeof(real));
+	do_lio(&c__4, &c__1, (char *)&tol, (ftnlen)sizeof(float));
 	e_wsle();
 	s_wsle(&io___57);
 	do_lio(&c__9, &c__1, " ", (ftnlen)1);
@@ -591,16 +591,16 @@ L9000:
 
 /*     The subroutine TV is called to computed y<---T*x. */
 
-int sssimp_av_(integer *nx, real *v, real *w)
+int sssimp_av_(int32_t *nx, float *v, float *w)
 {
     /* System generated locals */
-    integer i__1;
-    real r__1;
+    int32_t i__1;
+    float r__1;
 
     /* Local variables */
-    integer j;
-    real h2;
-    integer n2, lo;
+    int32_t j;
+    float h2;
+    int32_t n2, lo;
 
     /* Parameter adjustments */
     --w;
@@ -626,21 +626,21 @@ int sssimp_av_(integer *nx, real *v, real *w)
 /*     Scale the vector w by (1/h^2), where h is the mesh size */
 
     n2 = *nx * *nx;
-    h2 = 1.f / (real) ((*nx + 1) * (*nx + 1));
+    h2 = 1.f / (float) ((*nx + 1) * (*nx + 1));
     r__1 = 1.f / h2;
     sscal_(&n2, &r__1, &w[1], &c__1);
     return 0;
 } /* av_ */
 
 /* ------------------------------------------------------------------- */
-int sssimp_tv_(integer *nx, real *x, real *y)
+int sssimp_tv_(int32_t *nx, float *x, float *y)
 {
     /* System generated locals */
-    integer i__1;
+    int32_t i__1;
 
     /* Local variables */
-    integer j;
-    real dd, dl, du;
+    int32_t j;
+    float dd, dl, du;
 
 /*     Compute the matrix vector multiplication y<---T*x */
 /*     where T is a nx by nx tridiagonal matrix with DD on the */

@@ -35,15 +35,14 @@
 
 /* -------------------------------------------------------------------- */
 
-/* Subroutine */ int icopy_(integer *n, integer *lx, integer *incx, integer *
-	ly, integer *incy)
+int icopy_(int32_t *n, int32_t *lx, int32_t *incx, int32_t *
+	ly, int32_t *incy)
 {
     /* System generated locals */
-    integer i__1;
+    int32_t i__1;
 
     /* Local variables */
-    integer i__, ix, iy;
-
+    int32_t i__, ix, iy;
 
 /*     ---------------------------- */
 /*     Specifications for arguments */

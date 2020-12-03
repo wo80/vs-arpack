@@ -128,11 +128,11 @@
  * \BeginLib
  *
  * \Local variables:
- *     xxxxxx  real
+ *     xxxxxx  float
  *
  * \Routines called:
  *     dgetv0  ARPACK routine to generate the initial vector.
- *     ivout   ARPACK utility routine that prints integers.
+ *     ivout   ARPACK utility routine that prints int32_ts.
  *     dmout   ARPACK utility routine that prints matrices.
  *     dvout   ARPACK utility routine that prints vectors.
  *     dlamch  LAPACK routine that determines machine constants.
@@ -202,41 +202,37 @@
  * \EndLib
  */
 
-
-/* Subroutine */ int dsaitr_(integer *ido, char *bmat, integer *n, integer *k,
-	 integer *np, integer *mode, doublereal *resid, doublereal *rnorm, 
-	doublereal *v, integer *ldv, doublereal *h__, integer *ldh, integer *
-	ipntr, doublereal *workd, integer *info)
+int dsaitr_(int32_t *ido, char *bmat, int32_t *n, int32_t *k,
+	 int32_t *np, int32_t *mode, double *resid, double *rnorm, 
+	double *v, int32_t *ldv, double *h__, int32_t *ldh, int32_t *
+	ipntr, double *workd, int32_t *info)
 {
     /* Initialized data */
 
-    static logical first = TRUE_;
+    static bool first = true;
 
     /* System generated locals */
-    integer h_dim1, h_offset, v_dim1, v_offset, i__1;
+    int32_t h_dim1, h_offset, v_dim1, v_offset, i__1;
 
     /* Builtin functions */
-    double sqrt(doublereal);
+    double sqrt(double);
 
     /* Local variables */
-    integer i__;
-    static integer j;
-    static real t0, t1, t2, t3, t4, t5;
-    integer jj;
-    static integer ipj, irj, ivj;
-    static integer ierr, iter, itry;
-    doublereal temp1;
-    static logical orth1, orth2, step3, step4;
-    integer infol;
-    doublereal xtemp[2];
-    static doublereal wnorm;
-    static doublereal rnorm1;
-    static doublereal safmin;
-    static logical rstart;
-    static integer msglvl;
-
-
-
+    int32_t i__;
+    static int32_t j;
+    static float t0, t1, t2, t3, t4, t5;
+    int32_t jj;
+    static int32_t ipj, irj, ivj;
+    static int32_t ierr, iter, itry;
+    double temp1;
+    static bool orth1, orth2, step3, step4;
+    int32_t infol;
+    double xtemp[2];
+    static double wnorm;
+    static double rnorm1;
+    static double safmin;
+    static bool rstart;
+    static int32_t msglvl;
 
 /*     %-----------------% */
 /*     | Data statements | */
@@ -260,7 +256,7 @@
 /*     %-----------------------% */
 
     if (first) {
-	first = FALSE_;
+	first = false;
 
 /*        %--------------------------------% */
 /*        | safmin = safe minimum is such  | */
@@ -285,11 +281,11 @@
 /*        %------------------------------% */
 
 	*info = 0;
-	step3 = FALSE_;
-	step4 = FALSE_;
-	rstart = FALSE_;
-	orth1 = FALSE_;
-	orth2 = FALSE_;
+	step3 = false;
+	step4 = false;
+	rstart = false;
+	orth1 = false;
+	orth2 = false;
 
 /*        %--------------------------------% */
 /*        | Pointer to the current step of | */
@@ -386,7 +382,7 @@ L1000:
     ++timing_1.nrstrt;
     itry = 1;
 L20:
-    rstart = TRUE_;
+    rstart = true;
     *ido = 0;
 L30:
 
@@ -451,7 +447,7 @@ L40:
 /*        | Note that this is not quite yet r_{j}. See STEP 4    | */
 /*        %------------------------------------------------------% */
 
-    step3 = TRUE_;
+    step3 = true;
     ++timing_1.nopx;
     arscnd_(&t2);
     dcopy_(n, &v[j * v_dim1 + 1], &c__1, &workd[ivj], &c__1);
@@ -475,7 +471,7 @@ L50:
     arscnd_(&t3);
     timing_1.tmvopx += t3 - t2;
 
-    step3 = FALSE_;
+    step3 = false;
 
 /*        %------------------------------------------% */
 /*        | Put another copy of OP*v_{j} into RESID. | */
@@ -498,7 +494,7 @@ L50:
     arscnd_(&t2);
     if (*(unsigned char *)bmat == 'G') {
 	++timing_1.nbx;
-	step4 = TRUE_;
+	step4 = true;
 	ipntr[1] = irj;
 	ipntr[2] = ipj;
 	*ido = 2;
@@ -523,7 +519,7 @@ L60:
 	timing_1.tmvbx += t3 - t2;
     }
 
-    step4 = FALSE_;
+    step4 = false;
 
 /*        %-------------------------------------% */
 /*        | The following is needed for STEP 5. | */
@@ -554,7 +550,6 @@ L65:
 /*        | w_{j} <-  V_{j}^T * B * OP * v_{j}      | */
 /*        | r_{j} <-  OP*v_{j} - V_{j} * w_{j}      | */
 /*        %-----------------------------------------% */
-
 
 /*        %------------------------------------------% */
 /*        | Compute the j Fourier coefficients w_{j} | */
@@ -589,7 +584,7 @@ L65:
     }
     arscnd_(&t4);
 
-    orth1 = TRUE_;
+    orth1 = true;
     iter = 0;
 
     arscnd_(&t2);
@@ -620,7 +615,7 @@ L70:
 	timing_1.tmvbx += t3 - t2;
     }
 
-    orth1 = FALSE_;
+    orth1 = false;
 
 /*        %------------------------------% */
 /*        | Compute the B-norm of r_{j}. | */
@@ -693,7 +688,7 @@ L80:
     }
     h__[j + (h_dim1 << 1)] += workd[irj + j - 1];
 
-    orth2 = TRUE_;
+    orth2 = true;
     arscnd_(&t2);
     if (*(unsigned char *)bmat == 'G') {
 	++timing_1.nbx;
@@ -791,8 +786,8 @@ L90:
 
 L100:
 
-    rstart = FALSE_;
-    orth2 = FALSE_;
+    rstart = false;
+    orth2 = false;
 
     arscnd_(&t5);
     timing_1.titref += t5 - t4;

@@ -55,7 +55,7 @@
  * \BeginLib
  *
  * \Local variables:
- *     xxxxxx  real
+ *     xxxxxx  float
  *
  * \Routines called:
  *     sstqrb  ARPACK routine that computes the eigenvalues and the
@@ -85,21 +85,17 @@
  * \EndLib
  */
 
-
-/* Subroutine */ int sseigt_(real *rnorm, integer *n, real *h__, integer *ldh,
-	 real *eig, real *bounds, real *workl, integer *ierr)
+int sseigt_(float *rnorm, int32_t *n, float *h__, int32_t *ldh,
+	 float *eig, float *bounds, float *workl, int32_t *ierr)
 {
     /* System generated locals */
-    integer h_dim1, h_offset, i__1;
-    real r__1;
+    int32_t h_dim1, h_offset, i__1;
+    float r__1;
 
     /* Local variables */
-    integer k;
-    static real t0, t1;
-    integer msglvl;
-
-
-
+    int32_t k;
+    static float t0, t1;
+    int32_t msglvl;
 
 /*     %-----------------------% */
 /*     | Executable Statements | */

@@ -2,21 +2,18 @@
 
 #include "arpack.h"
 
-
 /* ----------------------------------------------------------------------- */
 
 /*     Only work with increment equal to 1 right now. */
 
-/* Subroutine */ int iset_(integer *n, integer *value, integer *array, 
-	integer *inc)
+int iset_(int32_t *n, int32_t *value, int32_t *array, 
+	int32_t *inc)
 {
     /* System generated locals */
-    integer i__1;
+    int32_t i__1;
 
     /* Local variables */
-    integer i__;
-
-
+    int32_t i__;
 
     /* Parameter adjustments */
     --array;

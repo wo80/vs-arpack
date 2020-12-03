@@ -94,7 +94,7 @@
  *     pp 357-385.
  *
  * \Routines called:
- *     ivout   ARPACK utility routine that prints integers.
+ *     ivout   ARPACK utility routine that prints int32_ts.
  *     arscnd  ARPACK utility routine for timing.
  *     zmout   ARPACK utility routine that prints matrices
  *     zvout   ARPACK utility routine that prints vectors.
@@ -128,49 +128,45 @@
  *     comes from. Deflation as in LAPACK routine zlahqr (QR algorithm
  *     for upper Hessenberg matrices ) is used.
  *     Upon output, the subdiagonals of H are enforced to be non-negative
- *     real numbers.
+ *     float numbers.
  *
  * \EndLib
  */
 
-
-/* Subroutine */ int znapps_(integer *n, integer *kev, integer *np, 
-	doublecomplex *shift, doublecomplex *v, integer *ldv, doublecomplex *
-	h__, integer *ldh, doublecomplex *resid, doublecomplex *q, integer *
-	ldq, doublecomplex *workl, doublecomplex *workd)
+int znapps_(int32_t *n, int32_t *kev, int32_t *np, 
+	zomplex *shift, zomplex *v, int32_t *ldv, zomplex *
+	h__, int32_t *ldh, zomplex *resid, zomplex *q, int32_t *
+	ldq, zomplex *workl, zomplex *workd)
 {
     /* Initialized data */
 
-    static logical first = TRUE_;
+    static bool first = true;
 
     /* System generated locals */
-    integer h_dim1, h_offset, v_dim1, v_offset, q_dim1, q_offset, i__1, i__2, 
+    int32_t h_dim1, h_offset, v_dim1, v_offset, q_dim1, q_offset, i__1, i__2, 
 	    i__3, i__4, i__5, i__6;
-    doublereal d__1, d__2, d__3, d__4;
-    doublecomplex z__1, z__2, z__3, z__4, z__5;
+    double d__1, d__2, d__3, d__4;
+    zomplex z__1, z__2, z__3, z__4, z__5;
 
     /* Builtin functions */
-    double d_imag(doublecomplex *);
-    void d_cnjg(doublecomplex *, doublecomplex *);
+    double d_imag(zomplex *);
+    void d_cnjg(zomplex *, zomplex *);
 
     /* Local variables */
-    doublereal c__;
-    doublecomplex f, g;
-    integer i__, j;
-    doublecomplex r__, s, t;
-    static real t0, t1;
-    doublecomplex h11, h21;
-    integer jj;
-    static doublereal ulp;
-    doublereal tst1;
-    integer iend;
-    static doublereal unfl, ovfl;
-    doublecomplex sigma;
-    integer istart, kplusp, msglvl;
-    static doublereal smlnum;
-
-
-
+    double c__;
+    zomplex f, g;
+    int32_t i__, j;
+    zomplex r__, s, t;
+    static float t0, t1;
+    zomplex h11, h21;
+    int32_t jj;
+    static double ulp;
+    double tst1;
+    int32_t iend;
+    static double unfl, ovfl;
+    zomplex sigma;
+    int32_t istart, kplusp, msglvl;
+    static double smlnum;
 
 /*     %----------------% */
 /*     | Data statements | */
@@ -212,7 +208,7 @@
 	dlabad_(&unfl, &ovfl);
 	ulp = dlamch_("precision");
 	smlnum = unfl * (*n / ulp);
-	first = FALSE_;
+	first = false;
     }
 
 /*     %-------------------------------% */

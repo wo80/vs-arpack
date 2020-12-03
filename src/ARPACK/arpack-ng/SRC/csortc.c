@@ -19,8 +19,8 @@
  *  WHICH   Character*2.  (Input)
  *          'LM' -> sort X into increasing order of magnitude.
  *          'SM' -> sort X into decreasing order of magnitude.
- *          'LR' -> sort X with real(X) in increasing algebraic order
- *          'SR' -> sort X with real(X) in decreasing algebraic order
+ *          'LR' -> sort X with float(X) in increasing algebraic order
+ *          'SR' -> sort X with float(X) in decreasing algebraic order
  *          'LI' -> sort X with imag(X) in increasing algebraic order
  *          'SI' -> sort X with imag(X) in decreasing algebraic order
  *
@@ -59,28 +59,25 @@
  * \EndLib
  */
 
-
-/* Subroutine */ int csortc_(char *which, logical *apply, integer *n, complex 
+int csortc_(char *which, bool *apply, int32_t *n, complex 
 	*x, complex *y)
 {
     /* System generated locals */
-    integer i__1, i__2, i__3;
-    real r__1, r__2;
+    int32_t i__1, i__2, i__3;
+    float r__1, r__2;
 
     /* Builtin functions */
-    integer s_cmp(char *, char *, ftnlen, ftnlen);
+    int32_t s_cmp(char *, char *, ftnlen, ftnlen);
     double r_imag(complex *);
 
     /* Local variables */
-    integer i__, j, igap;
+    int32_t i__, j, igap;
     complex temp;
-    real temp1, temp2;
-
+    float temp1, temp2;
 
 /*     %------------------% */
 /*     | Scalar Arguments | */
 /*     %------------------% */
-
 
 /*     %--------------------% */
 /*     | Intrinsic Functions | */

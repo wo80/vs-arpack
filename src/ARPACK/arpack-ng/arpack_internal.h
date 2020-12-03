@@ -1,93 +1,91 @@
 #pragma once
 
-#include "f2c.h"
-
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-	int arscnd_(real *);
+	int arscnd_(float *);
 
-	int ivout_(integer *, integer *, integer *, integer *, char *, ftnlen);
+	int ivout_(int32_t *, int32_t *, int32_t *, int32_t *, char *, ftnlen);
 
 	/* complex */
 	
-	int cgetv0_(integer *, char *, integer *, logical *, integer *, integer *, complex *, integer *, complex *, real *, integer *, complex *, integer *);
-	int cnaitr_(integer *, char *, integer *, integer *, integer *, integer *, complex *, real *, complex *, integer *, complex *, integer *, integer *, complex *, integer *);
-	int cnapps_(integer *, integer *, integer *, complex *, complex *, integer *, complex *, integer *, complex *, complex *, integer *, complex *, complex *);
-	int cnaup2_(integer *, char *, integer *, char *, integer *, integer *, real *, complex *, integer *, integer *, integer *, integer *, complex *, integer *, complex *, integer *, complex *, complex *, complex *, integer *, complex *, integer *, complex *, real *, integer *);
-	int cneigh_(real *, integer *, complex *, integer *, complex *, complex *, complex *, integer *, complex *, real *, integer *);
-	int cngets_(integer *, char *, integer *, integer *, complex *, complex *);
-	int csortc_(char *, logical *, integer *, complex *, complex *);
+	int cgetv0_(int32_t *, char *, int32_t *, bool *, int32_t *, int32_t *, complex *, int32_t *, complex *, float *, int32_t *, complex *, int32_t *);
+	int cnaitr_(int32_t *, char *, int32_t *, int32_t *, int32_t *, int32_t *, complex *, float *, complex *, int32_t *, complex *, int32_t *, int32_t *, complex *, int32_t *);
+	int cnapps_(int32_t *, int32_t *, int32_t *, complex *, complex *, int32_t *, complex *, int32_t *, complex *, complex *, int32_t *, complex *, complex *);
+	int cnaup2_(int32_t *, char *, int32_t *, char *, int32_t *, int32_t *, float *, complex *, int32_t *, int32_t *, int32_t *, int32_t *, complex *, int32_t *, complex *, int32_t *, complex *, complex *, complex *, int32_t *, complex *, int32_t *, complex *, float *, int32_t *);
+	int cneigh_(float *, int32_t *, complex *, int32_t *, complex *, complex *, complex *, int32_t *, complex *, float *, int32_t *);
+	int cngets_(int32_t *, char *, int32_t *, int32_t *, complex *, complex *);
+	int csortc_(char *, bool *, int32_t *, complex *, complex *);
 	int cstatn_(void);
 
-	int cmout_(integer *, integer *, integer *, complex *, integer *, integer *, char *, ftnlen);
-	int cvout_(integer *, integer *, complex *, integer *, char *, ftnlen);
+	int cmout_(int32_t *, int32_t *, int32_t *, complex *, int32_t *, int32_t *, char *, ftnlen);
+	int cvout_(int32_t *, int32_t *, complex *, int32_t *, char *, ftnlen);
 
 	/* double */
 
-	int dgetv0_(integer *, char *, integer *, logical *, integer *, integer *, doublereal *, integer *, doublereal *, doublereal *, integer *, doublereal *, integer *);
-	int dnaitr_(integer *, char *, integer *, integer *, integer *, integer *, doublereal *, doublereal *, doublereal *, integer *, doublereal *, integer *, integer *, doublereal *, integer *);
-	int dnapps_(integer *, integer *, integer *, doublereal *, doublereal *, doublereal *, integer *, doublereal *, integer *, doublereal *, doublereal *, integer *, doublereal *, doublereal *);
-	int dnaup2_(integer *, char *, integer *, char *, integer *, integer *, doublereal *, doublereal *, integer *, integer *, integer *, integer *, doublereal *, integer *, doublereal *, integer *, doublereal *, doublereal *, doublereal *, doublereal *, integer *, doublereal *, integer *, doublereal *, integer *);
-	int dnconv_(integer *, doublereal *, doublereal *, doublereal *, doublereal *, integer *);
-	int dneigh_(doublereal *, integer *, doublereal *, integer *, doublereal *, doublereal *, doublereal *, doublereal *, integer *, doublereal *, integer *);
-	int dngets_(integer *, char *, integer *, integer *, doublereal *, doublereal *, doublereal *, doublereal *, doublereal *);
-	int dsaitr_(integer *, char *, integer *, integer *, integer *, integer *, doublereal *, doublereal *, doublereal *, integer *, doublereal *, integer *, integer *, doublereal *, integer *);
-	int dsapps_(integer *, integer *, integer *, doublereal *, doublereal *, integer *, doublereal *, integer *, doublereal *, doublereal *, integer *, doublereal *);
-	int dsaup2_(integer *, char *, integer *, char *, integer *, integer *, doublereal *, doublereal *, integer *, integer *, integer *, integer *, doublereal *, integer *, doublereal *, integer *, doublereal *, doublereal *, doublereal *, integer *, doublereal *, integer *, doublereal *, integer *);
-	int dsconv_(integer *, doublereal *, doublereal *, doublereal *, integer *);
-	int dseigt_(doublereal *, integer *, doublereal *, integer *, doublereal *, doublereal *, doublereal *, integer *);
-	int dsesrt_(char *, logical *, integer *, doublereal *, integer *, doublereal *, integer *);
-	int dsgets_(integer *, char *, integer *, integer *, doublereal *, doublereal *, doublereal *);
-	int dsortc_(char *, logical *, integer *, doublereal *, doublereal *, doublereal *);
-	int dsortr_(char *, logical *, integer *, doublereal *, doublereal *);
+	int dgetv0_(int32_t *, char *, int32_t *, bool *, int32_t *, int32_t *, double *, int32_t *, double *, double *, int32_t *, double *, int32_t *);
+	int dnaitr_(int32_t *, char *, int32_t *, int32_t *, int32_t *, int32_t *, double *, double *, double *, int32_t *, double *, int32_t *, int32_t *, double *, int32_t *);
+	int dnapps_(int32_t *, int32_t *, int32_t *, double *, double *, double *, int32_t *, double *, int32_t *, double *, double *, int32_t *, double *, double *);
+	int dnaup2_(int32_t *, char *, int32_t *, char *, int32_t *, int32_t *, double *, double *, int32_t *, int32_t *, int32_t *, int32_t *, double *, int32_t *, double *, int32_t *, double *, double *, double *, double *, int32_t *, double *, int32_t *, double *, int32_t *);
+	int dnconv_(int32_t *, double *, double *, double *, double *, int32_t *);
+	int dneigh_(double *, int32_t *, double *, int32_t *, double *, double *, double *, double *, int32_t *, double *, int32_t *);
+	int dngets_(int32_t *, char *, int32_t *, int32_t *, double *, double *, double *, double *, double *);
+	int dsaitr_(int32_t *, char *, int32_t *, int32_t *, int32_t *, int32_t *, double *, double *, double *, int32_t *, double *, int32_t *, int32_t *, double *, int32_t *);
+	int dsapps_(int32_t *, int32_t *, int32_t *, double *, double *, int32_t *, double *, int32_t *, double *, double *, int32_t *, double *);
+	int dsaup2_(int32_t *, char *, int32_t *, char *, int32_t *, int32_t *, double *, double *, int32_t *, int32_t *, int32_t *, int32_t *, double *, int32_t *, double *, int32_t *, double *, double *, double *, int32_t *, double *, int32_t *, double *, int32_t *);
+	int dsconv_(int32_t *, double *, double *, double *, int32_t *);
+	int dseigt_(double *, int32_t *, double *, int32_t *, double *, double *, double *, int32_t *);
+	int dsesrt_(char *, bool *, int32_t *, double *, int32_t *, double *, int32_t *);
+	int dsgets_(int32_t *, char *, int32_t *, int32_t *, double *, double *, double *);
+	int dsortc_(char *, bool *, int32_t *, double *, double *, double *);
+	int dsortr_(char *, bool *, int32_t *, double *, double *);
 	int dstatn_(void);
 	int dstats_(void);
-	int dstqrb_(integer *, doublereal *, doublereal *, doublereal *, doublereal *, integer *);
+	int dstqrb_(int32_t *, double *, double *, double *, double *, int32_t *);
 
-	int dmout_(integer *, integer *, integer *, doublereal *, integer *, integer *, char *, ftnlen);
-	int dvout_(integer *, integer *, doublereal *, integer *, char *, ftnlen);
+	int dmout_(int32_t *, int32_t *, int32_t *, double *, int32_t *, int32_t *, char *, ftnlen);
+	int dvout_(int32_t *, int32_t *, double *, int32_t *, char *, ftnlen);
 
 	/* single */
 
-	int sgetv0_(integer *, char *, integer *, logical *, integer *, integer *, real *, integer *, real *, real *, integer *, real *, integer *);
-	int snaitr_(integer *, char *, integer *, integer *, integer *, integer *, real *, real *, real *, integer *, real *, integer *, integer *, real *, integer *);
-	int snapps_(integer *, integer *, integer *, real *, real *, real *, integer *, real *, integer *, real *, real *, integer *, real *, real *);
-	int snaup2_(integer *, char *, integer *, char *, integer *, integer *, real *, real *, integer *, integer *, integer *, integer *, real *, integer *, real *, integer *, real *, real *, real *, real *, integer *, real *, integer *, real *, integer *);
-	int snconv_(integer *, real *, real *, real *, real *, integer *);
-	int sneigh_(real *, integer *, real *, integer *, real *, real *, real *, real *, integer *, real *, integer *);
-	int sngets_(integer *, char *, integer *, integer *, real *, real *, real *, real *, real *);
-	int ssaitr_(integer *, char *, integer *, integer *, integer *, integer *, real *, real *, real *, integer *, real *, integer *, integer *, real *, integer *);
-	int ssapps_(integer *, integer *, integer *, real *, real *, integer *, real *, integer *, real *, real *, integer *, real *);
-	int ssaup2_(integer *, char *, integer *, char *, integer *, integer *, real *, real *, integer *, integer *, integer *, integer *, real *, integer *, real *, integer *, real *, real *, real *, integer *, real *, integer *, real *, integer *);
-	int ssconv_(integer *, real *, real *, real *, integer *);
-	int sseigt_(real *, integer *, real *, integer *, real *, real *, real *, integer *);
-	int ssesrt_(char *, logical *, integer *, real *, integer *, real *, integer *);
-	int ssgets_(integer *, char *, integer *, integer *, real *, real *, real *);
-	int ssortc_(char *, logical *, integer *, real *, real *, real *);
-	int ssortr_(char *, logical *, integer *, real *, real *);
+	int sgetv0_(int32_t *, char *, int32_t *, bool *, int32_t *, int32_t *, float *, int32_t *, float *, float *, int32_t *, float *, int32_t *);
+	int snaitr_(int32_t *, char *, int32_t *, int32_t *, int32_t *, int32_t *, float *, float *, float *, int32_t *, float *, int32_t *, int32_t *, float *, int32_t *);
+	int snapps_(int32_t *, int32_t *, int32_t *, float *, float *, float *, int32_t *, float *, int32_t *, float *, float *, int32_t *, float *, float *);
+	int snaup2_(int32_t *, char *, int32_t *, char *, int32_t *, int32_t *, float *, float *, int32_t *, int32_t *, int32_t *, int32_t *, float *, int32_t *, float *, int32_t *, float *, float *, float *, float *, int32_t *, float *, int32_t *, float *, int32_t *);
+	int snconv_(int32_t *, float *, float *, float *, float *, int32_t *);
+	int sneigh_(float *, int32_t *, float *, int32_t *, float *, float *, float *, float *, int32_t *, float *, int32_t *);
+	int sngets_(int32_t *, char *, int32_t *, int32_t *, float *, float *, float *, float *, float *);
+	int ssaitr_(int32_t *, char *, int32_t *, int32_t *, int32_t *, int32_t *, float *, float *, float *, int32_t *, float *, int32_t *, int32_t *, float *, int32_t *);
+	int ssapps_(int32_t *, int32_t *, int32_t *, float *, float *, int32_t *, float *, int32_t *, float *, float *, int32_t *, float *);
+	int ssaup2_(int32_t *, char *, int32_t *, char *, int32_t *, int32_t *, float *, float *, int32_t *, int32_t *, int32_t *, int32_t *, float *, int32_t *, float *, int32_t *, float *, float *, float *, int32_t *, float *, int32_t *, float *, int32_t *);
+	int ssconv_(int32_t *, float *, float *, float *, int32_t *);
+	int sseigt_(float *, int32_t *, float *, int32_t *, float *, float *, float *, int32_t *);
+	int ssesrt_(char *, bool *, int32_t *, float *, int32_t *, float *, int32_t *);
+	int ssgets_(int32_t *, char *, int32_t *, int32_t *, float *, float *, float *);
+	int ssortc_(char *, bool *, int32_t *, float *, float *, float *);
+	int ssortr_(char *, bool *, int32_t *, float *, float *);
 	int sstatn_(void);
 	int sstats_(void);
-	int sstqrb_(integer *, real *, real *, real *, real *, integer *);
+	int sstqrb_(int32_t *, float *, float *, float *, float *, int32_t *);
 
-	int smout_(integer *, integer *, integer *, real *, integer *, integer *, char *, ftnlen);
-	int svout_(integer *, integer *, real *, integer *, char *, ftnlen);
+	int smout_(int32_t *, int32_t *, int32_t *, float *, int32_t *, int32_t *, char *, ftnlen);
+	int svout_(int32_t *, int32_t *, float *, int32_t *, char *, ftnlen);
 
-	/* doublecomplex */
+	/* zomplex */
 
-	int zgetv0_(integer *, char *, integer *, logical *, integer *, integer *, doublecomplex *, integer *, doublecomplex *, doublereal *, integer *, doublecomplex *, integer *);
-	int znaitr_(integer *, char *, integer *, integer *, integer *, integer *, doublecomplex *, doublereal *, doublecomplex *, integer *, doublecomplex *, integer *, integer *, doublecomplex *, integer *);
-	int znapps_(integer *, integer *, integer *, doublecomplex *, doublecomplex *, integer *, doublecomplex *, integer *, doublecomplex *, doublecomplex *, integer *, doublecomplex *, doublecomplex *);
-	int znaup2_(integer *, char *, integer *, char *, integer *, integer *, doublereal *, doublecomplex *, integer *, integer *, integer *, integer *, doublecomplex *, integer *, doublecomplex *, integer *, doublecomplex *, doublecomplex *, doublecomplex *, integer *, doublecomplex *, integer *, doublecomplex *, doublereal *, integer *);
-	int zneigh_(doublereal *, integer *, doublecomplex *, integer *, doublecomplex *, doublecomplex *, doublecomplex *, integer *, doublecomplex *, doublereal *, integer *);
-	int zngets_(integer *, char *, integer *, integer *, doublecomplex *, doublecomplex *);
-	int zsortc_(char *, logical *, integer *, doublecomplex *, doublecomplex *);
+	int zgetv0_(int32_t *, char *, int32_t *, bool *, int32_t *, int32_t *, zomplex *, int32_t *, zomplex *, double *, int32_t *, zomplex *, int32_t *);
+	int znaitr_(int32_t *, char *, int32_t *, int32_t *, int32_t *, int32_t *, zomplex *, double *, zomplex *, int32_t *, zomplex *, int32_t *, int32_t *, zomplex *, int32_t *);
+	int znapps_(int32_t *, int32_t *, int32_t *, zomplex *, zomplex *, int32_t *, zomplex *, int32_t *, zomplex *, zomplex *, int32_t *, zomplex *, zomplex *);
+	int znaup2_(int32_t *, char *, int32_t *, char *, int32_t *, int32_t *, double *, zomplex *, int32_t *, int32_t *, int32_t *, int32_t *, zomplex *, int32_t *, zomplex *, int32_t *, zomplex *, zomplex *, zomplex *, int32_t *, zomplex *, int32_t *, zomplex *, double *, int32_t *);
+	int zneigh_(double *, int32_t *, zomplex *, int32_t *, zomplex *, zomplex *, zomplex *, int32_t *, zomplex *, double *, int32_t *);
+	int zngets_(int32_t *, char *, int32_t *, int32_t *, zomplex *, zomplex *);
+	int zsortc_(char *, bool *, int32_t *, zomplex *, zomplex *);
 	int zstatn_(void);
 
-	int zmout_(integer *, integer *, integer *, doublecomplex *, integer *, integer *, char *, ftnlen);
-	int zvout_(integer *, integer *, doublecomplex *, integer *, char *, ftnlen);
+	int zmout_(int32_t *, int32_t *, int32_t *, zomplex *, int32_t *, int32_t *, char *, ftnlen);
+	int zvout_(int32_t *, int32_t *, zomplex *, int32_t *, char *, ftnlen);
 
 #ifdef __cplusplus
 }

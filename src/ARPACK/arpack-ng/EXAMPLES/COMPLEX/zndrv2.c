@@ -3,7 +3,7 @@
 #include "arpack.h"
 
 struct {
-    doublecomplex rho;
+    zomplex rho;
 } convct_;
 
 #define convct_1 convct_
@@ -11,39 +11,39 @@ struct {
 int zndrv2()
 {
     /* System generated locals */
-    integer i__1, i__2;
-    doublecomplex z__1, z__2, z__3, z__4;
+    int32_t i__1, i__2;
+    zomplex z__1, z__2, z__3, z__4;
 
-    void z_div(doublecomplex *, doublecomplex *, doublecomplex *);
-    double d_imag(doublecomplex *);
+    void z_div(zomplex *, zomplex *, zomplex *);
+    double d_imag(zomplex *);
 
     /* Local variables */
-    doublecomplex d__[25], h__;
-    integer j, n;
-    doublecomplex s, v[6400]	/* was [256][25] */, h2, s1, s2, s3, dd[256], 
+    zomplex d__[25], h__;
+    int32_t j, n;
+    zomplex s, v[6400]	/* was [256][25] */, h2, s1, s2, s3, dd[256], 
 	    dl[256];
-    doublereal rd[75]	/* was [25][3] */;
-    doublecomplex ax[256], du[256], du2[256];
-    integer ido, ncv, nev;
-    doublereal tol;
+    double rd[75]	/* was [25][3] */;
+    zomplex ax[256], du[256], du2[256];
+    int32_t ido, ncv, nev;
+    double tol;
     char bmat[1];
-    integer mode, info;
-    logical rvec;
-    integer ierr, ipiv[256];
-    doublecomplex sigma;
+    int32_t mode, info;
+    bool rvec;
+    int32_t ierr, ipiv[256];
+    zomplex sigma;
     char which[2];
-    doublecomplex resid[256];
-    integer nconv;
-    doublecomplex workd[768];
-    integer ipntr[14];
-    doublecomplex workl[2000];
-    doublereal rwork[256];
-    integer iparam[11];
-    logical select[25];
-    integer ishfts;
-    integer maxitr;
-    integer lworkl;
-    doublecomplex workev[50];
+    zomplex resid[256];
+    int32_t nconv;
+    zomplex workd[768];
+    int32_t ipntr[14];
+    zomplex workl[2000];
+    double rwork[256];
+    int32_t iparam[11];
+    bool select[25];
+    int32_t ishfts;
+    int32_t maxitr;
+    int32_t lworkl;
+    zomplex workev[50];
 
     /* Fortran I/O blocks */
     static cilist io___4 = { 0, 6, 0, 0, 0 };
@@ -199,7 +199,7 @@ int zndrv2()
 
     convct_1.rho.r = 10., convct_1.rho.i = 0.;
     i__1 = n + 1;
-    z__2.r = (doublereal) i__1, z__2.i = 0.;
+    z__2.r = (double) i__1, z__2.i = 0.;
     z_div(&z__1, &c_b137, &z__2);
     h__.r = z__1.r, h__.i = z__1.i;
     z__1.r = h__.r * h__.r - h__.i * h__.i, z__1.i = h__.r * h__.i + h__.i * 
@@ -354,7 +354,7 @@ L20:
 	e_wsle();
 	s_wsle(&io___44);
 	do_lio(&c__9, &c__1, " Error with _naupd, info = ", (ftnlen)27);
-	do_lio(&c__3, &c__1, (char *)&info, (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&info, (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___45);
 	do_lio(&c__9, &c__1, " Check the documentation in _naupd.", (ftnlen)
@@ -376,7 +376,7 @@ L20:
 /*        | desired.  (indicated by rvec = .true.)    | */
 /*        %-------------------------------------------% */
 
-	rvec = TRUE_;
+	rvec = true;
 
 	zneupd_(&rvec, "A", select, d__, v, &c__256, &sigma, workev, bmat, &n,
 		 which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, 
@@ -406,7 +406,7 @@ L20:
 	    e_wsle();
 	    s_wsle(&io___52);
 	    do_lio(&c__9, &c__1, " Error with _neupd, info = ", (ftnlen)27);
-	    do_lio(&c__3, &c__1, (char *)&ierr, (ftnlen)sizeof(integer));
+	    do_lio(&c__3, &c__1, (char *)&ierr, (ftnlen)sizeof(int32_t));
 	    e_wsle();
 	    s_wsle(&io___53);
 	    do_lio(&c__9, &c__1, " Check the documentation of _neupd. ", (
@@ -499,18 +499,18 @@ L20:
 	e_wsle();
 	s_wsle(&io___68);
 	do_lio(&c__9, &c__1, " Size of the matrix is ", (ftnlen)23);
-	do_lio(&c__3, &c__1, (char *)&n, (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&n, (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___69);
 	do_lio(&c__9, &c__1, " The number of Ritz values requested is ", (
 		ftnlen)40);
-	do_lio(&c__3, &c__1, (char *)&nev, (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&nev, (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___70);
 	do_lio(&c__9, &c__1, " The number of Arnoldi vectors generated", (
 		ftnlen)40);
 	do_lio(&c__9, &c__1, " (NCV) is ", (ftnlen)10);
-	do_lio(&c__3, &c__1, (char *)&ncv, (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&ncv, (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___71);
 	do_lio(&c__9, &c__1, " What portion of the spectrum: ", (ftnlen)31);
@@ -519,21 +519,21 @@ L20:
 	s_wsle(&io___72);
 	do_lio(&c__9, &c__1, " The number of converged Ritz values is ", (
 		ftnlen)40);
-	do_lio(&c__3, &c__1, (char *)&nconv, (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&nconv, (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___73);
 	do_lio(&c__9, &c__1, " The number of Implicit Arnoldi update", (
 		ftnlen)38);
 	do_lio(&c__9, &c__1, " iterations taken is ", (ftnlen)21);
-	do_lio(&c__3, &c__1, (char *)&iparam[2], (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&iparam[2], (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___74);
 	do_lio(&c__9, &c__1, " The number of OP*x is ", (ftnlen)23);
-	do_lio(&c__3, &c__1, (char *)&iparam[8], (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&iparam[8], (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___75);
 	do_lio(&c__9, &c__1, " The convergence criterion is ", (ftnlen)30);
-	do_lio(&c__5, &c__1, (char *)&tol, (ftnlen)sizeof(doublereal));
+	do_lio(&c__5, &c__1, (char *)&tol, (ftnlen)sizeof(double));
 	e_wsle();
 	s_wsle(&io___76);
 	do_lio(&c__9, &c__1, " ", (ftnlen)1);
@@ -554,19 +554,19 @@ L9000:
 
 /*     matrix vector multiplication subroutine */
 
-int zndrv2_av_(integer *n, doublecomplex *v, doublecomplex *w)
+int zndrv2_av_(int32_t *n, zomplex *v, zomplex *w)
 {
     /* System generated locals */
-    integer i__1, i__2, i__3, i__4, i__5;
-    doublecomplex z__1, z__2, z__3, z__4, z__5;
+    int32_t i__1, i__2, i__3, i__4, i__5;
+    zomplex z__1, z__2, z__3, z__4, z__5;
 
     /* Builtin functions */
-    void z_div(doublecomplex *, doublecomplex *, doublecomplex *);
+    void z_div(zomplex *, zomplex *, zomplex *);
 
     /* Local variables */
-    doublecomplex h__;
-    integer j;
-    doublecomplex s, h2, dd, dl, du;
+    zomplex h__;
+    int32_t j;
+    zomplex s, h2, dd, dl, du;
 
     /* Parameter adjustments */
     --w;
@@ -574,7 +574,7 @@ int zndrv2_av_(integer *n, doublecomplex *v, doublecomplex *w)
 
     /* Function Body */
     i__1 = *n + 1;
-    z__2.r = (doublereal) i__1, z__2.i = 0.;
+    z__2.r = (double) i__1, z__2.i = 0.;
     z_div(&z__1, &c_b137, &z__2);
     h__.r = z__1.r, h__.i = z__1.i;
     z__1.r = h__.r * h__.r - h__.i * h__.i, z__1.i = h__.r * h__.i + h__.i * 

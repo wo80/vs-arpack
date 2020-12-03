@@ -5,7 +5,7 @@
 int cnsimp()
 {
     /* System generated locals */
-    integer i__1, i__2;
+    int32_t i__1, i__2;
     complex q__1;
 
     /* Builtin functions */
@@ -13,27 +13,27 @@ int cnsimp()
 
     /* Local variables */
     complex d__[30];
-    integer j, n;
+    int32_t j, n;
     complex v[7680]	/* was [256][30] */;
-    real rd[90]	/* was [30][3] */;
+    float rd[90]	/* was [30][3] */;
     complex ax[256];
-    integer nx, ido, ncv, nev;
-    real tol;
+    int32_t nx, ido, ncv, nev;
+    float tol;
     char bmat[1];
-    integer info;
-    logical rvec;
-    integer ierr, mode1;
+    int32_t info;
+    bool rvec;
+    int32_t ierr, mode1;
     complex sigma;
     char which[2];
     complex resid[256];
-    integer nconv;
+    int32_t nconv;
     complex workd[768];
-    integer ipntr[14];
+    int32_t ipntr[14];
     complex workl[2850];
-    real rwork[30];
-    integer iparam[11];
-    logical select[30];
-    integer ishfts, maxitr, lworkl;
+    float rwork[30];
+    int32_t iparam[11];
+    bool select[30];
+    int32_t ishfts, maxitr, lworkl;
     complex workev[60];
 
     /* Fortran I/O blocks */
@@ -381,7 +381,7 @@ L10:
 	e_wsle();
 	s_wsle(&io___25);
 	do_lio(&c__9, &c__1, " Error with _naupd, info = ", (ftnlen)27);
-	do_lio(&c__3, &c__1, (char *)&info, (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&info, (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___26);
 	do_lio(&c__9, &c__1, " Check the documentation of _naupd", (ftnlen)34)
@@ -409,7 +409,7 @@ L10:
 /*        |                                           | */
 /*        %-------------------------------------------% */
 
-	rvec = TRUE_;
+	rvec = true;
 
 	cneupd_(&rvec, "A", select, d__, v, &c__256, &sigma, workev, bmat, &n,
 		 which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, 
@@ -439,7 +439,7 @@ L10:
 	    e_wsle();
 	    s_wsle(&io___35);
 	    do_lio(&c__9, &c__1, " Error with _neupd, info = ", (ftnlen)27);
-	    do_lio(&c__3, &c__1, (char *)&ierr, (ftnlen)sizeof(integer));
+	    do_lio(&c__3, &c__1, (char *)&ierr, (ftnlen)sizeof(int32_t));
 	    e_wsle();
 	    s_wsle(&io___36);
 	    do_lio(&c__9, &c__1, " Check the documentation of _neupd. ", (
@@ -532,18 +532,18 @@ L10:
 	e_wsle();
 	s_wsle(&io___52);
 	do_lio(&c__9, &c__1, " Size of the matrix is ", (ftnlen)23);
-	do_lio(&c__3, &c__1, (char *)&n, (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&n, (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___53);
 	do_lio(&c__9, &c__1, " The number of Ritz values requested is ", (
 		ftnlen)40);
-	do_lio(&c__3, &c__1, (char *)&nev, (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&nev, (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___54);
 	do_lio(&c__9, &c__1, " The number of Arnoldi vectors generated", (
 		ftnlen)40);
 	do_lio(&c__9, &c__1, " (NCV) is ", (ftnlen)10);
-	do_lio(&c__3, &c__1, (char *)&ncv, (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&ncv, (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___55);
 	do_lio(&c__9, &c__1, " What portion of the spectrum: ", (ftnlen)31);
@@ -552,21 +552,21 @@ L10:
 	s_wsle(&io___56);
 	do_lio(&c__9, &c__1, " The number of converged Ritz values is ", (
 		ftnlen)40);
-	do_lio(&c__3, &c__1, (char *)&nconv, (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&nconv, (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___57);
 	do_lio(&c__9, &c__1, " The number of Implicit Arnoldi update", (
 		ftnlen)38);
 	do_lio(&c__9, &c__1, " iterations taken is ", (ftnlen)21);
-	do_lio(&c__3, &c__1, (char *)&iparam[2], (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&iparam[2], (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___58);
 	do_lio(&c__9, &c__1, " The number of OP*x is ", (ftnlen)23);
-	do_lio(&c__3, &c__1, (char *)&iparam[8], (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&iparam[8], (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___59);
 	do_lio(&c__9, &c__1, " The convergence criterion is ", (ftnlen)30);
-	do_lio(&c__4, &c__1, (char *)&tol, (ftnlen)sizeof(real));
+	do_lio(&c__4, &c__1, (char *)&tol, (ftnlen)sizeof(float));
 	e_wsle();
 	s_wsle(&io___60);
 	do_lio(&c__9, &c__1, " ", (ftnlen)1);
@@ -590,19 +590,19 @@ L9000:
 /*     The matrix used is the convection-diffusion operator */
 /*     discretized using centered difference. */
 
-int cnsimp_av_(integer *nx, complex *v, complex *w)
+int cnsimp_av_(int32_t *nx, complex *v, complex *w)
 {
     /* System generated locals */
-    integer i__1;
+    int32_t i__1;
     complex q__1, q__2;
 
     /* Builtin functions */
     void c_div(complex *, complex *, complex *);
 
     /* Local variables */
-    integer j;
+    int32_t j;
     complex h2;
-    integer lo;
+    int32_t lo;
 
 /*     Computes w <--- OP*v, where OP is the nx*nx by nx*nx block */
 /*     tridiagonal matrix */
@@ -626,7 +626,7 @@ int cnsimp_av_(integer *nx, complex *v, complex *w)
 
     /* Function Body */
     i__1 = (*nx + 1) * (*nx + 1);
-    q__2.r = (real) i__1, q__2.i = 0.f;
+    q__2.r = (float) i__1, q__2.i = 0.f;
     c_div(&q__1, &c_one, &q__2);
     h2.r = q__1.r, h2.i = q__1.i;
 
@@ -658,10 +658,10 @@ int cnsimp_av_(integer *nx, complex *v, complex *w)
 } /* av_ */
 
 /* ========================================================================= */
-int cnsimp_tv_(integer *nx, complex *x, complex *y)
+int cnsimp_tv_(int32_t *nx, complex *x, complex *y)
 {
     /* System generated locals */
-    integer i__1, i__2, i__3, i__4, i__5;
+    int32_t i__1, i__2, i__3, i__4, i__5;
     complex q__1, q__2, q__3, q__4, q__5;
 
     /* Builtin functions */
@@ -669,7 +669,7 @@ int cnsimp_tv_(integer *nx, complex *x, complex *y)
 
     /* Local variables */
     complex h__;
-    integer j;
+    int32_t j;
     complex h2, dd, dl, du;
 
 /*     Compute the matrix vector multiplication y<---T*x */
@@ -682,7 +682,7 @@ int cnsimp_tv_(integer *nx, complex *x, complex *y)
 
     /* Function Body */
     i__1 = *nx + 1;
-    q__2.r = (real) i__1, q__2.i = 0.f;
+    q__2.r = (float) i__1, q__2.i = 0.f;
     c_div(&q__1, &c_one, &q__2);
     h__.r = q__1.r, h__.i = q__1.i;
     q__1.r = h__.r * h__.r - h__.i * h__.i, q__1.i = h__.r * h__.i + h__.i * 

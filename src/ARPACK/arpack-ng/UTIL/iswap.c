@@ -2,20 +2,18 @@
 
 #include "arpack.h"
 
-/* Subroutine */ int iswap_(integer *n, integer *sx, integer *incx, integer *
-	sy, integer *incy)
+int iswap_(int32_t *n, int32_t *sx, int32_t *incx, int32_t *
+	sy, int32_t *incy)
 {
     /* System generated locals */
-    integer i__1;
+    int32_t i__1;
 
     /* Local variables */
-    integer i__, m, ix, iy, mp1, stemp;
-
+    int32_t i__, m, ix, iy, mp1, stemp;
 
 /*     interchanges two vectors. */
 /*     uses unrolled loops for increments equal to 1. */
 /*     jack dongarra, linpack, 3/11/78. */
-
 
     /* Parameter adjustments */
     --sy;
@@ -52,7 +50,6 @@
     return 0;
 
 /*       code for both increments equal to 1 */
-
 
 /*       clean-up loop */
 

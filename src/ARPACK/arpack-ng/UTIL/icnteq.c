@@ -2,20 +2,17 @@
 
 #include "arpack.h"
 
-
 /* ----------------------------------------------------------------------- */
 
 /*     Count the number of elements equal to a specified integer value. */
 
-integer icnteq_(integer *n, integer *array, integer *value)
+int32_t icnteq_(int32_t *n, int32_t *array, int32_t *value)
 {
     /* System generated locals */
-    integer ret_val, i__1;
+    int32_t ret_val, i__1;
 
     /* Local variables */
-    integer i__, k;
-
-
+    int32_t i__, k;
 
     /* Parameter adjustments */
     --array;

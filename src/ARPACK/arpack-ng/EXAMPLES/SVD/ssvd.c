@@ -5,39 +5,39 @@
 int ssvd()
 {
     /* System generated locals */
-    integer i__1;
-    real r__1;
+    int32_t i__1;
+    float r__1;
 
     /* Builtin functions */
     int s_copy(char *, char *, ftnlen, ftnlen);
-    integer s_wsle(cilist *), do_lio(integer *, integer *, char *, ftnlen), 
+    int32_t s_wsle(cilist *), do_lio(int32_t *, int32_t *, char *, ftnlen), 
 	    e_wsle(void);
-    double sqrt(doublereal);
+    double sqrt(double);
 
     /* Local variables */
-    integer j, m, n;
-    real s[50]	/* was [25][2] */, u[5000]	/* was [500][10] */, v[6250]	
+    int32_t j, m, n;
+    float s[50]	/* was [25][2] */, u[5000]	/* was [500][10] */, v[6250]	
 	    /* was [250][25] */;
-    real ax[500];
-    integer ido, ncv, nev;
-    real tol;
+    float ax[500];
+    int32_t ido, ncv, nev;
+    float tol;
     char bmat[1];
-    integer info;
-    logical rvec;
-    integer ierr;
-    real temp;
-    integer mode1;
-    real sigma;
+    int32_t info;
+    bool rvec;
+    int32_t ierr;
+    float temp;
+    int32_t mode1;
+    float sigma;
     char which[2];
-    real resid[250];
-    integer nconv;
-    real workd[750];
-    integer ipntr[11];
-    real workl[825];
-    integer iparam[11];
-    logical select[25];
-    integer ishfts, maxitr;
-    integer lworkl;
+    float resid[250];
+    int32_t nconv;
+    float workd[750];
+    int32_t ipntr[11];
+    float workl[825];
+    int32_t iparam[11];
+    bool select[25];
+    int32_t ishfts, maxitr;
+    int32_t lworkl;
 
     /* Fortran I/O blocks */
     static cilist io___7 = { 0, 6, 0, 0, 0 };
@@ -414,7 +414,7 @@ L10:
 	e_wsle();
 	s_wsle(&io___26);
 	do_lio(&c__9, &c__1, " Error with _saupd, info = ", (ftnlen)27);
-	do_lio(&c__3, &c__1, (char *)&info, (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&info, (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___27);
 	do_lio(&c__9, &c__1, " Check documentation in _saupd ", (ftnlen)31);
@@ -438,7 +438,7 @@ L10:
 /*        | post processing                            | */
 /*        %--------------------------------------------% */
 
-	rvec = TRUE_;
+	rvec = true;
 
 	sseupd_(&rvec, "All", select, s, v, &c__250, &sigma, bmat, &n, which, 
 		&nev, &tol, resid, &ncv, v, &c__250, iparam, ipntr, workd, 
@@ -464,7 +464,7 @@ L10:
 	    e_wsle();
 	    s_wsle(&io___35);
 	    do_lio(&c__9, &c__1, " Error with _seupd, info = ", (ftnlen)27);
-	    do_lio(&c__3, &c__1, (char *)&ierr, (ftnlen)sizeof(integer));
+	    do_lio(&c__3, &c__1, (char *)&ierr, (ftnlen)sizeof(int32_t));
 	    e_wsle();
 	    s_wsle(&io___36);
 	    do_lio(&c__9, &c__1, " Check the documentation of _seupd. ", (
@@ -572,18 +572,18 @@ L10:
 	e_wsle();
 	s_wsle(&io___52);
 	do_lio(&c__9, &c__1, " Size of the matrix is ", (ftnlen)23);
-	do_lio(&c__3, &c__1, (char *)&n, (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&n, (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___53);
 	do_lio(&c__9, &c__1, " The number of Ritz values requested is ", (
 		ftnlen)40);
-	do_lio(&c__3, &c__1, (char *)&nev, (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&nev, (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___54);
 	do_lio(&c__9, &c__1, " The number of Arnoldi vectors generated", (
 		ftnlen)40);
 	do_lio(&c__9, &c__1, " (NCV) is ", (ftnlen)10);
-	do_lio(&c__3, &c__1, (char *)&ncv, (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&ncv, (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___55);
 	do_lio(&c__9, &c__1, " What portion of the spectrum: ", (ftnlen)31);
@@ -592,21 +592,21 @@ L10:
 	s_wsle(&io___56);
 	do_lio(&c__9, &c__1, " The number of converged Ritz values is ", (
 		ftnlen)40);
-	do_lio(&c__3, &c__1, (char *)&nconv, (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&nconv, (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___57);
 	do_lio(&c__9, &c__1, " The number of Implicit Arnoldi update", (
 		ftnlen)38);
 	do_lio(&c__9, &c__1, " iterations taken is ", (ftnlen)21);
-	do_lio(&c__3, &c__1, (char *)&iparam[2], (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&iparam[2], (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___58);
 	do_lio(&c__9, &c__1, " The number of OP*x is ", (ftnlen)23);
-	do_lio(&c__3, &c__1, (char *)&iparam[8], (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&iparam[8], (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___59);
 	do_lio(&c__9, &c__1, " The convergence criterion is ", (ftnlen)30);
-	do_lio(&c__4, &c__1, (char *)&tol, (ftnlen)sizeof(real));
+	do_lio(&c__4, &c__1, (char *)&tol, (ftnlen)sizeof(float));
 	e_wsle();
 	s_wsle(&io___60);
 	do_lio(&c__9, &c__1, " ", (ftnlen)1);
@@ -646,15 +646,15 @@ L9000:
 
 /* ------------------------------------------------------------------- */
 
-int ssvd_av_(integer *m, integer *n, real *x, real *w)
+int ssvd_av_(int32_t *m, int32_t *n, float *x, float *w)
 {
     /* System generated locals */
-    integer i__1, i__2;
+    int32_t i__1, i__2;
 
     /* Local variables */
-    real h__;
-    integer i__, j;
-    real k, s, t;
+    float h__;
+    int32_t i__, j;
+    float k, s, t;
 
 /*     computes  w <- A*x */
 
@@ -663,8 +663,8 @@ int ssvd_av_(integer *m, integer *n, real *x, real *w)
     --x;
 
     /* Function Body */
-    h__ = 1.f / (real) (*m + 1);
-    k = 1.f / (real) (*n + 1);
+    h__ = 1.f / (float) (*m + 1);
+    k = 1.f / (float) (*n + 1);
     i__1 = *m;
     for (i__ = 1; i__ <= i__1; ++i__) {
 	w[i__] = 0.f;
@@ -696,15 +696,15 @@ int ssvd_av_(integer *m, integer *n, real *x, real *w)
 
 /* ------------------------------------------------------------------- */
 
-int ssvd_atv_(integer *m, integer *n, real *w, real *y)
+int ssvd_atv_(int32_t *m, int32_t *n, float *w, float *y)
 {
     /* System generated locals */
-    integer i__1, i__2;
+    int32_t i__1, i__2;
 
     /* Local variables */
-    real h__;
-    integer i__, j;
-    real k, s, t;
+    float h__;
+    int32_t i__, j;
+    float k, s, t;
 
 /*     computes  y <- A'*w */
 
@@ -713,8 +713,8 @@ int ssvd_atv_(integer *m, integer *n, real *w, real *y)
     --y;
 
     /* Function Body */
-    h__ = 1.f / (real) (*m + 1);
-    k = 1.f / (real) (*n + 1);
+    h__ = 1.f / (float) (*m + 1);
+    k = 1.f / (float) (*n + 1);
     i__1 = *n;
     for (i__ = 1; i__ <= i__1; ++i__) {
 	y[i__] = 0.f;

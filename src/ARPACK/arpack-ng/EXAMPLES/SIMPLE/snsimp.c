@@ -5,39 +5,39 @@
 int snsimp()
 {
     /* System generated locals */
-    integer i__1;
-    real r__1;
+    int32_t i__1;
+    float r__1;
 
     /* Builtin functions */
     int s_copy(char *, char *, ftnlen, ftnlen);
-    integer s_wsle(cilist *), do_lio(integer *, integer *, char *, ftnlen), 
+    int32_t s_wsle(cilist *), do_lio(int32_t *, int32_t *, char *, ftnlen), 
 	    e_wsle(void);
 
     /* Local variables */
-    real d__[90]	/* was [30][3] */;
-    integer j, n;
-    real v[7680]	/* was [256][30] */;
-    real ax[256];
-    integer nx, ido, ncv, nev;
-    real tol;
+    float d__[90]	/* was [30][3] */;
+    int32_t j, n;
+    float v[7680]	/* was [256][30] */;
+    float ax[256];
+    int32_t nx, ido, ncv, nev;
+    float tol;
     char bmat[1];
-    integer info;
-    logical rvec;
-    integer ierr, mode1;
+    int32_t info;
+    bool rvec;
+    int32_t ierr, mode1;
     char which[2];
-    real resid[256];
-    integer nconv;
-    real workd[768];
-    logical first;
-    integer ipntr[14];
-    real workl[2880];
-    integer iparam[11];
-    real sigmai;
-    logical select[30];
-    real sigmar;
-    integer ishfts, maxitr;
-    integer lworkl;
-    real workev[90];
+    float resid[256];
+    int32_t nconv;
+    float workd[768];
+    bool first;
+    int32_t ipntr[14];
+    float workl[2880];
+    int32_t iparam[11];
+    float sigmai;
+    bool select[30];
+    float sigmar;
+    int32_t ishfts, maxitr;
+    int32_t lworkl;
+    float workev[90];
 
     /* Fortran I/O blocks */
     static cilist io___7 = { 0, 6, 0, 0, 0 };
@@ -387,7 +387,7 @@ L10:
 	e_wsle();
 	s_wsle(&io___24);
 	do_lio(&c__9, &c__1, " Error with _naupd, info = ", (ftnlen)27);
-	do_lio(&c__3, &c__1, (char *)&info, (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&info, (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___25);
 	do_lio(&c__9, &c__1, " Check the documentation of _naupd", (ftnlen)34)
@@ -415,7 +415,7 @@ L10:
 /*        |                                           | */
 /*        %-------------------------------------------% */
 
-	rvec = TRUE_;
+	rvec = true;
 
 	sneupd_(&rvec, "A", select, d__, &d__[30], v, &c__256, &sigmar, &
 		sigmai, workev, bmat, &n, which, &nev, &tol, resid, &ncv, v, &
@@ -447,7 +447,7 @@ L10:
 	    e_wsle();
 	    s_wsle(&io___35);
 	    do_lio(&c__9, &c__1, " Error with _neupd, info = ", (ftnlen)27);
-	    do_lio(&c__3, &c__1, (char *)&ierr, (ftnlen)sizeof(integer));
+	    do_lio(&c__3, &c__1, (char *)&ierr, (ftnlen)sizeof(int32_t));
 	    e_wsle();
 	    s_wsle(&io___36);
 	    do_lio(&c__9, &c__1, " Check the documentation of _neupd. ", (
@@ -459,7 +459,7 @@ L10:
 
 	} else {
 
-	    first = TRUE_;
+	    first = true;
 	    nconv = iparam[4];
 	    i__1 = nconv;
 	    for (j = 1; j <= i__1; ++j) {
@@ -514,9 +514,9 @@ L10:
 		    d__[j + 59] = slapy2_(&d__[j + 59], &r__1);
 		    d__[j + 59] /= slapy2_(&d__[j - 1], &d__[j + 29]);
 		    d__[j + 60] = d__[j + 59];
-		    first = FALSE_;
+		    first = false;
 		} else {
-		    first = TRUE_;
+		    first = true;
 		}
 
 /* L20: */
@@ -574,18 +574,18 @@ L10:
 	e_wsle();
 	s_wsle(&io___52);
 	do_lio(&c__9, &c__1, " Size of the matrix is ", (ftnlen)23);
-	do_lio(&c__3, &c__1, (char *)&n, (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&n, (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___53);
 	do_lio(&c__9, &c__1, " The number of Ritz values requested is ", (
 		ftnlen)40);
-	do_lio(&c__3, &c__1, (char *)&nev, (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&nev, (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___54);
 	do_lio(&c__9, &c__1, " The number of Arnoldi vectors generated", (
 		ftnlen)40);
 	do_lio(&c__9, &c__1, " (NCV) is ", (ftnlen)10);
-	do_lio(&c__3, &c__1, (char *)&ncv, (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&ncv, (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___55);
 	do_lio(&c__9, &c__1, " What portion of the spectrum: ", (ftnlen)31);
@@ -594,21 +594,21 @@ L10:
 	s_wsle(&io___56);
 	do_lio(&c__9, &c__1, " The number of converged Ritz values is ", (
 		ftnlen)40);
-	do_lio(&c__3, &c__1, (char *)&nconv, (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&nconv, (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___57);
 	do_lio(&c__9, &c__1, " The number of Implicit Arnoldi update", (
 		ftnlen)38);
 	do_lio(&c__9, &c__1, " iterations taken is ", (ftnlen)21);
-	do_lio(&c__3, &c__1, (char *)&iparam[2], (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&iparam[2], (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___58);
 	do_lio(&c__9, &c__1, " The number of OP*x is ", (ftnlen)23);
-	do_lio(&c__3, &c__1, (char *)&iparam[8], (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&iparam[8], (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___59);
 	do_lio(&c__9, &c__1, " The convergence criterion is ", (ftnlen)30);
-	do_lio(&c__4, &c__1, (char *)&tol, (ftnlen)sizeof(real));
+	do_lio(&c__4, &c__1, (char *)&tol, (ftnlen)sizeof(float));
 	e_wsle();
 	s_wsle(&io___60);
 	do_lio(&c__9, &c__1, " ", (ftnlen)1);
@@ -632,16 +632,16 @@ L9000:
 /*     The matrix used is the 2 dimensional convection-diffusion */
 /*     operator discretized using central difference. */
 
-int snsimp_av_(integer *nx, real *v, real *w)
+int snsimp_av_(int32_t *nx, float *v, float *w)
 {
     /* System generated locals */
-    integer i__1;
-    real r__1;
+    int32_t i__1;
+    float r__1;
 
     /* Local variables */
-    integer j;
-    real h2;
-    integer lo;
+    int32_t j;
+    float h2;
+    int32_t lo;
 
 /*     Computes w <--- OP*v, where OP is the nx*nx by nx*nx block */
 /*     tridiagonal matrix */
@@ -668,7 +668,7 @@ int snsimp_av_(integer *nx, real *v, real *w)
     --v;
 
     /* Function Body */
-    h2 = 1.f / (real) ((*nx + 1) * (*nx + 1));
+    h2 = 1.f / (float) ((*nx + 1) * (*nx + 1));
 
 	snsimp_tv_(nx, &v[1], &w[1]);
     r__1 = -1.f / h2;
@@ -694,15 +694,15 @@ int snsimp_av_(integer *nx, real *v, real *w)
 } /* av_ */
 
 /* ========================================================================= */
-int snsimp_tv_(integer *nx, real *x, real *y)
+int snsimp_tv_(int32_t *nx, float *x, float *y)
 {
     /* System generated locals */
-    integer i__1;
+    int32_t i__1;
 
     /* Local variables */
-    real h__;
-    integer j;
-    real h2, dd, dl, du;
+    float h__;
+    int32_t j;
+    float h2, dd, dl, du;
 
 /*     Compute the matrix vector multiplication y<---T*x */
 /*     where T is a nx by nx tridiagonal matrix with DD on the */
@@ -717,7 +717,7 @@ int snsimp_tv_(integer *nx, real *x, real *y)
     --x;
 
     /* Function Body */
-    h__ = 1.f / (real) (*nx + 1);
+    h__ = 1.f / (float) (*nx + 1);
     h2 = h__ * h__;
     dd = 4.f / h2;
     dl = -1.f / h2 - 50.f / h__;

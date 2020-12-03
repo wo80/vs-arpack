@@ -137,7 +137,7 @@
  *     cneigh  ARPACK compute Ritz values and error bounds routine.
  *     cngets  ARPACK reorder Ritz values and error bounds routine.
  *     csortc  ARPACK sorting routine.
- *     ivout   ARPACK utility routine that prints integers.
+ *     ivout   ARPACK utility routine that prints int32_ts.
  *     arscnd  ARPACK utility routine for timing.
  *     cmout   ARPACK utility routine that prints matrices
  *     cvout   ARPACK utility routine that prints vectors.
@@ -167,52 +167,46 @@
  * \EndLib
  */
 
-
-/* Subroutine */ int cnaup2_(integer *ido, char *bmat, integer *n, char *
-	which, integer *nev, integer *np, real *tol, complex *resid, integer *
-	mode, integer *iupd, integer *ishift, integer *mxiter, complex *v, 
-	integer *ldv, complex *h__, integer *ldh, complex *ritz, complex *
-	bounds, complex *q, integer *ldq, complex *workl, integer *ipntr, 
-	complex *workd, real *rwork, integer *info)
+int cnaup2_(int32_t *ido, char *bmat, int32_t *n, char *
+	which, int32_t *nev, int32_t *np, float *tol, complex *resid, int32_t *
+	mode, int32_t *iupd, int32_t *ishift, int32_t *mxiter, complex *v, 
+	int32_t *ldv, complex *h__, int32_t *ldh, complex *ritz, complex *
+	bounds, complex *q, int32_t *ldq, complex *workl, int32_t *ipntr, 
+	complex *workd, float *rwork, int32_t *info)
 {
     /* System generated locals */
-    integer h_dim1, h_offset, q_dim1, q_offset, v_dim1, v_offset, i__1, i__2, 
+    int32_t h_dim1, h_offset, q_dim1, q_offset, v_dim1, v_offset, i__1, i__2, 
 	    i__3;
-    real r__1, r__2, r__3, r__4;
-    doublereal d__1;
+    float r__1, r__2, r__3, r__4;
+    double d__1;
     complex q__1;
 
     /* Builtin functions */
-    double pow_dd(doublereal *, doublereal *), r_imag(complex *);
-    integer s_cmp(char *, char *, ftnlen, ftnlen);
-    /* Subroutine */ int s_copy(char *, char *, ftnlen, ftnlen);
-    double sqrt(doublereal);
+    double pow_dd(double *, double *), r_imag(complex *);
+    int32_t s_cmp(char *, char *, ftnlen, ftnlen);
+    int s_copy(char *, char *, ftnlen, ftnlen);
+    double sqrt(double);
 
     /* Local variables */
-    integer i__, j;
-    static real t0, t1, t2, t3;
-    integer kp[3];
-    static integer np0, nev0;
-    static real eps23;
-    integer ierr;
-    static integer iter;
-    static logical getv0;
-    static logical cnorm;
-    static integer nconv;
-    real rtemp;
-    static logical initv;
-    static real rnorm;
-    static integer nevbef;
-    static logical update, ushift;
-    static integer kplusp, msglvl;
-    integer nptemp;
+    int32_t i__, j;
+    static float t0, t1, t2, t3;
+    int32_t kp[3];
+    static int32_t np0, nev0;
+    static float eps23;
+    int32_t ierr;
+    static int32_t iter;
+    static bool getv0;
+    static bool cnorm;
+    static int32_t nconv;
+    float rtemp;
+    static bool initv;
+    static float rnorm;
+    static int32_t nevbef;
+    static bool update, ushift;
+    static int32_t kplusp, msglvl;
+    int32_t nptemp;
     char wprime[2];
     complex cmpnorm;
-
-
-
-
-
 
 /*     %-----------------------% */
 /*     | Executable Statements | */
@@ -264,7 +258,7 @@
 /*        %---------------------------------% */
 
 	eps23 = slamch_("Epsilon-Machine");
-	d__1 = (doublereal) eps23;
+	d__1 = (double) eps23;
 	eps23 = pow_dd(&d__1, &d_23);
 
 /*        %---------------------------------------% */
@@ -272,10 +266,10 @@
 /*        | steps of the Arnoldi factorization.   | */
 /*        %---------------------------------------% */
 
-	getv0 = TRUE_;
-	update = FALSE_;
-	ushift = FALSE_;
-	cnorm = FALSE_;
+	getv0 = true;
+	update = false;
+	ushift = false;
+	cnorm = false;
 
 	if (*info != 0) {
 
@@ -283,10 +277,10 @@
 /*           | User provides the initial residual vector. | */
 /*           %--------------------------------------------% */
 
-	    initv = TRUE_;
+	    initv = true;
 	    *info = 0;
 	} else {
-	    initv = FALSE_;
+	    initv = false;
 	}
     }
 
@@ -314,7 +308,7 @@
 	    *info = -9;
 	    goto L1100;
 	}
-	getv0 = FALSE_;
+	getv0 = false;
 	*ido = 0;
     }
 
@@ -400,7 +394,7 @@ L1000:
 
     *ido = 0;
 L20:
-    update = TRUE_;
+    update = true;
 
     cnaitr_(ido, bmat, n, nev, np, mode, &resid[1], &rnorm, &v[v_offset], ldv,
 	     &h__[h_offset], ldh, &ipntr[1], &workd[1], info);
@@ -415,7 +409,7 @@ L20:
 	*info = -9999;
 	goto L1200;
     }
-    update = FALSE_;
+    update = false;
 
     if (msglvl > 1) {
 	svout_(&debug_1.logfil, &c__1, &rnorm, &debug_1.ndigit, "_naup2: Cor"
@@ -726,12 +720,12 @@ L20:
 /*           | and return them in the first 2*NP locations of WORKL. | */
 /*           %-------------------------------------------------------% */
 
-	ushift = TRUE_;
+	ushift = true;
 	*ido = 3;
 	goto L9000;
     }
 L50:
-    ushift = FALSE_;
+    ushift = false;
 
     if (*ishift != 1) {
 
@@ -771,7 +765,7 @@ L50:
 /*        | the first step of the next call to cnaitr.  | */
 /*        %---------------------------------------------% */
 
-    cnorm = TRUE_;
+    cnorm = true;
     arscnd_(&t2);
     if (*(unsigned char *)bmat == 'G') {
 	++timing_1.nbx;
@@ -810,7 +804,7 @@ L100:
     } else if (*(unsigned char *)bmat == 'I') {
 	rnorm = scnrm2_(n, &resid[1], &c__1);
     }
-    cnorm = FALSE_;
+    cnorm = false;
 
     if (msglvl > 2) {
 	svout_(&debug_1.logfil, &c__1, &rnorm, &debug_1.ndigit, "_naup2: B-n"

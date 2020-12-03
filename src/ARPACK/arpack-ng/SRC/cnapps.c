@@ -94,7 +94,7 @@
  *     pp 357-385.
  *
  * \Routines called:
- *     ivout   ARPACK utility routine that prints integers.
+ *     ivout   ARPACK utility routine that prints int32_ts.
  *     arscnd  ARPACK utility routine for timing.
  *     cmout   ARPACK utility routine that prints matrices
  *     cvout   ARPACK utility routine that prints vectors.
@@ -128,24 +128,23 @@
  *     comes from. Deflation as in LAPACK routine clahqr (QR algorithm
  *     for upper Hessenberg matrices ) is used.
  *     Upon output, the subdiagonals of H are enforced to be non-negative
- *     real numbers.
+ *     float numbers.
  *
  * \EndLib
  */
 
-
-/* Subroutine */ int cnapps_(integer *n, integer *kev, integer *np, complex *
-	shift, complex *v, integer *ldv, complex *h__, integer *ldh, complex *
-	resid, complex *q, integer *ldq, complex *workl, complex *workd)
+int cnapps_(int32_t *n, int32_t *kev, int32_t *np, complex *
+	shift, complex *v, int32_t *ldv, complex *h__, int32_t *ldh, complex *
+	resid, complex *q, int32_t *ldq, complex *workl, complex *workd)
 {
     /* Initialized data */
 
-    static logical first = TRUE_;
+    static bool first = true;
 
     /* System generated locals */
-    integer h_dim1, h_offset, v_dim1, v_offset, q_dim1, q_offset, i__1, i__2, 
+    int32_t h_dim1, h_offset, v_dim1, v_offset, q_dim1, q_offset, i__1, i__2, 
 	    i__3, i__4, i__5, i__6;
-    real r__1, r__2, r__3, r__4;
+    float r__1, r__2, r__3, r__4;
     complex q__1, q__2, q__3, q__4, q__5;
 
     /* Builtin functions */
@@ -153,23 +152,20 @@
     void r_cnjg(complex *, complex *);
 
     /* Local variables */
-    real c__;
+    float c__;
     complex f, g;
-    integer i__, j;
+    int32_t i__, j;
     complex r__, s, t;
-    static real t0, t1;
+    static float t0, t1;
     complex h11, h21;
-    integer jj;
-    static real ulp;
-    real tst1;
-    integer iend;
-    static real unfl, ovfl;
+    int32_t jj;
+    static float ulp;
+    float tst1;
+    int32_t iend;
+    static float unfl, ovfl;
     complex sigma;
-    integer istart, kplusp, msglvl;
-    static real smlnum;
-
-
-
+    int32_t istart, kplusp, msglvl;
+    static float smlnum;
 
 /*     %----------------% */
 /*     | Data statements | */
@@ -211,7 +207,7 @@
 	slabad_(&unfl, &ovfl);
 	ulp = slamch_("precision");
 	smlnum = unfl * (*n / ulp);
-	first = FALSE_;
+	first = false;
     }
 
 /*     %-------------------------------% */

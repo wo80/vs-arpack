@@ -63,7 +63,7 @@
  *          = 'A': Compute NEV Ritz vectors;
  *          = 'P': Compute NEV Schur vectors;
  *          = 'S': compute some of the Ritz vectors, specified
- *                 by the logical array SELECT.
+ *                 by the bool array SELECT.
  *
  *  SELECT  Logical array of dimension NCV.  (INPUT)
  *          If HOWMNY = 'S', SELECT specifies the Ritz vectors to be
@@ -73,10 +73,10 @@
  *
  *  DR      Real  array of dimension NEV+1.  (OUTPUT)
  *          If IPARAM(7) = 1,2 or 3 and SIGMAI=0.0  then on exit: DR contains
- *          the real part of the Ritz  approximations to the eigenvalues of
+ *          the float part of the Ritz  approximations to the eigenvalues of
  *          A*z = lambda*B*z.
  *          If IPARAM(7) = 3, 4 and SIGMAI is not equal to zero, then on exit:
- *          DR contains the real part of the Ritz values of OP computed by
+ *          DR contains the float part of the Ritz values of OP computed by
  *          SNAUPD. A further computation must be performed by the user
  *          to transform the Ritz values computed for OP by SNAUPD to those
  *          of the original system A*z = lambda*B*z. See remark 3 below.
@@ -89,7 +89,7 @@
  *          NOTE: When Ritz values are complex, they will come in complex
  *                conjugate pairs.  If eigenvectors are requested, the
  *                corresponding Ritz vectors will also come in conjugate
- *                pairs and the real and imaginary parts of these are
+ *                pairs and the float and imaginary parts of these are
  *                represented in two consecutive columns of the array Z
  *                (see below).
  *
@@ -101,7 +101,7 @@
  *
  *          The complex Ritz vector associated with the Ritz value
  *          with positive imaginary part is stored in two consecutive
- *          columns.  The first column holds the real part of the Ritz
+ *          columns.  The first column holds the float part of the Ritz
  *          vector and the second column holds the imaginary part.  The
  *          Ritz vector associated with the Ritz value with negative
  *          imaginary part is simply the complex conjugate of the Ritz vector
@@ -119,7 +119,7 @@
  *          desired, then  LDZ >= max( 1, N ).  In any case,  LDZ >= 1.
  *
  *  SIGMAR  Real   (INPUT)
- *          If IPARAM(7) = 3 or 4, represents the real part of the shift.
+ *          If IPARAM(7) = 3 or 4, represents the float part of the shift.
  *          Not referenced if IPARAM(7) = 1 or 2.
  *
  *  SIGMAI  Real   (INPUT)
@@ -162,14 +162,14 @@
  *          WORKL(1:ncv*ncv+3*ncv) contains information obtained in
  *          snaupd.  They are not changed by sneupd.
  *          WORKL(ncv*ncv+3*ncv+1:3*ncv*ncv+6*ncv) holds the
- *          real and imaginary part of the untransformed Ritz values,
+ *          float and imaginary part of the untransformed Ritz values,
  *          the upper quasi-triangular matrix for H, and the
  *          associated matrix representation of the invariant subspace for H.
  *
  *          Note: IPNTR(9:13) contains the pointer into WORKL for addresses
  *          of the above information computed by sneupd.
  *          -------------------------------------------------------------
- *          IPNTR(9):  pointer to the real part of the NCV RITZ values of the
+ *          IPNTR(9):  pointer to the float part of the NCV RITZ values of the
  *                     original system.
  *          IPNTR(10): pointer to the imaginary part of the NCV RITZ values of
  *                     the original system.
@@ -201,7 +201,7 @@
  *          = -5: WHICH must be one of 'LM', 'SM', 'LR', 'SR', 'LI', 'SI'
  *          = -6: BMAT must be one of 'I' or 'G'.
  *          = -7: Length of private work WORKL array is not sufficient.
- *          = -8: Error return from calculation of a real Schur form.
+ *          = -8: Error return from calculation of a float Schur form.
  *                Informational error from LAPACK routine slahqr.
  *          = -9: Error return from calculation of eigenvectors.
  *                Informational error from LAPACK routine strevc.
@@ -232,13 +232,13 @@
  *     pp 575-595, (1987).
  *
  * \Routines called:
- *     ivout   ARPACK utility routine that prints integers.
+ *     ivout   ARPACK utility routine that prints int32_ts.
  *     smout   ARPACK utility routine that prints matrices
  *     svout   ARPACK utility routine that prints vectors.
  *     sgeqr2  LAPACK routine that computes the QR factorization of
  *             a matrix.
  *     slacpy  LAPACK matrix copy routine.
- *     slahqr  LAPACK routine to compute the real Schur form of an
+ *     slahqr  LAPACK routine to compute the float Schur form of an
  *             upper Hessenberg matrix.
  *     slamch  LAPACK routine that determines machine constants.
  *     slapy2  LAPACK routine to compute sqrt(x**2+y**2) carefully.
@@ -267,11 +267,11 @@
  *             A * V(:,1:IPARAM(5)) = V(:,1:IPARAM(5)) * T, and
  *     trans(V(:,1:IPARAM(5))) * V(:,1:IPARAM(5)) = I are approximately
  *     satisfied. Here T is the leading submatrix of order IPARAM(5) of the
- *     real upper quasi-triangular matrix stored workl(ipntr(12)). That is,
+ *     float upper quasi-triangular matrix stored workl(ipntr(12)). That is,
  *     T is block upper triangular with 1-by-1 and 2-by-2 diagonal blocks;
  *     each 2-by-2 diagonal block has its diagonal elements equal and its
  *     off-diagonal elements of opposite sign.  Corresponding to each 2-by-2
- *     diagonal block is a complex conjugate pair of Ritz values. The real
+ *     diagonal block is a complex conjugate pair of Ritz values. The float
  *     Ritz values are stored on the diagonal of T.
  *
  *  3. If IPARAM(7) = 3 or 4 and SIGMAI is not equal zero, then the user must
@@ -281,7 +281,7 @@
  *     compute
  *           trans(Z(:,I)) * A * Z(:,I) if DI(I) = 0.
  *     If DI(I) is not equal to zero and DI(I+1) = - D(I),
- *     then the desired real and imaginary parts of the Ritz value are
+ *     then the desired float and imaginary parts of the Ritz value are
  *           trans(Z(:,I)) * A * Z(:,I) +  trans(Z(:,I+1)) * A * Z(:,I+1),
  *           trans(Z(:,I)) * A * Z(:,I+1) -  trans(Z(:,I+1)) * A * Z(:,I),
  *     respectively.
@@ -305,48 +305,45 @@
  * \EndLib
  */
 
-/* Subroutine */ int sneupd_(logical *rvec, char *howmny, logical *select, 
-	real *dr, real *di, real *z__, integer *ldz, real *sigmar, real *
-	sigmai, real *workev, char *bmat, integer *n, char *which, integer *
-	nev, real *tol, real *resid, integer *ncv, real *v, integer *ldv, 
-	integer *iparam, integer *ipntr, real *workd, real *workl, integer *
-	lworkl, integer *info)
+int sneupd_(bool *rvec, char *howmny, bool *select, 
+	float *dr, float *di, float *z__, int32_t *ldz, float *sigmar, float *
+	sigmai, float *workev, char *bmat, int32_t *n, char *which, int32_t *
+	nev, float *tol, float *resid, int32_t *ncv, float *v, int32_t *ldv, 
+	int32_t *iparam, int32_t *ipntr, float *workd, float *workl, int32_t *
+	lworkl, int32_t *info)
 {
     /* System generated locals */
-    integer v_dim1, v_offset, z_dim1, z_offset, i__1;
-    real r__1, r__2;
-    doublereal d__1;
+    int32_t v_dim1, v_offset, z_dim1, z_offset, i__1;
+    float r__1, r__2;
+    double d__1;
 
     /* Builtin functions */
-    double pow_dd(doublereal *, doublereal *);
-    integer s_cmp(char *, char *, ftnlen, ftnlen);
-    /* Subroutine */ int s_copy(char *, char *, ftnlen, ftnlen);
+    double pow_dd(double *, double *);
+    int32_t s_cmp(char *, char *, ftnlen, ftnlen);
+    int s_copy(char *, char *, ftnlen, ftnlen);
 
     /* Local variables */
-    integer j, k, ih, jj, np;
-    real vl[1]	/* was [1][1] */;
-    integer ibd, ldh, ldq, iri;
-    real sep;
-    integer irr, wri, wrr, mode;
-    real eps23;
-    integer ierr;
-    real temp;
-    integer iwev;
+    int32_t j, k, ih, jj, np;
+    float vl[1]	/* was [1][1] */;
+    int32_t ibd, ldh, ldq, iri;
+    float sep;
+    int32_t irr, wri, wrr, mode;
+    float eps23;
+    int32_t ierr;
+    float temp;
+    int32_t iwev;
     char type__[6];
-    real temp1;
-    integer ihbds, iconj;
-    real conds;
-    logical reord;
-    integer nconv, iwork[1];
-    real rnorm;
-    integer ritzi;
-    integer ritzr;
-    integer nconv2;
-    integer iheigi, iheigr, bounds, invsub, iuptri, msglvl, outncv, ishift, 
+    float temp1;
+    int32_t ihbds, iconj;
+    float conds;
+    bool reord;
+    int32_t nconv, iwork[1];
+    float rnorm;
+    int32_t ritzi;
+    int32_t ritzr;
+    int32_t nconv2;
+    int32_t iheigi, iheigr, bounds, invsub, iuptri, msglvl, outncv, ishift, 
 	    numcnv;
-
-
-
 
 /*     %-----------------------% */
 /*     | Executable Statements | */
@@ -384,7 +381,7 @@
 /*     %---------------------------------% */
 
     eps23 = slamch_("Epsilon-Machine");
-    d__1 = (doublereal) eps23;
+    d__1 = (double) eps23;
     eps23 = pow_dd(&d__1, &d_23);
 
 /*     %--------------% */
@@ -528,7 +525,7 @@
 
     if (*rvec) {
 
-	reord = FALSE_;
+	reord = false;
 
 /*        %---------------------------------------------------% */
 /*        | Use the temporary bounds array to store indices   | */
@@ -537,8 +534,8 @@
 
 	i__1 = *ncv;
 	for (j = 1; j <= i__1; ++j) {
-	    workl[bounds + j - 1] = (real) j;
-	    select[j] = FALSE_;
+	    workl[bounds + j - 1] = (float) j;
+	    select[j] = false;
 /* L10: */
 	}
 
@@ -583,10 +580,10 @@
 	    temp1 = dmax(r__1,r__2);
 	    jj = workl[bounds + *ncv - j];
 	    if (numcnv < nconv && workl[ibd + jj - 1] <= *tol * temp1) {
-		select[jj] = TRUE_;
+		select[jj] = true;
 		++numcnv;
 		if (jj > nconv) {
-		    reord = TRUE_;
+		    reord = true;
 		}
 	    }
 /* L11: */
@@ -756,9 +753,9 @@
 	    i__1 = *ncv;
 	    for (j = 1; j <= i__1; ++j) {
 		if (j <= nconv) {
-		    select[j] = TRUE_;
+		    select[j] = true;
 		} else {
-		    select[j] = FALSE_;
+		    select[j] = false;
 		}
 /* L30: */
 	    }
@@ -998,7 +995,7 @@
 
     if (s_cmp(type__, "SHIFTI", (ftnlen)6, (ftnlen)6) == 0 && msglvl > 1) {
 	svout_(&debug_1.logfil, &nconv, &dr[1], &debug_1.ndigit, "_neupd: Un"
-		"transformed real part of the Ritz valuess.", (ftnlen)52);
+		"transformed float part of the Ritz valuess.", (ftnlen)52);
 	svout_(&debug_1.logfil, &nconv, &di[1], &debug_1.ndigit, "_neupd: Un"
 		"transformed imag part of the Ritz valuess.", (ftnlen)52);
 	svout_(&debug_1.logfil, &nconv, &workl[ihbds], &debug_1.ndigit, "_ne"

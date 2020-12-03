@@ -5,35 +5,35 @@
 int ssdrv6()
 {
     /* System generated locals */
-    integer i__1;
-    real r__1;
+    int32_t i__1;
+    float r__1;
 
     /* Local variables */
-    real d__[50]	/* was [25][2] */, h__;
-    integer j, n;
-    real v[6400]	/* was [256][25] */, r1, r2, ad[256];
-    real ax[256];
-    real mx[256], adl[256], adu[256];
-    integer ido, ncv, nev;
-    real tol, adu2[256];
+    float d__[50]	/* was [25][2] */, h__;
+    int32_t j, n;
+    float v[6400]	/* was [256][25] */, r1, r2, ad[256];
+    float ax[256];
+    float mx[256], adl[256], adu[256];
+    int32_t ido, ncv, nev;
+    float tol, adu2[256];
     char bmat[1];
-    integer mode, info;
-    logical rvec;
-    integer ierr;
-    real temp[256];
-    integer ipiv[256];
-    real sigma;
+    int32_t mode, info;
+    bool rvec;
+    int32_t ierr;
+    float temp[256];
+    int32_t ipiv[256];
+    float sigma;
     char which[2];
-    real resid[256];
-    integer nconv;
-    real workd[768];
-    integer ipntr[11];
-    real workl[825];
-    integer iparam[11];
-    logical select[25];
-    integer ishfts;
-    integer maxitr;
-    integer lworkl;
+    float resid[256];
+    int32_t nconv;
+    float workd[768];
+    int32_t ipntr[11];
+    float workl[825];
+    int32_t iparam[11];
+    bool select[25];
+    int32_t ishfts;
+    int32_t maxitr;
+    int32_t lworkl;
 
     /* Fortran I/O blocks */
     static cilist io___4 = { 0, 6, 0, 0, 0 };
@@ -231,7 +231,7 @@ int ssdrv6()
 /*     | on the interval [0, 1].                              | */
 /*     %------------------------------------------------------% */
 
-    h__ = 1.f / (real) (n + 1);
+    h__ = 1.f / (float) (n + 1);
     r1 = h__ * .66666666666666663f;
     r2 = h__ * .16666666666666666f;
     i__1 = n;
@@ -384,7 +384,7 @@ L10:
 	e_wsle();
 	s_wsle(&io___44);
 	do_lio(&c__9, &c__1, " Error with _saupd, info = ", (ftnlen)27);
-	do_lio(&c__3, &c__1, (char *)&info, (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&info, (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___45);
 	do_lio(&c__9, &c__1, " Check the documentation of _saupd. ", (ftnlen)
@@ -406,7 +406,7 @@ L10:
 /*        | desired.  (indicated by rvec = .true.)    | */
 /*        %-------------------------------------------% */
 
-	rvec = TRUE_;
+	rvec = true;
 
 	sseupd_(&rvec, "All", select, d__, v, &c__256, &sigma, bmat, &n, 
 		which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, 
@@ -436,7 +436,7 @@ L10:
 	    e_wsle();
 	    s_wsle(&io___51);
 	    do_lio(&c__9, &c__1, " Error with _seupd, info = ", (ftnlen)27);
-	    do_lio(&c__3, &c__1, (char *)&ierr, (ftnlen)sizeof(integer));
+	    do_lio(&c__3, &c__1, (char *)&ierr, (ftnlen)sizeof(int32_t));
 	    e_wsle();
 	    s_wsle(&io___52);
 	    do_lio(&c__9, &c__1, " Check the documentation of _seupd ", (
@@ -522,18 +522,18 @@ L10:
 	e_wsle();
 	s_wsle(&io___67);
 	do_lio(&c__9, &c__1, " Size of the matrix is", (ftnlen)22);
-	do_lio(&c__3, &c__1, (char *)&n, (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&n, (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___68);
 	do_lio(&c__9, &c__1, " The number of Ritz values requested is", (
 		ftnlen)39);
-	do_lio(&c__3, &c__1, (char *)&nev, (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&nev, (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___69);
 	do_lio(&c__9, &c__1, " The number of Arnoldi vectors generated", (
 		ftnlen)40);
 	do_lio(&c__9, &c__1, " (NCV) is ", (ftnlen)10);
-	do_lio(&c__3, &c__1, (char *)&ncv, (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&ncv, (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___70);
 	do_lio(&c__9, &c__1, " What portion of the spectrum: ", (ftnlen)31);
@@ -542,21 +542,21 @@ L10:
 	s_wsle(&io___71);
 	do_lio(&c__9, &c__1, " The number of converged Ritz values is ", (
 		ftnlen)40);
-	do_lio(&c__3, &c__1, (char *)&nconv, (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&nconv, (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___72);
 	do_lio(&c__9, &c__1, " The number of Implicit Arnoldi update", (
 		ftnlen)38);
 	do_lio(&c__9, &c__1, " iterations taken is", (ftnlen)20);
-	do_lio(&c__3, &c__1, (char *)&iparam[2], (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&iparam[2], (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___73);
 	do_lio(&c__9, &c__1, " The number of OP*x is ", (ftnlen)23);
-	do_lio(&c__3, &c__1, (char *)&iparam[8], (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&iparam[8], (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___74);
 	do_lio(&c__9, &c__1, " The convergence criterion is ", (ftnlen)30);
-	do_lio(&c__4, &c__1, (char *)&tol, (ftnlen)sizeof(real));
+	do_lio(&c__4, &c__1, (char *)&tol, (ftnlen)sizeof(float));
 	e_wsle();
 	s_wsle(&io___75);
 	do_lio(&c__9, &c__1, " ", (ftnlen)1);
@@ -579,14 +579,14 @@ L9000:
 /*     arising from using the piecewise linear finite element */
 /*     on the interval [0,1]. */
 
-int ssdrv6_mv_(integer *n, real *v, real *w)
+int ssdrv6_mv_(int32_t *n, float *v, float *w)
 {
     /* System generated locals */
-    integer i__1;
+    int32_t i__1;
 
     /* Local variables */
-    real h__;
-    integer j;
+    float h__;
+    int32_t j;
 
     /* Parameter adjustments */
     --w;
@@ -604,7 +604,7 @@ int ssdrv6_mv_(integer *n, real *v, real *w)
 
 /*     Scale the vector w by h. */
 
-    h__ = 1.f / ((real) (*n + 1) * 6.f);
+    h__ = 1.f / ((float) (*n + 1) * 6.f);
     sscal_(n, &h__, &w[1], &c__1);
     return 0;
 } /* mv_ */
@@ -616,15 +616,15 @@ int ssdrv6_mv_(integer *n, real *v, real *w)
 /*     on the interval [0,1] with zero Dirichlet boundary condition */
 /*     using piecewise linear elements. */
 
-int ssdrv6_av_(integer *n, real *v, real *w)
+int ssdrv6_av_(int32_t *n, float *v, float *w)
 {
     /* System generated locals */
-    integer i__1;
-    real r__1;
+    int32_t i__1;
+    float r__1;
 
     /* Local variables */
-    real h__;
-    integer j;
+    float h__;
+    int32_t j;
 
     /* Parameter adjustments */
     --w;
@@ -642,7 +642,7 @@ int ssdrv6_av_(integer *n, real *v, real *w)
 
 /*     Scale the vector w by (1/h). */
 
-    h__ = 1.f / (real) (*n + 1);
+    h__ = 1.f / (float) (*n + 1);
     r__1 = 1.f / h__;
     sscal_(n, &r__1, &w[1], &c__1);
     return 0;

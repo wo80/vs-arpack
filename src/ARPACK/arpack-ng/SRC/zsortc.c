@@ -19,8 +19,8 @@
  *  WHICH   Character*2.  (Input)
  *          'LM' -> sort X into increasing order of magnitude.
  *          'SM' -> sort X into decreasing order of magnitude.
- *          'LR' -> sort X with real(X) in increasing algebraic order
- *          'SR' -> sort X with real(X) in decreasing algebraic order
+ *          'LR' -> sort X with float(X) in increasing algebraic order
+ *          'SR' -> sort X with float(X) in decreasing algebraic order
  *          'LI' -> sort X with imag(X) in increasing algebraic order
  *          'SI' -> sort X with imag(X) in decreasing algebraic order
  *
@@ -59,28 +59,25 @@
  * \EndLib
  */
 
-
-/* Subroutine */ int zsortc_(char *which, logical *apply, integer *n, 
-	doublecomplex *x, doublecomplex *y)
+int zsortc_(char *which, bool *apply, int32_t *n, 
+	zomplex *x, zomplex *y)
 {
     /* System generated locals */
-    integer i__1, i__2, i__3;
-    doublereal d__1, d__2;
+    int32_t i__1, i__2, i__3;
+    double d__1, d__2;
 
     /* Builtin functions */
-    integer s_cmp(char *, char *, ftnlen, ftnlen);
-    double d_imag(doublecomplex *);
+    int32_t s_cmp(char *, char *, ftnlen, ftnlen);
+    double d_imag(zomplex *);
 
     /* Local variables */
-    integer i__, j, igap;
-    doublecomplex temp;
-    doublereal temp1, temp2;
-
+    int32_t i__, j, igap;
+    zomplex temp;
+    double temp1, temp2;
 
 /*     %------------------% */
 /*     | Scalar Arguments | */
 /*     %------------------% */
-
 
 /*     %--------------------% */
 /*     | Intrinsic Functions | */

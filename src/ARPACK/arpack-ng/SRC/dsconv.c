@@ -57,24 +57,20 @@
  * \EndLib
  */
 
-
-/* Subroutine */ int dsconv_(integer *n, doublereal *ritz, doublereal *bounds,
-	 doublereal *tol, integer *nconv)
+int dsconv_(int32_t *n, double *ritz, double *bounds,
+	 double *tol, int32_t *nconv)
 {
     /* System generated locals */
-    integer i__1;
-    doublereal d__1, d__2, d__3;
+    int32_t i__1;
+    double d__1, d__2, d__3;
 
     /* Builtin functions */
-    double pow_dd(doublereal *, doublereal *);
+    double pow_dd(double *, double *);
 
     /* Local variables */
-    integer i__;
-    static real t0, t1;
-    doublereal eps23, temp;
-
-
-
+    int32_t i__;
+    static float t0, t1;
+    double eps23, temp;
 
 /*     %-------------------% */
 /*     | External routines | */

@@ -5,47 +5,47 @@
 int sndrv6()
 {
     /* System generated locals */
-    integer i__1, i__2, i__3;
-    real r__1, r__2;
+    int32_t i__1, i__2, i__3;
+    float r__1, r__2;
     complex q__1;
 
     double r_imag(complex *);
 
     /* Local variables */
-    real d__[75]	/* was [25][3] */;
-    integer j, n;
-    real v[6400]	/* was [256][25] */;
+    float d__[75]	/* was [25][3] */;
+    int32_t j, n;
+    float v[6400]	/* was [256][25] */;
     complex c1, c2, c3;
-    real ax[256];
-    real mx[256];
+    float ax[256];
+    float mx[256];
     complex cdd[256], cdl[256], cdu[256];
-    integer ido, ncv, nev;
-    real tol;
+    int32_t ido, ncv, nev;
+    float tol;
     complex cdu2[256];
-    real deni;
+    float deni;
     char bmat[1];
-    integer mode;
-    real denr;
-    integer info;
-    logical rvec;
-    integer ierr, ipiv[256];
-    real numi;
-    real numr;
+    int32_t mode;
+    float denr;
+    int32_t info;
+    bool rvec;
+    int32_t ierr, ipiv[256];
+    float numi;
+    float numr;
     char which[2];
-    real resid[256];
+    float resid[256];
     complex ctemp[256];
-    integer nconv;
-    real workd[768];
-    logical first;
-    integer ipntr[14];
-    real workl[2025];
-    integer iparam[11];
-    real sigmai;
-    logical select[25];
-    real sigmar;
-    integer ishfts, maxitr;
-    integer lworkl;
-    real workev[75];
+    int32_t nconv;
+    float workd[768];
+    bool first;
+    int32_t ipntr[14];
+    float workl[2025];
+    int32_t iparam[11];
+    float sigmai;
+    bool select[25];
+    float sigmar;
+    int32_t ishfts, maxitr;
+    int32_t lworkl;
+    float workev[75];
 
     /* Fortran I/O blocks */
     static cilist io___4 = { 0, 6, 0, 0, 0 };
@@ -426,7 +426,7 @@ L20:
 	e_wsle();
 	s_wsle(&io___45);
 	do_lio(&c__9, &c__1, " Error with _naupd, info = ", (ftnlen)27);
-	do_lio(&c__3, &c__1, (char *)&info, (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&info, (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___46);
 	do_lio(&c__9, &c__1, " Check the documentation of _naupd.", (ftnlen)
@@ -448,7 +448,7 @@ L20:
 /*        | desired.  (indicated by rvec = .true.)    | */
 /*        %-------------------------------------------% */
 
-	rvec = TRUE_;
+	rvec = true;
 	sneupd_(&rvec, "A", select, d__, &d__[25], v, &c__256, &sigmar, &
 		sigmai, workev, bmat, &n, which, &nev, &tol, resid, &ncv, v, &
 		c__256, iparam, ipntr, workd, workl, &lworkl, &ierr, (ftnlen)
@@ -478,7 +478,7 @@ L20:
 	    e_wsle();
 	    s_wsle(&io___53);
 	    do_lio(&c__9, &c__1, " Error with _neupd, info = ", (ftnlen)27);
-	    do_lio(&c__3, &c__1, (char *)&ierr, (ftnlen)sizeof(integer));
+	    do_lio(&c__3, &c__1, (char *)&ierr, (ftnlen)sizeof(int32_t));
 	    e_wsle();
 	    s_wsle(&io___54);
 	    do_lio(&c__9, &c__1, " Check the documentation of _neupd. ", (
@@ -490,7 +490,7 @@ L20:
 
 	} else {
 
-	    first = TRUE_;
+	    first = true;
 	    nconv = iparam[4];
 	    i__1 = nconv;
 	    for (j = 1; j <= i__1; ++j) {
@@ -557,7 +557,7 @@ L20:
 			    &deni);
 		    d__[j + 24] = (numi * denr - numr * deni) / slapy2_(&denr,
 			     &deni);
-		    first = FALSE_;
+		    first = false;
 
 		} else {
 
@@ -570,7 +570,7 @@ L20:
 
 		    d__[j - 1] = d__[j - 2];
 		    d__[j + 24] = -d__[j + 23];
-		    first = TRUE_;
+		    first = true;
 
 		}
 
@@ -590,7 +590,7 @@ L20:
 /*           | tolerance)                | */
 /*           %---------------------------% */
 
-	    first = TRUE_;
+	    first = true;
 	    nconv = iparam[4];
 	    i__1 = nconv;
 	    for (j = 1; j <= i__1; ++j) {
@@ -635,9 +635,9 @@ L20:
 		    d__[j + 49] = slapy2_(&d__[j + 49], &r__1);
 		    d__[j + 49] /= slapy2_(&d__[j - 1], &d__[j + 24]);
 		    d__[j + 50] = d__[j + 49];
-		    first = FALSE_;
+		    first = false;
 		} else {
-		    first = TRUE_;
+		    first = true;
 		}
 
 /* L80: */
@@ -696,18 +696,18 @@ L20:
 	e_wsle();
 	s_wsle(&io___74);
 	do_lio(&c__9, &c__1, " Size of the matrix is ", (ftnlen)23);
-	do_lio(&c__3, &c__1, (char *)&n, (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&n, (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___75);
 	do_lio(&c__9, &c__1, " The number of Ritz values requested is ", (
 		ftnlen)40);
-	do_lio(&c__3, &c__1, (char *)&nev, (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&nev, (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___76);
 	do_lio(&c__9, &c__1, " The number of Arnoldi vectors generated", (
 		ftnlen)40);
 	do_lio(&c__9, &c__1, " (NCV) is ", (ftnlen)10);
-	do_lio(&c__3, &c__1, (char *)&ncv, (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&ncv, (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___77);
 	do_lio(&c__9, &c__1, " What portion of the spectrum: ", (ftnlen)31);
@@ -716,21 +716,21 @@ L20:
 	s_wsle(&io___78);
 	do_lio(&c__9, &c__1, " The number of converged Ritz values is ", (
 		ftnlen)40);
-	do_lio(&c__3, &c__1, (char *)&nconv, (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&nconv, (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___79);
 	do_lio(&c__9, &c__1, " The number of Implicit Arnoldi update", (
 		ftnlen)38);
 	do_lio(&c__9, &c__1, " iterations taken is ", (ftnlen)21);
-	do_lio(&c__3, &c__1, (char *)&iparam[2], (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&iparam[2], (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___80);
 	do_lio(&c__9, &c__1, " The number of OP*x is ", (ftnlen)23);
-	do_lio(&c__3, &c__1, (char *)&iparam[8], (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&iparam[8], (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___81);
 	do_lio(&c__9, &c__1, " The convergence criterion is ", (ftnlen)30);
-	do_lio(&c__4, &c__1, (char *)&tol, (ftnlen)sizeof(real));
+	do_lio(&c__4, &c__1, (char *)&tol, (ftnlen)sizeof(float));
 	e_wsle();
 	s_wsle(&io___82);
 	do_lio(&c__9, &c__1, " ", (ftnlen)1);
@@ -751,13 +751,13 @@ L9000:
 
 /*     matrix vector multiplication subroutine */
 
-int sndrv6_mv_(integer *n, real *v, real *w)
+int sndrv6_mv_(int32_t *n, float *v, float *w)
 {
     /* System generated locals */
-    integer i__1;
+    int32_t i__1;
 
     /* Local variables */
-    integer j;
+    int32_t j;
 
 /*     Compute the matrix vector multiplication y<---M*x */
 /*     where M is a n by n symmetric tridiagonal matrix with 4 on the */
@@ -779,13 +779,13 @@ int sndrv6_mv_(integer *n, real *v, real *w)
 } /* mv_ */
 
 /* ------------------------------------------------------------------ */
-int sndrv6_av_(integer *n, real *v, real *w)
+int sndrv6_av_(int32_t *n, float *v, float *w)
 {
     /* System generated locals */
-    integer i__1;
+    int32_t i__1;
 
     /* Local variables */
-    integer j;
+    int32_t j;
 
 /*     Compute the matrix vector multiplication y<---A*x */
 /*     where M is a n by n symmetric tridiagonal matrix with 2 on the */

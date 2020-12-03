@@ -66,26 +66,23 @@
  * \EndLib
  */
 
-
-/* Subroutine */ int ssesrt_(char *which, logical *apply, integer *n, real *x,
-	 integer *na, real *a, integer *lda)
+int ssesrt_(char *which, bool *apply, int32_t *n, float *x,
+	 int32_t *na, float *a, int32_t *lda)
 {
     /* System generated locals */
-    integer a_dim1, a_offset, i__1;
-    real r__1, r__2;
+    int32_t a_dim1, a_offset, i__1;
+    float r__1, r__2;
 
     /* Builtin functions */
-    integer s_cmp(char *, char *, ftnlen, ftnlen);
+    int32_t s_cmp(char *, char *, ftnlen, ftnlen);
 
     /* Local variables */
-    integer i__, j, igap;
-    real temp;
-
+    int32_t i__, j, igap;
+    float temp;
 
 /*     %------------------% */
 /*     | Scalar Arguments | */
 /*     %------------------% */
-
 
 /*     %-----------------------% */
 /*     | Executable Statements | */

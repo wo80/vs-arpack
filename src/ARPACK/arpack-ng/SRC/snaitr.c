@@ -121,7 +121,7 @@
  * \BeginLib
  *
  * \Local variables:
- *     xxxxxx  real
+ *     xxxxxx  float
  *
  * \References:
  *  1. D.C. Sorensen, "Implicit Application of Polynomial Filters in
@@ -133,7 +133,7 @@
  *
  * \Routines called:
  *     sgetv0  ARPACK routine to generate the initial vector.
- *     ivout   ARPACK utility routine that prints integers.
+ *     ivout   ARPACK utility routine that prints int32_ts.
  *     arscnd  ARPACK utility routine for timing.
  *     smout   ARPACK utility routine that prints matrices
  *     svout   ARPACK utility routine that prints vectors.
@@ -207,47 +207,43 @@
  * \EndLib
  */
 
-
-/* Subroutine */ int snaitr_(integer *ido, char *bmat, integer *n, integer *k,
-	 integer *np, integer *nb, real *resid, real *rnorm, real *v, integer 
-	*ldv, real *h__, integer *ldh, integer *ipntr, real *workd, integer *
+int snaitr_(int32_t *ido, char *bmat, int32_t *n, int32_t *k,
+	 int32_t *np, int32_t *nb, float *resid, float *rnorm, float *v, int32_t 
+	*ldv, float *h__, int32_t *ldh, int32_t *ipntr, float *workd, int32_t *
 	info)
 {
     /* Initialized data */
 
-    static logical first = TRUE_;
+    static bool first = true;
 
     /* System generated locals */
-    integer h_dim1, h_offset, v_dim1, v_offset, i__1, i__2;
-    real r__1, r__2;
+    int32_t h_dim1, h_offset, v_dim1, v_offset, i__1, i__2;
+    float r__1, r__2;
 
     /* Builtin functions */
-    double sqrt(doublereal);
+    double sqrt(double);
 
     /* Local variables */
-    integer i__;
-    static integer j;
-    static real t0, t1, t2, t3, t4, t5;
-    integer jj;
-    static integer ipj, irj, ivj;
-    static real ulp;
-    real tst1;
-    static integer ierr, iter;
-    static real unfl, ovfl;
-    static integer itry;
-    real temp1;
-    static logical orth1, orth2, step3, step4;
-    static real betaj;
-    integer infol;
-    real xtemp[2];
-    static real wnorm;
-    static real rnorm1;
-    static logical rstart;
-    static integer msglvl;
-    static real smlnum;
-
-
-
+    int32_t i__;
+    static int32_t j;
+    static float t0, t1, t2, t3, t4, t5;
+    int32_t jj;
+    static int32_t ipj, irj, ivj;
+    static float ulp;
+    float tst1;
+    static int32_t ierr, iter;
+    static float unfl, ovfl;
+    static int32_t itry;
+    float temp1;
+    static bool orth1, orth2, step3, step4;
+    static float betaj;
+    int32_t infol;
+    float xtemp[2];
+    static float wnorm;
+    static float rnorm1;
+    static bool rstart;
+    static int32_t msglvl;
+    static float smlnum;
 
 /*     %-----------------% */
 /*     | Data statements | */
@@ -285,7 +281,7 @@
 	slabad_(&unfl, &ovfl);
 	ulp = slamch_("precision");
 	smlnum = unfl * (*n / ulp);
-	first = FALSE_;
+	first = false;
     }
 
     if (*ido == 0) {
@@ -303,11 +299,11 @@
 /*        %------------------------------% */
 
 	*info = 0;
-	step3 = FALSE_;
-	step4 = FALSE_;
-	rstart = FALSE_;
-	orth1 = FALSE_;
-	orth2 = FALSE_;
+	step3 = false;
+	step4 = false;
+	rstart = false;
+	orth1 = false;
+	orth2 = false;
 	j = *k + 1;
 	ipj = 1;
 	irj = ipj + *n;
@@ -394,7 +390,7 @@ L1000:
     ++timing_1.nrstrt;
     itry = 1;
 L20:
-    rstart = TRUE_;
+    rstart = true;
     *ido = 0;
 L30:
 
@@ -459,7 +455,7 @@ L40:
 /*        | Note that this is not quite yet r_{j}. See STEP 4    | */
 /*        %------------------------------------------------------% */
 
-    step3 = TRUE_;
+    step3 = true;
     ++timing_1.nopx;
     arscnd_(&t2);
     scopy_(n, &v[j * v_dim1 + 1], &c__1, &workd[ivj], &c__1);
@@ -483,7 +479,7 @@ L50:
 
     arscnd_(&t3);
     timing_1.tmvopx += t3 - t2;
-    step3 = FALSE_;
+    step3 = false;
 
 /*        %------------------------------------------% */
 /*        | Put another copy of OP*v_{j} into RESID. | */
@@ -499,7 +495,7 @@ L50:
     arscnd_(&t2);
     if (*(unsigned char *)bmat == 'G') {
 	++timing_1.nbx;
-	step4 = TRUE_;
+	step4 = true;
 	ipntr[1] = irj;
 	ipntr[2] = ipj;
 	*ido = 2;
@@ -525,7 +521,7 @@ L60:
 	timing_1.tmvbx += t3 - t2;
     }
 
-    step4 = FALSE_;
+    step4 = false;
 
 /*        %-------------------------------------% */
 /*        | The following is needed for STEP 5. | */
@@ -546,7 +542,6 @@ L60:
 /*        | w_{j} <-  V_{j}^T * B * OP * v_{j}      | */
 /*        | r_{j} <-  OP*v_{j} - V_{j} * w_{j}      | */
 /*        %-----------------------------------------% */
-
 
 /*        %------------------------------------------% */
 /*        | Compute the j Fourier coefficients w_{j} | */
@@ -570,7 +565,7 @@ L60:
 
     arscnd_(&t4);
 
-    orth1 = TRUE_;
+    orth1 = true;
 
     arscnd_(&t2);
     if (*(unsigned char *)bmat == 'G') {
@@ -600,7 +595,7 @@ L70:
 	timing_1.tmvbx += t3 - t2;
     }
 
-    orth1 = FALSE_;
+    orth1 = false;
 
 /*        %------------------------------% */
 /*        | Compute the B-norm of r_{j}. | */
@@ -674,7 +669,7 @@ L80:
 	    &resid[1], &c__1);
     saxpy_(&j, &s_one, &workd[irj], &c__1, &h__[j * h_dim1 + 1], &c__1);
 
-    orth2 = TRUE_;
+    orth2 = true;
     arscnd_(&t2);
     if (*(unsigned char *)bmat == 'G') {
 	++timing_1.nbx;
@@ -778,8 +773,8 @@ L90:
 
 L100:
 
-    rstart = FALSE_;
-    orth2 = FALSE_;
+    rstart = false;
+    orth2 = false;
 
     arscnd_(&t5);
     timing_1.titref += t5 - t4;

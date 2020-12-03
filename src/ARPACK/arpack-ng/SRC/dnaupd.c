@@ -11,9 +11,9 @@
  *  Reverse communication interface for the Implicitly Restarted Arnoldi
  *  iteration. This subroutine computes approximations to a few eigenpairs
  *  of a linear operator "OP" with respect to a semi-inner product defined by
- *  a symmetric positive semi-definite real matrix B. B may be the identity
- *  matrix. NOTE: If the linear operator "OP" is real and symmetric
- *  with respect to the real positive semi-definite symmetric matrix B,
+ *  a symmetric positive semi-definite float matrix B. B may be the identity
+ *  matrix. NOTE: If the linear operator "OP" is float and symmetric
+ *  with respect to the float positive semi-definite symmetric matrix B,
  *  i.e. B*OP = (OP`)*B, then subroutine dsaupd  should be used instead.
  *
  *  The computed approximate eigenvalues are called Ritz values and
@@ -31,16 +31,16 @@
  *
  *  Mode 3:  A*x = lambda*M*x, M symmetric semi-definite
  *           ===> OP = Real_Part{ inv[A - sigma*M]*M }  and  B = M.
- *           ===> shift-and-invert mode (in real arithmetic)
+ *           ===> shift-and-invert mode (in float arithmetic)
  *           If OP*x = amu*x, then
  *           amu = 1/2 * [ 1/(lambda-sigma) + 1/(lambda-conjg(sigma)) ].
- *           Note: If sigma is real, i.e. imaginary part of sigma is zero;
+ *           Note: If sigma is float, i.e. imaginary part of sigma is zero;
  *                 Real_Part{ inv[A - sigma*M]*M } == inv[A - sigma*M]*M
  *                 amu == 1/(lambda-sigma).
  *
  *  Mode 4:  A*x = lambda*M*x, M symmetric semi-definite
  *           ===> OP = Imaginary_Part{ inv[A - sigma*M]*M }  and  B = M.
- *           ===> shift-and-invert mode (in real arithmetic)
+ *           ===> shift-and-invert mode (in float arithmetic)
  *           If OP*x = amu*x, then
  *           amu = 1/2i * [ 1/(lambda-sigma) - 1/(lambda-conjg(sigma)) ].
  *
@@ -91,7 +91,7 @@
  *          IDO =  2: compute  Y = B * X  where
  *                    IPNTR(1) is the pointer into WORKD for X,
  *                    IPNTR(2) is the pointer into WORKD for Y.
- *          IDO =  3: compute the IPARAM(8) real and imaginary parts
+ *          IDO =  3: compute the IPARAM(8) float and imaginary parts
  *                    of the shifts where INPTR(14) is the pointer
  *                    into WORKL for placing the shifts. See Remark
  *                    5 below.
@@ -110,8 +110,8 @@
  *  WHICH   Character*2.  (INPUT)
  *          'LM' -> want the NEV eigenvalues of largest magnitude.
  *          'SM' -> want the NEV eigenvalues of smallest magnitude.
- *          'LR' -> want the NEV eigenvalues of largest real part.
- *          'SR' -> want the NEV eigenvalues of smallest real part.
+ *          'LR' -> want the NEV eigenvalues of largest float part.
+ *          'SR' -> want the NEV eigenvalues of smallest float part.
  *          'LI' -> want the NEV eigenvalues of largest imaginary part.
  *          'SI' -> want the NEV eigenvalues of smallest imaginary part.
  *
@@ -157,7 +157,7 @@
  *          the Arnoldi iteration in an implicit fashion.
  *          -------------------------------------------------------------
  *          ISHIFT = 0: the shifts are provided by the user via
- *                      reverse communication.  The real and imaginary
+ *                      reverse communication.  The float and imaginary
  *                      parts of the NCV eigenvalues of the Hessenberg
  *                      matrix H are returned in the part of the WORKL
  *                      array corresponding to RITZR and RITZI. See remark
@@ -213,7 +213,7 @@
  *                    that is untouched by the program.
  *          IPNTR(5): pointer to the NCV by NCV upper Hessenberg matrix
  *                    H in WORKL.
- *          IPNTR(6): pointer to the real part of the ritz value array
+ *          IPNTR(6): pointer to the float part of the ritz value array
  *                    RITZR in WORKL.
  *          IPNTR(7): pointer to the imaginary part of the ritz value array
  *                    RITZI in WORKL.
@@ -224,7 +224,7 @@
  *
  *          Note: IPNTR(9:13) is only referenced by dneupd . See Remark 2 below.
  *
- *          IPNTR(9):  pointer to the real part of the NCV RITZ values of the
+ *          IPNTR(9):  pointer to the float part of the NCV RITZ values of the
  *                     original system.
  *          IPNTR(10): pointer to the imaginary part of the NCV RITZ values of
  *                     the original system.
@@ -314,8 +314,8 @@
  *     See Chapter 8 of Reference 2 for further information.
  *
  *  5. When IPARAM(1) = 0, and IDO = 3, the user needs to provide the
- *     NP = IPARAM(8) real and imaginary parts of the shifts in locations
- *         real part                  imaginary part
+ *     NP = IPARAM(8) float and imaginary parts of the shifts in locations
+ *         float part                  imaginary part
  *         -----------------------    --------------
  *     1   WORKL(IPNTR(14))           WORKL(IPNTR(14)+NP)
  *     2   WORKL(IPNTR(14)+1)         WORKL(IPNTR(14)+NP+1)
@@ -325,7 +325,7 @@
  *     NP  WORKL(IPNTR(14)+NP-1)      WORKL(IPNTR(14)+2*NP-1).
  *
  *     Only complex conjugate pairs of shifts may be applied and the pairs
- *     must be placed in consecutive locations. The real part of the
+ *     must be placed in consecutive locations. The float part of the
  *     eigenvalues of the current upper Hessenberg matrix are located in
  *     WORKL(IPNTR(6)) through WORKL(IPNTR(6)+NCV-1) and the imaginary part
  *     in WORKL(IPNTR(7)) through WORKL(IPNTR(7)+NCV-1). They are ordered
@@ -368,7 +368,7 @@
  * \BeginLib
  *
  * \Local variables:
- *     xxxxxx  real
+ *     xxxxxx  float
  *
  * \References:
  *  1. D.C. Sorensen, "Implicit Application of Polynomial Filters in
@@ -384,7 +384,7 @@
  * \Routines called:
  *     dnaup2   ARPACK routine that implements the Implicitly Restarted
  *             Arnoldi Iteration.
- *     ivout   ARPACK utility routine that prints integers.
+ *     ivout   ARPACK utility routine that prints int32_ts.
  *     arscnd  ARPACK utility routine for timing.
  *     dvout    ARPACK utility routine that prints vectors.
  *     dlamch   LAPACK routine that determines machine constants.
@@ -408,11 +408,10 @@
  * \EndLib
  */
 
-
-/* Subroutine */ int dnaupd_(integer *ido, char *bmat, integer *n, char *
-	which, integer *nev, doublereal *tol, doublereal *resid, integer *ncv,
-	 doublereal *v, integer *ldv, integer *iparam, integer *ipntr, 
-	doublereal *workd, doublereal *workl, integer *lworkl, integer *info)
+int dnaupd_(int32_t *ido, char *bmat, int32_t *n, char *
+	which, int32_t *nev, double *tol, double *resid, int32_t *ncv,
+	 double *v, int32_t *ldv, int32_t *iparam, int32_t *ipntr, 
+	double *workd, double *workl, int32_t *lworkl, int32_t *info)
 {
     /* Format strings */
     static char fmt_1000[] = "(//,5x,\002==================================="
@@ -443,28 +442,24 @@
 	    " \002,f12.6/)";
 
     /* System generated locals */
-    integer v_dim1, v_offset, i__1, i__2;
+    int32_t v_dim1, v_offset, i__1, i__2;
 
     /* Builtin functions */
-    integer s_cmp(char *, char *, ftnlen, ftnlen), s_wsfe(cilist *), e_wsfe(
-	    void), do_fio(integer *, char *, ftnlen);
+    int32_t s_cmp(char *, char *, ftnlen, ftnlen), s_wsfe(cilist *), e_wsfe(
+	    void), do_fio(int32_t *, char *, ftnlen);
 
     /* Local variables */
-    integer j;
-    static real t0, t1;
-    static integer nb, ih, iq, np, iw, ldh, ldq, nev0, mode;
-    integer ierr;
-    static integer iupd, next, ritzi;
-    static integer ritzr;
-    static integer bounds, ishift, msglvl, mxiter;
+    int32_t j;
+    static float t0, t1;
+    static int32_t nb, ih, iq, np, iw, ldh, ldq, nev0, mode;
+    int32_t ierr;
+    static int32_t iupd, next, ritzi;
+    static int32_t ritzr;
+    static int32_t bounds, ishift, msglvl, mxiter;
 
     /* Fortran I/O blocks */
     static cilist io___22 = { 0, 6, 0, fmt_1000, 0 };
     static cilist io___23 = { 0, 6, 0, fmt_1100, 0 };
-
-
-
-
 
 /*     %-----------------------% */
 /*     | Executable Statements | */
@@ -686,24 +681,24 @@
 	s_wsfe(&io___22);
 	e_wsfe();
 	s_wsfe(&io___23);
-	do_fio(&c__1, (char *)&mxiter, (ftnlen)sizeof(integer));
-	do_fio(&c__1, (char *)&timing_1.nopx, (ftnlen)sizeof(integer));
-	do_fio(&c__1, (char *)&timing_1.nbx, (ftnlen)sizeof(integer));
-	do_fio(&c__1, (char *)&timing_1.nrorth, (ftnlen)sizeof(integer));
-	do_fio(&c__1, (char *)&timing_1.nitref, (ftnlen)sizeof(integer));
-	do_fio(&c__1, (char *)&timing_1.nrstrt, (ftnlen)sizeof(integer));
-	do_fio(&c__1, (char *)&timing_1.tmvopx, (ftnlen)sizeof(real));
-	do_fio(&c__1, (char *)&timing_1.tmvbx, (ftnlen)sizeof(real));
-	do_fio(&c__1, (char *)&timing_1.tnaupd, (ftnlen)sizeof(real));
-	do_fio(&c__1, (char *)&timing_1.tnaup2, (ftnlen)sizeof(real));
-	do_fio(&c__1, (char *)&timing_1.tnaitr, (ftnlen)sizeof(real));
-	do_fio(&c__1, (char *)&timing_1.titref, (ftnlen)sizeof(real));
-	do_fio(&c__1, (char *)&timing_1.tgetv0, (ftnlen)sizeof(real));
-	do_fio(&c__1, (char *)&timing_1.tneigh, (ftnlen)sizeof(real));
-	do_fio(&c__1, (char *)&timing_1.tngets, (ftnlen)sizeof(real));
-	do_fio(&c__1, (char *)&timing_1.tnapps, (ftnlen)sizeof(real));
-	do_fio(&c__1, (char *)&timing_1.tnconv, (ftnlen)sizeof(real));
-	do_fio(&c__1, (char *)&timing_1.trvec, (ftnlen)sizeof(real));
+	do_fio(&c__1, (char *)&mxiter, (ftnlen)sizeof(int32_t));
+	do_fio(&c__1, (char *)&timing_1.nopx, (ftnlen)sizeof(int32_t));
+	do_fio(&c__1, (char *)&timing_1.nbx, (ftnlen)sizeof(int32_t));
+	do_fio(&c__1, (char *)&timing_1.nrorth, (ftnlen)sizeof(int32_t));
+	do_fio(&c__1, (char *)&timing_1.nitref, (ftnlen)sizeof(int32_t));
+	do_fio(&c__1, (char *)&timing_1.nrstrt, (ftnlen)sizeof(int32_t));
+	do_fio(&c__1, (char *)&timing_1.tmvopx, (ftnlen)sizeof(float));
+	do_fio(&c__1, (char *)&timing_1.tmvbx, (ftnlen)sizeof(float));
+	do_fio(&c__1, (char *)&timing_1.tnaupd, (ftnlen)sizeof(float));
+	do_fio(&c__1, (char *)&timing_1.tnaup2, (ftnlen)sizeof(float));
+	do_fio(&c__1, (char *)&timing_1.tnaitr, (ftnlen)sizeof(float));
+	do_fio(&c__1, (char *)&timing_1.titref, (ftnlen)sizeof(float));
+	do_fio(&c__1, (char *)&timing_1.tgetv0, (ftnlen)sizeof(float));
+	do_fio(&c__1, (char *)&timing_1.tneigh, (ftnlen)sizeof(float));
+	do_fio(&c__1, (char *)&timing_1.tngets, (ftnlen)sizeof(float));
+	do_fio(&c__1, (char *)&timing_1.tnapps, (ftnlen)sizeof(float));
+	do_fio(&c__1, (char *)&timing_1.tnconv, (ftnlen)sizeof(float));
+	do_fio(&c__1, (char *)&timing_1.trvec, (ftnlen)sizeof(float));
 	e_wsfe();
     }
 

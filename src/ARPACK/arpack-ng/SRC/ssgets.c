@@ -62,11 +62,11 @@
  * \BeginLib
  *
  * \Local variables:
- *     xxxxxx  real
+ *     xxxxxx  float
  *
  * \Routines called:
  *     ssortr  ARPACK utility sorting routine.
- *     ivout   ARPACK utility routine that prints integers.
+ *     ivout   ARPACK utility routine that prints int32_ts.
  *     arscnd  ARPACK utility routine for timing.
  *     svout   ARPACK utility routine that prints vectors.
  *     scopy   Level 1 BLAS that copies one vector to another.
@@ -91,23 +91,19 @@
  * \EndLib
  */
 
-
-/* Subroutine */ int ssgets_(integer *ishift, char *which, integer *kev, 
-	integer *np, real *ritz, real *bounds, real *shifts)
+int ssgets_(int32_t *ishift, char *which, int32_t *kev, 
+	int32_t *np, float *ritz, float *bounds, float *shifts)
 {
     /* System generated locals */
-    integer i__1;
+    int32_t i__1;
 
     /* Builtin functions */
-    integer s_cmp(char *, char *, ftnlen, ftnlen);
+    int32_t s_cmp(char *, char *, ftnlen, ftnlen);
 
     /* Local variables */
-    static real t0, t1;
-    integer kevd2;
-    integer msglvl;
-
-
-
+    static float t0, t1;
+    int32_t kevd2;
+    int32_t msglvl;
 
 /*     %-----------------------% */
 /*     | Executable Statements | */

@@ -11,8 +11,8 @@
  *  Reverse communication interface for the Implicitly Restarted Arnoldi
  *  iteration. This is intended to be used to find a few eigenpairs of a
  *  complex linear operator OP with respect to a semi-inner product defined
- *  by a hermitian positive semi-definite real matrix B. B may be the identity
- *  matrix.  NOTE: if both OP and B are real, then ssaupd or snaupd should
+ *  by a hermitian positive semi-definite float matrix B. B may be the identity
+ *  matrix.  NOTE: if both OP and B are float, then ssaupd or snaupd should
  *  be used.
  *
  *
@@ -97,8 +97,8 @@
  *  WHICH   Character*2.  (INPUT)
  *          'LM' -> want the NEV eigenvalues of largest magnitude.
  *          'SM' -> want the NEV eigenvalues of smallest magnitude.
- *          'LR' -> want the NEV eigenvalues of largest real part.
- *          'SR' -> want the NEV eigenvalues of smallest real part.
+ *          'LR' -> want the NEV eigenvalues of largest float part.
+ *          'SR' -> want the NEV eigenvalues of smallest float part.
  *          'LI' -> want the NEV eigenvalues of largest imaginary part.
  *          'SI' -> want the NEV eigenvalues of smallest imaginary part.
  *
@@ -360,7 +360,7 @@
  *     cnaup2  ARPACK routine that implements the Implicitly Restarted
  *             Arnoldi Iteration.
  *     cstatn  ARPACK routine that initializes the timing variables.
- *     ivout   ARPACK utility routine that prints integers.
+ *     ivout   ARPACK utility routine that prints int32_ts.
  *     cvout   ARPACK utility routine that prints vectors.
  *     arscnd  ARPACK utility routine for timing.
  *     slamch  LAPACK routine that determines machine constants.
@@ -381,11 +381,10 @@
  * \EndLib
  */
 
-
-/* Subroutine */ int cnaupd_(integer *ido, char *bmat, integer *n, char *
-	which, integer *nev, real *tol, complex *resid, integer *ncv, complex 
-	*v, integer *ldv, integer *iparam, integer *ipntr, complex *workd, 
-	complex *workl, integer *lworkl, real *rwork, integer *info)
+int cnaupd_(int32_t *ido, char *bmat, int32_t *n, char *
+	which, int32_t *nev, float *tol, complex *resid, int32_t *ncv, complex 
+	*v, int32_t *ldv, int32_t *iparam, int32_t *ipntr, complex *workd, 
+	complex *workl, int32_t *lworkl, float *rwork, int32_t *info)
 {
     /* Format strings */
     static char fmt_1000[] = "(//,5x,\002==================================="
@@ -416,27 +415,23 @@
 	    " \002,f12.6/)";
 
     /* System generated locals */
-    integer v_dim1, v_offset, i__1, i__2;
+    int32_t v_dim1, v_offset, i__1, i__2;
 
     /* Builtin functions */
-    integer s_cmp(char *, char *, ftnlen, ftnlen), s_wsfe(cilist *), e_wsfe(
-	    void), do_fio(integer *, char *, ftnlen);
+    int32_t s_cmp(char *, char *, ftnlen, ftnlen), s_wsfe(cilist *), e_wsfe(
+	    void), do_fio(int32_t *, char *, ftnlen);
 
     /* Local variables */
-    integer j;
-    static real t0, t1;
-    static integer nb, ih, iq, np, iw, ldh, ldq, nev0, mode;
-    integer ierr;
-    static integer iupd, next, ritz;
-    static integer bounds, ishift, msglvl, mxiter;
+    int32_t j;
+    static float t0, t1;
+    static int32_t nb, ih, iq, np, iw, ldh, ldq, nev0, mode;
+    int32_t ierr;
+    static int32_t iupd, next, ritz;
+    static int32_t bounds, ishift, msglvl, mxiter;
 
     /* Fortran I/O blocks */
     static cilist io___21 = { 0, 6, 0, fmt_1000, 0 };
     static cilist io___22 = { 0, 6, 0, fmt_1100, 0 };
-
-
-
-
 
 /*     %-----------------------% */
 /*     | Executable Statements | */
@@ -656,24 +651,24 @@
 	s_wsfe(&io___21);
 	e_wsfe();
 	s_wsfe(&io___22);
-	do_fio(&c__1, (char *)&mxiter, (ftnlen)sizeof(integer));
-	do_fio(&c__1, (char *)&timing_1.nopx, (ftnlen)sizeof(integer));
-	do_fio(&c__1, (char *)&timing_1.nbx, (ftnlen)sizeof(integer));
-	do_fio(&c__1, (char *)&timing_1.nrorth, (ftnlen)sizeof(integer));
-	do_fio(&c__1, (char *)&timing_1.nitref, (ftnlen)sizeof(integer));
-	do_fio(&c__1, (char *)&timing_1.nrstrt, (ftnlen)sizeof(integer));
-	do_fio(&c__1, (char *)&timing_1.tmvopx, (ftnlen)sizeof(real));
-	do_fio(&c__1, (char *)&timing_1.tmvbx, (ftnlen)sizeof(real));
-	do_fio(&c__1, (char *)&timing_1.tcaupd, (ftnlen)sizeof(real));
-	do_fio(&c__1, (char *)&timing_1.tcaup2, (ftnlen)sizeof(real));
-	do_fio(&c__1, (char *)&timing_1.tcaitr, (ftnlen)sizeof(real));
-	do_fio(&c__1, (char *)&timing_1.titref, (ftnlen)sizeof(real));
-	do_fio(&c__1, (char *)&timing_1.tgetv0, (ftnlen)sizeof(real));
-	do_fio(&c__1, (char *)&timing_1.tceigh, (ftnlen)sizeof(real));
-	do_fio(&c__1, (char *)&timing_1.tcgets, (ftnlen)sizeof(real));
-	do_fio(&c__1, (char *)&timing_1.tcapps, (ftnlen)sizeof(real));
-	do_fio(&c__1, (char *)&timing_1.tcconv, (ftnlen)sizeof(real));
-	do_fio(&c__1, (char *)&timing_1.trvec, (ftnlen)sizeof(real));
+	do_fio(&c__1, (char *)&mxiter, (ftnlen)sizeof(int32_t));
+	do_fio(&c__1, (char *)&timing_1.nopx, (ftnlen)sizeof(int32_t));
+	do_fio(&c__1, (char *)&timing_1.nbx, (ftnlen)sizeof(int32_t));
+	do_fio(&c__1, (char *)&timing_1.nrorth, (ftnlen)sizeof(int32_t));
+	do_fio(&c__1, (char *)&timing_1.nitref, (ftnlen)sizeof(int32_t));
+	do_fio(&c__1, (char *)&timing_1.nrstrt, (ftnlen)sizeof(int32_t));
+	do_fio(&c__1, (char *)&timing_1.tmvopx, (ftnlen)sizeof(float));
+	do_fio(&c__1, (char *)&timing_1.tmvbx, (ftnlen)sizeof(float));
+	do_fio(&c__1, (char *)&timing_1.tcaupd, (ftnlen)sizeof(float));
+	do_fio(&c__1, (char *)&timing_1.tcaup2, (ftnlen)sizeof(float));
+	do_fio(&c__1, (char *)&timing_1.tcaitr, (ftnlen)sizeof(float));
+	do_fio(&c__1, (char *)&timing_1.titref, (ftnlen)sizeof(float));
+	do_fio(&c__1, (char *)&timing_1.tgetv0, (ftnlen)sizeof(float));
+	do_fio(&c__1, (char *)&timing_1.tceigh, (ftnlen)sizeof(float));
+	do_fio(&c__1, (char *)&timing_1.tcgets, (ftnlen)sizeof(float));
+	do_fio(&c__1, (char *)&timing_1.tcapps, (ftnlen)sizeof(float));
+	do_fio(&c__1, (char *)&timing_1.tcconv, (ftnlen)sizeof(float));
+	do_fio(&c__1, (char *)&timing_1.trvec, (ftnlen)sizeof(float));
 	e_wsfe();
     }
 

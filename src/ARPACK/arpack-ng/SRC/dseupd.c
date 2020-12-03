@@ -61,7 +61,7 @@
  *          the matrix of Ritz vectors. See remark 1 below.
  *          = 'A': compute NEV Ritz vectors;
  *          = 'S': compute some of the Ritz vectors, specified
- *                 by the logical array SELECT.
+ *                 by the bool array SELECT.
  *
  *  SELECT  Logical array of dimension NCV.  (INPUT/WORKSPACE)
  *          If HOWMNY = 'S', SELECT specifies the Ritz vectors to be
@@ -187,7 +187,7 @@
  *     dsesrt   ARPACK routine that sorts an array X, and applies the
  *             corresponding permutation to a matrix A.
  *     dsortr   dsortr   ARPACK sorting routine.
- *     ivout   ARPACK utility routine that prints integers.
+ *     ivout   ARPACK utility routine that prints int32_ts.
  *     dvout    ARPACK utility routine that prints vectors.
  *     dgeqr2   LAPACK routine that computes the QR factorization of
  *             a matrix.
@@ -220,41 +220,38 @@
  * \EndLib
  */
 
-/* Subroutine */ int dseupd_(logical *rvec, char *howmny, logical *select, 
-	doublereal *d__, doublereal *z__, integer *ldz, doublereal *sigma, 
-	char *bmat, integer *n, char *which, integer *nev, doublereal *tol, 
-	doublereal *resid, integer *ncv, doublereal *v, integer *ldv, integer 
-	*iparam, integer *ipntr, doublereal *workd, doublereal *workl, 
-	integer *lworkl, integer *info)
+int dseupd_(bool *rvec, char *howmny, bool *select, 
+	double *d__, double *z__, int32_t *ldz, double *sigma, 
+	char *bmat, int32_t *n, char *which, int32_t *nev, double *tol, 
+	double *resid, int32_t *ncv, double *v, int32_t *ldv, int32_t 
+	*iparam, int32_t *ipntr, double *workd, double *workl, 
+	int32_t *lworkl, int32_t *info)
 {
     /* System generated locals */
-    integer v_dim1, v_offset, z_dim1, z_offset, i__1;
-    doublereal d__1, d__2, d__3;
+    int32_t v_dim1, v_offset, z_dim1, z_offset, i__1;
+    double d__1, d__2, d__3;
 
     /* Builtin functions */
-    integer s_cmp(char *, char *, ftnlen, ftnlen);
-    /* Subroutine */ int s_copy(char *, char *, ftnlen, ftnlen);
-    double pow_dd(doublereal *, doublereal *);
+    int32_t s_cmp(char *, char *, ftnlen, ftnlen);
+    int s_copy(char *, char *, ftnlen, ftnlen);
+    double pow_dd(double *, double *);
 
     /* Local variables */
-    integer j, k, ih, jj, iq, np, iw, ibd, ihb, ihd, ldh, ldq, irz;
-    integer mode;
-    doublereal eps23;
-    integer ierr;
-    doublereal temp;
-    integer next;
+    int32_t j, k, ih, jj, iq, np, iw, ibd, ihb, ihd, ldh, ldq, irz;
+    int32_t mode;
+    double eps23;
+    int32_t ierr;
+    double temp;
+    int32_t next;
     char type__[6];
-    integer ritz;
-    doublereal temp1;
-    logical reord;
-    integer nconv;
-    doublereal rnorm;
-    doublereal bnorm2;
-    integer bounds, msglvl, ishift, numcnv;
-    integer leftptr, rghtptr;
-
-
-
+    int32_t ritz;
+    double temp1;
+    bool reord;
+    int32_t nconv;
+    double rnorm;
+    double bnorm2;
+    int32_t bounds, msglvl, ishift, numcnv;
+    int32_t leftptr, rghtptr;
 
 /*     %-----------------------% */
 /*     | Executable Statements | */
@@ -398,7 +395,6 @@
 /*     | GRAND total of NCV*(NCV+8) locations.                 | */
 /*     %-------------------------------------------------------% */
 
-
     ih = ipntr[5];
     ritz = ipntr[6];
     bounds = ipntr[7];
@@ -424,7 +420,6 @@
 
     irz = ipntr[11] + *ncv;
     ibd = irz + *ncv;
-
 
 /*     %---------------------------------% */
 /*     | Set machine dependent constant. | */
@@ -456,7 +451,7 @@
 
     if (*rvec) {
 
-	reord = FALSE_;
+	reord = false;
 
 /*        %---------------------------------------------------% */
 /*        | Use the temporary bounds array to store indices   | */
@@ -465,8 +460,8 @@
 
 	i__1 = *ncv;
 	for (j = 1; j <= i__1; ++j) {
-	    workl[bounds + j - 1] = (doublereal) j;
-	    select[j] = FALSE_;
+	    workl[bounds + j - 1] = (double) j;
+	    select[j] = false;
 /* L10: */
 	}
 
@@ -503,12 +498,12 @@
 /* Computing MAX */
 	    d__2 = eps23, d__3 = (d__1 = workl[irz + *ncv - j], abs(d__1));
 	    temp1 = max(d__2,d__3);
-	    jj = (integer) workl[bounds + *ncv - j];
+	    jj = (int32_t) workl[bounds + *ncv - j];
 	    if (numcnv < nconv && workl[ibd + jj - 1] <= *tol * temp1) {
-		select[jj] = TRUE_;
+		select[jj] = true;
 		++numcnv;
 		if (jj > nconv) {
-		    reord = TRUE_;
+		    reord = true;
 		}
 	    }
 /* L11: */

@@ -11,7 +11,7 @@ struct {
 int cndrv2()
 {
     /* System generated locals */
-    integer i__1, i__2;
+    int32_t i__1, i__2;
     complex q__1, q__2, q__3, q__4;
 
     void c_div(complex *, complex *, complex *);
@@ -19,28 +19,28 @@ int cndrv2()
 
     /* Local variables */
     complex d__[25], h__;
-    integer j, n;
+    int32_t j, n;
     complex s, v[6400]	/* was [256][25] */, h2, s1, s2, s3, dd[256], dl[256];
-    real rd[75]	/* was [25][3] */;
+    float rd[75]	/* was [25][3] */;
     complex ax[256], du[256], du2[256];
-    integer ido, ncv, nev;
-    real tol;
+    int32_t ido, ncv, nev;
+    float tol;
     char bmat[1];
-    integer mode, info;
-    logical rvec;
-    integer ierr, ipiv[256];
+    int32_t mode, info;
+    bool rvec;
+    int32_t ierr, ipiv[256];
     complex sigma;
     char which[2];
     complex resid[256];
-    integer nconv;
+    int32_t nconv;
     complex workd[768];
-    integer ipntr[14];
+    int32_t ipntr[14];
     complex workl[2000];
-    real rwork[256];
-    integer iparam[11];
-    logical select[25];
-    integer ishfts, maxitr;
-    integer lworkl;
+    float rwork[256];
+    int32_t iparam[11];
+    bool select[25];
+    int32_t ishfts, maxitr;
+    int32_t lworkl;
     complex workev[50];
 
     /* Fortran I/O blocks */
@@ -197,7 +197,7 @@ int cndrv2()
 
     convct_1.rho.r = 10.f, convct_1.rho.i = 0.f;
     i__1 = n + 1;
-    q__2.r = (real) i__1, q__2.i = 0.f;
+    q__2.r = (float) i__1, q__2.i = 0.f;
     c_div(&q__1, &c_one, &q__2);
     h__.r = q__1.r, h__.i = q__1.i;
     q__1.r = h__.r * h__.r - h__.i * h__.i, q__1.i = h__.r * h__.i + h__.i * 
@@ -352,7 +352,7 @@ L20:
 	e_wsle();
 	s_wsle(&io___44);
 	do_lio(&c__9, &c__1, " Error with _naupd, info = ", (ftnlen)27);
-	do_lio(&c__3, &c__1, (char *)&info, (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&info, (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___45);
 	do_lio(&c__9, &c__1, " Check the documentation in _naupd.", (ftnlen)
@@ -374,7 +374,7 @@ L20:
 /*        | desired.  (indicated by rvec = .true.)    | */
 /*        %-------------------------------------------% */
 
-	rvec = TRUE_;
+	rvec = true;
 
 	cneupd_(&rvec, "A", select, d__, v, &c__256, &sigma, workev, bmat, &n,
 		 which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, 
@@ -404,7 +404,7 @@ L20:
 	    e_wsle();
 	    s_wsle(&io___52);
 	    do_lio(&c__9, &c__1, " Error with _neupd, info = ", (ftnlen)27);
-	    do_lio(&c__3, &c__1, (char *)&ierr, (ftnlen)sizeof(integer));
+	    do_lio(&c__3, &c__1, (char *)&ierr, (ftnlen)sizeof(int32_t));
 	    e_wsle();
 	    s_wsle(&io___53);
 	    do_lio(&c__9, &c__1, " Check the documentation of _neupd. ", (
@@ -497,18 +497,18 @@ L20:
 	e_wsle();
 	s_wsle(&io___68);
 	do_lio(&c__9, &c__1, " Size of the matrix is ", (ftnlen)23);
-	do_lio(&c__3, &c__1, (char *)&n, (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&n, (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___69);
 	do_lio(&c__9, &c__1, " The number of Ritz values requested is ", (
 		ftnlen)40);
-	do_lio(&c__3, &c__1, (char *)&nev, (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&nev, (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___70);
 	do_lio(&c__9, &c__1, " The number of Arnoldi vectors generated", (
 		ftnlen)40);
 	do_lio(&c__9, &c__1, " (NCV) is ", (ftnlen)10);
-	do_lio(&c__3, &c__1, (char *)&ncv, (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&ncv, (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___71);
 	do_lio(&c__9, &c__1, " What portion of the spectrum: ", (ftnlen)31);
@@ -517,21 +517,21 @@ L20:
 	s_wsle(&io___72);
 	do_lio(&c__9, &c__1, " The number of converged Ritz values is ", (
 		ftnlen)40);
-	do_lio(&c__3, &c__1, (char *)&nconv, (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&nconv, (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___73);
 	do_lio(&c__9, &c__1, " The number of Implicit Arnoldi update", (
 		ftnlen)38);
 	do_lio(&c__9, &c__1, " iterations taken is ", (ftnlen)21);
-	do_lio(&c__3, &c__1, (char *)&iparam[2], (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&iparam[2], (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___74);
 	do_lio(&c__9, &c__1, " The number of OP*x is ", (ftnlen)23);
-	do_lio(&c__3, &c__1, (char *)&iparam[8], (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&iparam[8], (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___75);
 	do_lio(&c__9, &c__1, " The convergence criterion is ", (ftnlen)30);
-	do_lio(&c__4, &c__1, (char *)&tol, (ftnlen)sizeof(real));
+	do_lio(&c__4, &c__1, (char *)&tol, (ftnlen)sizeof(float));
 	e_wsle();
 	s_wsle(&io___76);
 	do_lio(&c__9, &c__1, " ", (ftnlen)1);
@@ -552,10 +552,10 @@ L9000:
 
 /*     matrix vector multiplication subroutine */
 
-int cndrv2_av_(integer *n, complex *v, complex *w)
+int cndrv2_av_(int32_t *n, complex *v, complex *w)
 {
     /* System generated locals */
-    integer i__1, i__2, i__3, i__4, i__5;
+    int32_t i__1, i__2, i__3, i__4, i__5;
     complex q__1, q__2, q__3, q__4, q__5;
 
     /* Builtin functions */
@@ -563,7 +563,7 @@ int cndrv2_av_(integer *n, complex *v, complex *w)
 
     /* Local variables */
     complex h__;
-    integer j;
+    int32_t j;
     complex s, h2, dd, dl, du;
 
     /* Parameter adjustments */
@@ -572,7 +572,7 @@ int cndrv2_av_(integer *n, complex *v, complex *w)
 
     /* Function Body */
     i__1 = *n + 1;
-    q__2.r = (real) i__1, q__2.i = 0.f;
+    q__2.r = (float) i__1, q__2.i = 0.f;
     c_div(&q__1, &c_one, &q__2);
     h__.r = q__1.r, h__.i = q__1.i;
     q__1.r = h__.r * h__.r - h__.i * h__.i, q__1.i = h__.r * h__.i + h__.i * 

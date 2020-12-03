@@ -62,7 +62,7 @@
  *          = 'A': Compute NEV Ritz vectors;
  *          = 'P': Compute NEV Schur vectors;
  *          = 'S': compute some of the Ritz vectors, specified
- *                 by the logical array SELECT.
+ *                 by the bool array SELECT.
  *
  *  SELECT  Logical array of dimension NCV.  (INPUT)
  *          If HOWMNY = 'S', SELECT specifies the Ritz vectors to be
@@ -201,7 +201,7 @@
  *     Vol. 48, No. 178, April, 1987 pp. 664-673.
  *
  * \Routines called:
- *     ivout   ARPACK utility routine that prints integers.
+ *     ivout   ARPACK utility routine that prints int32_ts.
  *     cmout   ARPACK utility routine that prints matrices
  *     cvout   ARPACK utility routine that prints vectors.
  *     cgeqr2  LAPACK routine that computes the QR factorization of
@@ -220,7 +220,7 @@
  *     cgeru   Level 2 BLAS rank one update to a matrix.
  *     ccopy   Level 1 BLAS that copies one vector to another .
  *     cscal   Level 1 BLAS that scales a vector.
- *     csscal  Level 1 BLAS that scales a complex vector by a real number.
+ *     csscal  Level 1 BLAS that scales a complex vector by a float number.
  *     scnrm2  Level 1 BLAS that computes the norm of a complex vector.
  *
  * \Remarks
@@ -251,50 +251,46 @@
  * \EndLib
  */
 
-/* Subroutine */ int cneupd_(logical *rvec, char *howmny, logical *select, 
-	complex *d__, complex *z__, integer *ldz, complex *sigma, complex *
-	workev, char *bmat, integer *n, char *which, integer *nev, real *tol, 
-	complex *resid, integer *ncv, complex *v, integer *ldv, integer *
-	iparam, integer *ipntr, complex *workd, complex *workl, integer *
-	lworkl, real *rwork, integer *info)
+int cneupd_(bool *rvec, char *howmny, bool *select, 
+	complex *d__, complex *z__, int32_t *ldz, complex *sigma, complex *
+	workev, char *bmat, int32_t *n, char *which, int32_t *nev, float *tol, 
+	complex *resid, int32_t *ncv, complex *v, int32_t *ldv, int32_t *
+	iparam, int32_t *ipntr, complex *workd, complex *workl, int32_t *
+	lworkl, float *rwork, int32_t *info)
 {
     /* System generated locals */
-    integer v_dim1, v_offset, z_dim1, z_offset, i__1, i__2;
-    real r__1, r__2, r__3, r__4;
-    doublereal d__1;
+    int32_t v_dim1, v_offset, z_dim1, z_offset, i__1, i__2;
+    float r__1, r__2, r__3, r__4;
+    double d__1;
     complex q__1, q__2;
 
     /* Builtin functions */
-    double pow_dd(doublereal *, doublereal *);
-    integer s_cmp(char *, char *, ftnlen, ftnlen);
-    /* Subroutine */ int s_copy(char *, char *, ftnlen, ftnlen);
+    double pow_dd(double *, double *);
+    int32_t s_cmp(char *, char *, ftnlen, ftnlen);
+    int s_copy(char *, char *, ftnlen, ftnlen);
     double r_imag(complex *);
     void c_div(complex *, complex *, complex *);
 
     /* Local variables */
-    integer j, k, ih, jj, iq, np;
+    int32_t j, k, ih, jj, iq, np;
     complex vl[1];
-    integer wr, ibd, ldh, ldq;
-    real sep;
-    integer irz, mode;
-    real eps23;
-    integer ierr;
+    int32_t wr, ibd, ldh, ldq;
+    float sep;
+    int32_t irz, mode;
+    float eps23;
+    int32_t ierr;
     complex temp;
-    integer iwev;
+    int32_t iwev;
     char type__[6];
-    integer ritz, iheig;
-    integer ihbds;
-    real conds;
-    logical reord;
-    integer nconv;
-    real rtemp;
+    int32_t ritz, iheig;
+    int32_t ihbds;
+    float conds;
+    bool reord;
+    int32_t nconv;
+    float rtemp;
     complex rnorm;
-    integer nconv2;
-    integer bounds, invsub, iuptri, msglvl, outncv, numcnv, ishift;
-
-
-
-
+    int32_t nconv2;
+    int32_t bounds, invsub, iuptri, msglvl, outncv, numcnv, ishift;
 
 /*     %-----------------------% */
 /*     | Executable Statements | */
@@ -327,13 +323,12 @@
     nconv = iparam[5];
     *info = 0;
 
-
 /*     %---------------------------------% */
 /*     | Get machine dependent constant. | */
 /*     %---------------------------------% */
 
     eps23 = slamch_("Epsilon-Machine");
-    d__1 = (doublereal) eps23;
+    d__1 = (double) eps23;
     eps23 = pow_dd(&d__1, &d_23);
 
 /*     %-------------------------------% */
@@ -467,7 +462,7 @@
 
     if (*rvec) {
 
-	reord = FALSE_;
+	reord = false;
 
 /*        %---------------------------------------------------% */
 /*        | Use the temporary bounds array to store indices   | */
@@ -477,8 +472,8 @@
 	i__1 = *ncv;
 	for (j = 1; j <= i__1; ++j) {
 	    i__2 = bounds + j - 1;
-	    workl[i__2].r = (real) j, workl[i__2].i = 0.f;
-	    select[j] = FALSE_;
+	    workl[i__2].r = (float) j, workl[i__2].i = 0.f;
+	    select[j] = false;
 /* L10: */
 	}
 
@@ -524,10 +519,10 @@
 	    r__1 = workl[i__2].r;
 	    r__2 = r_imag(&workl[ibd + jj - 1]);
 	    if (numcnv < nconv && slapy2_(&r__1, &r__2) <= *tol * rtemp) {
-		select[jj] = TRUE_;
+		select[jj] = true;
 		++numcnv;
 		if (jj > nconv) {
-		    reord = TRUE_;
+		    reord = true;
 		}
 	    }
 /* L11: */
@@ -690,9 +685,9 @@
 	    i__1 = *ncv;
 	    for (j = 1; j <= i__1; ++j) {
 		if (j <= nconv) {
-		    select[j] = TRUE_;
+		    select[j] = true;
 		} else {
-		    select[j] = FALSE_;
+		    select[j] = false;
 		}
 /* L30: */
 	    }

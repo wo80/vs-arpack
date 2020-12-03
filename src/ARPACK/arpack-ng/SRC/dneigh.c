@@ -31,7 +31,7 @@
  *          program.
  *
  *  RITZR,  Double precision arrays of length N.  (OUTPUT)
- *  RITZI   On output, RITZR(1:N) (resp. RITZI(1:N)) contains the real
+ *  RITZI   On output, RITZR(1:N) (resp. RITZI(1:N)) contains the float
  *          (respectively imaginary) parts of the eigenvalues of H.
  *
  *  BOUNDS  Double precision array of length N.  (OUTPUT)
@@ -60,10 +60,10 @@
  * \BeginLib
  *
  * \Local variables:
- *     xxxxxx  real
+ *     xxxxxx  float
  *
  * \Routines called:
- *     dlahqr  LAPACK routine to compute the real Schur form of an
+ *     dlahqr  LAPACK routine to compute the float Schur form of an
  *             upper Hessenberg matrix and last row of the Schur vectors.
  *     arscnd  ARPACK utility routine for timing.
  *     dmout   ARPACK utility routine that prints matrices
@@ -98,30 +98,25 @@
  * \EndLib
  */
 
-
-/* Subroutine */ int dneigh_(doublereal *rnorm, integer *n, doublereal *h__, 
-	integer *ldh, doublereal *ritzr, doublereal *ritzi, doublereal *
-	bounds, doublereal *q, integer *ldq, doublereal *workl, integer *ierr)
+int dneigh_(double *rnorm, int32_t *n, double *h__, 
+	int32_t *ldh, double *ritzr, double *ritzi, double *
+	bounds, double *q, int32_t *ldq, double *workl, int32_t *ierr)
 {
     /* System generated locals */
-    integer h_dim1, h_offset, q_dim1, q_offset, i__1;
-    doublereal d__1, d__2;
+    int32_t h_dim1, h_offset, q_dim1, q_offset, i__1;
+    double d__1, d__2;
 
     /* Local variables */
-    integer i__, j;
-    static real t0, t1;
-    doublereal vl[1], temp;
-    integer iconj;
-    logical select[1];
-    integer msglvl;
-
-
-
+    int32_t i__, j;
+    static float t0, t1;
+    double vl[1], temp;
+    int32_t iconj;
+    bool select[1];
+    int32_t msglvl;
 
 /*     %-----------------------% */
 /*     | Executable Statements | */
 /*     %-----------------------% */
-
 
 /*     %-------------------------------% */
 /*     | Initialize timing statistics  | */

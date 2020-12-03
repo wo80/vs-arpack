@@ -114,37 +114,33 @@
  * \EndLib
  */
 
-
-/* Subroutine */ int cgetv0_(integer *ido, char *bmat, integer *itry, logical 
-	*initv, integer *n, integer *j, complex *v, integer *ldv, complex *
-	resid, real *rnorm, integer *ipntr, complex *workd, integer *ierr)
+int cgetv0_(int32_t *ido, char *bmat, int32_t *itry, bool 
+	*initv, int32_t *n, int32_t *j, complex *v, int32_t *ldv, complex *
+	resid, float *rnorm, int32_t *ipntr, complex *workd, int32_t *ierr)
 {
     /* Initialized data */
 
-    static logical inits = TRUE_;
+    static bool inits = true;
 
     /* System generated locals */
-    integer v_dim1, v_offset, i__1, i__2;
-    real r__1, r__2;
+    int32_t v_dim1, v_offset, i__1, i__2;
+    float r__1, r__2;
     complex q__1;
 
     /* Builtin functions */
-    double r_imag(complex *), sqrt(doublereal);
+    double r_imag(complex *), sqrt(double);
 
     /* Local variables */
-    static real t0, t1, t2, t3;
-    integer jj;
-    static integer iter;
-    static logical orth;
-    static integer iseed[4];
-    integer idist;
+    static float t0, t1, t2, t3;
+    int32_t jj;
+    static int32_t iter;
+    static bool orth;
+    static int32_t iseed[4];
+    int32_t idist;
     complex cnorm;
-    static logical first;
-    static real rnorm0;
-    static integer msglvl;
-
-
-
+    static bool first;
+    static float rnorm0;
+    static int32_t msglvl;
 
 /*     %-----------------% */
 /*     | Data Statements | */
@@ -164,7 +160,6 @@
 /*     | Executable Statements | */
 /*     %-----------------------% */
 
-
 /*     %-----------------------------------% */
 /*     | Initialize the seed of the LAPACK | */
 /*     | random number generator           | */
@@ -175,7 +170,7 @@
 	iseed[1] = 3;
 	iseed[2] = 5;
 	iseed[3] = 7;
-	inits = FALSE_;
+	inits = false;
     }
 
     if (*ido == 0) {
@@ -190,8 +185,8 @@
 
 	*ierr = 0;
 	iter = 0;
-	first = FALSE_;
-	orth = FALSE_;
+	first = false;
+	orth = false;
 
 /*        %-----------------------------------------------------% */
 /*        | Possibly generate a random starting vector in RESID | */
@@ -250,7 +245,7 @@
 /*     %------------------------------------------------------% */
 
     arscnd_(&t2);
-    first = TRUE_;
+    first = true;
     if (*itry == 1) {
 	ccopy_(n, &workd[*n + 1], &c__1, &resid[1], &c__1);
     }
@@ -271,7 +266,7 @@ L20:
 	timing_1.tmvbx += t3 - t2;
     }
 
-    first = FALSE_;
+    first = false;
     if (*(unsigned char *)bmat == 'G') {
 	cdotc_(&q__1, n, &resid[1], &c__1, &workd[1], &c__1);
 	cnorm.r = q__1.r, cnorm.i = q__1.i;
@@ -303,7 +298,7 @@ L20:
 /*     | Parlett's book, page 107 and in Gragg & Reichel TOMS paper.   | */
 /*     %---------------------------------------------------------------% */
 
-    orth = TRUE_;
+    orth = true;
 L30:
 
     i__1 = *j - 1;

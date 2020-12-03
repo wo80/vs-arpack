@@ -2,14 +2,13 @@
 
 #include "arpack.h"
 
-
 /* \SCCS Information: @(#) */
 /* FILE: stats.F   SID: 2.1   DATE OF SID: 4/19/96   RELEASE: 2 */
 /*     %---------------------------------------------% */
 /*     | Initialize statistic and timing information | */
 /*     | for symmetric Arnoldi code.                 | */
 /*     %---------------------------------------------% */
-/* Subroutine */ int sstats_(void)
+int sstats_(void)
 {
 /*     %--------------------------------% */
 /*     | See stat.doc for documentation | */

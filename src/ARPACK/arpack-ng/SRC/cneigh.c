@@ -66,7 +66,7 @@
  *     xxxxxx  Complex
  *
  * \Routines called:
- *     ivout   ARPACK utility routine that prints integers.
+ *     ivout   ARPACK utility routine that prints int32_ts.
  *     arscnd  ARPACK utility routine for timing.
  *     cmout   ARPACK utility routine that prints matrices
  *     cvout   ARPACK utility routine that prints vectors.
@@ -78,7 +78,7 @@
  *     ctrevc  LAPACK routine to compute the eigenvectors of a matrix
  *             in upper triangular form
  *     ccopy   Level 1 BLAS that copies one vector to another.
- *     csscal  Level 1 BLAS that scales a complex vector by a real number.
+ *     csscal  Level 1 BLAS that scales a complex vector by a float number.
  *     scnrm2  Level 1 BLAS that computes the norm of a vector.
  *
  *
@@ -99,25 +99,21 @@
  * \EndLib
  */
 
-
-/* Subroutine */ int cneigh_(real *rnorm, integer *n, complex *h__, integer *
-	ldh, complex *ritz, complex *bounds, complex *q, integer *ldq, 
-	complex *workl, real *rwork, integer *ierr)
+int cneigh_(float *rnorm, int32_t *n, complex *h__, int32_t *
+	ldh, complex *ritz, complex *bounds, complex *q, int32_t *ldq, 
+	complex *workl, float *rwork, int32_t *ierr)
 {
     /* System generated locals */
-    integer h_dim1, h_offset, q_dim1, q_offset, i__1;
-    real r__1;
+    int32_t h_dim1, h_offset, q_dim1, q_offset, i__1;
+    float r__1;
 
     /* Local variables */
-    integer j;
-    static real t0, t1;
+    int32_t j;
+    static float t0, t1;
     complex vl[1];
-    real temp;
-    logical select[1];
-    integer msglvl;
-
-
-
+    float temp;
+    bool select[1];
+    int32_t msglvl;
 
 /*     %-----------------------% */
 /*     | Executable Statements | */

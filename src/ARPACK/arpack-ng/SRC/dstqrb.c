@@ -60,7 +60,7 @@
  * \BeginLib
  *
  * \Local variables:
- *     xxxxxx  real
+ *     xxxxxx  float
  *
  * \Routines called:
  *     daxpy   Level 1 BLAS that computes a vector triad.
@@ -106,39 +106,36 @@
  * \EndLib
  */
 
-
-/* Subroutine */ int dstqrb_(integer *n, doublereal *d__, doublereal *e, 
-	doublereal *z__, doublereal *work, integer *info)
+int dstqrb_(int32_t *n, double *d__, double *e, 
+	double *z__, double *work, int32_t *info)
 {
     /* System generated locals */
-    integer i__1, i__2;
-    doublereal d__1, d__2;
+    int32_t i__1, i__2;
+    double d__1, d__2;
 
     /* Builtin functions */
-    double sqrt(doublereal), d_sign(doublereal *, doublereal *);
+    double sqrt(double), d_sign(double *, double *);
 
     /* Local variables */
-    doublereal b, c__, f, g;
-    integer i__, j, k, l, m;
-    doublereal p, r__, s;
-    integer l1, ii, mm, lm1, mm1, nm1;
-    doublereal rt1, rt2, eps;
-    integer lsv;
-    doublereal tst, eps2;
-    integer lend, jtot;
-    doublereal anorm;
-    integer lendm1, lendp1;
-    integer iscale;
-    doublereal safmin;
-    doublereal safmax;
-    integer lendsv, nmaxit, icompz;
-    doublereal ssfmax, ssfmin;
-
+    double b, c__, f, g;
+    int32_t i__, j, k, l, m;
+    double p, r__, s;
+    int32_t l1, ii, mm, lm1, mm1, nm1;
+    double rt1, rt2, eps;
+    int32_t lsv;
+    double tst, eps2;
+    int32_t lend, jtot;
+    double anorm;
+    int32_t lendm1, lendp1;
+    int32_t iscale;
+    double safmin;
+    double safmax;
+    int32_t lendsv, nmaxit, icompz;
+    double ssfmax, ssfmin;
 
 /*     %------------------% */
 /*     | Scalar Arguments | */
 /*     %------------------% */
-
 
 /*     .. parameters .. */
 /*     .. */

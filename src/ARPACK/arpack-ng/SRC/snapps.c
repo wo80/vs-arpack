@@ -90,7 +90,7 @@
  * \BeginLib
  *
  * \Local variables:
- *     xxxxxx  real
+ *     xxxxxx  float
  *
  * \References:
  *  1. D.C. Sorensen, "Implicit Application of Polynomial Filters in
@@ -98,7 +98,7 @@
  *     pp 357-385.
  *
  * \Routines called:
- *     ivout   ARPACK utility routine that prints integers.
+ *     ivout   ARPACK utility routine that prints int32_ts.
  *     arscnd  ARPACK utility routine for timing.
  *     smout   ARPACK utility routine that prints matrices.
  *     svout   ARPACK utility routine that prints vectors.
@@ -141,40 +141,36 @@
  * \EndLib
  */
 
-
-/* Subroutine */ int snapps_(integer *n, integer *kev, integer *np, real *
-	shiftr, real *shifti, real *v, integer *ldv, real *h__, integer *ldh, 
-	real *resid, real *q, integer *ldq, real *workl, real *workd)
+int snapps_(int32_t *n, int32_t *kev, int32_t *np, float *
+	shiftr, float *shifti, float *v, int32_t *ldv, float *h__, int32_t *ldh, 
+	float *resid, float *q, int32_t *ldq, float *workl, float *workd)
 {
     /* Initialized data */
 
-    static logical first = TRUE_;
+    static bool first = true;
 
     /* System generated locals */
-    integer h_dim1, h_offset, v_dim1, v_offset, q_dim1, q_offset, i__1, i__2, 
+    int32_t h_dim1, h_offset, v_dim1, v_offset, q_dim1, q_offset, i__1, i__2, 
 	    i__3, i__4;
-    real r__1, r__2;
+    float r__1, r__2;
 
     /* Local variables */
-    real c__, f, g;
-    integer i__, j;
-    real r__, s, t, u[3];
-    static real t0, t1;
-    real h11, h12, h21, h22, h32;
-    integer jj, ir, nr;
-    real tau;
-    static real ulp;
-    real tst1;
-    integer iend;
-    static real unfl, ovfl;
-    logical cconj;
-    real sigmai;
-    real sigmar;
-    integer istart, kplusp, msglvl;
-    static real smlnum;
-
-
-
+    float c__, f, g;
+    int32_t i__, j;
+    float r__, s, t, u[3];
+    static float t0, t1;
+    float h11, h12, h21, h22, h32;
+    int32_t jj, ir, nr;
+    float tau;
+    static float ulp;
+    float tst1;
+    int32_t iend;
+    static float unfl, ovfl;
+    bool cconj;
+    float sigmai;
+    float sigmar;
+    int32_t istart, kplusp, msglvl;
+    static float smlnum;
 
 /*     %----------------% */
 /*     | Data statements | */
@@ -216,7 +212,7 @@
 	slabad_(&unfl, &ovfl);
 	ulp = slamch_("precision");
 	smlnum = unfl * (*n / ulp);
-	first = FALSE_;
+	first = false;
     }
 
 /*     %-------------------------------% */
@@ -249,7 +245,7 @@
 /*     | whole matrix including each block.           | */
 /*     %----------------------------------------------% */
 
-    cconj = FALSE_;
+    cconj = false;
     i__1 = *np;
     for (jj = 1; jj <= i__1; ++jj) {
 	sigmar = shiftr[jj];
@@ -259,7 +255,7 @@
 	    ivout_(&debug_1.logfil, &c__1, &jj, &debug_1.ndigit, "_napps: sh"
 		    "ift number.", (ftnlen)21);
 	    svout_(&debug_1.logfil, &c__1, &sigmar, &debug_1.ndigit, "_napps"
-		    ": The real part of the shift ", (ftnlen)35);
+		    ": The float part of the shift ", (ftnlen)35);
 	    svout_(&debug_1.logfil, &c__1, &sigmai, &debug_1.ndigit, "_napps"
 		    ": The imaginary part of the shift ", (ftnlen)40);
 	}
@@ -277,7 +273,7 @@
 /*           | had non-zero imaginary part.            | */
 /*           %-----------------------------------------% */
 
-	    cconj = FALSE_;
+	    cconj = false;
 	    goto L110;
 	} else if (jj < *np && dabs(sigmai) > 0.f) {
 
@@ -285,7 +281,7 @@
 /*           | Start of a complex conjugate pair. | */
 /*           %------------------------------------% */
 
-	    cconj = TRUE_;
+	    cconj = true;
 	} else if (jj == *np && dabs(sigmai) > 0.f) {
 
 /*           %----------------------------------------------% */

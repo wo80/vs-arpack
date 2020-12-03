@@ -81,7 +81,7 @@
  * \BeginLib
  *
  * \Local variables:
- *     xxxxxx  real
+ *     xxxxxx  float
  *
  * \References:
  *  1. D.C. Sorensen, "Implicit Application of Polynomial Filters in
@@ -92,7 +92,7 @@
  *     TR95-13, Department of Computational and Applied Mathematics.
  *
  * \Routines called:
- *     ivout   ARPACK utility routine that prints integers.
+ *     ivout   ARPACK utility routine that prints int32_ts.
  *     arscnd  ARPACK utility routine for timing.
  *     svout   ARPACK utility routine that prints vectors.
  *     slamch  LAPACK routine that determines machine constants.
@@ -129,34 +129,29 @@
  * \EndLib
  */
 
-
-/* Subroutine */ int ssapps_(integer *n, integer *kev, integer *np, real *
-	shift, real *v, integer *ldv, real *h__, integer *ldh, real *resid, 
-	real *q, integer *ldq, real *workd)
+int ssapps_(int32_t *n, int32_t *kev, int32_t *np, float *
+	shift, float *v, int32_t *ldv, float *h__, int32_t *ldh, float *resid, 
+	float *q, int32_t *ldq, float *workd)
 {
     /* Initialized data */
 
-    static logical first = TRUE_;
+    static bool first = true;
 
     /* System generated locals */
-    integer h_dim1, h_offset, q_dim1, q_offset, v_dim1, v_offset, i__1, i__2, 
+    int32_t h_dim1, h_offset, q_dim1, q_offset, v_dim1, v_offset, i__1, i__2, 
 	    i__3, i__4;
-    real r__1, r__2;
+    float r__1, r__2;
 
     /* Local variables */
-    real c__, f, g;
-    integer i__, j;
-    real r__, s, a1, a2, a3, a4;
-    static real t0, t1;
-    integer jj;
-    real big;
-    integer iend, itop;
-    static real epsmch;
-    integer istart, kplusp, msglvl;
-
-
-
-
+    float c__, f, g;
+    int32_t i__, j;
+    float r__, s, a1, a2, a3, a4;
+    static float t0, t1;
+    int32_t jj;
+    float big;
+    int32_t iend, itop;
+    static float epsmch;
+    int32_t istart, kplusp, msglvl;
 
 /*     %----------------% */
 /*     | Data statements | */
@@ -184,7 +179,7 @@
 
     if (first) {
 	epsmch = slamch_("Epsilon-Machine");
-	first = FALSE_;
+	first = false;
     }
     itop = 1;
 
@@ -309,7 +304,6 @@ L40:
 		q[j + istart * q_dim1] = a1;
 /* L60: */
 	    }
-
 
 /*            %----------------------------------------------% */
 /*            | The following loop chases the bulge created. | */

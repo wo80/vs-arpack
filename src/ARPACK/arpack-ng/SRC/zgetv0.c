@@ -114,38 +114,34 @@
  * \EndLib
  */
 
-
-/* Subroutine */ int zgetv0_(integer *ido, char *bmat, integer *itry, logical 
-	*initv, integer *n, integer *j, doublecomplex *v, integer *ldv, 
-	doublecomplex *resid, doublereal *rnorm, integer *ipntr, 
-	doublecomplex *workd, integer *ierr)
+int zgetv0_(int32_t *ido, char *bmat, int32_t *itry, bool 
+	*initv, int32_t *n, int32_t *j, zomplex *v, int32_t *ldv, 
+	zomplex *resid, double *rnorm, int32_t *ipntr, 
+	zomplex *workd, int32_t *ierr)
 {
     /* Initialized data */
 
-    static logical inits = TRUE_;
+    static bool inits = true;
 
     /* System generated locals */
-    integer v_dim1, v_offset, i__1, i__2;
-    doublereal d__1, d__2;
-    doublecomplex z__1;
+    int32_t v_dim1, v_offset, i__1, i__2;
+    double d__1, d__2;
+    zomplex z__1;
 
     /* Builtin functions */
-    double d_imag(doublecomplex *), sqrt(doublereal);
+    double d_imag(zomplex *), sqrt(double);
 
     /* Local variables */
-    static real t0, t1, t2, t3;
-    integer jj;
-    static integer iter;
-    static logical orth;
-    static integer iseed[4];
-    integer idist;
-    doublecomplex cnorm;
-    static logical first;
-    static doublereal rnorm0;
-    static integer msglvl;
-
-
-
+    static float t0, t1, t2, t3;
+    int32_t jj;
+    static int32_t iter;
+    static bool orth;
+    static int32_t iseed[4];
+    int32_t idist;
+    zomplex cnorm;
+    static bool first;
+    static double rnorm0;
+    static int32_t msglvl;
 
 /*     %-----------------% */
 /*     | Data Statements | */
@@ -165,7 +161,6 @@
 /*     | Executable Statements | */
 /*     %-----------------------% */
 
-
 /*     %-----------------------------------% */
 /*     | Initialize the seed of the LAPACK | */
 /*     | random number generator           | */
@@ -176,7 +171,7 @@
 	iseed[1] = 3;
 	iseed[2] = 5;
 	iseed[3] = 7;
-	inits = FALSE_;
+	inits = false;
     }
 
     if (*ido == 0) {
@@ -191,8 +186,8 @@
 
 	*ierr = 0;
 	iter = 0;
-	first = FALSE_;
-	orth = FALSE_;
+	first = false;
+	orth = false;
 
 /*        %-----------------------------------------------------% */
 /*        | Possibly generate a random starting vector in RESID | */
@@ -251,7 +246,7 @@
 /*     %------------------------------------------------------% */
 
     arscnd_(&t2);
-    first = TRUE_;
+    first = true;
     if (*itry == 1) {
 	zcopy_(n, &workd[*n + 1], &c__1, &resid[1], &c__1);
     }
@@ -272,7 +267,7 @@ L20:
 	timing_1.tmvbx += t3 - t2;
     }
 
-    first = FALSE_;
+    first = false;
     if (*(unsigned char *)bmat == 'G') {
 	zdotc_(&z__1, n, &resid[1], &c__1, &workd[1], &c__1);
 	cnorm.r = z__1.r, cnorm.i = z__1.i;
@@ -304,7 +299,7 @@ L20:
 /*     | Parlett's book, page 107 and in Gragg & Reichel TOMS paper.   | */
 /*     %---------------------------------------------------------------% */
 
-    orth = TRUE_;
+    orth = true;
 L30:
 
     i__1 = *j - 1;

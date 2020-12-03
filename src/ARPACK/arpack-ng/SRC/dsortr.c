@@ -57,26 +57,23 @@
  * \EndLib
  */
 
-
-/* Subroutine */ int dsortr_(char *which, logical *apply, integer *n, 
-	doublereal *x1, doublereal *x2)
+int dsortr_(char *which, bool *apply, int32_t *n, 
+	double *x1, double *x2)
 {
     /* System generated locals */
-    integer i__1;
-    doublereal d__1, d__2;
+    int32_t i__1;
+    double d__1, d__2;
 
     /* Builtin functions */
-    integer s_cmp(char *, char *, ftnlen, ftnlen);
+    int32_t s_cmp(char *, char *, ftnlen, ftnlen);
 
     /* Local variables */
-    integer i__, j, igap;
-    doublereal temp;
-
+    int32_t i__, j, igap;
+    double temp;
 
 /*     %------------------% */
 /*     | Scalar Arguments | */
 /*     %------------------% */
-
 
 /*     %-----------------------% */
 /*     | Executable Statements | */

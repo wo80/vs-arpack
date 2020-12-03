@@ -90,7 +90,7 @@
  * \BeginLib
  *
  * \Local variables:
- *     xxxxxx  real
+ *     xxxxxx  float
  *
  * \References:
  *  1. D.C. Sorensen, "Implicit Application of Polynomial Filters in
@@ -98,7 +98,7 @@
  *     pp 357-385.
  *
  * \Routines called:
- *     ivout   ARPACK utility routine that prints integers.
+ *     ivout   ARPACK utility routine that prints int32_ts.
  *     arscnd  ARPACK utility routine for timing.
  *     dmout   ARPACK utility routine that prints matrices.
  *     dvout   ARPACK utility routine that prints vectors.
@@ -141,41 +141,37 @@
  * \EndLib
  */
 
-
-/* Subroutine */ int dnapps_(integer *n, integer *kev, integer *np, 
-	doublereal *shiftr, doublereal *shifti, doublereal *v, integer *ldv, 
-	doublereal *h__, integer *ldh, doublereal *resid, doublereal *q, 
-	integer *ldq, doublereal *workl, doublereal *workd)
+int dnapps_(int32_t *n, int32_t *kev, int32_t *np, 
+	double *shiftr, double *shifti, double *v, int32_t *ldv, 
+	double *h__, int32_t *ldh, double *resid, double *q, 
+	int32_t *ldq, double *workl, double *workd)
 {
     /* Initialized data */
 
-    static logical first = TRUE_;
+    static bool first = true;
 
     /* System generated locals */
-    integer h_dim1, h_offset, v_dim1, v_offset, q_dim1, q_offset, i__1, i__2, 
+    int32_t h_dim1, h_offset, v_dim1, v_offset, q_dim1, q_offset, i__1, i__2, 
 	    i__3, i__4;
-    doublereal d__1, d__2;
+    double d__1, d__2;
 
     /* Local variables */
-    doublereal c__, f, g;
-    integer i__, j;
-    doublereal r__, s, t, u[3];
-    static real t0, t1;
-    doublereal h11, h12, h21, h22, h32;
-    integer jj, ir, nr;
-    doublereal tau;
-    static doublereal ulp;
-    doublereal tst1;
-    integer iend;
-    static doublereal unfl, ovfl;
-    logical cconj;
-    doublereal sigmai;
-    integer istart, kplusp, msglvl;
-    doublereal sigmar;
-    static doublereal smlnum;
-
-
-
+    double c__, f, g;
+    int32_t i__, j;
+    double r__, s, t, u[3];
+    static float t0, t1;
+    double h11, h12, h21, h22, h32;
+    int32_t jj, ir, nr;
+    double tau;
+    static double ulp;
+    double tst1;
+    int32_t iend;
+    static double unfl, ovfl;
+    bool cconj;
+    double sigmai;
+    int32_t istart, kplusp, msglvl;
+    double sigmar;
+    static double smlnum;
 
 /*     %----------------% */
 /*     | Data statements | */
@@ -217,7 +213,7 @@
 	dlabad_(&unfl, &ovfl);
 	ulp = dlamch_("precision");
 	smlnum = unfl * (*n / ulp);
-	first = FALSE_;
+	first = false;
     }
 
 /*     %-------------------------------% */
@@ -250,7 +246,7 @@
 /*     | whole matrix including each block.           | */
 /*     %----------------------------------------------% */
 
-    cconj = FALSE_;
+    cconj = false;
     i__1 = *np;
     for (jj = 1; jj <= i__1; ++jj) {
 	sigmar = shiftr[jj];
@@ -260,7 +256,7 @@
 	    ivout_(&debug_1.logfil, &c__1, &jj, &debug_1.ndigit, "_napps: sh"
 		    "ift number.", (ftnlen)21);
 	    dvout_(&debug_1.logfil, &c__1, &sigmar, &debug_1.ndigit, "_napps"
-		    ": The real part of the shift ", (ftnlen)35);
+		    ": The float part of the shift ", (ftnlen)35);
 	    dvout_(&debug_1.logfil, &c__1, &sigmai, &debug_1.ndigit, "_napps"
 		    ": The imaginary part of the shift ", (ftnlen)40);
 	}
@@ -278,7 +274,7 @@
 /*           | had non-zero imaginary part.            | */
 /*           %-----------------------------------------% */
 
-	    cconj = FALSE_;
+	    cconj = false;
 	    goto L110;
 	} else if (jj < *np && abs(sigmai) > 0.) {
 
@@ -286,7 +282,7 @@
 /*           | Start of a complex conjugate pair. | */
 /*           %------------------------------------% */
 
-	    cconj = TRUE_;
+	    cconj = true;
 	} else if (jj == *np && abs(sigmai) > 0.) {
 
 /*           %----------------------------------------------% */

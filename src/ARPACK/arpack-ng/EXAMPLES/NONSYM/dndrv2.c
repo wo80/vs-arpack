@@ -3,7 +3,7 @@
 #include "arpack.h"
 
 struct {
-    doublereal rho;
+    double rho;
 } convct_;
 
 #define convct_1 convct_
@@ -11,35 +11,35 @@ struct {
 int dndrv2()
 {
     /* System generated locals */
-    integer i__1;
-    doublereal d__1;
+    int32_t i__1;
+    double d__1;
 
     /* Local variables */
-    doublereal d__[75]	/* was [25][3] */, h__;
-    integer j, n;
-    doublereal s, v[6400]	/* was [256][25] */, s1, s2, s3, dd[256], dl[
+    double d__[75]	/* was [25][3] */, h__;
+    int32_t j, n;
+    double s, v[6400]	/* was [256][25] */, s1, s2, s3, dd[256], dl[
 	    256];
-    doublereal ax[256], du[256], du2[256];
-    integer ido, ncv, nev;
-    doublereal tol;
+    double ax[256], du[256], du2[256];
+    int32_t ido, ncv, nev;
+    double tol;
     char bmat[1];
-    integer mode, info;
-    logical rvec;
-    integer ierr, ipiv[256];
+    int32_t mode, info;
+    bool rvec;
+    int32_t ierr, ipiv[256];
     char which[2];
-    doublereal resid[256];
-    integer nconv;
-    doublereal workd[768];
-    logical first;
-    integer ipntr[14];
-    doublereal workl[2025];
-    integer iparam[11];
-    doublereal sigmai;
-    logical select[25];
-    doublereal sigmar;
-    integer ishfts, maxitr;
-    integer lworkl;
-    doublereal workev[75];
+    double resid[256];
+    int32_t nconv;
+    double workd[768];
+    bool first;
+    int32_t ipntr[14];
+    double workl[2025];
+    int32_t iparam[11];
+    double sigmai;
+    bool select[25];
+    double sigmar;
+    int32_t ishfts, maxitr;
+    int32_t lworkl;
+    double workev[75];
 
     /* Fortran I/O blocks */
     static cilist io___4 = { 0, 6, 0, 0, 0 };
@@ -196,7 +196,7 @@ int dndrv2()
 /*     %----------------------------------------------------% */
 
     convct_1.rho = 10.;
-    h__ = 1. / (doublereal) (n + 1);
+    h__ = 1. / (double) (n + 1);
     s = convct_1.rho * h__ / 2.;
 
     s1 = -1. - s;
@@ -330,7 +330,7 @@ L20:
 	e_wsle();
 	s_wsle(&io___43);
 	do_lio(&c__9, &c__1, " Error with _naupd, info = ", (ftnlen)27);
-	do_lio(&c__3, &c__1, (char *)&info, (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&info, (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___44);
 	do_lio(&c__9, &c__1, " Check the documentation in _naupd.", (ftnlen)
@@ -352,7 +352,7 @@ L20:
 /*        | desired.  (indicated by rvec = .true.)    | */
 /*        %-------------------------------------------% */
 
-	rvec = TRUE_;
+	rvec = true;
 
 	dneupd_(&rvec, "A", select, d__, &d__[25], v, &c__256, &sigmar, &
 		sigmai, workev, bmat, &n, which, &nev, &tol, resid, &ncv, v, &
@@ -383,7 +383,7 @@ L20:
 	    e_wsle();
 	    s_wsle(&io___51);
 	    do_lio(&c__9, &c__1, " Error with _neupd, info = ", (ftnlen)27);
-	    do_lio(&c__3, &c__1, (char *)&ierr, (ftnlen)sizeof(integer));
+	    do_lio(&c__3, &c__1, (char *)&ierr, (ftnlen)sizeof(int32_t));
 	    e_wsle();
 	    s_wsle(&io___52);
 	    do_lio(&c__9, &c__1, " Check the documentation of _neupd. ", (
@@ -395,7 +395,7 @@ L20:
 
 	} else {
 
-	    first = TRUE_;
+	    first = true;
 	    nconv = iparam[4];
 	    i__1 = nconv;
 	    for (j = 1; j <= i__1; ++j) {
@@ -449,9 +449,9 @@ L20:
 		    d__1 = dnrm2_(&n, ax, &c__1);
 		    d__[j + 49] = dlapy2_(&d__[j + 49], &d__1);
 		    d__[j + 50] = d__[j + 49];
-		    first = FALSE_;
+		    first = false;
 		} else {
-		    first = TRUE_;
+		    first = true;
 		}
 
 /* L30: */
@@ -510,18 +510,18 @@ L20:
 	e_wsle();
 	s_wsle(&io___67);
 	do_lio(&c__9, &c__1, " Size of the matrix is ", (ftnlen)23);
-	do_lio(&c__3, &c__1, (char *)&n, (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&n, (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___68);
 	do_lio(&c__9, &c__1, " The number of Ritz values requested is ", (
 		ftnlen)40);
-	do_lio(&c__3, &c__1, (char *)&nev, (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&nev, (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___69);
 	do_lio(&c__9, &c__1, " The number of Arnoldi vectors generated", (
 		ftnlen)40);
 	do_lio(&c__9, &c__1, " (NCV) is ", (ftnlen)10);
-	do_lio(&c__3, &c__1, (char *)&ncv, (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&ncv, (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___70);
 	do_lio(&c__9, &c__1, " What portion of the spectrum: ", (ftnlen)31);
@@ -530,21 +530,21 @@ L20:
 	s_wsle(&io___71);
 	do_lio(&c__9, &c__1, " The number of converged Ritz values is ", (
 		ftnlen)40);
-	do_lio(&c__3, &c__1, (char *)&nconv, (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&nconv, (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___72);
 	do_lio(&c__9, &c__1, " The number of Implicit Arnoldi update", (
 		ftnlen)38);
 	do_lio(&c__9, &c__1, " iterations taken is ", (ftnlen)21);
-	do_lio(&c__3, &c__1, (char *)&iparam[2], (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&iparam[2], (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___73);
 	do_lio(&c__9, &c__1, " The number of OP*x is ", (ftnlen)23);
-	do_lio(&c__3, &c__1, (char *)&iparam[8], (ftnlen)sizeof(integer));
+	do_lio(&c__3, &c__1, (char *)&iparam[8], (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___74);
 	do_lio(&c__9, &c__1, " The convergence criterion is ", (ftnlen)30);
-	do_lio(&c__5, &c__1, (char *)&tol, (ftnlen)sizeof(doublereal));
+	do_lio(&c__5, &c__1, (char *)&tol, (ftnlen)sizeof(double));
 	e_wsle();
 	s_wsle(&io___75);
 	do_lio(&c__9, &c__1, " ", (ftnlen)1);
@@ -565,15 +565,15 @@ L9000:
 
 /*     matrix vector multiplication subroutine */
 
-int dndrv2_av_(integer *n, doublereal *v, doublereal *w)
+int dndrv2_av_(int32_t *n, double *v, double *w)
 {
     /* System generated locals */
-    integer i__1;
+    int32_t i__1;
 
     /* Local variables */
-    doublereal h__;
-    integer j;
-    doublereal s, dd, dl, du;
+    double h__;
+    int32_t j;
+    double s, dd, dl, du;
 
 /*     Compute the matrix vector multiplication y<---A*x */
 /*     where A is a n by n nonsymmetric tridiagonal matrix derived from */
@@ -586,7 +586,7 @@ int dndrv2_av_(integer *n, doublereal *v, doublereal *w)
     --v;
 
     /* Function Body */
-    h__ = 1. / (doublereal) (*n + 1);
+    h__ = 1. / (double) (*n + 1);
     s = convct_1.rho * h__ / 2.;
     dd = 2.;
     dl = -1. - s;

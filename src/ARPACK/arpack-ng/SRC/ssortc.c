@@ -10,7 +10,7 @@
  * \Description:
  *  Sorts the complex array in XREAL and XIMAG into the order
  *  specified by WHICH and optionally applies the permutation to the
- *  real array Y. It is assumed that if an element of XIMAG is
+ *  float array Y. It is assumed that if an element of XIMAG is
  *  nonzero, then its negative is also an element. In other words,
  *  both members of a complex conjugate pair are to be sorted and the
  *  pairs are kept adjacent to each other.
@@ -64,26 +64,23 @@
  * \EndLib
  */
 
-
-/* Subroutine */ int ssortc_(char *which, logical *apply, integer *n, real *
-	xreal, real *ximag, real *y)
+int ssortc_(char *which, bool *apply, int32_t *n, float *
+	xfloat, float *ximag, float *y)
 {
     /* System generated locals */
-    integer i__1;
-    real r__1, r__2;
+    int32_t i__1;
+    float r__1, r__2;
 
     /* Builtin functions */
-    integer s_cmp(char *, char *, ftnlen, ftnlen);
+    int32_t s_cmp(char *, char *, ftnlen, ftnlen);
 
     /* Local variables */
-    integer i__, j, igap;
-    real temp, temp1, temp2;
-
+    int32_t i__, j, igap;
+    float temp, temp1, temp2;
 
 /*     %------------------% */
 /*     | Scalar Arguments | */
 /*     %------------------% */
-
 
 /*     %-----------------------% */
 /*     | Executable Statements | */
@@ -111,13 +108,13 @@ L20:
 		goto L30;
 	    }
 
-	    temp1 = slapy2_(&xreal[j], &ximag[j]);
-	    temp2 = slapy2_(&xreal[j + igap], &ximag[j + igap]);
+	    temp1 = slapy2_(&xfloat[j], &ximag[j]);
+	    temp2 = slapy2_(&xfloat[j + igap], &ximag[j + igap]);
 
 	    if (temp1 > temp2) {
-		temp = xreal[j];
-		xreal[j] = xreal[j + igap];
-		xreal[j + igap] = temp;
+		temp = xfloat[j];
+		xfloat[j] = xfloat[j + igap];
+		xfloat[j + igap] = temp;
 
 		temp = ximag[j];
 		ximag[j] = ximag[j + igap];
@@ -159,13 +156,13 @@ L50:
 		goto L60;
 	    }
 
-	    temp1 = slapy2_(&xreal[j], &ximag[j]);
-	    temp2 = slapy2_(&xreal[j + igap], &ximag[j + igap]);
+	    temp1 = slapy2_(&xfloat[j], &ximag[j]);
+	    temp2 = slapy2_(&xfloat[j + igap], &ximag[j + igap]);
 
 	    if (temp1 < temp2) {
-		temp = xreal[j];
-		xreal[j] = xreal[j + igap];
-		xreal[j + igap] = temp;
+		temp = xfloat[j];
+		xfloat[j] = xfloat[j + igap];
+		xfloat[j + igap] = temp;
 
 		temp = ximag[j];
 		ximag[j] = ximag[j + igap];
@@ -207,10 +204,10 @@ L80:
 		goto L90;
 	    }
 
-	    if (xreal[j] > xreal[j + igap]) {
-		temp = xreal[j];
-		xreal[j] = xreal[j + igap];
-		xreal[j + igap] = temp;
+	    if (xfloat[j] > xfloat[j + igap]) {
+		temp = xfloat[j];
+		xfloat[j] = xfloat[j + igap];
+		xfloat[j + igap] = temp;
 
 		temp = ximag[j];
 		ximag[j] = ximag[j + igap];
@@ -251,10 +248,10 @@ L110:
 		goto L120;
 	    }
 
-	    if (xreal[j] < xreal[j + igap]) {
-		temp = xreal[j];
-		xreal[j] = xreal[j + igap];
-		xreal[j + igap] = temp;
+	    if (xfloat[j] < xfloat[j + igap]) {
+		temp = xfloat[j];
+		xfloat[j] = xfloat[j + igap];
+		xfloat[j + igap] = temp;
 
 		temp = ximag[j];
 		ximag[j] = ximag[j + igap];
@@ -297,9 +294,9 @@ L140:
 
 	    if ((r__1 = ximag[j], dabs(r__1)) > (r__2 = ximag[j + igap], dabs(
 		    r__2))) {
-		temp = xreal[j];
-		xreal[j] = xreal[j + igap];
-		xreal[j + igap] = temp;
+		temp = xfloat[j];
+		xfloat[j] = xfloat[j + igap];
+		xfloat[j + igap] = temp;
 
 		temp = ximag[j];
 		ximag[j] = ximag[j + igap];
@@ -342,9 +339,9 @@ L170:
 
 	    if ((r__1 = ximag[j], dabs(r__1)) < (r__2 = ximag[j + igap], dabs(
 		    r__2))) {
-		temp = xreal[j];
-		xreal[j] = xreal[j + igap];
-		xreal[j + igap] = temp;
+		temp = xfloat[j];
+		xfloat[j] = xfloat[j + igap];
+		xfloat[j + igap] = temp;
 
 		temp = ximag[j];
 		ximag[j] = ximag[j + igap];

@@ -57,25 +57,21 @@
  * \EndLib
  */
 
-
-/* Subroutine */ int ssconv_(integer *n, real *ritz, real *bounds, real *tol, 
-	integer *nconv)
+int ssconv_(int32_t *n, float *ritz, float *bounds, float *tol, 
+	int32_t *nconv)
 {
     /* System generated locals */
-    integer i__1;
-    real r__1, r__2, r__3;
-    doublereal d__1;
+    int32_t i__1;
+    float r__1, r__2, r__3;
+    double d__1;
 
     /* Builtin functions */
-    double pow_dd(doublereal *, doublereal *);
+    double pow_dd(double *, double *);
 
     /* Local variables */
-    integer i__;
-    static real t0, t1;
-    real eps23, temp;
-
-
-
+    int32_t i__;
+    static float t0, t1;
+    float eps23, temp;
 
 /*     %-------------------% */
 /*     | External routines | */
@@ -93,7 +89,7 @@
     arscnd_(&t0);
 
     eps23 = slamch_("Epsilon-Machine");
-    d__1 = (doublereal) eps23;
+    d__1 = (double) eps23;
     eps23 = pow_dd(&d__1, &d_23);
 
     *nconv = 0;

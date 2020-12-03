@@ -30,8 +30,8 @@
  *          Shift selection criteria.
  *          'LM' -> want the KEV eigenvalues of largest magnitude.
  *          'SM' -> want the KEV eigenvalues of smallest magnitude.
- *          'LR' -> want the KEV eigenvalues of largest real part.
- *          'SR' -> want the KEV eigenvalues of smallest real part.
+ *          'LR' -> want the KEV eigenvalues of largest float part.
+ *          'SR' -> want the KEV eigenvalues of smallest float part.
  *          'LI' -> want the KEV eigenvalues of largest imaginary part.
  *          'SI' -> want the KEV eigenvalues of smallest imaginary part.
  *
@@ -46,7 +46,7 @@
  *           pairs together.
  *
  *  RITZR,  Double precision array of length KEV+NP.  (INPUT/OUTPUT)
- *  RITZI   On INPUT, RITZR and RITZI contain the real and imaginary
+ *  RITZI   On INPUT, RITZR and RITZI contain the float and imaginary
  *          parts of the eigenvalues of H.
  *          On OUTPUT, RITZR and RITZI are sorted so that the unwanted
  *          eigenvalues are in the first NP locations and the wanted
@@ -67,7 +67,7 @@
  * \BeginLib
  *
  * \Local variables:
- *     xxxxxx  real
+ *     xxxxxx  float
  *
  * \Routines called:
  *     dsortc  ARPACK sorting routine.
@@ -93,23 +93,19 @@
  * \EndLib
  */
 
-
-/* Subroutine */ int dngets_(integer *ishift, char *which, integer *kev, 
-	integer *np, doublereal *ritzr, doublereal *ritzi, doublereal *bounds,
-	 doublereal *shiftr, doublereal *shifti)
+int dngets_(int32_t *ishift, char *which, int32_t *kev, 
+	int32_t *np, double *ritzr, double *ritzi, double *bounds,
+	 double *shiftr, double *shifti)
 {
     /* System generated locals */
-    integer i__1;
+    int32_t i__1;
 
     /* Builtin functions */
-    integer s_cmp(char *, char *, ftnlen, ftnlen);
+    int32_t s_cmp(char *, char *, ftnlen, ftnlen);
 
     /* Local variables */
-    static real t0, t1;
-    integer msglvl;
-
-
-
+    static float t0, t1;
+    int32_t msglvl;
 
 /*     %-----------------------% */
 /*     | Executable Statements | */
@@ -201,7 +197,7 @@
 		ftnlen)13);
 	i__1 = *kev + *np;
 	dvout_(&debug_1.logfil, &i__1, &ritzr[1], &debug_1.ndigit, "_ngets: "
-		"Eigenvalues of current H matrix -- real part", (ftnlen)52);
+		"Eigenvalues of current H matrix -- float part", (ftnlen)52);
 	i__1 = *kev + *np;
 	dvout_(&debug_1.logfil, &i__1, &ritzi[1], &debug_1.ndigit, "_ngets: "
 		"Eigenvalues of current H matrix -- imag part", (ftnlen)52);

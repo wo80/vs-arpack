@@ -65,7 +65,7 @@
  *
  * \Routines called:
  *     zsortc  ARPACK sorting routine.
- *     ivout   ARPACK utility routine that prints integers.
+ *     ivout   ARPACK utility routine that prints int32_ts.
  *     arscnd  ARPACK utility routine for timing.
  *     zvout   ARPACK utility routine that prints vectors.
  *
@@ -87,19 +87,15 @@
  * \EndLib
  */
 
-
-/* Subroutine */ int zngets_(integer *ishift, char *which, integer *kev, 
-	integer *np, doublecomplex *ritz, doublecomplex *bounds)
+int zngets_(int32_t *ishift, char *which, int32_t *kev, 
+	int32_t *np, zomplex *ritz, zomplex *bounds)
 {
     /* System generated locals */
-    integer i__1;
+    int32_t i__1;
 
     /* Local variables */
-    static real t0, t1;
-    integer msglvl;
-
-
-
+    static float t0, t1;
+    int32_t msglvl;
 
 /*     %-----------------------% */
 /*     | Executable Statements | */

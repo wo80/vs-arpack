@@ -2,7 +2,6 @@
 
 #include "arpack.h"
 
-
 /*     %---------------------------------------------% */
 /*     | Initialize statistic and timing information | */
 /*     | for nonsymmetric Arnoldi code.              | */
@@ -19,13 +18,12 @@
 /* \SCCS Information: @(#) */
 /* FILE: statn.F   SID: 2.4   DATE OF SID: 4/20/96   RELEASE: 2 */
 
-/* Subroutine */ int sstatn_(void)
+int sstatn_(void)
 {
 
 /*     %--------------------------------% */
 /*     | See stat.doc for documentation | */
 /*     %--------------------------------% */
-
 
 /*     %-----------------------% */
 /*     | Executable Statements | */
@@ -60,7 +58,6 @@
     timing_1.tmvbx = 0.f;
 
     return 0;
-
 
 /*     %---------------% */
 /*     | End of sstatn | */

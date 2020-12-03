@@ -2,9 +2,8 @@
 
 #include "arpack.h"
 
-/* Subroutine */ int arscnd_(real *t)
+int arscnd_(float *t)
 {
-
 
 /*  -- LAPACK auxiliary routine (preliminary version) -- */
 /*     Univ. of Tennessee, Univ. of California Berkeley, NAG Ltd., */

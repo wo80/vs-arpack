@@ -60,7 +60,7 @@
  * \BeginLib
  *
  * \Local variables:
- *     xxxxxx  real
+ *     xxxxxx  float
  *
  * \Routines called:
  *     saxpy   Level 1 BLAS that computes a vector triad.
@@ -106,40 +106,37 @@
  * \EndLib
  */
 
-
-/* Subroutine */ int sstqrb_(integer *n, real *d__, real *e, real *z__, real *
-	work, integer *info)
+int sstqrb_(int32_t *n, float *d__, float *e, float *z__, float *
+	work, int32_t *info)
 {
     /* System generated locals */
-    integer i__1, i__2;
-    real r__1, r__2;
+    int32_t i__1, i__2;
+    float r__1, r__2;
 
     /* Builtin functions */
-    double sqrt(doublereal), r_sign(real *, real *);
+    double sqrt(double), r_sign(float *, float *);
 
     /* Local variables */
-    real b, c__, f, g;
-    integer i__, j, k, l, m;
-    real p, r__, s;
-    integer l1, ii, mm, lm1, mm1, nm1;
-    real rt1, rt2, eps;
-    integer lsv;
-    real tst, eps2;
-    integer lend, jtot;
-    real anorm;
-    integer lendm1, lendp1;
-    integer iscale;
-    real safmin, safmax;
-    integer lendsv;
-    real ssfmin;
-    integer nmaxit, icompz;
-    real ssfmax;
-
+    float b, c__, f, g;
+    int32_t i__, j, k, l, m;
+    float p, r__, s;
+    int32_t l1, ii, mm, lm1, mm1, nm1;
+    float rt1, rt2, eps;
+    int32_t lsv;
+    float tst, eps2;
+    int32_t lend, jtot;
+    float anorm;
+    int32_t lendm1, lendp1;
+    int32_t iscale;
+    float safmin, safmax;
+    int32_t lendsv;
+    float ssfmin;
+    int32_t nmaxit, icompz;
+    float ssfmax;
 
 /*     %------------------% */
 /*     | Scalar Arguments | */
 /*     %------------------% */
-
 
 /*     .. parameters .. */
 /*     .. */

@@ -66,26 +66,23 @@
  * \EndLib
  */
 
-
-/* Subroutine */ int dsesrt_(char *which, logical *apply, integer *n, 
-	doublereal *x, integer *na, doublereal *a, integer *lda)
+int dsesrt_(char *which, bool *apply, int32_t *n, 
+	double *x, int32_t *na, double *a, int32_t *lda)
 {
     /* System generated locals */
-    integer a_dim1, a_offset, i__1;
-    doublereal d__1, d__2;
+    int32_t a_dim1, a_offset, i__1;
+    double d__1, d__2;
 
     /* Builtin functions */
-    integer s_cmp(char *, char *, ftnlen, ftnlen);
+    int32_t s_cmp(char *, char *, ftnlen, ftnlen);
 
     /* Local variables */
-    integer i__, j, igap;
-    doublereal temp;
-
+    int32_t i__, j, igap;
+    double temp;
 
 /*     %------------------% */
 /*     | Scalar Arguments | */
 /*     %------------------% */
-
 
 /*     %-----------------------% */
 /*     | Executable Statements | */

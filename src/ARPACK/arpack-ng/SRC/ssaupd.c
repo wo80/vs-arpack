@@ -12,8 +12,8 @@
  *  Reverse communication interface for the Implicitly Restarted Arnoldi
  *  Iteration.  For symmetric problems this reduces to a variant of the Lanczos
  *  method.  This method has been designed to compute approximations to a
- *  few eigenpairs of a linear operator OP that is real and symmetric
- *  with respect to a real positive semi-definite symmetric matrix B,
+ *  few eigenpairs of a linear operator OP that is float and symmetric
+ *  with respect to a float positive semi-definite symmetric matrix B,
  *  i.e.
  *
  *       B*OP = (OP`)*B.
@@ -384,7 +384,7 @@
  *             Arnoldi Iteration.
  *     sstats  ARPACK routine that initialize timing and other statistics
  *             variables.
- *     ivout   ARPACK utility routine that prints integers.
+ *     ivout   ARPACK utility routine that prints int32_ts.
  *     arscnd  ARPACK utility routine for timing.
  *     svout   ARPACK utility routine that prints vectors.
  *     slamch  LAPACK routine that determines machine constants.
@@ -409,11 +409,10 @@
  * \EndLib
  */
 
-
-/* Subroutine */ int ssaupd_(integer *ido, char *bmat, integer *n, char *
-	which, integer *nev, real *tol, real *resid, integer *ncv, real *v, 
-	integer *ldv, integer *iparam, integer *ipntr, real *workd, real *
-	workl, integer *lworkl, integer *info)
+int ssaupd_(int32_t *ido, char *bmat, int32_t *n, char *
+	which, int32_t *nev, float *tol, float *resid, int32_t *ncv, float *v, 
+	int32_t *ldv, int32_t *iparam, int32_t *ipntr, float *workd, float *
+	workl, int32_t *lworkl, int32_t *info)
 {
     /* Format strings */
     static char fmt_1000[] = "(//,5x,\002==================================="
@@ -443,26 +442,22 @@
 	    "\002,f12.6)";
 
     /* System generated locals */
-    integer v_dim1, v_offset, i__1, i__2;
+    int32_t v_dim1, v_offset, i__1, i__2;
 
     /* Builtin functions */
-    integer s_cmp(char *, char *, ftnlen, ftnlen), s_wsfe(cilist *), e_wsfe(
-	    void), do_fio(integer *, char *, ftnlen);
+    int32_t s_cmp(char *, char *, ftnlen, ftnlen), s_wsfe(cilist *), e_wsfe(
+	    void), do_fio(int32_t *, char *, ftnlen);
 
     /* Local variables */
-    integer j;
-    static real t0, t1;
-    static integer nb, ih, iq, np, iw, ldh, ldq, nev0, mode, ierr, iupd, next,
+    int32_t j;
+    static float t0, t1;
+    static int32_t nb, ih, iq, np, iw, ldh, ldq, nev0, mode, ierr, iupd, next,
 	     ritz;
-    static integer bounds, ishift, msglvl, mxiter;
+    static int32_t bounds, ishift, msglvl, mxiter;
 
     /* Fortran I/O blocks */
     static cilist io___21 = { 0, 6, 0, fmt_1000, 0 };
     static cilist io___22 = { 0, 6, 0, fmt_1100, 0 };
-
-
-
-
 
 /*     %-----------------------% */
 /*     | Executable Statements | */
@@ -687,23 +682,23 @@
 	s_wsfe(&io___21);
 	e_wsfe();
 	s_wsfe(&io___22);
-	do_fio(&c__1, (char *)&mxiter, (ftnlen)sizeof(integer));
-	do_fio(&c__1, (char *)&timing_1.nopx, (ftnlen)sizeof(integer));
-	do_fio(&c__1, (char *)&timing_1.nbx, (ftnlen)sizeof(integer));
-	do_fio(&c__1, (char *)&timing_1.nrorth, (ftnlen)sizeof(integer));
-	do_fio(&c__1, (char *)&timing_1.nitref, (ftnlen)sizeof(integer));
-	do_fio(&c__1, (char *)&timing_1.nrstrt, (ftnlen)sizeof(integer));
-	do_fio(&c__1, (char *)&timing_1.tmvopx, (ftnlen)sizeof(real));
-	do_fio(&c__1, (char *)&timing_1.tmvbx, (ftnlen)sizeof(real));
-	do_fio(&c__1, (char *)&timing_1.tsaupd, (ftnlen)sizeof(real));
-	do_fio(&c__1, (char *)&timing_1.tsaup2, (ftnlen)sizeof(real));
-	do_fio(&c__1, (char *)&timing_1.tsaitr, (ftnlen)sizeof(real));
-	do_fio(&c__1, (char *)&timing_1.titref, (ftnlen)sizeof(real));
-	do_fio(&c__1, (char *)&timing_1.tgetv0, (ftnlen)sizeof(real));
-	do_fio(&c__1, (char *)&timing_1.tseigt, (ftnlen)sizeof(real));
-	do_fio(&c__1, (char *)&timing_1.tsgets, (ftnlen)sizeof(real));
-	do_fio(&c__1, (char *)&timing_1.tsapps, (ftnlen)sizeof(real));
-	do_fio(&c__1, (char *)&timing_1.tsconv, (ftnlen)sizeof(real));
+	do_fio(&c__1, (char *)&mxiter, (ftnlen)sizeof(int32_t));
+	do_fio(&c__1, (char *)&timing_1.nopx, (ftnlen)sizeof(int32_t));
+	do_fio(&c__1, (char *)&timing_1.nbx, (ftnlen)sizeof(int32_t));
+	do_fio(&c__1, (char *)&timing_1.nrorth, (ftnlen)sizeof(int32_t));
+	do_fio(&c__1, (char *)&timing_1.nitref, (ftnlen)sizeof(int32_t));
+	do_fio(&c__1, (char *)&timing_1.nrstrt, (ftnlen)sizeof(int32_t));
+	do_fio(&c__1, (char *)&timing_1.tmvopx, (ftnlen)sizeof(float));
+	do_fio(&c__1, (char *)&timing_1.tmvbx, (ftnlen)sizeof(float));
+	do_fio(&c__1, (char *)&timing_1.tsaupd, (ftnlen)sizeof(float));
+	do_fio(&c__1, (char *)&timing_1.tsaup2, (ftnlen)sizeof(float));
+	do_fio(&c__1, (char *)&timing_1.tsaitr, (ftnlen)sizeof(float));
+	do_fio(&c__1, (char *)&timing_1.titref, (ftnlen)sizeof(float));
+	do_fio(&c__1, (char *)&timing_1.tgetv0, (ftnlen)sizeof(float));
+	do_fio(&c__1, (char *)&timing_1.tseigt, (ftnlen)sizeof(float));
+	do_fio(&c__1, (char *)&timing_1.tsgets, (ftnlen)sizeof(float));
+	do_fio(&c__1, (char *)&timing_1.tsapps, (ftnlen)sizeof(float));
+	do_fio(&c__1, (char *)&timing_1.tsconv, (ftnlen)sizeof(float));
 	e_wsfe();
     }
 
