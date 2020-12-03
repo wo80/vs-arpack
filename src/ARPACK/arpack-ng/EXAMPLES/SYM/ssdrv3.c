@@ -167,7 +167,7 @@ int ssdrv3()
 	e_wsle();
 	goto L9000;
     }
-    *(unsigned char *)bmat = 'G';
+    *bmat = 'G';
     strcpy(which, "LM");
 
      /* ------------------------------------------------ */

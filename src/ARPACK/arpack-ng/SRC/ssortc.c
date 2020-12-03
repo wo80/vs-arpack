@@ -71,7 +71,7 @@ int ssortc_(char *which, bool *apply, int32_t *n, float *xfloat, float *ximag, f
     float r__1, r__2;
 
     /* Builtin functions */
-    
+    int32_t strcmp(char *, char *, ftnlen, ftnlen);
 
     /* Local variables */
     int32_t i__, j, igap;

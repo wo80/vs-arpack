@@ -491,7 +491,7 @@ L50:
         /* ------------------------------------- */
 
     arscnd_(&t2);
-    if (*(unsigned char *)bmat == 'G') {
+    if (*bmat == 'G') {
 	++timing_1.nbx;
 	step4 = true;
 	ipntr[1] = irj;
@@ -503,7 +503,7 @@ L50:
            /* ----------------------------------- */
 
 	goto L9000;
-    } else if (*(unsigned char *)bmat == 'I') {
+    } else if (*bmat == 'I') {
 	zcopy_(n, &resid[1], &c__1, &workd[ipj], &c__1);
     }
 L60:
@@ -514,7 +514,7 @@ L60:
         /* if step4 = .true.                */
         /* -------------------------------- */
 
-    if (*(unsigned char *)bmat == 'G') {
+    if (*bmat == 'G') {
 	arscnd_(&t3);
 	timing_1.tmvbx += t3 - t2;
     }
@@ -526,13 +526,13 @@ L60:
         /* Compute the B-norm of OP*v_{j}.     */
         /* ----------------------------------- */
 
-    if (*(unsigned char *)bmat == 'G') {
+    if (*bmat == 'G') {
 	zdotc_(&z__1, n, &resid[1], &c__1, &workd[ipj], &c__1);
 	cnorm.r = z__1.r, cnorm.i = z__1.i;
 	d__1 = cnorm.r;
 	d__2 = d_imag(&cnorm);
 	wnorm = sqrt(dlapy2_(&d__1, &d__2));
-    } else if (*(unsigned char *)bmat == 'I') {
+    } else if (*bmat == 'I') {
 	wnorm = dznrm2_(n, &resid[1], &c__1);
     }
 
@@ -572,7 +572,7 @@ L60:
     orth1 = true;
 
     arscnd_(&t2);
-    if (*(unsigned char *)bmat == 'G') {
+    if (*bmat == 'G') {
 	++timing_1.nbx;
 	zcopy_(n, &resid[1], &c__1, &workd[irj], &c__1);
 	ipntr[1] = irj;
@@ -584,7 +584,7 @@ L60:
            /* -------------------------------- */
 
 	goto L9000;
-    } else if (*(unsigned char *)bmat == 'I') {
+    } else if (*bmat == 'I') {
 	zcopy_(n, &resid[1], &c__1, &workd[ipj], &c__1);
     }
 L70:
@@ -594,7 +594,7 @@ L70:
         /* WORKD(IPJ:IPJ+N-1) := B*r_{j}.                    */
         /* ------------------------------------------------- */
 
-    if (*(unsigned char *)bmat == 'G') {
+    if (*bmat == 'G') {
 	arscnd_(&t3);
 	timing_1.tmvbx += t3 - t2;
     }
@@ -605,13 +605,13 @@ L70:
         /* Compute the B-norm of r_{j}. */
         /* ---------------------------- */
 
-    if (*(unsigned char *)bmat == 'G') {
+    if (*bmat == 'G') {
 	zdotc_(&z__1, n, &resid[1], &c__1, &workd[ipj], &c__1);
 	cnorm.r = z__1.r, cnorm.i = z__1.i;
 	d__1 = cnorm.r;
 	d__2 = d_imag(&cnorm);
 	*rnorm = sqrt(dlapy2_(&d__1, &d__2));
-    } else if (*(unsigned char *)bmat == 'I') {
+    } else if (*bmat == 'I') {
 	*rnorm = dznrm2_(n, &resid[1], &c__1);
     }
 
@@ -678,7 +678,7 @@ L80:
 
     orth2 = true;
     arscnd_(&t2);
-    if (*(unsigned char *)bmat == 'G') {
+    if (*bmat == 'G') {
 	++timing_1.nbx;
 	zcopy_(n, &resid[1], &c__1, &workd[irj], &c__1);
 	ipntr[1] = irj;
@@ -691,7 +691,7 @@ L80:
            /* --------------------------------- */
 
 	goto L9000;
-    } else if (*(unsigned char *)bmat == 'I') {
+    } else if (*bmat == 'I') {
 	zcopy_(n, &resid[1], &c__1, &workd[ipj], &c__1);
     }
 L90:
@@ -700,7 +700,7 @@ L90:
         /* Back from reverse communication if ORTH2 = .true. */
         /* ------------------------------------------------- */
 
-    if (*(unsigned char *)bmat == 'G') {
+    if (*bmat == 'G') {
 	arscnd_(&t3);
 	timing_1.tmvbx += t3 - t2;
     }
@@ -709,13 +709,13 @@ L90:
         /* Compute the B-norm of the corrected residual r_{j}. */
         /* --------------------------------------------------- */
 
-    if (*(unsigned char *)bmat == 'G') {
+    if (*bmat == 'G') {
 	zdotc_(&z__1, n, &resid[1], &c__1, &workd[ipj], &c__1);
 	cnorm.r = z__1.r, cnorm.i = z__1.i;
 	d__1 = cnorm.r;
 	d__2 = d_imag(&cnorm);
 	rnorm1 = sqrt(dlapy2_(&d__1, &d__2));
-    } else if (*(unsigned char *)bmat == 'I') {
+    } else if (*bmat == 'I') {
 	rnorm1 = dznrm2_(n, &resid[1], &c__1);
     }
 

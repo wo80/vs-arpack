@@ -66,7 +66,7 @@ int zsortc_(char *which, bool *apply, int32_t *n, zomplex *x, zomplex *y)
     double d__1, d__2;
 
     /* Builtin functions */
-    
+    int32_t strcmp(char *, char *, ftnlen, ftnlen);
     double d_imag(zomplex *);
 
     /* Local variables */

@@ -66,7 +66,7 @@ int csortc_(char *which, bool *apply, int32_t *n, complex *x, complex *y)
     float r__1, r__2;
 
     /* Builtin functions */
-    
+    int32_t strcmp(char *, char *, ftnlen, ftnlen);
     double r_imag(complex *);
 
     /* Local variables */

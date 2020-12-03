@@ -175,7 +175,7 @@ int sndrv2()
 	e_wsle();
 	goto L9000;
     }
-    *(unsigned char *)bmat = 'I';
+    *bmat = 'I';
     strcpy(which, "LM");
     sigmar = 1.f;
     sigmai = 0.f;

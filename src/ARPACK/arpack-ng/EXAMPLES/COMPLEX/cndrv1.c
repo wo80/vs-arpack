@@ -168,7 +168,7 @@ int cndrv1()
 	e_wsle();
 	goto L9000;
     }
-    *(unsigned char *)bmat = 'I';
+    *bmat = 'I';
     strcpy(which, "LM");
 
      /* ------------------------------------------------- */

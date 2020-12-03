@@ -215,7 +215,7 @@ int zgetv0_(int32_t *ido, char *bmat, int32_t *itry, bool *initv, int32_t *n, in
 	    zcopy_(n, &resid[1], &c__1, &workd[1], &c__1);
 	    *ido = -1;
 	    goto L9000;
-	} else if (*itry > 1 && *(unsigned char *)bmat == 'G') {
+	} else if (*itry > 1 && *bmat == 'G') {
 	    zcopy_(n, &resid[1], &c__1, &workd[*n + 1], &c__1);
 	}
     }
@@ -249,31 +249,31 @@ int zgetv0_(int32_t *ido, char *bmat, int32_t *itry, bool *initv, int32_t *n, in
     if (*itry == 1) {
 	zcopy_(n, &workd[*n + 1], &c__1, &resid[1], &c__1);
     }
-    if (*(unsigned char *)bmat == 'G') {
+    if (*bmat == 'G') {
 	++timing_1.nbx;
 	ipntr[1] = *n + 1;
 	ipntr[2] = 1;
 	*ido = 2;
 	goto L9000;
-    } else if (*(unsigned char *)bmat == 'I') {
+    } else if (*bmat == 'I') {
 	zcopy_(n, &resid[1], &c__1, &workd[1], &c__1);
     }
 
 L20:
 
-    if (*(unsigned char *)bmat == 'G') {
+    if (*bmat == 'G') {
 	arscnd_(&t3);
 	timing_1.tmvbx += t3 - t2;
     }
 
     first = false;
-    if (*(unsigned char *)bmat == 'G') {
+    if (*bmat == 'G') {
 	zdotc_(&z__1, n, &resid[1], &c__1, &workd[1], &c__1);
 	cnorm.r = z__1.r, cnorm.i = z__1.i;
 	d__1 = cnorm.r;
 	d__2 = d_imag(&cnorm);
 	rnorm0 = sqrt(dlapy2_(&d__1, &d__2));
-    } else if (*(unsigned char *)bmat == 'I') {
+    } else if (*bmat == 'I') {
 	rnorm0 = dznrm2_(n, &resid[1], &c__1);
     }
     *rnorm = rnorm0;
@@ -314,31 +314,31 @@ L30:
      /* -------------------------------------------------------- */
 
     arscnd_(&t2);
-    if (*(unsigned char *)bmat == 'G') {
+    if (*bmat == 'G') {
 	++timing_1.nbx;
 	zcopy_(n, &resid[1], &c__1, &workd[*n + 1], &c__1);
 	ipntr[1] = *n + 1;
 	ipntr[2] = 1;
 	*ido = 2;
 	goto L9000;
-    } else if (*(unsigned char *)bmat == 'I') {
+    } else if (*bmat == 'I') {
 	zcopy_(n, &resid[1], &c__1, &workd[1], &c__1);
     }
 
 L40:
 
-    if (*(unsigned char *)bmat == 'G') {
+    if (*bmat == 'G') {
 	arscnd_(&t3);
 	timing_1.tmvbx += t3 - t2;
     }
 
-    if (*(unsigned char *)bmat == 'G') {
+    if (*bmat == 'G') {
 	zdotc_(&z__1, n, &resid[1], &c__1, &workd[1], &c__1);
 	cnorm.r = z__1.r, cnorm.i = z__1.i;
 	d__1 = cnorm.r;
 	d__2 = d_imag(&cnorm);
 	*rnorm = sqrt(dlapy2_(&d__1, &d__2));
-    } else if (*(unsigned char *)bmat == 'I') {
+    } else if (*bmat == 'I') {
 	*rnorm = dznrm2_(n, &resid[1], &c__1);
     }
 

@@ -171,7 +171,7 @@ int zndrv3()
 	e_wsle();
 	goto L9000;
     }
-    *(unsigned char *)bmat = 'G';
+    *bmat = 'G';
     strcpy(which, "LM");
     sigma.r = 0., sigma.i = 0.;
 

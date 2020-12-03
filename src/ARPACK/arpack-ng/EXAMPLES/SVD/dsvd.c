@@ -265,7 +265,7 @@ int dsvd()
 
     nev = 4;
     ncv = 10;
-    *(unsigned char *)bmat = 'I';
+    *bmat = 'I';
     strcpy(which, "LM");
 
     if (n > 250) {

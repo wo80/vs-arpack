@@ -163,7 +163,7 @@ int ssdrv2()
 	goto L9000;
     }
 
-    *(unsigned char *)bmat = 'I';
+    *bmat = 'I';
     strcpy(which, "LM");
     sigma = 0.f;
 

@@ -77,12 +77,12 @@ int dvout_(int32_t *lout, int32_t *n, double *sx,
     lll = min(i__1,80);
     i__1 = lll;
     for (i__ = 1; i__ <= i__1; ++i__) {
-	*(unsigned char *)&line[i__ - 1] = '-';
+	*&line[i__ - 1] = '-';
 /* L10: */
     }
 
     for (i__ = lll + 1; i__ <= 80; ++i__) {
-	*(unsigned char *)&line[i__ - 1] = ' ';
+	*&line[i__ - 1] = ' ';
 /* L20: */
     }
 

@@ -231,7 +231,7 @@ int sssimp()
 
     nev = 4;
     ncv = 20;
-    *(unsigned char *)bmat = 'I';
+    *bmat = 'I';
     strcpy(which, "LM");
 
     if (n > 256) {

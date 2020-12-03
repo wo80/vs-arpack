@@ -230,7 +230,7 @@ int dseupd_(bool *rvec, char *howmny, bool *select, double *d__, double *z__, in
     double d__1, d__2, d__3;
 
     /* Builtin functions */
-    
+    int32_t strcmp(char *, char *, ftnlen, ftnlen);
 
     double pow_dd(double *, double *);
 
@@ -301,19 +301,19 @@ int dseupd_(bool *rvec, char *howmny, bool *select, double *d__, double *z__, in
     if (*ncv <= *nev || *ncv > *n) {
 	ierr = -3;
     }
-    if (strcmp(which, "LM") != 0 && strcmp(which, "SM") != 0 &&
-        strcmp(which, "LA") != 0 && strcmp(which, "SA") != 0 &&
-        strcmp(which, "BE") != 0) {
-        ierr = -5;
+    if (strcmp(which, "LM") != 0 && strcmp(which, "SM", (
+	    ftnlen)2, (ftnlen)2) != 0 && strcmp(which, "LA", (ftnlen)2, (
+	    ftnlen)2) != 0 && strcmp(which, "SA") != 0 &&
+	     strcmp(which, "BE") != 0) {ierr = -5;
     }
-    if (*(unsigned char *)bmat != 'I' && *(unsigned char *)bmat != 'G') {
+    if (*bmat != 'I' && *bmat != 'G') {
 	ierr = -6;
     }
-    if (*(unsigned char *)howmny != 'A' && *(unsigned char *)howmny != 'P' && 
-	    *(unsigned char *)howmny != 'S' && *rvec) {
+    if (*howmny != 'A' && *howmny != 'P' && 
+	    *howmny != 'S' && *rvec) {
 	ierr = -15;
     }
-    if (*rvec && *(unsigned char *)howmny == 'S') {
+    if (*rvec && *howmny == 'S') {
 	ierr = -16;
     }
 
@@ -334,7 +334,7 @@ int dseupd_(bool *rvec, char *howmny, bool *select, double *d__, double *z__, in
     } else {
 	ierr = -10;
     }
-    if (mode == 1 && *(unsigned char *)bmat == 'G') {
+    if (mode == 1 && *bmat == 'G') {
 	ierr = -11;
     }
     if (*nev == 1 && strcmp(which, "BE") == 0) {
@@ -433,9 +433,9 @@ int dseupd_(bool *rvec, char *howmny, bool *select, double *d__, double *z__, in
      /* ------------------------------------- */
 
     rnorm = workl[ih];
-    if (*(unsigned char *)bmat == 'I') {
+    if (*bmat == 'I') {
 	bnorm2 = rnorm;
-    } else if (*(unsigned char *)bmat == 'G') {
+    } else if (*bmat == 'G') {
 	bnorm2 = dnrm2_(n, &workd[1], &c__1);
     }
 
@@ -724,7 +724,7 @@ L30:
      /* the Lanczos basis matrix V.                    */
      /* ---------------------------------------------- */
 
-    if (*rvec && *(unsigned char *)howmny == 'A') {
+    if (*rvec && *howmny == 'A') {
 
         /* -------------------------------------------------------- */
         /* Compute the QR factorization of the matrix representing  */
@@ -773,7 +773,7 @@ L30:
 	    workl[iw + *ncv + j - 1] = workl[ihb + j - 1];
 /* L67: */
 	}
-    } else if (*rvec && *(unsigned char *)howmny == 'S') {
+    } else if (*rvec && *howmny == 'S') {
 
 /*     Not yet implemented. See remark 2 above. */
 

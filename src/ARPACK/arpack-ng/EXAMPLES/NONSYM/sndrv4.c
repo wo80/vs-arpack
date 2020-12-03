@@ -182,7 +182,7 @@ int sndrv4()
 	e_wsle();
 	goto L9000;
     }
-    *(unsigned char *)bmat = 'G';
+    *bmat = 'G';
     strcpy(which, "LM");
     sigmar = 1.f;
     sigmai = 0.f;

@@ -444,7 +444,7 @@ int dsaupd_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, dou
     int32_t v_dim1, v_offset, i__1, i__2;
 
     /* Builtin functions */
-    int32_t s_wsfe(cilist *), e_wsfe(
+    int32_t strcmp(char *, char *, ftnlen, ftnlen), s_wsfe(cilist *), e_wsfe(
 	    void), do_fio(int32_t *, char *, ftnlen);
 
     /* Local variables */
@@ -523,7 +523,7 @@ int dsaupd_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, dou
 	 && strcmp(which, "SA") != 0 && strcmp(which, "BE") != 0) {
 	    ierr = -5;
 	}
-	if (*(unsigned char *)bmat != 'I' && *(unsigned char *)bmat != 'G') {
+	if (*bmat != 'I' && *bmat != 'G') {
 	    ierr = -6;
 	}
 
@@ -534,7 +534,7 @@ int dsaupd_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, dou
 	}
 	if (mode < 1 || mode > 5) {
 	    ierr = -10;
-	} else if (mode == 1 && *(unsigned char *)bmat == 'G') {
+	} else if (mode == 1 && *bmat == 'G') {
 	    ierr = -11;
 	} else if (ishift < 0 || ishift > 1) {
 	    ierr = -12;

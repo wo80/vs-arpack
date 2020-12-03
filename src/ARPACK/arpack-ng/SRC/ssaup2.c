@@ -190,7 +190,7 @@ int ssaup2_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, int
 
     /* Builtin functions */
     double pow_dd(double *, double *);
-    
+    int32_t strcmp(char *, char *, ftnlen, ftnlen);
 
     double sqrt(double);
 
@@ -775,7 +775,7 @@ L50:
 
     cnorm = true;
     arscnd_(&t2);
-    if (*(unsigned char *)bmat == 'G') {
+    if (*bmat == 'G') {
 	++timing_1.nbx;
 	scopy_(n, &resid[1], &c__1, &workd[*n + 1], &c__1);
 	ipntr[1] = *n + 1;
@@ -787,7 +787,7 @@ L50:
            /* -------------------------------- */
 
 	goto L9000;
-    } else if (*(unsigned char *)bmat == 'I') {
+    } else if (*bmat == 'I') {
 	scopy_(n, &resid[1], &c__1, &workd[1], &c__1);
     }
 
@@ -798,15 +798,15 @@ L100:
         /* WORKD(1:N) := B*RESID            */
         /* -------------------------------- */
 
-    if (*(unsigned char *)bmat == 'G') {
+    if (*bmat == 'G') {
 	arscnd_(&t3);
 	timing_1.tmvbx += t3 - t2;
     }
 
-    if (*(unsigned char *)bmat == 'G') {
+    if (*bmat == 'G') {
 	rnorm = sdot_(n, &resid[1], &c__1, &workd[1], &c__1);
 	rnorm = sqrt((dabs(rnorm)));
-    } else if (*(unsigned char *)bmat == 'I') {
+    } else if (*bmat == 'I') {
 	rnorm = snrm2_(n, &resid[1], &c__1);
     }
     cnorm = false;

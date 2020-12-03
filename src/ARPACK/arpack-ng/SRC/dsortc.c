@@ -71,7 +71,7 @@ int dsortc_(char *which, bool *apply, int32_t *n, double *xfloat, double *ximag,
     double d__1, d__2;
 
     /* Builtin functions */
-    
+    int32_t strcmp(char *, char *, ftnlen, ftnlen);
 
     /* Local variables */
     int32_t i__, j, igap;

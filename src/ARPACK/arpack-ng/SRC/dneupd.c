@@ -317,7 +317,7 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
 
     /* Builtin functions */
     double pow_dd(double *, double *);
-    
+    int32_t strcmp(char *, char *, ftnlen, ftnlen);
 
     /* Local variables */
     int32_t j, k, ih, jj, np;
@@ -399,7 +399,7 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
     } else if (strcmp(which, "LM") != 0 && strcmp(which, "SM") != 0 && strcmp(which, "LR") != 0
 	    && strcmp(which, "SR") != 0 && strcmp(which, "LI") != 0 && strcmp(which, "SI") != 0) {
 	ierr = -5;
-    } else if (*(unsigned char *)bmat != 'I' && *(unsigned char *)bmat != 'G')
+    } else if (*bmat != 'I' && *bmat != 'G')
 	     {
 	ierr = -6;
     } else /* if(complicated condition) */ {
@@ -407,10 +407,10 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
 	i__1 = *ncv;
 	if (*lworkl < i__1 * i__1 * 3 + *ncv * 6) {
 	    ierr = -7;
-	} else if (*(unsigned char *)howmny != 'A' && *(unsigned char *)
-		howmny != 'P' && *(unsigned char *)howmny != 'S' && *rvec) {
+	} else if (*howmny != 'A' && *
+		howmny != 'P' && *howmny != 'S' && *rvec) {
 	    ierr = -13;
-	} else if (*(unsigned char *)howmny == 'S') {
+	} else if (*howmny == 'S') {
 	    ierr = -12;
 	}
     }
@@ -426,7 +426,7 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
     } else {
 	ierr = -10;
     }
-    if (mode == 1 && *(unsigned char *)bmat == 'G') {
+    if (mode == 1 && *bmat == 'G') {
 	ierr = -11;
     }
 
@@ -713,7 +713,7 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
 /* L20: */
 	}
 
-	if (*(unsigned char *)howmny == 'A') {
+	if (*howmny == 'A') {
 
            /* ------------------------------------------ */
            /* Compute the NCONV wanted eigenvectors of T */
@@ -974,7 +974,8 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
      /* for MODE = 2.                                   */
      /* ----------------------------------------------- */
 
-    if (*rvec && *(unsigned char *)howmny == 'A' && strcmp(type__, "SHIFTI") == 0) {
+    if (*rvec && *howmny == 'A' && strcmp(type__, "SHIFTI", (
+	    ftnlen)6, (ftnlen)6) == 0) {
 
         /* ---------------------------------------------- */
         /* Purify the computed Ritz vectors by adding a   */
