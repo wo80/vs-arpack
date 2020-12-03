@@ -141,8 +141,7 @@ int cneigh_(float *rnorm, int32_t *n, complex *h__, int32_t *
     msglvl = debug_1.mceigh;
 
     if (msglvl > 2) {
-	cmout_(&debug_1.logfil, n, n, &h__[h_offset], ldh, &debug_1.ndigit, 
-		"_neigh: Entering upper Hessenberg matrix H ", (ftnlen)43);
+	cmout_(&debug_1.logfil, n, n, &h__[h_offset], ldh, &debug_1.ndigit, "_neigh: Entering upper Hessenberg matrix H ");
     }
 
      /* -------------------------------------------------------- */
@@ -163,8 +162,7 @@ int cneigh_(float *rnorm, int32_t *n, complex *h__, int32_t *
 
     ccopy_(n, &q[*n - 1 + q_dim1], ldq, &bounds[1], &c__1);
     if (msglvl > 1) {
-	cvout_(&debug_1.logfil, n, &bounds[1], &debug_1.ndigit, "_neigh: las"
-		"t row of the Schur matrix for H", (ftnlen)42);
+	cvout_(&debug_1.logfil, n, &bounds[1], &debug_1.ndigit, "_neigh: last row of the Schur matrix for H");
     }
 
      /* -------------------------------------------------------- */
@@ -199,8 +197,7 @@ int cneigh_(float *rnorm, int32_t *n, complex *h__, int32_t *
 
     if (msglvl > 1) {
 	ccopy_(n, &q[*n + q_dim1], ldq, &workl[1], &c__1);
-	cvout_(&debug_1.logfil, n, &workl[1], &debug_1.ndigit, "_neigh: Last"
-		" row of the eigenvector matrix for H", (ftnlen)48);
+	cvout_(&debug_1.logfil, n, &workl[1], &debug_1.ndigit, "_neigh: Last row of the eigenvector matrix for H");
     }
 
      /* -------------------------- */
@@ -211,10 +208,8 @@ int cneigh_(float *rnorm, int32_t *n, complex *h__, int32_t *
     csscal_(n, rnorm, &bounds[1], &c__1);
 
     if (msglvl > 2) {
-	cvout_(&debug_1.logfil, n, &ritz[1], &debug_1.ndigit, "_neigh: The e"
-		"igenvalues of H", (ftnlen)28);
-	cvout_(&debug_1.logfil, n, &bounds[1], &debug_1.ndigit, "_neigh: Rit"
-		"z estimates for the eigenvalues of H", (ftnlen)47);
+	cvout_(&debug_1.logfil, n, &ritz[1], &debug_1.ndigit, "_neigh: The eigenvalues of H");
+	cvout_(&debug_1.logfil, n, &bounds[1], &debug_1.ndigit, "_neigh: Ritz estimates for the eigenvalues of H");
     }
 
     arscnd_(&t1);

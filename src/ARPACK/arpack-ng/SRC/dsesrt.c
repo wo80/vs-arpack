@@ -66,8 +66,8 @@
  * \EndLib
  */
 
-int dsesrt_(char *which, bool *apply, int32_t *n, 
-	double *x, int32_t *na, double *a, int32_t *lda)
+int dsesrt_(char *which, bool *apply, int32_t *n, double *x, int32_t *na, double *a,
+     int32_t *lda)
 {
     /* System generated locals */
     int32_t a_dim1, a_offset, i__1;

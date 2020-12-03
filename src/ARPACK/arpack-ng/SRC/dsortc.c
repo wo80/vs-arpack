@@ -64,8 +64,7 @@
  * \EndLib
  */
 
-int dsortc_(char *which, bool *apply, int32_t *n, 
-	double *xfloat, double *ximag, double *y)
+int dsortc_(char *which, bool *apply, int32_t *n, double *xfloat, double *ximag, double *y)
 {
     /* System generated locals */
     int32_t i__1;

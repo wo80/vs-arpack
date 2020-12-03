@@ -57,8 +57,7 @@
  * \EndLib
  */
 
-int ssortr_(char *which, bool *apply, int32_t *n, float *
-	x1, float *x2)
+int ssortr_(char *which, bool *apply, int32_t *n, float *x1, float *x2)
 {
     /* System generated locals */
     int32_t i__1;

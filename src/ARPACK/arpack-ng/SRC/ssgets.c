@@ -91,8 +91,8 @@
  * \EndLib
  */
 
-int ssgets_(int32_t *ishift, char *which, int32_t *kev, 
-	int32_t *np, float *ritz, float *bounds, float *shifts)
+int ssgets_(int32_t *ishift, char *which, int32_t *kev, int32_t *np, float *ritz,
+     float *bounds, float *shifts)
 {
     /* System generated locals */
     int32_t i__1;
@@ -177,16 +177,12 @@ int ssgets_(int32_t *ishift, char *which, int32_t *kev,
     timing_1.tsgets += t1 - t0;
 
     if (msglvl > 0) {
-	ivout_(&debug_1.logfil, &c__1, kev, &debug_1.ndigit, "_sgets: KEV is",
-		 (ftnlen)14);
-	ivout_(&debug_1.logfil, &c__1, np, &debug_1.ndigit, "_sgets: NP is", (
-		ftnlen)13);
+	ivout_(&debug_1.logfil, &c__1, kev, &debug_1.ndigit, "_sgets: KEV is");
+	ivout_(&debug_1.logfil, &c__1, np, &debug_1.ndigit, "_sgets: NP is");
 	i__1 = *kev + *np;
-	svout_(&debug_1.logfil, &i__1, &ritz[1], &debug_1.ndigit, "_sgets: E"
-		"igenvalues of current H matrix", (ftnlen)39);
+	svout_(&debug_1.logfil, &i__1, &ritz[1], &debug_1.ndigit, "_sgets: Eigenvalues of current H matrix");
 	i__1 = *kev + *np;
-	svout_(&debug_1.logfil, &i__1, &bounds[1], &debug_1.ndigit, "_sgets:"
-		" Associated Ritz estimates", (ftnlen)33);
+	svout_(&debug_1.logfil, &i__1, &bounds[1], &debug_1.ndigit, "_sgets: Associated Ritz estimates");
     }
 
     return 0;

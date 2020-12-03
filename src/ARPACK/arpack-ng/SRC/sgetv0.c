@@ -117,9 +117,9 @@
  * \EndLib
  */
 
-int sgetv0_(int32_t *ido, char *bmat, int32_t *itry, bool 
-	*initv, int32_t *n, int32_t *j, float *v, int32_t *ldv, float *resid, 
-	float *rnorm, int32_t *ipntr, float *workd, int32_t *ierr)
+int sgetv0_(int32_t *ido, char *bmat, int32_t *itry, bool *initv, int32_t *n, int32_t *j,
+     float *v, int32_t *ldv, float *resid, float *rnorm, int32_t *ipntr, float *workd,
+     int32_t *ierr)
 {
     /* Initialized data */
 
@@ -342,10 +342,8 @@ L40:
      /* ------------------------------------ */
 
     if (msglvl > 2) {
-	svout_(&debug_1.logfil, &c__1, &rnorm0, &debug_1.ndigit, "_getv0: re"
-		"-orthonalization ; rnorm0 is", (ftnlen)38);
-	svout_(&debug_1.logfil, &c__1, rnorm, &debug_1.ndigit, "_getv0: re-o"
-		"rthonalization ; rnorm is", (ftnlen)37);
+	svout_(&debug_1.logfil, &c__1, &rnorm0, &debug_1.ndigit, "_getv0: re-orthonalization ; rnorm0 is");
+	svout_(&debug_1.logfil, &c__1, rnorm, &debug_1.ndigit, "_getv0: re-orthonalization ; rnorm is");
     }
 
     if (*rnorm > rnorm0 * .717f) {
@@ -379,12 +377,10 @@ L40:
 L50:
 
     if (msglvl > 0) {
-	svout_(&debug_1.logfil, &c__1, rnorm, &debug_1.ndigit, "_getv0: B-no"
-		"rm of initial / restarted starting vector", (ftnlen)53);
+	svout_(&debug_1.logfil, &c__1, rnorm, &debug_1.ndigit, "_getv0: B-norm of initial / restarted starting vector");
     }
     if (msglvl > 3) {
-	svout_(&debug_1.logfil, n, &resid[1], &debug_1.ndigit, "_getv0: init"
-		"ial / restarted starting vector", (ftnlen)43);
+	svout_(&debug_1.logfil, n, &resid[1], &debug_1.ndigit, "_getv0: initial / restarted starting vector");
     }
     *ido = 99;
 

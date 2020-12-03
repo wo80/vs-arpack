@@ -202,10 +202,9 @@
  * \EndLib
  */
 
-int dsaitr_(int32_t *ido, char *bmat, int32_t *n, int32_t *k,
-	 int32_t *np, int32_t *mode, double *resid, double *rnorm, 
-	double *v, int32_t *ldv, double *h__, int32_t *ldh, int32_t *
-	ipntr, double *workd, int32_t *info)
+int dsaitr_(int32_t *ido, char *bmat, int32_t *n, int32_t *k,int32_t *np, int32_t *mode,
+     double *resid, double *rnorm, double *v, int32_t *ldv, double *h__, int32_t *ldh,
+     int32_t *ipntr, double *workd, int32_t *info)
 {
     /* Initialized data */
 
@@ -347,10 +346,8 @@ int dsaitr_(int32_t *ido, char *bmat, int32_t *n, int32_t *k,
 L1000:
 
     if (msglvl > 2) {
-	ivout_(&debug_1.logfil, &c__1, &j, &debug_1.ndigit, "_saitr: generat"
-		"ing Arnoldi vector no.", (ftnlen)37);
-	dvout_(&debug_1.logfil, &c__1, rnorm, &debug_1.ndigit, "_saitr: B-no"
-		"rm of the current residual =", (ftnlen)40);
+	ivout_(&debug_1.logfil, &c__1, &j, &debug_1.ndigit, "_saitr: generating Arnoldi vector no.");
+	dvout_(&debug_1.logfil, &c__1, rnorm, &debug_1.ndigit, "_saitr: B-norm of the current residual =");
     }
 
         /* ------------------------------------------------------- */
@@ -369,8 +366,7 @@ L1000:
            /* ------------------------------------------------- */
 
     if (msglvl > 0) {
-	ivout_(&debug_1.logfil, &c__1, &j, &debug_1.ndigit, "_saitr: ****** "
-		"restart at step ******", (ftnlen)37);
+	ivout_(&debug_1.logfil, &c__1, &j, &debug_1.ndigit, "_saitr: ****** restart at step ******");
     }
 
            /* ------------------------------------------- */
@@ -391,8 +387,7 @@ L30:
            /* RSTART = .true. flow returns here.   */
            /* ------------------------------------ */
 
-    dgetv0_(ido, bmat, &itry, &c_false, n, &j, &v[v_offset], ldv, &resid[1], 
-	    rnorm, &ipntr[1], &workd[1], &ierr);
+    dgetv0_(ido, bmat, &itry, &c_false, n, &j, &v[v_offset], ldv, &resid[1], rnorm, &ipntr[1], &workd[1], &ierr);
     if (*ido != 99) {
 	goto L9000;
     }
@@ -660,8 +655,7 @@ L80:
     if (msglvl > 2) {
 	xtemp[0] = wnorm;
 	xtemp[1] = *rnorm;
-	dvout_(&debug_1.logfil, &c__2, xtemp, &debug_1.ndigit, "_saitr: re-o"
-		"rthonalization ; wnorm and rnorm are", (ftnlen)48);
+	dvout_(&debug_1.logfil, &c__2, xtemp, &debug_1.ndigit, "_saitr: re-orthonalization ; wnorm and rnorm are");
     }
 
         /* -------------------------------------------------- */
@@ -729,13 +723,11 @@ L90:
     }
 
     if (msglvl > 0 && iter > 0) {
-	ivout_(&debug_1.logfil, &c__1, &j, &debug_1.ndigit, "_saitr: Iterati"
-		"ve refinement for Arnoldi residual", (ftnlen)49);
+	ivout_(&debug_1.logfil, &c__1, &j, &debug_1.ndigit, "_saitr: Iterative refinement for Arnoldi residual");
 	if (msglvl > 2) {
 	    xtemp[0] = *rnorm;
 	    xtemp[1] = rnorm1;
-	    dvout_(&debug_1.logfil, &c__2, xtemp, &debug_1.ndigit, "_saitr: "
-		    "iterative refinement ; rnorm and rnorm1 are", (ftnlen)51);
+	    dvout_(&debug_1.logfil, &c__2, xtemp, &debug_1.ndigit, "_saitr: iterative refinement ; rnorm and rnorm1 are");
 	}
     }
 
@@ -819,14 +811,10 @@ L100:
 
 	if (msglvl > 1) {
 	    i__1 = *k + *np;
-	    dvout_(&debug_1.logfil, &i__1, &h__[(h_dim1 << 1) + 1], &
-		    debug_1.ndigit, "_saitr: main diagonal of matrix H of st"
-		    "ep K+NP.", (ftnlen)47);
+	    dvout_(&debug_1.logfil, &i__1, &h__[(h_dim1 << 1) + 1], &debug_1.ndigit, "_saitr: main diagonal of matrix H of step K+NP.");
 	    if (*k + *np > 1) {
 		i__1 = *k + *np - 1;
-		dvout_(&debug_1.logfil, &i__1, &h__[h_dim1 + 2], &
-			debug_1.ndigit, "_saitr: sub diagonal of matrix H of"
-			" step K+NP.", (ftnlen)46);
+		dvout_(&debug_1.logfil, &i__1, &h__[h_dim1 + 2], &debug_1.ndigit, "_saitr: sub diagonal of matrix H of step K+NP.");
 	    }
 	}
 

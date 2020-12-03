@@ -87,8 +87,8 @@
  * \EndLib
  */
 
-int zngets_(int32_t *ishift, char *which, int32_t *kev, 
-	int32_t *np, zomplex *ritz, zomplex *bounds)
+int zngets_(int32_t *ishift, char *which, int32_t *kev, int32_t *np, zomplex *ritz,
+     zomplex *bounds)
 {
     /* System generated locals */
     int32_t i__1;
@@ -136,17 +136,12 @@ int zngets_(int32_t *ishift, char *which, int32_t *kev,
     timing_1.tcgets += t1 - t0;
 
     if (msglvl > 0) {
-	ivout_(&debug_1.logfil, &c__1, kev, &debug_1.ndigit, "_ngets: KEV is",
-		 (ftnlen)14);
-	ivout_(&debug_1.logfil, &c__1, np, &debug_1.ndigit, "_ngets: NP is", (
-		ftnlen)13);
+	ivout_(&debug_1.logfil, &c__1, kev, &debug_1.ndigit, "_ngets: KEV is");
+	ivout_(&debug_1.logfil, &c__1, np, &debug_1.ndigit, "_ngets: NP is");
 	i__1 = *kev + *np;
-	zvout_(&debug_1.logfil, &i__1, &ritz[1], &debug_1.ndigit, "_ngets: E"
-		"igenvalues of current H matrix ", (ftnlen)40);
+	zvout_(&debug_1.logfil, &i__1, &ritz[1], &debug_1.ndigit, "_ngets: Eigenvalues of current H matrix ");
 	i__1 = *kev + *np;
-	zvout_(&debug_1.logfil, &i__1, &bounds[1], &debug_1.ndigit, "_ngets:"
-		" Ritz estimates of the current KEV+NP Ritz values", (ftnlen)
-		56);
+	zvout_(&debug_1.logfil, &i__1, &bounds[1], &debug_1.ndigit, "_ngets: Ritz estimates of the current KEV+NP Ritz values");
     }
 
     return 0;

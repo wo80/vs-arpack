@@ -162,20 +162,17 @@ int dndrv2()
     ncv = 20;
     if (n > 256) {
 	s_wsle(&io___4);
-	do_lio(&c__9, &c__1, " ERROR with _NDRV2: N is greater than MAXN ", (
-		ftnlen)43);
+	do_lio(&c__9, &c__1, " ERROR with _NDRV2: N is greater than MAXN ", (ftnlen)43);
 	e_wsle();
 	goto L9000;
     } else if (nev > 10) {
 	s_wsle(&io___5);
-	do_lio(&c__9, &c__1, " ERROR with _NDRV2: NEV is greater than MAXNEV "
-		, (ftnlen)47);
+	do_lio(&c__9, &c__1, " ERROR with _NDRV2: NEV is greater than MAXNEV ", (ftnlen)47);
 	e_wsle();
 	goto L9000;
     } else if (ncv > 25) {
 	s_wsle(&io___6);
-	do_lio(&c__9, &c__1, " ERROR with _NDRV2: NCV is greater than MAXNCV "
-		, (ftnlen)47);
+	do_lio(&c__9, &c__1, " ERROR with _NDRV2: NCV is greater than MAXNCV ", (ftnlen)47);
 	e_wsle();
 	goto L9000;
     }
@@ -332,8 +329,7 @@ L20:
 	do_lio(&c__3, &c__1, (char *)&info, (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___44);
-	do_lio(&c__9, &c__1, " Check the documentation in _naupd.", (ftnlen)
-		35);
+	do_lio(&c__9, &c__1, " Check the documentation in _naupd.", (ftnlen)35);
 	e_wsle();
 	s_wsle(&io___45);
 	do_lio(&c__9, &c__1, " ", (ftnlen)1);
@@ -385,8 +381,7 @@ L20:
 	    do_lio(&c__3, &c__1, (char *)&ierr, (ftnlen)sizeof(int32_t));
 	    e_wsle();
 	    s_wsle(&io___52);
-	    do_lio(&c__9, &c__1, " Check the documentation of _neupd. ", (
-		    ftnlen)36);
+	    do_lio(&c__9, &c__1, " Check the documentation of _neupd. ", (ftnlen)36);
 	    e_wsle();
 	    s_wsle(&io___53);
 	    do_lio(&c__9, &c__1, " ", (ftnlen)1);
@@ -460,8 +455,7 @@ L20:
            /* Display computed residuals. */
            /* --------------------------- */
 
-	    dmout_(&c__6, &nconv, &c__3, d__, &c__25, &c_n6, "Ritz values (R"
-		    "eal,Imag) and relative residuals", (ftnlen)46);
+	    dmout_(&c__6, &nconv, &c__3, d__, &c__25, &c_n6, "Ritz values (Real,Imag) and relative residuals");
 
 	}
 
@@ -474,8 +468,7 @@ L20:
 	    do_lio(&c__9, &c__1, " ", (ftnlen)1);
 	    e_wsle();
 	    s_wsle(&io___58);
-	    do_lio(&c__9, &c__1, " Maximum number of iterations reached.", (
-		    ftnlen)38);
+	    do_lio(&c__9, &c__1, " Maximum number of iterations reached.", (ftnlen)38);
 	    e_wsle();
 	    s_wsle(&io___59);
 	    do_lio(&c__9, &c__1, " ", (ftnlen)1);
@@ -485,10 +478,8 @@ L20:
 	    do_lio(&c__9, &c__1, " ", (ftnlen)1);
 	    e_wsle();
 	    s_wsle(&io___61);
-	    do_lio(&c__9, &c__1, " No shifts could be applied during implicit"
-		    , (ftnlen)43);
-	    do_lio(&c__9, &c__1, " Arnoldi update, try increasing NCV.", (
-		    ftnlen)36);
+	    do_lio(&c__9, &c__1, " No shifts could be applied during implicit", (ftnlen)43);
+	    do_lio(&c__9, &c__1, " Arnoldi update, try increasing NCV.", (ftnlen)36);
 	    e_wsle();
 	    s_wsle(&io___62);
 	    do_lio(&c__9, &c__1, " ", (ftnlen)1);
@@ -512,13 +503,11 @@ L20:
 	do_lio(&c__3, &c__1, (char *)&n, (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___68);
-	do_lio(&c__9, &c__1, " The number of Ritz values requested is ", (
-		ftnlen)40);
+	do_lio(&c__9, &c__1, " The number of Ritz values requested is ", (ftnlen)40);
 	do_lio(&c__3, &c__1, (char *)&nev, (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___69);
-	do_lio(&c__9, &c__1, " The number of Arnoldi vectors generated", (
-		ftnlen)40);
+	do_lio(&c__9, &c__1, " The number of Arnoldi vectors generated", (ftnlen)40);
 	do_lio(&c__9, &c__1, " (NCV) is ", (ftnlen)10);
 	do_lio(&c__3, &c__1, (char *)&ncv, (ftnlen)sizeof(int32_t));
 	e_wsle();
@@ -527,13 +516,11 @@ L20:
 	do_lio(&c__9, &c__1, which, (ftnlen)2);
 	e_wsle();
 	s_wsle(&io___71);
-	do_lio(&c__9, &c__1, " The number of converged Ritz values is ", (
-		ftnlen)40);
+	do_lio(&c__9, &c__1, " The number of converged Ritz values is ", (ftnlen)40);
 	do_lio(&c__3, &c__1, (char *)&nconv, (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___72);
-	do_lio(&c__9, &c__1, " The number of Implicit Arnoldi update", (
-		ftnlen)38);
+	do_lio(&c__9, &c__1, " The number of Implicit Arnoldi update", (ftnlen)38);
 	do_lio(&c__9, &c__1, " iterations taken is ", (ftnlen)21);
 	do_lio(&c__3, &c__1, (char *)&iparam[2], (ftnlen)sizeof(int32_t));
 	e_wsle();

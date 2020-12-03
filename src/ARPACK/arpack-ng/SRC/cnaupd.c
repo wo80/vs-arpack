@@ -381,10 +381,9 @@
  * \EndLib
  */
 
-int cnaupd_(int32_t *ido, char *bmat, int32_t *n, char *
-	which, int32_t *nev, float *tol, complex *resid, int32_t *ncv, complex 
-	*v, int32_t *ldv, int32_t *iparam, int32_t *ipntr, complex *workd, 
-	complex *workl, int32_t *lworkl, float *rwork, int32_t *info)
+int cnaupd_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, float *tol,
+     complex *resid, int32_t *ncv, complex *v, int32_t *ldv, int32_t *iparam, int32_t *ipntr,
+     complex *workd, complex *workl, int32_t *lworkl, float *rwork, int32_t *info)
 {
     /* Format strings */
     static char fmt_1000[] = "(//,5x,\002==================================="
@@ -593,10 +592,7 @@ int cnaupd_(int32_t *ido, char *bmat, int32_t *n, char *
      /* Carry out the Implicitly restarted Arnoldi Iteration. */
      /* ----------------------------------------------------- */
 
-    cnaup2_(ido, bmat, n, which, &nev0, &np, tol, &resid[1], &mode, &iupd, &
-	    ishift, &mxiter, &v[v_offset], ldv, &workl[ih], &ldh, &workl[ritz]
-	    , &workl[bounds], &workl[iq], &ldq, &workl[iw], &ipntr[1], &workd[
-	    1], &rwork[1], info);
+    cnaup2_(ido, bmat, n, which, &nev0, &np, tol, &resid[1], &mode, &iupd, &ishift, &mxiter, &v[v_offset], ldv, &workl[ih], &ldh, &workl[ritz], &workl[bounds], &workl[iq], &ldq, &workl[iw], &ipntr[1], &workd[1], &rwork[1], info);
 
      /* ------------------------------------------------ */
      /* ido .ne. 99 implies use of reverse communication */
@@ -629,14 +625,10 @@ int cnaupd_(int32_t *ido, char *bmat, int32_t *n, char *
     }
 
     if (msglvl > 0) {
-	ivout_(&debug_1.logfil, &c__1, &mxiter, &debug_1.ndigit, "_naupd: Nu"
-		"mber of update iterations taken", (ftnlen)41);
-	ivout_(&debug_1.logfil, &c__1, &np, &debug_1.ndigit, "_naupd: Number"
-		" of wanted \"converged\" Ritz values", (ftnlen)48);
-	cvout_(&debug_1.logfil, &np, &workl[ritz], &debug_1.ndigit, "_naupd:"
-		" The final Ritz values", (ftnlen)29);
-	cvout_(&debug_1.logfil, &np, &workl[bounds], &debug_1.ndigit, "_naup"
-		"d: Associated Ritz estimates", (ftnlen)33);
+	ivout_(&debug_1.logfil, &c__1, &mxiter, &debug_1.ndigit, "_naupd: Number of update iterations taken");
+	ivout_(&debug_1.logfil, &c__1, &np, &debug_1.ndigit, "_naupd: Number of wanted \"converged\" Ritz values");
+	cvout_(&debug_1.logfil, &np, &workl[ritz], &debug_1.ndigit, "_naupd: The final Ritz values");
+	cvout_(&debug_1.logfil, &np, &workl[bounds], &debug_1.ndigit, "_naupd: Associated Ritz estimates");
     }
 
     arscnd_(&t1);

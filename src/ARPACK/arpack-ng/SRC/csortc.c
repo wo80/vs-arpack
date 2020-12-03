@@ -59,8 +59,7 @@
  * \EndLib
  */
 
-int csortc_(char *which, bool *apply, int32_t *n, complex 
-	*x, complex *y)
+int csortc_(char *which, bool *apply, int32_t *n, complex *x, complex *y)
 {
     /* System generated locals */
     int32_t i__1, i__2, i__3;

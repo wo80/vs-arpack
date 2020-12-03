@@ -251,13 +251,11 @@
  * \EndLib
  */
 
-int zneupd_(bool *rvec, char *howmny, bool *select, 
-	zomplex *d__, zomplex *z__, int32_t *ldz, zomplex *
-	sigma, zomplex *workev, char *bmat, int32_t *n, char *which, 
-	int32_t *nev, double *tol, zomplex *resid, int32_t *ncv, 
-	zomplex *v, int32_t *ldv, int32_t *iparam, int32_t *ipntr, 
-	zomplex *workd, zomplex *workl, int32_t *lworkl, 
-	double *rwork, int32_t *info)
+int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d__, zomplex *z__, int32_t *ldz,
+     zomplex *sigma, zomplex *workev, char *bmat, int32_t *n, char *which, int32_t *nev,
+     double *tol, zomplex *resid, int32_t *ncv, zomplex *v, int32_t *ldv, int32_t *iparam,
+     int32_t *ipntr, zomplex *workd, zomplex *workl, int32_t *lworkl, double *rwork,
+     int32_t *info)
 {
     /* System generated locals */
     int32_t v_dim1, v_offset, z_dim1, z_offset, i__1, i__2;
@@ -452,10 +450,8 @@ int zneupd_(bool *rvec, char *howmny, bool *select,
     workl[i__1].r = 0., workl[i__1].i = 0.;
 
     if (msglvl > 2) {
-	zvout_(&debug_1.logfil, ncv, &workl[irz], &debug_1.ndigit, "_neupd: "
-		"Ritz values passed in from _NAUPD.", (ftnlen)42);
-	zvout_(&debug_1.logfil, ncv, &workl[ibd], &debug_1.ndigit, "_neupd: "
-		"Ritz estimates passed in from _NAUPD.", (ftnlen)45);
+	zvout_(&debug_1.logfil, ncv, &workl[irz], &debug_1.ndigit, "_neupd: Ritz values passed in from _NAUPD.");
+	zvout_(&debug_1.logfil, ncv, &workl[ibd], &debug_1.ndigit, "_neupd: Ritz estimates passed in from _NAUPD.");
     }
 
     if (*rvec) {
@@ -490,11 +486,8 @@ int zneupd_(bool *rvec, char *howmny, bool *select,
 	zngets_(&ishift, which, nev, &np, &workl[irz], &workl[bounds]);
 
 	if (msglvl > 2) {
-	    zvout_(&debug_1.logfil, ncv, &workl[irz], &debug_1.ndigit, "_neu"
-		    "pd: Ritz values after calling _NGETS.", (ftnlen)41);
-	    zvout_(&debug_1.logfil, ncv, &workl[bounds], &debug_1.ndigit, 
-		    "_neupd: Ritz value indices after calling _NGETS.", (
-		    ftnlen)48);
+	    zvout_(&debug_1.logfil, ncv, &workl[irz], &debug_1.ndigit, "_neupd: Ritz values after calling _NGETS.");
+	    zvout_(&debug_1.logfil, ncv, &workl[bounds], &debug_1.ndigit, "_neupd: Ritz value indices after calling _NGETS.");
 	}
 
         /* --------------------------------------------------- */
@@ -534,10 +527,8 @@ int zneupd_(bool *rvec, char *howmny, bool *select,
         /* --------------------------------------------------------- */
 
 	if (msglvl > 2) {
-	    ivout_(&debug_1.logfil, &c__1, &numcnv, &debug_1.ndigit, "_neupd"
-		    ": Number of specified eigenvalues", (ftnlen)39);
-	    ivout_(&debug_1.logfil, &c__1, &nconv, &debug_1.ndigit, "_neupd:"
-		    " Number of \"converged\" eigenvalues", (ftnlen)41);
+	    ivout_(&debug_1.logfil, &c__1, &numcnv, &debug_1.ndigit, "_neupd: Number of specified eigenvalues");
+	    ivout_(&debug_1.logfil, &c__1, &nconv, &debug_1.ndigit, "_neupd: Number of \"converged\" eigenvalues");
 	}
 
 	if (numcnv != nconv) {
@@ -565,15 +556,10 @@ int zneupd_(bool *rvec, char *howmny, bool *select,
 	}
 
 	if (msglvl > 1) {
-	    zvout_(&debug_1.logfil, ncv, &workl[iheig], &debug_1.ndigit, 
-		    "_neupd: Eigenvalues of H", (ftnlen)24);
-	    zvout_(&debug_1.logfil, ncv, &workl[ihbds], &debug_1.ndigit, 
-		    "_neupd: Last row of the Schur vector matrix", (ftnlen)43)
-		    ;
+	    zvout_(&debug_1.logfil, ncv, &workl[iheig], &debug_1.ndigit, "_neupd: Eigenvalues of H");
+	    zvout_(&debug_1.logfil, ncv, &workl[ihbds], &debug_1.ndigit, "_neupd: Last row of the Schur vector matrix");
 	    if (msglvl > 3) {
-		zmout_(&debug_1.logfil, ncv, ncv, &workl[iuptri], &ldh, &
-			debug_1.ndigit, "_neupd: The upper triangular matrix "
-			, (ftnlen)36);
+		zmout_(&debug_1.logfil, ncv, ncv, &workl[iuptri], &ldh, &debug_1.ndigit, "_neupd: The upper triangular matrix ");
 	    }
 	}
 
@@ -596,12 +582,9 @@ int zneupd_(bool *rvec, char *howmny, bool *select,
 	    }
 
 	    if (msglvl > 2) {
-		zvout_(&debug_1.logfil, ncv, &workl[iheig], &debug_1.ndigit, 
-			"_neupd: Eigenvalues of H--reordered", (ftnlen)35);
+		zvout_(&debug_1.logfil, ncv, &workl[iheig], &debug_1.ndigit, "_neupd: Eigenvalues of H--reordered");
 		if (msglvl > 3) {
-		    zmout_(&debug_1.logfil, ncv, ncv, &workl[iuptri], &ldq, &
-			    debug_1.ndigit, "_neupd: Triangular matrix after"
-			    " re-ordering", (ftnlen)43);
+		    zmout_(&debug_1.logfil, ncv, ncv, &workl[iuptri], &ldq, &debug_1.ndigit, "_neupd: Triangular matrix after re-ordering");
 		}
 	    }
 
@@ -732,13 +715,9 @@ int zneupd_(bool *rvec, char *howmny, bool *select,
 	    if (msglvl > 2) {
 		zcopy_(&nconv, &workl[invsub + *ncv - 1], &ldq, &workl[ihbds],
 			 &c__1);
-		zvout_(&debug_1.logfil, &nconv, &workl[ihbds], &
-			debug_1.ndigit, "_neupd: Last row of the eigenvector"
-			" matrix for T", (ftnlen)48);
+		zvout_(&debug_1.logfil, &nconv, &workl[ihbds], &debug_1.ndigit, "_neupd: Last row of the eigenvector matrix for T");
 		if (msglvl > 3) {
-		    zmout_(&debug_1.logfil, ncv, ncv, &workl[invsub], &ldq, &
-			    debug_1.ndigit, "_neupd: The eigenvector matrix "
-			    "for T", (ftnlen)36);
+		    zmout_(&debug_1.logfil, ncv, ncv, &workl[invsub], &ldq, &debug_1.ndigit, "_neupd: The eigenvector matrix for T");
 		}
 	    }
 
@@ -827,16 +806,11 @@ int zneupd_(bool *rvec, char *howmny, bool *select,
     }
 
     if (s_cmp(type__, "REGULR", (ftnlen)6, (ftnlen)6) != 0 && msglvl > 1) {
-	zvout_(&debug_1.logfil, &nconv, &d__[1], &debug_1.ndigit, "_neupd: U"
-		"ntransformed Ritz values.", (ftnlen)34);
-	zvout_(&debug_1.logfil, &nconv, &workl[ihbds], &debug_1.ndigit, "_ne"
-		"upd: Ritz estimates of the untransformed Ritz values.", (
-		ftnlen)56);
+	zvout_(&debug_1.logfil, &nconv, &d__[1], &debug_1.ndigit, "_neupd: Untransformed Ritz values.");
+	zvout_(&debug_1.logfil, &nconv, &workl[ihbds], &debug_1.ndigit, "_neupd: Ritz estimates of the untransformed Ritz values.");
     } else if (msglvl > 1) {
-	zvout_(&debug_1.logfil, &nconv, &d__[1], &debug_1.ndigit, "_neupd: C"
-		"onverged Ritz values.", (ftnlen)30);
-	zvout_(&debug_1.logfil, &nconv, &workl[ihbds], &debug_1.ndigit, "_ne"
-		"upd: Associated Ritz estimates.", (ftnlen)34);
+	zvout_(&debug_1.logfil, &nconv, &d__[1], &debug_1.ndigit, "_neupd: Converged Ritz values.");
+	zvout_(&debug_1.logfil, &nconv, &workl[ihbds], &debug_1.ndigit, "_neupd: Associated Ritz estimates.");
     }
 
      /* ----------------------------------------------- */

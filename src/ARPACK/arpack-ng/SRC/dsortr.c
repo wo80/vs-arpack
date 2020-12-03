@@ -57,8 +57,7 @@
  * \EndLib
  */
 
-int dsortr_(char *which, bool *apply, int32_t *n, 
-	double *x1, double *x2)
+int dsortr_(char *which, bool *apply, int32_t *n, double *x1, double *x2)
 {
     /* System generated locals */
     int32_t i__1;

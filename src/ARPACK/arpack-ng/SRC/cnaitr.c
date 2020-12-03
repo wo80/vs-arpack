@@ -207,10 +207,9 @@
  * \EndLib
  */
 
-int cnaitr_(int32_t *ido, char *bmat, int32_t *n, int32_t *k,
-	 int32_t *np, int32_t *nb, complex *resid, float *rnorm, complex *v, 
-	int32_t *ldv, complex *h__, int32_t *ldh, int32_t *ipntr, complex *
-	workd, int32_t *info)
+int cnaitr_(int32_t *ido, char *bmat, int32_t *n, int32_t *k,int32_t *np, int32_t *nb,
+     complex *resid, float *rnorm, complex *v, int32_t *ldv, complex *h__, int32_t *ldh,
+     int32_t *ipntr, complex *workd, int32_t *info)
 {
     /* Initialized data */
 
@@ -355,10 +354,8 @@ int cnaitr_(int32_t *ido, char *bmat, int32_t *n, int32_t *k,
 L1000:
 
     if (msglvl > 1) {
-	ivout_(&debug_1.logfil, &c__1, &j, &debug_1.ndigit, "_naitr: generat"
-		"ing Arnoldi vector number", (ftnlen)40);
-	svout_(&debug_1.logfil, &c__1, rnorm, &debug_1.ndigit, "_naitr: B-no"
-		"rm of the current residual is", (ftnlen)41);
+	ivout_(&debug_1.logfil, &c__1, &j, &debug_1.ndigit, "_naitr: generating Arnoldi vector number");
+	svout_(&debug_1.logfil, &c__1, rnorm, &debug_1.ndigit, "_naitr: B-norm of the current residual is");
     }
 
         /* ------------------------------------------------- */
@@ -379,8 +376,7 @@ L1000:
            /* ------------------------------------------------- */
 
     if (msglvl > 0) {
-	ivout_(&debug_1.logfil, &c__1, &j, &debug_1.ndigit, "_naitr: ****** "
-		"RESTART AT STEP ******", (ftnlen)37);
+	ivout_(&debug_1.logfil, &c__1, &j, &debug_1.ndigit, "_naitr: ****** RESTART AT STEP ******");
     }
 
            /* ------------------------------------------- */
@@ -402,8 +398,7 @@ L30:
            /* RSTART = .true. flow returns here.   */
            /* ------------------------------------ */
 
-    cgetv0_(ido, bmat, &itry, &c_false, n, &j, &v[v_offset], ldv, &resid[1], 
-	    rnorm, &ipntr[1], &workd[1], &ierr);
+    cgetv0_(ido, bmat, &itry, &c_false, n, &j, &v[v_offset], ldv, &resid[1], rnorm, &ipntr[1], &workd[1], &ierr);
     if (*ido != 99) {
 	goto L9000;
     }
@@ -657,10 +652,8 @@ L80:
     if (msglvl > 2) {
 	rtemp[0] = wnorm;
 	rtemp[1] = *rnorm;
-	svout_(&debug_1.logfil, &c__2, rtemp, &debug_1.ndigit, "_naitr: re-o"
-		"rthogonalization; wnorm and rnorm are", (ftnlen)49);
-	cvout_(&debug_1.logfil, &j, &h__[j * h_dim1 + 1], &debug_1.ndigit, 
-		"_naitr: j-th column of H", (ftnlen)24);
+	svout_(&debug_1.logfil, &c__2, rtemp, &debug_1.ndigit, "_naitr: re-orthogonalization; wnorm and rnorm are");
+	cvout_(&debug_1.logfil, &j, &h__[j * h_dim1 + 1], &debug_1.ndigit, "_naitr: j-th column of H");
     }
 
         /* -------------------------------------------------- */
@@ -727,13 +720,11 @@ L90:
     }
 
     if (msglvl > 0 && iter > 0) {
-	ivout_(&debug_1.logfil, &c__1, &j, &debug_1.ndigit, "_naitr: Iterati"
-		"ve refinement for Arnoldi residual", (ftnlen)49);
+	ivout_(&debug_1.logfil, &c__1, &j, &debug_1.ndigit, "_naitr: Iterative refinement for Arnoldi residual");
 	if (msglvl > 2) {
 	    rtemp[0] = *rnorm;
 	    rtemp[1] = rnorm1;
-	    svout_(&debug_1.logfil, &c__2, rtemp, &debug_1.ndigit, "_naitr: "
-		    "iterative refinement ; rnorm and rnorm1 are", (ftnlen)51);
+	    svout_(&debug_1.logfil, &c__2, rtemp, &debug_1.ndigit, "_naitr: iterative refinement ; rnorm and rnorm1 are");
 	}
     }
 
@@ -841,9 +832,7 @@ L100:
 	if (msglvl > 2) {
 	    i__1 = *k + *np;
 	    i__2 = *k + *np;
-	    cmout_(&debug_1.logfil, &i__1, &i__2, &h__[h_offset], ldh, &
-		    debug_1.ndigit, "_naitr: Final upper Hessenberg matrix H"
-		    " of order K+NP", (ftnlen)53);
+	    cmout_(&debug_1.logfil, &i__1, &i__2, &h__[h_offset], ldh, &debug_1.ndigit, "_naitr: Final upper Hessenberg matrix H of order K+NP");
 	}
 
 	goto L9000;

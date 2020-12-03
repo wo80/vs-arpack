@@ -20,7 +20,7 @@
 /* ----------------------------------------------------------------------- */
 
 int ivout_(int32_t *lout, int32_t *n, int32_t *ix, int32_t *
-	idigit, char *ifmt, ftnlen ifmt_len)
+	idigit, char *ifmt)
 {
     /* Format strings */
     static char fmt_2000[] = "(/1x,a/1x,a)";

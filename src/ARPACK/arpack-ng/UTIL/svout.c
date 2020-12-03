@@ -20,7 +20,7 @@
 /* ----------------------------------------------------------------------- */
 
 int svout_(int32_t *lout, int32_t *n, float *sx, int32_t *
-	idigit, char *ifmt, ftnlen ifmt_len)
+	idigit, char *ifmt)
 {
     /* Format strings */
     static char fmt_9999[] = "(/1x,a/1x,a)";

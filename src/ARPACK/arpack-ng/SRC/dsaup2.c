@@ -177,12 +177,10 @@
  * \EndLib
  */
 
-int dsaup2_(int32_t *ido, char *bmat, int32_t *n, char *
-	which, int32_t *nev, int32_t *np, double *tol, double *resid, 
-	int32_t *mode, int32_t *iupd, int32_t *ishift, int32_t *mxiter, 
-	double *v, int32_t *ldv, double *h__, int32_t *ldh, 
-	double *ritz, double *bounds, double *q, int32_t *ldq, 
-	double *workl, int32_t *ipntr, double *workd, int32_t *info)
+int dsaup2_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, int32_t *np,
+     double *tol, double *resid, int32_t *mode, int32_t *iupd, int32_t *ishift, int32_t *mxiter,
+     double *v, int32_t *ldv, double *h__, int32_t *ldh, double *ritz, double *bounds,
+     double *q, int32_t *ldq, double *workl, int32_t *ipntr, double *workd, int32_t *info)
 {
     /* System generated locals */
     int32_t h_dim1, h_offset, q_dim1, q_offset, v_dim1, v_offset, i__1, i__2, 
@@ -309,8 +307,7 @@ int dsaup2_(int32_t *ido, char *bmat, int32_t *n, char *
 /* L10: */
 
     if (getv0) {
-	dgetv0_(ido, bmat, &c__1, &initv, n, &c__1, &v[v_offset], ldv, &resid[
-		1], &rnorm, &ipntr[1], &workd[1], info);
+	dgetv0_(ido, bmat, &c__1, &initv, n, &c__1, &v[v_offset], ldv, &resid[1], &rnorm, &ipntr[1], &workd[1], info);
 
 	if (*ido != 99) {
 	    goto L9000;
@@ -358,8 +355,7 @@ int dsaup2_(int32_t *ido, char *bmat, int32_t *n, char *
      /* Compute the first NEV steps of the Lanczos factorization */
      /* -------------------------------------------------------- */
 
-    dsaitr_(ido, bmat, n, &c__0, &nev0, mode, &resid[1], &rnorm, &v[v_offset],
-	     ldv, &h__[h_offset], ldh, &ipntr[1], &workd[1], info);
+    dsaitr_(ido, bmat, n, &c__0, &nev0, mode, &resid[1], &rnorm, &v[v_offset],ldv, &h__[h_offset], ldh, &ipntr[1], &workd[1], info);
 
      /* ------------------------------------------------- */
      /* ido .ne. 99 implies use of reverse communication  */
@@ -397,14 +393,11 @@ L1000:
     ++iter;
 
     if (msglvl > 0) {
-	ivout_(&debug_1.logfil, &c__1, &iter, &debug_1.ndigit, "_saup2: ****"
-		" Start of major iteration number ****", (ftnlen)49);
+	ivout_(&debug_1.logfil, &c__1, &iter, &debug_1.ndigit, "_saup2: **** Start of major iteration number ****");
     }
     if (msglvl > 1) {
-	ivout_(&debug_1.logfil, &c__1, nev, &debug_1.ndigit, "_saup2: The le"
-		"ngth of the current Lanczos factorization", (ftnlen)55);
-	ivout_(&debug_1.logfil, &c__1, np, &debug_1.ndigit, "_saup2: Extend "
-		"the Lanczos factorization by", (ftnlen)43);
+	ivout_(&debug_1.logfil, &c__1, nev, &debug_1.ndigit, "_saup2: The length of the current Lanczos factorization");
+	ivout_(&debug_1.logfil, &c__1, np, &debug_1.ndigit, "_saup2: Extend the Lanczos factorization by");
     }
 
         /* ---------------------------------------------------------- */
@@ -415,8 +408,7 @@ L1000:
 L20:
     update = true;
 
-    dsaitr_(ido, bmat, n, nev, np, mode, &resid[1], &rnorm, &v[v_offset], ldv,
-	     &h__[h_offset], ldh, &ipntr[1], &workd[1], info);
+    dsaitr_(ido, bmat, n, nev, np, mode, &resid[1], &rnorm, &v[v_offset], ldv,&h__[h_offset], ldh, &ipntr[1], &workd[1], info);
 
         /* ------------------------------------------------- */
         /* ido .ne. 99 implies use of reverse communication  */
@@ -443,8 +435,7 @@ L20:
     update = false;
 
     if (msglvl > 1) {
-	dvout_(&debug_1.logfil, &c__1, &rnorm, &debug_1.ndigit, "_saup2: Cur"
-		"rent B-norm of residual for factorization", (ftnlen)52);
+	dvout_(&debug_1.logfil, &c__1, &rnorm, &debug_1.ndigit, "_saup2: Current B-norm of residual for factorization");
     }
 
         /* ------------------------------------------------------ */
@@ -452,8 +443,7 @@ L20:
         /* of the current symmetric tridiagonal matrix.           */
         /* ------------------------------------------------------ */
 
-    dseigt_(&rnorm, &kplusp, &h__[h_offset], ldh, &ritz[1], &bounds[1], &
-	    workl[1], &ierr);
+    dseigt_(&rnorm, &kplusp, &h__[h_offset], ldh, &ritz[1], &bounds[1], &workl[1], &ierr);
 
     if (ierr != 0) {
 	*info = -8;
@@ -493,13 +483,9 @@ L20:
 	kp[0] = *nev;
 	kp[1] = *np;
 	kp[2] = nconv;
-	ivout_(&debug_1.logfil, &c__3, kp, &debug_1.ndigit, "_saup2: NEV, NP"
-		", NCONV are", (ftnlen)26);
-	dvout_(&debug_1.logfil, &kplusp, &ritz[1], &debug_1.ndigit, "_saup2:"
-		" The eigenvalues of H", (ftnlen)28);
-	dvout_(&debug_1.logfil, &kplusp, &bounds[1], &debug_1.ndigit, "_saup"
-		"2: Ritz estimates of the current NCV Ritz values", (ftnlen)53)
-		;
+	ivout_(&debug_1.logfil, &c__3, kp, &debug_1.ndigit, "_saup2: NEV, NP, NCONV are");
+	dvout_(&debug_1.logfil, &kplusp, &ritz[1], &debug_1.ndigit, "_saup2: The eigenvalues of H");
+	dvout_(&debug_1.logfil, &kplusp, &bounds[1], &debug_1.ndigit, "_saup2: Ritz estimates of the current NCV Ritz values");
     }
 
         /* ------------------------------------------------------- */
@@ -544,8 +530,7 @@ L20:
               /* --------------------------------------------------- */
 
 	    s_copy(wprime, "SA", (ftnlen)2, (ftnlen)2);
-	    dsortr_(wprime, &c_true, &kplusp, &ritz[1], &bounds[1])
-		    ;
+	    dsortr_(wprime, &c_true, &kplusp, &ritz[1], &bounds[1]);
 	    nevd2 = nev0 / 2;
 	    nevm2 = nev0 - nevd2;
 	    if (*nev > 1) {
@@ -586,8 +571,7 @@ L20:
 		s_copy(wprime, "LA", (ftnlen)2, (ftnlen)2);
 	    }
 
-	    dsortr_(wprime, &c_true, &kplusp, &ritz[1], &bounds[1])
-		    ;
+	    dsortr_(wprime, &c_true, &kplusp, &ritz[1], &bounds[1]);
 
 	}
 
@@ -667,10 +651,8 @@ L20:
 	h__[h_dim1 + 1] = rnorm;
 
 	if (msglvl > 1) {
-	    dvout_(&debug_1.logfil, &kplusp, &ritz[1], &debug_1.ndigit, "_sa"
-		    "up2: Sorted Ritz values.", (ftnlen)27);
-	    dvout_(&debug_1.logfil, &kplusp, &bounds[1], &debug_1.ndigit, 
-		    "_saup2: Sorted ritz estimates.", (ftnlen)30);
+	    dvout_(&debug_1.logfil, &kplusp, &ritz[1], &debug_1.ndigit, "_saup2: Sorted Ritz values.");
+	    dvout_(&debug_1.logfil, &kplusp, &bounds[1], &debug_1.ndigit, "_saup2: Sorted ritz estimates.");
 	}
 
            /* ---------------------------------- */
@@ -723,18 +705,13 @@ L20:
     }
 
     if (msglvl > 0) {
-	ivout_(&debug_1.logfil, &c__1, &nconv, &debug_1.ndigit, "_saup2: no."
-		" of \"converged\" Ritz values at this iter.", (ftnlen)52);
+	ivout_(&debug_1.logfil, &c__1, &nconv, &debug_1.ndigit, "_saup2: no. of \"converged\" Ritz values at this iter.");
 	if (msglvl > 1) {
 	    kp[0] = *nev;
 	    kp[1] = *np;
-	    ivout_(&debug_1.logfil, &c__2, kp, &debug_1.ndigit, "_saup2: NEV"
-		    " and NP are", (ftnlen)22);
-	    dvout_(&debug_1.logfil, nev, &ritz[*np + 1], &debug_1.ndigit, 
-		    "_saup2: \"wanted\" Ritz values.", (ftnlen)29);
-	    dvout_(&debug_1.logfil, nev, &bounds[*np + 1], &debug_1.ndigit, 
-		    "_saup2: Ritz estimates of the \"wanted\" values ", (
-		    ftnlen)46);
+	    ivout_(&debug_1.logfil, &c__2, kp, &debug_1.ndigit, "_saup2: NEV and NP are");
+	    dvout_(&debug_1.logfil, nev, &ritz[*np + 1], &debug_1.ndigit, "_saup2: \"wanted\" Ritz values.");
+	    dvout_(&debug_1.logfil, nev, &bounds[*np + 1], &debug_1.ndigit, "_saup2: Ritz estimates of the \"wanted\" values ");
 	}
     }
 
@@ -772,13 +749,10 @@ L50:
     }
 
     if (msglvl > 2) {
-	ivout_(&debug_1.logfil, &c__1, np, &debug_1.ndigit, "_saup2: The num"
-		"ber of shifts to apply ", (ftnlen)38);
-	dvout_(&debug_1.logfil, np, &workl[1], &debug_1.ndigit, "_saup2: shi"
-		"fts selected", (ftnlen)23);
+	ivout_(&debug_1.logfil, &c__1, np, &debug_1.ndigit, "_saup2: The number of shifts to apply ");
+	dvout_(&debug_1.logfil, np, &workl[1], &debug_1.ndigit, "_saup2: shifts selected");
 	if (*ishift == 1) {
-	    dvout_(&debug_1.logfil, np, &bounds[1], &debug_1.ndigit, "_saup2"
-		    ": corresponding Ritz estimates", (ftnlen)36);
+	    dvout_(&debug_1.logfil, np, &bounds[1], &debug_1.ndigit, "_saup2: corresponding Ritz estimates");
 	}
     }
 
@@ -790,8 +764,7 @@ L50:
         /* factorization of length NEV.                            */
         /* ------------------------------------------------------- */
 
-    dsapps_(n, nev, np, &ritz[1], &v[v_offset], ldv, &h__[h_offset], ldh, &
-	    resid[1], &q[q_offset], ldq, &workd[1]);
+    dsapps_(n, nev, np, &ritz[1], &v[v_offset], ldv, &h__[h_offset], ldh, &resid[1], &q[q_offset], ldq, &workd[1]);
 
         /* ------------------------------------------- */
         /* Compute the B-norm of the updated residual. */
@@ -839,13 +812,10 @@ L100:
 /* L130: */
 
     if (msglvl > 2) {
-	dvout_(&debug_1.logfil, &c__1, &rnorm, &debug_1.ndigit, "_saup2: B-n"
-		"orm of residual for NEV factorization", (ftnlen)48);
-	dvout_(&debug_1.logfil, nev, &h__[(h_dim1 << 1) + 1], &debug_1.ndigit,
-		 "_saup2: main diagonal of compressed H matrix", (ftnlen)44);
+	dvout_(&debug_1.logfil, &c__1, &rnorm, &debug_1.ndigit, "_saup2: B-norm of residual for NEV factorization");
+	dvout_(&debug_1.logfil, nev, &h__[(h_dim1 << 1) + 1], &debug_1.ndigit,"_saup2: main diagonal of compressed H matrix");
 	i__1 = *nev - 1;
-	dvout_(&debug_1.logfil, &i__1, &h__[h_dim1 + 2], &debug_1.ndigit, 
-		"_saup2: subdiagonal of compressed H matrix", (ftnlen)42);
+	dvout_(&debug_1.logfil, &i__1, &h__[h_dim1 + 2], &debug_1.ndigit, "_saup2: subdiagonal of compressed H matrix");
     }
 
     goto L1000;

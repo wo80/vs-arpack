@@ -64,8 +64,7 @@
  * \EndLib
  */
 
-int ssortc_(char *which, bool *apply, int32_t *n, float *
-	xfloat, float *ximag, float *y)
+int ssortc_(char *which, bool *apply, int32_t *n, float *xfloat, float *ximag, float *y)
 {
     /* System generated locals */
     int32_t i__1;

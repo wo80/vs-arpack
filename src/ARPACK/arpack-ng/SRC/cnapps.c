@@ -247,10 +247,8 @@ int cnapps_(int32_t *n, int32_t *kev, int32_t *np, complex *
 	sigma.r = shift[i__2].r, sigma.i = shift[i__2].i;
 
 	if (msglvl > 2) {
-	    ivout_(&debug_1.logfil, &c__1, &jj, &debug_1.ndigit, "_napps: sh"
-		    "ift number.", (ftnlen)21);
-	    cvout_(&debug_1.logfil, &c__1, &sigma, &debug_1.ndigit, "_napps:"
-		    " Value of the shift ", (ftnlen)27);
+	    ivout_(&debug_1.logfil, &c__1, &jj, &debug_1.ndigit, "_napps: shift number.");
+	    cvout_(&debug_1.logfil, &c__1, &sigma, &debug_1.ndigit, "_napps: Value of the shift ");
 	}
 
 	istart = 1;
@@ -280,15 +278,9 @@ L20:
 	    r__2 = ulp * tst1;
 	    if ((r__1 = h__[i__3].r, dabs(r__1)) <= dmax(r__2,smlnum)) {
 		if (msglvl > 0) {
-		    ivout_(&debug_1.logfil, &c__1, &i__, &debug_1.ndigit, 
-			    "_napps: matrix splitting at row/column no.", (
-			    ftnlen)42);
-		    ivout_(&debug_1.logfil, &c__1, &jj, &debug_1.ndigit, 
-			    "_napps: matrix splitting with shift number.", (
-			    ftnlen)43);
-		    cvout_(&debug_1.logfil, &c__1, &h__[i__ + 1 + i__ * 
-			    h_dim1], &debug_1.ndigit, "_napps: off diagonal "
-			    "element.", (ftnlen)29);
+		    ivout_(&debug_1.logfil, &c__1, &i__, &debug_1.ndigit, "_napps: matrix splitting at row/column no.");
+		    ivout_(&debug_1.logfil, &c__1, &jj, &debug_1.ndigit, "_napps: matrix splitting with shift number.");
+		    cvout_(&debug_1.logfil, &c__1, &h__[i__ + 1 + i__ * h_dim1], &debug_1.ndigit, "_napps: off diagonal element.");
 		}
 		iend = i__;
 		i__3 = i__ + 1 + i__ * h_dim1;
@@ -301,10 +293,8 @@ L20:
 L40:
 
 	if (msglvl > 2) {
-	    ivout_(&debug_1.logfil, &c__1, &istart, &debug_1.ndigit, "_napps"
-		    ": Start of current block ", (ftnlen)31);
-	    ivout_(&debug_1.logfil, &c__1, &iend, &debug_1.ndigit, "_napps: "
-		    "End of current block ", (ftnlen)29);
+	    ivout_(&debug_1.logfil, &c__1, &istart, &debug_1.ndigit, "_napps: Start of current block ");
+	    ivout_(&debug_1.logfil, &c__1, &iend, &debug_1.ndigit, "_napps: End of current block ");
 	}
 
         /* ---------------------------------------------- */
@@ -592,18 +582,11 @@ L100:
     }
 
     if (msglvl > 1) {
-	cvout_(&debug_1.logfil, &c__1, &q[kplusp + *kev * q_dim1], &
-		debug_1.ndigit, "_napps: sigmak = (e_{kev+p}^T*Q)*e_{kev}", (
-		ftnlen)40);
-	cvout_(&debug_1.logfil, &c__1, &h__[*kev + 1 + *kev * h_dim1], &
-		debug_1.ndigit, "_napps: betak = e_{kev+1}^T*H*e_{kev}", (
-		ftnlen)37);
-	ivout_(&debug_1.logfil, &c__1, kev, &debug_1.ndigit, "_napps: Order "
-		"of the final Hessenberg matrix ", (ftnlen)45);
+	cvout_(&debug_1.logfil, &c__1, &q[kplusp + *kev * q_dim1], &debug_1.ndigit, "_napps: sigmak = (e_{kev+p}^T*Q)*e_{kev}");
+	cvout_(&debug_1.logfil, &c__1, &h__[*kev + 1 + *kev * h_dim1], &debug_1.ndigit, "_napps: betak = e_{kev+1}^T*H*e_{kev}");
+	ivout_(&debug_1.logfil, &c__1, kev, &debug_1.ndigit, "_napps: Order of the final Hessenberg matrix ");
 	if (msglvl > 2) {
-	    cmout_(&debug_1.logfil, kev, kev, &h__[h_offset], ldh, &
-		    debug_1.ndigit, "_napps: updated Hessenberg matrix H for"
-		    " next iteration", (ftnlen)54);
+	    cmout_(&debug_1.logfil, kev, kev, &h__[h_offset], ldh, &debug_1.ndigit, "_napps: updated Hessenberg matrix H for next iteration");
 	}
 
     }

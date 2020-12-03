@@ -66,8 +66,8 @@
  * \EndLib
  */
 
-int ssesrt_(char *which, bool *apply, int32_t *n, float *x,
-	 int32_t *na, float *a, int32_t *lda)
+int ssesrt_(char *which, bool *apply, int32_t *n, float *x,int32_t *na, float *a,
+     int32_t *lda)
 {
     /* System generated locals */
     int32_t a_dim1, a_offset, i__1;

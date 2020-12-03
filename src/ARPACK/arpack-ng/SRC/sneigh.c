@@ -140,8 +140,7 @@ int sneigh_(float *rnorm, int32_t *n, float *h__, int32_t *ldh,
     msglvl = debug_1.mneigh;
 
     if (msglvl > 2) {
-	smout_(&debug_1.logfil, n, n, &h__[h_offset], ldh, &debug_1.ndigit, 
-		"_neigh: Entering upper Hessenberg matrix H ", (ftnlen)43);
+	smout_(&debug_1.logfil, n, n, &h__[h_offset], ldh, &debug_1.ndigit, "_neigh: Entering upper Hessenberg matrix H ");
     }
 
      /* --------------------------------------------------------- */
@@ -166,8 +165,7 @@ int sneigh_(float *rnorm, int32_t *n, float *h__, int32_t *ldh,
     }
 
     if (msglvl > 1) {
-	svout_(&debug_1.logfil, n, &bounds[1], &debug_1.ndigit, "_neigh: las"
-		"t row of the Schur matrix for H", (ftnlen)42);
+	svout_(&debug_1.logfil, n, &bounds[1], &debug_1.ndigit, "_neigh: last row of the Schur matrix for H");
     }
 
      /* --------------------------------------------------------- */
@@ -238,8 +236,7 @@ int sneigh_(float *rnorm, int32_t *n, float *h__, int32_t *ldh,
 	    workl[1], &c__1);
 
     if (msglvl > 1) {
-	svout_(&debug_1.logfil, n, &workl[1], &debug_1.ndigit, "_neigh: Last"
-		" row of the eigenvector matrix for H", (ftnlen)48);
+	svout_(&debug_1.logfil, n, &workl[1], &debug_1.ndigit, "_neigh: Last row of the eigenvector matrix for H");
     }
 
      /* -------------------------- */
@@ -278,12 +275,9 @@ int sneigh_(float *rnorm, int32_t *n, float *h__, int32_t *ldh,
     }
 
     if (msglvl > 2) {
-	svout_(&debug_1.logfil, n, &ritzr[1], &debug_1.ndigit, "_neigh: Real"
-		" part of the eigenvalues of H", (ftnlen)41);
-	svout_(&debug_1.logfil, n, &ritzi[1], &debug_1.ndigit, "_neigh: Imag"
-		"inary part of the eigenvalues of H", (ftnlen)46);
-	svout_(&debug_1.logfil, n, &bounds[1], &debug_1.ndigit, "_neigh: Rit"
-		"z estimates for the eigenvalues of H", (ftnlen)47);
+	svout_(&debug_1.logfil, n, &ritzr[1], &debug_1.ndigit, "_neigh: Real part of the eigenvalues of H");
+	svout_(&debug_1.logfil, n, &ritzi[1], &debug_1.ndigit, "_neigh: Imaginary part of the eigenvalues of H");
+	svout_(&debug_1.logfil, n, &bounds[1], &debug_1.ndigit, "_neigh: Ritz estimates for the eigenvalues of H");
     }
 
     arscnd_(&t1);

@@ -146,20 +146,17 @@ int ssdrv1()
     ncv = 10;
     if (n > 256) {
 	s_wsle(&io___5);
-	do_lio(&c__9, &c__1, " ERROR with _SDRV1: N is greater than MAXN ", (
-		ftnlen)43);
+	do_lio(&c__9, &c__1, " ERROR with _SDRV1: N is greater than MAXN ", (ftnlen)43);
 	e_wsle();
 	goto L9000;
     } else if (nev > 10) {
 	s_wsle(&io___6);
-	do_lio(&c__9, &c__1, " ERROR with _SDRV1: NEV is greater than MAXNEV "
-		, (ftnlen)47);
+	do_lio(&c__9, &c__1, " ERROR with _SDRV1: NEV is greater than MAXNEV ", (ftnlen)47);
 	e_wsle();
 	goto L9000;
     } else if (ncv > 25) {
 	s_wsle(&io___7);
-	do_lio(&c__9, &c__1, " ERROR with _SDRV1: NCV is greater than MAXNCV "
-		, (ftnlen)47);
+	do_lio(&c__9, &c__1, " ERROR with _SDRV1: NCV is greater than MAXNCV ", (ftnlen)47);
 	e_wsle();
 	goto L9000;
     }
@@ -310,8 +307,7 @@ L10:
 	    do_lio(&c__3, &c__1, (char *)&ierr, (ftnlen)sizeof(int32_t));
 	    e_wsle();
 	    s_wsle(&io___34);
-	    do_lio(&c__9, &c__1, " Check the documentation of _seupd. ", (
-		    ftnlen)36);
+	    do_lio(&c__9, &c__1, " Check the documentation of _seupd. ", (ftnlen)36);
 	    e_wsle();
 	    s_wsle(&io___35);
 	    do_lio(&c__9, &c__1, " ", (ftnlen)1);
@@ -349,8 +345,7 @@ L10:
             /* Display computed residuals    */
             /* ----------------------------- */
 
-	    smout_(&c__6, &nconv, &c__2, d__, &c__25, &c_n6, "Ritz values an"
-		    "d relative residuals", (ftnlen)34);
+	    smout_(&c__6, &nconv, &c__2, d__, &c__25, &c_n6, "Ritz values and relative residuals");
 	}
 
         /* ---------------------------------------- */
@@ -362,8 +357,7 @@ L10:
 	    do_lio(&c__9, &c__1, " ", (ftnlen)1);
 	    e_wsle();
 	    s_wsle(&io___40);
-	    do_lio(&c__9, &c__1, " Maximum number of iterations reached.", (
-		    ftnlen)38);
+	    do_lio(&c__9, &c__1, " Maximum number of iterations reached.", (ftnlen)38);
 	    e_wsle();
 	    s_wsle(&io___41);
 	    do_lio(&c__9, &c__1, " ", (ftnlen)1);
@@ -373,10 +367,8 @@ L10:
 	    do_lio(&c__9, &c__1, " ", (ftnlen)1);
 	    e_wsle();
 	    s_wsle(&io___43);
-	    do_lio(&c__9, &c__1, " No shifts could be applied during implicit"
-		    , (ftnlen)43);
-	    do_lio(&c__9, &c__1, " Arnoldi update, try increasing NCV.", (
-		    ftnlen)36);
+	    do_lio(&c__9, &c__1, " No shifts could be applied during implicit", (ftnlen)43);
+	    do_lio(&c__9, &c__1, " Arnoldi update, try increasing NCV.", (ftnlen)36);
 	    e_wsle();
 	    s_wsle(&io___44);
 	    do_lio(&c__9, &c__1, " ", (ftnlen)1);
@@ -400,13 +392,11 @@ L10:
 	do_lio(&c__3, &c__1, (char *)&n, (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___50);
-	do_lio(&c__9, &c__1, " The number of Ritz values requested is ", (
-		ftnlen)40);
+	do_lio(&c__9, &c__1, " The number of Ritz values requested is ", (ftnlen)40);
 	do_lio(&c__3, &c__1, (char *)&nev, (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___51);
-	do_lio(&c__9, &c__1, " The number of Arnoldi vectors generated", (
-		ftnlen)40);
+	do_lio(&c__9, &c__1, " The number of Arnoldi vectors generated", (ftnlen)40);
 	do_lio(&c__9, &c__1, " (NCV) is ", (ftnlen)10);
 	do_lio(&c__3, &c__1, (char *)&ncv, (ftnlen)sizeof(int32_t));
 	e_wsle();
@@ -415,13 +405,11 @@ L10:
 	do_lio(&c__9, &c__1, which, (ftnlen)2);
 	e_wsle();
 	s_wsle(&io___53);
-	do_lio(&c__9, &c__1, " The number of converged Ritz values is ", (
-		ftnlen)40);
+	do_lio(&c__9, &c__1, " The number of converged Ritz values is ", (ftnlen)40);
 	do_lio(&c__3, &c__1, (char *)&nconv, (ftnlen)sizeof(int32_t));
 	e_wsle();
 	s_wsle(&io___54);
-	do_lio(&c__9, &c__1, " The number of Implicit Arnoldi update", (
-		ftnlen)38);
+	do_lio(&c__9, &c__1, " The number of Implicit Arnoldi update", (ftnlen)38);
 	do_lio(&c__9, &c__1, " iterations taken is ", (ftnlen)21);
 	do_lio(&c__3, &c__1, (char *)&iparam[2], (ftnlen)sizeof(int32_t));
 	e_wsle();
