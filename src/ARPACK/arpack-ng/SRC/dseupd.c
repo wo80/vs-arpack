@@ -527,7 +527,7 @@ int dseupd_(bool *rvec, char *howmny, bool *select, double *d, double *z, int32_
 	dcopy_(&i__1, &workl[ih + 1], &c__1, &workl[ihb], &c__1);
 	dcopy_(ncv, &workl[ih + ldh], &c__1, &workl[ihd], &c__1);
 
-	dsteqr_("Identity", ncv, &workl[ihd], &workl[ihb], &workl[iq], &ldq, &
+	dsteqr_("I", ncv, &workl[ihd], &workl[ihb], &workl[iq], &ldq, &
 		workl[iw], &ierr);
 
 	if (ierr != 0) {
@@ -742,9 +742,9 @@ L30:
         /* the Ritz values in workl(ihd).                         */
         /* ------------------------------------------------------ */
 
-	dorm2r_("Right", "Notranspose", n, ncv, &nconv, &workl[iq], &ldq, &
+	dorm2r_("R", "N", n, ncv, &nconv, &workl[iq], &ldq, &
 		workl[iw + *ncv], &v[v_offset], ldv, &workd[*n + 1], &ierr);
-	dlacpy_("All", n, &nconv, &v[v_offset], ldv, &z[z_offset], ldz);
+	dlacpy_("A", n, &nconv, &v[v_offset], ldv, &z[z_offset], ldz);
 
         /* --------------------------------------------------- */
         /* In order to compute the Ritz estimates for the Ritz */
@@ -758,7 +758,7 @@ L30:
 /* L65: */
 	}
 	workl[ihb + *ncv - 1] = 1.;
-	dorm2r_("Left", "Transpose", ncv, &c__1, &nconv, &workl[iq], &ldq, &
+	dorm2r_("L", "T", ncv, &c__1, &nconv, &workl[iq], &ldq, &
 		workl[iw + *ncv], &workl[ihb], ncv, &temp, &ierr);
 
         /* --------------------------------------------------- */

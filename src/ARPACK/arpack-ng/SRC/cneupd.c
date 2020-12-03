@@ -544,7 +544,7 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int3
 
 	i__1 = ldh * *ncv;
 	ccopy_(&i__1, &workl[ih], &c__1, &workl[iuptri], &c__1);
-	claset_("All", ncv, ncv, &c_zero, &c_one, &workl[invsub], &ldq);
+	claset_("A", ncv, ncv, &c_zero, &c_one, &workl[invsub], &ldq);
 	clahqr_(&c_true, &c_true, ncv, &c__1, ncv, &workl[iuptri], &ldh, &
 		workl[iheig], &c__1, ncv, &workl[invsub], &ldq, &ierr);
 	ccopy_(ncv, &workl[invsub + *ncv - 1], &ldq, &workl[ihbds], &c__1);
@@ -568,7 +568,7 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int3
            /* Reorder the computed upper triangular matrix. */
            /* --------------------------------------------- */
 
-	    ctrsen_("None", "V", &select[1], ncv, &workl[iuptri], &ldh, &
+	    ctrsen_("N", "V", &select[1], ncv, &workl[iuptri], &ldh, &
 		    workl[invsub], &ldq, &workl[iheig], &nconv2, &conds, &sep,
 		     &workev[1], ncv, &ierr);
 
@@ -628,9 +628,9 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int3
         /* NCONV in workl(iuptri).                                */
         /* ------------------------------------------------------ */
 
-	cunm2r_("Right", "Notranspose", n, ncv, &nconv, &workl[invsub], &ldq, 
+	cunm2r_("R", "N", n, ncv, &nconv, &workl[invsub], &ldq, 
 		&workev[1], &v[v_offset], ldv, &workd[*n + 1], &ierr);
-	clacpy_("All", n, &nconv, &v[v_offset], ldv, &z[z_offset], ldz);
+	clacpy_("A", n, &nconv, &v[v_offset], ldv, &z[z_offset], ldz);
 
 	i__1 = nconv;
 	for (j = 1; j <= i__1; ++j) {
@@ -672,7 +672,7 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int3
 /* L30: */
 	    }
 
-	    ctrevc_("Right", "Select", &select[1], ncv, &workl[iuptri], &ldq, 
+	    ctrevc_("R", "S", &select[1], ncv, &workl[iuptri], &ldq, 
 		    vl, &c__1, &workl[invsub], &ldq, ncv, &outncv, &workev[1],
 		     &rwork[1], &ierr);
 
@@ -731,7 +731,7 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int3
            /* Form Z*Q.                                    */
            /* -------------------------------------------- */
 
-	    ctrmm_("Right", "Upper", "No transpose", "Non-unit", n, &nconv, &
+	    ctrmm_("R", "U", "N", "N", n, &nconv, &
 		    c_one, &workl[invsub], &ldq, &z[z_offset], ldz);
 	}
 

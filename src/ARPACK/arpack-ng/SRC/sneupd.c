@@ -599,7 +599,7 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
 
 	i__1 = ldh * *ncv;
 	scopy_(&i__1, &workl[ih], &c__1, &workl[iuptri], &c__1);
-	slaset_("All", ncv, ncv, &s_zero, &s_one, &workl[invsub], &ldq);
+	slaset_("A", ncv, ncv, &s_zero, &s_one, &workl[invsub], &ldq);
 	slahqr_(&c_true, &c_true, ncv, &c__1, ncv, &workl[iuptri], &ldh, &
 		workl[iheigr], &workl[iheigi], &c__1, ncv, &workl[invsub], &
 		ldq, &ierr);
@@ -625,7 +625,7 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
            /* Reorder the computed upper quasi-triangular matrix. */
            /* --------------------------------------------------- */
 
-	    strsen_("None", "V", &select[1], ncv, &workl[iuptri], &ldh, &
+	    strsen_("N", "V", &select[1], ncv, &workl[iuptri], &ldh, &
 		    workl[invsub], &ldq, &workl[iheigr], &workl[iheigi], &
 		    nconv2, &conds, &sep, &workl[ihbds], ncv, iwork, &c__1, &
 		    ierr);
@@ -688,9 +688,9 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
         /* matrix of order NCONV in workl(iuptri)                  */
         /* ------------------------------------------------------- */
 
-	sorm2r_("Right", "Notranspose", n, ncv, &nconv, &workl[invsub], &ldq, 
+	sorm2r_("R", "N", n, ncv, &nconv, &workl[invsub], &ldq, 
 		&workev[1], &v[v_offset], ldv, &workd[*n + 1], &ierr);
-	slacpy_("All", n, &nconv, &v[v_offset], ldv, &z[z_offset], ldz);
+	slacpy_("A", n, &nconv, &v[v_offset], ldv, &z[z_offset], ldz);
 
 	i__1 = nconv;
 	for (j = 1; j <= i__1; ++j) {
@@ -729,7 +729,7 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
 /* L30: */
 	    }
 
-	    strevc_("Right", "Select", &select[1], ncv, &workl[iuptri], &ldq, 
+	    strevc_("R", "S", &select[1], ncv, &workl[iuptri], &ldq, 
 		    vl, &c__1, &workl[invsub], &ldq, ncv, &outncv, &workev[1],
 		     &ierr);
 
@@ -847,11 +847,11 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
            /* in workl(iheigr) and workl(iheigi).          */
            /* -------------------------------------------- */
 
-	    sorm2r_("Right", "Notranspose", n, ncv, &nconv, &workl[invsub], &
+	    sorm2r_("R", "N", n, ncv, &nconv, &workl[invsub], &
 		    ldq, &workev[1], &z[z_offset], ldz, &workd[*n + 1], &
 		    ierr, (ftnlen)5, (ftnlen)11);
 
-	    strmm_("Right", "Upper", "No transpose", "Non-unit", n, &nconv, &
+	    strmm_("R", "U", "N", "N", n, &nconv, &
 		    s_one, &workl[invsub], &ldq, &z[z_offset], ldz, (ftnlen)
 		    5, (ftnlen)5, (ftnlen)12, (ftnlen)8);
 

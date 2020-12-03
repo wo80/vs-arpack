@@ -439,9 +439,9 @@ L40:
             /* use LAPACK routine SLASCL               */
             /* --------------------------------------- */
 
-	dlascl_("General", &i, &i, rnorm, &d_one, n, &c__1, &v[j * v_dim1 
+	dlascl_("G", &i, &i, rnorm, &d_one, n, &c__1, &v[j * v_dim1 
 		+ 1], n, &infol);
-	dlascl_("General", &i, &i, rnorm, &d_one, n, &c__1, &workd[ipj], 
+	dlascl_("G", &i, &i, rnorm, &d_one, n, &c__1, &workd[ipj], 
 		n, &infol);
     }
 

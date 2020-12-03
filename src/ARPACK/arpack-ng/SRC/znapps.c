@@ -226,7 +226,7 @@ int znapps_(int32_t *n, int32_t *kev, int32_t *np,
      /* the rotations and reflections              */
      /* ------------------------------------------ */
 
-    zlaset_("All", &kplusp, &kplusp, &z_zero, &z_one, &q[q_offset], ldq);
+    zlaset_("A", &kplusp, &kplusp, &z_zero, &z_one, &q[q_offset], ldq);
 
      /* -------------------------------------------- */
      /* Quick return if there are no shifts to apply */

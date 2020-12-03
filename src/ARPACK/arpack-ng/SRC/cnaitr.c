@@ -442,9 +442,9 @@ L40:
             /* use LAPACK routine clascl               */
             /* --------------------------------------- */
 
-	clascl_("General", &i, &i, rnorm, &s_one, n, &c__1, &v[j * v_dim1 
+	clascl_("G", &i, &i, rnorm, &s_one, n, &c__1, &v[j * v_dim1 
 		+ 1], n, &infol);
-	clascl_("General", &i, &i, rnorm, &s_one, n, &c__1, &workd[ipj], 
+	clascl_("G", &i, &i, rnorm, &s_one, n, &c__1, &workd[ipj], 
 		n, &infol);
     }
 

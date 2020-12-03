@@ -199,7 +199,7 @@ int dsapps_(int32_t *n, int32_t *kev, int32_t *np,
      /* kplusp used to accumulate the rotations.     */
      /* -------------------------------------------- */
 
-    dlaset_("All", &kplusp, &kplusp, &d_zero, &d_one, &q[q_offset], ldq);
+    dlaset_("A", &kplusp, &kplusp, &d_zero, &d_one, &q[q_offset], ldq);
 
      /* -------------------------------------------- */
      /* Quick return if there are no shifts to apply */

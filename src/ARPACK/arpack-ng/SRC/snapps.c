@@ -229,7 +229,7 @@ int snapps_(int32_t *n, int32_t *kev, int32_t *np, float *
      /* the rotations and reflections              */
      /* ------------------------------------------ */
 
-    slaset_("All", &kplusp, &kplusp, &s_zero, &s_one, &q[q_offset], ldq);
+    slaset_("A", &kplusp, &kplusp, &s_zero, &s_one, &q[q_offset], ldq);
 
      /* -------------------------------------------- */
      /* Quick return if there are no shifts to apply */
@@ -505,7 +505,7 @@ L40:
               /* ------------------------------------ */
 
 		i__3 = kplusp - i + 1;
-		slarf_("Left", &nr, &i__3, u, &c__1, &tau, &h[i + i * 
+		slarf_("L", &nr, &i__3, u, &c__1, &tau, &h[i + i * 
 			h_dim1], ldh, &workl[1]);
 
               /* ------------------------------------- */
@@ -515,14 +515,14 @@ L40:
 /* Computing MIN */
 		i__3 = i + 3;
 		ir = min(i__3,iend);
-		slarf_("Right", &ir, &nr, u, &c__1, &tau, &h[i * h_dim1 + 
+		slarf_("R", &ir, &nr, u, &c__1, &tau, &h[i * h_dim1 + 
 			1], ldh, &workl[1]);
 
               /* --------------------------------------------------- */
               /* Accumulate the reflector in the matrix Q;  Q <- Q*G */
               /* --------------------------------------------------- */
 
-		slarf_("Right", &kplusp, &nr, u, &c__1, &tau, &q[i * q_dim1 
+		slarf_("R", &kplusp, &nr, u, &c__1, &tau, &q[i * q_dim1 
 			+ 1], ldq, &workl[1]);
 
               /* -------------------------- */

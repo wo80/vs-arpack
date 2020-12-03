@@ -225,7 +225,7 @@ int cnapps_(int32_t *n, int32_t *kev, int32_t *np, complex *
      /* the rotations and reflections              */
      /* ------------------------------------------ */
 
-    claset_("All", &kplusp, &kplusp, &c_zero, &c_one, &q[q_offset], ldq);
+    claset_("A", &kplusp, &kplusp, &c_zero, &c_one, &q[q_offset], ldq);
 
      /* -------------------------------------------- */
      /* Quick return if there are no shifts to apply */

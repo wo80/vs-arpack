@@ -198,7 +198,7 @@ int ssapps_(int32_t *n, int32_t *kev, int32_t *np, float *
      /* kplusp used to accumulate the rotations.     */
      /* -------------------------------------------- */
 
-    slaset_("All", &kplusp, &kplusp, &s_zero, &s_one, &q[q_offset], ldq);
+    slaset_("A", &kplusp, &kplusp, &s_zero, &s_one, &q[q_offset], ldq);
 
      /* -------------------------------------------- */
      /* Quick return if there are no shifts to apply */
@@ -481,7 +481,7 @@ L90:
      /*  Move v(:,kplusp-kev+1:kplusp) into v(:,1:kev). */
      /* ----------------------------------------------- */
 
-    slacpy_("All", n, kev, &v[(*np + 1) * v_dim1 + 1], ldv, &v[v_offset], ldv);
+    slacpy_("A", n, kev, &v[(*np + 1) * v_dim1 + 1], ldv, &v[v_offset], ldv);
 
      /* ------------------------------------------ */
      /* Copy the (kev+1)-st column of (V*Q) in the */

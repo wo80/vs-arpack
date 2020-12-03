@@ -442,9 +442,9 @@ L40:
             /* use LAPACK routine zlascl               */
             /* --------------------------------------- */
 
-	zlascl_("General", &i, &i, rnorm, &d_one, n, &c__1, &v[j * v_dim1 
+	zlascl_("G", &i, &i, rnorm, &d_one, n, &c__1, &v[j * v_dim1 
 		+ 1], n, &infol);
-	zlascl_("General", &i, &i, rnorm, &d_one, n, &c__1, &workd[ipj], 
+	zlascl_("G", &i, &i, rnorm, &d_one, n, &c__1, &workd[ipj], 
 		n, &infol);
     }
 
