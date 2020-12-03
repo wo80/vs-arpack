@@ -1,5 +1,6 @@
 /* EXAMPLES\SIMPLE\dssimp.f -- translated by f2c (version 20100827). */
 
+#include <stdlib.h>
 #include "arpack.h"
 
 int dssimp()
@@ -16,7 +17,7 @@ int dssimp()
     /* Local variables */
     double d[50]	/* was [25][2] */;
     int32_t j, n;
-    double v[6400]	/* was [256][25] */;
+    double *v	/* was [256][25] */;
     double ax[256];
     int32_t nx, ido, ncv, nev;
     double tol;
@@ -26,14 +27,19 @@ int dssimp()
     int32_t ierr, mode1;
     double sigma;
     char* which;
-    double resid[256];
+    double *resid;
     int32_t nconv;
-    double workd[768];
+    double *workd;
     int32_t ipntr[11];
-    double workl[825];
+    double *workl;
     int32_t iparam[11];
     bool select[25];
     int32_t ishfts, maxitr, lworkl;
+
+    resid = (double*)malloc(256 * sizeof(double));
+    v = (double*)malloc(6400 * sizeof(double));
+    workl = (double*)malloc(825 * sizeof(double));
+    workd = (double*)malloc(768 * sizeof(double));
 
     /* Fortran I/O blocks */
 
@@ -291,9 +297,7 @@ L10:
         /* has been exceeded.                          */
         /* ------------------------------------------- */
 
-    dsaupd_(&ido, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, 
-	    iparam, ipntr, workd, workl, &lworkl, &info, (ftnlen)1, (ftnlen)2)
-	    ;
+    dsaupd_(&ido, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, workd, workl, &lworkl, &info);
 
     if (ido == -1 || ido == 1) {
 
@@ -354,10 +358,7 @@ L10:
 
 	rvec = true;
 
-	dseupd_(&rvec, "All", select, d, v, &c__256, &sigma, bmat, &n, 
-		which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, 
-		workd, workl, &lworkl, &ierr, (ftnlen)3, (ftnlen)1, (ftnlen)2)
-		;
+	dseupd_(&rvec, "All", select, d, v, &c__256, &sigma, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, workd, workl, &lworkl, &ierr);
 
          /* -------------------------------------------- */
          /* Eigenvalues are returned in the first column */
@@ -447,6 +448,11 @@ L10:
 	printf(" \n");
 
     }
+
+    free(resid);
+    free(v);
+    free(workl);
+    free(workd);
 
      /* ------------------------- */
      /* Done with program dssimp. */

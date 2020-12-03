@@ -22,8 +22,7 @@
 
 /* ----------------------------------------------------------------------- */
 
-int dmout_(int32_t *m, int32_t *n, double 
-	*a, int32_t *lda, int32_t *idigit, char *ifmt)
+int dmout_(int32_t *m, int32_t *n, double *a, int32_t *lda, int32_t *idigit, char *ifmt)
 {
     /* Initialized data */
 
@@ -35,27 +34,21 @@ int dmout_(int32_t *m, int32_t *n, double
     char line[80];
     int32_t ndigit;
 
-/*     .. Data statements .. */
     /* Parameter adjustments */
     a_dim1 = *lda;
     a_offset = 1 + a_dim1;
     a -= a_offset;
 
     /* Function Body */
-/*     .. */
-/*     .. Executable Statements .. */
 
 /* Computing MIN */
     i__1 = strlen(ifmt);
-    lll = min(i__1,80);
+    lll = min(i__1,79);
     i__1 = lll;
     for (i = 1; i <= i__1; ++i) {
-	*&line[i - 1] = '-';
+	line[i - 1] = '-';
     }
-
-    for (i = lll + 1; i <= 80; ++i) {
-	*&line[i - 1] = ' ';
-    }
+	line[lll] = '\0';
 
     printf("\n %s\n %s", ifmt, line);
 
@@ -79,7 +72,7 @@ int dmout_(int32_t *m, int32_t *n, double
 /* Computing MIN */
 		i__2 = *n, i__3 = k1 + 4;
 		k2 = min(i__2,i__3);
-		printf("          ");
+		printf("\n          ");
 		for (i = k1; i <= k2; ++i) {
 		    printf("     Col %4d ", i);
 		}
@@ -87,7 +80,7 @@ int dmout_(int32_t *m, int32_t *n, double
 		for (i = 1; i <= i__2; ++i) {
 		    printf("\n  Row %4d:  ", i);
 		    for (j = k1; j <= k2; ++j) {
-			printf(" %12.3f", a[i + j * a_dim1]);
+			printf(" %12.3e", a[i + j * a_dim1]);
 		    }
 		}
 	    }
@@ -98,7 +91,7 @@ int dmout_(int32_t *m, int32_t *n, double
 /* Computing MIN */
 		i__2 = *n, i__3 = k1 + 3;
 		k2 = min(i__2,i__3);
-		printf("          ");
+		printf("\n          ");
 		for (i = k1; i <= k2; ++i) {
 		    printf("      Col %4d  ", i);
 		}
@@ -106,7 +99,7 @@ int dmout_(int32_t *m, int32_t *n, double
 		for (i = 1; i <= i__2; ++i) {
 		    printf("\n  Row %4d:  ", i);
 		    for (j = k1; j <= k2; ++j) {
-			printf(" %14.5f", a[i + j * a_dim1]);
+			printf(" %14.5e", a[i + j * a_dim1]);
 		    }
 		}
 	    }
@@ -117,7 +110,7 @@ int dmout_(int32_t *m, int32_t *n, double
 /* Computing MIN */
 		i__2 = *n, i__3 = k1 + 2;
 		k2 = min(i__2,i__3);
-		printf("          ");
+		printf("\n          ");
 		for (i = k1; i <= k2; ++i) {
 		    printf("        Col %4d    ", i);
 		}
@@ -125,7 +118,7 @@ int dmout_(int32_t *m, int32_t *n, double
 		for (i = 1; i <= i__2; ++i) {
 		    printf("\n  Row %4d:  ", i);
 		    for (j = k1; j <= k2; ++j) {
-			printf(" %18.9f", a[i + j * a_dim1]);
+			printf(" %18.9e", a[i + j * a_dim1]);
 		    }
 		}
 	    }
@@ -136,7 +129,7 @@ int dmout_(int32_t *m, int32_t *n, double
 /* Computing MIN */
 		i__2 = *n, i__3 = k1 + 1;
 		k2 = min(i__2,i__3);
-		printf("          ");
+		printf("\n          ");
 		for (i = k1; i <= k2; ++i) {
 		    printf("          Col %4d      ", i);
 		}
@@ -144,7 +137,7 @@ int dmout_(int32_t *m, int32_t *n, double
 		for (i = 1; i <= i__2; ++i) {
 		    printf("\n  Row %4d:  ", i);
 		    for (j = k1; j <= k2; ++j) {
-			printf(" %22.13f", a[i + j * a_dim1]);
+			printf(" %22.13e", a[i + j * a_dim1]);
 		    }
 		}
 	    }
@@ -161,7 +154,7 @@ int dmout_(int32_t *m, int32_t *n, double
 /* Computing MIN */
 		i__2 = *n, i__3 = k1 + 9;
 		k2 = min(i__2,i__3);
-		printf("          ");
+		printf("\n          ");
 		for (i = k1; i <= k2; ++i) {
 		    printf("     Col %4d ", i);
 		}
@@ -169,7 +162,7 @@ int dmout_(int32_t *m, int32_t *n, double
 		for (i = 1; i <= i__2; ++i) {
 		    printf("\n  Row %4d:  ", i);
 		    for (j = k1; j <= k2; ++j) {
-			printf(" %12.3f", a[i + j * a_dim1]);
+			printf(" %12.3e", a[i + j * a_dim1]);
 		    }
 		}
 	    }
@@ -180,7 +173,7 @@ int dmout_(int32_t *m, int32_t *n, double
 /* Computing MIN */
 		i__2 = *n, i__3 = k1 + 7;
 		k2 = min(i__2,i__3);
-		printf("          ");
+		printf("\n          ");
 		for (i = k1; i <= k2; ++i) {
 		    printf("      Col %4d  ", i);
 		}
@@ -188,7 +181,7 @@ int dmout_(int32_t *m, int32_t *n, double
 		for (i = 1; i <= i__2; ++i) {
 		    printf("\n  Row %4d:  ", i);
 		    for (j = k1; j <= k2; ++j) {
-			printf(" %14.5f", a[i + j * a_dim1]);
+			printf(" %14.5e", a[i + j * a_dim1]);
 		    }
 		}
 	    }
@@ -199,7 +192,7 @@ int dmout_(int32_t *m, int32_t *n, double
 /* Computing MIN */
 		i__2 = *n, i__3 = k1 + 5;
 		k2 = min(i__2,i__3);
-		printf("          ");
+		printf("\n          ");
 		for (i = k1; i <= k2; ++i) {
 		    printf("        Col %4d    ", i);
 		}
@@ -207,7 +200,7 @@ int dmout_(int32_t *m, int32_t *n, double
 		for (i = 1; i <= i__2; ++i) {
 		    printf("\n  Row %4d:  ", i);
 		    for (j = k1; j <= k2; ++j) {
-			printf(" %18.9f", a[i + j * a_dim1]);
+			printf(" %18.9e", a[i + j * a_dim1]);
 		    }
 		}
 	    }
@@ -218,7 +211,7 @@ int dmout_(int32_t *m, int32_t *n, double
 /* Computing MIN */
 		i__2 = *n, i__3 = k1 + 4;
 		k2 = min(i__2,i__3);
-		printf("          ");
+		printf("\n          ");
 		for (i = k1; i <= k2; ++i) {
 		    printf("          Col %4d      ", i);
 		}
@@ -226,7 +219,7 @@ int dmout_(int32_t *m, int32_t *n, double
 		for (i = 1; i <= i__2; ++i) {
 		    printf("\n  Row %4d:  ", i);
 		    for (j = k1; j <= k2; ++j) {
-			printf(" %22.13f", a[i + j * a_dim1]);
+			printf(" %22.13e", a[i + j * a_dim1]);
 		    }
 		}
 	    }

@@ -66,7 +66,7 @@
  *     xxxxxx  Complex
  *
  * \Routines called:
- *     ivout   ARPACK utility routine that prints int32_ts.
+ *     ivout   ARPACK utility routine that prints integers.
  *     arscnd  ARPACK utility routine for timing.
  *     cmout   ARPACK utility routine that prints matrices
  *     cvout   ARPACK utility routine that prints vectors.
@@ -78,9 +78,8 @@
  *     ctrevc  LAPACK routine to compute the eigenvectors of a matrix
  *             in upper triangular form
  *     ccopy   Level 1 BLAS that copies one vector to another.
- *     csscal  Level 1 BLAS that scales a complex vector by a float number.
+ *     csscal  Level 1 BLAS that scales a complex vector by a real number.
  *     scnrm2  Level 1 BLAS that computes the norm of a vector.
- *
  *
  * \Author
  *     Danny Sorensen               Phuong Vu
@@ -159,8 +158,7 @@ int cneigh_(float *rnorm, int32_t *n, complex *h, int32_t *
 
     clacpy_("A", n, n, &h[h_offset], ldh, &workl[1], n);
     claset_("A", n, n, &c_zero, &c_one, &q[q_offset], ldq);
-    clahqr_(&c_true, &c_true, n, &c__1, n, &workl[1], ldh, &ritz[1], &c__1, n,
-	     &q[q_offset], ldq, ierr);
+    clahqr_(&c_true, &c_true, n, &c__1, n, &workl[1], ldh, &ritz[1], &c__1, n,&q[q_offset], ldq, ierr);
     if (*ierr != 0) {
 	goto L9000;
     }
@@ -178,8 +176,7 @@ int cneigh_(float *rnorm, int32_t *n, complex *h, int32_t *
      /*    eigenvectors.                                         */
      /* -------------------------------------------------------- */
 
-    ctrevc_("R", "B", select, n, &workl[1], n, vl, n, &q[q_offset], 
-	    ldq, n, n, &workl[*n * *n + 1], &rwork[1], ierr);
+    ctrevc_("R", "B", select, n, &workl[1], n, vl, n, &q[q_offset], ldq, n, n, &workl[*n * *n + 1], &rwork[1], ierr);
 
     if (*ierr != 0) {
 	goto L9000;

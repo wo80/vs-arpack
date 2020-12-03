@@ -81,7 +81,7 @@
  * \BeginLib
  *
  * \Local variables:
- *     xxxxxx  float
+ *     xxxxxx  real
  *
  * \References:
  *  1. D.C. Sorensen, "Implicit Application of Polynomial Filters in
@@ -92,7 +92,7 @@
  *     TR95-13, Department of Computational and Applied Mathematics.
  *
  * \Routines called:
- *     ivout   ARPACK utility routine that prints int32_ts.
+ *     ivout   ARPACK utility routine that prints integers.
  *     arscnd  ARPACK utility routine for timing.
  *     svout   ARPACK utility routine that prints vectors.
  *     slamch  LAPACK routine that determines machine constants.
@@ -178,7 +178,7 @@ int ssapps_(int32_t *n, int32_t *kev, int32_t *np, float *
      /* --------------------- */
 
     if (first) {
-	epsmch = slamch_("Epsilon-Machine");
+	epsmch = slamch_("E");
 	first = false;
     }
     itop = 1;
@@ -465,8 +465,7 @@ L90:
      /* ----------------------------------------------- */
 
     if (h[*kev + 1 + h_dim1] > 0.f) {
-	sgemv_("N", n, &kplusp, &s_one, &v[v_offset], ldv, &q[(*kev + 1) * 
-		q_dim1 + 1], &c__1, &s_zero, &workd[*n + 1], &c__1);
+	sgemv_("N", n, &kplusp, &s_one, &v[v_offset], ldv, &q[(*kev + 1) * q_dim1 + 1], &c__1, &s_zero, &workd[*n + 1], &c__1);
     }
 
      /* ----------------------------------------------------- */
@@ -479,10 +478,8 @@ L90:
     i__1 = *kev;
     for (i = 1; i <= i__1; ++i) {
 	i__2 = kplusp - i + 1;
-	sgemv_("N", n, &i__2, &s_one, &v[v_offset], ldv, &q[(*kev - i + 1) * 
-		q_dim1 + 1], &c__1, &s_zero, &workd[1], &c__1);
-	scopy_(n, &workd[1], &c__1, &v[(kplusp - i + 1) * v_dim1 + 1], &
-		c__1);
+	sgemv_("N", n, &i__2, &s_one, &v[v_offset], ldv, &q[(*kev - i + 1) * q_dim1 + 1], &c__1, &s_zero, &workd[1], &c__1);
+	scopy_(n, &workd[1], &c__1, &v[(kplusp - i + 1) * v_dim1 + 1], &c__1);
 /* L130: */
     }
 
@@ -511,8 +508,7 @@ L90:
 
     sscal_(n, &q[kplusp + *kev * q_dim1], &resid[1], &c__1);
     if (h[*kev + 1 + h_dim1] > 0.f) {
-	saxpy_(n, &h[*kev + 1 + h_dim1], &v[(*kev + 1) * v_dim1 + 1], &c__1,
-		 &resid[1], &c__1);
+	saxpy_(n, &h[*kev + 1 + h_dim1], &v[(*kev + 1) * v_dim1 + 1], &c__1,&resid[1], &c__1);
     }
 
 #ifndef NO_TRACE

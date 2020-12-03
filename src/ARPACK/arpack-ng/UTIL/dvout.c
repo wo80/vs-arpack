@@ -19,8 +19,7 @@
 
 /* ----------------------------------------------------------------------- */
 
-int dvout_(int32_t *n, double *sx, 
-	int32_t *idigit, char *ifmt)
+int dvout_(int32_t *n, double *sx, int32_t *idigit, char *ifmt)
 {
 
     /* System generated locals */
@@ -31,23 +30,18 @@ int dvout_(int32_t *n, double *sx,
     char line[80];
     int32_t ndigit;
 
-/*     .. Executable Statements .. */
-
     /* Parameter adjustments */
     --sx;
 
     /* Function Body */
 /* Computing MIN */
     i__1 = strlen(ifmt);
-    lll = min(i__1,80);
+    lll = min(i__1,79);
     i__1 = lll;
     for (i = 1; i <= i__1; ++i) {
-	*&line[i - 1] = '-';
+	line[i - 1] = '-';
     }
-
-    for (i = lll + 1; i <= 80; ++i) {
-	*&line[i - 1] = ' ';
-    }
+    line[lll] = '\0';
 
     printf("\n %s\n %s", ifmt, line);
 
@@ -73,7 +67,7 @@ int dvout_(int32_t *n, double *sx,
 		k2 = min(i__2,i__3);
 		printf("\n  %4d -   %4d:", k1, k2);
 		for (i = k1; i <= k2; ++i) {
-		    printf(" %12.3f", sx[i]);
+		    printf(" %12.3e", sx[i]);
 		}
 	    }
 	} else if (ndigit <= 6) {
@@ -84,7 +78,7 @@ int dvout_(int32_t *n, double *sx,
 		k2 = min(i__2,i__3);
 		printf("\n  %4d -   %4d:", k1, k2);
 		for (i = k1; i <= k2; ++i) {
-		    printf(" %14.5f", sx[i]);
+		    printf(" %14.5e", sx[i]);
 		}
 	    }
 	} else if (ndigit <= 10) {
@@ -95,7 +89,7 @@ int dvout_(int32_t *n, double *sx,
 		k2 = min(i__2,i__3);
 		printf("\n  %4d -   %4d:", k1, k2);
 		for (i = k1; i <= k2; ++i) {
-		    printf(" %18.9f", sx[i]);
+		    printf(" %18.9e", sx[i]);
 		}
 	    }
 	} else {
@@ -106,7 +100,7 @@ int dvout_(int32_t *n, double *sx,
 		k2 = min(i__2,i__3);
 		printf("\n  %4d -   %4d:", k1, k2);
 		for (i = k1; i <= k2; ++i) {
-		    printf(" %24.13f", sx[i]);
+		    printf(" %24.13e", sx[i]);
 		}
 	    }
 	}
@@ -124,7 +118,7 @@ int dvout_(int32_t *n, double *sx,
 		k2 = min(i__2,i__3);
 		printf("\n  %4d -   %4d:", k1, k2);
 		for (i = k1; i <= k2; ++i) {
-		    printf(" %12.3f", sx[i]);
+		    printf(" %12.3e", sx[i]);
 		}
 	    }
 	} else if (ndigit <= 6) {
@@ -135,7 +129,7 @@ int dvout_(int32_t *n, double *sx,
 		k2 = min(i__2,i__3);
 		printf("\n  %4d -   %4d:", k1, k2);
 		for (i = k1; i <= k2; ++i) {
-		    printf(" %14.5f", sx[i]);
+		    printf(" %14.5e", sx[i]);
 		}
 	    }
 	} else if (ndigit <= 10) {
@@ -146,7 +140,7 @@ int dvout_(int32_t *n, double *sx,
 		k2 = min(i__2,i__3);
 		printf("\n  %4d -   %4d:", k1, k2);
 		for (i = k1; i <= k2; ++i) {
-		    printf(" %18.9f", sx[i]);
+		    printf(" %18.9e", sx[i]);
 		}
 	    }
 	} else {
@@ -157,7 +151,7 @@ int dvout_(int32_t *n, double *sx,
 		k2 = min(i__2,i__3);
 		printf("\n  %4d -   %4d:", k1, k2);
 		for (i = k1; i <= k2; ++i) {
-		    printf(" %24.13f", sx[i]);
+		    printf(" %24.13e", sx[i]);
 		}
 	    }
 	}

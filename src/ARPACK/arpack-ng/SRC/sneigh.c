@@ -31,7 +31,7 @@
  *          program.
  *
  *  RITZR,  Real arrays of length N.  (OUTPUT)
- *  RITZI   On output, RITZR(1:N) (resp. RITZI(1:N)) contains the float
+ *  RITZI   On output, RITZR(1:N) (resp. RITZI(1:N)) contains the real
  *          (respectively imaginary) parts of the eigenvalues of H.
  *
  *  BOUNDS  Real array of length N.  (OUTPUT)
@@ -60,10 +60,10 @@
  * \BeginLib
  *
  * \Local variables:
- *     xxxxxx  float
+ *     xxxxxx  real
  *
  * \Routines called:
- *     slahqr  LAPACK routine to compute the float Schur form of an
+ *     slahqr  LAPACK routine to compute the real Schur form of an
  *             upper Hessenberg matrix and last row of the Schur vectors.
  *     arscnd  ARPACK utility routine for timing.
  *     smout   ARPACK utility routine that prints matrices
@@ -76,7 +76,6 @@
  *     scopy   Level 1 BLAS that copies one vector to another .
  *     snrm2   Level 1 BLAS that computes the norm of a vector.
  *     sscal   Level 1 BLAS that scales a vector.
- *
  *
  * \Author
  *     Danny Sorensen               Phuong Vu
@@ -163,8 +162,7 @@ int sneigh_(float *rnorm, int32_t *n, float *h, int32_t *ldh,
 /* L5: */
     }
     bounds[*n] = 1.f;
-    slahqr_(&c_true, &c_true, n, &c__1, n, &workl[1], n, &ritzr[1], &ritzi[1],
-	     &c__1, &c__1, &bounds[1], &c__1, ierr);
+    slahqr_(&c_true, &c_true, n, &c__1, n, &workl[1], n, &ritzr[1], &ritzi[1],&c__1, &c__1, &bounds[1], &c__1, ierr);
     if (*ierr != 0) {
 	goto L9000;
     }
@@ -185,8 +183,7 @@ int sneigh_(float *rnorm, int32_t *n, float *h, int32_t *ldh,
      /* columns of Q.                                             */
      /* --------------------------------------------------------- */
 
-    strevc_("R", "A", select, n, &workl[1], n, vl, n, &q[q_offset], ldq, n, n,
-	     &workl[*n * *n + 1], ierr);
+    strevc_("R", "A", select, n, &workl[1], n, vl, n, &q[q_offset], ldq, n, n,&workl[*n * *n + 1], ierr);
 
     if (*ierr != 0) {
 	goto L9000;
@@ -239,8 +236,7 @@ int sneigh_(float *rnorm, int32_t *n, float *h, int32_t *ldh,
 /* L10: */
     }
 
-    sgemv_("T", n, n, &s_one, &q[q_offset], ldq, &bounds[1], &c__1, &s_zero, &
-	    workl[1], &c__1);
+    sgemv_("T", n, n, &s_one, &q[q_offset], ldq, &bounds[1], &c__1, &s_zero, &workl[1], &c__1);
 
 #ifndef NO_TRACE
     if (msglvl > 1) {

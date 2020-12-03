@@ -90,7 +90,7 @@
  * \BeginLib
  *
  * \Local variables:
- *     xxxxxx  float
+ *     xxxxxx  real
  *
  * \References:
  *  1. D.C. Sorensen, "Implicit Application of Polynomial Filters in
@@ -98,7 +98,7 @@
  *     pp 357-385.
  *
  * \Routines called:
- *     ivout   ARPACK utility routine that prints int32_ts.
+ *     ivout   ARPACK utility routine that prints integers.
  *     arscnd  ARPACK utility routine for timing.
  *     dmout   ARPACK utility routine that prints matrices.
  *     dvout   ARPACK utility routine that prints vectors.
@@ -208,10 +208,10 @@ int dnapps_(int32_t *n, int32_t *kev, int32_t *np,
         /* REFERENCE: LAPACK subroutine dlahqr           */
         /* --------------------------------------------- */
 
-	unfl = dlamch_("safe minimum");
+	unfl = dlamch_("S");
 	ovfl = 1. / unfl;
 	dlabad_(&unfl, &ovfl);
-	ulp = dlamch_("precision");
+	ulp = dlamch_("P");
 	smlnum = unfl * (*n / ulp);
 	first = false;
     }
@@ -516,8 +516,7 @@ L40:
               /* ------------------------------------ */
 
 		i__3 = kplusp - i + 1;
-		dlarf_("L", &nr, &i__3, u, &c__1, &tau, &h[i + i * 
-			h_dim1], ldh, &workl[1]);
+		dlarf_("L", &nr, &i__3, u, &c__1, &tau, &h[i + i * h_dim1], ldh, &workl[1]);
 
               /* ------------------------------------- */
               /* Apply the reflector to the right of H */
@@ -526,15 +525,13 @@ L40:
 /* Computing MIN */
 		i__3 = i + 3;
 		ir = min(i__3,iend);
-		dlarf_("R", &ir, &nr, u, &c__1, &tau, &h[i * h_dim1 + 
-			1], ldh, &workl[1]);
+		dlarf_("R", &ir, &nr, u, &c__1, &tau, &h[i * h_dim1 + 1], ldh, &workl[1]);
 
               /* --------------------------------------------------- */
               /* Accumulate the reflector in the matrix Q;  Q <- Q*G */
               /* --------------------------------------------------- */
 
-		dlarf_("R", &kplusp, &nr, u, &c__1, &tau, &q[i * q_dim1 
-			+ 1], ldq, &workl[1]);
+		dlarf_("R", &kplusp, &nr, u, &c__1, &tau, &q[i * q_dim1 + 1], ldq, &workl[1]);
 
               /* -------------------------- */
               /* Prepare for next reflector */
@@ -630,8 +627,7 @@ L110:
      /* ----------------------------------------------- */
 
     if (h[*kev + 1 + *kev * h_dim1] > 0.) {
-	dgemv_("N", n, &kplusp, &d_one, &v[v_offset], ldv, &q[(*kev + 1) * 
-		q_dim1 + 1], &c__1, &d_zero, &workd[*n + 1], &c__1);
+	dgemv_("N", n, &kplusp, &d_one, &v[v_offset], ldv, &q[(*kev + 1) * q_dim1 + 1], &c__1, &d_zero, &workd[*n + 1], &c__1);
     }
 
      /* -------------------------------------------------------- */
@@ -642,10 +638,8 @@ L110:
     i__1 = *kev;
     for (i = 1; i <= i__1; ++i) {
 	i__2 = kplusp - i + 1;
-	dgemv_("N", n, &i__2, &d_one, &v[v_offset], ldv, &q[(*kev - i + 1) * 
-		q_dim1 + 1], &c__1, &d_zero, &workd[1], &c__1);
-	dcopy_(n, &workd[1], &c__1, &v[(kplusp - i + 1) * v_dim1 + 1], &
-		c__1);
+	dgemv_("N", n, &i__2, &d_one, &v[v_offset], ldv, &q[(*kev - i + 1) * q_dim1 + 1], &c__1, &d_zero, &workd[1], &c__1);
+	dcopy_(n, &workd[1], &c__1, &v[(kplusp - i + 1) * v_dim1 + 1], &c__1);
 /* L140: */
     }
 
@@ -655,8 +649,7 @@ L110:
 
     i__1 = *kev;
     for (i = 1; i <= i__1; ++i) {
-	dcopy_(n, &v[(kplusp - *kev + i) * v_dim1 + 1], &c__1, &v[i * 
-		v_dim1 + 1], &c__1);
+	dcopy_(n, &v[(kplusp - *kev + i) * v_dim1 + 1], &c__1, &v[i * v_dim1 + 1], &c__1);
 /* L150: */
     }
 
@@ -678,8 +671,7 @@ L110:
 
     dscal_(n, &q[kplusp + *kev * q_dim1], &resid[1], &c__1);
     if (h[*kev + 1 + *kev * h_dim1] > 0.) {
-	daxpy_(n, &h[*kev + 1 + *kev * h_dim1], &v[(*kev + 1) * v_dim1 + 1],
-		 &c__1, &resid[1], &c__1);
+	daxpy_(n, &h[*kev + 1 + *kev * h_dim1], &v[(*kev + 1) * v_dim1 + 1],&c__1, &resid[1], &c__1);
     }
 
 #ifndef NO_TRACE

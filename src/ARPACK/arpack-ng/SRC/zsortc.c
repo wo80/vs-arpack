@@ -19,8 +19,8 @@
  *  WHICH   Character*2.  (Input)
  *          'LM' -> sort X into increasing order of magnitude.
  *          'SM' -> sort X into decreasing order of magnitude.
- *          'LR' -> sort X with float(X) in increasing algebraic order
- *          'SR' -> sort X with float(X) in decreasing algebraic order
+ *          'LR' -> sort X with real(X) in increasing algebraic order
+ *          'SR' -> sort X with real(X) in decreasing algebraic order
  *          'LI' -> sort X with imag(X) in increasing algebraic order
  *          'SI' -> sort X with imag(X) in decreasing algebraic order
  *

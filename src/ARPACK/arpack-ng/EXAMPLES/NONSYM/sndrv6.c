@@ -237,9 +237,7 @@ L20:
         /* has been exceeded.                          */
         /* ------------------------------------------- */
 
-    snaupd_(&ido, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, 
-	    iparam, ipntr, workd, workl, &lworkl, &info, (ftnlen)1, (ftnlen)2)
-	    ;
+    snaupd_(&ido, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, workd, workl, &lworkl, &info);
 
     if (ido == -1) {
 
@@ -264,8 +262,7 @@ L20:
 /* L30: */
 	}
 
-	cgttrs_("N", &n, &c__1, cdl, cdd, cdu, cdu2, ipiv, ctemp, &c__256, &
-		ierr, (ftnlen)1);
+	cgttrs_("N", &n, &c__1, cdl, cdd, cdu, cdu2, ipiv, ctemp, &c__256, &ierr);
 	if (ierr != 0) {
 	    printf(" \n");
 	    printf(" ERROR with _gttrs in _NDRV6.\n");
@@ -303,8 +300,7 @@ L20:
 	    ctemp[i__2].r = q__1.r, ctemp[i__2].i = q__1.i;
 /* L50: */
 	}
-	cgttrs_("N", &n, &c__1, cdl, cdd, cdu, cdu2, ipiv, ctemp, &c__256, &
-		ierr, (ftnlen)1);
+	cgttrs_("N", &n, &c__1, cdl, cdd, cdu, cdu2, ipiv, ctemp, &c__256, &ierr);
 	if (ierr != 0) {
 	    printf(" \n");
 	    printf(" ERROR with _gttrs in _NDRV6.\n");
@@ -372,10 +368,7 @@ L20:
         /* ----------------------------------------- */
 
 	rvec = true;
-	sneupd_(&rvec, "A", select, d, &d[25], v, &c__256, &sigmar, &
-		sigmai, workev, bmat, &n, which, &nev, &tol, resid, &ncv, v, &
-		c__256, iparam, ipntr, workd, workl, &lworkl, &ierr, (ftnlen)
-		1, (ftnlen)1, (ftnlen)2);
+	sneupd_(&rvec, "A", select, d, &d[25], v, &c__256, &sigmar, &sigmai, workev, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, workd, workl, &lworkl, &ierr);
 
         /* --------------------------------------------- */
         /* The real part of the eigenvalue is returned   */
@@ -440,13 +433,10 @@ L20:
 
 			sndrv6_av_(&n, &v[(j << 8) - 256], ax);
 		    numr = sdot_(&n, &v[(j << 8) - 256], &c__1, ax, &c__1);
-		    numi = sdot_(&n, &v[(j + 1 << 8) - 256], &c__1, ax, &c__1)
-			    ;
+		    numi = sdot_(&n, &v[(j + 1 << 8) - 256], &c__1, ax, &c__1);
 			sndrv6_av_(&n, &v[(j + 1 << 8) - 256], ax);
-		    numr += sdot_(&n, &v[(j + 1 << 8) - 256], &c__1, ax, &
-			    c__1);
-		    numi = -numi + sdot_(&n, &v[(j << 8) - 256], &c__1, ax, &
-			    c__1);
+		    numr += sdot_(&n, &v[(j + 1 << 8) - 256], &c__1, ax, &c__1);
+		    numi = -numi + sdot_(&n, &v[(j << 8) - 256], &c__1, ax, &c__1);
 
                   /* -------------- */
                   /* Compute x'(Mx) */
@@ -454,22 +444,17 @@ L20:
 
 			sndrv6_mv_(&n, &v[(j << 8) - 256], ax);
 		    denr = sdot_(&n, &v[(j << 8) - 256], &c__1, ax, &c__1);
-		    deni = sdot_(&n, &v[(j + 1 << 8) - 256], &c__1, ax, &c__1)
-			    ;
+		    deni = sdot_(&n, &v[(j + 1 << 8) - 256], &c__1, ax, &c__1);
 			sndrv6_mv_(&n, &v[(j + 1 << 8) - 256], ax);
-		    denr += sdot_(&n, &v[(j + 1 << 8) - 256], &c__1, ax, &
-			    c__1);
-		    deni = -deni + sdot_(&n, &v[(j << 8) - 256], &c__1, ax, &
-			    c__1);
+		    denr += sdot_(&n, &v[(j + 1 << 8) - 256], &c__1, ax, &c__1);
+		    deni = -deni + sdot_(&n, &v[(j << 8) - 256], &c__1, ax, &c__1);
 
                   /* -------------- */
                   /* d=x'(Ax)/x'(Mx)*/
                   /* -------------- */
 
-		    d[j - 1] = (numr * denr + numi * deni) / slapy2_(&denr, 
-			    &deni);
-		    d[j + 24] = (numi * denr - numr * deni) / slapy2_(&denr,
-			     &deni);
+		    d[j - 1] = (numr * denr + numi * deni) / slapy2_(&denr, &deni);
+		    d[j + 24] = (numi * denr - numr * deni) / slapy2_(&denr,&deni);
 		    first = false;
 
 		} else {

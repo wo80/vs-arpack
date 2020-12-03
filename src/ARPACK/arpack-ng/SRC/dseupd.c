@@ -61,7 +61,7 @@
  *          the matrix of Ritz vectors. See remark 1 below.
  *          = 'A': compute NEV Ritz vectors;
  *          = 'S': compute some of the Ritz vectors, specified
- *                 by the bool array SELECT.
+ *                 by the logical array SELECT.
  *
  *  SELECT  Logical array of dimension NCV.  (INPUT/WORKSPACE)
  *          If HOWMNY = 'S', SELECT specifies the Ritz vectors to be
@@ -94,7 +94,6 @@
  *  SIGMA   Double precision   (INPUT)
  *          If IPARAM(7) = 3,4,5 represents the shift. Not referenced if
  *          IPARAM(7) = 1 or 2.
- *
  *
  *  **** The remaining arguments MUST be the same as for the   ****
  *  **** call to DSAUPD  that was just completed.               ****
@@ -187,7 +186,7 @@
  *     dsesrt   ARPACK routine that sorts an array X, and applies the
  *             corresponding permutation to a matrix A.
  *     dsortr   dsortr   ARPACK sorting routine.
- *     ivout   ARPACK utility routine that prints int32_ts.
+ *     ivout   ARPACK utility routine that prints integers.
  *     dvout    ARPACK utility routine that prints vectors.
  *     dgeqr2   LAPACK routine that computes the QR factorization of
  *             a matrix.
@@ -240,7 +239,7 @@ int dseupd_(bool *rvec, char *howmny, bool *select, double *d, double *z, int32_
     int32_t ierr;
     double temp;
     int32_t next;
-    char type__[6];
+    char type[7];
     int32_t ritz;
     double temp1;
     bool reord;
@@ -323,13 +322,13 @@ int dseupd_(bool *rvec, char *howmny, bool *select, double *d, double *z, int32_
     }
 
     if (mode == 1 || mode == 2) {
-	strcpy(type__, "REGULR");
+	strcpy(type, "REGULR");
     } else if (mode == 3) {
-	strcpy(type__, "SHIFTI");
+	strcpy(type, "SHIFTI");
     } else if (mode == 4) {
-	strcpy(type__, "BUCKLE");
+	strcpy(type, "BUCKLE");
     } else if (mode == 5) {
-	strcpy(type__, "CAYLEY");
+	strcpy(type, "CAYLEY");
     } else {
 	ierr = -10;
     }
@@ -421,7 +420,7 @@ int dseupd_(bool *rvec, char *howmny, bool *select, double *d, double *z, int32_
      /* Set machine dependent constant. */
      /* ------------------------------- */
 
-    eps23 = dlamch_("Epsilon-Machine");
+    eps23 = dlamch_("E");
     eps23 = pow_dd(&eps23, &d_23);
 
      /* ------------------------------------- */
@@ -533,8 +532,7 @@ int dseupd_(bool *rvec, char *howmny, bool *select, double *d, double *z, int32_
 	dcopy_(&i__1, &workl[ih + 1], &c__1, &workl[ihb], &c__1);
 	dcopy_(ncv, &workl[ih + ldh], &c__1, &workl[ihd], &c__1);
 
-	dsteqr_("I", ncv, &workl[ihd], &workl[ihb], &workl[iq], &ldq, &
-		workl[iw], &ierr);
+	dsteqr_("I", ncv, &workl[ihd], &workl[ihb], &workl[iq], &ldq, &workl[iw], &ierr);
 
 	if (ierr != 0) {
 	    *info = -8;
@@ -599,12 +597,9 @@ L20:
 		temp = workl[ihd + leftptr - 1];
 		workl[ihd + leftptr - 1] = workl[ihd + rghtptr - 1];
 		workl[ihd + rghtptr - 1] = temp;
-		dcopy_(ncv, &workl[iq + *ncv * (leftptr - 1)], &c__1, &workl[
-			iw], &c__1);
-		dcopy_(ncv, &workl[iq + *ncv * (rghtptr - 1)], &c__1, &workl[
-			iq + *ncv * (leftptr - 1)], &c__1);
-		dcopy_(ncv, &workl[iw], &c__1, &workl[iq + *ncv * (rghtptr - 
-			1)], &c__1);
+		dcopy_(ncv, &workl[iq + *ncv * (leftptr - 1)], &c__1, &workl[iw], &c__1);
+		dcopy_(ncv, &workl[iq + *ncv * (rghtptr - 1)], &c__1, &workl[iq + *ncv * (leftptr - 1)], &c__1);
+		dcopy_(ncv, &workl[iw], &c__1, &workl[iq + *ncv * (rghtptr - 1)], &c__1);
 		++leftptr;
 		--rghtptr;
 
@@ -646,7 +641,7 @@ L30:
      /* (and corresponding data) are returned in ascending order.        */
      /* ---------------------------------------------------------------- */
 
-    if (strcmp(type__, "REGULR") == 0) {
+    if (strcmp(type, "REGULR") == 0) {
 
         /* ------------------------------------------------------- */
         /* Ascending sort of wanted Ritz values, vectors and error */
@@ -677,20 +672,20 @@ L30:
         /* ----------------------------------------------------------- */
 
 	dcopy_(ncv, &workl[ihd], &c__1, &workl[iw], &c__1);
-	if (strcmp(type__, "SHIFTI") == 0) {
+	if (strcmp(type, "SHIFTI") == 0) {
 	    i__1 = *ncv;
 	    for (k = 1; k <= i__1; ++k) {
 		workl[ihd + k - 1] = 1. / workl[ihd + k - 1] + *sigma;
 /* L40: */
 	    }
-	} else if (strcmp(type__, "BUCKLE") == 0) {
+	} else if (strcmp(type, "BUCKLE") == 0) {
 	    i__1 = *ncv;
 	    for (k = 1; k <= i__1; ++k) {
 		workl[ihd + k - 1] = *sigma * workl[ihd + k - 1] / (workl[ihd 
 			+ k - 1] - 1.);
 /* L50: */
 	    }
-	} else if (strcmp(type__, "CAYLEY") == 0) {
+	} else if (strcmp(type, "CAYLEY") == 0) {
 	    i__1 = *ncv;
 	    for (k = 1; k <= i__1; ++k) {
 		workl[ihd + k - 1] = *sigma * (workl[ihd + k - 1] + 1.) / (
@@ -741,8 +736,7 @@ L30:
         /* columns of workl(iq,ldq).                                */
         /* -------------------------------------------------------- */
 
-	dgeqr2_(ncv, &nconv, &workl[iq], &ldq, &workl[iw + *ncv], &workl[ihb],
-		 &ierr);
+	dgeqr2_(ncv, &nconv, &workl[iq], &ldq, &workl[iw + *ncv], &workl[ihb],&ierr);
 
         /* ------------------------------------------------------ */
         /* * Postmultiply V by Q.                                 */
@@ -752,8 +746,7 @@ L30:
         /* the Ritz values in workl(ihd).                         */
         /* ------------------------------------------------------ */
 
-	dorm2r_("R", "N", n, ncv, &nconv, &workl[iq], &ldq, &
-		workl[iw + *ncv], &v[v_offset], ldv, &workd[*n + 1], &ierr);
+	dorm2r_("R", "N", n, ncv, &nconv, &workl[iq], &ldq, &workl[iw + *ncv], &v[v_offset], ldv, &workd[*n + 1], &ierr);
 	dlacpy_("A", n, &nconv, &v[v_offset], ldv, &z[z_offset], ldz);
 
         /* --------------------------------------------------- */
@@ -768,8 +761,7 @@ L30:
 /* L65: */
 	}
 	workl[ihb + *ncv - 1] = 1.;
-	dorm2r_("L", "T", ncv, &c__1, &nconv, &workl[iq], &ldq, &
-		workl[iw + *ncv], &workl[ihb], ncv, &temp, &ierr);
+	dorm2r_("L", "T", ncv, &c__1, &nconv, &workl[iq], &ldq, &workl[iw + *ncv], &workl[ihb], ncv, &temp, &ierr);
 
         /* --------------------------------------------------- */
         /* Make a copy of the last row into                    */
@@ -788,7 +780,7 @@ L30:
 
     }
 
-    if (strcmp(type__, "REGULR") == 0 && *rvec) {
+    if (strcmp(type, "REGULR") == 0 && *rvec) {
 
 	i__1 = *ncv;
 	for (j = 1; j <= i__1; ++j) {
@@ -797,7 +789,7 @@ L30:
 /* L70: */
 	}
 
-    } else if (strcmp(type__, "REGULR") != 0 && *rvec) {
+    } else if (strcmp(type, "REGULR") != 0 && *rvec) {
 
         /* ----------------------------------------------- */
         /* *  Determine Ritz estimates of the theta.       */
@@ -809,7 +801,7 @@ L30:
         /* ----------------------------------------------- */
 
 	dscal_(ncv, &bnorm2, &workl[ihb], &c__1);
-	if (strcmp(type__, "SHIFTI") == 0) {
+	if (strcmp(type, "SHIFTI") == 0) {
 
 	    i__1 = *ncv;
 	    for (k = 1; k <= i__1; ++k) {
@@ -820,7 +812,7 @@ L30:
 /* L80: */
 	    }
 
-	} else if (strcmp(type__, "BUCKLE") == 0) {
+	} else if (strcmp(type, "BUCKLE") == 0) {
 
 	    i__1 = *ncv;
 	    for (k = 1; k <= i__1; ++k) {
@@ -831,7 +823,7 @@ L30:
 /* L90: */
 	    }
 
-	} else if (strcmp(type__, "CAYLEY") == 0) {
+	} else if (strcmp(type, "CAYLEY") == 0) {
 
 	    i__1 = *ncv;
 	    for (k = 1; k <= i__1; ++k) {
@@ -844,7 +836,7 @@ L30:
 
     }
 
-    if (strcmp(type__, "REGULR") != 0 && msglvl > 1) {
+    if (strcmp(type, "REGULR") != 0 && msglvl > 1) {
 	dvout_(&nconv, &d[1], &debug_1.ndigit, "_seupd: Untransformed converged Ritz values");
 	dvout_(&nconv, &workl[ihb], &debug_1.ndigit, "_seupd: Ritz estimates of the untransformed Ritz values");
     } else if (msglvl > 1) {
@@ -858,8 +850,8 @@ L30:
      /* for MODE = 3,4,5. See reference 7               */
      /* ----------------------------------------------- */
 
-    if (*rvec && (strcmp(type__, "SHIFTI") == 0 || strcmp(
-	    type__, "CAYLEY") == 0)) {
+    if (*rvec && (strcmp(type, "SHIFTI") == 0 || strcmp(
+	    type, "CAYLEY") == 0)) {
 
 	i__1 = nconv - 1;
 	for (k = 0; k <= i__1; ++k) {
@@ -867,7 +859,7 @@ L30:
 /* L110: */
 	}
 
-    } else if (*rvec && strcmp(type__, "BUCKLE") == 0) {
+    } else if (*rvec && strcmp(type, "BUCKLE") == 0) {
 
 	i__1 = nconv - 1;
 	for (k = 0; k <= i__1; ++k) {
@@ -877,9 +869,8 @@ L30:
 
     }
 
-    if (*rvec && strcmp(type__, "REGULR") != 0) {
-	dger_(n, &nconv, &d_one, &resid[1], &c__1, &workl[iw], &c__1, &z[
-		z_offset], ldz);
+    if (*rvec && strcmp(type, "REGULR") != 0) {
+	dger_(n, &nconv, &d_one, &resid[1], &c__1, &workl[iw], &c__1, &z[z_offset], ldz);
     }
 
 L9000:

@@ -1,5 +1,6 @@
 /* EXAMPLES\NONSYM\dndrv2.f -- translated by f2c (version 20100827). */
 
+#include <stdlib.h>
 #include "arpack.h"
 
 struct {
@@ -17,8 +18,8 @@ int dndrv2()
     /* Local variables */
     double d[75]	/* was [25][3] */, h;
     int32_t j, n;
-    double s, v[6400]	/* was [256][25] */, s1, s2, s3, dd[256], dl[
-	    256];
+    double s, s1, s2, s3, dd[256], dl[256];
+    double* v	/* was [256][25] */;
     double ax[256], du[256], du2[256];
     int32_t ido, ncv, nev;
     double tol;
@@ -27,12 +28,12 @@ int dndrv2()
     bool rvec;
     int32_t ierr, ipiv[256];
     char* which;
-    double resid[256];
+    double* resid;
     int32_t nconv;
-    double workd[768];
+    double* workd;
     bool first;
     int32_t ipntr[14];
-    double workl[2025];
+    double *workl;
     int32_t iparam[11];
     double sigmai;
     bool select[25];
@@ -40,6 +41,11 @@ int dndrv2()
     int32_t ishfts, maxitr;
     int32_t lworkl;
     double workev[75];
+
+    resid = (double*)malloc(256 * sizeof(double));
+    v = (double*)malloc(6400 * sizeof(double));
+    workl = (double*)malloc(2025 * sizeof(double));
+    workd = (double*)malloc(768 * sizeof(double));
 
     /* Fortran I/O blocks */
 
@@ -222,9 +228,7 @@ L20:
         /* has been exceeded.                          */
         /* ------------------------------------------- */
 
-    dnaupd_(&ido, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, 
-	    iparam, ipntr, workd, workl, &lworkl, &info, (ftnlen)1, (ftnlen)2)
-	    ;
+    dnaupd_(&ido, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, workd, workl, &lworkl, &info);
 
     if (ido == -1 || ido == 1) {
 
@@ -238,8 +242,7 @@ L20:
 
 	dcopy_(&n, &workd[ipntr[0] - 1], &c__1, &workd[ipntr[1] - 1], &c__1);
 
-	dgttrs_("N", &n, &c__1, dl, dd, du, du2, ipiv, &workd[ipntr[1] - 1], &
-		n, &ierr, (ftnlen)1);
+	dgttrs_("N", &n, &c__1, dl, dd, du, du2, ipiv, &workd[ipntr[1] - 1], &n, &ierr);
 	if (ierr != 0) {
 	    printf(" \n");
 	    printf(" ERROR with _gttrs in _NDRV2.\n");
@@ -286,10 +289,7 @@ L20:
 
 	rvec = true;
 
-	dneupd_(&rvec, "A", select, d, &d[25], v, &c__256, &sigmar, &
-		sigmai, workev, bmat, &n, which, &nev, &tol, resid, &ncv, v, &
-		c__256, iparam, ipntr, workd, workl, &lworkl, &ierr, (ftnlen)
-		1, (ftnlen)1, (ftnlen)2);
+	dneupd_(&rvec, "A", select, d, &d[25], v, &c__256, &sigmar, &sigmai, workev, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, workd, workl, &lworkl, &ierr);
 
         /* --------------------------------------------- */
         /* The real part of the eigenvalue is returned   */
@@ -359,15 +359,13 @@ L20:
 			dndrv2_av_(&n, &v[(j << 8) - 256], ax);
 		    d__1 = -d[j - 1];
 		    daxpy_(&n, &d__1, &v[(j << 8) - 256], &c__1, ax, &c__1);
-		    daxpy_(&n, &d[j + 24], &v[(j + 1 << 8) - 256], &c__1, 
-			    ax, &c__1);
+		    daxpy_(&n, &d[j + 24], &v[(j + 1 << 8) - 256], &c__1, ax, &c__1);
 		    d[j + 49] = dnrm2_(&n, ax, &c__1);
 			dndrv2_av_(&n, &v[(j + 1 << 8) - 256], ax);
 		    d__1 = -d[j + 24];
 		    daxpy_(&n, &d__1, &v[(j << 8) - 256], &c__1, ax, &c__1);
 		    d__1 = -d[j - 1];
-		    daxpy_(&n, &d__1, &v[(j + 1 << 8) - 256], &c__1, ax, &
-			    c__1);
+		    daxpy_(&n, &d__1, &v[(j + 1 << 8) - 256], &c__1, ax, &c__1);
 		    d__1 = dnrm2_(&n, ax, &c__1);
 		    d[j + 49] = dlapy2_(&d[j + 49], &d__1);
 		    d[j + 50] = d[j + 49];
@@ -417,6 +415,11 @@ L20:
 	printf(" \n");
 
     }
+
+    free(resid);
+    free(v);
+    free(workl);
+    free(workd);
 
      /* ------------------------- */
      /* Done with program dndrv2. */

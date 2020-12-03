@@ -78,7 +78,6 @@
  *          the front end.  It is used in shifts calculation, shifts
  *          application and convergence checking.
  *
- *
  *  IPNTR   Integer array of length 3.  (OUTPUT)
  *          Pointer to mark the starting locations in the WORKD for
  *          vectors used by the Arnoldi iteration.
@@ -137,7 +136,7 @@
  *     cneigh  ARPACK compute Ritz values and error bounds routine.
  *     cngets  ARPACK reorder Ritz values and error bounds routine.
  *     csortc  ARPACK sorting routine.
- *     ivout   ARPACK utility routine that prints int32_ts.
+ *     ivout   ARPACK utility routine that prints integers.
  *     arscnd  ARPACK utility routine for timing.
  *     cmout   ARPACK utility routine that prints matrices
  *     cvout   ARPACK utility routine that prints vectors.
@@ -203,7 +202,7 @@ int cnaup2_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, int
     static bool update, ushift;
     static int32_t kplusp, msglvl;
     int32_t nptemp;
-    char wprime[2];
+    char wprime[3];
     complex cmpnorm;
 
      /* --------------------- */
@@ -257,7 +256,7 @@ int cnaup2_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, int
         /* Get machine dependent constant. */
         /* ------------------------------- */
 
-	eps23 = slamch_("Epsilon-Machine");
+	eps23 = slamch_("E");
 	d__1 = (double) eps23;
 	eps23 = pow_dd(&d__1, &d_23);
 
@@ -448,8 +447,7 @@ L20:
     ccopy_(&kplusp, &ritz[1], &c__1, &workl[i__1 * i__1 + 1], &c__1);
 /* Computing 2nd power */
     i__1 = kplusp;
-    ccopy_(&kplusp, &bounds[1], &c__1, &workl[i__1 * i__1 + kplusp + 1], &
-	    c__1);
+    ccopy_(&kplusp, &bounds[1], &c__1, &workl[i__1 * i__1 + kplusp + 1], &c__1);
 
         /* ------------------------------------------------- */
         /* Select the wanted Ritz values and their bounds    */

@@ -2,8 +2,7 @@
 
 #include "arpack.h"
 
-int iswap_(int32_t *n, int32_t *sx, int32_t *incx, int32_t *
-	sy, int32_t *incy)
+int iswap_(int32_t *n, int32_t *sx, int32_t *incx, int32_t *sy, int32_t *incy)
 {
     /* System generated locals */
     int32_t i__1;

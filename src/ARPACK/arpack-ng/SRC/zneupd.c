@@ -62,7 +62,7 @@
  *          = 'A': Compute NEV Ritz vectors;
  *          = 'P': Compute NEV Schur vectors;
  *          = 'S': compute some of the Ritz vectors, specified
- *                 by the bool array SELECT.
+ *                 by the logical array SELECT.
  *
  *  SELECT  Logical array of dimension NCV.  (INPUT)
  *          If HOWMNY = 'S', SELECT specifies the Ritz vectors to be
@@ -201,7 +201,7 @@
  *     Vol. 48, No. 178, April, 1987 pp. 664-673.
  *
  * \Routines called:
- *     ivout   ARPACK utility routine that prints int32_ts.
+ *     ivout   ARPACK utility routine that prints integers.
  *     zmout   ARPACK utility routine that prints matrices
  *     zvout   ARPACK utility routine that prints vectors.
  *     zgeqr2  LAPACK routine that computes the QR factorization of
@@ -220,7 +220,7 @@
  *     zgeru   Level 2 BLAS rank one update to a matrix.
  *     zcopy   Level 1 BLAS that copies one vector to another .
  *     zscal   Level 1 BLAS that scales a vector.
- *     zdscal  Level 1 BLAS that scales a complex vector by a float number.
+ *     zdscal  Level 1 BLAS that scales a complex vector by a real number.
  *     dznrm2  Level 1 BLAS that computes the norm of a complex vector.
  *
  * \Remarks
@@ -278,7 +278,7 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int3
     int32_t ierr;
     zomplex temp;
     int32_t iwev;
-    char type__[6];
+    char type[7];
     int32_t ritz, iheig, ihbds;
     double conds;
     bool reord;
@@ -323,7 +323,7 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int3
      /* Get machine dependent constant. */
      /* ------------------------------- */
 
-    eps23 = dlamch_("Epsilon-Machine");
+    eps23 = dlamch_("E");
     eps23 = pow_dd(&eps23, &d_23);
 
      /* ----------------------------- */
@@ -361,9 +361,9 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int3
     }
 
     if (mode == 1 || mode == 2) {
-	strcpy(type__, "REGULR");
+	strcpy(type, "REGULR");
     } else if (mode == 3) {
-	strcpy(type__, "SHIFTI");
+	strcpy(type, "SHIFTI");
     } else {
 	ierr = -10;
     }
@@ -548,8 +548,7 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int3
 	i__1 = ldh * *ncv;
 	zcopy_(&i__1, &workl[ih], &c__1, &workl[iuptri], &c__1);
 	zlaset_("A", ncv, ncv, &z_zero, &z_one, &workl[invsub], &ldq);
-	zlahqr_(&c_true, &c_true, ncv, &c__1, ncv, &workl[iuptri], &ldh, &
-		workl[iheig], &c__1, ncv, &workl[invsub], &ldq, &ierr);
+	zlahqr_(&c_true, &c_true, ncv, &c__1, ncv, &workl[iuptri], &ldh, &workl[iheig], &c__1, ncv, &workl[invsub], &ldq, &ierr);
 	zcopy_(ncv, &workl[invsub + *ncv - 1], &ldq, &workl[ihbds], &c__1);
 
 	if (ierr != 0) {
@@ -573,9 +572,7 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int3
            /* Reorder the computed upper triangular matrix. */
            /* --------------------------------------------- */
 
-	    ztrsen_("N", "V", &select[1], ncv, &workl[iuptri], &ldh, &
-		    workl[invsub], &ldq, &workl[iheig], &nconv2, &conds, &sep,
-		     &workev[1], ncv, &ierr);
+	    ztrsen_("N", "V", &select[1], ncv, &workl[iuptri], &ldh, &workl[invsub], &ldq, &workl[iheig], &nconv2, &conds, &sep,&workev[1], ncv, &ierr);
 
 	    if (nconv2 < nconv) {
 		nconv = nconv2;
@@ -610,7 +607,7 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int3
         /* if a spectral transformation was not used. */
         /* ------------------------------------------ */
 
-	if (strcmp(type__, "REGULR") == 0) {
+	if (strcmp(type, "REGULR") == 0) {
 	    zcopy_(&nconv, &workl[iheig], &c__1, &d[1], &c__1);
 	}
 
@@ -620,8 +617,7 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int3
         /* columns of workl(invsub,ldq).                            */
         /* -------------------------------------------------------- */
 
-	zgeqr2_(ncv, &nconv, &workl[invsub], &ldq, &workev[1], &workev[*ncv + 
-		1], &ierr);
+	zgeqr2_(ncv, &nconv, &workl[invsub], &ldq, &workev[1], &workev[*ncv + 1], &ierr);
 
         /* ------------------------------------------------------ */
         /* * Postmultiply V by Q using zunm2r.                    */
@@ -635,8 +631,7 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int3
         /* NCONV in workl(iuptri).                                */
         /* ------------------------------------------------------ */
 
-	zunm2r_("R", "N", n, ncv, &nconv, &workl[invsub], &ldq, 
-		&workev[1], &v[v_offset], ldv, &workd[*n + 1], &ierr);
+	zunm2r_("R", "N", n, ncv, &nconv, &workl[invsub], &ldq, &workev[1], &v[v_offset], ldv, &workd[*n + 1], &ierr);
 	zlacpy_("A", n, &nconv, &v[v_offset], ldv, &z[z_offset], ldz);
 
 	i__1 = nconv;
@@ -679,9 +674,7 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int3
 /* L30: */
 	    }
 
-	    ztrevc_("R", "S", &select[1], ncv, &workl[iuptri], &ldq, 
-		    vl, &c__1, &workl[invsub], &ldq, ncv, &outncv, &workev[1],
-		     &rwork[1], &ierr);
+	    ztrevc_("R", "S", &select[1], ncv, &workl[iuptri], &ldq, vl, &c__1, &workl[invsub], &ldq, ncv, &outncv, &workev[1],&rwork[1], &ierr);
 
 	    if (ierr != 0) {
 		*info = -9;
@@ -720,8 +713,7 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int3
 
 #ifndef NO_TRACE
 	    if (msglvl > 2) {
-		zcopy_(&nconv, &workl[invsub + *ncv - 1], &ldq, &workl[ihbds],
-			 &c__1);
+		zcopy_(&nconv, &workl[invsub + *ncv - 1], &ldq, &workl[ihbds],&c__1);
 		zvout_(&nconv, &workl[ihbds], &debug_1.ndigit, "_neupd: Last row of the eigenvector matrix for T");
 		if (msglvl > 3) {
 		    zmout_(ncv, ncv, &workl[invsub], &ldq, &debug_1.ndigit, "_neupd: The eigenvector matrix for T");
@@ -740,8 +732,7 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int3
            /* Form Z*Q.                                    */
            /* -------------------------------------------- */
 
-	    ztrmm_("R", "U", "N", "N", n, &nconv, &
-		    z_one, &workl[invsub], &ldq, &z[z_offset], ldz);
+	    ztrmm_("R", "U", "N", "N", n, &nconv, &z_one, &workl[invsub], &ldq, &z[z_offset], ldz);
 	}
 
     } else {
@@ -763,7 +754,7 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int3
      /* of A*x = lambda*B*x.                           */
      /* ---------------------------------------------- */
 
-    if (strcmp(type__, "REGULR") == 0) {
+    if (strcmp(type, "REGULR") == 0) {
 
 	if (*rvec) {
 	    zscal_(ncv, &rnorm, &workl[ihbds], &c__1);
@@ -802,7 +793,7 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int3
      /* *The Ritz vectors are not affected by the transformation. */
      /* --------------------------------------------------------- */
 
-    if (strcmp(type__, "SHIFTI") == 0) {
+    if (strcmp(type, "SHIFTI") == 0) {
 	i__1 = nconv;
 	for (k = 1; k <= i__1; ++k) {
 	    i__2 = k;
@@ -813,7 +804,7 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int3
 	}
     }
 
-    if (strcmp(type__, "REGULR") != 0 && msglvl > 1) {
+    if (strcmp(type, "REGULR") != 0 && msglvl > 1) {
 	zvout_(&nconv, &d[1], &debug_1.ndigit, "_neupd: Untransformed Ritz values.");
 	zvout_(&nconv, &workl[ihbds], &debug_1.ndigit, "_neupd: Ritz estimates of the untransformed Ritz values.");
     } else if (msglvl > 1) {
@@ -827,7 +818,7 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int3
      /* for MODE = 3. See reference 3.                  */
      /* ----------------------------------------------- */
 
-    if (*rvec && *howmny == 'A' && strcmp(type__, "SHIFTI") == 0) {
+    if (*rvec && *howmny == 'A' && strcmp(type, "SHIFTI") == 0) {
 
         /* ---------------------------------------------- */
         /* Purify the computed Ritz vectors by adding a   */
@@ -854,8 +845,7 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int3
         /* purify all the Ritz vectors together. */
         /* ------------------------------------- */
 
-	zgeru_(n, &nconv, &z_one, &resid[1], &c__1, &workev[1], &c__1, &z[
-		z_offset], ldz);
+	zgeru_(n, &nconv, &z_one, &resid[1], &c__1, &workev[1], &c__1, &z[z_offset], ldz);
 
     }
 

@@ -5,6 +5,68 @@ extern "C"
 {
 #endif
 
+	/* BEGIN: public interface */
+
+	int cnaupd_(int32_t* ido, char* bmat, int32_t* n, char* which, int32_t* nev, float* tol,
+		complex* resid, int32_t* ncv, complex* v, int32_t* ldv, int32_t* iparam, int32_t* ipntr,
+		complex* workd, complex* workl, int32_t* lworkl, float* rwork, int32_t* info);
+
+	int cneupd_(bool* rvec, char* howmny, bool* select, complex* d, complex* z, int32_t* ldz,
+		complex* sigma, complex* workev, char* bmat, int32_t* n, char* which, int32_t* nev,
+		float* tol, complex* resid, int32_t* ncv, complex* v, int32_t* ldv, int32_t* iparam,
+		int32_t* ipntr, complex* workd, complex* workl, int32_t* lworkl, float* rwork,
+		int32_t* info);
+
+	int dnaupd_(int32_t* ido, char* bmat, int32_t* n, char* which, int32_t* nev, double* tol,
+		double* resid, int32_t* ncv, double* v, int32_t* ldv, int32_t* iparam, int32_t* ipntr,
+		double* workd, double* workl, int32_t* lworkl, int32_t* info);
+
+	int dneupd_(bool* rvec, char* howmny, bool* select, double* dr, double* di, double* z,
+		int32_t* ldz, double* sigmar, double* sigmai, double* workev, char* bmat, int32_t* n,
+		char* which, int32_t* nev, double* tol, double* resid, int32_t* ncv, double* v,
+		int32_t* ldv, int32_t* iparam, int32_t* ipntr, double* workd, double* workl, int32_t* lworkl,
+		int32_t* info);
+
+	int dsaupd_(int32_t* ido, char* bmat, int32_t* n, char* which, int32_t* nev, double* tol,
+		double* resid, int32_t* ncv, double* v, int32_t* ldv, int32_t* iparam, int32_t* ipntr,
+		double* workd, double* workl, int32_t* lworkl, int32_t* info);
+
+	int dseupd_(bool* rvec, char* howmny, bool* select, double* d, double* z, int32_t* ldz,
+		double* sigma, char* bmat, int32_t* n, char* which, int32_t* nev, double* tol,
+		double* resid, int32_t* ncv, double* v, int32_t* ldv, int32_t* iparam, int32_t* ipntr,
+		double* workd, double* workl, int32_t* lworkl, int32_t* info);
+
+	int snaupd_(int32_t* ido, char* bmat, int32_t* n, char* which, int32_t* nev, float* tol,
+		float* resid, int32_t* ncv, float* v, int32_t* ldv, int32_t* iparam, int32_t* ipntr,
+		float* workd, float* workl, int32_t* lworkl, int32_t* info);
+
+	int sneupd_(bool* rvec, char* howmny, bool* select, float* dr, float* di, float* z,
+		int32_t* ldz, float* sigmar, float* sigmai, float* workev, char* bmat, int32_t* n,
+		char* which, int32_t* nev, float* tol, float* resid, int32_t* ncv, float* v,
+		int32_t* ldv, int32_t* iparam, int32_t* ipntr, float* workd, float* workl, int32_t* lworkl,
+		int32_t* info);
+
+	int ssaupd_(int32_t* ido, char* bmat, int32_t* n, char* which, int32_t* nev, float* tol,
+		float* resid, int32_t* ncv, float* v, int32_t* ldv, int32_t* iparam, int32_t* ipntr,
+		float* workd, float* workl, int32_t* lworkl, int32_t* info);
+
+	int sseupd_(bool* rvec, char* howmny, bool* select, float* d, float* z, int32_t* ldz,
+		float* sigma, char* bmat, int32_t* n, char* which, int32_t* nev, float* tol,
+		float* resid, int32_t* ncv, float* v, int32_t* ldv, int32_t* iparam, int32_t* ipntr,
+		float* workd, float* workl, int32_t* lworkl, int32_t* info);
+
+	int znaupd_(int32_t* ido, char* bmat, int32_t* n, char* which, int32_t* nev, double* tol,
+		zomplex* resid, int32_t* ncv, zomplex* v, int32_t* ldv, int32_t* iparam, int32_t* ipntr,
+		zomplex* workd, zomplex* workl, int32_t* lworkl, double* rwork, int32_t* info);
+
+	int zneupd_(bool* rvec, char* howmny, bool* select, zomplex* d, zomplex* z, int32_t* ldz,
+		zomplex* sigma, zomplex* workev, char* bmat, int32_t* n, char* which, int32_t* nev,
+		double* tol, zomplex* resid, int32_t* ncv, zomplex* v, int32_t* ldv, int32_t* iparam,
+		int32_t* ipntr, zomplex* workd, zomplex* workl, int32_t* lworkl, double* rwork,
+		int32_t* info);
+
+	/* END: public interface */
+
 	int arscnd_(float *);
 
 	int ivout_(int32_t *, int32_t *, int32_t *, char *);

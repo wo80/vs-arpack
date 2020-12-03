@@ -81,7 +81,7 @@
  * \BeginLib
  *
  * \Local variables:
- *     xxxxxx  float
+ *     xxxxxx  real
  *
  * \References:
  *  1. D.C. Sorensen, "Implicit Application of Polynomial Filters in
@@ -92,7 +92,7 @@
  *     TR95-13, Department of Computational and Applied Mathematics.
  *
  * \Routines called:
- *     ivout   ARPACK utility routine that prints int32_ts.
+ *     ivout   ARPACK utility routine that prints integers.
  *     arscnd  ARPACK utility routine for timing.
  *     dvout   ARPACK utility routine that prints vectors.
  *     dlamch  LAPACK routine that determines machine constants.
@@ -179,7 +179,7 @@ int dsapps_(int32_t *n, int32_t *kev, int32_t *np,
      /* --------------------- */
 
     if (first) {
-	epsmch = dlamch_("Epsilon-Machine");
+	epsmch = dlamch_("E");
 	first = false;
     }
     itop = 1;
@@ -466,8 +466,7 @@ L90:
      /* ----------------------------------------------- */
 
     if (h[*kev + 1 + h_dim1] > 0.) {
-	dgemv_("N", n, &kplusp, &d_one, &v[v_offset], ldv, &q[(*kev + 1) * 
-		q_dim1 + 1], &c__1, &d_zero, &workd[*n + 1], &c__1);
+	dgemv_("N", n, &kplusp, &d_one, &v[v_offset], ldv, &q[(*kev + 1) * q_dim1 + 1], &c__1, &d_zero, &workd[*n + 1], &c__1);
     }
 
      /* ----------------------------------------------------- */
@@ -480,10 +479,8 @@ L90:
     i__1 = *kev;
     for (i = 1; i <= i__1; ++i) {
 	i__2 = kplusp - i + 1;
-	dgemv_("N", n, &i__2, &d_one, &v[v_offset], ldv, &q[(*kev - i + 1) * 
-		q_dim1 + 1], &c__1, &d_zero, &workd[1], &c__1);
-	dcopy_(n, &workd[1], &c__1, &v[(kplusp - i + 1) * v_dim1 + 1], &
-		c__1);
+	dgemv_("N", n, &i__2, &d_one, &v[v_offset], ldv, &q[(*kev - i + 1) * q_dim1 + 1], &c__1, &d_zero, &workd[1], &c__1);
+	dcopy_(n, &workd[1], &c__1, &v[(kplusp - i + 1) * v_dim1 + 1], &c__1);
 /* L130: */
     }
 
@@ -493,8 +490,7 @@ L90:
 
     i__1 = *kev;
     for (i = 1; i <= i__1; ++i) {
-	dcopy_(n, &v[(*np + i) * v_dim1 + 1], &c__1, &v[i * v_dim1 + 1], &
-		c__1);
+	dcopy_(n, &v[(*np + i) * v_dim1 + 1], &c__1, &v[i * v_dim1 + 1], &c__1);
 /* L140: */
     }
 
@@ -517,8 +513,7 @@ L90:
 
     dscal_(n, &q[kplusp + *kev * q_dim1], &resid[1], &c__1);
     if (h[*kev + 1 + h_dim1] > 0.) {
-	daxpy_(n, &h[*kev + 1 + h_dim1], &v[(*kev + 1) * v_dim1 + 1], &c__1,
-		 &resid[1], &c__1);
+	daxpy_(n, &h[*kev + 1 + h_dim1], &v[(*kev + 1) * v_dim1 + 1], &c__1,&resid[1], &c__1);
     }
 
 #ifndef NO_TRACE

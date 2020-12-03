@@ -22,8 +22,7 @@
 
 /* ----------------------------------------------------------------------- */
 
-int smout_(int32_t *m, int32_t *n, float *a, 
-	int32_t *lda, int32_t *idigit, char *ifmt)
+int smout_(int32_t *m, int32_t *n, float *a, int32_t *lda, int32_t *idigit, char *ifmt)
 {
     /* Initialized data */
 
@@ -44,15 +43,12 @@ int smout_(int32_t *m, int32_t *n, float *a,
 
 /* Computing MIN */
     i__1 = strlen(ifmt);
-    lll = min(i__1,80);
+    lll = min(i__1,79);
     i__1 = lll;
     for (i = 1; i <= i__1; ++i) {
-	*&line[i - 1] = '-';
+	line[i - 1] = '-';
     }
-
-    for (i = lll + 1; i <= 80; ++i) {
-	*&line[i - 1] = ' ';
-    }
+	line[lll] = '\0';
 
     printf("\n %s\n %s", ifmt, line);
 
@@ -76,7 +72,7 @@ int smout_(int32_t *m, int32_t *n, float *a,
 /* Computing MIN */
 		i__2 = *n, i__3 = k1 + 4;
 		k2 = min(i__2,i__3);
-		printf("          ");
+		printf("\n          ");
 		for (i = k1; i <= k2; ++i) {
 		    printf("     Col %4d ", i);
 		}
@@ -95,7 +91,7 @@ int smout_(int32_t *m, int32_t *n, float *a,
 /* Computing MIN */
 		i__2 = *n, i__3 = k1 + 3;
 		k2 = min(i__2,i__3);
-		printf("          ");
+		printf("\n          ");
 		for (i = k1; i <= k2; ++i) {
 		    printf("      Col %4d  ", i);
 		}
@@ -114,7 +110,7 @@ int smout_(int32_t *m, int32_t *n, float *a,
 /* Computing MIN */
 		i__2 = *n, i__3 = k1 + 2;
 		k2 = min(i__2,i__3);
-		printf("          ");
+		printf("\n          ");
 		for (i = k1; i <= k2; ++i) {
 		    printf("        Col %4d    ", i);
 		}
@@ -133,7 +129,7 @@ int smout_(int32_t *m, int32_t *n, float *a,
 /* Computing MIN */
 		i__2 = *n, i__3 = k1 + 1;
 		k2 = min(i__2,i__3);
-		printf("          ");
+		printf("\n          ");
 		for (i = k1; i <= k2; ++i) {
 		    printf("          Col %4d      ", i);
 		}
@@ -158,7 +154,7 @@ int smout_(int32_t *m, int32_t *n, float *a,
 /* Computing MIN */
 		i__2 = *n, i__3 = k1 + 9;
 		k2 = min(i__2,i__3);
-		printf("          ");
+		printf("\n          ");
 		for (i = k1; i <= k2; ++i) {
 		    printf("     Col %4d ", i);
 		}
@@ -177,7 +173,7 @@ int smout_(int32_t *m, int32_t *n, float *a,
 /* Computing MIN */
 		i__2 = *n, i__3 = k1 + 7;
 		k2 = min(i__2,i__3);
-		printf("          ");
+		printf("\n          ");
 		for (i = k1; i <= k2; ++i) {
 		    printf("      Col %4d  ", i);
 		}
@@ -196,7 +192,7 @@ int smout_(int32_t *m, int32_t *n, float *a,
 /* Computing MIN */
 		i__2 = *n, i__3 = k1 + 5;
 		k2 = min(i__2,i__3);
-		printf("          ");
+		printf("\n          ");
 		for (i = k1; i <= k2; ++i) {
 		    printf("        Col %4d    ", i);
 		}
@@ -215,7 +211,7 @@ int smout_(int32_t *m, int32_t *n, float *a,
 /* Computing MIN */
 		i__2 = *n, i__3 = k1 + 4;
 		k2 = min(i__2,i__3);
-		printf("          ");
+		printf("\n          ");
 		for (i = k1; i <= k2; ++i) {
 		    printf("          Col %4d      ", i);
 		}

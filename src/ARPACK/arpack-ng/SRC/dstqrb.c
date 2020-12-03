@@ -60,7 +60,7 @@
  * \BeginLib
  *
  * \Local variables:
- *     xxxxxx  float
+ *     xxxxxx  real
  *
  * \Routines called:
  *     daxpy   Level 1 BLAS that computes a vector triad.
@@ -184,11 +184,11 @@ int dstqrb_(int32_t *n, double *d, double *e,
 
 /*     determine the unit roundoff and over/underflow thresholds. */
 
-    eps = dlamch_("e");
+    eps = dlamch_("E");
 /* Computing 2nd power */
     d__1 = eps;
     eps2 = d__1 * d__1;
-    safmin = dlamch_("s");
+    safmin = dlamch_("S");
     safmax = 1. / safmin;
     ssfmax = sqrt(safmax) / 3.;
     ssfmin = sqrt(safmin) / eps2;
@@ -398,8 +398,7 @@ L60:
 
 /*             *** New starting with version 2.5 *** */
 
-	    dlasr_("r", "v", "b", &c__1, &mm, &work[l], &work[*n - 1 + l], &
-		    z[l], &c__1);
+	    dlasr_("r", "v", "b", &c__1, &mm, &work[l], &work[*n - 1 + l], &z[l], &c__1);
 /*             ************************************* */
 	}
 
@@ -456,8 +455,7 @@ L110:
 
 	if (m == l - 1) {
 	    if (icompz > 0) {
-		dlaev2_(&d[l - 1], &e[l - 1], &d[l], &rt1, &rt2, &c, &s)
-			;
+		dlaev2_(&d[l - 1], &e[l - 1], &d[l], &rt1, &rt2, &c, &s);
 /* $$$               work( m ) = c */
 /* $$$               work( n-1+m ) = s */
 /* $$$               call dlasr( 'r', 'v', 'f', n, 2, work( m ), */
@@ -533,8 +531,7 @@ L110:
 
 /*           *** New starting with version 2.5 *** */
 
-	    dlasr_("r", "v", "f", &c__1, &mm, &work[m], &work[*n - 1 + m], &
-		    z[m], &c__1);
+	    dlasr_("r", "v", "f", &c__1, &mm, &work[m], &work[*n - 1 + m], &z[m], &c__1);
 /*           ************************************* */
 	}
 

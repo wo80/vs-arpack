@@ -11,10 +11,9 @@
  *  Reverse communication interface for the Implicitly Restarted Arnoldi
  *  iteration. This is intended to be used to find a few eigenpairs of a
  *  complex linear operator OP with respect to a semi-inner product defined
- *  by a hermitian positive semi-definite float matrix B. B may be the identity
- *  matrix.  NOTE: if both OP and B are float, then dsaupd  or dnaupd  should
+ *  by a hermitian positive semi-definite real matrix B. B may be the identity
+ *  matrix.  NOTE: if both OP and B are real, then dsaupd  or dnaupd  should
  *  be used.
- *
  *
  *  The computed approximate eigenvalues are called Ritz values and
  *  the corresponding approximate eigenvectors are called Ritz vectors.
@@ -33,7 +32,6 @@
  *           ===> OP =  inv[A - sigma*M]*M   and  B = M.
  *           ===> shift-and-invert mode
  *           If OP*x = amu*x, then lambda = sigma + 1/amu.
- *
  *
  *  NOTE: The action of w <- inv[A - sigma*M]*v or w <- inv[M]*v
  *        should be accomplished either by a direct method
@@ -97,8 +95,8 @@
  *  WHICH   Character*2.  (INPUT)
  *          'LM' -> want the NEV eigenvalues of largest magnitude.
  *          'SM' -> want the NEV eigenvalues of smallest magnitude.
- *          'LR' -> want the NEV eigenvalues of largest float part.
- *          'SR' -> want the NEV eigenvalues of smallest float part.
+ *          'LR' -> want the NEV eigenvalues of largest real part.
+ *          'SR' -> want the NEV eigenvalues of smallest real part.
  *          'LI' -> want the NEV eigenvalues of largest imaginary part.
  *          'SI' -> want the NEV eigenvalues of smallest imaginary part.
  *
@@ -233,7 +231,6 @@
  *          Private (replicated) array on each PE or array allocated on
  *          the front end.
  *
- *
  *  INFO    Integer.  (INPUT/OUTPUT)
  *          If INFO .EQ. 0, a randomly initial residual vector is used.
  *          If INFO .NE. 0, RESID contains the initial residual vector,
@@ -360,7 +357,7 @@
  *     znaup2   ARPACK routine that implements the Implicitly Restarted
  *             Arnoldi Iteration.
  *     zstatn   ARPACK routine that initializes the timing variables.
- *     ivout   ARPACK utility routine that prints int32_ts.
+ *     ivout   ARPACK utility routine that prints integers.
  *     zvout    ARPACK utility routine that prints vectors.
  *     arscnd  ARPACK utility routine for timing.
  *     dlamch   LAPACK routine that determines machine constants.
@@ -388,10 +385,6 @@ int znaupd_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, dou
 
     /* System generated locals */
     int32_t v_dim1, v_offset, i__1, i__2;
-
-    /* Builtin functions */
-    int32_t strcmp(char *, char *, ftnlen, ftnlen), s_wsfe(cilist *), e_wsfe(
-	    void), do_fio(int32_t *, char *, ftnlen);
 
     /* Local variables */
     int32_t j;
@@ -493,7 +486,7 @@ int znaupd_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, dou
 	    nb = 1;
 	}
 	if (*tol <= 0.) {
-	    *tol = dlamch_("EpsMach");
+	    *tol = dlamch_("E");
 	}
 	if (ishift != 0 && ishift != 1 && ishift != 2) {
 	    ishift = 1;
@@ -610,32 +603,32 @@ int znaupd_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, dou
 #ifndef NO_TRACE
     if (msglvl > 0) {
 
-        /* ------------------------------------------------------ */
-        /* Version Number & Version Date are defined in version.h */
-        /* ------------------------------------------------------ */
+        printf("\n ============================================= ");
+        printf("\n = Complex implicit Arnoldi update code      = ");
+        printf("\n = Version Number:     %s                 = ", ARPACK_VERSION);
+        printf("\n = Version Date:       %s            = ", ARPACK_DATE);
+        printf("\n ============================================= ");
+        printf("\n = Summary of timing statistics              = ");
+        printf("\n ============================================= ");
 
-	s_wsfe(&io___21);
-	e_wsfe();
-	s_wsfe(&io___22);
-	do_fio(&c__1, (char *)&mxiter, (ftnlen)sizeof(int32_t));
-	do_fio(&c__1, (char *)&timing_1.nopx, (ftnlen)sizeof(int32_t));
-	do_fio(&c__1, (char *)&timing_1.nbx, (ftnlen)sizeof(int32_t));
-	do_fio(&c__1, (char *)&timing_1.nrorth, (ftnlen)sizeof(int32_t));
-	do_fio(&c__1, (char *)&timing_1.nitref, (ftnlen)sizeof(int32_t));
-	do_fio(&c__1, (char *)&timing_1.nrstrt, (ftnlen)sizeof(int32_t));
-	do_fio(&c__1, (char *)&timing_1.tmvopx, (ftnlen)sizeof(float));
-	do_fio(&c__1, (char *)&timing_1.tmvbx, (ftnlen)sizeof(float));
-	do_fio(&c__1, (char *)&timing_1.tcaupd, (ftnlen)sizeof(float));
-	do_fio(&c__1, (char *)&timing_1.tcaup2, (ftnlen)sizeof(float));
-	do_fio(&c__1, (char *)&timing_1.tcaitr, (ftnlen)sizeof(float));
-	do_fio(&c__1, (char *)&timing_1.titref, (ftnlen)sizeof(float));
-	do_fio(&c__1, (char *)&timing_1.tgetv0, (ftnlen)sizeof(float));
-	do_fio(&c__1, (char *)&timing_1.tceigh, (ftnlen)sizeof(float));
-	do_fio(&c__1, (char *)&timing_1.tcgets, (ftnlen)sizeof(float));
-	do_fio(&c__1, (char *)&timing_1.tcapps, (ftnlen)sizeof(float));
-	do_fio(&c__1, (char *)&timing_1.tcconv, (ftnlen)sizeof(float));
-	do_fio(&c__1, (char *)&timing_1.trvec, (ftnlen)sizeof(float));
-	e_wsfe();
+        printf("\n Total number update iterations             =  %5d", mxiter);
+        printf("\n Total number of OP*x operations            =  %5d", timing_1.nopx);
+        printf("\n Total number of B*x operations             =  %5d", timing_1.nbx);
+        printf("\n Total number of reorthogonalization steps  =  %5d", timing_1.nrorth);
+        printf("\n Total number of iterative refinement steps =  %5d", timing_1.nitref);
+        printf("\n Total number of restart steps              =  %5d", timing_1.nrstrt);
+        printf("\n Total time in user OP*x operation          =  %12f", timing_1.tmvopx);
+        printf("\n Total time in user B*x operation           =  %12f", timing_1.tmvbx);
+        printf("\n Total time in Arnoldi update routine       =  %12f", timing_1.tcaupd);
+        printf("\n Total time in naup2 routine                =  %12f", timing_1.tcaup2);
+        printf("\n Total time in basic Arnoldi iteration loop =  %12f", timing_1.tcaitr);
+        printf("\n Total time in reorthogonalization phase    =  %12f", timing_1.titref);
+        printf("\n Total time in (re)start vector generation  =  %12f", timing_1.tgetv0);
+        printf("\n Total time in Hessenberg eig. subproblem   =  %12f", timing_1.tceigh);
+        printf("\n Total time in getting the shifts           =  %12f", timing_1.tcgets);
+        printf("\n Total time in applying the shifts          =  %12f", timing_1.tcapps);
+        printf("\n Total time in convergence testing          =  %12f", timing_1.tcconv);
+        printf("\n Total time in computing final Ritz vectors =  %12f", timing_1.trvec);
     }
 #endif
 

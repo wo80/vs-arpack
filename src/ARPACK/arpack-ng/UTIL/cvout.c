@@ -3,11 +3,6 @@
 #include "arpack.h"
 
 /* ----------------------------------------------------------------------- */
-
-/* \SCCS Information: @(#) */
-/* FILE: cvout.f   SID: 2.1   DATE OF SID: 11/16/95   RELEASE: 2 */
-
-/* ----------------------------------------------------------------------- */
 /*  Routine:    CVOUT */
 
 /*  Purpose:    Complex vector output routine. */
@@ -24,8 +19,7 @@
 
 /* ----------------------------------------------------------------------- */
 
-int cvout_(int32_t *n, complex *cx, int32_t *
-	idigit, char *ifmt)
+int cvout_(int32_t *n, complex *cx, int32_t *idigit, char *ifmt)
 {
 
     /* System generated locals */
@@ -42,15 +36,12 @@ int cvout_(int32_t *n, complex *cx, int32_t *
     /* Function Body */
 /* Computing MIN */
     i__1 = strlen(ifmt);
-    lll = min(i__1,80);
+    lll = min(i__1,79);
     i__1 = lll;
     for (i = 1; i <= i__1; ++i) {
-	*&line[i - 1] = '-';
+	line[i - 1] = '-';
     }
-
-    for (i = lll + 1; i <= 80; ++i) {
-	*&line[i - 1] = ' ';
-    }
+	line[lll] = '\0';
 
     printf("\n %s\n %s", ifmt, line);
 

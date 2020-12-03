@@ -2,6 +2,7 @@
 
 #include "arpack.h"
 
+/* ----------------------------------------------------------------------- */
 /*  Routine:    ZMOUT */
 
 /*  Purpose:    Complex*16 matrix output routine. */
@@ -18,9 +19,6 @@
 /*     IDIGIT - Print up to IABS(IDIGIT) decimal digits per number.  (In) */
 /*              If IDIGIT .LT. 0, printing is done with 72 columns. */
 /*              If IDIGIT .GT. 0, printing is done with 132 columns. */
-
-/* \SCCS Information: @(#) */
-/* FILE: zmout.f   SID: 2.1   DATE OF SID: 11/16/95   RELEASE: 2 */
 
 /* ----------------------------------------------------------------------- */
 
@@ -47,15 +45,12 @@ int zmout_(int32_t *m, int32_t *n, zomplex *a, int32_t *lda, int32_t *idigit, ch
 
 /* Computing MIN */
     i__1 = strlen(ifmt);
-    lll = min(i__1,80);
+    lll = min(i__1,79);
     i__1 = lll;
     for (i = 1; i <= i__1; ++i) {
-	*&line[i - 1] = '-';
+	line[i - 1] = '-';
     }
-
-    for (i = lll + 1; i <= 80; ++i) {
-	*&line[i - 1] = ' ';
-    }
+	line[lll] = '\0';
 
     printf("\n %s\n %s", ifmt, line);
 
@@ -79,7 +74,7 @@ int zmout_(int32_t *m, int32_t *n, zomplex *a, int32_t *lda, int32_t *idigit, ch
 /* Computing MIN */
 		i__2 = *n, i__3 = k1 + 1;
 		k2 = min(i__2,i__3);
-		printf("           ");
+		printf("\n           ");
 		for (i = k1; i <= k2; ++i) {
 		    printf("          Col %4d         ", i);
 		}
@@ -88,7 +83,7 @@ int zmout_(int32_t *m, int32_t *n, zomplex *a, int32_t *lda, int32_t *idigit, ch
 			printf("\n  Row %4d:  ", i);
 			for (j = k1; j <= k2; ++j) {
 			    d__1 = a[i + j * a_dim1];
-			    printf("(  %10.3f   %10.3f)  ", d__1.r, d__1.i);
+			    printf("(  %10.3e   %10.3e)  ", d__1.r, d__1.i);
 			}
 		}
 	    }
@@ -99,7 +94,7 @@ int zmout_(int32_t *m, int32_t *n, zomplex *a, int32_t *lda, int32_t *idigit, ch
 /* Computing MIN */
 		i__2 = *n, i__3 = k1 + 1;
 		k2 = min(i__2,i__3);
-		printf("          ");
+		printf("\n          ");
 		for (i = k1; i <= k2; ++i) {
 		    printf("            Col %4d           ", i);
 		}
@@ -108,7 +103,7 @@ int zmout_(int32_t *m, int32_t *n, zomplex *a, int32_t *lda, int32_t *idigit, ch
 			printf("\n  Row %4d:  ", i);
 			for (j = k1; j <= k2; ++j) {
 			    d__1 = a[i + j * a_dim1];
-			    printf("(  %12.5f   %12.5f)  ", d__1.r, d__1.i);
+			    printf("(  %12.5e   %12.5e)  ", d__1.r, d__1.i);
 			}
 		}
 	    }
@@ -119,7 +114,7 @@ int zmout_(int32_t *m, int32_t *n, zomplex *a, int32_t *lda, int32_t *idigit, ch
 /* Computing MIN */
 		i__2 = *n, i__3 = k1 + 1;
 		k2 = min(i__2,i__3);
-		printf("          ");
+		printf("\n          ");
 		for (i = k1; i <= k2; ++i) {
 		    printf("              Col %4d             ", i);
 		}
@@ -128,7 +123,7 @@ int zmout_(int32_t *m, int32_t *n, zomplex *a, int32_t *lda, int32_t *idigit, ch
 			printf("\n  Row %4d:  ", i);
 			for (j = k1; j <= k2; ++j) {
 			    d__1 = a[i + j * a_dim1];
-			    printf("(  %14.7f   %14.7f)  ", d__1.r, d__1.i);
+			    printf("(  %14.7e   %14.7e)  ", d__1.r, d__1.i);
 			}
 		}
 	    }
@@ -140,7 +135,7 @@ int zmout_(int32_t *m, int32_t *n, zomplex *a, int32_t *lda, int32_t *idigit, ch
 		i__2 = *m;
 		for (i = 1; i <= i__2; ++i) {
 		    d__1 = a[i + k1 * a_dim1];
-		    printf("\n  Row %4d:  (  %20.13f   %20.13f)", i, d__1.r, d__1.i);
+		    printf("\n  Row %4d:  (  %20.13e   %20.13e)", i, d__1.r, d__1.i);
 		}
 	    }
 	}
@@ -156,7 +151,7 @@ int zmout_(int32_t *m, int32_t *n, zomplex *a, int32_t *lda, int32_t *idigit, ch
 /* Computing MIN */
 		i__2 = *n, i__3 = k1 + 3;
 		k2 = min(i__2,i__3);
-		printf("           ");
+		printf("\n           ");
 		for (i = k1; i <= k2; ++i) {
 		    printf("          Col %4d         ", i);
 		}
@@ -165,7 +160,7 @@ int zmout_(int32_t *m, int32_t *n, zomplex *a, int32_t *lda, int32_t *idigit, ch
 		printf("\n  Row %4d:  ", i);
 		for (j = k1; j <= k2; ++j) {
 		    d__1 = a[i + j * a_dim1];
-		    printf("  %10.3f   %10.3f)  ", d__1.r, d__1.i);
+		    printf("  %10.3e   %10.3e)  ", d__1.r, d__1.i);
 		}
 		}
 	    }
@@ -176,7 +171,7 @@ int zmout_(int32_t *m, int32_t *n, zomplex *a, int32_t *lda, int32_t *idigit, ch
 /* Computing MIN */
 		i__2 = *n, i__3 = k1 + 2;
 		k2 = min(i__2,i__3);
-		printf("          ");
+		printf("\n          ");
 		for (i = k1; i <= k2; ++i) {
 		    printf("            Col %4d           ", i);
 		}
@@ -185,7 +180,7 @@ int zmout_(int32_t *m, int32_t *n, zomplex *a, int32_t *lda, int32_t *idigit, ch
 		printf("\n  Row %4d:  ", i);
 		for (j = k1; j <= k2; ++j) {
 		    d__1 = a[i + j * a_dim1];
-		    printf("  %12.5f   %12.5f)  ", d__1.r, d__1.i);
+		    printf("  %12.5e   %12.5e)  ", d__1.r, d__1.i);
 		}
 		}
 	    }
@@ -196,7 +191,7 @@ int zmout_(int32_t *m, int32_t *n, zomplex *a, int32_t *lda, int32_t *idigit, ch
 /* Computing MIN */
 		i__2 = *n, i__3 = k1 + 2;
 		k2 = min(i__2,i__3);
-		printf("          ");
+		printf("\n          ");
 		for (i = k1; i <= k2; ++i) {
 		    printf("              Col %4d             ", i);
 		}
@@ -205,7 +200,7 @@ int zmout_(int32_t *m, int32_t *n, zomplex *a, int32_t *lda, int32_t *idigit, ch
 		printf("\n  Row %4d:  ", i);
 		for (j = k1; j <= k2; ++j) {
 		    d__1 = a[i + j * a_dim1];
-		    printf("  %14.7f   %14.7f)  ", d__1.r, d__1.i);
+		    printf("  %14.7e   %14.7e)  ", d__1.r, d__1.i);
 		}
 		}
 	    }
@@ -216,7 +211,7 @@ int zmout_(int32_t *m, int32_t *n, zomplex *a, int32_t *lda, int32_t *idigit, ch
 /* Computing MIN */
 		i__2 = *n, i__3 = k1 + 1;
 		k2 = min(i__2,i__3);
-		printf("            ");
+		printf("\n            ");
 		for (i = k1; i <= k2; ++i) {
 		    printf("                   Col %4d                  ", i);
 		}
@@ -225,7 +220,7 @@ int zmout_(int32_t *m, int32_t *n, zomplex *a, int32_t *lda, int32_t *idigit, ch
 		printf("\n  Row %4d:  ", i);
 		for (j = k1; j <= k2; ++j) {
 		    d__1 = a[i + j * a_dim1];
-		    printf("  %20.13f   %20.13f)  ", d__1.r, d__1.i);
+		    printf("  %20.13e   %20.13e)  ", d__1.r, d__1.i);
 		}
 		}
 	    }

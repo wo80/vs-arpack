@@ -1,10 +1,19 @@
 #pragma once
 
 #include <stdint.h>
-#include <stdbool.h>
 #include "f2c.h"
 
 #define zomplex doublecomplex
+
+/* Define boolean type */
+
+/* Remark: cannot use <stdbool.h>, since the size of bool is 1 byte, */
+/* while f2c is 4 bytes. This will cause problems with LAPACK.       */
+
+typedef long int bool;
+
+#define false (0)
+#define true (1)
 
 /* Common blocks */
 

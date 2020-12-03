@@ -60,7 +60,7 @@
  * \BeginLib
  *
  * \Local variables:
- *     xxxxxx  float
+ *     xxxxxx  real
  *
  * \Routines called:
  *     saxpy   Level 1 BLAS that computes a vector triad.
@@ -185,11 +185,11 @@ int sstqrb_(int32_t *n, float *d, float *e, float *z, float *
 
 /*     determine the unit roundoff and over/underflow thresholds. */
 
-    eps = slamch_("e");
+    eps = slamch_("E");
 /* Computing 2nd power */
     r__1 = eps;
     eps2 = r__1 * r__1;
-    safmin = slamch_("s");
+    safmin = slamch_("S");
     safmax = 1.f / safmin;
     ssfmax = sqrt(safmax) / 3.f;
     ssfmin = sqrt(safmin) / eps2;
@@ -399,8 +399,7 @@ L60:
 
 /*             *** New starting with version 2.5 *** */
 
-	    slasr_("r", "v", "b", &c__1, &mm, &work[l], &work[*n - 1 + l], &
-		    z[l], &c__1);
+	    slasr_("r", "v", "b", &c__1, &mm, &work[l], &work[*n - 1 + l], &z[l], &c__1);
 /*             ************************************* */
 	}
 
@@ -457,8 +456,7 @@ L110:
 
 	if (m == l - 1) {
 	    if (icompz > 0) {
-		slaev2_(&d[l - 1], &e[l - 1], &d[l], &rt1, &rt2, &c, &s)
-			;
+		slaev2_(&d[l - 1], &e[l - 1], &d[l], &rt1, &rt2, &c, &s);
 /* $$$               work( m ) = c */
 /* $$$               work( n-1+m ) = s */
 /* $$$               call slasr( 'r', 'v', 'f', n, 2, work( m ), */
@@ -534,8 +532,7 @@ L110:
 
 /*           *** New starting with version 2.5 *** */
 
-	    slasr_("r", "v", "f", &c__1, &mm, &work[m], &work[*n - 1 + m], &
-		    z[m], &c__1);
+	    slasr_("r", "v", "f", &c__1, &mm, &work[m], &work[*n - 1 + m], &z[m], &c__1);
 /*           ************************************* */
 	}
 

@@ -117,8 +117,7 @@ L20:
 		x[j] = x[j + igap];
 		x[j + igap] = temp;
 		if (*apply) {
-		    sswap_(na, &a[j * a_dim1 + 1], &c__1, &a[(j + igap) * 
-			    a_dim1 + 1], &c__1);
+		    sswap_(na, &a[j * a_dim1 + 1], &c__1, &a[(j + igap) * a_dim1 + 1], &c__1);
 		}
 	    } else {
 		goto L30;
@@ -154,8 +153,7 @@ L50:
 		x[j] = x[j + igap];
 		x[j + igap] = temp;
 		if (*apply) {
-		    sswap_(na, &a[j * a_dim1 + 1], &c__1, &a[(j + igap) * 
-			    a_dim1 + 1], &c__1);
+		    sswap_(na, &a[j * a_dim1 + 1], &c__1, &a[(j + igap) * a_dim1 + 1], &c__1);
 		}
 	    } else {
 		goto L60;
@@ -190,8 +188,7 @@ L80:
 		x[j] = x[j + igap];
 		x[j + igap] = temp;
 		if (*apply) {
-		    sswap_(na, &a[j * a_dim1 + 1], &c__1, &a[(j + igap) * 
-			    a_dim1 + 1], &c__1);
+		    sswap_(na, &a[j * a_dim1 + 1], &c__1, &a[(j + igap) * a_dim1 + 1], &c__1);
 		}
 	    } else {
 		goto L90;
@@ -227,8 +224,7 @@ L110:
 		x[j] = x[j + igap];
 		x[j + igap] = temp;
 		if (*apply) {
-		    sswap_(na, &a[j * a_dim1 + 1], &c__1, &a[(j + igap) * 
-			    a_dim1 + 1], &c__1);
+		    sswap_(na, &a[j * a_dim1 + 1], &c__1, &a[(j + igap) * a_dim1 + 1], &c__1);
 		}
 	    } else {
 		goto L120;

@@ -323,9 +323,7 @@ L10:
         /* has been exceeded.                          */
         /* ------------------------------------------- */
 
-    dsaupd_(&ido, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__250, 
-	    iparam, ipntr, workd, workl, &lworkl, &info, (ftnlen)1, (ftnlen)2)
-	    ;
+    dsaupd_(&ido, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__250, iparam, ipntr, workd, workl, &lworkl, &info);
 
     if (ido == -1 || ido == 1) {
 
@@ -385,9 +383,7 @@ L10:
 
 	rvec = true;
 
-	dseupd_(&rvec, "All", select, s, v, &c__250, &sigma, bmat, &n, which, 
-		&nev, &tol, resid, &ncv, v, &c__250, iparam, ipntr, workd, 
-		workl, &lworkl, &ierr, (ftnlen)3, (ftnlen)1, (ftnlen)2);
+	dseupd_(&rvec, "All", select, s, v, &c__250, &sigma, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__250, iparam, ipntr, workd, workl, &lworkl, &ierr);
 
         /* --------------------------------------------- */
         /* Singular values are returned in the first     */

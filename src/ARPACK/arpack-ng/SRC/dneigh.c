@@ -31,7 +31,7 @@
  *          program.
  *
  *  RITZR,  Double precision arrays of length N.  (OUTPUT)
- *  RITZI   On output, RITZR(1:N) (resp. RITZI(1:N)) contains the float
+ *  RITZI   On output, RITZR(1:N) (resp. RITZI(1:N)) contains the real
  *          (respectively imaginary) parts of the eigenvalues of H.
  *
  *  BOUNDS  Double precision array of length N.  (OUTPUT)
@@ -60,10 +60,10 @@
  * \BeginLib
  *
  * \Local variables:
- *     xxxxxx  float
+ *     xxxxxx  real
  *
  * \Routines called:
- *     dlahqr  LAPACK routine to compute the float Schur form of an
+ *     dlahqr  LAPACK routine to compute the real Schur form of an
  *             upper Hessenberg matrix and last row of the Schur vectors.
  *     arscnd  ARPACK utility routine for timing.
  *     dmout   ARPACK utility routine that prints matrices
@@ -76,7 +76,6 @@
  *     dcopy   Level 1 BLAS that copies one vector to another .
  *     dnrm2   Level 1 BLAS that computes the norm of a vector.
  *     dscal   Level 1 BLAS that scales a vector.
- *
  *
  * \Author
  *     Danny Sorensen               Phuong Vu
@@ -163,8 +162,7 @@ int dneigh_(double *rnorm, int32_t *n, double *h,
 /* L5: */
     }
     bounds[*n] = 1.;
-    dlahqr_(&c_true, &c_true, n, &c__1, n, &workl[1], n, &ritzr[1], &ritzi[1],
-	     &c__1, &c__1, &bounds[1], &c__1, ierr);
+    dlahqr_(&c_true, &c_true, n, &c__1, n, &workl[1], n, &ritzr[1], &ritzi[1],&c__1, &c__1, &bounds[1], &c__1, ierr);
     if (*ierr != 0) {
 	goto L9000;
     }
@@ -185,8 +183,7 @@ int dneigh_(double *rnorm, int32_t *n, double *h,
      /* columns of Q.                                             */
      /* --------------------------------------------------------- */
 
-    dtrevc_("R", "A", select, n, &workl[1], n, vl, n, &q[q_offset], ldq, n, n,
-	     &workl[*n * *n + 1], ierr);
+    dtrevc_("R", "A", select, n, &workl[1], n, vl, n, &q[q_offset], ldq, n, n,&workl[*n * *n + 1], ierr);
 
     if (*ierr != 0) {
 	goto L9000;
@@ -239,8 +236,7 @@ int dneigh_(double *rnorm, int32_t *n, double *h,
 /* L10: */
     }
 
-    dgemv_("T", n, n, &d_one, &q[q_offset], ldq, &bounds[1], &c__1, &d_zero, &
-	    workl[1], &c__1);
+    dgemv_("T", n, n, &d_one, &q[q_offset], ldq, &bounds[1], &c__1, &d_zero, &workl[1], &c__1);
 
 #ifndef NO_TRACE
     if (msglvl > 1) {

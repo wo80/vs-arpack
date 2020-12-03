@@ -121,7 +121,7 @@
  * \BeginLib
  *
  * \Local variables:
- *     xxxxxx  float
+ *     xxxxxx  real
  *
  * \References:
  *  1. D.C. Sorensen, "Implicit Application of Polynomial Filters in
@@ -133,7 +133,7 @@
  *
  * \Routines called:
  *     sgetv0  ARPACK routine to generate the initial vector.
- *     ivout   ARPACK utility routine that prints int32_ts.
+ *     ivout   ARPACK utility routine that prints integers.
  *     arscnd  ARPACK utility routine for timing.
  *     smout   ARPACK utility routine that prints matrices
  *     svout   ARPACK utility routine that prints vectors.
@@ -275,10 +275,10 @@ int snaitr_(int32_t *ido, char *bmat, int32_t *n, int32_t *k,int32_t *np, int32_
         /* REFERENCE: LAPACK subroutine slahqr     */
         /* --------------------------------------- */
 
-	unfl = slamch_("safe minimum");
+	unfl = slamch_("S");
 	ovfl = 1.f / unfl;
 	slabad_(&unfl, &ovfl);
-	ulp = slamch_("precision");
+	ulp = slamch_("P");
 	smlnum = unfl * (*n / ulp);
 	first = false;
     }
@@ -449,10 +449,8 @@ L40:
             /* use LAPACK routine SLASCL               */
             /* --------------------------------------- */
 
-	slascl_("G", &i, &i, rnorm, &s_one, n, &c__1, &v[j * v_dim1 
-		+ 1], n, &infol);
-	slascl_("G", &i, &i, rnorm, &s_one, n, &c__1, &workd[ipj], 
-		n, &infol);
+	slascl_("G", &i, &i, rnorm, &s_one, n, &c__1, &v[j * v_dim1 + 1], n, &infol);
+	slascl_("G", &i, &i, rnorm, &s_one, n, &c__1, &workd[ipj], n, &infol);
     }
 
         /* ---------------------------------------------------- */
@@ -564,16 +562,14 @@ L60:
         /* WORKD(IPJ:IPJ+N-1) contains B*OP*v_{j}.  */
         /* ---------------------------------------- */
 
-    sgemv_("T", n, &j, &s_one, &v[v_offset], ldv, &workd[ipj], &c__1, &s_zero, 
-	    &h[j * h_dim1 + 1], &c__1);
+    sgemv_("T", n, &j, &s_one, &v[v_offset], ldv, &workd[ipj], &c__1, &s_zero, &h[j * h_dim1 + 1], &c__1);
 
         /* ------------------------------------ */
         /* Orthogonalize r_{j} against V_{j}.   */
         /* RESID contains OP*v_{j}. See STEP 3. */
         /* ------------------------------------ */
 
-    sgemv_("N", n, &j, &s_m1, &v[v_offset], ldv, &h[j * h_dim1 + 1], &c__1,
-	     &s_one, &resid[1], &c__1);
+    sgemv_("N", n, &j, &s_m1, &v[v_offset], ldv, &h[j * h_dim1 + 1], &c__1,&s_one, &resid[1], &c__1);
 
     if (j > 1) {
 	h[j + (j - 1) * h_dim1] = betaj;
@@ -678,8 +674,7 @@ L80:
         /* WORKD(IRJ:IRJ+J-1) = v(:,1:J)'*WORKD(IPJ:IPJ+N-1). */
         /* -------------------------------------------------- */
 
-    sgemv_("T", n, &j, &s_one, &v[v_offset], ldv, &workd[ipj], &c__1, &s_zero, 
-	    &workd[irj], &c__1);
+    sgemv_("T", n, &j, &s_one, &v[v_offset], ldv, &workd[ipj], &c__1, &s_zero, &workd[irj], &c__1);
 
         /* ------------------------------------------- */
         /* Compute the correction to the residual:     */
@@ -688,8 +683,7 @@ L80:
         /* + v(:,1:J)*WORKD(IRJ:IRJ+J-1)*e'_j.         */
         /* ------------------------------------------- */
 
-    sgemv_("N", n, &j, &s_m1, &v[v_offset], ldv, &workd[irj], &c__1, &s_one, 
-	    &resid[1], &c__1);
+    sgemv_("N", n, &j, &s_m1, &v[v_offset], ldv, &workd[irj], &c__1, &s_one, &resid[1], &c__1);
     saxpy_(&j, &s_one, &workd[irj], &c__1, &h[j * h_dim1 + 1], &c__1);
 
     orth2 = true;

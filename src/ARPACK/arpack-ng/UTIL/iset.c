@@ -6,8 +6,7 @@
 
 /*     Only work with increment equal to 1 right now. */
 
-int iset_(int32_t *n, int32_t *value, int32_t *array, 
-	int32_t *inc)
+int iset_(int32_t *n, int32_t *value, int32_t *array, int32_t *inc)
 {
     /* System generated locals */
     int32_t i__1;

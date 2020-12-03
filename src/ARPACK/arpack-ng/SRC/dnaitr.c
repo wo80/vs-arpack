@@ -121,7 +121,7 @@
  * \BeginLib
  *
  * \Local variables:
- *     xxxxxx  float
+ *     xxxxxx  real
  *
  * \References:
  *  1. D.C. Sorensen, "Implicit Application of Polynomial Filters in
@@ -133,7 +133,7 @@
  *
  * \Routines called:
  *     dgetv0  ARPACK routine to generate the initial vector.
- *     ivout   ARPACK utility routine that prints int32_ts.
+ *     ivout   ARPACK utility routine that prints integers.
  *     arscnd  ARPACK utility routine for timing.
  *     dmout   ARPACK utility routine that prints matrices
  *     dvout   ARPACK utility routine that prints vectors.
@@ -275,10 +275,10 @@ int dnaitr_(int32_t *ido, char *bmat, int32_t *n, int32_t *k,int32_t *np, int32_
         /* REFERENCE: LAPACK subroutine dlahqr     */
         /* --------------------------------------- */
 
-	unfl = dlamch_("safe minimum");
+	unfl = dlamch_("S");
 	ovfl = 1. / unfl;
 	dlabad_(&unfl, &ovfl);
-	ulp = dlamch_("precision");
+	ulp = dlamch_("P");
 	smlnum = unfl * (*n / ulp);
 	first = false;
     }
@@ -449,10 +449,8 @@ L40:
             /* use LAPACK routine SLASCL               */
             /* --------------------------------------- */
 
-	dlascl_("G", &i, &i, rnorm, &d_one, n, &c__1, &v[j * v_dim1 
-		+ 1], n, &infol);
-	dlascl_("G", &i, &i, rnorm, &d_one, n, &c__1, &workd[ipj], 
-		n, &infol);
+	dlascl_("G", &i, &i, rnorm, &d_one, n, &c__1, &v[j * v_dim1 + 1], n, &infol);
+	dlascl_("G", &i, &i, rnorm, &d_one, n, &c__1, &workd[ipj], n, &infol);
     }
 
         /* ---------------------------------------------------- */
@@ -564,16 +562,14 @@ L60:
         /* WORKD(IPJ:IPJ+N-1) contains B*OP*v_{j}.  */
         /* ---------------------------------------- */
 
-    dgemv_("T", n, &j, &d_one, &v[v_offset], ldv, &workd[ipj], &c__1, &d_zero, 
-	    &h[j * h_dim1 + 1], &c__1);
+    dgemv_("T", n, &j, &d_one, &v[v_offset], ldv, &workd[ipj], &c__1, &d_zero, &h[j * h_dim1 + 1], &c__1);
 
         /* ------------------------------------ */
         /* Orthogonalize r_{j} against V_{j}.   */
         /* RESID contains OP*v_{j}. See STEP 3. */
         /* ------------------------------------ */
 
-    dgemv_("N", n, &j, &d_m1, &v[v_offset], ldv, &h[j * h_dim1 + 1], &c__1,
-	     &d_one, &resid[1], &c__1);
+    dgemv_("N", n, &j, &d_m1, &v[v_offset], ldv, &h[j * h_dim1 + 1], &c__1,&d_one, &resid[1], &c__1);
 
     if (j > 1) {
 	h[j + (j - 1) * h_dim1] = betaj;
@@ -678,8 +674,7 @@ L80:
         /* WORKD(IRJ:IRJ+J-1) = v(:,1:J)'*WORKD(IPJ:IPJ+N-1). */
         /* -------------------------------------------------- */
 
-    dgemv_("T", n, &j, &d_one, &v[v_offset], ldv, &workd[ipj], &c__1, &d_zero, 
-	    &workd[irj], &c__1);
+    dgemv_("T", n, &j, &d_one, &v[v_offset], ldv, &workd[ipj], &c__1, &d_zero, &workd[irj], &c__1);
 
         /* ------------------------------------------- */
         /* Compute the correction to the residual:     */
@@ -688,8 +683,7 @@ L80:
         /* + v(:,1:J)*WORKD(IRJ:IRJ+J-1)*e'_j.         */
         /* ------------------------------------------- */
 
-    dgemv_("N", n, &j, &d_m1, &v[v_offset], ldv, &workd[irj], &c__1, &d_one, 
-	    &resid[1], &c__1);
+    dgemv_("N", n, &j, &d_m1, &v[v_offset], ldv, &workd[irj], &c__1, &d_one, &resid[1], &c__1);
     daxpy_(&j, &d_one, &workd[irj], &c__1, &h[j * h_dim1 + 1], &c__1);
 
     orth2 = true;

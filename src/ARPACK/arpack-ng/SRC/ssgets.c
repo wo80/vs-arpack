@@ -62,11 +62,11 @@
  * \BeginLib
  *
  * \Local variables:
- *     xxxxxx  float
+ *     xxxxxx  real
  *
  * \Routines called:
  *     ssortr  ARPACK utility sorting routine.
- *     ivout   ARPACK utility routine that prints int32_ts.
+ *     ivout   ARPACK utility routine that prints integers.
  *     arscnd  ARPACK utility routine for timing.
  *     svout   ARPACK utility routine that prints vectors.
  *     scopy   Level 1 BLAS that copies one vector to another.
@@ -143,8 +143,7 @@ int ssgets_(int32_t *ishift, char *which, int32_t *kev, int32_t *np, float *ritz
 	    i__1 = min(kevd2,*np);
 	    sswap_(&i__1, &ritz[1], &c__1, &ritz[max(kevd2,*np) + 1], &c__1);
 	    i__1 = min(kevd2,*np);
-	    sswap_(&i__1, &bounds[1], &c__1, &bounds[max(kevd2,*np) + 1], &
-		    c__1);
+	    sswap_(&i__1, &bounds[1], &c__1, &bounds[max(kevd2,*np) + 1], &c__1);
 	}
 
     } else {

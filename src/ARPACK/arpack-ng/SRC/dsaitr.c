@@ -128,11 +128,11 @@
  * \BeginLib
  *
  * \Local variables:
- *     xxxxxx  float
+ *     xxxxxx  real
  *
  * \Routines called:
  *     dgetv0  ARPACK routine to generate the initial vector.
- *     ivout   ARPACK utility routine that prints int32_ts.
+ *     ivout   ARPACK utility routine that prints integers.
  *     dmout   ARPACK utility routine that prints matrices.
  *     dvout   ARPACK utility routine that prints vectors.
  *     dlamch  LAPACK routine that determines machine constants.
@@ -262,7 +262,7 @@ int dsaitr_(int32_t *ido, char *bmat, int32_t *n, int32_t *k,int32_t *np, int32_
         /* that 1/sfmin does not overflow */
         /* ------------------------------ */
 
-	safmin = dlamch_("safmin");
+	safmin = dlamch_("S");
     }
 
     if (*ido == 0) {
@@ -441,10 +441,8 @@ L40:
             /* use LAPACK routine SLASCL               */
             /* --------------------------------------- */
 
-	dlascl_("G", &i, &i, rnorm, &d_one, n, &c__1, &v[j * v_dim1 
-		+ 1], n, &infol);
-	dlascl_("G", &i, &i, rnorm, &d_one, n, &c__1, &workd[ipj], 
-		n, &infol);
+	dlascl_("G", &i, &i, rnorm, &d_one, n, &c__1, &v[j * v_dim1 + 1], n, &infol);
+	dlascl_("G", &i, &i, rnorm, &d_one, n, &c__1, &workd[ipj], n, &infol);
     }
 
         /* ---------------------------------------------------- */
@@ -572,11 +570,9 @@ L65:
         /* ---------------------------------------- */
 
     if (*mode != 2) {
-	dgemv_("T", n, &j, &d_one, &v[v_offset], ldv, &workd[ipj], &c__1, &
-		d_zero, &workd[irj], &c__1);
+	dgemv_("T", n, &j, &d_one, &v[v_offset], ldv, &workd[ipj], &c__1, &d_zero, &workd[irj], &c__1);
     } else if (*mode == 2) {
-	dgemv_("T", n, &j, &d_one, &v[v_offset], ldv, &workd[ivj], &c__1, &
-		d_zero, &workd[irj], &c__1);
+	dgemv_("T", n, &j, &d_one, &v[v_offset], ldv, &workd[ivj], &c__1, &d_zero, &workd[irj], &c__1);
     }
 
         /* ------------------------------------ */
@@ -584,8 +580,7 @@ L65:
         /* RESID contains OP*v_{j}. See STEP 3. */
         /* ------------------------------------ */
 
-    dgemv_("N", n, &j, &d_m1, &v[v_offset], ldv, &workd[irj], &c__1, &d_one, 
-	    &resid[1], &c__1);
+    dgemv_("N", n, &j, &d_m1, &v[v_offset], ldv, &workd[irj], &c__1, &d_one, &resid[1], &c__1);
 
         /* ------------------------------------ */
         /* Extend H to have j rows and columns. */
@@ -692,8 +687,7 @@ L80:
         /* WORKD(IRJ:IRJ+J-1) = v(:,1:J)'*WORKD(IPJ:IPJ+N-1). */
         /* -------------------------------------------------- */
 
-    dgemv_("T", n, &j, &d_one, &v[v_offset], ldv, &workd[ipj], &c__1, &d_zero, 
-	    &workd[irj], &c__1);
+    dgemv_("T", n, &j, &d_one, &v[v_offset], ldv, &workd[ipj], &c__1, &d_zero, &workd[irj], &c__1);
 
         /* -------------------------------------------- */
         /* Compute the correction to the residual:      */
@@ -703,8 +697,7 @@ L80:
         /* H(j,j) is updated.                           */
         /* -------------------------------------------- */
 
-    dgemv_("N", n, &j, &d_m1, &v[v_offset], ldv, &workd[irj], &c__1, &d_one, 
-	    &resid[1], &c__1);
+    dgemv_("N", n, &j, &d_m1, &v[v_offset], ldv, &workd[irj], &c__1, &d_one, &resid[1], &c__1);
 
     if (j == 1 || rstart) {
 	h[j + h_dim1] = 0.;

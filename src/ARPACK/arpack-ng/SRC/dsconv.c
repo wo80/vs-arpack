@@ -89,7 +89,7 @@ int dsconv_(int32_t *n, double *ritz, double *bounds,
     arscnd_(&t0);
 #endif
 
-    eps23 = dlamch_("Epsilon-Machine");
+    eps23 = dlamch_("E");
     eps23 = pow_dd(&eps23, &d_23);
 
     *nconv = 0;

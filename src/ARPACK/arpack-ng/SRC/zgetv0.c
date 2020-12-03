@@ -315,12 +315,10 @@ L20:
 L30:
 
     i__1 = *j - 1;
-    zgemv_("C", n, &i__1, &z_one, &v[v_offset], ldv, &workd[1], &c__1, &z_zero, &
-	    workd[*n + 1], &c__1);
+    zgemv_("C", n, &i__1, &z_one, &v[v_offset], ldv, &workd[1], &c__1, &z_zero, &workd[*n + 1], &c__1);
     i__1 = *j - 1;
     z__1.r = -1., z__1.i = -0.;
-    zgemv_("N", n, &i__1, &z__1, &v[v_offset], ldv, &workd[*n + 1], &c__1, &
-	    z_one, &resid[1], &c__1);
+    zgemv_("N", n, &i__1, &z__1, &v[v_offset], ldv, &workd[*n + 1], &c__1, &z_one, &resid[1], &c__1);
 
      /* -------------------------------------------------------- */
      /* Compute the B-norm of the orthogonalized starting vector */
@@ -406,9 +404,7 @@ L50:
     if (msglvl > 0) {
 	dvout_(&c__1, rnorm, &debug_1.ndigit, "_getv0: B-norm of initial / restarted starting vector");
     }
-#endif
 
-#ifndef NO_TRACE
     if (msglvl > 2) {
 	zvout_(n, &resid[1], &debug_1.ndigit, "_getv0: initial / restarted starting vector");
     }

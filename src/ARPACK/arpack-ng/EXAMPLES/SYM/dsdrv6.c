@@ -1,5 +1,6 @@
 /* EXAMPLES\SYM\dsdrv6.f -- translated by f2c (version 20100827). */
 
+#include <stdlib.h>
 #include "arpack.h"
 
 int dsdrv6()
@@ -11,7 +12,7 @@ int dsdrv6()
     /* Local variables */
     double d[50]	/* was [25][2] */, h;
     int32_t j, n;
-    double v[6400]	/* was [256][25] */, r1, r2, ad[256];
+    double *v	/* was [256][25] */, r1, r2, ad[256];
     double ax[256];
     double mx[256], adl[256], adu[256];
     int32_t ido, ncv, nev;
@@ -24,15 +25,20 @@ int dsdrv6()
     int32_t ipiv[256];
     double sigma;
     char* which;
-    double resid[256];
+    double *resid;
     int32_t nconv;
-    double workd[768];
+    double *workd;
     int32_t ipntr[11];
-    double workl[825];
+    double *workl;
     int32_t iparam[11];
     bool select[25];
     int32_t ishfts, maxitr;
     int32_t lworkl;
+
+    resid = (double*)malloc(256 * sizeof(double));
+    v = (double*)malloc(6400 * sizeof(double));
+    workl = (double*)malloc(825 * sizeof(double));
+    workd = (double*)malloc(768 * sizeof(double));
 
     /* Fortran I/O blocks */
 
@@ -212,9 +218,7 @@ L10:
         /* has been exceeded.                          */
         /* ------------------------------------------- */
 
-    dsaupd_(&ido, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, 
-	    iparam, ipntr, workd, workl, &lworkl, &info, (ftnlen)1, (ftnlen)2)
-	    ;
+    dsaupd_(&ido, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, workd, workl, &lworkl, &info);
 
     if (ido == -1) {
 
@@ -232,8 +236,7 @@ L10:
 	dsdrv6_mv_(&n, &workd[ipntr[0] - 1], temp);
 	daxpy_(&n, &sigma, temp, &c__1, &workd[ipntr[1] - 1], &c__1);
 
-	dgttrs_("Notranspose", &n, &c__1, adl, ad, adu, adu2, ipiv, &workd[
-		ipntr[1] - 1], &n, &ierr, (ftnlen)11);
+	dgttrs_("Notranspose", &n, &c__1, adl, ad, adu, adu2, ipiv, &workd[ipntr[1] - 1], &n, &ierr);
 	if (ierr != 0) {
 	    printf(" \n");
 	    printf(" Error with _gttrs in _SDRV6.\n");
@@ -262,10 +265,8 @@ L10:
            /* -------------------------------------------------- */
 
 	dsdrv6_av_(&n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
-	daxpy_(&n, &sigma, &workd[ipntr[2] - 1], &c__1, &workd[ipntr[1] - 1], 
-		&c__1);
-	dgttrs_("Notranspose", &n, &c__1, adl, ad, adu, adu2, ipiv, &workd[
-		ipntr[1] - 1], &n, &ierr, (ftnlen)11);
+	daxpy_(&n, &sigma, &workd[ipntr[2] - 1], &c__1, &workd[ipntr[1] - 1], &c__1);
+	dgttrs_("Notranspose", &n, &c__1, adl, ad, adu, adu2, ipiv, &workd[ipntr[1] - 1], &n, &ierr);
 	if (ierr != 0) {
 	    printf(" \n");
 	    printf(" Error with _gttrs in _SDRV6. \n");
@@ -329,10 +330,7 @@ L10:
 
 	rvec = true;
 
-	dseupd_(&rvec, "All", select, d, v, &c__256, &sigma, bmat, &n, 
-		which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, 
-		workd, workl, &lworkl, &ierr, (ftnlen)3, (ftnlen)1, (ftnlen)2)
-		;
+	dseupd_(&rvec, "All", select, d, v, &c__256, &sigma, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, workd, workl, &lworkl, &ierr);
 
         /* -------------------------------------------- */
         /* Eigenvalues are returned in the first column */
@@ -418,6 +416,11 @@ L10:
 	printf(" \n");
 
     }
+
+    free(resid);
+    free(v);
+    free(workl);
+    free(workd);
 
      /* ------------------------- */
      /* Done with program dsdrv6. */

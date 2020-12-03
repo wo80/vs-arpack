@@ -55,7 +55,7 @@
  * \BeginLib
  *
  * \Local variables:
- *     xxxxxx  float
+ *     xxxxxx  real
  *
  * \Routines called:
  *     sstqrb  ARPACK routine that computes the eigenvalues and the

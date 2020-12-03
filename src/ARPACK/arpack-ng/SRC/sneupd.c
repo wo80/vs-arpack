@@ -63,7 +63,7 @@
  *          = 'A': Compute NEV Ritz vectors;
  *          = 'P': Compute NEV Schur vectors;
  *          = 'S': compute some of the Ritz vectors, specified
- *                 by the bool array SELECT.
+ *                 by the logical array SELECT.
  *
  *  SELECT  Logical array of dimension NCV.  (INPUT)
  *          If HOWMNY = 'S', SELECT specifies the Ritz vectors to be
@@ -73,10 +73,10 @@
  *
  *  DR      Real  array of dimension NEV+1.  (OUTPUT)
  *          If IPARAM(7) = 1,2 or 3 and SIGMAI=0.0  then on exit: DR contains
- *          the float part of the Ritz  approximations to the eigenvalues of
+ *          the real part of the Ritz  approximations to the eigenvalues of
  *          A*z = lambda*B*z.
  *          If IPARAM(7) = 3, 4 and SIGMAI is not equal to zero, then on exit:
- *          DR contains the float part of the Ritz values of OP computed by
+ *          DR contains the real part of the Ritz values of OP computed by
  *          SNAUPD. A further computation must be performed by the user
  *          to transform the Ritz values computed for OP by SNAUPD to those
  *          of the original system A*z = lambda*B*z. See remark 3 below.
@@ -89,7 +89,7 @@
  *          NOTE: When Ritz values are complex, they will come in complex
  *                conjugate pairs.  If eigenvectors are requested, the
  *                corresponding Ritz vectors will also come in conjugate
- *                pairs and the float and imaginary parts of these are
+ *                pairs and the real and imaginary parts of these are
  *                represented in two consecutive columns of the array Z
  *                (see below).
  *
@@ -101,7 +101,7 @@
  *
  *          The complex Ritz vector associated with the Ritz value
  *          with positive imaginary part is stored in two consecutive
- *          columns.  The first column holds the float part of the Ritz
+ *          columns.  The first column holds the real part of the Ritz
  *          vector and the second column holds the imaginary part.  The
  *          Ritz vector associated with the Ritz value with negative
  *          imaginary part is simply the complex conjugate of the Ritz vector
@@ -119,7 +119,7 @@
  *          desired, then  LDZ >= max( 1, N ).  In any case,  LDZ >= 1.
  *
  *  SIGMAR  Real   (INPUT)
- *          If IPARAM(7) = 3 or 4, represents the float part of the shift.
+ *          If IPARAM(7) = 3 or 4, represents the real part of the shift.
  *          Not referenced if IPARAM(7) = 1 or 2.
  *
  *  SIGMAI  Real   (INPUT)
@@ -162,14 +162,14 @@
  *          WORKL(1:ncv*ncv+3*ncv) contains information obtained in
  *          snaupd.  They are not changed by sneupd.
  *          WORKL(ncv*ncv+3*ncv+1:3*ncv*ncv+6*ncv) holds the
- *          float and imaginary part of the untransformed Ritz values,
+ *          real and imaginary part of the untransformed Ritz values,
  *          the upper quasi-triangular matrix for H, and the
  *          associated matrix representation of the invariant subspace for H.
  *
  *          Note: IPNTR(9:13) contains the pointer into WORKL for addresses
  *          of the above information computed by sneupd.
  *          -------------------------------------------------------------
- *          IPNTR(9):  pointer to the float part of the NCV RITZ values of the
+ *          IPNTR(9):  pointer to the real part of the NCV RITZ values of the
  *                     original system.
  *          IPNTR(10): pointer to the imaginary part of the NCV RITZ values of
  *                     the original system.
@@ -201,7 +201,7 @@
  *          = -5: WHICH must be one of 'LM', 'SM', 'LR', 'SR', 'LI', 'SI'
  *          = -6: BMAT must be one of 'I' or 'G'.
  *          = -7: Length of private work WORKL array is not sufficient.
- *          = -8: Error return from calculation of a float Schur form.
+ *          = -8: Error return from calculation of a real Schur form.
  *                Informational error from LAPACK routine slahqr.
  *          = -9: Error return from calculation of eigenvectors.
  *                Informational error from LAPACK routine strevc.
@@ -232,13 +232,13 @@
  *     pp 575-595, (1987).
  *
  * \Routines called:
- *     ivout   ARPACK utility routine that prints int32_ts.
+ *     ivout   ARPACK utility routine that prints integers.
  *     smout   ARPACK utility routine that prints matrices
  *     svout   ARPACK utility routine that prints vectors.
  *     sgeqr2  LAPACK routine that computes the QR factorization of
  *             a matrix.
  *     slacpy  LAPACK matrix copy routine.
- *     slahqr  LAPACK routine to compute the float Schur form of an
+ *     slahqr  LAPACK routine to compute the real Schur form of an
  *             upper Hessenberg matrix.
  *     slamch  LAPACK routine that determines machine constants.
  *     slapy2  LAPACK routine to compute sqrt(x**2+y**2) carefully.
@@ -267,11 +267,11 @@
  *             A * V(:,1:IPARAM(5)) = V(:,1:IPARAM(5)) * T, and
  *     trans(V(:,1:IPARAM(5))) * V(:,1:IPARAM(5)) = I are approximately
  *     satisfied. Here T is the leading submatrix of order IPARAM(5) of the
- *     float upper quasi-triangular matrix stored workl(ipntr(12)). That is,
+ *     real upper quasi-triangular matrix stored workl(ipntr(12)). That is,
  *     T is block upper triangular with 1-by-1 and 2-by-2 diagonal blocks;
  *     each 2-by-2 diagonal block has its diagonal elements equal and its
  *     off-diagonal elements of opposite sign.  Corresponding to each 2-by-2
- *     diagonal block is a complex conjugate pair of Ritz values. The float
+ *     diagonal block is a complex conjugate pair of Ritz values. The real
  *     Ritz values are stored on the diagonal of T.
  *
  *  3. If IPARAM(7) = 3 or 4 and SIGMAI is not equal zero, then the user must
@@ -281,7 +281,7 @@
  *     compute
  *           trans(Z(:,I)) * A * Z(:,I) if DI(I) = 0.
  *     If DI(I) is not equal to zero and DI(I+1) = - D(I),
- *     then the desired float and imaginary parts of the Ritz value are
+ *     then the desired real and imaginary parts of the Ritz value are
  *           trans(Z(:,I)) * A * Z(:,I) +  trans(Z(:,I+1)) * A * Z(:,I+1),
  *           trans(Z(:,I)) * A * Z(:,I+1) -  trans(Z(:,I+1)) * A * Z(:,I),
  *     respectively.
@@ -329,7 +329,7 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
     int32_t ierr;
     float temp;
     int32_t iwev;
-    char type__[6];
+    char type[7];
     float temp1;
     int32_t ihbds, iconj;
     float conds;
@@ -377,7 +377,7 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
      /* Get machine dependent constant. */
      /* ------------------------------- */
 
-    eps23 = slamch_("Epsilon-Machine");
+    eps23 = slamch_("E");
     d__1 = (double) eps23;
     eps23 = pow_dd(&d__1, &d_23);
 
@@ -415,13 +415,13 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
     }
 
     if (mode == 1 || mode == 2) {
-	strcpy(type__, "REGULR");
+	strcpy(type, "REGULR");
     } else if (mode == 3 && *sigmai == 0.f) {
-	strcpy(type__, "SHIFTI");
+	strcpy(type, "SHIFTI");
     } else if (mode == 3) {
-	strcpy(type__, "REALPT");
+	strcpy(type, "REALPT");
     } else if (mode == 4) {
-	strcpy(type__, "IMAGPT");
+	strcpy(type, "IMAGPT");
     } else {
 	ierr = -10;
     }
@@ -606,9 +606,7 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
 	i__1 = ldh * *ncv;
 	scopy_(&i__1, &workl[ih], &c__1, &workl[iuptri], &c__1);
 	slaset_("A", ncv, ncv, &s_zero, &s_one, &workl[invsub], &ldq);
-	slahqr_(&c_true, &c_true, ncv, &c__1, ncv, &workl[iuptri], &ldh, &
-		workl[iheigr], &workl[iheigi], &c__1, ncv, &workl[invsub], &
-		ldq, &ierr);
+	slahqr_(&c_true, &c_true, ncv, &c__1, ncv, &workl[iuptri], &ldh, &workl[iheigr], &workl[iheigi], &c__1, ncv, &workl[invsub], &ldq, &ierr);
 	scopy_(ncv, &workl[invsub + *ncv - 1], &ldq, &workl[ihbds], &c__1);
 
 	if (ierr != 0) {
@@ -633,10 +631,7 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
            /* Reorder the computed upper quasi-triangular matrix. */
            /* --------------------------------------------------- */
 
-	    strsen_("N", "V", &select[1], ncv, &workl[iuptri], &ldh, &
-		    workl[invsub], &ldq, &workl[iheigr], &workl[iheigi], &
-		    nconv2, &conds, &sep, &workl[ihbds], ncv, iwork, &c__1, &
-		    ierr);
+	    strsen_("N", "V", &select[1], ncv, &workl[iuptri], &ldh, &workl[invsub], &ldq, &workl[iheigr], &workl[iheigi], &nconv2, &conds, &sep, &workl[ihbds], ncv, iwork, &c__1, &ierr);
 
 	    if (nconv2 < nconv) {
 		nconv = nconv2;
@@ -672,7 +667,7 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
         /* if a spectral transformation was not used.         */
         /* -------------------------------------------------- */
 
-	if (strcmp(type__, "REGULR") == 0) {
+	if (strcmp(type, "REGULR") == 0) {
 	    scopy_(&nconv, &workl[iheigr], &c__1, &dr[1], &c__1);
 	    scopy_(&nconv, &workl[iheigi], &c__1, &di[1], &c__1);
 	}
@@ -683,8 +678,7 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
         /* columns of workl(invsub,ldq).                            */
         /* -------------------------------------------------------- */
 
-	sgeqr2_(ncv, &nconv, &workl[invsub], &ldq, &workev[1], &workev[*ncv + 
-		1], &ierr);
+	sgeqr2_(ncv, &nconv, &workl[invsub], &ldq, &workev[1], &workev[*ncv + 1], &ierr);
 
         /* ------------------------------------------------------- */
         /* * Postmultiply V by Q using sorm2r.                     */
@@ -698,8 +692,7 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
         /* matrix of order NCONV in workl(iuptri)                  */
         /* ------------------------------------------------------- */
 
-	sorm2r_("R", "N", n, ncv, &nconv, &workl[invsub], &ldq, 
-		&workev[1], &v[v_offset], ldv, &workd[*n + 1], &ierr);
+	sorm2r_("R", "N", n, ncv, &nconv, &workl[invsub], &ldq, &workev[1], &v[v_offset], ldv, &workd[*n + 1], &ierr);
 	slacpy_("A", n, &nconv, &v[v_offset], ldv, &z[z_offset], ldz);
 
 	i__1 = nconv;
@@ -739,9 +732,7 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
 /* L30: */
 	    }
 
-	    strevc_("R", "S", &select[1], ncv, &workl[iuptri], &ldq, 
-		    vl, &c__1, &workl[invsub], &ldq, ncv, &outncv, &workev[1],
-		     &ierr);
+	    strevc_("R", "S", &select[1], ncv, &workl[iuptri], &ldq, vl, &c__1, &workl[invsub], &ldq, ncv, &outncv, &workev[1],&ierr);
 
 	    if (ierr != 0) {
 		*info = -9;
@@ -781,13 +772,11 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
                  /* ----------------------------------------- */
 
 		    if (iconj == 0) {
-			r__1 = snrm2_(ncv, &workl[invsub + (j - 1) * ldq], &
-				c__1);
+			r__1 = snrm2_(ncv, &workl[invsub + (j - 1) * ldq], &c__1);
 			r__2 = snrm2_(ncv, &workl[invsub + j * ldq], &c__1);
 			temp = slapy2_(&r__1, &r__2);
 			r__1 = 1.f / temp;
-			sscal_(ncv, &r__1, &workl[invsub + (j - 1) * ldq], &
-				c__1);
+			sscal_(ncv, &r__1, &workl[invsub + (j - 1) * ldq], &c__1);
 			r__1 = 1.f / temp;
 			sscal_(ncv, &r__1, &workl[invsub + j * ldq], &c__1);
 			iconj = 1;
@@ -800,8 +789,7 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
 /* L40: */
 	    }
 
-	    sgemv_("T", ncv, &nconv, &s_one, &workl[invsub], &ldq, &workl[
-		    ihbds], &c__1, &s_zero, &workev[1], &c__1);
+	    sgemv_("T", ncv, &nconv, &s_one, &workl[invsub], &ldq, &workl[ihbds], &c__1, &s_zero, &workev[1], &c__1);
 
 	    iconj = 0;
 	    i__1 = nconv;
@@ -827,8 +815,7 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
 
 #ifndef NO_TRACE
 	    if (msglvl > 2) {
-		scopy_(ncv, &workl[invsub + *ncv - 1], &ldq, &workl[ihbds], &
-			c__1);
+		scopy_(ncv, &workl[invsub + *ncv - 1], &ldq, &workl[ihbds], &c__1);
 		svout_(ncv, &workl[ihbds], &debug_1.ndigit, "_neupd: Last row of the eigenvector matrix for T");
 		if (msglvl > 3) {
 		    smout_(ncv, ncv, &workl[invsub], &ldq, &debug_1.ndigit, "_neupd: The eigenvector matrix for T");
@@ -848,8 +835,7 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
            /* columns of workl(invsub,ldq).                           */
            /* ------------------------------------------------------- */
 
-	    sgeqr2_(ncv, &nconv, &workl[invsub], &ldq, &workev[1], &workev[*
-		    ncv + 1], &ierr);
+	    sgeqr2_(ncv, &nconv, &workl[invsub], &ldq, &workev[1], &workev[*ncv + 1], &ierr);
 
            /* -------------------------------------------- */
            /* * Postmultiply Z by Q.                       */
@@ -859,13 +845,9 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
            /* in workl(iheigr) and workl(iheigi).          */
            /* -------------------------------------------- */
 
-	    sorm2r_("R", "N", n, ncv, &nconv, &workl[invsub], &
-		    ldq, &workev[1], &z[z_offset], ldz, &workd[*n + 1], &
-		    ierr, (ftnlen)5, (ftnlen)11);
+	    sorm2r_("R", "N", n, ncv, &nconv, &workl[invsub], &ldq, &workev[1], &z[z_offset], ldz, &workd[*n + 1], &ierr);
 
-	    strmm_("R", "U", "N", "N", n, &nconv, &
-		    s_one, &workl[invsub], &ldq, &z[z_offset], ldz, (ftnlen)
-		    5, (ftnlen)5, (ftnlen)12, (ftnlen)8);
+	    strmm_("R", "U", "N", "N", n, &nconv, &s_one, &workl[invsub], &ldq, &z[z_offset], ldz);
 
 	}
 
@@ -889,7 +871,7 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
      /* of A*x = lambda*B*x.                           */
      /* ---------------------------------------------- */
 
-    if (strcmp(type__, "REGULR") == 0) {
+    if (strcmp(type, "REGULR") == 0) {
 
 	if (*rvec) {
 	    sscal_(ncv, &rnorm, &workl[ihbds], &c__1);
@@ -903,7 +885,7 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
         /*   Ritz values in the original system. */
         /* ------------------------------------- */
 
-	if (strcmp(type__, "SHIFTI") == 0) {
+	if (strcmp(type, "SHIFTI") == 0) {
 
 	    if (*rvec) {
 		sscal_(ncv, &rnorm, &workl[ihbds], &c__1);
@@ -911,21 +893,20 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
 
 	    i__1 = *ncv;
 	    for (k = 1; k <= i__1; ++k) {
-		temp = slapy2_(&workl[iheigr + k - 1], &workl[iheigi + k - 1])
-			;
+		temp = slapy2_(&workl[iheigr + k - 1], &workl[iheigi + k - 1]);
 		workl[ihbds + k - 1] = (r__1 = workl[ihbds + k - 1], dabs(
 			r__1)) / temp / temp;
 /* L50: */
 	    }
 
-	} else if (strcmp(type__, "REALPT") == 0) {
+	} else if (strcmp(type, "REALPT") == 0) {
 
 	    i__1 = *ncv;
 	    for (k = 1; k <= i__1; ++k) {
 /* L60: */
 	    }
 
-	} else if (strcmp(type__, "IMAGPT") == 0) {
+	} else if (strcmp(type, "IMAGPT") == 0) {
 
 	    i__1 = *ncv;
 	    for (k = 1; k <= i__1; ++k) {
@@ -944,35 +925,32 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
         /* *The Ritz vectors are not affected by the transformation. */
         /* --------------------------------------------------------- */
 
-	if (strcmp(type__, "SHIFTI") == 0) {
+	if (strcmp(type, "SHIFTI") == 0) {
 
 	    i__1 = *ncv;
 	    for (k = 1; k <= i__1; ++k) {
-		temp = slapy2_(&workl[iheigr + k - 1], &workl[iheigi + k - 1])
-			;
-		workl[iheigr + k - 1] = workl[iheigr + k - 1] / temp / temp + 
-			*sigmar;
-		workl[iheigi + k - 1] = -workl[iheigi + k - 1] / temp / temp 
-			+ *sigmai;
+		temp = slapy2_(&workl[iheigr + k - 1], &workl[iheigi + k - 1]);
+		workl[iheigr + k - 1] = workl[iheigr + k - 1] / temp / temp + *sigmar;
+		workl[iheigi + k - 1] = -workl[iheigi + k - 1] / temp / temp + *sigmai;
 /* L80: */
 	    }
 
 	    scopy_(&nconv, &workl[iheigr], &c__1, &dr[1], &c__1);
 	    scopy_(&nconv, &workl[iheigi], &c__1, &di[1], &c__1);
 
-	} else if (strcmp(type__, "REALPT") == 0 || 
-		strcmp(type__, "IMAGPT") == 0) {scopy_(&nconv, &workl[iheigr], &c__1, &dr[1], &c__1);
+	} else if (strcmp(type, "REALPT") == 0 || 
+		strcmp(type, "IMAGPT") == 0) {scopy_(&nconv, &workl[iheigr], &c__1, &dr[1], &c__1);
 	    scopy_(&nconv, &workl[iheigi], &c__1, &di[1], &c__1);
 
 	}
 
     }
 
-    if (strcmp(type__, "SHIFTI") == 0 && msglvl > 1) {
+    if (strcmp(type, "SHIFTI") == 0 && msglvl > 1) {
 	svout_(&nconv, &dr[1], &debug_1.ndigit, "_neupd: Untransformed float part of the Ritz valuess.");
 	svout_(&nconv, &di[1], &debug_1.ndigit, "_neupd: Untransformed imag part of the Ritz valuess.");
 	svout_(&nconv, &workl[ihbds], &debug_1.ndigit, "_neupd: Ritz estimates of untransformed Ritz values.");
-    } else if (strcmp(type__, "REGULR") == 0 && msglvl > 
+    } else if (strcmp(type, "REGULR") == 0 && msglvl > 
 	    1) {
 	svout_(&nconv, &dr[1], &debug_1.ndigit, "_neupd: Real parts of converged Ritz values.");
 	svout_(&nconv, &di[1], &debug_1.ndigit, "_neupd: Imag parts of converged Ritz values.");
@@ -985,7 +963,7 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
      /* for MODE = 2.                                   */
      /* ----------------------------------------------- */
 
-    if (*rvec && *howmny == 'A' && strcmp(type__, "SHIFTI") == 0) {
+    if (*rvec && *howmny == 'A' && strcmp(type, "SHIFTI") == 0) {
 
         /* ---------------------------------------------- */
         /* Purify the computed Ritz vectors by adding a   */
@@ -1006,8 +984,7 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
 		workev[j] = workl[invsub + (j - 1) * ldq + *ncv - 1] / workl[
 			iheigr + j - 1];
 	    } else if (iconj == 0) {
-		temp = slapy2_(&workl[iheigr + j - 1], &workl[iheigi + j - 1])
-			;
+		temp = slapy2_(&workl[iheigr + j - 1], &workl[iheigi + j - 1]);
 		if (temp != 0.f) {
 		    workev[j] = (workl[invsub + (j - 1) * ldq + *ncv - 1] * 
 			    workl[iheigr + j - 1] + workl[invsub + j * ldq + *
@@ -1029,8 +1006,7 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
         /* purify all the Ritz vectors together. */
         /* ------------------------------------- */
 
-	sger_(n, &nconv, &s_one, &resid[1], &c__1, &workev[1], &c__1, &z[
-		z_offset], ldz);
+	sger_(n, &nconv, &s_one, &resid[1], &c__1, &workev[1], &c__1, &z[z_offset], ldz);
 
     }
 

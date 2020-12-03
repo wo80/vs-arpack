@@ -54,8 +54,6 @@
  *  BOUNDS  Complex array of length KEV+NP.  (INPUT/OUTPUT)
  *          Error bounds corresponding to the ordering in RITZ.
  *
- *
- *
  * \EndDoc
  *
  * \BeginLib
@@ -65,7 +63,7 @@
  *
  * \Routines called:
  *     csortc  ARPACK sorting routine.
- *     ivout   ARPACK utility routine that prints int32_ts.
+ *     ivout   ARPACK utility routine that prints integers.
  *     arscnd  ARPACK utility routine for timing.
  *     cvout   ARPACK utility routine that prints vectors.
  *
@@ -87,8 +85,7 @@
  * \EndLib
  */
 
-int cngets_(int32_t *ishift, char *which, int32_t *kev, int32_t *np, complex *ritz,
-     complex *bounds)
+int cngets_(int32_t *ishift, char *which, int32_t *kev, int32_t *np, complex *ritz, complex *bounds)
 {
     /* System generated locals */
     int32_t i__1;

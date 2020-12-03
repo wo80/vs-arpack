@@ -11,9 +11,9 @@
  *  Reverse communication interface for the Implicitly Restarted Arnoldi
  *  iteration. This subroutine computes approximations to a few eigenpairs
  *  of a linear operator "OP" with respect to a semi-inner product defined by
- *  a symmetric positive semi-definite float matrix B. B may be the identity
- *  matrix. NOTE: If the linear operator "OP" is float and symmetric
- *  with respect to the float positive semi-definite symmetric matrix B,
+ *  a symmetric positive semi-definite real matrix B. B may be the identity
+ *  matrix. NOTE: If the linear operator "OP" is real and symmetric
+ *  with respect to the real positive semi-definite symmetric matrix B,
  *  i.e. B*OP = (OP`)*B, then subroutine dsaupd  should be used instead.
  *
  *  The computed approximate eigenvalues are called Ritz values and
@@ -31,16 +31,16 @@
  *
  *  Mode 3:  A*x = lambda*M*x, M symmetric semi-definite
  *           ===> OP = Real_Part{ inv[A - sigma*M]*M }  and  B = M.
- *           ===> shift-and-invert mode (in float arithmetic)
+ *           ===> shift-and-invert mode (in real arithmetic)
  *           If OP*x = amu*x, then
  *           amu = 1/2 * [ 1/(lambda-sigma) + 1/(lambda-conjg(sigma)) ].
- *           Note: If sigma is float, i.e. imaginary part of sigma is zero;
+ *           Note: If sigma is real, i.e. imaginary part of sigma is zero;
  *                 Real_Part{ inv[A - sigma*M]*M } == inv[A - sigma*M]*M
  *                 amu == 1/(lambda-sigma).
  *
  *  Mode 4:  A*x = lambda*M*x, M symmetric semi-definite
  *           ===> OP = Imaginary_Part{ inv[A - sigma*M]*M }  and  B = M.
- *           ===> shift-and-invert mode (in float arithmetic)
+ *           ===> shift-and-invert mode (in real arithmetic)
  *           If OP*x = amu*x, then
  *           amu = 1/2i * [ 1/(lambda-sigma) - 1/(lambda-conjg(sigma)) ].
  *
@@ -91,7 +91,7 @@
  *          IDO =  2: compute  Y = B * X  where
  *                    IPNTR(1) is the pointer into WORKD for X,
  *                    IPNTR(2) is the pointer into WORKD for Y.
- *          IDO =  3: compute the IPARAM(8) float and imaginary parts
+ *          IDO =  3: compute the IPARAM(8) real and imaginary parts
  *                    of the shifts where INPTR(14) is the pointer
  *                    into WORKL for placing the shifts. See Remark
  *                    5 below.
@@ -110,8 +110,8 @@
  *  WHICH   Character*2.  (INPUT)
  *          'LM' -> want the NEV eigenvalues of largest magnitude.
  *          'SM' -> want the NEV eigenvalues of smallest magnitude.
- *          'LR' -> want the NEV eigenvalues of largest float part.
- *          'SR' -> want the NEV eigenvalues of smallest float part.
+ *          'LR' -> want the NEV eigenvalues of largest real part.
+ *          'SR' -> want the NEV eigenvalues of smallest real part.
  *          'LI' -> want the NEV eigenvalues of largest imaginary part.
  *          'SI' -> want the NEV eigenvalues of smallest imaginary part.
  *
@@ -157,7 +157,7 @@
  *          the Arnoldi iteration in an implicit fashion.
  *          -------------------------------------------------------------
  *          ISHIFT = 0: the shifts are provided by the user via
- *                      reverse communication.  The float and imaginary
+ *                      reverse communication.  The real and imaginary
  *                      parts of the NCV eigenvalues of the Hessenberg
  *                      matrix H are returned in the part of the WORKL
  *                      array corresponding to RITZR and RITZI. See remark
@@ -213,7 +213,7 @@
  *                    that is untouched by the program.
  *          IPNTR(5): pointer to the NCV by NCV upper Hessenberg matrix
  *                    H in WORKL.
- *          IPNTR(6): pointer to the float part of the ritz value array
+ *          IPNTR(6): pointer to the real part of the ritz value array
  *                    RITZR in WORKL.
  *          IPNTR(7): pointer to the imaginary part of the ritz value array
  *                    RITZI in WORKL.
@@ -224,7 +224,7 @@
  *
  *          Note: IPNTR(9:13) is only referenced by dneupd . See Remark 2 below.
  *
- *          IPNTR(9):  pointer to the float part of the NCV RITZ values of the
+ *          IPNTR(9):  pointer to the real part of the NCV RITZ values of the
  *                     original system.
  *          IPNTR(10): pointer to the imaginary part of the NCV RITZ values of
  *                     the original system.
@@ -314,8 +314,8 @@
  *     See Chapter 8 of Reference 2 for further information.
  *
  *  5. When IPARAM(1) = 0, and IDO = 3, the user needs to provide the
- *     NP = IPARAM(8) float and imaginary parts of the shifts in locations
- *         float part                  imaginary part
+ *     NP = IPARAM(8) real and imaginary parts of the shifts in locations
+ *         real part                  imaginary part
  *         -----------------------    --------------
  *     1   WORKL(IPNTR(14))           WORKL(IPNTR(14)+NP)
  *     2   WORKL(IPNTR(14)+1)         WORKL(IPNTR(14)+NP+1)
@@ -325,7 +325,7 @@
  *     NP  WORKL(IPNTR(14)+NP-1)      WORKL(IPNTR(14)+2*NP-1).
  *
  *     Only complex conjugate pairs of shifts may be applied and the pairs
- *     must be placed in consecutive locations. The float part of the
+ *     must be placed in consecutive locations. The real part of the
  *     eigenvalues of the current upper Hessenberg matrix are located in
  *     WORKL(IPNTR(6)) through WORKL(IPNTR(6)+NCV-1) and the imaginary part
  *     in WORKL(IPNTR(7)) through WORKL(IPNTR(7)+NCV-1). They are ordered
@@ -368,7 +368,7 @@
  * \BeginLib
  *
  * \Local variables:
- *     xxxxxx  float
+ *     xxxxxx  real
  *
  * \References:
  *  1. D.C. Sorensen, "Implicit Application of Polynomial Filters in
@@ -384,7 +384,7 @@
  * \Routines called:
  *     dnaup2   ARPACK routine that implements the Implicitly Restarted
  *             Arnoldi Iteration.
- *     ivout   ARPACK utility routine that prints int32_ts.
+ *     ivout   ARPACK utility routine that prints integers.
  *     arscnd  ARPACK utility routine for timing.
  *     dvout    ARPACK utility routine that prints vectors.
  *     dlamch   LAPACK routine that determines machine constants.
@@ -415,10 +415,6 @@ int dnaupd_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, dou
 
     /* System generated locals */
     int32_t v_dim1, v_offset, i__1, i__2;
-
-    /* Builtin functions */
-    int32_t strcmp(char *, char *, ftnlen, ftnlen), s_wsfe(cilist *), e_wsfe(
-	    void), do_fio(int32_t *, char *, ftnlen);
 
     /* Local variables */
     int32_t j;
@@ -522,7 +518,7 @@ int dnaupd_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, dou
 	    nb = 1;
 	}
 	if (*tol <= 0.) {
-	    *tol = dlamch_("EpsMach");
+	    *tol = dlamch_("E");
 	}
 
         /* -------------------------------------------- */
@@ -639,32 +635,32 @@ int dnaupd_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, dou
 #ifndef NO_TRACE
     if (msglvl > 0) {
 
-        /* ------------------------------------------------------ */
-        /* Version Number & Version Date are defined in version.h */
-        /* ------------------------------------------------------ */
+        printf("\n ============================================= ");
+        printf("\n = Nonsymmetric implicit Arnoldi update code = ");
+        printf("\n = Version Number:     %s                 = ", ARPACK_VERSION);
+        printf("\n = Version Date:       %s            = ", ARPACK_DATE);
+        printf("\n ============================================= ");
+        printf("\n = Summary of timing statistics              = ");
+        printf("\n ============================================= ");
 
-	s_wsfe(&io___22);
-	e_wsfe();
-	s_wsfe(&io___23);
-	do_fio(&c__1, (char *)&mxiter, (ftnlen)sizeof(int32_t));
-	do_fio(&c__1, (char *)&timing_1.nopx, (ftnlen)sizeof(int32_t));
-	do_fio(&c__1, (char *)&timing_1.nbx, (ftnlen)sizeof(int32_t));
-	do_fio(&c__1, (char *)&timing_1.nrorth, (ftnlen)sizeof(int32_t));
-	do_fio(&c__1, (char *)&timing_1.nitref, (ftnlen)sizeof(int32_t));
-	do_fio(&c__1, (char *)&timing_1.nrstrt, (ftnlen)sizeof(int32_t));
-	do_fio(&c__1, (char *)&timing_1.tmvopx, (ftnlen)sizeof(float));
-	do_fio(&c__1, (char *)&timing_1.tmvbx, (ftnlen)sizeof(float));
-	do_fio(&c__1, (char *)&timing_1.tnaupd, (ftnlen)sizeof(float));
-	do_fio(&c__1, (char *)&timing_1.tnaup2, (ftnlen)sizeof(float));
-	do_fio(&c__1, (char *)&timing_1.tnaitr, (ftnlen)sizeof(float));
-	do_fio(&c__1, (char *)&timing_1.titref, (ftnlen)sizeof(float));
-	do_fio(&c__1, (char *)&timing_1.tgetv0, (ftnlen)sizeof(float));
-	do_fio(&c__1, (char *)&timing_1.tneigh, (ftnlen)sizeof(float));
-	do_fio(&c__1, (char *)&timing_1.tngets, (ftnlen)sizeof(float));
-	do_fio(&c__1, (char *)&timing_1.tnapps, (ftnlen)sizeof(float));
-	do_fio(&c__1, (char *)&timing_1.tnconv, (ftnlen)sizeof(float));
-	do_fio(&c__1, (char *)&timing_1.trvec, (ftnlen)sizeof(float));
-	e_wsfe();
+        printf("\n Total number update iterations             =  %5d", mxiter);
+        printf("\n Total number of OP*x operations            =  %5d", timing_1.nopx);
+        printf("\n Total number of B*x operations             =  %5d", timing_1.nbx);
+        printf("\n Total number of reorthogonalization steps  =  %5d", timing_1.nrorth);
+        printf("\n Total number of iterative refinement steps =  %5d", timing_1.nitref);
+        printf("\n Total number of restart steps              =  %5d", timing_1.nrstrt);
+        printf("\n Total time in user OP*x operation          =  %12f", timing_1.tmvopx);
+        printf("\n Total time in user B*x operation           =  %12f", timing_1.tmvbx);
+        printf("\n Total time in Arnoldi update routine       =  %12f", timing_1.tnaupd);
+        printf("\n Total time in naup2 routine                =  %12f", timing_1.tnaup2);
+        printf("\n Total time in basic Arnoldi iteration loop =  %12f", timing_1.tnaitr);
+        printf("\n Total time in reorthogonalization phase    =  %12f", timing_1.titref);
+        printf("\n Total time in (re)start vector generation  =  %12f", timing_1.tgetv0);
+        printf("\n Total time in Hessenberg eig. subproblem   =  %12f", timing_1.tneigh);
+        printf("\n Total time in getting the shifts           =  %12f", timing_1.tngets);
+        printf("\n Total time in applying the shifts          =  %12f", timing_1.tnapps);
+        printf("\n Total time in convergence testing          =  %12f", timing_1.tnconv);
+        printf("\n Total time in computing final Ritz vectors =  %12f", timing_1.trvec);
     }
 #endif
 

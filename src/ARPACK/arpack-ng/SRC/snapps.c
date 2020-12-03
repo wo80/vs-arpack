@@ -90,7 +90,7 @@
  * \BeginLib
  *
  * \Local variables:
- *     xxxxxx  float
+ *     xxxxxx  real
  *
  * \References:
  *  1. D.C. Sorensen, "Implicit Application of Polynomial Filters in
@@ -98,7 +98,7 @@
  *     pp 357-385.
  *
  * \Routines called:
- *     ivout   ARPACK utility routine that prints int32_ts.
+ *     ivout   ARPACK utility routine that prints integers.
  *     arscnd  ARPACK utility routine for timing.
  *     smout   ARPACK utility routine that prints matrices.
  *     svout   ARPACK utility routine that prints vectors.
@@ -207,10 +207,10 @@ int snapps_(int32_t *n, int32_t *kev, int32_t *np, float *
         /* REFERENCE: LAPACK subroutine slahqr           */
         /* --------------------------------------------- */
 
-	unfl = slamch_("safe minimum");
+	unfl = slamch_("S");
 	ovfl = 1.f / unfl;
 	slabad_(&unfl, &ovfl);
-	ulp = slamch_("precision");
+	ulp = slamch_("P");
 	smlnum = unfl * (*n / ulp);
 	first = false;
     }
@@ -515,8 +515,7 @@ L40:
               /* ------------------------------------ */
 
 		i__3 = kplusp - i + 1;
-		slarf_("L", &nr, &i__3, u, &c__1, &tau, &h[i + i * 
-			h_dim1], ldh, &workl[1]);
+		slarf_("L", &nr, &i__3, u, &c__1, &tau, &h[i + i * h_dim1], ldh, &workl[1]);
 
               /* ------------------------------------- */
               /* Apply the reflector to the right of H */
@@ -525,15 +524,13 @@ L40:
 /* Computing MIN */
 		i__3 = i + 3;
 		ir = min(i__3,iend);
-		slarf_("R", &ir, &nr, u, &c__1, &tau, &h[i * h_dim1 + 
-			1], ldh, &workl[1]);
+		slarf_("R", &ir, &nr, u, &c__1, &tau, &h[i * h_dim1 + 1], ldh, &workl[1]);
 
               /* --------------------------------------------------- */
               /* Accumulate the reflector in the matrix Q;  Q <- Q*G */
               /* --------------------------------------------------- */
 
-		slarf_("R", &kplusp, &nr, u, &c__1, &tau, &q[i * q_dim1 
-			+ 1], ldq, &workl[1]);
+		slarf_("R", &kplusp, &nr, u, &c__1, &tau, &q[i * q_dim1 + 1], ldq, &workl[1]);
 
               /* -------------------------- */
               /* Prepare for next reflector */
@@ -629,8 +626,7 @@ L110:
      /* ----------------------------------------------- */
 
     if (h[*kev + 1 + *kev * h_dim1] > 0.f) {
-	sgemv_("N", n, &kplusp, &s_one, &v[v_offset], ldv, &q[(*kev + 1) * 
-		q_dim1 + 1], &c__1, &s_zero, &workd[*n + 1], &c__1);
+	sgemv_("N", n, &kplusp, &s_one, &v[v_offset], ldv, &q[(*kev + 1) * q_dim1 + 1], &c__1, &s_zero, &workd[*n + 1], &c__1);
     }
 
      /* -------------------------------------------------------- */
@@ -641,10 +637,8 @@ L110:
     i__1 = *kev;
     for (i = 1; i <= i__1; ++i) {
 	i__2 = kplusp - i + 1;
-	sgemv_("N", n, &i__2, &s_one, &v[v_offset], ldv, &q[(*kev - i + 1) * 
-		q_dim1 + 1], &c__1, &s_zero, &workd[1], &c__1);
-	scopy_(n, &workd[1], &c__1, &v[(kplusp - i + 1) * v_dim1 + 1], &
-		c__1);
+	sgemv_("N", n, &i__2, &s_one, &v[v_offset], ldv, &q[(*kev - i + 1) * q_dim1 + 1], &c__1, &s_zero, &workd[1], &c__1);
+	scopy_(n, &workd[1], &c__1, &v[(kplusp - i + 1) * v_dim1 + 1], &c__1);
 /* L140: */
     }
 
@@ -652,8 +646,7 @@ L110:
      /*  Move v(:,kplusp-kev+1:kplusp) into v(:,1:kev). */
      /* ----------------------------------------------- */
 
-    slacpy_("A", n, kev, &v[(kplusp - *kev + 1) * v_dim1 + 1], ldv, &v[
-	    v_offset], ldv);
+    slacpy_("A", n, kev, &v[(kplusp - *kev + 1) * v_dim1 + 1], ldv, &v[v_offset], ldv);
 
      /* ------------------------------------------------------------ */
      /* Copy the (kev+1)-st column of (V*Q) in the appropriate place */
@@ -673,8 +666,7 @@ L110:
 
     sscal_(n, &q[kplusp + *kev * q_dim1], &resid[1], &c__1);
     if (h[*kev + 1 + *kev * h_dim1] > 0.f) {
-	saxpy_(n, &h[*kev + 1 + *kev * h_dim1], &v[(*kev + 1) * v_dim1 + 1],
-		 &c__1, &resid[1], &c__1);
+	saxpy_(n, &h[*kev + 1 + *kev * h_dim1], &v[(*kev + 1) * v_dim1 + 1],&c__1, &resid[1], &c__1);
     }
 
 #ifndef NO_TRACE

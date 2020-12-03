@@ -2,6 +2,7 @@
 
 #include "arpack.h"
 
+/* ----------------------------------------------------------------------- */
 /*  Routine:    CMOUT */
 
 /*  Purpose:    Complex matrix output routine. */
@@ -19,13 +20,9 @@
 /*              If IDIGIT .LT. 0, printing is done with 72 columns. */
 /*              If IDIGIT .GT. 0, printing is done with 132 columns. */
 
-/* \SCCS Information: @(#) */
-/* FILE: cmout.f   SID: 2.1   DATE OF SID: 11/16/95   RELEASE: 2 */
-
 /* ----------------------------------------------------------------------- */
 
-int cmout_(int32_t *m, int32_t *n, complex *a,
-	 int32_t *lda, int32_t *idigit, char *ifmt)
+int cmout_(int32_t *m, int32_t *n, complex *a, int32_t *lda, int32_t *idigit, char *ifmt)
 {
     /* Initialized data */
 
@@ -48,15 +45,12 @@ int cmout_(int32_t *m, int32_t *n, complex *a,
 
 /* Computing MIN */
     i__1 = strlen(ifmt);
-    lll = min(i__1,80);
+    lll = min(i__1,79);
     i__1 = lll;
     for (i = 1; i <= i__1; ++i) {
-	*&line[i - 1] = '-';
+	line[i - 1] = '-';
     }
-
-    for (i = lll + 1; i <= 80; ++i) {
-	*&line[i - 1] = ' ';
-    }
+	line[lll] = '\0';
 
     printf("\n %s\n %s", ifmt, line);
 
@@ -80,7 +74,7 @@ int cmout_(int32_t *m, int32_t *n, complex *a,
 /* Computing MIN */
 		i__2 = *n, i__3 = k1 + 1;
 		k2 = min(i__2,i__3);
-		printf("           ");
+		printf("\n           ");
 		for (i = k1; i <= k2; ++i) {
 		    printf("          Col %4d         ", i);
 		}
@@ -100,7 +94,7 @@ int cmout_(int32_t *m, int32_t *n, complex *a,
 /* Computing MIN */
 		i__2 = *n, i__3 = k1 + 1;
 		k2 = min(i__2,i__3);
-		printf("          ");
+		printf("\n          ");
 		for (i = k1; i <= k2; ++i) {
 		    printf("            Col %4d           ", i);
 		}
@@ -120,7 +114,7 @@ int cmout_(int32_t *m, int32_t *n, complex *a,
 /* Computing MIN */
 		i__2 = *n, i__3 = k1 + 1;
 		k2 = min(i__2,i__3);
-		printf("          ");
+		printf("\n          ");
 		for (i = k1; i <= k2; ++i) {
 		    printf("              Col %4d             ", i);
 		}
@@ -157,7 +151,7 @@ int cmout_(int32_t *m, int32_t *n, complex *a,
 /* Computing MIN */
 		i__2 = *n, i__3 = k1 + 3;
 		k2 = min(i__2,i__3);
-		printf("           ");
+		printf("\n           ");
 		for (i = k1; i <= k2; ++i) {
 		    printf("          Col %4d         ", i);
 		}
@@ -177,7 +171,7 @@ int cmout_(int32_t *m, int32_t *n, complex *a,
 /* Computing MIN */
 		i__2 = *n, i__3 = k1 + 2;
 		k2 = min(i__2,i__3);
-		printf("          ");
+		printf("\n          ");
 		for (i = k1; i <= k2; ++i) {
 		    printf("            Col %4d           ", i);
 		}
@@ -197,7 +191,7 @@ int cmout_(int32_t *m, int32_t *n, complex *a,
 /* Computing MIN */
 		i__2 = *n, i__3 = k1 + 2;
 		k2 = min(i__2,i__3);
-		printf("          ");
+		printf("\n          ");
 		for (i = k1; i <= k2; ++i) {
 		    printf("              Col %4d             ", i);
 		}
@@ -217,7 +211,7 @@ int cmout_(int32_t *m, int32_t *n, complex *a,
 /* Computing MIN */
 		i__2 = *n, i__3 = k1 + 1;
 		k2 = min(i__2,i__3);
-		printf("            ");
+		printf("\n            ");
 		for (i = k1; i <= k2; ++i) {
 		    printf("                   Col %4d                  ", i);
 		}

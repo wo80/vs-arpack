@@ -1,5 +1,6 @@
 /* EXAMPLES\NONSYM\dndrv3.f -- translated by f2c (version 20100827). */
 
+#include <stdlib.h>
 #include "arpack.h"
 
 int dndrv3()
@@ -11,7 +12,8 @@ int dndrv3()
     /* Local variables */
     double d[75]	/* was [25][3] */, h;
     int32_t j, n;
-    double v[6400]	/* was [256][25] */, md[256], me[255];
+    double md[256], me[255];
+    double* v	/* was [256][25] */;
     double ax[256];
     double mx[256];
     int32_t ido, ncv, nev;
@@ -21,12 +23,12 @@ int dndrv3()
     bool rvec;
     int32_t ierr;
     char* which;
-    double resid[256];
+    double* resid;
     int32_t nconv;
-    double workd[768];
+    double* workd;
     bool first;
     int32_t ipntr[14];
-    double workl[2025];
+    double *workl;
     int32_t iparam[11];
     double sigmai;
     bool select[25];
@@ -34,6 +36,11 @@ int dndrv3()
     int32_t ishfts;
     int32_t maxitr, lworkl;
     double workev[75];
+
+    resid = (double*)malloc(256 * sizeof(double));
+    v = (double*)malloc(6400 * sizeof(double));
+    workl = (double*)malloc(2025 * sizeof(double));
+    workd = (double*)malloc(768 * sizeof(double));
 
     /* Fortran I/O blocks */
 
@@ -199,9 +206,7 @@ L10:
         /* has been exceeded.                          */
         /* ------------------------------------------- */
 
-    dnaupd_(&ido, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, 
-	    iparam, ipntr, workd, workl, &lworkl, &info, (ftnlen)1, (ftnlen)2)
-	    ;
+    dnaupd_(&ido, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, workd, workl, &lworkl, &info);
 
     if (ido == -1 || ido == 1) {
 
@@ -280,10 +285,7 @@ L10:
         /* ----------------------------------------- */
 
 	rvec = true;
-	dneupd_(&rvec, "A", select, d, &d[25], v, &c__256, &sigmar, &
-		sigmai, workev, bmat, &n, which, &nev, &tol, resid, &ncv, v, &
-		c__256, iparam, ipntr, workd, workl, &lworkl, &ierr, (ftnlen)
-		1, (ftnlen)1, (ftnlen)2);
+	dneupd_(&rvec, "A", select, d, &d[25], v, &c__256, &sigmar, &sigmai, workev, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, workd, workl, &lworkl, &ierr);
 
         /* --------------------------------------------- */
         /* The real part of the eigenvalue is returned   */
@@ -417,6 +419,11 @@ L10:
 	printf(" \n");
 
     }
+
+    free(resid);
+    free(v);
+    free(workl);
+    free(workd);
 
      /* ------------------------- */
      /* Done with program dndrv3. */

@@ -35,8 +35,7 @@
 
 /* -------------------------------------------------------------------- */
 
-int icopy_(int32_t *n, int32_t *lx, int32_t *incx, int32_t *
-	ly, int32_t *incy)
+int icopy_(int32_t *n, int32_t *lx, int32_t *incx, int32_t *ly, int32_t *incy)
 {
     /* System generated locals */
     int32_t i__1;

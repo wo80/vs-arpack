@@ -133,7 +133,7 @@
  *
  * \Routines called:
  *     zgetv0  ARPACK routine to generate the initial vector.
- *     ivout   ARPACK utility routine that prints int32_ts.
+ *     ivout   ARPACK utility routine that prints integers.
  *     arscnd  ARPACK utility routine for timing.
  *     zmout   ARPACK utility routine that prints matrices
  *     zvout   ARPACK utility routine that prints vectors.
@@ -148,7 +148,7 @@
  *     zcopy   Level 1 BLAS that copies one vector to another .
  *     zdotc   Level 1 BLAS that computes the scalar product of two vectors.
  *     zscal   Level 1 BLAS that scales a vector.
- *     zdscal  Level 1 BLAS that scales a complex vector by a float number.
+ *     zdscal  Level 1 BLAS that scales a complex vector by a real number.
  *     dznrm2  Level 1 BLAS that computes the norm of a vector.
  *
  * \Author
@@ -277,11 +277,11 @@ int znaitr_(int32_t *ido, char *bmat, int32_t *n, int32_t *k,int32_t *np, int32_
         /* REFERENCE: LAPACK subroutine zlahqr     */
         /* --------------------------------------- */
 
-	unfl = dlamch_("safe minimum");
+	unfl = dlamch_("S");
 	z__1.r = 1. / unfl, z__1.i = 0. / unfl;
 	ovfl = z__1.r;
 	dlabad_(&unfl, &ovfl);
-	ulp = dlamch_("precision");
+	ulp = dlamch_("P");
 	smlnum = unfl * (*n / ulp);
 	first = false;
     }
@@ -452,10 +452,8 @@ L40:
             /* use LAPACK routine zlascl               */
             /* --------------------------------------- */
 
-	zlascl_("G", &i, &i, rnorm, &d_one, n, &c__1, &v[j * v_dim1 
-		+ 1], n, &infol);
-	zlascl_("G", &i, &i, rnorm, &d_one, n, &c__1, &workd[ipj], 
-		n, &infol);
+	zlascl_("G", &i, &i, rnorm, &d_one, n, &c__1, &v[j * v_dim1 + 1], n, &infol);
+	zlascl_("G", &i, &i, rnorm, &d_one, n, &c__1, &workd[ipj], n, &infol);
     }
 
         /* ---------------------------------------------------- */
@@ -570,8 +568,7 @@ L60:
         /* WORKD(IPJ:IPJ+N-1) contains B*OP*v_{j}.  */
         /* ---------------------------------------- */
 
-    zgemv_("C", n, &j, &z_one, &v[v_offset], ldv, &workd[ipj], &c__1, &z_zero, &
-	    h[j * h_dim1 + 1], &c__1);
+    zgemv_("C", n, &j, &z_one, &v[v_offset], ldv, &workd[ipj], &c__1, &z_zero, &h[j * h_dim1 + 1], &c__1);
 
         /* ------------------------------------ */
         /* Orthogonalize r_{j} against V_{j}.   */
@@ -579,8 +576,7 @@ L60:
         /* ------------------------------------ */
 
     z__1.r = -1., z__1.i = -0.;
-    zgemv_("N", n, &j, &z__1, &v[v_offset], ldv, &h[j * h_dim1 + 1], &c__1, 
-	    &z_one, &resid[1], &c__1);
+    zgemv_("N", n, &j, &z__1, &v[v_offset], ldv, &h[j * h_dim1 + 1], &c__1, &z_one, &resid[1], &c__1);
 
     if (j > 1) {
 	i__1 = j + (j - 1) * h_dim1;
@@ -691,8 +687,7 @@ L80:
         /* WORKD(IRJ:IRJ+J-1) = v(:,1:J)'*WORKD(IPJ:IPJ+N-1). */
         /* -------------------------------------------------- */
 
-    zgemv_("C", n, &j, &z_one, &v[v_offset], ldv, &workd[ipj], &c__1, &z_zero, &
-	    workd[irj], &c__1);
+    zgemv_("C", n, &j, &z_one, &v[v_offset], ldv, &workd[ipj], &c__1, &z_zero, &workd[irj], &c__1);
 
         /* ------------------------------------------- */
         /* Compute the correction to the residual:     */
@@ -702,8 +697,7 @@ L80:
         /* ------------------------------------------- */
 
     z__1.r = -1., z__1.i = -0.;
-    zgemv_("N", n, &j, &z__1, &v[v_offset], ldv, &workd[irj], &c__1, &z_one, &
-	    resid[1], &c__1);
+    zgemv_("N", n, &j, &z__1, &v[v_offset], ldv, &workd[irj], &c__1, &z_one, &resid[1], &c__1);
     zaxpy_(&j, &z_one, &workd[irj], &c__1, &h[j * h_dim1 + 1], &c__1);
 
     orth2 = true;
