@@ -1,4 +1,4 @@
-/* D:\Projekte\ARPACK\arpack-ng\UTIL\dmout.f -- translated by f2c (version 20100827). */
+/* arpack-ng\UTIL\dmout.f -- translated by f2c (version 20100827). */
 
 #include "arpack.h"
 
@@ -22,71 +22,19 @@
 
 /* ----------------------------------------------------------------------- */
 
-int dmout_(int32_t *lout, int32_t *m, int32_t *n, double 
+int dmout_(int32_t *m, int32_t *n, double 
 	*a, int32_t *lda, int32_t *idigit, char *ifmt)
 {
     /* Initialized data */
 
-    static char icol[1*3] = "C" "o" "l";
-
-    /* Format strings */
-    static char fmt_9999[] = "(/1x,a,/1x,a)";
-    static char fmt_9998[] = "(10x,10(4x,3a1,i4,1x))";
-    static char fmt_9994[] = "(1x,\002 Row\002,i4,\002:\002,1x,1p,10d12.3)";
-    static char fmt_9997[] = "(10x,8(5x,3a1,i4,2x))";
-    static char fmt_9993[] = "(1x,\002 Row\002,i4,\002:\002,1x,1p,8d14.5)";
-    static char fmt_9996[] = "(10x,6(7x,3a1,i4,4x))";
-    static char fmt_9992[] = "(1x,\002 Row\002,i4,\002:\002,1x,1p,6d18.9)";
-    static char fmt_9995[] = "(10x,5(9x,3a1,i4,6x))";
-    static char fmt_9991[] = "(1x,\002 Row\002,i4,\002:\002,1x,1p,5d22.13)";
-    static char fmt_9990[] = "(1x,\002 \002)";
-
     /* System generated locals */
     int32_t a_dim1, a_offset, i__1, i__2, i__3;
-
-    /* Builtin functions */
-    int32_t i_len(char *, ftnlen), s_wsfe(cilist *), do_fio(int32_t *, char *,
-	     ftnlen), e_wsfe(void);
 
     /* Local variables */
     int32_t i, j, k1, k2, lll;
     char line[80];
     int32_t ndigit;
 
-    /* Fortran I/O blocks */
-    static cilist io___5 = { 0, 0, 0, fmt_9999, 0 };
-    static cilist io___9 = { 0, 0, 0, fmt_9998, 0 };
-    static cilist io___10 = { 0, 0, 0, fmt_9994, 0 };
-    static cilist io___12 = { 0, 0, 0, fmt_9997, 0 };
-    static cilist io___13 = { 0, 0, 0, fmt_9993, 0 };
-    static cilist io___14 = { 0, 0, 0, fmt_9996, 0 };
-    static cilist io___15 = { 0, 0, 0, fmt_9992, 0 };
-    static cilist io___16 = { 0, 0, 0, fmt_9995, 0 };
-    static cilist io___17 = { 0, 0, 0, fmt_9991, 0 };
-    static cilist io___18 = { 0, 0, 0, fmt_9998, 0 };
-    static cilist io___19 = { 0, 0, 0, fmt_9994, 0 };
-    static cilist io___20 = { 0, 0, 0, fmt_9997, 0 };
-    static cilist io___21 = { 0, 0, 0, fmt_9993, 0 };
-    static cilist io___22 = { 0, 0, 0, fmt_9996, 0 };
-    static cilist io___23 = { 0, 0, 0, fmt_9992, 0 };
-    static cilist io___24 = { 0, 0, 0, fmt_9995, 0 };
-    static cilist io___25 = { 0, 0, 0, fmt_9991, 0 };
-    static cilist io___26 = { 0, 0, 0, fmt_9990, 0 };
-
-/*     ... */
-/*     ... SPECIFICATIONS FOR ARGUMENTS */
-/*     ... */
-/*     ... SPECIFICATIONS FOR LOCAL VARIABLES */
-/*     .. Scalar Arguments .. */
-/*     .. */
-/*     .. Array Arguments .. */
-/*     .. */
-/*     .. Local Scalars .. */
-/*     .. */
-/*     .. Local Arrays .. */
-/*     .. */
-/*     .. Intrinsic Functions .. */
-/*     .. */
 /*     .. Data statements .. */
     /* Parameter adjustments */
     a_dim1 = *lda;
@@ -98,24 +46,18 @@ int dmout_(int32_t *lout, int32_t *m, int32_t *n, double
 /*     .. Executable Statements .. */
 
 /* Computing MIN */
-    i__1 = i_len(ifmt, ifmt_len);
+    i__1 = strlen(ifmt);
     lll = min(i__1,80);
     i__1 = lll;
     for (i = 1; i <= i__1; ++i) {
 	*&line[i - 1] = '-';
-/* L10: */
     }
 
     for (i = lll + 1; i <= 80; ++i) {
 	*&line[i - 1] = ' ';
-/* L20: */
     }
 
-    io___5.ciunit = *lout;
-    s_wsfe(&io___5);
-    do_fio(&c__1, ifmt, ifmt_len);
-    do_fio(&c__1, line, lll);
-    e_wsfe();
+    printf("\n %s\n %s", ifmt, line);
 
     if (*m <= 0 || *n <= 0 || *lda <= 0) {
 	return 0;
@@ -137,27 +79,17 @@ int dmout_(int32_t *lout, int32_t *m, int32_t *n, double
 /* Computing MIN */
 		i__2 = *n, i__3 = k1 + 4;
 		k2 = min(i__2,i__3);
-		io___9.ciunit = *lout;
-		s_wsfe(&io___9);
-		i__2 = k2;
-		for (i = k1; i <= i__2; ++i) {
-		    do_fio(&c__3, icol, (ftnlen)1);
-		    do_fio(&c__1, (char *)&i, (ftnlen)sizeof(int32_t));
+		printf("          ");
+		for (i = k1; i <= k2; ++i) {
+		    printf("     Col %4d ", i);
 		}
-		e_wsfe();
 		i__2 = *m;
 		for (i = 1; i <= i__2; ++i) {
-		    io___10.ciunit = *lout;
-		    s_wsfe(&io___10);
-		    do_fio(&c__1, (char *)&i, (ftnlen)sizeof(int32_t));
-		    i__3 = k2;
-		    for (j = k1; j <= i__3; ++j) {
-			do_fio(&c__1, (char *)&a[i + j * a_dim1], (ftnlen)sizeof(double));
+		    printf("\n  Row %4d:  ", i);
+		    for (j = k1; j <= k2; ++j) {
+			printf(" %12.3f", a[i + j * a_dim1]);
 		    }
-		    e_wsfe();
-/* L30: */
 		}
-/* L40: */
 	    }
 
 	} else if (ndigit <= 6) {
@@ -166,27 +98,17 @@ int dmout_(int32_t *lout, int32_t *m, int32_t *n, double
 /* Computing MIN */
 		i__2 = *n, i__3 = k1 + 3;
 		k2 = min(i__2,i__3);
-		io___12.ciunit = *lout;
-		s_wsfe(&io___12);
-		i__2 = k2;
-		for (i = k1; i <= i__2; ++i) {
-		    do_fio(&c__3, icol, (ftnlen)1);
-		    do_fio(&c__1, (char *)&i, (ftnlen)sizeof(int32_t));
+		printf("          ");
+		for (i = k1; i <= k2; ++i) {
+		    printf("      Col %4d  ", i);
 		}
-		e_wsfe();
 		i__2 = *m;
 		for (i = 1; i <= i__2; ++i) {
-		    io___13.ciunit = *lout;
-		    s_wsfe(&io___13);
-		    do_fio(&c__1, (char *)&i, (ftnlen)sizeof(int32_t));
-		    i__3 = k2;
-		    for (j = k1; j <= i__3; ++j) {
-			do_fio(&c__1, (char *)&a[i + j * a_dim1], (ftnlen)sizeof(double));
+		    printf("\n  Row %4d:  ", i);
+		    for (j = k1; j <= k2; ++j) {
+			printf(" %14.5f", a[i + j * a_dim1]);
 		    }
-		    e_wsfe();
-/* L50: */
 		}
-/* L60: */
 	    }
 
 	} else if (ndigit <= 10) {
@@ -195,27 +117,17 @@ int dmout_(int32_t *lout, int32_t *m, int32_t *n, double
 /* Computing MIN */
 		i__2 = *n, i__3 = k1 + 2;
 		k2 = min(i__2,i__3);
-		io___14.ciunit = *lout;
-		s_wsfe(&io___14);
-		i__2 = k2;
-		for (i = k1; i <= i__2; ++i) {
-		    do_fio(&c__3, icol, (ftnlen)1);
-		    do_fio(&c__1, (char *)&i, (ftnlen)sizeof(int32_t));
+		printf("          ");
+		for (i = k1; i <= k2; ++i) {
+		    printf("        Col %4d    ", i);
 		}
-		e_wsfe();
 		i__2 = *m;
 		for (i = 1; i <= i__2; ++i) {
-		    io___15.ciunit = *lout;
-		    s_wsfe(&io___15);
-		    do_fio(&c__1, (char *)&i, (ftnlen)sizeof(int32_t));
-		    i__3 = k2;
-		    for (j = k1; j <= i__3; ++j) {
-			do_fio(&c__1, (char *)&a[i + j * a_dim1], (ftnlen)sizeof(double));
+		    printf("\n  Row %4d:  ", i);
+		    for (j = k1; j <= k2; ++j) {
+			printf(" %18.9f", a[i + j * a_dim1]);
 		    }
-		    e_wsfe();
-/* L70: */
 		}
-/* L80: */
 	    }
 
 	} else {
@@ -224,27 +136,17 @@ int dmout_(int32_t *lout, int32_t *m, int32_t *n, double
 /* Computing MIN */
 		i__2 = *n, i__3 = k1 + 1;
 		k2 = min(i__2,i__3);
-		io___16.ciunit = *lout;
-		s_wsfe(&io___16);
-		i__2 = k2;
-		for (i = k1; i <= i__2; ++i) {
-		    do_fio(&c__3, icol, (ftnlen)1);
-		    do_fio(&c__1, (char *)&i, (ftnlen)sizeof(int32_t));
+		printf("          ");
+		for (i = k1; i <= k2; ++i) {
+		    printf("          Col %4d      ", i);
 		}
-		e_wsfe();
 		i__2 = *m;
 		for (i = 1; i <= i__2; ++i) {
-		    io___17.ciunit = *lout;
-		    s_wsfe(&io___17);
-		    do_fio(&c__1, (char *)&i, (ftnlen)sizeof(int32_t));
-		    i__3 = k2;
-		    for (j = k1; j <= i__3; ++j) {
-			do_fio(&c__1, (char *)&a[i + j * a_dim1], (ftnlen)sizeof(double));
+		    printf("\n  Row %4d:  ", i);
+		    for (j = k1; j <= k2; ++j) {
+			printf(" %22.13f", a[i + j * a_dim1]);
 		    }
-		    e_wsfe();
-/* L90: */
 		}
-/* L100: */
 	    }
 	}
 
@@ -259,27 +161,17 @@ int dmout_(int32_t *lout, int32_t *m, int32_t *n, double
 /* Computing MIN */
 		i__2 = *n, i__3 = k1 + 9;
 		k2 = min(i__2,i__3);
-		io___18.ciunit = *lout;
-		s_wsfe(&io___18);
-		i__2 = k2;
-		for (i = k1; i <= i__2; ++i) {
-		    do_fio(&c__3, icol, (ftnlen)1);
-		    do_fio(&c__1, (char *)&i, (ftnlen)sizeof(int32_t));
+		printf("          ");
+		for (i = k1; i <= k2; ++i) {
+		    printf("     Col %4d ", i);
 		}
-		e_wsfe();
 		i__2 = *m;
 		for (i = 1; i <= i__2; ++i) {
-		    io___19.ciunit = *lout;
-		    s_wsfe(&io___19);
-		    do_fio(&c__1, (char *)&i, (ftnlen)sizeof(int32_t));
-		    i__3 = k2;
-		    for (j = k1; j <= i__3; ++j) {
-			do_fio(&c__1, (char *)&a[i + j * a_dim1], (ftnlen)sizeof(double));
+		    printf("\n  Row %4d:  ", i);
+		    for (j = k1; j <= k2; ++j) {
+			printf(" %12.3f", a[i + j * a_dim1]);
 		    }
-		    e_wsfe();
-/* L110: */
 		}
-/* L120: */
 	    }
 
 	} else if (ndigit <= 6) {
@@ -288,27 +180,17 @@ int dmout_(int32_t *lout, int32_t *m, int32_t *n, double
 /* Computing MIN */
 		i__2 = *n, i__3 = k1 + 7;
 		k2 = min(i__2,i__3);
-		io___20.ciunit = *lout;
-		s_wsfe(&io___20);
-		i__2 = k2;
-		for (i = k1; i <= i__2; ++i) {
-		    do_fio(&c__3, icol, (ftnlen)1);
-		    do_fio(&c__1, (char *)&i, (ftnlen)sizeof(int32_t));
+		printf("          ");
+		for (i = k1; i <= k2; ++i) {
+		    printf("      Col %4d  ", i);
 		}
-		e_wsfe();
 		i__2 = *m;
 		for (i = 1; i <= i__2; ++i) {
-		    io___21.ciunit = *lout;
-		    s_wsfe(&io___21);
-		    do_fio(&c__1, (char *)&i, (ftnlen)sizeof(int32_t));
-		    i__3 = k2;
-		    for (j = k1; j <= i__3; ++j) {
-			do_fio(&c__1, (char *)&a[i + j * a_dim1], (ftnlen)sizeof(double));
+		    printf("\n  Row %4d:  ", i);
+		    for (j = k1; j <= k2; ++j) {
+			printf(" %14.5f", a[i + j * a_dim1]);
 		    }
-		    e_wsfe();
-/* L130: */
 		}
-/* L140: */
 	    }
 
 	} else if (ndigit <= 10) {
@@ -317,27 +199,17 @@ int dmout_(int32_t *lout, int32_t *m, int32_t *n, double
 /* Computing MIN */
 		i__2 = *n, i__3 = k1 + 5;
 		k2 = min(i__2,i__3);
-		io___22.ciunit = *lout;
-		s_wsfe(&io___22);
-		i__2 = k2;
-		for (i = k1; i <= i__2; ++i) {
-		    do_fio(&c__3, icol, (ftnlen)1);
-		    do_fio(&c__1, (char *)&i, (ftnlen)sizeof(int32_t));
+		printf("          ");
+		for (i = k1; i <= k2; ++i) {
+		    printf("        Col %4d    ", i);
 		}
-		e_wsfe();
 		i__2 = *m;
 		for (i = 1; i <= i__2; ++i) {
-		    io___23.ciunit = *lout;
-		    s_wsfe(&io___23);
-		    do_fio(&c__1, (char *)&i, (ftnlen)sizeof(int32_t));
-		    i__3 = k2;
-		    for (j = k1; j <= i__3; ++j) {
-			do_fio(&c__1, (char *)&a[i + j * a_dim1], (ftnlen)sizeof(double));
+		    printf("\n  Row %4d:  ", i);
+		    for (j = k1; j <= k2; ++j) {
+			printf(" %18.9f", a[i + j * a_dim1]);
 		    }
-		    e_wsfe();
-/* L150: */
 		}
-/* L160: */
 	    }
 
 	} else {
@@ -346,33 +218,21 @@ int dmout_(int32_t *lout, int32_t *m, int32_t *n, double
 /* Computing MIN */
 		i__2 = *n, i__3 = k1 + 4;
 		k2 = min(i__2,i__3);
-		io___24.ciunit = *lout;
-		s_wsfe(&io___24);
-		i__2 = k2;
-		for (i = k1; i <= i__2; ++i) {
-		    do_fio(&c__3, icol, (ftnlen)1);
-		    do_fio(&c__1, (char *)&i, (ftnlen)sizeof(int32_t));
+		printf("          ");
+		for (i = k1; i <= k2; ++i) {
+		    printf("          Col %4d      ", i);
 		}
-		e_wsfe();
 		i__2 = *m;
 		for (i = 1; i <= i__2; ++i) {
-		    io___25.ciunit = *lout;
-		    s_wsfe(&io___25);
-		    do_fio(&c__1, (char *)&i, (ftnlen)sizeof(int32_t));
-		    i__3 = k2;
-		    for (j = k1; j <= i__3; ++j) {
-			do_fio(&c__1, (char *)&a[i + j * a_dim1], (ftnlen)sizeof(double));
+		    printf("\n  Row %4d:  ", i);
+		    for (j = k1; j <= k2; ++j) {
+			printf(" %22.13f", a[i + j * a_dim1]);
 		    }
-		    e_wsfe();
-/* L170: */
 		}
-/* L180: */
 	    }
 	}
     }
-    io___26.ciunit = *lout;
-    s_wsfe(&io___26);
-    e_wsfe();
+    printf("\n");
 
     return 0;
 } /* dmout_ */

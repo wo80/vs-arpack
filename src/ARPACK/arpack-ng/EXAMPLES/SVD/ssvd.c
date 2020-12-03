@@ -21,14 +21,14 @@ int ssvd()
     float ax[500];
     int32_t ido, ncv, nev;
     float tol;
-    char bmat[1];
+    char* bmat;
     int32_t info;
     bool rvec;
     int32_t ierr;
     float temp;
     int32_t mode1;
     float sigma;
-    char which[2];
+    char* which;
     float resid[250];
     int32_t nconv;
     float workd[750];
@@ -40,37 +40,6 @@ int ssvd()
     int32_t lworkl;
 
     /* Fortran I/O blocks */
-    static cilist io___7 = { 0, 6, 0, 0, 0 };
-    static cilist io___8 = { 0, 6, 0, 0, 0 };
-    static cilist io___9 = { 0, 6, 0, 0, 0 };
-    static cilist io___10 = { 0, 6, 0, 0, 0 };
-    static cilist io___25 = { 0, 6, 0, 0, 0 };
-    static cilist io___26 = { 0, 6, 0, 0, 0 };
-    static cilist io___27 = { 0, 6, 0, 0, 0 };
-    static cilist io___28 = { 0, 6, 0, 0, 0 };
-    static cilist io___34 = { 0, 6, 0, 0, 0 };
-    static cilist io___35 = { 0, 6, 0, 0, 0 };
-    static cilist io___36 = { 0, 6, 0, 0, 0 };
-    static cilist io___37 = { 0, 6, 0, 0, 0 };
-    static cilist io___42 = { 0, 6, 0, 0, 0 };
-    static cilist io___43 = { 0, 6, 0, 0, 0 };
-    static cilist io___44 = { 0, 6, 0, 0, 0 };
-    static cilist io___45 = { 0, 6, 0, 0, 0 };
-    static cilist io___46 = { 0, 6, 0, 0, 0 };
-    static cilist io___47 = { 0, 6, 0, 0, 0 };
-    static cilist io___48 = { 0, 6, 0, 0, 0 };
-    static cilist io___49 = { 0, 6, 0, 0, 0 };
-    static cilist io___50 = { 0, 6, 0, 0, 0 };
-    static cilist io___51 = { 0, 6, 0, 0, 0 };
-    static cilist io___52 = { 0, 6, 0, 0, 0 };
-    static cilist io___53 = { 0, 6, 0, 0, 0 };
-    static cilist io___54 = { 0, 6, 0, 0, 0 };
-    static cilist io___55 = { 0, 6, 0, 0, 0 };
-    static cilist io___56 = { 0, 6, 0, 0, 0 };
-    static cilist io___57 = { 0, 6, 0, 0, 0 };
-    static cilist io___58 = { 0, 6, 0, 0, 0 };
-    static cilist io___59 = { 0, 6, 0, 0, 0 };
-    static cilist io___60 = { 0, 6, 0, 0, 0 };
 
 /*     This example program is intended to illustrate the */
 /*     the use of ARPACK to compute the Singular Value Decomposition. */
@@ -266,29 +235,21 @@ int ssvd()
 
     nev = 4;
     ncv = 10;
-    *bmat = 'I';
+    bmat = "I";
     strcpy(which, "LM");
 
     if (n > 250) {
-	s_wsle(&io___7);
-	do_lio(&c__9, &c__1, " ERROR with _SVD: N is greater than MAXN ", (ftnlen)41);
-	e_wsle();
-	goto L9000;
+	printf(" ERROR with _SVD: N is greater than MAXN \n");
+	return 0;
     } else if (m > 500) {
-	s_wsle(&io___8);
-	do_lio(&c__9, &c__1, " ERROR with _SVD: M is greater than MAXM ", (ftnlen)41);
-	e_wsle();
-	goto L9000;
+	printf(" ERROR with _SVD: M is greater than MAXM \n");
+	return 0;
     } else if (nev > 10) {
-	s_wsle(&io___9);
-	do_lio(&c__9, &c__1, " ERROR with _SVD: NEV is greater than MAXNEV ", (ftnlen)45);
-	e_wsle();
-	goto L9000;
+	printf(" ERROR with _SVD: NEV is greater than MAXNEV \n");
+	return 0;
     } else if (ncv > 25) {
-	s_wsle(&io___10);
-	do_lio(&c__9, &c__1, " ERROR with _SVD: NCV is greater than MAXNCV ", (ftnlen)45);
-	e_wsle();
-	goto L9000;
+	printf(" ERROR with _SVD: NCV is greater than MAXNCV \n");
+	return 0;
     }
 
      /* --------------------------------------------------- */
@@ -403,19 +364,10 @@ L10:
         /* documentation in SSAUPD. */
         /* ------------------------ */
 
-	s_wsle(&io___25);
-	do_lio(&c__9, &c__1, " ", (ftnlen)1);
-	e_wsle();
-	s_wsle(&io___26);
-	do_lio(&c__9, &c__1, " Error with _saupd, info = ", (ftnlen)27);
-	do_lio(&c__3, &c__1, (char *)&info, (ftnlen)sizeof(int32_t));
-	e_wsle();
-	s_wsle(&io___27);
-	do_lio(&c__9, &c__1, " Check documentation in _saupd ", (ftnlen)31);
-	e_wsle();
-	s_wsle(&io___28);
-	do_lio(&c__9, &c__1, " ", (ftnlen)1);
-	e_wsle();
+	printf(" \n");
+	printf(" Error with _saupd info = %d\n", info);
+	printf(" Check documentation in _saupd \n");
+	printf(" \n");
 
     } else {
 
@@ -453,19 +405,10 @@ L10:
            /* Check the documentation of SSEUPD. */
            /* ---------------------------------- */
 
-	    s_wsle(&io___34);
-	    do_lio(&c__9, &c__1, " ", (ftnlen)1);
-	    e_wsle();
-	    s_wsle(&io___35);
-	    do_lio(&c__9, &c__1, " Error with _seupd, info = ", (ftnlen)27);
-	    do_lio(&c__3, &c__1, (char *)&ierr, (ftnlen)sizeof(int32_t));
-	    e_wsle();
-	    s_wsle(&io___36);
-	    do_lio(&c__9, &c__1, " Check the documentation of _seupd. ", (ftnlen)36);
-	    e_wsle();
-	    s_wsle(&io___37);
-	    do_lio(&c__9, &c__1, " ", (ftnlen)1);
-	    e_wsle();
+	    printf(" \n");
+	    printf(" Error with _seupd info = %d\n", ierr);
+	    printf(" Check the documentation of _seupd. \n");
+	    printf(" \n");
 
 	} else {
 
@@ -517,7 +460,7 @@ L10:
            /* Display computed residuals    */
            /* ----------------------------- */
 
-	    smout_(&c__6, &nconv, &c__2, s, &c__25, &c_n6, "Singular values and direct residuals");
+	    smout_(&nconv, &c__2, s, &c__25, &c_n6, "Singular values and direct residuals");
 	}
 
         /* ---------------------------------------- */
@@ -525,85 +468,35 @@ L10:
         /* ---------------------------------------- */
 
 	if (info == 1) {
-	    s_wsle(&io___42);
-	    do_lio(&c__9, &c__1, " ", (ftnlen)1);
-	    e_wsle();
-	    s_wsle(&io___43);
-	    do_lio(&c__9, &c__1, " Maximum number of iterations reached.", (ftnlen)38);
-	    e_wsle();
-	    s_wsle(&io___44);
-	    do_lio(&c__9, &c__1, " ", (ftnlen)1);
-	    e_wsle();
+	    printf(" \n");
+	    printf(" Maximum number of iterations reached.\n");
+	    printf(" \n");
 	} else if (info == 3) {
-	    s_wsle(&io___45);
-	    do_lio(&c__9, &c__1, " ", (ftnlen)1);
-	    e_wsle();
-	    s_wsle(&io___46);
-	    do_lio(&c__9, &c__1, " No shifts could be applied during implicit", (ftnlen)43);
-	    do_lio(&c__9, &c__1, " Arnoldi update, try increasing NCV.", (ftnlen)36);
-	    e_wsle();
-	    s_wsle(&io___47);
-	    do_lio(&c__9, &c__1, " ", (ftnlen)1);
-	    e_wsle();
+	    printf(" \n");
+	    printf(" No shifts could be applied during implicit\n");
+	    printf(" Arnoldi update try increasing NCV.\n");
+	    printf(" \n");
 	}
 
-	s_wsle(&io___48);
-	do_lio(&c__9, &c__1, " ", (ftnlen)1);
-	e_wsle();
-	s_wsle(&io___49);
-	do_lio(&c__9, &c__1, " _SVD ", (ftnlen)6);
-	e_wsle();
-	s_wsle(&io___50);
-	do_lio(&c__9, &c__1, " ==== ", (ftnlen)6);
-	e_wsle();
-	s_wsle(&io___51);
-	do_lio(&c__9, &c__1, " ", (ftnlen)1);
-	e_wsle();
-	s_wsle(&io___52);
-	do_lio(&c__9, &c__1, " Size of the matrix is ", (ftnlen)23);
-	do_lio(&c__3, &c__1, (char *)&n, (ftnlen)sizeof(int32_t));
-	e_wsle();
-	s_wsle(&io___53);
-	do_lio(&c__9, &c__1, " The number of Ritz values requested is ", (ftnlen)40);
-	do_lio(&c__3, &c__1, (char *)&nev, (ftnlen)sizeof(int32_t));
-	e_wsle();
-	s_wsle(&io___54);
-	do_lio(&c__9, &c__1, " The number of Arnoldi vectors generated", (ftnlen)40);
-	do_lio(&c__9, &c__1, " (NCV) is ", (ftnlen)10);
-	do_lio(&c__3, &c__1, (char *)&ncv, (ftnlen)sizeof(int32_t));
-	e_wsle();
-	s_wsle(&io___55);
-	do_lio(&c__9, &c__1, " What portion of the spectrum: ", (ftnlen)31);
-	do_lio(&c__9, &c__1, which, (ftnlen)2);
-	e_wsle();
-	s_wsle(&io___56);
-	do_lio(&c__9, &c__1, " The number of converged Ritz values is ", (ftnlen)40);
-	do_lio(&c__3, &c__1, (char *)&nconv, (ftnlen)sizeof(int32_t));
-	e_wsle();
-	s_wsle(&io___57);
-	do_lio(&c__9, &c__1, " The number of Implicit Arnoldi update", (ftnlen)38);
-	do_lio(&c__9, &c__1, " iterations taken is ", (ftnlen)21);
-	do_lio(&c__3, &c__1, (char *)&iparam[2], (ftnlen)sizeof(int32_t));
-	e_wsle();
-	s_wsle(&io___58);
-	do_lio(&c__9, &c__1, " The number of OP*x is ", (ftnlen)23);
-	do_lio(&c__3, &c__1, (char *)&iparam[8], (ftnlen)sizeof(int32_t));
-	e_wsle();
-	s_wsle(&io___59);
-	do_lio(&c__9, &c__1, " The convergence criterion is ", (ftnlen)30);
-	do_lio(&c__4, &c__1, (char *)&tol, (ftnlen)sizeof(float));
-	e_wsle();
-	s_wsle(&io___60);
-	do_lio(&c__9, &c__1, " ", (ftnlen)1);
-	e_wsle();
+	printf(" \n");
+	printf(" _SVD \n");
+	printf(" ==== \n");
+	printf(" \n");
+	printf(" Size of the matrix is %d\n", n);
+	printf(" The number of Ritz values requested is %d\n", nev);
+	printf(" The number of Arnoldi vectors generated (NCV) is %d\n", ncv);
+	printf(" What portion of the spectrum: %s\n", which);
+	printf(" The number of converged Ritz values is %d\n", nconv);
+	printf(" The number of Implicit Arnoldi update iterations taken is %d\n", iparam[2]);
+	printf(" The number of OP*x is %d\n", iparam[8]);
+	printf(" The convergence criterion is %f\n", tol);
+	printf(" \n");
 
     }
 
      /* ----------------------- */
      /* Done with program ssvd. */
      /* ----------------------- */
-
-L9000:
 
     return 0;
 } /* MAIN__ */

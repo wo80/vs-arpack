@@ -241,9 +241,9 @@ L20:
 		    i + 1 + (h_dim1 << 1)], dabs(r__2));
 	    if (h[i + 1 + h_dim1] <= epsmch * big) {
 		if (msglvl > 0) {
-		    ivout_(&debug_1.logfil, &c__1, &i, &debug_1.ndigit, "_sapps: deflation at row/column no.");
-		    ivout_(&debug_1.logfil, &c__1, &jj, &debug_1.ndigit, "_sapps: occurred before shift number.");
-		    svout_(&debug_1.logfil, &c__1, &h[i + 1 + h_dim1], &debug_1.ndigit, "_sapps: the corresponding off diagonal element");
+		    ivout_(&c__1, &i, &debug_1.ndigit, "_sapps: deflation at row/column no.");
+		    ivout_(&c__1, &jj, &debug_1.ndigit, "_sapps: occurred before shift number.");
+		    svout_(&c__1, &h[i + 1 + h_dim1], &debug_1.ndigit, "_sapps: the corresponding off diagonal element");
 		}
 		h[i + 1 + h_dim1] = 0.f;
 		iend = i;
@@ -441,8 +441,8 @@ L90:
 		+ 1 + (h_dim1 << 1)], dabs(r__2));
 	if (h[i + 1 + h_dim1] <= epsmch * big) {
 	    if (msglvl > 0) {
-		ivout_(&debug_1.logfil, &c__1, &i, &debug_1.ndigit, "_sapps: deflation at row/column no.");
-		svout_(&debug_1.logfil, &c__1, &h[i + 1 + h_dim1], &debug_1.ndigit, "_sapps: the corresponding off diagonal element");
+		ivout_(&c__1, &i, &debug_1.ndigit, "_sapps: deflation at row/column no.");
+		svout_(&c__1, &h[i + 1 + h_dim1], &debug_1.ndigit, "_sapps: the corresponding off diagonal element");
 	    }
 	    h[i + 1 + h_dim1] = 0.f;
 	}
@@ -507,12 +507,12 @@ L90:
     }
 
     if (msglvl > 1) {
-	svout_(&debug_1.logfil, &c__1, &q[kplusp + *kev * q_dim1], &debug_1.ndigit, "_sapps: sigmak of the updated residual vector");
-	svout_(&debug_1.logfil, &c__1, &h[*kev + 1 + h_dim1], &debug_1.ndigit, "_sapps: betak of the updated residual vector");
-	svout_(&debug_1.logfil, kev, &h[(h_dim1 << 1) + 1], &debug_1.ndigit,"_sapps: updated main diagonal of H for next iteration");
+	svout_(&c__1, &q[kplusp + *kev * q_dim1], &debug_1.ndigit, "_sapps: sigmak of the updated residual vector");
+	svout_(&c__1, &h[*kev + 1 + h_dim1], &debug_1.ndigit, "_sapps: betak of the updated residual vector");
+	svout_(kev, &h[(h_dim1 << 1) + 1], &debug_1.ndigit,"_sapps: updated main diagonal of H for next iteration");
 	if (*kev > 1) {
 	    i__1 = *kev - 1;
-	    svout_(&debug_1.logfil, &i__1, &h[h_dim1 + 2], &debug_1.ndigit, "_sapps: updated sub diagonal of H for next iteration");
+	    svout_(&i__1, &h[h_dim1 + 2], &debug_1.ndigit, "_sapps: updated sub diagonal of H for next iteration");
 	}
     }
 

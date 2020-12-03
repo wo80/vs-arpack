@@ -136,12 +136,12 @@ int cngets_(int32_t *ishift, char *which, int32_t *kev, int32_t *np, complex *ri
     timing_1.tcgets += t1 - t0;
 
     if (msglvl > 0) {
-	ivout_(&debug_1.logfil, &c__1, kev, &debug_1.ndigit, "_ngets: KEV is");
-	ivout_(&debug_1.logfil, &c__1, np, &debug_1.ndigit, "_ngets: NP is");
+	ivout_(&c__1, kev, &debug_1.ndigit, "_ngets: KEV is");
+	ivout_(&c__1, np, &debug_1.ndigit, "_ngets: NP is");
 	i__1 = *kev + *np;
-	cvout_(&debug_1.logfil, &i__1, &ritz[1], &debug_1.ndigit, "_ngets: Eigenvalues of current H matrix ");
+	cvout_(&i__1, &ritz[1], &debug_1.ndigit, "_ngets: Eigenvalues of current H matrix ");
 	i__1 = *kev + *np;
-	cvout_(&debug_1.logfil, &i__1, &bounds[1], &debug_1.ndigit, "_ngets: Ritz estimates of the current KEV+NP Ritz values");
+	cvout_(&i__1, &bounds[1], &debug_1.ndigit, "_ngets: Ritz estimates of the current KEV+NP Ritz values");
     }
 
     return 0;

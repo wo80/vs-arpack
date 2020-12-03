@@ -1,4 +1,4 @@
-/* D:\Projekte\ARPACK\arpack-ng\UTIL\icopy.f -- translated by f2c (version 20100827). */
+/* arpack-ng\UTIL\icopy.f -- translated by f2c (version 20100827). */
 
 #include "arpack.h"
 
@@ -82,7 +82,6 @@ int icopy_(int32_t *n, int32_t *lx, int32_t *incx, int32_t *
 	ly[iy] = lx[ix];
 	ix += *incx;
 	iy += *incy;
-/* L10: */
     }
     return 0;
 
@@ -92,7 +91,6 @@ L20:
     i__1 = *n;
     for (i = 1; i <= i__1; ++i) {
 	ly[i] = lx[i];
-/* L30: */
     }
     return 0;
 } /* icopy_ */

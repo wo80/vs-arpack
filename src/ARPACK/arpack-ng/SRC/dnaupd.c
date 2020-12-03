@@ -650,11 +650,11 @@ int dnaupd_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, dou
     }
 
     if (msglvl > 0) {
-	ivout_(&debug_1.logfil, &c__1, &mxiter, &debug_1.ndigit, "_naupd: Number of update iterations taken");
-	ivout_(&debug_1.logfil, &c__1, &np, &debug_1.ndigit, "_naupd: Number of wanted \"converged\" Ritz values");
-	dvout_(&debug_1.logfil, &np, &workl[ritzr], &debug_1.ndigit, "_naupd: Real part of the final Ritz values");
-	dvout_(&debug_1.logfil, &np, &workl[ritzi], &debug_1.ndigit, "_naupd: Imaginary part of the final Ritz values");
-	dvout_(&debug_1.logfil, &np, &workl[bounds], &debug_1.ndigit, "_naupd: Associated Ritz estimates");
+	ivout_(&c__1, &mxiter, &debug_1.ndigit, "_naupd: Number of update iterations taken");
+	ivout_(&c__1, &np, &debug_1.ndigit, "_naupd: Number of wanted \"converged\" Ritz values");
+	dvout_(&np, &workl[ritzr], &debug_1.ndigit, "_naupd: Real part of the final Ritz values");
+	dvout_(&np, &workl[ritzi], &debug_1.ndigit, "_naupd: Imaginary part of the final Ritz values");
+	dvout_(&np, &workl[bounds], &debug_1.ndigit, "_naupd: Associated Ritz estimates");
     }
 
     arscnd_(&t1);

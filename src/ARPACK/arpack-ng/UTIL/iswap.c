@@ -1,4 +1,4 @@
-/* D:\Projekte\ARPACK\arpack-ng\UTIL\iswap.f -- translated by f2c (version 20100827). */
+/* arpack-ng\UTIL\iswap.f -- translated by f2c (version 20100827). */
 
 #include "arpack.h"
 
@@ -45,7 +45,6 @@ int iswap_(int32_t *n, int32_t *sx, int32_t *incx, int32_t *
 	sy[iy] = stemp;
 	ix += *incx;
 	iy += *incy;
-/* L10: */
     }
     return 0;
 
@@ -63,7 +62,6 @@ L20:
 	stemp = sx[i];
 	sx[i] = sy[i];
 	sy[i] = stemp;
-/* L30: */
     }
     if (*n < 3) {
 	return 0;
@@ -81,7 +79,6 @@ L40:
 	stemp = sx[i + 2];
 	sx[i + 2] = sy[i + 2];
 	sy[i + 2] = stemp;
-/* L50: */
     }
     return 0;
 } /* iswap_ */

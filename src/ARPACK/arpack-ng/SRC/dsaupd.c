@@ -653,10 +653,10 @@ int dsaupd_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, dou
     }
 
     if (msglvl > 0) {
-	ivout_(&debug_1.logfil, &c__1, &mxiter, &debug_1.ndigit, "_saupd: number of update iterations taken");
-	ivout_(&debug_1.logfil, &c__1, &np, &debug_1.ndigit, "_saupd: number of \"converged\" Ritz values");
-	dvout_(&debug_1.logfil, &np, &workl[ritz], &debug_1.ndigit, "_saupd: final Ritz values");
-	dvout_(&debug_1.logfil, &np, &workl[bounds], &debug_1.ndigit, "_saupd: corresponding error bounds");
+	ivout_(&c__1, &mxiter, &debug_1.ndigit, "_saupd: number of update iterations taken");
+	ivout_(&c__1, &np, &debug_1.ndigit, "_saupd: number of \"converged\" Ritz values");
+	dvout_(&np, &workl[ritz], &debug_1.ndigit, "_saupd: final Ritz values");
+	dvout_(&np, &workl[bounds], &debug_1.ndigit, "_saupd: corresponding error bounds");
     }
 
     arscnd_(&t1);

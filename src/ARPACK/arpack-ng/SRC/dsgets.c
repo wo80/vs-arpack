@@ -176,12 +176,12 @@ int dsgets_(int32_t *ishift, char *which, int32_t *kev, int32_t *np, double *rit
     timing_1.tsgets += t1 - t0;
 
     if (msglvl > 0) {
-	ivout_(&debug_1.logfil, &c__1, kev, &debug_1.ndigit, "_sgets: KEV is");
-	ivout_(&debug_1.logfil, &c__1, np, &debug_1.ndigit, "_sgets: NP is");
+	ivout_(&c__1, kev, &debug_1.ndigit, "_sgets: KEV is");
+	ivout_(&c__1, np, &debug_1.ndigit, "_sgets: NP is");
 	i__1 = *kev + *np;
-	dvout_(&debug_1.logfil, &i__1, &ritz[1], &debug_1.ndigit, "_sgets: Eigenvalues of current H matrix");
+	dvout_(&i__1, &ritz[1], &debug_1.ndigit, "_sgets: Eigenvalues of current H matrix");
 	i__1 = *kev + *np;
-	dvout_(&debug_1.logfil, &i__1, &bounds[1], &debug_1.ndigit, "_sgets: Associated Ritz estimates");
+	dvout_(&i__1, &bounds[1], &debug_1.ndigit, "_sgets: Associated Ritz estimates");
     }
 
     return 0;

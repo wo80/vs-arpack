@@ -1,4 +1,4 @@
-/* D:\Projekte\ARPACK\arpack-ng\UTIL\icnteq.f -- translated by f2c (version 20100827). */
+/* arpack-ng\UTIL\icnteq.f -- translated by f2c (version 20100827). */
 
 #include "arpack.h"
 
@@ -6,7 +6,7 @@
 
 /*     Count the number of elements equal to a specified integer value. */
 
-int32_t icnteq_(int32_t *n, int32_t *array, int32_t *value)
+int icnteq_(int32_t *n, int32_t *array, int32_t *value)
 {
     /* System generated locals */
     int32_t ret_val, i__1;
@@ -24,7 +24,6 @@ int32_t icnteq_(int32_t *n, int32_t *array, int32_t *value)
 	if (array[i] == *value) {
 	    ++k;
 	}
-/* L10: */
     }
     ret_val = k;
 

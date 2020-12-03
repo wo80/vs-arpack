@@ -142,7 +142,7 @@ int zneigh_(double *rnorm, int32_t *n, zomplex *
     msglvl = debug_1.mceigh;
 
     if (msglvl > 2) {
-	zmout_(&debug_1.logfil, n, n, &h[h_offset], ldh, &debug_1.ndigit, "_neigh: Entering upper Hessenberg matrix H ");
+	zmout_(n, n, &h[h_offset], ldh, &debug_1.ndigit, "_neigh: Entering upper Hessenberg matrix H ");
     }
 
      /* -------------------------------------------------------- */
@@ -163,7 +163,7 @@ int zneigh_(double *rnorm, int32_t *n, zomplex *
 
     zcopy_(n, &q[*n - 1 + q_dim1], ldq, &bounds[1], &c__1);
     if (msglvl > 1) {
-	zvout_(&debug_1.logfil, n, &bounds[1], &debug_1.ndigit, "_neigh: last row of the Schur matrix for H");
+	zvout_(n, &bounds[1], &debug_1.ndigit, "_neigh: last row of the Schur matrix for H");
     }
 
      /* -------------------------------------------------------- */
@@ -198,7 +198,7 @@ int zneigh_(double *rnorm, int32_t *n, zomplex *
 
     if (msglvl > 1) {
 	zcopy_(n, &q[*n + q_dim1], ldq, &workl[1], &c__1);
-	zvout_(&debug_1.logfil, n, &workl[1], &debug_1.ndigit, "_neigh: Last row of the eigenvector matrix for H");
+	zvout_(n, &workl[1], &debug_1.ndigit, "_neigh: Last row of the eigenvector matrix for H");
     }
 
      /* -------------------------- */
@@ -209,8 +209,8 @@ int zneigh_(double *rnorm, int32_t *n, zomplex *
     zdscal_(n, rnorm, &bounds[1], &c__1);
 
     if (msglvl > 2) {
-	zvout_(&debug_1.logfil, n, &ritz[1], &debug_1.ndigit, "_neigh: The eigenvalues of H");
-	zvout_(&debug_1.logfil, n, &bounds[1], &debug_1.ndigit, "_neigh: Ritz estimates for the eigenvalues of H");
+	zvout_(n, &ritz[1], &debug_1.ndigit, "_neigh: The eigenvalues of H");
+	zvout_(n, &bounds[1], &debug_1.ndigit, "_neigh: Ritz estimates for the eigenvalues of H");
     }
 
     arscnd_(&t1);

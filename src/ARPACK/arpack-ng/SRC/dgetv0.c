@@ -342,8 +342,8 @@ L40:
      /* ------------------------------------ */
 
     if (msglvl > 2) {
-	dvout_(&debug_1.logfil, &c__1, &rnorm0, &debug_1.ndigit, "_getv0: re-orthonalization ; rnorm0 is");
-	dvout_(&debug_1.logfil, &c__1, rnorm, &debug_1.ndigit, "_getv0: re-orthonalization ; rnorm is");
+	dvout_(&c__1, &rnorm0, &debug_1.ndigit, "_getv0: re-orthonalization ; rnorm0 is");
+	dvout_(&c__1, rnorm, &debug_1.ndigit, "_getv0: re-orthonalization ; rnorm is");
     }
 
     if (*rnorm > rnorm0 * .717f) {
@@ -377,10 +377,10 @@ L40:
 L50:
 
     if (msglvl > 0) {
-	dvout_(&debug_1.logfil, &c__1, rnorm, &debug_1.ndigit, "_getv0: B-norm of initial / restarted starting vector");
+	dvout_(&c__1, rnorm, &debug_1.ndigit, "_getv0: B-norm of initial / restarted starting vector");
     }
     if (msglvl > 3) {
-	dvout_(&debug_1.logfil, n, &resid[1], &debug_1.ndigit, "_getv0: initial / restarted starting vector");
+	dvout_(n, &resid[1], &debug_1.ndigit, "_getv0: initial / restarted starting vector");
     }
     *ido = 99;
 

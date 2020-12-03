@@ -7,7 +7,7 @@ extern "C"
 
 	int arscnd_(float *);
 
-	int ivout_(int32_t *, int32_t *, int32_t *, int32_t *, char *);
+	int ivout_(int32_t *, int32_t *, int32_t *, char *);
 
 	/* complex */
 	
@@ -20,8 +20,8 @@ extern "C"
 	int csortc_(char *, bool *, int32_t *, complex *, complex *);
 	int cstatn_(void);
 
-	int cmout_(int32_t *, int32_t *, int32_t *, complex *, int32_t *, int32_t *, char *);
-	int cvout_(int32_t *, int32_t *, complex *, int32_t *, char *);
+	int cmout_(int32_t *, int32_t *, complex *, int32_t *, int32_t *, char *);
+	int cvout_(int32_t *, complex *, int32_t *, char *);
 
 	/* double */
 
@@ -45,8 +45,8 @@ extern "C"
 	int dstats_(void);
 	int dstqrb_(int32_t *, double *, double *, double *, double *, int32_t *);
 
-	int dmout_(int32_t *, int32_t *, int32_t *, double *, int32_t *, int32_t *, char *);
-	int dvout_(int32_t *, int32_t *, double *, int32_t *, char *);
+	int dmout_(int32_t *, int32_t *, double *, int32_t *, int32_t *, char *);
+	int dvout_(int32_t *, double *, int32_t *, char *);
 
 	/* single */
 
@@ -70,8 +70,8 @@ extern "C"
 	int sstats_(void);
 	int sstqrb_(int32_t *, float *, float *, float *, float *, int32_t *);
 
-	int smout_(int32_t *, int32_t *, int32_t *, float *, int32_t *, int32_t *, char *);
-	int svout_(int32_t *, int32_t *, float *, int32_t *, char *);
+	int smout_(int32_t *, int32_t *, float *, int32_t *, int32_t *, char *);
+	int svout_(int32_t *, float *, int32_t *, char *);
 
 	/* zomplex */
 
@@ -84,8 +84,8 @@ extern "C"
 	int zsortc_(char *, bool *, int32_t *, zomplex *, zomplex *);
 	int zstatn_(void);
 
-	int zmout_(int32_t *, int32_t *, int32_t *, zomplex *, int32_t *, int32_t *, char *);
-	int zvout_(int32_t *, int32_t *, zomplex *, int32_t *, char *);
+	int zmout_(int32_t *, int32_t *, zomplex *, int32_t *, int32_t *, char *);
+	int zvout_(int32_t *, zomplex *, int32_t *, char *);
 
 #ifdef __cplusplus
 }

@@ -16,12 +16,12 @@ int ssdrv5()
     float mx[256], adl[256], adu[256];
     int32_t ido, ncv, nev;
     float tol, adu2[256];
-    char bmat[1];
+    char* bmat;
     int32_t mode, info;
     bool rvec;
     int32_t ierr, ipiv[256];
     float sigma;
-    char which[2];
+    char* which;
     float resid[256];
     int32_t nconv;
     float workd[768];
@@ -34,45 +34,6 @@ int ssdrv5()
     int32_t lworkl;
 
     /* Fortran I/O blocks */
-    static cilist io___4 = { 0, 6, 0, 0, 0 };
-    static cilist io___5 = { 0, 6, 0, 0, 0 };
-    static cilist io___6 = { 0, 6, 0, 0, 0 };
-    static cilist io___28 = { 0, 6, 0, 0, 0 };
-    static cilist io___29 = { 0, 6, 0, 0, 0 };
-    static cilist io___30 = { 0, 6, 0, 0, 0 };
-    static cilist io___36 = { 0, 6, 0, 0, 0 };
-    static cilist io___37 = { 0, 6, 0, 0, 0 };
-    static cilist io___38 = { 0, 6, 0, 0, 0 };
-    static cilist io___39 = { 0, 6, 0, 0, 0 };
-    static cilist io___40 = { 0, 6, 0, 0, 0 };
-    static cilist io___41 = { 0, 6, 0, 0, 0 };
-    static cilist io___42 = { 0, 6, 0, 0, 0 };
-    static cilist io___43 = { 0, 6, 0, 0, 0 };
-    static cilist io___44 = { 0, 6, 0, 0, 0 };
-    static cilist io___45 = { 0, 6, 0, 0, 0 };
-    static cilist io___49 = { 0, 6, 0, 0, 0 };
-    static cilist io___50 = { 0, 6, 0, 0, 0 };
-    static cilist io___51 = { 0, 6, 0, 0, 0 };
-    static cilist io___52 = { 0, 6, 0, 0, 0 };
-    static cilist io___56 = { 0, 6, 0, 0, 0 };
-    static cilist io___57 = { 0, 6, 0, 0, 0 };
-    static cilist io___58 = { 0, 6, 0, 0, 0 };
-    static cilist io___59 = { 0, 6, 0, 0, 0 };
-    static cilist io___60 = { 0, 6, 0, 0, 0 };
-    static cilist io___61 = { 0, 6, 0, 0, 0 };
-    static cilist io___62 = { 0, 6, 0, 0, 0 };
-    static cilist io___63 = { 0, 6, 0, 0, 0 };
-    static cilist io___64 = { 0, 6, 0, 0, 0 };
-    static cilist io___65 = { 0, 6, 0, 0, 0 };
-    static cilist io___66 = { 0, 6, 0, 0, 0 };
-    static cilist io___67 = { 0, 6, 0, 0, 0 };
-    static cilist io___68 = { 0, 6, 0, 0, 0 };
-    static cilist io___69 = { 0, 6, 0, 0, 0 };
-    static cilist io___70 = { 0, 6, 0, 0, 0 };
-    static cilist io___71 = { 0, 6, 0, 0, 0 };
-    static cilist io___72 = { 0, 6, 0, 0, 0 };
-    static cilist io___73 = { 0, 6, 0, 0, 0 };
-    static cilist io___74 = { 0, 6, 0, 0, 0 };
 
 /*     Program to illustrate the idea of reverse communication */
 /*     in Buckling mode for a generalized symmetric eigenvalue */
@@ -163,22 +124,16 @@ int ssdrv5()
     nev = 4;
     ncv = 10;
     if (n > 256) {
-	s_wsle(&io___4);
-	do_lio(&c__9, &c__1, " ERROR with _SDRV5: N is greater than MAXN ", (ftnlen)43);
-	e_wsle();
-	goto L9000;
+	printf(" ERROR with _SDRV5: N is greater than MAXN \n");
+	return 0;
     } else if (nev > 10) {
-	s_wsle(&io___5);
-	do_lio(&c__9, &c__1, " ERROR with _SDRV5: NEV is greater than MAXNEV ", (ftnlen)47);
-	e_wsle();
-	goto L9000;
+	printf(" ERROR with _SDRV5: NEV is greater than MAXNEV \n");
+	return 0;
     } else if (ncv > 25) {
-	s_wsle(&io___6);
-	do_lio(&c__9, &c__1, " ERROR with _SDRV5: NCV is greater than MAXNCV ", (ftnlen)47);
-	e_wsle();
-	goto L9000;
+	printf(" ERROR with _SDRV5: NCV is greater than MAXNCV \n");
+	return 0;
     }
-    *bmat = 'G';
+    bmat = "G";
     strcpy(which, "LM");
     sigma = 1.f;
 
@@ -237,16 +192,10 @@ int ssdrv5()
     scopy_(&n, adl, &c__1, adu, &c__1);
     sgttrf_(&n, adl, ad, adu, adu2, ipiv, &ierr);
     if (ierr != 0) {
-	s_wsle(&io___28);
-	do_lio(&c__9, &c__1, " ", (ftnlen)1);
-	e_wsle();
-	s_wsle(&io___29);
-	do_lio(&c__9, &c__1, " Error with _gttrf in _SDRV5.", (ftnlen)29);
-	e_wsle();
-	s_wsle(&io___30);
-	do_lio(&c__9, &c__1, " ", (ftnlen)1);
-	e_wsle();
-	goto L9000;
+	printf(" \n");
+	printf(" Error with _gttrf in _SDRV5.\n");
+	printf(" \n");
+	return 0;
     }
 
      /* ----------------------------------------- */
@@ -285,16 +234,10 @@ L10:
 	sgttrs_("Notranspose", &n, &c__1, adl, ad, adu, adu2, ipiv, &workd[
 		ipntr[1] - 1], &n, &ierr, (ftnlen)11);
 	if (ierr != 0) {
-	    s_wsle(&io___36);
-	    do_lio(&c__9, &c__1, " ", (ftnlen)1);
-	    e_wsle();
-	    s_wsle(&io___37);
-	    do_lio(&c__9, &c__1, " Error with _gttrs in SDRV5.", (ftnlen)28);
-	    e_wsle();
-	    s_wsle(&io___38);
-	    do_lio(&c__9, &c__1, " ", (ftnlen)1);
-	    e_wsle();
-	    goto L9000;
+	    printf(" \n");
+	    printf(" Error with _gttrs in SDRV5.\n");
+	    printf(" \n");
+	    return ierr;
 	}
 
            /* --------------------------------------- */
@@ -318,16 +261,10 @@ L10:
 	sgttrs_("Notranspose", &n, &c__1, adl, ad, adu, adu2, ipiv, &workd[
 		ipntr[1] - 1], &n, &ierr, (ftnlen)11);
 	if (ierr != 0) {
-	    s_wsle(&io___39);
-	    do_lio(&c__9, &c__1, " ", (ftnlen)1);
-	    e_wsle();
-	    s_wsle(&io___40);
-	    do_lio(&c__9, &c__1, " Error with _gttrs in _SDRV5.", (ftnlen)29);
-	    e_wsle();
-	    s_wsle(&io___41);
-	    do_lio(&c__9, &c__1, " ", (ftnlen)1);
-	    e_wsle();
-	    goto L9000;
+	    printf(" \n");
+	    printf(" Error with _gttrs in _SDRV5.\n");
+	    printf(" \n");
+	    return ierr;
 	}
 
            /* --------------------------------------- */
@@ -367,19 +304,10 @@ L10:
         /* documentation in SSAUPD. */
         /* ------------------------ */
 
-	s_wsle(&io___42);
-	do_lio(&c__9, &c__1, " ", (ftnlen)1);
-	e_wsle();
-	s_wsle(&io___43);
-	do_lio(&c__9, &c__1, " Error with _saupd, info = ", (ftnlen)27);
-	do_lio(&c__3, &c__1, (char *)&info, (ftnlen)sizeof(int32_t));
-	e_wsle();
-	s_wsle(&io___44);
-	do_lio(&c__9, &c__1, " Check the documentation of _saupd ", (ftnlen)35);
-	e_wsle();
-	s_wsle(&io___45);
-	do_lio(&c__9, &c__1, " ", (ftnlen)1);
-	e_wsle();
+	printf(" \n");
+	printf(" Error with _saupd info = %d\n", info);
+	printf(" Check the documentation of _saupd \n");
+	printf(" \n");
 
     } else {
 
@@ -407,19 +335,10 @@ L10:
            /* Check the documentation of SSEUPD. */
            /* ---------------------------------- */
 
-	    s_wsle(&io___49);
-	    do_lio(&c__9, &c__1, " ", (ftnlen)1);
-	    e_wsle();
-	    s_wsle(&io___50);
-	    do_lio(&c__9, &c__1, " Error with _seupd, info = ", (ftnlen)27);
-	    do_lio(&c__3, &c__1, (char *)&ierr, (ftnlen)sizeof(int32_t));
-	    e_wsle();
-	    s_wsle(&io___51);
-	    do_lio(&c__9, &c__1, " Check the documentation of _seupd ", (ftnlen)35);
-	    e_wsle();
-	    s_wsle(&io___52);
-	    do_lio(&c__9, &c__1, " ", (ftnlen)1);
-	    e_wsle();
+	    printf(" \n");
+	    printf(" Error with _seupd info = %d\n", ierr);
+	    printf(" Check the documentation of _seupd \n");
+	    printf(" \n");
 
 	} else {
 
@@ -450,7 +369,7 @@ L10:
 /* L30: */
 	    }
 
-	    smout_(&c__6, &nconv, &c__2, d, &c__25, &c_n6, "Ritz values and relative residuals");
+	    smout_(&nconv, &c__2, d, &c__25, &c_n6, "Ritz values and relative residuals");
 
 	}
 
@@ -459,85 +378,35 @@ L10:
         /* ---------------------------------------- */
 
 	if (info == 1) {
-	    s_wsle(&io___56);
-	    do_lio(&c__9, &c__1, " ", (ftnlen)1);
-	    e_wsle();
-	    s_wsle(&io___57);
-	    do_lio(&c__9, &c__1, " Maximum number of iterations reached.", (ftnlen)38);
-	    e_wsle();
-	    s_wsle(&io___58);
-	    do_lio(&c__9, &c__1, " ", (ftnlen)1);
-	    e_wsle();
+	    printf(" \n");
+	    printf(" Maximum number of iterations reached.\n");
+	    printf(" \n");
 	} else if (info == 3) {
-	    s_wsle(&io___59);
-	    do_lio(&c__9, &c__1, " ", (ftnlen)1);
-	    e_wsle();
-	    s_wsle(&io___60);
-	    do_lio(&c__9, &c__1, " No shifts could be applied during implicit", (ftnlen)43);
-	    do_lio(&c__9, &c__1, " Arnoldi update, try increasing NCV.", (ftnlen)36);
-	    e_wsle();
-	    s_wsle(&io___61);
-	    do_lio(&c__9, &c__1, " ", (ftnlen)1);
-	    e_wsle();
+	    printf(" \n");
+	    printf(" No shifts could be applied during implicit\n");
+	    printf(" Arnoldi update try increasing NCV.\n");
+	    printf(" \n");
 	}
 
-	s_wsle(&io___62);
-	do_lio(&c__9, &c__1, " ", (ftnlen)1);
-	e_wsle();
-	s_wsle(&io___63);
-	do_lio(&c__9, &c__1, " _SDRV5 ", (ftnlen)8);
-	e_wsle();
-	s_wsle(&io___64);
-	do_lio(&c__9, &c__1, " ====== ", (ftnlen)8);
-	e_wsle();
-	s_wsle(&io___65);
-	do_lio(&c__9, &c__1, " ", (ftnlen)1);
-	e_wsle();
-	s_wsle(&io___66);
-	do_lio(&c__9, &c__1, " Size of the matrix is", (ftnlen)22);
-	do_lio(&c__3, &c__1, (char *)&n, (ftnlen)sizeof(int32_t));
-	e_wsle();
-	s_wsle(&io___67);
-	do_lio(&c__9, &c__1, " The number of Ritz values requested is", (ftnlen)39);
-	do_lio(&c__3, &c__1, (char *)&nev, (ftnlen)sizeof(int32_t));
-	e_wsle();
-	s_wsle(&io___68);
-	do_lio(&c__9, &c__1, " The number of Arnoldi vectors generated", (ftnlen)40);
-	do_lio(&c__9, &c__1, " (NCV) is ", (ftnlen)10);
-	do_lio(&c__3, &c__1, (char *)&ncv, (ftnlen)sizeof(int32_t));
-	e_wsle();
-	s_wsle(&io___69);
-	do_lio(&c__9, &c__1, " What portion of the spectrum: ", (ftnlen)31);
-	do_lio(&c__9, &c__1, which, (ftnlen)2);
-	e_wsle();
-	s_wsle(&io___70);
-	do_lio(&c__9, &c__1, " The number of converged Ritz values is ", (ftnlen)40);
-	do_lio(&c__3, &c__1, (char *)&nconv, (ftnlen)sizeof(int32_t));
-	e_wsle();
-	s_wsle(&io___71);
-	do_lio(&c__9, &c__1, " The number of Implicit Arnoldi update", (ftnlen)38);
-	do_lio(&c__9, &c__1, " iterations taken is", (ftnlen)20);
-	do_lio(&c__3, &c__1, (char *)&iparam[2], (ftnlen)sizeof(int32_t));
-	e_wsle();
-	s_wsle(&io___72);
-	do_lio(&c__9, &c__1, " The number of OP*x is ", (ftnlen)23);
-	do_lio(&c__3, &c__1, (char *)&iparam[8], (ftnlen)sizeof(int32_t));
-	e_wsle();
-	s_wsle(&io___73);
-	do_lio(&c__9, &c__1, " The convergence criterion is ", (ftnlen)30);
-	do_lio(&c__4, &c__1, (char *)&tol, (ftnlen)sizeof(float));
-	e_wsle();
-	s_wsle(&io___74);
-	do_lio(&c__9, &c__1, " ", (ftnlen)1);
-	e_wsle();
+	printf(" \n");
+	printf(" _SDRV5 \n");
+	printf(" ====== \n");
+	printf(" \n");
+	printf(" Size of the matrix is %d\n", n);
+	printf(" The number of Ritz values requested is %d\n", nev);
+	printf(" The number of Arnoldi vectors generated (NCV) is %d\n", ncv);
+	printf(" What portion of the spectrum: %s\n", which);
+	printf(" The number of converged Ritz values is %d\n", nconv);
+	printf(" The number of Implicit Arnoldi update iterations taken is %d\n", iparam[2]);
+	printf(" The number of OP*x is %d\n", iparam[8]);
+	printf(" The convergence criterion is %f\n", tol);
+	printf(" \n");
 
     }
 
      /* ------------------------- */
      /* Done with program ssdrv5. */
      /* ------------------------- */
-
-L9000:
 
     return 0;
 } /* MAIN__ */
