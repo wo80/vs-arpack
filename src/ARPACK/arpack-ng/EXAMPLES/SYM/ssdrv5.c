@@ -179,7 +179,7 @@ int ssdrv5()
 	goto L9000;
     }
     *(unsigned char *)bmat = 'G';
-    s_copy(which, "LM", (ftnlen)2, (ftnlen)2);
+    strcpy(which, "LM");
     sigma = 1.f;
 
      /* --------------------------------------------------- */

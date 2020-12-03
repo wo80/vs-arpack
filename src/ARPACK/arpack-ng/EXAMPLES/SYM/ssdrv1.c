@@ -161,7 +161,7 @@ int ssdrv1()
 	goto L9000;
     }
     *(unsigned char *)bmat = 'I';
-    s_copy(which, "SM", (ftnlen)2, (ftnlen)2);
+    strcpy(which, "SM");
 
      /* ------------------------------------------------ */
      /* The work array WORKL is used in SSAUPD as        */

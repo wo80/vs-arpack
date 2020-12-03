@@ -169,7 +169,7 @@ int cndrv1()
 	goto L9000;
     }
     *(unsigned char *)bmat = 'I';
-    s_copy(which, "LM", (ftnlen)2, (ftnlen)2);
+    strcpy(which, "LM");
 
      /* ------------------------------------------------- */
      /* The work array WORKL is used in CNAUPD as         */

@@ -64,7 +64,7 @@ int dsortr_(char *which, bool *apply, int32_t *n, double *x1, double *x2)
     double d__1, d__2;
 
     /* Builtin functions */
-    int32_t s_cmp(char *, char *, ftnlen, ftnlen);
+    
 
     /* Local variables */
     int32_t i__, j, igap;
@@ -80,7 +80,7 @@ int dsortr_(char *which, bool *apply, int32_t *n, double *x1, double *x2)
 
     igap = *n / 2;
 
-    if (s_cmp(which, "SA", (ftnlen)2, (ftnlen)2) == 0) {
+    if (strcmp(which, "SA") == 0) {
 
 /*        X1 is sorted into decreasing order of algebraic. */
 
@@ -117,7 +117,7 @@ L30:
 	igap /= 2;
 	goto L10;
 
-    } else if (s_cmp(which, "SM", (ftnlen)2, (ftnlen)2) == 0) {
+    } else if (strcmp(which, "SM") == 0) {
 
 /*        X1 is sorted into decreasing order of magnitude. */
 
@@ -155,7 +155,7 @@ L60:
 	igap /= 2;
 	goto L40;
 
-    } else if (s_cmp(which, "LA", (ftnlen)2, (ftnlen)2) == 0) {
+    } else if (strcmp(which, "LA") == 0) {
 
 /*        X1 is sorted into increasing order of algebraic. */
 
@@ -192,7 +192,7 @@ L90:
 	igap /= 2;
 	goto L70;
 
-    } else if (s_cmp(which, "LM", (ftnlen)2, (ftnlen)2) == 0) {
+    } else if (strcmp(which, "LM") == 0) {
 
 /*        X1 is sorted into increasing order of magnitude. */
 

@@ -231,8 +231,8 @@ int sseupd_(bool *rvec, char *howmny, bool *select, float *d__, float *z__, int3
     double d__1;
 
     /* Builtin functions */
-    int32_t s_cmp(char *, char *, ftnlen, ftnlen);
-    int s_copy(char *, char *, ftnlen, ftnlen);
+    
+
     double pow_dd(double *, double *);
 
     /* Local variables */
@@ -301,10 +301,10 @@ int sseupd_(bool *rvec, char *howmny, bool *select, float *d__, float *z__, int3
     if (*ncv <= *nev || *ncv > *n) {
 	ierr = -3;
     }
-    if (s_cmp(which, "LM", (ftnlen)2, (ftnlen)2) != 0 && s_cmp(which, "SM", (
-	    ftnlen)2, (ftnlen)2) != 0 && s_cmp(which, "LA", (ftnlen)2, (
-	    ftnlen)2) != 0 && s_cmp(which, "SA", (ftnlen)2, (ftnlen)2) != 0 &&
-	     s_cmp(which, "BE", (ftnlen)2, (ftnlen)2) != 0) {ierr = -5;
+    if (strcmp(which, "LM") != 0 && strcmp(which, "SM") != 0 &&
+        strcmp(which, "LA") != 0 && strcmp(which, "SA") != 0 &&
+	    strcmp(which, "BE") != 0) {
+        ierr = -5;
     }
     if (*(unsigned char *)bmat != 'I' && *(unsigned char *)bmat != 'G') {
 	ierr = -6;
@@ -324,20 +324,20 @@ int sseupd_(bool *rvec, char *howmny, bool *select, float *d__, float *z__, int3
     }
 
     if (mode == 1 || mode == 2) {
-	s_copy(type__, "REGULR", (ftnlen)6, (ftnlen)6);
+	strcpy(type__, "REGULR");
     } else if (mode == 3) {
-	s_copy(type__, "SHIFTI", (ftnlen)6, (ftnlen)6);
+	strcpy(type__, "SHIFTI");
     } else if (mode == 4) {
-	s_copy(type__, "BUCKLE", (ftnlen)6, (ftnlen)6);
+	strcpy(type__, "BUCKLE");
     } else if (mode == 5) {
-	s_copy(type__, "CAYLEY", (ftnlen)6, (ftnlen)6);
+	strcpy(type__, "CAYLEY");
     } else {
 	ierr = -10;
     }
     if (mode == 1 && *(unsigned char *)bmat == 'G') {
 	ierr = -11;
     }
-    if (*nev == 1 && s_cmp(which, "BE", (ftnlen)2, (ftnlen)2) == 0) {
+    if (*nev == 1 && strcmp(which, "BE") == 0) {
 	ierr = -12;
     }
 
@@ -638,7 +638,7 @@ L30:
      /* (and corresponding data) are returned in ascending order.        */
      /* ---------------------------------------------------------------- */
 
-    if (s_cmp(type__, "REGULR", (ftnlen)6, (ftnlen)6) == 0) {
+    if (strcmp(type__, "REGULR") == 0) {
 
         /* ------------------------------------------------------- */
         /* Ascending sort of wanted Ritz values, vectors and error */
@@ -669,20 +669,20 @@ L30:
         /* ----------------------------------------------------------- */
 
 	scopy_(ncv, &workl[ihd], &c__1, &workl[iw], &c__1);
-	if (s_cmp(type__, "SHIFTI", (ftnlen)6, (ftnlen)6) == 0) {
+	if (strcmp(type__, "SHIFTI") == 0) {
 	    i__1 = *ncv;
 	    for (k = 1; k <= i__1; ++k) {
 		workl[ihd + k - 1] = 1.f / workl[ihd + k - 1] + *sigma;
 /* L40: */
 	    }
-	} else if (s_cmp(type__, "BUCKLE", (ftnlen)6, (ftnlen)6) == 0) {
+	} else if (strcmp(type__, "BUCKLE") == 0) {
 	    i__1 = *ncv;
 	    for (k = 1; k <= i__1; ++k) {
 		workl[ihd + k - 1] = *sigma * workl[ihd + k - 1] / (workl[ihd 
 			+ k - 1] - 1.f);
 /* L50: */
 	    }
-	} else if (s_cmp(type__, "CAYLEY", (ftnlen)6, (ftnlen)6) == 0) {
+	} else if (strcmp(type__, "CAYLEY") == 0) {
 	    i__1 = *ncv;
 	    for (k = 1; k <= i__1; ++k) {
 		workl[ihd + k - 1] = *sigma * (workl[ihd + k - 1] + 1.f) / (
@@ -780,7 +780,7 @@ L30:
 
     }
 
-    if (s_cmp(type__, "REGULR", (ftnlen)6, (ftnlen)6) == 0 && *rvec) {
+    if (strcmp(type__, "REGULR") == 0 && *rvec) {
 
 	i__1 = *ncv;
 	for (j = 1; j <= i__1; ++j) {
@@ -789,7 +789,7 @@ L30:
 /* L70: */
 	}
 
-    } else if (s_cmp(type__, "REGULR", (ftnlen)6, (ftnlen)6) != 0 && *rvec) {
+    } else if (strcmp(type__, "REGULR") != 0 && *rvec) {
 
         /* ----------------------------------------------- */
         /* *  Determine Ritz estimates of the theta.       */
@@ -801,7 +801,7 @@ L30:
         /* ----------------------------------------------- */
 
 	sscal_(ncv, &bnorm2, &workl[ihb], &c__1);
-	if (s_cmp(type__, "SHIFTI", (ftnlen)6, (ftnlen)6) == 0) {
+	if (strcmp(type__, "SHIFTI") == 0) {
 
 	    i__1 = *ncv;
 	    for (k = 1; k <= i__1; ++k) {
@@ -812,7 +812,7 @@ L30:
 /* L80: */
 	    }
 
-	} else if (s_cmp(type__, "BUCKLE", (ftnlen)6, (ftnlen)6) == 0) {
+	} else if (strcmp(type__, "BUCKLE") == 0) {
 
 	    i__1 = *ncv;
 	    for (k = 1; k <= i__1; ++k) {
@@ -823,7 +823,7 @@ L30:
 /* L90: */
 	    }
 
-	} else if (s_cmp(type__, "CAYLEY", (ftnlen)6, (ftnlen)6) == 0) {
+	} else if (strcmp(type__, "CAYLEY") == 0) {
 
 	    i__1 = *ncv;
 	    for (k = 1; k <= i__1; ++k) {
@@ -836,7 +836,7 @@ L30:
 
     }
 
-    if (s_cmp(type__, "REGULR", (ftnlen)6, (ftnlen)6) != 0 && msglvl > 1) {
+    if (strcmp(type__, "REGULR") != 0 && msglvl > 1) {
 	svout_(&debug_1.logfil, &nconv, &d__[1], &debug_1.ndigit, "_seupd: Untransformed converged Ritz values");
 	svout_(&debug_1.logfil, &nconv, &workl[ihb], &debug_1.ndigit, "_seupd: Ritz estimates of the untransformed Ritz values");
     } else if (msglvl > 1) {
@@ -850,8 +850,8 @@ L30:
      /* for MODE = 3,4,5. See reference 7               */
      /* ----------------------------------------------- */
 
-    if (*rvec && (s_cmp(type__, "SHIFTI", (ftnlen)6, (ftnlen)6) == 0 || s_cmp(
-	    type__, "CAYLEY", (ftnlen)6, (ftnlen)6) == 0)) {
+    if (*rvec && (strcmp(type__, "SHIFTI") == 0 || strcmp(
+	    type__, "CAYLEY") == 0)) {
 
 	i__1 = nconv - 1;
 	for (k = 0; k <= i__1; ++k) {
@@ -859,7 +859,7 @@ L30:
 /* L110: */
 	}
 
-    } else if (*rvec && s_cmp(type__, "BUCKLE", (ftnlen)6, (ftnlen)6) == 0) {
+    } else if (*rvec && strcmp(type__, "BUCKLE") == 0) {
 
 	i__1 = nconv - 1;
 	for (k = 0; k <= i__1; ++k) {
@@ -869,7 +869,7 @@ L30:
 
     }
 
-    if (s_cmp(type__, "REGULR", (ftnlen)6, (ftnlen)6) != 0) {
+    if (strcmp(type__, "REGULR") != 0) {
 	sger_(n, &nconv, &s_one, &resid[1], &c__1, &workl[iw], &c__1, &z__[
 		z_offset], ldz);
     }

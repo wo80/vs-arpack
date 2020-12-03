@@ -9,7 +9,7 @@ int dsvd()
     double d__1;
 
     /* Builtin functions */
-    int s_copy(char *, char *, ftnlen, ftnlen);
+
     int32_t s_wsle(cilist *), do_lio(int32_t *, int32_t *, char *, ftnlen), 
 	    e_wsle(void);
     double sqrt(double);
@@ -266,7 +266,7 @@ int dsvd()
     nev = 4;
     ncv = 10;
     *(unsigned char *)bmat = 'I';
-    s_copy(which, "LM", (ftnlen)2, (ftnlen)2);
+    strcpy(which, "LM");
 
     if (n > 250) {
 	s_wsle(&io___7);

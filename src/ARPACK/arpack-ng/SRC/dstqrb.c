@@ -258,7 +258,7 @@ L30:
 /*     scale submatrix in rows and columns l to lend */
 
     i__1 = lend - l + 1;
-    anorm = dlanst_("i", &i__1, &d__[l], &e[l], (ftnlen)1);
+    anorm = dlanst_("i", &i__1, &d__[l], &e[l]);
     iscale = 0;
     if (anorm == 0.) {
 	goto L10;

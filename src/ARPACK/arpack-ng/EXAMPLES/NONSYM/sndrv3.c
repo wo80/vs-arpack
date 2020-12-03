@@ -167,7 +167,7 @@ int sndrv3()
 	goto L9000;
     }
     *(unsigned char *)bmat = 'G';
-    s_copy(which, "LM", (ftnlen)2, (ftnlen)2);
+    strcpy(which, "LM");
 
      /* ---------------------------------------------- */
      /* M is the mass matrix formed by using piecewise */

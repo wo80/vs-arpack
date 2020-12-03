@@ -186,8 +186,8 @@ int snaup2_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, int
 
     /* Builtin functions */
     double pow_dd(double *, double *);
-    int32_t s_cmp(char *, char *, ftnlen, ftnlen);
-    int s_copy(char *, char *, ftnlen, ftnlen);
+    
+
     double sqrt(double);
 
     /* Local variables */
@@ -547,23 +547,23 @@ L20:
            /* order.                                       */
            /* -------------------------------------------- */
 
-	if (s_cmp(which, "LM", (ftnlen)2, (ftnlen)2) == 0) {
-	    s_copy(wprime, "SR", (ftnlen)2, (ftnlen)2);
+	if (strcmp(which, "LM") == 0) {
+	    strcpy(wprime, "SR");
 	}
-	if (s_cmp(which, "SM", (ftnlen)2, (ftnlen)2) == 0) {
-	    s_copy(wprime, "LR", (ftnlen)2, (ftnlen)2);
+	if (strcmp(which, "SM") == 0) {
+	    strcpy(wprime, "LR");
 	}
-	if (s_cmp(which, "LR", (ftnlen)2, (ftnlen)2) == 0) {
-	    s_copy(wprime, "SM", (ftnlen)2, (ftnlen)2);
+	if (strcmp(which, "LR") == 0) {
+	    strcpy(wprime, "SM");
 	}
-	if (s_cmp(which, "SR", (ftnlen)2, (ftnlen)2) == 0) {
-	    s_copy(wprime, "LM", (ftnlen)2, (ftnlen)2);
+	if (strcmp(which, "SR") == 0) {
+	    strcpy(wprime, "LM");
 	}
-	if (s_cmp(which, "LI", (ftnlen)2, (ftnlen)2) == 0) {
-	    s_copy(wprime, "SM", (ftnlen)2, (ftnlen)2);
+	if (strcmp(which, "LI") == 0) {
+	    strcpy(wprime, "SM");
 	}
-	if (s_cmp(which, "SI", (ftnlen)2, (ftnlen)2) == 0) {
-	    s_copy(wprime, "LM", (ftnlen)2, (ftnlen)2);
+	if (strcmp(which, "SI") == 0) {
+	    strcpy(wprime, "LM");
 	}
 
 	ssortc_(wprime, &c_true, &kplusp, &ritzr[1], &ritzi[1], &bounds[1]);
@@ -575,23 +575,23 @@ L20:
            /* desired one appears at the front.            */
            /* -------------------------------------------- */
 
-	if (s_cmp(which, "LM", (ftnlen)2, (ftnlen)2) == 0) {
-	    s_copy(wprime, "SM", (ftnlen)2, (ftnlen)2);
+	if (strcmp(which, "LM") == 0) {
+	    strcpy(wprime, "SM");
 	}
-	if (s_cmp(which, "SM", (ftnlen)2, (ftnlen)2) == 0) {
-	    s_copy(wprime, "LM", (ftnlen)2, (ftnlen)2);
+	if (strcmp(which, "SM") == 0) {
+	    strcpy(wprime, "LM");
 	}
-	if (s_cmp(which, "LR", (ftnlen)2, (ftnlen)2) == 0) {
-	    s_copy(wprime, "SR", (ftnlen)2, (ftnlen)2);
+	if (strcmp(which, "LR") == 0) {
+	    strcpy(wprime, "SR");
 	}
-	if (s_cmp(which, "SR", (ftnlen)2, (ftnlen)2) == 0) {
-	    s_copy(wprime, "LR", (ftnlen)2, (ftnlen)2);
+	if (strcmp(which, "SR") == 0) {
+	    strcpy(wprime, "LR");
 	}
-	if (s_cmp(which, "LI", (ftnlen)2, (ftnlen)2) == 0) {
-	    s_copy(wprime, "SI", (ftnlen)2, (ftnlen)2);
+	if (strcmp(which, "LI") == 0) {
+	    strcpy(wprime, "SI");
 	}
-	if (s_cmp(which, "SI", (ftnlen)2, (ftnlen)2) == 0) {
-	    s_copy(wprime, "LI", (ftnlen)2, (ftnlen)2);
+	if (strcmp(which, "SI") == 0) {
+	    strcpy(wprime, "LI");
 	}
 
 	ssortc_(wprime, &c_true, &kplusp, &ritzr[1], &ritzi[1], &bounds[1]);
@@ -617,7 +617,7 @@ L20:
            /* (in the case when NCONV < NEV.)                    */
            /* -------------------------------------------------- */
 
-	s_copy(wprime, "LR", (ftnlen)2, (ftnlen)2);
+	strcpy(wprime, "LR");
 	ssortc_(wprime, &c_true, &numcnv, &bounds[1], &ritzr[1], &ritzi[1]);
 
            /* -------------------------------------------- */

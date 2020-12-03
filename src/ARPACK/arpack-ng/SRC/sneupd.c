@@ -318,8 +318,7 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
 
     /* Builtin functions */
     double pow_dd(double *, double *);
-    int32_t s_cmp(char *, char *, ftnlen, ftnlen);
-    int s_copy(char *, char *, ftnlen, ftnlen);
+    
 
     /* Local variables */
     int32_t j, k, ih, jj, np;
@@ -397,11 +396,8 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
 	ierr = -2;
     } else if (*ncv <= *nev + 1 || *ncv > *n) {
 	ierr = -3;
-    } else if (s_cmp(which, "LM", (ftnlen)2, (ftnlen)2) != 0 && s_cmp(which, 
-	    "SM", (ftnlen)2, (ftnlen)2) != 0 && s_cmp(which, "LR", (ftnlen)2, 
-	    (ftnlen)2) != 0 && s_cmp(which, "SR", (ftnlen)2, (ftnlen)2) != 0 
-	    && s_cmp(which, "LI", (ftnlen)2, (ftnlen)2) != 0 && s_cmp(which, 
-	    "SI", (ftnlen)2, (ftnlen)2) != 0) {
+    } else if (strcmp(which, "LM") != 0 && strcmp(which, "SM") != 0 && strcmp(which, "LR") != 0
+	    && strcmp(which, "SR") != 0 && strcmp(which, "LI") != 0 && strcmp(which, "SI") != 0) {
 	ierr = -5;
     } else if (*(unsigned char *)bmat != 'I' && *(unsigned char *)bmat != 'G')
 	     {
@@ -420,13 +416,13 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
     }
 
     if (mode == 1 || mode == 2) {
-	s_copy(type__, "REGULR", (ftnlen)6, (ftnlen)6);
+	strcpy(type__, "REGULR");
     } else if (mode == 3 && *sigmai == 0.f) {
-	s_copy(type__, "SHIFTI", (ftnlen)6, (ftnlen)6);
+	strcpy(type__, "SHIFTI");
     } else if (mode == 3) {
-	s_copy(type__, "REALPT", (ftnlen)6, (ftnlen)6);
+	strcpy(type__, "REALPT");
     } else if (mode == 4) {
-	s_copy(type__, "IMAGPT", (ftnlen)6, (ftnlen)6);
+	strcpy(type__, "IMAGPT");
     } else {
 	ierr = -10;
     }
@@ -667,7 +663,7 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
         /* if a spectral transformation was not used.         */
         /* -------------------------------------------------- */
 
-	if (s_cmp(type__, "REGULR", (ftnlen)6, (ftnlen)6) == 0) {
+	if (strcmp(type__, "REGULR") == 0) {
 	    scopy_(&nconv, &workl[iheigr], &c__1, &dr[1], &c__1);
 	    scopy_(&nconv, &workl[iheigi], &c__1, &di[1], &c__1);
 	}
@@ -882,7 +878,7 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
      /* of A*x = lambda*B*x.                           */
      /* ---------------------------------------------- */
 
-    if (s_cmp(type__, "REGULR", (ftnlen)6, (ftnlen)6) == 0) {
+    if (strcmp(type__, "REGULR") == 0) {
 
 	if (*rvec) {
 	    sscal_(ncv, &rnorm, &workl[ihbds], &c__1);
@@ -896,7 +892,7 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
         /*   Ritz values in the original system. */
         /* ------------------------------------- */
 
-	if (s_cmp(type__, "SHIFTI", (ftnlen)6, (ftnlen)6) == 0) {
+	if (strcmp(type__, "SHIFTI") == 0) {
 
 	    if (*rvec) {
 		sscal_(ncv, &rnorm, &workl[ihbds], &c__1);
@@ -911,14 +907,14 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
 /* L50: */
 	    }
 
-	} else if (s_cmp(type__, "REALPT", (ftnlen)6, (ftnlen)6) == 0) {
+	} else if (strcmp(type__, "REALPT") == 0) {
 
 	    i__1 = *ncv;
 	    for (k = 1; k <= i__1; ++k) {
 /* L60: */
 	    }
 
-	} else if (s_cmp(type__, "IMAGPT", (ftnlen)6, (ftnlen)6) == 0) {
+	} else if (strcmp(type__, "IMAGPT") == 0) {
 
 	    i__1 = *ncv;
 	    for (k = 1; k <= i__1; ++k) {
@@ -937,7 +933,7 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
         /* *The Ritz vectors are not affected by the transformation. */
         /* --------------------------------------------------------- */
 
-	if (s_cmp(type__, "SHIFTI", (ftnlen)6, (ftnlen)6) == 0) {
+	if (strcmp(type__, "SHIFTI") == 0) {
 
 	    i__1 = *ncv;
 	    for (k = 1; k <= i__1; ++k) {
@@ -953,19 +949,19 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
 	    scopy_(&nconv, &workl[iheigr], &c__1, &dr[1], &c__1);
 	    scopy_(&nconv, &workl[iheigi], &c__1, &di[1], &c__1);
 
-	} else if (s_cmp(type__, "REALPT", (ftnlen)6, (ftnlen)6) == 0 || 
-		s_cmp(type__, "IMAGPT", (ftnlen)6, (ftnlen)6) == 0) {scopy_(&nconv, &workl[iheigr], &c__1, &dr[1], &c__1);
+	} else if (strcmp(type__, "REALPT") == 0 || 
+		strcmp(type__, "IMAGPT") == 0) {scopy_(&nconv, &workl[iheigr], &c__1, &dr[1], &c__1);
 	    scopy_(&nconv, &workl[iheigi], &c__1, &di[1], &c__1);
 
 	}
 
     }
 
-    if (s_cmp(type__, "SHIFTI", (ftnlen)6, (ftnlen)6) == 0 && msglvl > 1) {
+    if (strcmp(type__, "SHIFTI") == 0 && msglvl > 1) {
 	svout_(&debug_1.logfil, &nconv, &dr[1], &debug_1.ndigit, "_neupd: Untransformed float part of the Ritz valuess.");
 	svout_(&debug_1.logfil, &nconv, &di[1], &debug_1.ndigit, "_neupd: Untransformed imag part of the Ritz valuess.");
 	svout_(&debug_1.logfil, &nconv, &workl[ihbds], &debug_1.ndigit, "_neupd: Ritz estimates of untransformed Ritz values.");
-    } else if (s_cmp(type__, "REGULR", (ftnlen)6, (ftnlen)6) == 0 && msglvl > 
+    } else if (strcmp(type__, "REGULR") == 0 && msglvl > 
 	    1) {
 	svout_(&debug_1.logfil, &nconv, &dr[1], &debug_1.ndigit, "_neupd: Real parts of converged Ritz values.");
 	svout_(&debug_1.logfil, &nconv, &di[1], &debug_1.ndigit, "_neupd: Imag parts of converged Ritz values.");
@@ -978,8 +974,7 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
      /* for MODE = 2.                                   */
      /* ----------------------------------------------- */
 
-    if (*rvec && *(unsigned char *)howmny == 'A' && s_cmp(type__, "SHIFTI", (
-	    ftnlen)6, (ftnlen)6) == 0) {
+    if (*rvec && *(unsigned char *)howmny == 'A' && strcmp(type__, "SHIFTI") == 0) {
 
         /* ---------------------------------------------- */
         /* Purify the computed Ritz vectors by adding a   */

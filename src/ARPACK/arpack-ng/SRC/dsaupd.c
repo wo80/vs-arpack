@@ -444,7 +444,7 @@ int dsaupd_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, dou
     int32_t v_dim1, v_offset, i__1, i__2;
 
     /* Builtin functions */
-    int32_t s_cmp(char *, char *, ftnlen, ftnlen), s_wsfe(cilist *), e_wsfe(
+    int32_t s_wsfe(cilist *), e_wsfe(
 	    void), do_fio(int32_t *, char *, ftnlen);
 
     /* Local variables */
@@ -519,11 +519,8 @@ int dsaupd_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, dou
 	if (mxiter <= 0) {
 	    ierr = -4;
 	}
-	if (s_cmp(which, "LM", (ftnlen)2, (ftnlen)2) != 0 && s_cmp(which, 
-		"SM", (ftnlen)2, (ftnlen)2) != 0 && s_cmp(which, "LA", (
-		ftnlen)2, (ftnlen)2) != 0 && s_cmp(which, "SA", (ftnlen)2, (
-		ftnlen)2) != 0 && s_cmp(which, "BE", (ftnlen)2, (ftnlen)2) != 
-		0) {
+	if (strcmp(which, "LM") != 0 && strcmp(which, "SM") != 0 && strcmp(which, "LA") != 0
+	 && strcmp(which, "SA") != 0 && strcmp(which, "BE") != 0) {
 	    ierr = -5;
 	}
 	if (*(unsigned char *)bmat != 'I' && *(unsigned char *)bmat != 'G') {
@@ -541,7 +538,7 @@ int dsaupd_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, dou
 	    ierr = -11;
 	} else if (ishift < 0 || ishift > 1) {
 	    ierr = -12;
-	} else if (*nev == 1 && s_cmp(which, "BE", (ftnlen)2, (ftnlen)2) == 0)
+	} else if (*nev == 1 && strcmp(which, "BE") == 0)
 		 {
 	    ierr = -13;
 	}

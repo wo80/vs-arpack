@@ -265,8 +265,8 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d__, complex *z__, 
 
     /* Builtin functions */
     double pow_dd(double *, double *);
-    int32_t s_cmp(char *, char *, ftnlen, ftnlen);
-    int s_copy(char *, char *, ftnlen, ftnlen);
+    
+
     double r_imag(complex *);
     void c_div(complex *, complex *, complex *);
 
@@ -345,11 +345,8 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d__, complex *z__, 
 	ierr = -2;
     } else if (*ncv <= *nev + 1 || *ncv > *n) {
 	ierr = -3;
-    } else if (s_cmp(which, "LM", (ftnlen)2, (ftnlen)2) != 0 && s_cmp(which, 
-	    "SM", (ftnlen)2, (ftnlen)2) != 0 && s_cmp(which, "LR", (ftnlen)2, 
-	    (ftnlen)2) != 0 && s_cmp(which, "SR", (ftnlen)2, (ftnlen)2) != 0 
-	    && s_cmp(which, "LI", (ftnlen)2, (ftnlen)2) != 0 && s_cmp(which, 
-	    "SI", (ftnlen)2, (ftnlen)2) != 0) {
+    } else if (strcmp(which, "LM") != 0 && strcmp(which, "SM") != 0 && strcmp(which, "LR") != 0
+	    && strcmp(which, "SR") != 0 && strcmp(which, "LI") != 0 && strcmp(which, "SI") != 0) {
 	ierr = -5;
     } else if (*(unsigned char *)bmat != 'I' && *(unsigned char *)bmat != 'G')
 	     {
@@ -368,9 +365,9 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d__, complex *z__, 
     }
 
     if (mode == 1 || mode == 2) {
-	s_copy(type__, "REGULR", (ftnlen)6, (ftnlen)6);
+	strcpy(type__, "REGULR");
     } else if (mode == 3) {
-	s_copy(type__, "SHIFTI", (ftnlen)6, (ftnlen)6);
+	strcpy(type__, "SHIFTI");
     } else {
 	ierr = -10;
     }
@@ -607,7 +604,7 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d__, complex *z__, 
         /* if a spectral transformation was not used. */
         /* ------------------------------------------ */
 
-	if (s_cmp(type__, "REGULR", (ftnlen)6, (ftnlen)6) == 0) {
+	if (strcmp(type__, "REGULR") == 0) {
 	    ccopy_(&nconv, &workl[iheig], &c__1, &d__[1], &c__1);
 	}
 
@@ -758,7 +755,7 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d__, complex *z__, 
      /* of A*x = lambda*B*x.                           */
      /* ---------------------------------------------- */
 
-    if (s_cmp(type__, "REGULR", (ftnlen)6, (ftnlen)6) == 0) {
+    if (strcmp(type__, "REGULR") == 0) {
 
 	if (*rvec) {
 	    cscal_(ncv, &rnorm, &workl[ihbds], &c__1);
@@ -797,7 +794,7 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d__, complex *z__, 
      /* *The Ritz vectors are not affected by the transformation. */
      /* --------------------------------------------------------- */
 
-    if (s_cmp(type__, "SHIFTI", (ftnlen)6, (ftnlen)6) == 0) {
+    if (strcmp(type__, "SHIFTI") == 0) {
 	i__1 = nconv;
 	for (k = 1; k <= i__1; ++k) {
 	    i__2 = k;
@@ -808,7 +805,7 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d__, complex *z__, 
 	}
     }
 
-    if (s_cmp(type__, "REGULR", (ftnlen)6, (ftnlen)6) != 0 && msglvl > 1) {
+    if (strcmp(type__, "REGULR") != 0 && msglvl > 1) {
 	cvout_(&debug_1.logfil, &nconv, &d__[1], &debug_1.ndigit, "_neupd: Untransformed Ritz values.");
 	cvout_(&debug_1.logfil, &nconv, &workl[ihbds], &debug_1.ndigit, "_neupd: Ritz estimates of the untransformed Ritz values.");
     } else if (msglvl > 1) {
@@ -822,8 +819,7 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d__, complex *z__, 
      /* for MODE = 3. See reference 3.                  */
      /* ----------------------------------------------- */
 
-    if (*rvec && *(unsigned char *)howmny == 'A' && s_cmp(type__, "SHIFTI", (
-	    ftnlen)6, (ftnlen)6) == 0) {
+    if (*rvec && *(unsigned char *)howmny == 'A' && strcmp(type__, "SHIFTI") == 0) {
 
         /* ---------------------------------------------- */
         /* Purify the computed Ritz vectors by adding a   */

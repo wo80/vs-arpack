@@ -98,7 +98,7 @@ int dsgets_(int32_t *ishift, char *which, int32_t *kev, int32_t *np, double *rit
     int32_t i__1;
 
     /* Builtin functions */
-    int32_t s_cmp(char *, char *, ftnlen, ftnlen);
+    
 
     /* Local variables */
     static float t0, t1;
@@ -123,7 +123,7 @@ int dsgets_(int32_t *ishift, char *which, int32_t *kev, int32_t *np, double *rit
     arscnd_(&t0);
     msglvl = debug_1.msgets;
 
-    if (s_cmp(which, "BE", (ftnlen)2, (ftnlen)2) == 0) {
+    if (strcmp(which, "BE") == 0) {
 
         /* --------------------------------------------------- */
         /* Both ends of the spectrum are requested.            */

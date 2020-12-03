@@ -444,7 +444,7 @@ int dnaupd_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, dou
     int32_t v_dim1, v_offset, i__1, i__2;
 
     /* Builtin functions */
-    int32_t s_cmp(char *, char *, ftnlen, ftnlen), s_wsfe(cilist *), e_wsfe(
+    int32_t s_wsfe(cilist *), e_wsfe(
 	    void), do_fio(int32_t *, char *, ftnlen);
 
     /* Local variables */
@@ -512,11 +512,8 @@ int dnaupd_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, dou
 	    ierr = -3;
 	} else if (mxiter <= 0) {
 	    ierr = -4;
-	} else if (s_cmp(which, "LM", (ftnlen)2, (ftnlen)2) != 0 && s_cmp(
-		which, "SM", (ftnlen)2, (ftnlen)2) != 0 && s_cmp(which, "LR", 
-		(ftnlen)2, (ftnlen)2) != 0 && s_cmp(which, "SR", (ftnlen)2, (
-		ftnlen)2) != 0 && s_cmp(which, "LI", (ftnlen)2, (ftnlen)2) != 
-		0 && s_cmp(which, "SI", (ftnlen)2, (ftnlen)2) != 0) {
+	} else if (strcmp(which, "LM") != 0 && strcmp(which, "SM") != 0 && strcmp(which, "LR") != 0
+		&& strcmp(which, "SR") != 0 && strcmp(which, "LI") != 0 && strcmp(which, "SI") != 0) {
 	    ierr = -5;
 	} else if (*(unsigned char *)bmat != 'I' && *(unsigned char *)bmat != 
 		'G') {

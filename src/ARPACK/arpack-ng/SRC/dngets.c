@@ -100,7 +100,7 @@ int dngets_(int32_t *ishift, char *which, int32_t *kev, int32_t *np, double *rit
     int32_t i__1;
 
     /* Builtin functions */
-    int32_t s_cmp(char *, char *, ftnlen, ftnlen);
+    
 
     /* Local variables */
     static float t0, t1;
@@ -136,22 +136,22 @@ int dngets_(int32_t *ishift, char *which, int32_t *kev, int32_t *np, double *rit
      /* complex conjugate pairs together                   */
      /* -------------------------------------------------- */
 
-    if (s_cmp(which, "LM", (ftnlen)2, (ftnlen)2) == 0) {
+    if (strcmp(which, "LM") == 0) {
 	i__1 = *kev + *np;
 	dsortc_("LR", &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1]);
-    } else if (s_cmp(which, "SM", (ftnlen)2, (ftnlen)2) == 0) {
+    } else if (strcmp(which, "SM") == 0) {
 	i__1 = *kev + *np;
 	dsortc_("SR", &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1]);
-    } else if (s_cmp(which, "LR", (ftnlen)2, (ftnlen)2) == 0) {
+    } else if (strcmp(which, "LR") == 0) {
 	i__1 = *kev + *np;
 	dsortc_("LM", &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1]);
-    } else if (s_cmp(which, "SR", (ftnlen)2, (ftnlen)2) == 0) {
+    } else if (strcmp(which, "SR") == 0) {
 	i__1 = *kev + *np;
 	dsortc_("SM", &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1]);
-    } else if (s_cmp(which, "LI", (ftnlen)2, (ftnlen)2) == 0) {
+    } else if (strcmp(which, "LI") == 0) {
 	i__1 = *kev + *np;
 	dsortc_("LM", &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1]);
-    } else if (s_cmp(which, "SI", (ftnlen)2, (ftnlen)2) == 0) {
+    } else if (strcmp(which, "SI") == 0) {
 	i__1 = *kev + *np;
 	dsortc_("SM", &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1]);
     }

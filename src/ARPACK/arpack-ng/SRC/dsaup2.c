@@ -189,8 +189,8 @@ int dsaup2_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, int
 
     /* Builtin functions */
     double pow_dd(double *, double *);
-    int32_t s_cmp(char *, char *, ftnlen, ftnlen);
-    int s_copy(char *, char *, ftnlen, ftnlen);
+    
+
     double sqrt(double);
 
     /* Local variables */
@@ -518,7 +518,7 @@ L20:
            /* swap overlapping locations.                    */
            /* ---------------------------------------------- */
 
-	if (s_cmp(which, "BE", (ftnlen)2, (ftnlen)2) == 0) {
+	if (strcmp(which, "BE") == 0) {
 
               /* --------------------------------------------------- */
               /* Both ends of the spectrum are requested.            */
@@ -529,7 +529,7 @@ L20:
               /* overlapping locations.                              */
               /* --------------------------------------------------- */
 
-	    s_copy(wprime, "SA", (ftnlen)2, (ftnlen)2);
+	    strcpy(wprime, "SA");
 	    dsortr_(wprime, &c_true, &kplusp, &ritz[1], &bounds[1]);
 	    nevd2 = nev0 / 2;
 	    nevm2 = nev0 - nevd2;
@@ -558,17 +558,17 @@ L20:
               /* NEV locations.                                   */
               /* ------------------------------------------------ */
 
-	    if (s_cmp(which, "LM", (ftnlen)2, (ftnlen)2) == 0) {
-		s_copy(wprime, "SM", (ftnlen)2, (ftnlen)2);
+	    if (strcmp(which, "LM") == 0) {
+		strcpy(wprime, "SM");
 	    }
-	    if (s_cmp(which, "SM", (ftnlen)2, (ftnlen)2) == 0) {
-		s_copy(wprime, "LM", (ftnlen)2, (ftnlen)2);
+	    if (strcmp(which, "SM") == 0) {
+		strcpy(wprime, "LM");
 	    }
-	    if (s_cmp(which, "LA", (ftnlen)2, (ftnlen)2) == 0) {
-		s_copy(wprime, "SA", (ftnlen)2, (ftnlen)2);
+	    if (strcmp(which, "LA") == 0) {
+		strcpy(wprime, "SA");
 	    }
-	    if (s_cmp(which, "SA", (ftnlen)2, (ftnlen)2) == 0) {
-		s_copy(wprime, "LA", (ftnlen)2, (ftnlen)2);
+	    if (strcmp(which, "SA") == 0) {
+		strcpy(wprime, "LA");
 	    }
 
 	    dsortr_(wprime, &c_true, &kplusp, &ritz[1], &bounds[1]);
@@ -596,7 +596,7 @@ L20:
            /* (in the case when NCONV < NEV.)                    */
            /* -------------------------------------------------- */
 
-	s_copy(wprime, "LA", (ftnlen)2, (ftnlen)2);
+	strcpy(wprime, "LA");
 	dsortr_(wprime, &c_true, &nev0, &bounds[1], &ritz[1]);
 
            /* -------------------------------------------- */
@@ -620,7 +620,7 @@ L20:
            /* ritz and bound.                                  */
            /* ------------------------------------------------ */
 
-	if (s_cmp(which, "BE", (ftnlen)2, (ftnlen)2) == 0) {
+	if (strcmp(which, "BE") == 0) {
 
               /* ---------------------------------------------- */
               /* Sort the "converged" Ritz values in increasing */
@@ -628,7 +628,7 @@ L20:
               /* middle.                                        */
               /* ---------------------------------------------- */
 
-	    s_copy(wprime, "LA", (ftnlen)2, (ftnlen)2);
+	    strcpy(wprime, "LA");
 	    dsortr_(wprime, &c_true, &nconv, &ritz[1], &bounds[1]);
 
 	} else {
