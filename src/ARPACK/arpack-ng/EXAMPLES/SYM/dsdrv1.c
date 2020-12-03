@@ -124,7 +124,7 @@ int dsdrv1()
 	return 0;
     }
     bmat = "I";
-    strcpy(which, "SM");
+    which = "SM";
 
      /* ------------------------------------------------ */
      /* The work array WORKL is used in DSAUPD as        */

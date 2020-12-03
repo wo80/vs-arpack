@@ -138,7 +138,7 @@ int sndrv4()
 	return 0;
     }
     bmat = "G";
-    strcpy(which, "LM");
+    which = "LM";
     sigmar = 1.f;
     sigmai = 0.f;
 

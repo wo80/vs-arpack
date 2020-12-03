@@ -134,7 +134,7 @@ int ssdrv5()
 	return 0;
     }
     bmat = "G";
-    strcpy(which, "LM");
+    which = "LM";
     sigma = 1.f;
 
      /* --------------------------------------------------- */

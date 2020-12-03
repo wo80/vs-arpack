@@ -140,7 +140,7 @@ int cndrv4()
 	return 0;
     }
     bmat = "G";
-    strcpy(which, "LM");
+    which = "LM";
     sigma.r = 1.f, sigma.i = 0.f;
 
      /* ------------------------------------------------ */

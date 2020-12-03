@@ -140,7 +140,7 @@ int cmout_(int32_t *m, int32_t *n, complex *a,
 		printf("                               Col %4d                  ", i);
 		i__2 = *m;
 		for (i = 1; i <= i__2; ++i) {
-		    d__1 = a[i + j * a_dim1];
+		    d__1 = a[i + k1 * a_dim1];
 		    printf("\n  Row %4d:  (  %20.13e   %20.13e)", i, d__1.r, d__1.i);
 		}
 	    }

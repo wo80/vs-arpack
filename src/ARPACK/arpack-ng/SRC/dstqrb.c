@@ -1,4 +1,4 @@
-/* D:\Projekte\ARPACK\arpack-ng\SRC\dstqrb.f -- translated by f2c (version 20100827). */
+/* arpack-ng\SRC\dstqrb.f -- translated by f2c (version 20100827). */
 
 #include "arpack.h"
 

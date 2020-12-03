@@ -1,4 +1,4 @@
-/* D:\Projekte\ARPACK\arpack-ng\SRC\cneigh.f -- translated by f2c (version 20100827). */
+/* arpack-ng\SRC\cneigh.f -- translated by f2c (version 20100827). */
 
 #include "arpack.h"
 

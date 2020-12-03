@@ -139,7 +139,7 @@ int dndrv4()
 	return 0;
     }
     bmat = "G";
-    strcpy(which, "LM");
+    which = "LM";
     sigmar = 1.;
     sigmai = 0.;
 

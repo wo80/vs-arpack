@@ -202,7 +202,7 @@ int sssimp()
     nev = 4;
     ncv = 20;
     bmat = "I";
-    strcpy(which, "LM");
+    which = "LM";
 
     if (n > 256) {
 	printf(" ERROR with _SSIMP: N is greater than MAXN \n");

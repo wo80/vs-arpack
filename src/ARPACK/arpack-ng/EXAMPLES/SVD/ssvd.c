@@ -236,7 +236,7 @@ int ssvd()
     nev = 4;
     ncv = 10;
     bmat = "I";
-    strcpy(which, "LM");
+    which = "LM";
 
     if (n > 250) {
 	printf(" ERROR with _SVD: N is greater than MAXN \n");

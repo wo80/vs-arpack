@@ -135,7 +135,7 @@ int dsdrv6()
 	return 0;
     }
     bmat = "G";
-    strcpy(which, "LM");
+    which = "LM";
     sigma = 150.;
 
      /* ------------------------------------------------ */

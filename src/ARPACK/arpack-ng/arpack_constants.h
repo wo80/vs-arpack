@@ -1,8 +1,5 @@
 #pragma once
 
-#include <stdint.h>
-#include <stdbool.h>
-
 static logical c_true = TRUE_;
 static logical c_false = FALSE_;
 

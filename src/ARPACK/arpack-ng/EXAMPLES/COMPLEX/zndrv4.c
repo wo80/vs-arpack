@@ -142,7 +142,7 @@ int zndrv4()
 	return 0;
     }
     bmat = "G";
-    strcpy(which, "LM");
+    which = "LM";
     sigma.r = 1., sigma.i = 0.;
 
      /* ------------------------------------------------ */

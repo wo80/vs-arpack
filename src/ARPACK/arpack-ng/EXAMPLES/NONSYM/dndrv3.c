@@ -126,7 +126,7 @@ int dndrv3()
 	return 0;
     }
     bmat = "G";
-    strcpy(which, "LM");
+    which = "LM";
 
      /* ---------------------------------------------- */
      /* M is the mass matrix formed by using piecewise */

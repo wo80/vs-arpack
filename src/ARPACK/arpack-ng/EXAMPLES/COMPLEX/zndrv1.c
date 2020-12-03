@@ -135,7 +135,7 @@ int zndrv1()
 	return 0;
     }
     bmat = "I";
-    strcpy(which, "LM");
+    which = "LM";
 
      /* ------------------------------------------------- */
      /* The work array WORKL is used in ZNAUPD  as         */

@@ -139,7 +139,7 @@ int zmout_(int32_t *m, int32_t *n, zomplex *a, int32_t *lda, int32_t *idigit, ch
 		printf("                               Col %4d                  ", i);
 		i__2 = *m;
 		for (i = 1; i <= i__2; ++i) {
-		    d__1 = a[i + j * a_dim1];
+		    d__1 = a[i + k1 * a_dim1];
 		    printf("\n  Row %4d:  (  %20.13f   %20.13f)", i, d__1.r, d__1.i);
 		}
 	    }

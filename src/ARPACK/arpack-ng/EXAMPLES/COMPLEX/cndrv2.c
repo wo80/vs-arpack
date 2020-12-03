@@ -136,7 +136,7 @@ int cndrv2()
 	return 0;
     }
     bmat = "I";
-    strcpy(which, "LM");
+    which = "LM";
     sigma.r = 0.f, sigma.i = 0.f;
 
      /* -------------------------------------------------- */

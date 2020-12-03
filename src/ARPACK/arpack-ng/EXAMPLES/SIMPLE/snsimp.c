@@ -212,7 +212,7 @@ int snsimp()
     nev = 4;
     ncv = 20;
     bmat = "I";
-    strcpy(which, "LM");
+    which = "LM";
 
     if (n > 256) {
 	printf(" ERROR with _NSIMP: N is greater than MAXN \n");

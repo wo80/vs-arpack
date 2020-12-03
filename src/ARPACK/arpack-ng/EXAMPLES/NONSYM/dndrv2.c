@@ -135,7 +135,7 @@ int dndrv2()
 	return 0;
     }
     bmat = "I";
-    strcpy(which, "LM");
+    which = "LM";
     sigmar = 1.;
     sigmai = 0.;
 
