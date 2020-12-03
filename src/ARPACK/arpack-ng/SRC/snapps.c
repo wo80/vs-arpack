@@ -220,7 +220,10 @@ int snapps_(int32_t *n, int32_t *kev, int32_t *np, float *
      /* & message level for debugging */
      /* ----------------------------- */
 
+#ifndef NO_TIMER
     arscnd_(&t0);
+#endif
+
     msglvl = debug_1.mnapps;
     kplusp = *kev + *np;
 
@@ -251,11 +254,13 @@ int snapps_(int32_t *n, int32_t *kev, int32_t *np, float *
 	sigmar = shiftr[jj];
 	sigmai = shifti[jj];
 
+#ifndef NO_TRACE
 	if (msglvl > 2) {
 	    ivout_(&c__1, &jj, &debug_1.ndigit, "_napps: shift number.");
 	    svout_(&c__1, &sigmar, &debug_1.ndigit, "_napps: The float part of the shift ");
 	    svout_(&c__1, &sigmai, &debug_1.ndigit, "_napps: The imaginary part of the shift ");
 	}
+#endif
 
         /* ----------------------------------------------- */
         /* The following set of conditionals is necessary  */
@@ -324,11 +329,14 @@ L20:
 	    r__2 = ulp * tst1;
 	    if ((r__1 = h[i + 1 + i * h_dim1], dabs(r__1)) <= dmax(r__2,
 		    smlnum)) {
+#ifndef NO_TRACE
 		if (msglvl > 0) {
 		    ivout_(&c__1, &i, &debug_1.ndigit, "_napps: matrix splitting at row/column no.");
 		    ivout_(&c__1, &jj, &debug_1.ndigit, "_napps: matrix splitting with shift number.");
 		    svout_(&c__1, &h[i + 1 + i * h_dim1], &debug_1.ndigit, "_napps: off diagonal element.");
 		}
+#endif
+
 		iend = i;
 		h[i + 1 + i * h_dim1] = 0.f;
 		goto L40;
@@ -338,10 +346,12 @@ L20:
 	iend = kplusp;
 L40:
 
+#ifndef NO_TRACE
 	if (msglvl > 2) {
 	    ivout_(&c__1, &istart, &debug_1.ndigit, "_napps: Start of current block ");
 	    ivout_(&c__1, &iend, &debug_1.ndigit, "_napps: End of current block ");
 	}
+#endif
 
         /* ---------------------------------------------- */
         /* No reason to apply a shift to block of order 1 */
@@ -667,6 +677,7 @@ L110:
 		 &c__1, &resid[1], &c__1);
     }
 
+#ifndef NO_TRACE
     if (msglvl > 1) {
 	svout_(&c__1, &q[kplusp + *kev * q_dim1], &debug_1.ndigit, "_napps: sigmak = (e_{kev+p}^T*Q)*e_{kev}");
 	svout_(&c__1, &h[*kev + 1 + *kev * h_dim1], &debug_1.ndigit, "_napps: betak = e_{kev+1}^T*H*e_{kev}");
@@ -676,10 +687,13 @@ L110:
 	}
 
     }
+#endif
 
 L9000:
+#ifndef NO_TIMER
     arscnd_(&t1);
     timing_1.tnapps += t1 - t0;
+#endif
 
     return 0;
 

@@ -272,7 +272,10 @@ int dsaitr_(int32_t *ido, char *bmat, int32_t *n, int32_t *k,int32_t *np, int32_
         /* & message level for debugging */
         /* ----------------------------- */
 
+#ifndef NO_TIMER
 	arscnd_(&t0);
+#endif
+
 	msglvl = debug_1.msaitr;
 
         /* ---------------------------- */
@@ -345,10 +348,12 @@ int dsaitr_(int32_t *ido, char *bmat, int32_t *n, int32_t *k,int32_t *np, int32_
 
 L1000:
 
+#ifndef NO_TRACE
     if (msglvl > 2) {
 	ivout_(&c__1, &j, &debug_1.ndigit, "_saitr: generating Arnoldi vector no.");
 	dvout_(&c__1, rnorm, &debug_1.ndigit, "_saitr: B-norm of the current residual =");
     }
+#endif
 
         /* ------------------------------------------------------- */
         /* Check for exact zero. Equivalent to determining whether */
@@ -365,9 +370,11 @@ L1000:
            /* basis and continue the iteration.                 */
            /* ------------------------------------------------- */
 
+#ifndef NO_TRACE
     if (msglvl > 0) {
 	ivout_(&c__1, &j, &debug_1.ndigit, "_saitr: ****** restart at step ******");
     }
+#endif
 
            /* ------------------------------------------- */
            /* ITRY is the loop variable that controls the */
@@ -404,8 +411,11 @@ L30:
               /* ---------------------------------------------- */
 
 	*info = j - 1;
+#ifndef NO_TIMER
 	arscnd_(&t1);
 	timing_1.tsaitr += t1 - t0;
+#endif
+
 	*ido = 99;
 	goto L9000;
     }
@@ -444,7 +454,10 @@ L40:
 
     step3 = true;
     ++timing_1.nopx;
+#ifndef NO_TIMER
     arscnd_(&t2);
+#endif
+
     dcopy_(n, &v[j * v_dim1 + 1], &c__1, &workd[ivj], &c__1);
     ipntr[1] = ivj;
     ipntr[2] = irj;
@@ -463,8 +476,10 @@ L50:
         /* WORKD(IRJ:IRJ+N-1) := OP*v_{j}.   */
         /* --------------------------------- */
 
+#ifndef NO_TIMER
     arscnd_(&t3);
     timing_1.tmvopx += t3 - t2;
+#endif
 
     step3 = false;
 
@@ -486,7 +501,10 @@ L50:
     if (*mode == 2) {
 	goto L65;
     }
+#ifndef NO_TIMER
     arscnd_(&t2);
+#endif
+
     if (*bmat == 'G') {
 	++timing_1.nbx;
 	step4 = true;
@@ -509,10 +527,12 @@ L60:
         /* WORKD(IPJ:IPJ+N-1) := B*OP*v_{j}. */
         /* --------------------------------- */
 
+#ifndef NO_TIMER
     if (*bmat == 'G') {
 	arscnd_(&t3);
 	timing_1.tmvbx += t3 - t2;
     }
+#endif
 
     step4 = false;
 
@@ -577,12 +597,17 @@ L65:
     } else {
 	h[j + h_dim1] = *rnorm;
     }
+#ifndef NO_TIMER
     arscnd_(&t4);
+#endif
 
     orth1 = true;
     iter = 0;
 
+#ifndef NO_TIMER
     arscnd_(&t2);
+#endif
+
     if (*bmat == 'G') {
 	++timing_1.nbx;
 	dcopy_(n, &resid[1], &c__1, &workd[irj], &c__1);
@@ -605,10 +630,12 @@ L70:
         /* WORKD(IPJ:IPJ+N-1) := B*r_{j}.                    */
         /* ------------------------------------------------- */
 
+#ifndef NO_TIMER
     if (*bmat == 'G') {
 	arscnd_(&t3);
 	timing_1.tmvbx += t3 - t2;
     }
+#endif
 
     orth1 = false;
 
@@ -652,11 +679,13 @@ L70:
 
 L80:
 
+#ifndef NO_TRACE
     if (msglvl > 2) {
 	xtemp[0] = wnorm;
 	xtemp[1] = *rnorm;
 	dvout_(&c__2, xtemp, &debug_1.ndigit, "_saitr: re-orthonalization ; wnorm and rnorm are");
     }
+#endif
 
         /* -------------------------------------------------- */
         /* Compute V_{j}^T * B * r_{j}.                       */
@@ -683,7 +712,10 @@ L80:
     h[j + (h_dim1 << 1)] += workd[irj + j - 1];
 
     orth2 = true;
+#ifndef NO_TIMER
     arscnd_(&t2);
+#endif
+
     if (*bmat == 'G') {
 	++timing_1.nbx;
 	dcopy_(n, &resid[1], &c__1, &workd[irj], &c__1);
@@ -706,10 +738,12 @@ L90:
         /* Back from reverse communication if ORTH2 = .true. */
         /* ------------------------------------------------- */
 
+#ifndef NO_TIMER
     if (*bmat == 'G') {
 	arscnd_(&t3);
 	timing_1.tmvbx += t3 - t2;
     }
+#endif
 
         /* --------------------------------------------------- */
         /* Compute the B-norm of the corrected residual r_{j}. */
@@ -722,6 +756,7 @@ L90:
 	rnorm1 = dnrm2_(n, &resid[1], &c__1);
     }
 
+#ifndef NO_TRACE
     if (msglvl > 0 && iter > 0) {
 	ivout_(&c__1, &j, &debug_1.ndigit, "_saitr: Iterative refinement for Arnoldi residual");
 	if (msglvl > 2) {
@@ -730,6 +765,7 @@ L90:
 	    dvout_(&c__2, xtemp, &debug_1.ndigit, "_saitr: iterative refinement ; rnorm and rnorm1 are");
 	}
     }
+#endif
 
         /* --------------------------------------- */
         /* Determine if we need to perform another */
@@ -781,8 +817,10 @@ L100:
     rstart = false;
     orth2 = false;
 
+#ifndef NO_TIMER
     arscnd_(&t5);
     timing_1.titref += t5 - t4;
+#endif
 
         /* -------------------------------------------------------- */
         /* Make sure the last off-diagonal element is non negative  */
@@ -805,10 +843,14 @@ L100:
 
     ++j;
     if (j > *k + *np) {
+#ifndef NO_TIMER
 	arscnd_(&t1);
 	timing_1.tsaitr += t1 - t0;
+#endif
+
 	*ido = 99;
 
+#ifndef NO_TRACE
 	if (msglvl > 1) {
 	    i__1 = *k + *np;
 	    dvout_(&i__1, &h[(h_dim1 << 1) + 1], &debug_1.ndigit, "_saitr: main diagonal of matrix H of step K+NP.");
@@ -817,6 +859,7 @@ L100:
 		dvout_(&i__1, &h[h_dim1 + 2], &debug_1.ndigit, "_saitr: sub diagonal of matrix H of step K+NP.");
 	    }
 	}
+#endif
 
 	goto L9000;
     }

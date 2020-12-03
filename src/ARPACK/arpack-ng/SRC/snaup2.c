@@ -236,7 +236,9 @@ int snaup2_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, int
     /* Function Body */
     if (*ido == 0) {
 
+#ifndef NO_TIMER
 	arscnd_(&t0);
+#endif
 
 	msglvl = debug_1.mnaup2;
 
@@ -374,9 +376,11 @@ L1000:
 
     ++iter;
 
+#ifndef NO_TRACE
     if (msglvl > 0) {
 	ivout_(&c__1, &iter, &debug_1.ndigit, "_naup2: **** Start of major iteration number ****");
     }
+#endif
 
         /* --------------------------------------------------------- */
         /* Compute NP additional steps of the Arnoldi factorization. */
@@ -386,10 +390,12 @@ L1000:
 
     *np = kplusp - *nev;
 
+#ifndef NO_TRACE
     if (msglvl > 1) {
 	ivout_(&c__1, nev, &debug_1.ndigit, "_naup2: The length of the current Arnoldi factorization");
 	ivout_(&c__1, np, &debug_1.ndigit, "_naup2: Extend the Arnoldi factorization by");
     }
+#endif
 
         /* --------------------------------------------------------- */
         /* Compute NP additional steps of the Arnoldi factorization. */
@@ -418,9 +424,11 @@ L20:
     }
     update = false;
 
+#ifndef NO_TRACE
     if (msglvl > 1) {
 	svout_(&c__1, &rnorm, &debug_1.ndigit, "_naup2: Corresponding B-norm of the residual");
     }
+#endif
 
         /* ------------------------------------------------------ */
         /* Compute the eigenvalues and corresponding error bounds */
@@ -479,6 +487,7 @@ L20:
     scopy_(nev, &bounds[*np + 1], &c__1, &workl[(*np << 1) + 1], &c__1);
     snconv_(nev, &ritzr[*np + 1], &ritzi[*np + 1], &workl[(*np << 1) + 1], tol, &nconv);
 
+#ifndef NO_TRACE
     if (msglvl > 2) {
 	kp[0] = *nev;
 	kp[1] = *np;
@@ -489,6 +498,7 @@ L20:
 	svout_(&kplusp, &ritzi[1], &debug_1.ndigit, "_naup2: Imaginary part of the eigenvalues of H");
 	svout_(&kplusp, &bounds[1], &debug_1.ndigit, "_naup2: Ritz estimates of the current NCV Ritz values");
     }
+#endif
 
         /* ------------------------------------------------------- */
         /* Count the number of unwanted Ritz values that have zero */
@@ -512,6 +522,7 @@ L20:
 
     if (nconv >= numcnv || iter > *mxiter || *np == 0) {
 
+#ifndef NO_TRACE
 	if (msglvl > 4) {
 /* Computing 2nd power */
 	    i__1 = kplusp;
@@ -523,6 +534,7 @@ L20:
 	    i__1 = kplusp;
 	    svout_(&kplusp, &workl[i__1 * i__1 + (kplusp << 1) + 1], &debug_1.ndigit, "_naup2: Ritz eistmates computed by _neigh:");
 	}
+#endif
 
            /* ---------------------------------------------- */
            /* Prepare to exit. Put the converged Ritz values */
@@ -641,11 +653,13 @@ L20:
 
 	ssortc_(which, &c_true, &nconv, &ritzr[1], &ritzi[1], &bounds[1]);
 
+#ifndef NO_TRACE
 	if (msglvl > 1) {
 	    svout_(&kplusp, &ritzr[1], &debug_1.ndigit, "_naup2: Sorted float part of the eigenvalues");
 	    svout_(&kplusp, &ritzi[1], &debug_1.ndigit, "_naup2: Sorted imaginary part of the eigenvalues");
 	    svout_(&kplusp, &bounds[1], &debug_1.ndigit, "_naup2: Sorted ritz estimates.");
 	}
+#endif
 
            /* ---------------------------------- */
            /* Max iterations have been exceeded. */
@@ -707,6 +721,7 @@ L20:
 
     }
 
+#ifndef NO_TRACE
     if (msglvl > 0) {
 	ivout_(&c__1, &nconv, &debug_1.ndigit, "_naup2: no. of \"converged\" Ritz values at this iter.");
 	if (msglvl > 1) {
@@ -718,6 +733,7 @@ L20:
 	    svout_(nev, &bounds[*np + 1], &debug_1.ndigit, "_naup2: Ritz estimates of the \"wanted\" values ");
 	}
     }
+#endif
 
     if (*ishift == 0) {
 
@@ -754,6 +770,7 @@ L50:
 	scopy_(np, &workl[*np + 1], &c__1, &ritzi[1], &c__1);
     }
 
+#ifndef NO_TRACE
     if (msglvl > 2) {
 	ivout_(&c__1, np, &debug_1.ndigit, "_naup2: The number of shifts to apply ");
 	svout_(np, &ritzr[1], &debug_1.ndigit, "_naup2: Real part of the shifts");
@@ -762,6 +779,7 @@ L50:
 	    svout_(np, &bounds[1], &debug_1.ndigit, "_naup2: Ritz estimates of the shifts");
 	}
     }
+#endif
 
         /* ------------------------------------------------------- */
         /* Apply the NP implicit shifts by QR bulge chasing.       */
@@ -779,7 +797,10 @@ L50:
         /* ------------------------------------------- */
 
     cnorm = true;
+#ifndef NO_TIMER
     arscnd_(&t2);
+#endif
+
     if (*bmat == 'G') {
 	++timing_1.nbx;
 	scopy_(n, &resid[1], &c__1, &workd[*n + 1], &c__1);
@@ -803,10 +824,12 @@ L100:
         /* WORKD(1:N) := B*RESID            */
         /* -------------------------------- */
 
+#ifndef NO_TIMER
     if (*bmat == 'G') {
 	arscnd_(&t3);
 	timing_1.tmvbx += t3 - t2;
     }
+#endif
 
     if (*bmat == 'G') {
 	rnorm = sdot_(n, &resid[1], &c__1, &workd[1], &c__1);
@@ -816,10 +839,12 @@ L100:
     }
     cnorm = false;
 
+#ifndef NO_TRACE
     if (msglvl > 2) {
 	svout_(&c__1, &rnorm, &debug_1.ndigit, "_naup2: B-norm of residual for compressed factorization");
 	smout_(nev, nev, &h[h_offset], ldh, &debug_1.ndigit, "_naup2: Compressed upper Hessenberg matrix H");
     }
+#endif
 
     goto L1000;
 
@@ -841,8 +866,10 @@ L1200:
      /* Error Exit */
      /* ---------- */
 
+#ifndef NO_TIMER
     arscnd_(&t1);
     timing_1.tnaup2 = t1 - t0;
+#endif
 
 L9000:
 

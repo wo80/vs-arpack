@@ -216,7 +216,10 @@ int znapps_(int32_t *n, int32_t *kev, int32_t *np,
      /* & message level for debugging */
      /* ----------------------------- */
 
+#ifndef NO_TIMER
     arscnd_(&t0);
+#endif
+
     msglvl = debug_1.mcapps;
 
     kplusp = *kev + *np;
@@ -247,10 +250,12 @@ int znapps_(int32_t *n, int32_t *kev, int32_t *np,
 	i__2 = jj;
 	sigma.r = shift[i__2].r, sigma.i = shift[i__2].i;
 
+#ifndef NO_TRACE
 	if (msglvl > 2) {
 	    ivout_(&c__1, &jj, &debug_1.ndigit, "_napps: shift number.");
 	    zvout_(&c__1, &sigma, &debug_1.ndigit, "_napps: Value of the shift ");
 	}
+#endif
 
 	istart = 1;
 L20:
@@ -278,11 +283,14 @@ L20:
 /* Computing MAX */
 	    d__2 = ulp * tst1;
 	    if ((d__1 = h[i__3].r, abs(d__1)) <= max(d__2,smlnum)) {
+#ifndef NO_TRACE
 		if (msglvl > 0) {
 		    ivout_(&c__1, &i, &debug_1.ndigit, "_napps: matrix splitting at row/column no.");
 		    ivout_(&c__1, &jj, &debug_1.ndigit, "_napps: matrix splitting with shift number.");
 		    zvout_(&c__1, &h[i + 1 + i * h_dim1], &debug_1.ndigit, "_napps: off diagonal element.");
 		}
+#endif
+
 		iend = i;
 		i__3 = i + 1 + i * h_dim1;
 		h[i__3].r = 0., h[i__3].i = 0.;
@@ -293,10 +301,12 @@ L20:
 	iend = kplusp;
 L40:
 
+#ifndef NO_TRACE
 	if (msglvl > 2) {
 	    ivout_(&c__1, &istart, &debug_1.ndigit, "_napps: Start of current block ");
 	    ivout_(&c__1, &iend, &debug_1.ndigit, "_napps: End of current block ");
 	}
+#endif
 
         /* ---------------------------------------------- */
         /* No reason to apply a shift to block of order 1 */
@@ -582,6 +592,7 @@ L100:
 		 &c__1, &resid[1], &c__1);
     }
 
+#ifndef NO_TRACE
     if (msglvl > 1) {
 	zvout_(&c__1, &q[kplusp + *kev * q_dim1], &debug_1.ndigit, "_napps: sigmak = (e_{kev+p}^T*Q)*e_{kev}");
 	zvout_(&c__1, &h[*kev + 1 + *kev * h_dim1], &debug_1.ndigit, "_napps: betak = e_{kev+1}^T*H*e_{kev}");
@@ -591,10 +602,13 @@ L100:
 	}
 
     }
+#endif
 
 L9000:
+#ifndef NO_TIMER
     arscnd_(&t1);
     timing_1.tcapps += t1 - t0;
+#endif
 
     return 0;
 

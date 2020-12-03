@@ -111,7 +111,10 @@ int zngets_(int32_t *ishift, char *which, int32_t *kev, int32_t *np, zomplex *ri
     --ritz;
 
     /* Function Body */
+#ifndef NO_TIMER
     arscnd_(&t0);
+#endif
+
     msglvl = debug_1.mcgets;
 
     i__1 = *kev + *np;
@@ -132,9 +135,12 @@ int zngets_(int32_t *ishift, char *which, int32_t *kev, int32_t *np, zomplex *ri
 
     }
 
+#ifndef NO_TIMER
     arscnd_(&t1);
     timing_1.tcgets += t1 - t0;
+#endif
 
+#ifndef NO_TRACE
     if (msglvl > 0) {
 	ivout_(&c__1, kev, &debug_1.ndigit, "_ngets: KEV is");
 	ivout_(&c__1, np, &debug_1.ndigit, "_ngets: NP is");
@@ -143,6 +149,7 @@ int zngets_(int32_t *ishift, char *which, int32_t *kev, int32_t *np, zomplex *ri
 	i__1 = *kev + *np;
 	zvout_(&i__1, &bounds[1], &debug_1.ndigit, "_ngets: Ritz estimates of the current KEV+NP Ritz values");
     }
+#endif
 
     return 0;
 

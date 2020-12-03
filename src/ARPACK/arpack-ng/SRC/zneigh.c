@@ -138,12 +138,17 @@ int zneigh_(double *rnorm, int32_t *n, zomplex *
     q -= q_offset;
 
     /* Function Body */
+#ifndef NO_TIMER
     arscnd_(&t0);
+#endif
+
     msglvl = debug_1.mceigh;
 
+#ifndef NO_TRACE
     if (msglvl > 2) {
 	zmout_(n, n, &h[h_offset], ldh, &debug_1.ndigit, "_neigh: Entering upper Hessenberg matrix H ");
     }
+#endif
 
      /* -------------------------------------------------------- */
      /* 1. Compute the eigenvalues, the last components of the   */
@@ -162,9 +167,11 @@ int zneigh_(double *rnorm, int32_t *n, zomplex *
     }
 
     zcopy_(n, &q[*n - 1 + q_dim1], ldq, &bounds[1], &c__1);
+#ifndef NO_TRACE
     if (msglvl > 1) {
 	zvout_(n, &bounds[1], &debug_1.ndigit, "_neigh: last row of the Schur matrix for H");
     }
+#endif
 
      /* -------------------------------------------------------- */
      /* 2. Compute the eigenvectors of the full Schur form T and */
@@ -196,10 +203,12 @@ int zneigh_(double *rnorm, int32_t *n, zomplex *
 /* L10: */
     }
 
+#ifndef NO_TRACE
     if (msglvl > 1) {
 	zcopy_(n, &q[*n + q_dim1], ldq, &workl[1], &c__1);
 	zvout_(n, &workl[1], &debug_1.ndigit, "_neigh: Last row of the eigenvector matrix for H");
     }
+#endif
 
      /* -------------------------- */
      /* Compute the Ritz estimates */
@@ -208,13 +217,17 @@ int zneigh_(double *rnorm, int32_t *n, zomplex *
     zcopy_(n, &q[*n + q_dim1], n, &bounds[1], &c__1);
     zdscal_(n, rnorm, &bounds[1], &c__1);
 
+#ifndef NO_TRACE
     if (msglvl > 2) {
 	zvout_(n, &ritz[1], &debug_1.ndigit, "_neigh: The eigenvalues of H");
 	zvout_(n, &bounds[1], &debug_1.ndigit, "_neigh: Ritz estimates for the eigenvalues of H");
     }
+#endif
 
+#ifndef NO_TIMER
     arscnd_(&t1);
     timing_1.tceigh += t1 - t0;
+#endif
 
 L9000:
     return 0;

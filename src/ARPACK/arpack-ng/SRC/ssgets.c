@@ -119,7 +119,10 @@ int ssgets_(int32_t *ishift, char *which, int32_t *kev, int32_t *np, float *ritz
     --ritz;
 
     /* Function Body */
+#ifndef NO_TIMER
     arscnd_(&t0);
+#endif
+
     msglvl = debug_1.msgets;
 
     if (strcmp(which, "BE") == 0) {
@@ -172,9 +175,12 @@ int ssgets_(int32_t *ishift, char *which, int32_t *kev, int32_t *np, float *ritz
 	scopy_(np, &ritz[1], &c__1, &shifts[1], &c__1);
     }
 
+#ifndef NO_TIMER
     arscnd_(&t1);
     timing_1.tsgets += t1 - t0;
+#endif
 
+#ifndef NO_TRACE
     if (msglvl > 0) {
 	ivout_(&c__1, kev, &debug_1.ndigit, "_sgets: KEV is");
 	ivout_(&c__1, np, &debug_1.ndigit, "_sgets: NP is");
@@ -183,6 +189,7 @@ int ssgets_(int32_t *ishift, char *which, int32_t *kev, int32_t *np, float *ritz
 	i__1 = *kev + *np;
 	svout_(&i__1, &bounds[1], &debug_1.ndigit, "_sgets: Associated Ritz estimates");
     }
+#endif
 
     return 0;
 

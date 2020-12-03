@@ -244,7 +244,10 @@ int dsaup2_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, int
         /* & message level for debugging */
         /* ----------------------------- */
 
+#ifndef NO_TIMER
 	arscnd_(&t0);
+#endif
+
 	msglvl = debug_1.msaup2;
 
         /* ------------------------------- */
@@ -391,13 +394,18 @@ L1000:
 
     ++iter;
 
+#ifndef NO_TRACE
     if (msglvl > 0) {
 	ivout_(&c__1, &iter, &debug_1.ndigit, "_saup2: **** Start of major iteration number ****");
     }
+#endif
+
+#ifndef NO_TRACE
     if (msglvl > 1) {
 	ivout_(&c__1, nev, &debug_1.ndigit, "_saup2: The length of the current Lanczos factorization");
 	ivout_(&c__1, np, &debug_1.ndigit, "_saup2: Extend the Lanczos factorization by");
     }
+#endif
 
         /* ---------------------------------------------------------- */
         /* Compute NP additional steps of the Lanczos factorization. */
@@ -433,9 +441,11 @@ L20:
     }
     update = false;
 
+#ifndef NO_TRACE
     if (msglvl > 1) {
 	dvout_(&c__1, &rnorm, &debug_1.ndigit, "_saup2: Current B-norm of residual for factorization");
     }
+#endif
 
         /* ------------------------------------------------------ */
         /* Compute the eigenvalues and corresponding error bounds */
@@ -478,6 +488,7 @@ L20:
     dcopy_(nev, &bounds[*np + 1], &c__1, &workl[*np + 1], &c__1);
     dsconv_(nev, &ritz[*np + 1], &workl[*np + 1], tol, &nconv);
 
+#ifndef NO_TRACE
     if (msglvl > 2) {
 	kp[0] = *nev;
 	kp[1] = *np;
@@ -486,6 +497,7 @@ L20:
 	dvout_(&kplusp, &ritz[1], &debug_1.ndigit, "_saup2: The eigenvalues of H");
 	dvout_(&kplusp, &bounds[1], &debug_1.ndigit, "_saup2: Ritz estimates of the current NCV Ritz values");
     }
+#endif
 
         /* ------------------------------------------------------- */
         /* Count the number of unwanted Ritz values that have zero */
@@ -649,10 +661,12 @@ L20:
 
 	h[h_dim1 + 1] = rnorm;
 
+#ifndef NO_TRACE
 	if (msglvl > 1) {
 	    dvout_(&kplusp, &ritz[1], &debug_1.ndigit, "_saup2: Sorted Ritz values.");
 	    dvout_(&kplusp, &bounds[1], &debug_1.ndigit, "_saup2: Sorted ritz estimates.");
 	}
+#endif
 
            /* ---------------------------------- */
            /* Max iterations have been exceeded. */
@@ -703,6 +717,7 @@ L20:
 
     }
 
+#ifndef NO_TRACE
     if (msglvl > 0) {
 	ivout_(&c__1, &nconv, &debug_1.ndigit, "_saup2: no. of \"converged\" Ritz values at this iter.");
 	if (msglvl > 1) {
@@ -713,6 +728,7 @@ L20:
 	    dvout_(nev, &bounds[*np + 1], &debug_1.ndigit, "_saup2: Ritz estimates of the \"wanted\" values ");
 	}
     }
+#endif
 
     if (*ishift == 0) {
 
@@ -747,6 +763,7 @@ L50:
 	dcopy_(np, &workl[1], &c__1, &ritz[1], &c__1);
     }
 
+#ifndef NO_TRACE
     if (msglvl > 2) {
 	ivout_(&c__1, np, &debug_1.ndigit, "_saup2: The number of shifts to apply ");
 	dvout_(np, &workl[1], &debug_1.ndigit, "_saup2: shifts selected");
@@ -754,6 +771,7 @@ L50:
 	    dvout_(np, &bounds[1], &debug_1.ndigit, "_saup2: corresponding Ritz estimates");
 	}
     }
+#endif
 
         /* ------------------------------------------------------- */
         /* Apply the NP0 implicit shifts by QR bulge chasing.      */
@@ -772,7 +790,10 @@ L50:
         /* ------------------------------------------- */
 
     cnorm = true;
+#ifndef NO_TIMER
     arscnd_(&t2);
+#endif
+
     if (*bmat == 'G') {
 	++timing_1.nbx;
 	dcopy_(n, &resid[1], &c__1, &workd[*n + 1], &c__1);
@@ -796,10 +817,12 @@ L100:
         /* WORKD(1:N) := B*RESID            */
         /* -------------------------------- */
 
+#ifndef NO_TIMER
     if (*bmat == 'G') {
 	arscnd_(&t3);
 	timing_1.tmvbx += t3 - t2;
     }
+#endif
 
     if (*bmat == 'G') {
 	rnorm = ddot_(n, &resid[1], &c__1, &workd[1], &c__1);
@@ -810,12 +833,14 @@ L100:
     cnorm = false;
 /* L130: */
 
+#ifndef NO_TRACE
     if (msglvl > 2) {
 	dvout_(&c__1, &rnorm, &debug_1.ndigit, "_saup2: B-norm of residual for NEV factorization");
 	dvout_(nev, &h[(h_dim1 << 1) + 1], &debug_1.ndigit,"_saup2: main diagonal of compressed H matrix");
 	i__1 = *nev - 1;
 	dvout_(&i__1, &h[h_dim1 + 2], &debug_1.ndigit, "_saup2: subdiagonal of compressed H matrix");
     }
+#endif
 
     goto L1000;
 
@@ -837,8 +862,10 @@ L1200:
      /* Error exit */
      /* ---------- */
 
+#ifndef NO_TIMER
     arscnd_(&t1);
     timing_1.tsaup2 = t1 - t0;
+#endif
 
 L9000:
     return 0;

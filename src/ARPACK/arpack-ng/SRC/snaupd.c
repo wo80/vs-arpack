@@ -412,33 +412,6 @@ int snaupd_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, flo
      float *resid, int32_t *ncv, float *v, int32_t *ldv, int32_t *iparam, int32_t *ipntr,
      float *workd, float *workl, int32_t *lworkl, int32_t *info)
 {
-    /* Format strings */
-    static char fmt_1000[] = "(//,5x,\002==================================="
-	    "==========\002,/5x,\002= Nonsymmetric implicit Arnoldi update co"
-	    "de =\002,/5x,\002= Version Number: \002,\002 2.4\002,21x,\002 "
-	    "=\002,/5x,\002= Version Date:   \002,\002 07/31/96\002,16x,\002 ="
-	    "\002,/5x,\002=============================================\002,/"
-	    "5x,\002= Summary of timing statistics              =\002,/5x,"
-	    "\002=============================================\002,//)";
-    static char fmt_1100[] = "(5x,\002Total number update iterations        "
-	    "     = \002,i5,/5x,\002Total number of OP*x operations          "
-	    "  = \002,i5,/5x,\002Total number of B*x operations             = "
-	    "\002,i5,/5x,\002Total number of reorthogonalization steps  = "
-	    "\002,i5,/5x,\002Total number of iterative refinement steps = "
-	    "\002,i5,/5x,\002Total number of restart steps              = "
-	    "\002,i5,/5x,\002Total time in user OP*x operation          = "
-	    "\002,f12.6,/5x,\002Total time in user B*x operation           ="
-	    " \002,f12.6,/5x,\002Total time in Arnoldi update routine       = "
-	    "\002,f12.6,/5x,\002Total time in naup2 routine                ="
-	    " \002,f12.6,/5x,\002Total time in basic Arnoldi iteration loop = "
-	    "\002,f12.6,/5x,\002Total time in reorthogonalization phase    ="
-	    " \002,f12.6,/5x,\002Total time in (re)start vector generation  = "
-	    "\002,f12.6,/5x,\002Total time in Hessenberg eig. subproblem   ="
-	    " \002,f12.6,/5x,\002Total time in getting the shifts           = "
-	    "\002,f12.6,/5x,\002Total time in applying the shifts          ="
-	    " \002,f12.6,/5x,\002Total time in convergence testing          = "
-	    "\002,f12.6,/5x,\002Total time in computing final Ritz vectors ="
-	    " \002,f12.6/)";
 
     /* System generated locals */
     int32_t v_dim1, v_offset, i__1, i__2;
@@ -455,10 +428,6 @@ int snaupd_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, flo
     static int32_t iupd, next, ritzi;
     static int32_t ritzr;
     static int32_t bounds, ishift, msglvl, mxiter;
-
-    /* Fortran I/O blocks */
-    static cilist io___22 = { 0, 6, 0, fmt_1000, 0 };
-    static cilist io___23 = { 0, 6, 0, fmt_1100, 0 };
 
      /* --------------------- */
      /* Executable Statements */
@@ -483,7 +452,10 @@ int snaupd_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, flo
         /* ----------------------------- */
 
 	sstatn_();
+#ifndef NO_TIMER
 	arscnd_(&t0);
+#endif
+
 	msglvl = debug_1.mnaupd;
 
         /* -------------- */
@@ -649,6 +621,7 @@ int snaupd_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, flo
 	*info = 3;
     }
 
+#ifndef NO_TRACE
     if (msglvl > 0) {
 	ivout_(&c__1, &mxiter, &debug_1.ndigit, "_naupd: Number of update iterations taken");
 	ivout_(&c__1, &np, &debug_1.ndigit, "_naupd: Number of wanted \"converged\" Ritz values");
@@ -656,10 +629,14 @@ int snaupd_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, flo
 	svout_(&np, &workl[ritzi], &debug_1.ndigit, "_naupd: Imaginary part of the final Ritz values");
 	svout_(&np, &workl[bounds], &debug_1.ndigit, "_naupd: Associated Ritz estimates");
     }
+#endif
 
+#ifndef NO_TIMER
     arscnd_(&t1);
     timing_1.tnaupd = t1 - t0;
+#endif
 
+#ifndef NO_TRACE
     if (msglvl > 0) {
 
         /* ------------------------------------------------------ */
@@ -689,6 +666,7 @@ int snaupd_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, flo
 	do_fio(&c__1, (char *)&timing_1.trvec, (ftnlen)sizeof(float));
 	e_wsfe();
     }
+#endif
 
 L9000:
 

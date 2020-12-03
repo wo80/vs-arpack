@@ -413,32 +413,6 @@ int ssaupd_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, flo
      float *resid, int32_t *ncv, float *v, int32_t *ldv, int32_t *iparam, int32_t *ipntr,
      float *workd, float *workl, int32_t *lworkl, int32_t *info)
 {
-    /* Format strings */
-    static char fmt_1000[] = "(//,5x,\002==================================="
-	    "=======\002,/5x,\002= Symmetric implicit Arnoldi update code "
-	    "=\002,/5x,\002= Version Number:\002,\002 2.4\002,19x,\002 =\002,"
-	    "/5x,\002= Version Date:  \002,\002 07/31/96\002,14x,\002 =\002,/"
-	    "5x,\002==========================================\002,/5x,\002= "
-	    "Summary of timing statistics           =\002,/5x,\002==========="
-	    "===============================\002,//)";
-    static char fmt_1100[] = "(5x,\002Total number update iterations        "
-	    "     = \002,i5,/5x,\002Total number of OP*x operations          "
-	    "  = \002,i5,/5x,\002Total number of B*x operations             = "
-	    "\002,i5,/5x,\002Total number of reorthogonalization steps  = "
-	    "\002,i5,/5x,\002Total number of iterative refinement steps = "
-	    "\002,i5,/5x,\002Total number of restart steps              = "
-	    "\002,i5,/5x,\002Total time in user OP*x operation          = "
-	    "\002,f12.6,/5x,\002Total time in user B*x operation           ="
-	    " \002,f12.6,/5x,\002Total time in Arnoldi update routine       = "
-	    "\002,f12.6,/5x,\002Total time in saup2 routine                ="
-	    " \002,f12.6,/5x,\002Total time in basic Arnoldi iteration loop = "
-	    "\002,f12.6,/5x,\002Total time in reorthogonalization phase    ="
-	    " \002,f12.6,/5x,\002Total time in (re)start vector generation  = "
-	    "\002,f12.6,/5x,\002Total time in trid eigenvalue subproblem   ="
-	    " \002,f12.6,/5x,\002Total time in getting the shifts           = "
-	    "\002,f12.6,/5x,\002Total time in applying the shifts          ="
-	    " \002,f12.6,/5x,\002Total time in convergence testing          = "
-	    "\002,f12.6)";
 
     /* System generated locals */
     int32_t v_dim1, v_offset, i__1, i__2;
@@ -453,10 +427,6 @@ int ssaupd_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, flo
     static int32_t nb, ih, iq, np, iw, ldh, ldq, nev0, mode, ierr, iupd, next,
 	     ritz;
     static int32_t bounds, ishift, msglvl, mxiter;
-
-    /* Fortran I/O blocks */
-    static cilist io___21 = { 0, 6, 0, fmt_1000, 0 };
-    static cilist io___22 = { 0, 6, 0, fmt_1100, 0 };
 
      /* --------------------- */
      /* Executable Statements */
@@ -481,7 +451,10 @@ int ssaupd_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, flo
         /* ----------------------------- */
 
 	sstats_();
+#ifndef NO_TIMER
 	arscnd_(&t0);
+#endif
+
 	msglvl = debug_1.msaupd;
 
 	ierr = 0;
@@ -652,16 +625,21 @@ int ssaupd_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, flo
 	*info = 3;
     }
 
+#ifndef NO_TRACE
     if (msglvl > 0) {
 	ivout_(&c__1, &mxiter, &debug_1.ndigit, "_saupd: number of update iterations taken");
 	ivout_(&c__1, &np, &debug_1.ndigit, "_saupd: number of \"converged\" Ritz values");
 	svout_(&np, &workl[ritz], &debug_1.ndigit, "_saupd: final Ritz values");
 	svout_(&np, &workl[bounds], &debug_1.ndigit, "_saupd: corresponding error bounds");
     }
+#endif
 
+#ifndef NO_TIMER
     arscnd_(&t1);
     timing_1.tsaupd = t1 - t0;
+#endif
 
+#ifndef NO_TRACE
     if (msglvl > 0) {
 
         /* ------------------------------------------------------ */
@@ -690,6 +668,7 @@ int ssaupd_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, flo
 	do_fio(&c__1, (char *)&timing_1.tsconv, (ftnlen)sizeof(float));
 	e_wsfe();
     }
+#endif
 
 L9000:
 

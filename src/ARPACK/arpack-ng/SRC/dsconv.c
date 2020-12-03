@@ -85,7 +85,9 @@ int dsconv_(int32_t *n, double *ritz, double *bounds,
     --ritz;
 
     /* Function Body */
+#ifndef NO_TIMER
     arscnd_(&t0);
+#endif
 
     eps23 = dlamch_("Epsilon-Machine");
     eps23 = pow_dd(&eps23, &d_23);
@@ -109,8 +111,10 @@ int dsconv_(int32_t *n, double *ritz, double *bounds,
 /* L10: */
     }
 
+#ifndef NO_TIMER
     arscnd_(&t1);
     timing_1.tsconv += t1 - t0;
+#endif
 
     return 0;
 

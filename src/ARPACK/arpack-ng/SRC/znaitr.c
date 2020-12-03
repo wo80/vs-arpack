@@ -293,7 +293,10 @@ int znaitr_(int32_t *ido, char *bmat, int32_t *n, int32_t *k,int32_t *np, int32_
         /* & message level for debugging */
         /* ----------------------------- */
 
+#ifndef NO_TIMER
 	arscnd_(&t0);
+#endif
+
 	msglvl = debug_1.mcaitr;
 
         /* ---------------------------- */
@@ -353,10 +356,12 @@ int znaitr_(int32_t *ido, char *bmat, int32_t *n, int32_t *k,int32_t *np, int32_
      /* ------------------------------------------------------------ */
 L1000:
 
+#ifndef NO_TRACE
     if (msglvl > 1) {
 	ivout_(&c__1, &j, &debug_1.ndigit, "_naitr: generating Arnoldi vector number");
 	dvout_(&c__1, rnorm, &debug_1.ndigit, "_naitr: B-norm of the current residual is");
     }
+#endif
 
         /* ------------------------------------------------- */
         /* STEP 1: Check if the B norm of j-th residual      */
@@ -375,9 +380,11 @@ L1000:
            /* basis and continue the iteration.                 */
            /* ------------------------------------------------- */
 
+#ifndef NO_TRACE
     if (msglvl > 0) {
 	ivout_(&c__1, &j, &debug_1.ndigit, "_naitr: ****** RESTART AT STEP ******");
     }
+#endif
 
            /* ------------------------------------------- */
            /* ITRY is the loop variable that controls the */
@@ -415,8 +422,11 @@ L30:
               /* ---------------------------------------------- */
 
 	*info = j - 1;
+#ifndef NO_TIMER
 	arscnd_(&t1);
 	timing_1.tcaitr += t1 - t0;
+#endif
+
 	*ido = 99;
 	goto L9000;
     }
@@ -455,7 +465,10 @@ L40:
 
     step3 = true;
     ++timing_1.nopx;
+#ifndef NO_TIMER
     arscnd_(&t2);
+#endif
+
     zcopy_(n, &v[j * v_dim1 + 1], &c__1, &workd[ivj], &c__1);
     ipntr[1] = ivj;
     ipntr[2] = irj;
@@ -475,8 +488,11 @@ L50:
         /* if step3 = .true.                */
         /* -------------------------------- */
 
+#ifndef NO_TIMER
     arscnd_(&t3);
     timing_1.tmvopx += t3 - t2;
+#endif
+
     step3 = false;
 
         /* ---------------------------------------- */
@@ -490,7 +506,10 @@ L50:
         /*          factorization to length j.   */
         /* ------------------------------------- */
 
+#ifndef NO_TIMER
     arscnd_(&t2);
+#endif
+
     if (*bmat == 'G') {
 	++timing_1.nbx;
 	step4 = true;
@@ -514,10 +533,12 @@ L60:
         /* if step4 = .true.                */
         /* -------------------------------- */
 
+#ifndef NO_TIMER
     if (*bmat == 'G') {
 	arscnd_(&t3);
 	timing_1.tmvbx += t3 - t2;
     }
+#endif
 
     step4 = false;
 
@@ -567,11 +588,16 @@ L60:
 	h[i__1].r = z__1.r, h[i__1].i = z__1.i;
     }
 
+#ifndef NO_TIMER
     arscnd_(&t4);
+#endif
 
     orth1 = true;
 
+#ifndef NO_TIMER
     arscnd_(&t2);
+#endif
+
     if (*bmat == 'G') {
 	++timing_1.nbx;
 	zcopy_(n, &resid[1], &c__1, &workd[irj], &c__1);
@@ -594,10 +620,12 @@ L70:
         /* WORKD(IPJ:IPJ+N-1) := B*r_{j}.                    */
         /* ------------------------------------------------- */
 
+#ifndef NO_TIMER
     if (*bmat == 'G') {
 	arscnd_(&t3);
 	timing_1.tmvbx += t3 - t2;
     }
+#endif
 
     orth1 = false;
 
@@ -649,12 +677,14 @@ L70:
 
 L80:
 
+#ifndef NO_TRACE
     if (msglvl > 2) {
 	rtemp[0] = wnorm;
 	rtemp[1] = *rnorm;
 	dvout_(&c__2, rtemp, &debug_1.ndigit, "_naitr: re-orthogonalization; wnorm and rnorm are");
 	zvout_(&j, &h[j * h_dim1 + 1], &debug_1.ndigit, "_naitr: j-th column of H");
     }
+#endif
 
         /* -------------------------------------------------- */
         /* Compute V_{j}^T * B * r_{j}.                       */
@@ -677,7 +707,10 @@ L80:
     zaxpy_(&j, &z_one, &workd[irj], &c__1, &h[j * h_dim1 + 1], &c__1);
 
     orth2 = true;
+#ifndef NO_TIMER
     arscnd_(&t2);
+#endif
+
     if (*bmat == 'G') {
 	++timing_1.nbx;
 	zcopy_(n, &resid[1], &c__1, &workd[irj], &c__1);
@@ -700,10 +733,12 @@ L90:
         /* Back from reverse communication if ORTH2 = .true. */
         /* ------------------------------------------------- */
 
+#ifndef NO_TIMER
     if (*bmat == 'G') {
 	arscnd_(&t3);
 	timing_1.tmvbx += t3 - t2;
     }
+#endif
 
         /* --------------------------------------------------- */
         /* Compute the B-norm of the corrected residual r_{j}. */
@@ -719,6 +754,7 @@ L90:
 	rnorm1 = dznrm2_(n, &resid[1], &c__1);
     }
 
+#ifndef NO_TRACE
     if (msglvl > 0 && iter > 0) {
 	ivout_(&c__1, &j, &debug_1.ndigit, "_naitr: Iterative refinement for Arnoldi residual");
 	if (msglvl > 2) {
@@ -727,6 +763,7 @@ L90:
 	    dvout_(&c__2, rtemp, &debug_1.ndigit, "_naitr: iterative refinement ; rnorm and rnorm1 are");
 	}
     }
+#endif
 
         /* --------------------------------------- */
         /* Determine if we need to perform another */
@@ -785,8 +822,10 @@ L100:
     rstart = false;
     orth2 = false;
 
+#ifndef NO_TIMER
     arscnd_(&t5);
     timing_1.titref += t5 - t4;
+#endif
 
         /* ---------------------------------- */
         /* STEP 6: Update  j = j+1;  Continue */
@@ -794,8 +833,11 @@ L100:
 
     ++j;
     if (j > *k + *np) {
+#ifndef NO_TIMER
 	arscnd_(&t1);
 	timing_1.tcaitr += t1 - t0;
+#endif
+
 	*ido = 99;
 	i__1 = *k + *np - 1;
 	for (i = max(1,*k); i <= i__1; ++i) {
@@ -829,11 +871,13 @@ L100:
 /* L110: */
 	}
 
+#ifndef NO_TRACE
 	if (msglvl > 2) {
 	    i__1 = *k + *np;
 	    i__2 = *k + *np;
 	    zmout_(&i__1, &i__2, &h[h_offset], ldh, &debug_1.ndigit, "_naitr: Final upper Hessenberg matrix H of order K+NP");
 	}
+#endif
 
 	goto L9000;
     }

@@ -136,12 +136,17 @@ int sneigh_(float *rnorm, int32_t *n, float *h, int32_t *ldh,
     q -= q_offset;
 
     /* Function Body */
+#ifndef NO_TIMER
     arscnd_(&t0);
+#endif
+
     msglvl = debug_1.mneigh;
 
+#ifndef NO_TRACE
     if (msglvl > 2) {
 	smout_(n, n, &h[h_offset], ldh, &debug_1.ndigit, "_neigh: Entering upper Hessenberg matrix H ");
     }
+#endif
 
      /* --------------------------------------------------------- */
      /* 1. Compute the eigenvalues, the last components of the    */
@@ -164,9 +169,11 @@ int sneigh_(float *rnorm, int32_t *n, float *h, int32_t *ldh,
 	goto L9000;
     }
 
+#ifndef NO_TRACE
     if (msglvl > 1) {
 	svout_(n, &bounds[1], &debug_1.ndigit, "_neigh: last row of the Schur matrix for H");
     }
+#endif
 
      /* --------------------------------------------------------- */
      /* 2. Compute the eigenvectors of the full Schur form T and  */
@@ -235,9 +242,11 @@ int sneigh_(float *rnorm, int32_t *n, float *h, int32_t *ldh,
     sgemv_("T", n, n, &s_one, &q[q_offset], ldq, &bounds[1], &c__1, &s_zero, &
 	    workl[1], &c__1);
 
+#ifndef NO_TRACE
     if (msglvl > 1) {
 	svout_(n, &workl[1], &debug_1.ndigit, "_neigh: Last row of the eigenvector matrix for H");
     }
+#endif
 
      /* -------------------------- */
      /* Compute the Ritz estimates */
@@ -274,14 +283,18 @@ int sneigh_(float *rnorm, int32_t *n, float *h, int32_t *ldh,
 /* L20: */
     }
 
+#ifndef NO_TRACE
     if (msglvl > 2) {
 	svout_(n, &ritzr[1], &debug_1.ndigit, "_neigh: Real part of the eigenvalues of H");
 	svout_(n, &ritzi[1], &debug_1.ndigit, "_neigh: Imaginary part of the eigenvalues of H");
 	svout_(n, &bounds[1], &debug_1.ndigit, "_neigh: Ritz estimates for the eigenvalues of H");
     }
+#endif
 
+#ifndef NO_TIMER
     arscnd_(&t1);
     timing_1.tneigh += t1 - t0;
+#endif
 
 L9000:
     return 0;

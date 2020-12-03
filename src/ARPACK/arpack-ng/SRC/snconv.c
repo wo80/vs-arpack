@@ -101,7 +101,9 @@ int snconv_(int32_t *n, float *ritzr, float *ritzi, float *
     --ritzr;
 
     /* Function Body */
+#ifndef NO_TIMER
     arscnd_(&t0);
+#endif
 
      /* ------------------------------- */
      /* Get machine dependent constant. */
@@ -123,8 +125,10 @@ int snconv_(int32_t *n, float *ritzr, float *ritzi, float *
 /* L20: */
     }
 
+#ifndef NO_TIMER
     arscnd_(&t1);
     timing_1.tnconv += t1 - t0;
+#endif
 
     return 0;
 

@@ -116,9 +116,13 @@ int dseigt_(double *rnorm, int32_t *n, double *h,
     h -= h_offset;
 
     /* Function Body */
+#ifndef NO_TIMER
     arscnd_(&t0);
+#endif
+
     msglvl = debug_1.mseigt;
 
+#ifndef NO_TRACE
     if (msglvl > 0) {
 	dvout_(n, &h[(h_dim1 << 1) + 1], &debug_1.ndigit, "_seigt: main diagonal of matrix H");
 	if (*n > 1) {
@@ -126,6 +130,7 @@ int dseigt_(double *rnorm, int32_t *n, double *h,
 	    dvout_(&i__1, &h[h_dim1 + 2], &debug_1.ndigit, "_seigt: sub diagonal of matrix H");
 	}
     }
+#endif
 
     dcopy_(n, &h[(h_dim1 << 1) + 1], &c__1, &eig[1], &c__1);
     i__1 = *n - 1;
@@ -134,9 +139,11 @@ int dseigt_(double *rnorm, int32_t *n, double *h,
     if (*ierr != 0) {
 	goto L9000;
     }
+#ifndef NO_TRACE
     if (msglvl > 1) {
 	dvout_(n, &bounds[1], &debug_1.ndigit, "_seigt: last row of the eigenvector matrix for H");
     }
+#endif
 
      /* --------------------------------------------- */
      /* Finally determine the error bounds associated */
@@ -149,8 +156,10 @@ int dseigt_(double *rnorm, int32_t *n, double *h,
 /* L30: */
     }
 
+#ifndef NO_TIMER
     arscnd_(&t1);
     timing_1.tseigt += t1 - t0;
+#endif
 
 L9000:
     return 0;

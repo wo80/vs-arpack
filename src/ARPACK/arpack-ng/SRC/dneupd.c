@@ -508,11 +508,13 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
     rnorm = workl[ih + 2];
     workl[ih + 2] = 0.;
 
+#ifndef NO_TRACE
     if (msglvl > 2) {
 	dvout_(ncv, &workl[irr], &debug_1.ndigit, "_neupd: Real part of Ritz values passed in from _NAUPD.");
 	dvout_(ncv, &workl[iri], &debug_1.ndigit, "_neupd: Imag part of Ritz values passed in from _NAUPD.");
 	dvout_(ncv, &workl[ibd], &debug_1.ndigit, "_neupd: Ritz estimates passed in from _NAUPD.");
     }
+#endif
 
     if (*rvec) {
 
@@ -544,11 +546,13 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
 	ishift = 0;
 	dngets_(&ishift, which, nev, &np, &workl[irr], &workl[iri], &workl[bounds], &workl[1], &workl[np + 1]);
 
+#ifndef NO_TRACE
 	if (msglvl > 2) {
 	    dvout_(ncv, &workl[irr], &debug_1.ndigit, "_neupd: Real part of Ritz values after calling _NGETS.");
 	    dvout_(ncv, &workl[iri], &debug_1.ndigit, "_neupd: Imag part of Ritz values after calling _NGETS.");
 	    dvout_(ncv, &workl[bounds], &debug_1.ndigit, "_neupd: Ritz value indices after calling _NGETS.");
 	}
+#endif
 
         /* --------------------------------------------------- */
         /* Record indices of the converged wanted Ritz values  */
@@ -580,10 +584,12 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
         /* caused by incorrect passing of the dnaupd data.           */
         /* --------------------------------------------------------- */
 
+#ifndef NO_TRACE
 	if (msglvl > 2) {
 	    ivout_(&c__1, &numcnv, &debug_1.ndigit, "_neupd: Number of specified eigenvalues");
 	    ivout_(&c__1, &nconv, &debug_1.ndigit, "_neupd: Number of \"converged\" eigenvalues");
 	}
+#endif
 
 	if (numcnv != nconv) {
 	    *info = -15;
@@ -610,6 +616,7 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
 	    goto L9000;
 	}
 
+#ifndef NO_TRACE
 	if (msglvl > 1) {
 	    dvout_(ncv, &workl[iheigr], &debug_1.ndigit, "_neupd: Real part of the eigenvalues of H");
 	    dvout_(ncv, &workl[iheigi], &debug_1.ndigit, "_neupd: Imaginary part of the Eigenvalues of H");
@@ -618,6 +625,7 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
 		dmout_(ncv, ncv, &workl[iuptri], &ldh, &debug_1.ndigit, "_neupd: The upper quasi-triangular matrix ");
 	    }
 	}
+#endif
 
 	if (reord) {
 
@@ -638,6 +646,7 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
 		goto L9000;
 	    }
 
+#ifndef NO_TRACE
 	    if (msglvl > 2) {
 		dvout_(ncv, &workl[iheigr], &debug_1.ndigit, "_neupd: Real part of the eigenvalues of H--reordered");
 		dvout_(ncv, &workl[iheigi], &debug_1.ndigit, "_neupd: Imag part of the eigenvalues of H--reordered");
@@ -645,6 +654,7 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
 		    dmout_(ncv, ncv, &workl[iuptri], &ldq, &debug_1.ndigit, "_neupd: Quasi-triangular matrix after re-ordering");
 		}
 	    }
+#endif
 
 	}
 
@@ -815,6 +825,7 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
 /* L45: */
 	    }
 
+#ifndef NO_TRACE
 	    if (msglvl > 2) {
 		dcopy_(ncv, &workl[invsub + *ncv - 1], &ldq, &workl[ihbds], &
 			c__1);
@@ -823,6 +834,7 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
 		    dmout_(ncv, ncv, &workl[invsub], &ldq, &debug_1.ndigit, "_neupd: The eigenvector matrix for T");
 		}
 	    }
+#endif
 
            /* ------------------------------------- */
            /* Copy Ritz estimates into workl(ihbds) */
