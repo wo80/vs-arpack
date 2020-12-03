@@ -74,10 +74,9 @@ int ssesrt_(char *which, bool *apply, int32_t *n, float *x,int32_t *na, float *a
     float r__1, r__2;
 
     /* Builtin functions */
-    int32_t strcmp(char *, char *, ftnlen, ftnlen);
-
+    
     /* Local variables */
-    int32_t i__, j, igap;
+    int32_t i, j, igap;
     float temp;
 
      /* ---------------- */
@@ -105,8 +104,8 @@ L10:
 	    goto L9000;
 	}
 	i__1 = *n - 1;
-	for (i__ = igap; i__ <= i__1; ++i__) {
-	    j = i__ - igap;
+	for (i = igap; i <= i__1; ++i) {
+	    j = i - igap;
 L20:
 
 	    if (j < 0) {
@@ -141,8 +140,8 @@ L40:
 	    goto L9000;
 	}
 	i__1 = *n - 1;
-	for (i__ = igap; i__ <= i__1; ++i__) {
-	    j = i__ - igap;
+	for (i = igap; i <= i__1; ++i) {
+	    j = i - igap;
 L50:
 
 	    if (j < 0) {
@@ -178,8 +177,8 @@ L70:
 	    goto L9000;
 	}
 	i__1 = *n - 1;
-	for (i__ = igap; i__ <= i__1; ++i__) {
-	    j = i__ - igap;
+	for (i = igap; i <= i__1; ++i) {
+	    j = i - igap;
 L80:
 
 	    if (j < 0) {
@@ -214,8 +213,8 @@ L100:
 	    goto L9000;
 	}
 	i__1 = *n - 1;
-	for (i__ = igap; i__ <= i__1; ++i__) {
-	    j = i__ - igap;
+	for (i = igap; i <= i__1; ++i) {
+	    j = i - igap;
 L110:
 
 	    if (j < 0) {

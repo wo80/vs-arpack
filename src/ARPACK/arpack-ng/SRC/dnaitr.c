@@ -208,7 +208,7 @@
  */
 
 int dnaitr_(int32_t *ido, char *bmat, int32_t *n, int32_t *k,int32_t *np, int32_t *nb,
-     double *resid, double *rnorm, double *v, int32_t *ldv, double *h__, int32_t *ldh,
+     double *resid, double *rnorm, double *v, int32_t *ldv, double *h, int32_t *ldh,
      int32_t *ipntr, double *workd, int32_t *info)
 {
     /* Initialized data */
@@ -223,7 +223,7 @@ int dnaitr_(int32_t *ido, char *bmat, int32_t *n, int32_t *k,int32_t *np, int32_
     double sqrt(double);
 
     /* Local variables */
-    int32_t i__;
+    int32_t i;
     static int32_t j;
     static float t0, t1, t2, t3, t4, t5;
     int32_t jj;
@@ -256,7 +256,7 @@ int dnaitr_(int32_t *ido, char *bmat, int32_t *n, int32_t *k,int32_t *np, int32_
     v -= v_offset;
     h_dim1 = *ldh;
     h_offset = 1 + h_dim1;
-    h__ -= h_offset;
+    h -= h_offset;
     --ipntr;
 
     /* Function Body */
@@ -439,9 +439,9 @@ L40:
             /* use LAPACK routine SLASCL               */
             /* --------------------------------------- */
 
-	dlascl_("General", &i__, &i__, rnorm, &d_one, n, &c__1, &v[j * v_dim1 
+	dlascl_("General", &i, &i, rnorm, &d_one, n, &c__1, &v[j * v_dim1 
 		+ 1], n, &infol);
-	dlascl_("General", &i__, &i__, rnorm, &d_one, n, &c__1, &workd[ipj], 
+	dlascl_("General", &i, &i, rnorm, &d_one, n, &c__1, &workd[ipj], 
 		n, &infol);
     }
 
@@ -544,18 +544,18 @@ L60:
         /* ---------------------------------------- */
 
     dgemv_("T", n, &j, &d_one, &v[v_offset], ldv, &workd[ipj], &c__1, &d_zero, 
-	    &h__[j * h_dim1 + 1], &c__1);
+	    &h[j * h_dim1 + 1], &c__1);
 
         /* ------------------------------------ */
         /* Orthogonalize r_{j} against V_{j}.   */
         /* RESID contains OP*v_{j}. See STEP 3. */
         /* ------------------------------------ */
 
-    dgemv_("N", n, &j, &d_m1, &v[v_offset], ldv, &h__[j * h_dim1 + 1], &c__1,
+    dgemv_("N", n, &j, &d_m1, &v[v_offset], ldv, &h[j * h_dim1 + 1], &c__1,
 	     &d_one, &resid[1], &c__1);
 
     if (j > 1) {
-	h__[j + (j - 1) * h_dim1] = betaj;
+	h[j + (j - 1) * h_dim1] = betaj;
     }
 
     arscnd_(&t4);
@@ -640,7 +640,7 @@ L80:
 	xtemp[0] = wnorm;
 	xtemp[1] = *rnorm;
 	dvout_(&debug_1.logfil, &c__2, xtemp, &debug_1.ndigit, "_naitr: re-orthonalization; wnorm and rnorm are");
-	dvout_(&debug_1.logfil, &j, &h__[j * h_dim1 + 1], &debug_1.ndigit, "_naitr: j-th column of H");
+	dvout_(&debug_1.logfil, &j, &h[j * h_dim1 + 1], &debug_1.ndigit, "_naitr: j-th column of H");
     }
 
         /* -------------------------------------------------- */
@@ -660,7 +660,7 @@ L80:
 
     dgemv_("N", n, &j, &d_m1, &v[v_offset], ldv, &workd[irj], &c__1, &d_one, 
 	    &resid[1], &c__1);
-    daxpy_(&j, &d_one, &workd[irj], &c__1, &h__[j * h_dim1 + 1], &c__1);
+    daxpy_(&j, &d_one, &workd[irj], &c__1, &h[j * h_dim1 + 1], &c__1);
 
     orth2 = true;
     arscnd_(&t2);
@@ -780,7 +780,7 @@ L100:
 	timing_1.tnaitr += t1 - t0;
 	*ido = 99;
 	i__1 = *k + *np - 1;
-	for (i__ = max(1,*k); i__ <= i__1; ++i__) {
+	for (i = max(1,*k); i <= i__1; ++i) {
 
               /* ------------------------------------------ */
               /* Check for splitting and deflation.         */
@@ -788,17 +788,17 @@ L100:
               /* REFERENCE: LAPACK subroutine dlahqr        */
               /* ------------------------------------------ */
 
-	    tst1 = (d__1 = h__[i__ + i__ * h_dim1], abs(d__1)) + (d__2 = h__[
-		    i__ + 1 + (i__ + 1) * h_dim1], abs(d__2));
+	    tst1 = (d__1 = h[i + i * h_dim1], abs(d__1)) + (d__2 = h[
+		    i + 1 + (i + 1) * h_dim1], abs(d__2));
 	    if (tst1 == 0.) {
 		i__2 = *k + *np;
-		tst1 = dlanhs_("1", &i__2, &h__[h_offset], ldh, &workd[*n + 1]);
+		tst1 = dlanhs_("1", &i__2, &h[h_offset], ldh, &workd[*n + 1]);
 	    }
 /* Computing MAX */
 	    d__2 = ulp * tst1;
-	    if ((d__1 = h__[i__ + 1 + i__ * h_dim1], abs(d__1)) <= max(d__2,
+	    if ((d__1 = h[i + 1 + i * h_dim1], abs(d__1)) <= max(d__2,
 		    smlnum)) {
-		h__[i__ + 1 + i__ * h_dim1] = 0.;
+		h[i + 1 + i * h_dim1] = 0.;
 	    }
 /* L110: */
 	}
@@ -806,7 +806,7 @@ L100:
 	if (msglvl > 2) {
 	    i__1 = *k + *np;
 	    i__2 = *k + *np;
-	    dmout_(&debug_1.logfil, &i__1, &i__2, &h__[h_offset], ldh, &debug_1.ndigit, "_naitr: Final upper Hessenberg matrix H of order K+NP");
+	    dmout_(&debug_1.logfil, &i__1, &i__2, &h[h_offset], ldh, &debug_1.ndigit, "_naitr: Final upper Hessenberg matrix H of order K+NP");
 	}
 
 	goto L9000;

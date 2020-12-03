@@ -9,7 +9,7 @@ int iswap_(int32_t *n, int32_t *sx, int32_t *incx, int32_t *
     int32_t i__1;
 
     /* Local variables */
-    int32_t i__, m, ix, iy, mp1, stemp;
+    int32_t i, m, ix, iy, mp1, stemp;
 
 /*     interchanges two vectors. */
 /*     uses unrolled loops for increments equal to 1. */
@@ -39,7 +39,7 @@ int iswap_(int32_t *n, int32_t *sx, int32_t *incx, int32_t *
 	iy = (-(*n) + 1) * *incy + 1;
     }
     i__1 = *n;
-    for (i__ = 1; i__ <= i__1; ++i__) {
+    for (i = 1; i <= i__1; ++i) {
 	stemp = sx[ix];
 	sx[ix] = sy[iy];
 	sy[iy] = stemp;
@@ -59,10 +59,10 @@ L20:
 	goto L40;
     }
     i__1 = m;
-    for (i__ = 1; i__ <= i__1; ++i__) {
-	stemp = sx[i__];
-	sx[i__] = sy[i__];
-	sy[i__] = stemp;
+    for (i = 1; i <= i__1; ++i) {
+	stemp = sx[i];
+	sx[i] = sy[i];
+	sy[i] = stemp;
 /* L30: */
     }
     if (*n < 3) {
@@ -71,16 +71,16 @@ L20:
 L40:
     mp1 = m + 1;
     i__1 = *n;
-    for (i__ = mp1; i__ <= i__1; i__ += 3) {
-	stemp = sx[i__];
-	sx[i__] = sy[i__];
-	sy[i__] = stemp;
-	stemp = sx[i__ + 1];
-	sx[i__ + 1] = sy[i__ + 1];
-	sy[i__ + 1] = stemp;
-	stemp = sx[i__ + 2];
-	sx[i__ + 2] = sy[i__ + 2];
-	sy[i__ + 2] = stemp;
+    for (i = mp1; i <= i__1; i += 3) {
+	stemp = sx[i];
+	sx[i] = sy[i];
+	sy[i] = stemp;
+	stemp = sx[i + 1];
+	sx[i + 1] = sy[i + 1];
+	sy[i + 1] = stemp;
+	stemp = sx[i + 2];
+	sx[i + 2] = sy[i + 2];
+	sy[i + 2] = stemp;
 /* L50: */
     }
     return 0;

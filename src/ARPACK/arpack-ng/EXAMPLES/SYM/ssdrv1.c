@@ -9,7 +9,7 @@ int ssdrv1()
     float r__1;
 
     /* Local variables */
-    float d__[50]	/* was [25][2] */;
+    float d[50]	/* was [25][2] */;
     int32_t j, n;
     float v[6400]	/* was [256][25] */;
     float ax[256];
@@ -277,7 +277,7 @@ L10:
 
 	rvec = true;
 
-	sseupd_(&rvec, "All", select, d__, v, &c__256, &sigma, bmat, &n, 
+	sseupd_(&rvec, "All", select, d, v, &c__256, &sigma, bmat, &n, 
 		which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, 
 		workd, workl, &lworkl, &ierr, (ftnlen)3, (ftnlen)1, (ftnlen)2)
 		;
@@ -333,10 +333,10 @@ L10:
                /* ------------------------- */
 
 		ssdrv1_av_(&nx, &v[(j << 8) - 256], ax);
-		r__1 = -d__[j - 1];
+		r__1 = -d[j - 1];
 		saxpy_(&n, &r__1, &v[(j << 8) - 256], &c__1, ax, &c__1);
-		d__[j + 24] = snrm2_(&n, ax, &c__1);
-		d__[j + 24] /= (r__1 = d__[j - 1], dabs(r__1));
+		d[j + 24] = snrm2_(&n, ax, &c__1);
+		d[j + 24] /= (r__1 = d[j - 1], dabs(r__1));
 
 /* L20: */
 	    }
@@ -345,7 +345,7 @@ L10:
             /* Display computed residuals    */
             /* ----------------------------- */
 
-	    smout_(&c__6, &nconv, &c__2, d__, &c__25, &c_n6, "Ritz values and relative residuals");
+	    smout_(&c__6, &nconv, &c__2, d, &c__25, &c_n6, "Ritz values and relative residuals");
 	}
 
         /* ---------------------------------------- */

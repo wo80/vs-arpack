@@ -13,15 +13,15 @@ int iset_(int32_t *n, int32_t *value, int32_t *array,
     int32_t i__1;
 
     /* Local variables */
-    int32_t i__;
+    int32_t i;
 
     /* Parameter adjustments */
     --array;
 
     /* Function Body */
     i__1 = *n;
-    for (i__ = 1; i__ <= i__1; ++i__) {
-	array[i__] = *value;
+    for (i = 1; i <= i__1; ++i) {
+	array[i] = *value;
 /* L10: */
     }
 

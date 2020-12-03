@@ -12,7 +12,7 @@ int cnsimp()
     double r_imag(complex *);
 
     /* Local variables */
-    complex d__[30];
+    complex d[30];
     int32_t j, n;
     complex v[7680]	/* was [256][30] */;
     float rd[90]	/* was [30][3] */;
@@ -406,7 +406,7 @@ L10:
 
 	rvec = true;
 
-	cneupd_(&rvec, "A", select, d__, v, &c__256, &sigma, workev, bmat, &n,
+	cneupd_(&rvec, "A", select, d, v, &c__256, &sigma, workev, bmat, &n,
 		 which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, 
 		workd, workl, &lworkl, rwork, &ierr, (ftnlen)1, (ftnlen)1, (
 		ftnlen)2);
@@ -464,11 +464,11 @@ L10:
 
         cnsimp_av_(&nx, &v[(j << 8) - 256], ax);
 		i__2 = j - 1;
-		q__1.r = -d__[i__2].r, q__1.i = -d__[i__2].i;
+		q__1.r = -d[i__2].r, q__1.i = -d[i__2].i;
 		caxpy_(&n, &q__1, &v[(j << 8) - 256], &c__1, ax, &c__1);
 		i__2 = j - 1;
-		rd[j - 1] = d__[i__2].r;
-		rd[j + 29] = r_imag(&d__[j - 1]);
+		rd[j - 1] = d[i__2].r;
+		rd[j + 29] = r_imag(&d[j - 1]);
 		rd[j + 59] = scnrm2_(&n, ax, &c__1);
 		rd[j + 59] /= slapy2_(&rd[j - 1], &rd[j + 29]);
 /* L20: */
@@ -654,7 +654,7 @@ int cnsimp_tv_(int32_t *nx, complex *x, complex *y)
     void c_div(complex *, complex *, complex *);
 
     /* Local variables */
-    complex h__;
+    complex h;
     int32_t j;
     complex h2, dd, dl, du;
 
@@ -670,22 +670,22 @@ int cnsimp_tv_(int32_t *nx, complex *x, complex *y)
     i__1 = *nx + 1;
     q__2.r = (float) i__1, q__2.i = 0.f;
     c_div(&q__1, &c_one, &q__2);
-    h__.r = q__1.r, h__.i = q__1.i;
-    q__1.r = h__.r * h__.r - h__.i * h__.i, q__1.i = h__.r * h__.i + h__.i * 
-	    h__.r;
+    h.r = q__1.r, h.i = q__1.i;
+    q__1.r = h.r * h.r - h.i * h.i, q__1.i = h.r * h.i + h.i * 
+	    h.r;
     h2.r = q__1.r, h2.i = q__1.i;
     c_div(&q__1, &c_b151, &h2);
     dd.r = q__1.r, dd.i = q__1.i;
     q__3.r = -1.f, q__3.i = -0.f;
     c_div(&q__2, &q__3, &h2);
     q__5.r = 50.f, q__5.i = 0.f;
-    c_div(&q__4, &q__5, &h__);
+    c_div(&q__4, &q__5, &h);
     q__1.r = q__2.r - q__4.r, q__1.i = q__2.i - q__4.i;
     dl.r = q__1.r, dl.i = q__1.i;
     q__3.r = -1.f, q__3.i = -0.f;
     c_div(&q__2, &q__3, &h2);
     q__5.r = 50.f, q__5.i = 0.f;
-    c_div(&q__4, &q__5, &h__);
+    c_div(&q__4, &q__5, &h);
     q__1.r = q__2.r + q__4.r, q__1.i = q__2.i + q__4.i;
     du.r = q__1.r, du.i = q__1.i;
 

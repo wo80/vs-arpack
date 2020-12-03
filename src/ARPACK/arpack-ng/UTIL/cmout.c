@@ -85,7 +85,7 @@ int cmout_(int32_t *lout, int32_t *m, int32_t *n, complex *a,
 	     ftnlen), e_wsfe(void);
 
     /* Local variables */
-    int32_t i__, j, k1, k2, lll;
+    int32_t i, j, k1, k2, lll;
     char line[80];
     int32_t ndigit;
 
@@ -136,13 +136,13 @@ int cmout_(int32_t *lout, int32_t *m, int32_t *n, complex *a,
     i__1 = i_len(ifmt, ifmt_len);
     lll = min(i__1,80);
     i__1 = lll;
-    for (i__ = 1; i__ <= i__1; ++i__) {
-	*&line[i__ - 1] = '-';
+    for (i = 1; i <= i__1; ++i) {
+	*&line[i - 1] = '-';
 /* L10: */
     }
 
-    for (i__ = lll + 1; i__ <= 80; ++i__) {
-	*&line[i__ - 1] = ' ';
+    for (i = lll + 1; i <= 80; ++i) {
+	*&line[i - 1] = ' ';
 /* L20: */
     }
 
@@ -175,29 +175,29 @@ int cmout_(int32_t *lout, int32_t *m, int32_t *n, complex *a,
 		io___9.ciunit = *lout;
 		s_wsfe(&io___9);
 		i__2 = k2;
-		for (i__ = k1; i__ <= i__2; ++i__) {
+		for (i = k1; i <= i__2; ++i) {
 		    do_fio(&c__3, icol, (ftnlen)1);
-		    do_fio(&c__1, (char *)&i__, (ftnlen)sizeof(int32_t));
+		    do_fio(&c__1, (char *)&i, (ftnlen)sizeof(int32_t));
 		}
 		e_wsfe();
 		i__2 = *m;
-		for (i__ = 1; i__ <= i__2; ++i__) {
+		for (i = 1; i <= i__2; ++i) {
 		    if (k1 != *n) {
 			io___10.ciunit = *lout;
 			s_wsfe(&io___10);
-			do_fio(&c__1, (char *)&i__, (ftnlen)sizeof(int32_t));
+			do_fio(&c__1, (char *)&i, (ftnlen)sizeof(int32_t));
 			i__3 = k2;
 			for (j = k1; j <= i__3; ++j) {
-			    do_fio(&c__2, (char *)&a[i__ + j * a_dim1], (ftnlen)sizeof(float));
+			    do_fio(&c__2, (char *)&a[i + j * a_dim1], (ftnlen)sizeof(float));
 			}
 			e_wsfe();
 		    } else {
 			io___12.ciunit = *lout;
 			s_wsfe(&io___12);
-			do_fio(&c__1, (char *)&i__, (ftnlen)sizeof(int32_t));
+			do_fio(&c__1, (char *)&i, (ftnlen)sizeof(int32_t));
 			i__3 = k2;
 			for (j = k1; j <= i__3; ++j) {
-			    do_fio(&c__2, (char *)&a[i__ + j * a_dim1], (ftnlen)sizeof(float));
+			    do_fio(&c__2, (char *)&a[i + j * a_dim1], (ftnlen)sizeof(float));
 			}
 			e_wsfe();
 		    }
@@ -215,29 +215,29 @@ int cmout_(int32_t *lout, int32_t *m, int32_t *n, complex *a,
 		io___13.ciunit = *lout;
 		s_wsfe(&io___13);
 		i__2 = k2;
-		for (i__ = k1; i__ <= i__2; ++i__) {
+		for (i = k1; i <= i__2; ++i) {
 		    do_fio(&c__3, icol, (ftnlen)1);
-		    do_fio(&c__1, (char *)&i__, (ftnlen)sizeof(int32_t));
+		    do_fio(&c__1, (char *)&i, (ftnlen)sizeof(int32_t));
 		}
 		e_wsfe();
 		i__2 = *m;
-		for (i__ = 1; i__ <= i__2; ++i__) {
+		for (i = 1; i <= i__2; ++i) {
 		    if (k1 != *n) {
 			io___14.ciunit = *lout;
 			s_wsfe(&io___14);
-			do_fio(&c__1, (char *)&i__, (ftnlen)sizeof(int32_t));
+			do_fio(&c__1, (char *)&i, (ftnlen)sizeof(int32_t));
 			i__3 = k2;
 			for (j = k1; j <= i__3; ++j) {
-			    do_fio(&c__2, (char *)&a[i__ + j * a_dim1], (ftnlen)sizeof(float));
+			    do_fio(&c__2, (char *)&a[i + j * a_dim1], (ftnlen)sizeof(float));
 			}
 			e_wsfe();
 		    } else {
 			io___15.ciunit = *lout;
 			s_wsfe(&io___15);
-			do_fio(&c__1, (char *)&i__, (ftnlen)sizeof(int32_t));
+			do_fio(&c__1, (char *)&i, (ftnlen)sizeof(int32_t));
 			i__3 = k2;
 			for (j = k1; j <= i__3; ++j) {
-			    do_fio(&c__2, (char *)&a[i__ + j * a_dim1], (ftnlen)sizeof(float));
+			    do_fio(&c__2, (char *)&a[i + j * a_dim1], (ftnlen)sizeof(float));
 			}
 			e_wsfe();
 		    }
@@ -255,29 +255,29 @@ int cmout_(int32_t *lout, int32_t *m, int32_t *n, complex *a,
 		io___16.ciunit = *lout;
 		s_wsfe(&io___16);
 		i__2 = k2;
-		for (i__ = k1; i__ <= i__2; ++i__) {
+		for (i = k1; i <= i__2; ++i) {
 		    do_fio(&c__3, icol, (ftnlen)1);
-		    do_fio(&c__1, (char *)&i__, (ftnlen)sizeof(int32_t));
+		    do_fio(&c__1, (char *)&i, (ftnlen)sizeof(int32_t));
 		}
 		e_wsfe();
 		i__2 = *m;
-		for (i__ = 1; i__ <= i__2; ++i__) {
+		for (i = 1; i <= i__2; ++i) {
 		    if (k1 != *n) {
 			io___17.ciunit = *lout;
 			s_wsfe(&io___17);
-			do_fio(&c__1, (char *)&i__, (ftnlen)sizeof(int32_t));
+			do_fio(&c__1, (char *)&i, (ftnlen)sizeof(int32_t));
 			i__3 = k2;
 			for (j = k1; j <= i__3; ++j) {
-			    do_fio(&c__2, (char *)&a[i__ + j * a_dim1], (ftnlen)sizeof(float));
+			    do_fio(&c__2, (char *)&a[i + j * a_dim1], (ftnlen)sizeof(float));
 			}
 			e_wsfe();
 		    } else {
 			io___18.ciunit = *lout;
 			s_wsfe(&io___18);
-			do_fio(&c__1, (char *)&i__, (ftnlen)sizeof(int32_t));
+			do_fio(&c__1, (char *)&i, (ftnlen)sizeof(int32_t));
 			i__3 = k2;
 			for (j = k1; j <= i__3; ++j) {
-			    do_fio(&c__2, (char *)&a[i__ + j * a_dim1], (ftnlen)sizeof(float));
+			    do_fio(&c__2, (char *)&a[i + j * a_dim1], (ftnlen)sizeof(float));
 			}
 			e_wsfe();
 		    }
@@ -295,11 +295,11 @@ int cmout_(int32_t *lout, int32_t *m, int32_t *n, complex *a,
 		do_fio(&c__1, (char *)&k1, (ftnlen)sizeof(int32_t));
 		e_wsfe();
 		i__2 = *m;
-		for (i__ = 1; i__ <= i__2; ++i__) {
+		for (i = 1; i <= i__2; ++i) {
 		    io___20.ciunit = *lout;
 		    s_wsfe(&io___20);
-		    do_fio(&c__1, (char *)&i__, (ftnlen)sizeof(int32_t));
-		    do_fio(&c__2, (char *)&a[i__ + k1 * a_dim1], (ftnlen)sizeof(float));
+		    do_fio(&c__1, (char *)&i, (ftnlen)sizeof(int32_t));
+		    do_fio(&c__2, (char *)&a[i + k1 * a_dim1], (ftnlen)sizeof(float));
 		    e_wsfe();
 /* L90: */
 		}
@@ -321,47 +321,47 @@ int cmout_(int32_t *lout, int32_t *m, int32_t *n, complex *a,
 		io___21.ciunit = *lout;
 		s_wsfe(&io___21);
 		i__2 = k2;
-		for (i__ = k1; i__ <= i__2; ++i__) {
+		for (i = k1; i <= i__2; ++i) {
 		    do_fio(&c__3, icol, (ftnlen)1);
-		    do_fio(&c__1, (char *)&i__, (ftnlen)sizeof(int32_t));
+		    do_fio(&c__1, (char *)&i, (ftnlen)sizeof(int32_t));
 		}
 		e_wsfe();
 		i__2 = *m;
-		for (i__ = 1; i__ <= i__2; ++i__) {
+		for (i = 1; i <= i__2; ++i) {
 		    if (k1 + 3 <= *n) {
 			io___22.ciunit = *lout;
 			s_wsfe(&io___22);
-			do_fio(&c__1, (char *)&i__, (ftnlen)sizeof(int32_t));
+			do_fio(&c__1, (char *)&i, (ftnlen)sizeof(int32_t));
 			i__3 = k2;
 			for (j = k1; j <= i__3; ++j) {
-			    do_fio(&c__2, (char *)&a[i__ + j * a_dim1], (ftnlen)sizeof(float));
+			    do_fio(&c__2, (char *)&a[i + j * a_dim1], (ftnlen)sizeof(float));
 			}
 			e_wsfe();
 		    } else if (k1 + 3 - *n == 1) {
 			io___23.ciunit = *lout;
 			s_wsfe(&io___23);
-			do_fio(&c__1, (char *)&i__, (ftnlen)sizeof(int32_t));
+			do_fio(&c__1, (char *)&i, (ftnlen)sizeof(int32_t));
 			i__3 = k2;
 			for (j = k1; j <= i__3; ++j) {
-			    do_fio(&c__2, (char *)&a[i__ + j * a_dim1], (ftnlen)sizeof(float));
+			    do_fio(&c__2, (char *)&a[i + j * a_dim1], (ftnlen)sizeof(float));
 			}
 			e_wsfe();
 		    } else if (k1 + 3 - *n == 2) {
 			io___24.ciunit = *lout;
 			s_wsfe(&io___24);
-			do_fio(&c__1, (char *)&i__, (ftnlen)sizeof(int32_t));
+			do_fio(&c__1, (char *)&i, (ftnlen)sizeof(int32_t));
 			i__3 = k2;
 			for (j = k1; j <= i__3; ++j) {
-			    do_fio(&c__2, (char *)&a[i__ + j * a_dim1], (ftnlen)sizeof(float));
+			    do_fio(&c__2, (char *)&a[i + j * a_dim1], (ftnlen)sizeof(float));
 			}
 			e_wsfe();
 		    } else if (k1 + 3 - *n == 3) {
 			io___25.ciunit = *lout;
 			s_wsfe(&io___25);
-			do_fio(&c__1, (char *)&i__, (ftnlen)sizeof(int32_t));
+			do_fio(&c__1, (char *)&i, (ftnlen)sizeof(int32_t));
 			i__3 = k2;
 			for (j = k1; j <= i__3; ++j) {
-			    do_fio(&c__2, (char *)&a[i__ + j * a_dim1], (ftnlen)sizeof(float));
+			    do_fio(&c__2, (char *)&a[i + j * a_dim1], (ftnlen)sizeof(float));
 			}
 			e_wsfe();
 		    }
@@ -379,38 +379,38 @@ int cmout_(int32_t *lout, int32_t *m, int32_t *n, complex *a,
 		io___26.ciunit = *lout;
 		s_wsfe(&io___26);
 		i__2 = k2;
-		for (i__ = k1; i__ <= i__2; ++i__) {
+		for (i = k1; i <= i__2; ++i) {
 		    do_fio(&c__3, icol, (ftnlen)1);
-		    do_fio(&c__1, (char *)&i__, (ftnlen)sizeof(int32_t));
+		    do_fio(&c__1, (char *)&i, (ftnlen)sizeof(int32_t));
 		}
 		e_wsfe();
 		i__2 = *m;
-		for (i__ = 1; i__ <= i__2; ++i__) {
+		for (i = 1; i <= i__2; ++i) {
 		    if (k1 + 2 <= *n) {
 			io___27.ciunit = *lout;
 			s_wsfe(&io___27);
-			do_fio(&c__1, (char *)&i__, (ftnlen)sizeof(int32_t));
+			do_fio(&c__1, (char *)&i, (ftnlen)sizeof(int32_t));
 			i__3 = k2;
 			for (j = k1; j <= i__3; ++j) {
-			    do_fio(&c__2, (char *)&a[i__ + j * a_dim1], (ftnlen)sizeof(float));
+			    do_fio(&c__2, (char *)&a[i + j * a_dim1], (ftnlen)sizeof(float));
 			}
 			e_wsfe();
 		    } else if (k1 + 2 - *n == 1) {
 			io___28.ciunit = *lout;
 			s_wsfe(&io___28);
-			do_fio(&c__1, (char *)&i__, (ftnlen)sizeof(int32_t));
+			do_fio(&c__1, (char *)&i, (ftnlen)sizeof(int32_t));
 			i__3 = k2;
 			for (j = k1; j <= i__3; ++j) {
-			    do_fio(&c__2, (char *)&a[i__ + j * a_dim1], (ftnlen)sizeof(float));
+			    do_fio(&c__2, (char *)&a[i + j * a_dim1], (ftnlen)sizeof(float));
 			}
 			e_wsfe();
 		    } else if (k1 + 2 - *n == 2) {
 			io___29.ciunit = *lout;
 			s_wsfe(&io___29);
-			do_fio(&c__1, (char *)&i__, (ftnlen)sizeof(int32_t));
+			do_fio(&c__1, (char *)&i, (ftnlen)sizeof(int32_t));
 			i__3 = k2;
 			for (j = k1; j <= i__3; ++j) {
-			    do_fio(&c__2, (char *)&a[i__ + j * a_dim1], (ftnlen)sizeof(float));
+			    do_fio(&c__2, (char *)&a[i + j * a_dim1], (ftnlen)sizeof(float));
 			}
 			e_wsfe();
 		    }
@@ -428,38 +428,38 @@ int cmout_(int32_t *lout, int32_t *m, int32_t *n, complex *a,
 		io___30.ciunit = *lout;
 		s_wsfe(&io___30);
 		i__2 = k2;
-		for (i__ = k1; i__ <= i__2; ++i__) {
+		for (i = k1; i <= i__2; ++i) {
 		    do_fio(&c__3, icol, (ftnlen)1);
-		    do_fio(&c__1, (char *)&i__, (ftnlen)sizeof(int32_t));
+		    do_fio(&c__1, (char *)&i, (ftnlen)sizeof(int32_t));
 		}
 		e_wsfe();
 		i__2 = *m;
-		for (i__ = 1; i__ <= i__2; ++i__) {
+		for (i = 1; i <= i__2; ++i) {
 		    if (k1 + 2 <= *n) {
 			io___31.ciunit = *lout;
 			s_wsfe(&io___31);
-			do_fio(&c__1, (char *)&i__, (ftnlen)sizeof(int32_t));
+			do_fio(&c__1, (char *)&i, (ftnlen)sizeof(int32_t));
 			i__3 = k2;
 			for (j = k1; j <= i__3; ++j) {
-			    do_fio(&c__2, (char *)&a[i__ + j * a_dim1], (ftnlen)sizeof(float));
+			    do_fio(&c__2, (char *)&a[i + j * a_dim1], (ftnlen)sizeof(float));
 			}
 			e_wsfe();
 		    } else if (k1 + 2 - *n == 1) {
 			io___32.ciunit = *lout;
 			s_wsfe(&io___32);
-			do_fio(&c__1, (char *)&i__, (ftnlen)sizeof(int32_t));
+			do_fio(&c__1, (char *)&i, (ftnlen)sizeof(int32_t));
 			i__3 = k2;
 			for (j = k1; j <= i__3; ++j) {
-			    do_fio(&c__2, (char *)&a[i__ + j * a_dim1], (ftnlen)sizeof(float));
+			    do_fio(&c__2, (char *)&a[i + j * a_dim1], (ftnlen)sizeof(float));
 			}
 			e_wsfe();
 		    } else if (k1 + 2 - *n == 2) {
 			io___33.ciunit = *lout;
 			s_wsfe(&io___33);
-			do_fio(&c__1, (char *)&i__, (ftnlen)sizeof(int32_t));
+			do_fio(&c__1, (char *)&i, (ftnlen)sizeof(int32_t));
 			i__3 = k2;
 			for (j = k1; j <= i__3; ++j) {
-			    do_fio(&c__2, (char *)&a[i__ + j * a_dim1], (ftnlen)sizeof(float));
+			    do_fio(&c__2, (char *)&a[i + j * a_dim1], (ftnlen)sizeof(float));
 			}
 			e_wsfe();
 		    }
@@ -477,29 +477,29 @@ int cmout_(int32_t *lout, int32_t *m, int32_t *n, complex *a,
 		io___34.ciunit = *lout;
 		s_wsfe(&io___34);
 		i__2 = k2;
-		for (i__ = k1; i__ <= i__2; ++i__) {
+		for (i = k1; i <= i__2; ++i) {
 		    do_fio(&c__3, icol, (ftnlen)1);
-		    do_fio(&c__1, (char *)&i__, (ftnlen)sizeof(int32_t));
+		    do_fio(&c__1, (char *)&i, (ftnlen)sizeof(int32_t));
 		}
 		e_wsfe();
 		i__2 = *m;
-		for (i__ = 1; i__ <= i__2; ++i__) {
+		for (i = 1; i <= i__2; ++i) {
 		    if (k1 + 1 <= *n) {
 			io___35.ciunit = *lout;
 			s_wsfe(&io___35);
-			do_fio(&c__1, (char *)&i__, (ftnlen)sizeof(int32_t));
+			do_fio(&c__1, (char *)&i, (ftnlen)sizeof(int32_t));
 			i__3 = k2;
 			for (j = k1; j <= i__3; ++j) {
-			    do_fio(&c__2, (char *)&a[i__ + j * a_dim1], (ftnlen)sizeof(float));
+			    do_fio(&c__2, (char *)&a[i + j * a_dim1], (ftnlen)sizeof(float));
 			}
 			e_wsfe();
 		    } else {
 			io___36.ciunit = *lout;
 			s_wsfe(&io___36);
-			do_fio(&c__1, (char *)&i__, (ftnlen)sizeof(int32_t));
+			do_fio(&c__1, (char *)&i, (ftnlen)sizeof(int32_t));
 			i__3 = k2;
 			for (j = k1; j <= i__3; ++j) {
-			    do_fio(&c__2, (char *)&a[i__ + j * a_dim1], (ftnlen)sizeof(float));
+			    do_fio(&c__2, (char *)&a[i + j * a_dim1], (ftnlen)sizeof(float));
 			}
 			e_wsfe();
 		    }

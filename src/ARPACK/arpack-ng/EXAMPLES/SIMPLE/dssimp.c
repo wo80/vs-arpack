@@ -14,7 +14,7 @@ int dssimp()
 	    e_wsle(void);
 
     /* Local variables */
-    double d__[50]	/* was [25][2] */;
+    double d[50]	/* was [25][2] */;
     int32_t j, n;
     double v[6400]	/* was [256][25] */;
     double ax[256];
@@ -399,7 +399,7 @@ L10:
 
 	rvec = true;
 
-	dseupd_(&rvec, "All", select, d__, v, &c__256, &sigma, bmat, &n, 
+	dseupd_(&rvec, "All", select, d, v, &c__256, &sigma, bmat, &n, 
 		which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, 
 		workd, workl, &lworkl, &ierr, (ftnlen)3, (ftnlen)1, (ftnlen)2)
 		;
@@ -456,10 +456,10 @@ L10:
                /* ------------------------- */
 
 		dssimp_av_(&nx, &v[(j << 8) - 256], ax);
-		d__1 = -d__[j - 1];
+		d__1 = -d[j - 1];
 		daxpy_(&n, &d__1, &v[(j << 8) - 256], &c__1, ax, &c__1);
-		d__[j + 24] = dnrm2_(&n, ax, &c__1);
-		d__[j + 24] /= (d__1 = d__[j - 1], abs(d__1));
+		d[j + 24] = dnrm2_(&n, ax, &c__1);
+		d[j + 24] /= (d__1 = d[j - 1], abs(d__1));
 
 /* L20: */
 	    }
@@ -468,7 +468,7 @@ L10:
             /* Display computed residuals. */
             /* --------------------------- */
 
-	    dmout_(&c__6, &nconv, &c__2, d__, &c__25, &c_n6, "Ritz values and relative residuals");
+	    dmout_(&c__6, &nconv, &c__2, d, &c__25, &c_n6, "Ritz values and relative residuals");
 	}
 
          /* ----------------------------------------- */

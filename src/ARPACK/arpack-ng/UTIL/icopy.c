@@ -42,7 +42,7 @@ int icopy_(int32_t *n, int32_t *lx, int32_t *incx, int32_t *
     int32_t i__1;
 
     /* Local variables */
-    int32_t i__, ix, iy;
+    int32_t i, ix, iy;
 
 /*     ---------------------------- */
 /*     Specifications for arguments */
@@ -78,7 +78,7 @@ int icopy_(int32_t *n, int32_t *lx, int32_t *incx, int32_t *
 	iy = (-(*n) + 1) * *incy + 1;
     }
     i__1 = *n;
-    for (i__ = 1; i__ <= i__1; ++i__) {
+    for (i = 1; i <= i__1; ++i) {
 	ly[iy] = lx[ix];
 	ix += *incx;
 	iy += *incy;
@@ -90,8 +90,8 @@ int icopy_(int32_t *n, int32_t *lx, int32_t *incx, int32_t *
 
 L20:
     i__1 = *n;
-    for (i__ = 1; i__ <= i__1; ++i__) {
-	ly[i__] = lx[i__];
+    for (i = 1; i <= i__1; ++i) {
+	ly[i] = lx[i];
 /* L30: */
     }
     return 0;

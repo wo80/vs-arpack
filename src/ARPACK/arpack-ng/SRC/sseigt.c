@@ -85,7 +85,7 @@
  * \EndLib
  */
 
-int sseigt_(float *rnorm, int32_t *n, float *h__, int32_t *ldh,
+int sseigt_(float *rnorm, int32_t *n, float *h, int32_t *ldh,
 	 float *eig, float *bounds, float *workl, int32_t *ierr)
 {
     /* System generated locals */
@@ -112,23 +112,23 @@ int sseigt_(float *rnorm, int32_t *n, float *h__, int32_t *ldh,
     --eig;
     h_dim1 = *ldh;
     h_offset = 1 + h_dim1;
-    h__ -= h_offset;
+    h -= h_offset;
 
     /* Function Body */
     arscnd_(&t0);
     msglvl = debug_1.mseigt;
 
     if (msglvl > 0) {
-	svout_(&debug_1.logfil, n, &h__[(h_dim1 << 1) + 1], &debug_1.ndigit, "_seigt: main diagonal of matrix H");
+	svout_(&debug_1.logfil, n, &h[(h_dim1 << 1) + 1], &debug_1.ndigit, "_seigt: main diagonal of matrix H");
 	if (*n > 1) {
 	    i__1 = *n - 1;
-	    svout_(&debug_1.logfil, &i__1, &h__[h_dim1 + 2], &debug_1.ndigit, "_seigt: sub diagonal of matrix H");
+	    svout_(&debug_1.logfil, &i__1, &h[h_dim1 + 2], &debug_1.ndigit, "_seigt: sub diagonal of matrix H");
 	}
     }
 
-    scopy_(n, &h__[(h_dim1 << 1) + 1], &c__1, &eig[1], &c__1);
+    scopy_(n, &h[(h_dim1 << 1) + 1], &c__1, &eig[1], &c__1);
     i__1 = *n - 1;
-    scopy_(&i__1, &h__[h_dim1 + 2], &c__1, &workl[1], &c__1);
+    scopy_(&i__1, &h[h_dim1 + 2], &c__1, &workl[1], &c__1);
     sstqrb_(n, &eig[1], &workl[1], &bounds[1], &workl[*n + 1], ierr);
     if (*ierr != 0) {
 	goto L9000;

@@ -637,8 +637,8 @@ int ssvd_av_(int32_t *m, int32_t *n, float *x, float *w)
     int32_t i__1, i__2;
 
     /* Local variables */
-    float h__;
-    int32_t i__, j;
+    float h;
+    int32_t i, j;
     float k, s, t;
 
 /*     computes  w <- A*x */
@@ -648,11 +648,11 @@ int ssvd_av_(int32_t *m, int32_t *n, float *x, float *w)
     --x;
 
     /* Function Body */
-    h__ = 1.f / (float) (*m + 1);
+    h = 1.f / (float) (*m + 1);
     k = 1.f / (float) (*n + 1);
     i__1 = *m;
-    for (i__ = 1; i__ <= i__1; ++i__) {
-	w[i__] = 0.f;
+    for (i = 1; i <= i__1; ++i) {
+	w[i] = 0.f;
 /* L5: */
     }
     t = 0.f;
@@ -662,15 +662,15 @@ int ssvd_av_(int32_t *m, int32_t *n, float *x, float *w)
 	t += k;
 	s = 0.f;
 	i__2 = j;
-	for (i__ = 1; i__ <= i__2; ++i__) {
-	    s += h__;
-	    w[i__] += k * s * (t - 1.f) * x[j];
+	for (i = 1; i <= i__2; ++i) {
+	    s += h;
+	    w[i] += k * s * (t - 1.f) * x[j];
 /* L10: */
 	}
 	i__2 = *m;
-	for (i__ = j + 1; i__ <= i__2; ++i__) {
-	    s += h__;
-	    w[i__] += k * t * (s - 1.f) * x[j];
+	for (i = j + 1; i <= i__2; ++i) {
+	    s += h;
+	    w[i] += k * t * (s - 1.f) * x[j];
 /* L20: */
 	}
 /* L30: */
@@ -687,8 +687,8 @@ int ssvd_atv_(int32_t *m, int32_t *n, float *w, float *y)
     int32_t i__1, i__2;
 
     /* Local variables */
-    float h__;
-    int32_t i__, j;
+    float h;
+    int32_t i, j;
     float k, s, t;
 
 /*     computes  y <- A'*w */
@@ -698,11 +698,11 @@ int ssvd_atv_(int32_t *m, int32_t *n, float *w, float *y)
     --y;
 
     /* Function Body */
-    h__ = 1.f / (float) (*m + 1);
+    h = 1.f / (float) (*m + 1);
     k = 1.f / (float) (*n + 1);
     i__1 = *n;
-    for (i__ = 1; i__ <= i__1; ++i__) {
-	y[i__] = 0.f;
+    for (i = 1; i <= i__1; ++i) {
+	y[i] = 0.f;
 /* L5: */
     }
     t = 0.f;
@@ -712,15 +712,15 @@ int ssvd_atv_(int32_t *m, int32_t *n, float *w, float *y)
 	t += k;
 	s = 0.f;
 	i__2 = j;
-	for (i__ = 1; i__ <= i__2; ++i__) {
-	    s += h__;
-	    y[j] += k * s * (t - 1.f) * w[i__];
+	for (i = 1; i <= i__2; ++i) {
+	    s += h;
+	    y[j] += k * s * (t - 1.f) * w[i];
 /* L10: */
 	}
 	i__2 = *m;
-	for (i__ = j + 1; i__ <= i__2; ++i__) {
-	    s += h__;
-	    y[j] += k * t * (s - 1.f) * w[i__];
+	for (i = j + 1; i <= i__2; ++i) {
+	    s += h;
+	    y[j] += k * t * (s - 1.f) * w[i];
 /* L20: */
 	}
 /* L30: */

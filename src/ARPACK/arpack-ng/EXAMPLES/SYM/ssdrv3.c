@@ -9,7 +9,7 @@ int ssdrv3()
     float r__1;
 
     /* Local variables */
-    float d__[50]	/* was [25][2] */, h__;
+    float d[50]	/* was [25][2] */, h;
     int32_t j, n;
     float v[6400]	/* was [256][25] */, r1, r2, ad[256];
     float ax[256];
@@ -212,10 +212,10 @@ int ssdrv3()
      /* elements on the interval [0, 1].               */
      /* ---------------------------------------------- */
 
-    h__ = 1.f / (float) (n + 1);
+    h = 1.f / (float) (n + 1);
 
-    r1 = h__ * .66666666666666663f;
-    r2 = h__ * .16666666666666666f;
+    r1 = h * .66666666666666663f;
+    r2 = h * .16666666666666666f;
     i__1 = n;
     for (j = 1; j <= i__1; ++j) {
 	ad[j - 1] = r1;
@@ -352,7 +352,7 @@ L10:
 
 	rvec = true;
 
-	sseupd_(&rvec, "All", select, d__, v, &c__256, &sigma, bmat, &n, 
+	sseupd_(&rvec, "All", select, d, v, &c__256, &sigma, bmat, &n, 
 		which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, 
 		workd, workl, &lworkl, &ierr, (ftnlen)3, (ftnlen)1, (ftnlen)2)
 		;
@@ -410,10 +410,10 @@ L10:
 
 		ssdrv3_av_(&n, &v[(j << 8) - 256], ax);
 		ssdrv3_mv_(&n, &v[(j << 8) - 256], mx);
-		r__1 = -d__[j - 1];
+		r__1 = -d[j - 1];
 		saxpy_(&n, &r__1, mx, &c__1, ax, &c__1);
-		d__[j + 24] = snrm2_(&n, ax, &c__1);
-		d__[j + 24] /= (r__1 = d__[j - 1], dabs(r__1));
+		d[j + 24] = snrm2_(&n, ax, &c__1);
+		d[j + 24] /= (r__1 = d[j - 1], dabs(r__1));
 
 /* L30: */
 	    }
@@ -422,7 +422,7 @@ L10:
            /* Display computed residuals. */
            /* --------------------------- */
 
-	    smout_(&c__6, &nconv, &c__2, d__, &c__25, &c_n6, "Ritz values and relative residuals");
+	    smout_(&c__6, &nconv, &c__2, d, &c__25, &c_n6, "Ritz values and relative residuals");
 	}
 
         /* ---------------------------------------- */
@@ -524,7 +524,7 @@ int ssdrv3_mv_(int32_t *n, float *v, float *w)
     int32_t i__1;
 
     /* Local variables */
-    float h__;
+    float h;
     int32_t j;
 
     /* Parameter adjustments */
@@ -543,8 +543,8 @@ int ssdrv3_mv_(int32_t *n, float *v, float *w)
 
 /*     Scale the vector w by h. */
 
-    h__ = 1.f / ((float) (*n + 1) * 6.f);
-    sscal_(n, &h__, &w[1], &c__1);
+    h = 1.f / ((float) (*n + 1) * 6.f);
+    sscal_(n, &h, &w[1], &c__1);
     return 0;
 } /* mv_ */
 
@@ -563,7 +563,7 @@ int ssdrv3_av_(int32_t *n, float *v, float *w)
     float r__1;
 
     /* Local variables */
-    float h__;
+    float h;
     int32_t j;
 
     /* Parameter adjustments */
@@ -582,8 +582,8 @@ int ssdrv3_av_(int32_t *n, float *v, float *w)
 
 /*     Scale the vector w by (1 / h). */
 
-    h__ = 1.f / (float) (*n + 1);
-    r__1 = 1.f / h__;
+    h = 1.f / (float) (*n + 1);
+    r__1 = 1.f / h;
     sscal_(n, &r__1, &w[1], &c__1);
     return 0;
 } /* av_ */

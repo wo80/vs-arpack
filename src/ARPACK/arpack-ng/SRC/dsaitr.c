@@ -203,7 +203,7 @@
  */
 
 int dsaitr_(int32_t *ido, char *bmat, int32_t *n, int32_t *k,int32_t *np, int32_t *mode,
-     double *resid, double *rnorm, double *v, int32_t *ldv, double *h__, int32_t *ldh,
+     double *resid, double *rnorm, double *v, int32_t *ldv, double *h, int32_t *ldh,
      int32_t *ipntr, double *workd, int32_t *info)
 {
     /* Initialized data */
@@ -217,7 +217,7 @@ int dsaitr_(int32_t *ido, char *bmat, int32_t *n, int32_t *k,int32_t *np, int32_
     double sqrt(double);
 
     /* Local variables */
-    int32_t i__;
+    int32_t i;
     static int32_t j;
     static float t0, t1, t2, t3, t4, t5;
     int32_t jj;
@@ -245,7 +245,7 @@ int dsaitr_(int32_t *ido, char *bmat, int32_t *n, int32_t *k,int32_t *np, int32_
     v -= v_offset;
     h_dim1 = *ldh;
     h_offset = 1 + h_dim1;
-    h__ -= h_offset;
+    h -= h_offset;
     --ipntr;
 
     /* Function Body */
@@ -431,9 +431,9 @@ L40:
             /* use LAPACK routine SLASCL               */
             /* --------------------------------------- */
 
-	dlascl_("General", &i__, &i__, rnorm, &d_one, n, &c__1, &v[j * v_dim1 
+	dlascl_("General", &i, &i, rnorm, &d_one, n, &c__1, &v[j * v_dim1 
 		+ 1], n, &infol);
-	dlascl_("General", &i__, &i__, rnorm, &d_one, n, &c__1, &workd[ipj], 
+	dlascl_("General", &i, &i, rnorm, &d_one, n, &c__1, &workd[ipj], 
 		n, &infol);
     }
 
@@ -571,11 +571,11 @@ L65:
         /* Extend H to have j rows and columns. */
         /* ------------------------------------ */
 
-    h__[j + (h_dim1 << 1)] = workd[irj + j - 1];
+    h[j + (h_dim1 << 1)] = workd[irj + j - 1];
     if (j == 1 || rstart) {
-	h__[j + h_dim1] = 0.;
+	h[j + h_dim1] = 0.;
     } else {
-	h__[j + h_dim1] = *rnorm;
+	h[j + h_dim1] = *rnorm;
     }
     arscnd_(&t4);
 
@@ -678,9 +678,9 @@ L80:
 	    &resid[1], &c__1);
 
     if (j == 1 || rstart) {
-	h__[j + h_dim1] = 0.;
+	h[j + h_dim1] = 0.;
     }
-    h__[j + (h_dim1 << 1)] += workd[irj + j - 1];
+    h[j + (h_dim1 << 1)] += workd[irj + j - 1];
 
     orth2 = true;
     arscnd_(&t2);
@@ -790,8 +790,8 @@ L100:
         /* and scale v(:,j) by -1.                                  */
         /* -------------------------------------------------------- */
 
-    if (h__[j + h_dim1] < 0.) {
-	h__[j + h_dim1] = -h__[j + h_dim1];
+    if (h[j + h_dim1] < 0.) {
+	h[j + h_dim1] = -h[j + h_dim1];
 	if (j < *k + *np) {
 	    dscal_(n, &d_m1, &v[(j + 1) * v_dim1 + 1], &c__1);
 	} else {
@@ -811,10 +811,10 @@ L100:
 
 	if (msglvl > 1) {
 	    i__1 = *k + *np;
-	    dvout_(&debug_1.logfil, &i__1, &h__[(h_dim1 << 1) + 1], &debug_1.ndigit, "_saitr: main diagonal of matrix H of step K+NP.");
+	    dvout_(&debug_1.logfil, &i__1, &h[(h_dim1 << 1) + 1], &debug_1.ndigit, "_saitr: main diagonal of matrix H of step K+NP.");
 	    if (*k + *np > 1) {
 		i__1 = *k + *np - 1;
-		dvout_(&debug_1.logfil, &i__1, &h__[h_dim1 + 2], &debug_1.ndigit, "_saitr: sub diagonal of matrix H of step K+NP.");
+		dvout_(&debug_1.logfil, &i__1, &h[h_dim1 + 2], &debug_1.ndigit, "_saitr: sub diagonal of matrix H of step K+NP.");
 	    }
 	}
 

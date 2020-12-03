@@ -143,7 +143,7 @@
 
 int dnapps_(int32_t *n, int32_t *kev, int32_t *np, 
 	double *shiftr, double *shifti, double *v, int32_t *ldv, 
-	double *h__, int32_t *ldh, double *resid, double *q, 
+	double *h, int32_t *ldh, double *resid, double *q, 
 	int32_t *ldq, double *workl, double *workd)
 {
     /* Initialized data */
@@ -156,9 +156,9 @@ int dnapps_(int32_t *n, int32_t *kev, int32_t *np,
     double d__1, d__2;
 
     /* Local variables */
-    double c__, f, g;
-    int32_t i__, j;
-    double r__, s, t, u[3];
+    double c, f, g;
+    int32_t i, j;
+    double r, s, t, u[3];
     static float t0, t1;
     double h11, h12, h21, h22, h32;
     int32_t jj, ir, nr;
@@ -188,7 +188,7 @@ int dnapps_(int32_t *n, int32_t *kev, int32_t *np,
     v -= v_offset;
     h_dim1 = *ldh;
     h_offset = 1 + h_dim1;
-    h__ -= h_offset;
+    h -= h_offset;
     q_dim1 = *ldq;
     q_offset = 1 + q_dim1;
     q -= q_offset;
@@ -307,7 +307,7 @@ L20:
         /* ------------------------------------------------ */
 
 	i__2 = kplusp - 1;
-	for (i__ = istart; i__ <= i__2; ++i__) {
+	for (i = istart; i <= i__2; ++i) {
 
            /* -------------------------------------- */
            /* Check for splitting and deflation. Use */
@@ -315,23 +315,23 @@ L20:
            /* REFERENCE: LAPACK subroutine dlahqr    */
            /* -------------------------------------- */
 
-	    tst1 = (d__1 = h__[i__ + i__ * h_dim1], abs(d__1)) + (d__2 = h__[
-		    i__ + 1 + (i__ + 1) * h_dim1], abs(d__2));
+	    tst1 = (d__1 = h[i + i * h_dim1], abs(d__1)) + (d__2 = h[
+		    i + 1 + (i + 1) * h_dim1], abs(d__2));
 	    if (tst1 == 0.) {
 		i__3 = kplusp - jj + 1;
-		tst1 = dlanhs_("1", &i__3, &h__[h_offset], ldh, &workl[1]);
+		tst1 = dlanhs_("1", &i__3, &h[h_offset], ldh, &workl[1]);
 	    }
 /* Computing MAX */
 	    d__2 = ulp * tst1;
-	    if ((d__1 = h__[i__ + 1 + i__ * h_dim1], abs(d__1)) <= max(d__2,
+	    if ((d__1 = h[i + 1 + i * h_dim1], abs(d__1)) <= max(d__2,
 		    smlnum)) {
 		if (msglvl > 0) {
-		    ivout_(&debug_1.logfil, &c__1, &i__, &debug_1.ndigit, "_napps: matrix splitting at row/column no.");
+		    ivout_(&debug_1.logfil, &c__1, &i, &debug_1.ndigit, "_napps: matrix splitting at row/column no.");
 		    ivout_(&debug_1.logfil, &c__1, &jj, &debug_1.ndigit, "_napps: matrix splitting with shift number.");
-		    dvout_(&debug_1.logfil, &c__1, &h__[i__ + 1 + i__ * h_dim1], &debug_1.ndigit, "_napps: off diagonal element.");
+		    dvout_(&debug_1.logfil, &c__1, &h[i + 1 + i * h_dim1], &debug_1.ndigit, "_napps: off diagonal element.");
 		}
-		iend = i__;
-		h__[i__ + 1 + i__ * h_dim1] = 0.;
+		iend = i;
+		h[i + 1 + i * h_dim1] = 0.;
 		goto L40;
 	    }
 /* L30: */
@@ -361,8 +361,8 @@ L40:
 	    goto L100;
 	}
 
-	h11 = h__[istart + istart * h_dim1];
-	h21 = h__[istart + 1 + istart * h_dim1];
+	h11 = h[istart + istart * h_dim1];
+	h21 = h[istart + 1 + istart * h_dim1];
 	if (abs(sigmai) <= 0.) {
 
            /* ------------------------------------------- */
@@ -373,14 +373,14 @@ L40:
 	    g = h21;
 
 	    i__2 = iend - 1;
-	    for (i__ = istart; i__ <= i__2; ++i__) {
+	    for (i = istart; i <= i__2; ++i) {
 
               /* ---------------------------------------------------- */
               /* Construct the plane rotation G to zero out the bulge */
               /* ---------------------------------------------------- */
 
-		dlartg_(&f, &g, &c__, &s, &r__);
-		if (i__ > istart) {
+		dlartg_(&f, &g, &c, &s, &r);
+		if (i > istart) {
 
                  /* ----------------------------------------- */
                  /* The following ensures that h(1:iend-1,1), */
@@ -388,13 +388,13 @@ L40:
                  /* H, remain non negative.                   */
                  /* ----------------------------------------- */
 
-		    if (r__ < 0.) {
-			r__ = -r__;
-			c__ = -c__;
+		    if (r < 0.) {
+			r = -r;
+			c = -c;
 			s = -s;
 		    }
-		    h__[i__ + (i__ - 1) * h_dim1] = r__;
-		    h__[i__ + 1 + (i__ - 1) * h_dim1] = 0.;
+		    h[i + (i - 1) * h_dim1] = r;
+		    h[i + 1 + (i - 1) * h_dim1] = 0.;
 		}
 
               /* ------------------------------------------- */
@@ -402,12 +402,12 @@ L40:
               /* ------------------------------------------- */
 
 		i__3 = kplusp;
-		for (j = i__; j <= i__3; ++j) {
-		    t = c__ * h__[i__ + j * h_dim1] + s * h__[i__ + 1 + j * 
+		for (j = i; j <= i__3; ++j) {
+		    t = c * h[i + j * h_dim1] + s * h[i + 1 + j * 
 			    h_dim1];
-		    h__[i__ + 1 + j * h_dim1] = -s * h__[i__ + j * h_dim1] + 
-			    c__ * h__[i__ + 1 + j * h_dim1];
-		    h__[i__ + j * h_dim1] = t;
+		    h[i + 1 + j * h_dim1] = -s * h[i + j * h_dim1] + 
+			    c * h[i + 1 + j * h_dim1];
+		    h[i + j * h_dim1] = t;
 /* L50: */
 		}
 
@@ -416,14 +416,14 @@ L40:
               /* ------------------------------------------- */
 
 /* Computing MIN */
-		i__4 = i__ + 2;
+		i__4 = i + 2;
 		i__3 = min(i__4,iend);
 		for (j = 1; j <= i__3; ++j) {
-		    t = c__ * h__[j + i__ * h_dim1] + s * h__[j + (i__ + 1) * 
+		    t = c * h[j + i * h_dim1] + s * h[j + (i + 1) * 
 			    h_dim1];
-		    h__[j + (i__ + 1) * h_dim1] = -s * h__[j + i__ * h_dim1] 
-			    + c__ * h__[j + (i__ + 1) * h_dim1];
-		    h__[j + i__ * h_dim1] = t;
+		    h[j + (i + 1) * h_dim1] = -s * h[j + i * h_dim1] 
+			    + c * h[j + (i + 1) * h_dim1];
+		    h[j + i * h_dim1] = t;
 /* L60: */
 		}
 
@@ -432,14 +432,14 @@ L40:
               /* -------------------------------------------------- */
 
 /* Computing MIN */
-		i__4 = i__ + jj;
+		i__4 = i + jj;
 		i__3 = min(i__4,kplusp);
 		for (j = 1; j <= i__3; ++j) {
-		    t = c__ * q[j + i__ * q_dim1] + s * q[j + (i__ + 1) * 
+		    t = c * q[j + i * q_dim1] + s * q[j + (i + 1) * 
 			    q_dim1];
-		    q[j + (i__ + 1) * q_dim1] = -s * q[j + i__ * q_dim1] + 
-			    c__ * q[j + (i__ + 1) * q_dim1];
-		    q[j + i__ * q_dim1] = t;
+		    q[j + (i + 1) * q_dim1] = -s * q[j + i * q_dim1] + 
+			    c * q[j + (i + 1) * q_dim1];
+		    q[j + i * q_dim1] = t;
 /* L70: */
 		}
 
@@ -447,9 +447,9 @@ L40:
               /* Prepare for next rotation */
               /* ------------------------- */
 
-		if (i__ < iend - 1) {
-		    f = h__[i__ + 1 + i__ * h_dim1];
-		    g = h__[i__ + 2 + i__ * h_dim1];
+		if (i < iend - 1) {
+		    f = h[i + 1 + i * h_dim1];
+		    g = h[i + 2 + i * h_dim1];
 		}
 /* L80: */
 	    }
@@ -464,9 +464,9 @@ L40:
            /* Complex conjugate shifts ==> apply double shift QR */
            /* -------------------------------------------------- */
 
-	    h12 = h__[istart + (istart + 1) * h_dim1];
-	    h22 = h__[istart + 1 + (istart + 1) * h_dim1];
-	    h32 = h__[istart + 2 + (istart + 1) * h_dim1];
+	    h12 = h[istart + (istart + 1) * h_dim1];
+	    h22 = h[istart + 1 + (istart + 1) * h_dim1];
+	    h32 = h[istart + 2 + (istart + 1) * h_dim1];
 
            /* ------------------------------------------------------- */
            /* Compute 1st column of (H - shift*I)*(H - conj(shift)*I) */
@@ -479,10 +479,10 @@ L40:
 	    u[2] = h32;
 
 	    i__2 = iend - 1;
-	    for (i__ = istart; i__ <= i__2; ++i__) {
+	    for (i = istart; i <= i__2; ++i) {
 
 /* Computing MIN */
-		i__3 = 3, i__4 = iend - i__ + 1;
+		i__3 = 3, i__4 = iend - i + 1;
 		nr = min(i__3,i__4);
 
               /* --------------------------------------------------- */
@@ -492,11 +492,11 @@ L40:
 
 		dlarfg_(&nr, u, &u[1], &c__1, &tau);
 
-		if (i__ > istart) {
-		    h__[i__ + (i__ - 1) * h_dim1] = u[0];
-		    h__[i__ + 1 + (i__ - 1) * h_dim1] = 0.;
-		    if (i__ < iend - 1) {
-			h__[i__ + 2 + (i__ - 1) * h_dim1] = 0.;
+		if (i > istart) {
+		    h[i + (i - 1) * h_dim1] = u[0];
+		    h[i + 1 + (i - 1) * h_dim1] = 0.;
+		    if (i < iend - 1) {
+			h[i + 2 + (i - 1) * h_dim1] = 0.;
 		    }
 		}
 		u[0] = 1.;
@@ -505,8 +505,8 @@ L40:
               /* Apply the reflector to the left of H */
               /* ------------------------------------ */
 
-		i__3 = kplusp - i__ + 1;
-		dlarf_("Left", &nr, &i__3, u, &c__1, &tau, &h__[i__ + i__ * 
+		i__3 = kplusp - i + 1;
+		dlarf_("Left", &nr, &i__3, u, &c__1, &tau, &h[i + i * 
 			h_dim1], ldh, &workl[1]);
 
               /* ------------------------------------- */
@@ -514,27 +514,27 @@ L40:
               /* ------------------------------------- */
 
 /* Computing MIN */
-		i__3 = i__ + 3;
+		i__3 = i + 3;
 		ir = min(i__3,iend);
-		dlarf_("Right", &ir, &nr, u, &c__1, &tau, &h__[i__ * h_dim1 + 
+		dlarf_("Right", &ir, &nr, u, &c__1, &tau, &h[i * h_dim1 + 
 			1], ldh, &workl[1]);
 
               /* --------------------------------------------------- */
               /* Accumulate the reflector in the matrix Q;  Q <- Q*G */
               /* --------------------------------------------------- */
 
-		dlarf_("Right", &kplusp, &nr, u, &c__1, &tau, &q[i__ * q_dim1 
+		dlarf_("Right", &kplusp, &nr, u, &c__1, &tau, &q[i * q_dim1 
 			+ 1], ldq, &workl[1]);
 
               /* -------------------------- */
               /* Prepare for next reflector */
               /* -------------------------- */
 
-		if (i__ < iend - 1) {
-		    u[0] = h__[i__ + 1 + i__ * h_dim1];
-		    u[1] = h__[i__ + 2 + i__ * h_dim1];
-		    if (i__ < iend - 2) {
-			u[2] = h__[i__ + 3 + i__ * h_dim1];
+		if (i < iend - 1) {
+		    u[0] = h[i + 1 + i * h_dim1];
+		    u[1] = h[i + 2 + i * h_dim1];
+		    if (i < iend - 2) {
+			u[2] = h[i + 3 + i * h_dim1];
 		    }
 		}
 
@@ -574,13 +574,13 @@ L110:
 
     i__1 = *kev;
     for (j = 1; j <= i__1; ++j) {
-	if (h__[j + 1 + j * h_dim1] < 0.) {
+	if (h[j + 1 + j * h_dim1] < 0.) {
 	    i__2 = kplusp - j + 1;
-	    dscal_(&i__2, &d_m1, &h__[j + 1 + j * h_dim1], ldh);
+	    dscal_(&i__2, &d_m1, &h[j + 1 + j * h_dim1], ldh);
 /* Computing MIN */
 	    i__3 = j + 2;
 	    i__2 = min(i__3,kplusp);
-	    dscal_(&i__2, &d_m1, &h__[(j + 1) * h_dim1 + 1], &c__1);
+	    dscal_(&i__2, &d_m1, &h[(j + 1) * h_dim1 + 1], &c__1);
 /* Computing MIN */
 	    i__3 = j + *np + 1;
 	    i__2 = min(i__3,kplusp);
@@ -590,7 +590,7 @@ L110:
     }
 
     i__1 = *kev;
-    for (i__ = 1; i__ <= i__1; ++i__) {
+    for (i = 1; i <= i__1; ++i) {
 
         /* ------------------------------------------ */
         /* Final check for splitting and deflation.   */
@@ -598,15 +598,15 @@ L110:
         /* REFERENCE: LAPACK subroutine dlahqr        */
         /* ------------------------------------------ */
 
-	tst1 = (d__1 = h__[i__ + i__ * h_dim1], abs(d__1)) + (d__2 = h__[i__ 
-		+ 1 + (i__ + 1) * h_dim1], abs(d__2));
+	tst1 = (d__1 = h[i + i * h_dim1], abs(d__1)) + (d__2 = h[i 
+		+ 1 + (i + 1) * h_dim1], abs(d__2));
 	if (tst1 == 0.) {
-	    tst1 = dlanhs_("1", kev, &h__[h_offset], ldh, &workl[1]);
+	    tst1 = dlanhs_("1", kev, &h[h_offset], ldh, &workl[1]);
 	}
 /* Computing MAX */
 	d__1 = ulp * tst1;
-	if (h__[i__ + 1 + i__ * h_dim1] <= max(d__1,smlnum)) {
-	    h__[i__ + 1 + i__ * h_dim1] = 0.;
+	if (h[i + 1 + i * h_dim1] <= max(d__1,smlnum)) {
+	    h[i + 1 + i * h_dim1] = 0.;
 	}
 /* L130: */
     }
@@ -619,7 +619,7 @@ L110:
      /* of H would be zero as in exact arithmetic.      */
      /* ----------------------------------------------- */
 
-    if (h__[*kev + 1 + *kev * h_dim1] > 0.) {
+    if (h[*kev + 1 + *kev * h_dim1] > 0.) {
 	dgemv_("N", n, &kplusp, &d_one, &v[v_offset], ldv, &q[(*kev + 1) * 
 		q_dim1 + 1], &c__1, &d_zero, &workd[*n + 1], &c__1);
     }
@@ -630,11 +630,11 @@ L110:
      /* -------------------------------------------------------- */
 
     i__1 = *kev;
-    for (i__ = 1; i__ <= i__1; ++i__) {
-	i__2 = kplusp - i__ + 1;
-	dgemv_("N", n, &i__2, &d_one, &v[v_offset], ldv, &q[(*kev - i__ + 1) * 
+    for (i = 1; i <= i__1; ++i) {
+	i__2 = kplusp - i + 1;
+	dgemv_("N", n, &i__2, &d_one, &v[v_offset], ldv, &q[(*kev - i + 1) * 
 		q_dim1 + 1], &c__1, &d_zero, &workd[1], &c__1);
-	dcopy_(n, &workd[1], &c__1, &v[(kplusp - i__ + 1) * v_dim1 + 1], &
+	dcopy_(n, &workd[1], &c__1, &v[(kplusp - i + 1) * v_dim1 + 1], &
 		c__1);
 /* L140: */
     }
@@ -644,8 +644,8 @@ L110:
      /* ----------------------------------------------- */
 
     i__1 = *kev;
-    for (i__ = 1; i__ <= i__1; ++i__) {
-	dcopy_(n, &v[(kplusp - *kev + i__) * v_dim1 + 1], &c__1, &v[i__ * 
+    for (i = 1; i <= i__1; ++i) {
+	dcopy_(n, &v[(kplusp - *kev + i) * v_dim1 + 1], &c__1, &v[i * 
 		v_dim1 + 1], &c__1);
 /* L150: */
     }
@@ -654,7 +654,7 @@ L110:
      /* Copy the (kev+1)-st column of (V*Q) in the appropriate place */
      /* ------------------------------------------------------------ */
 
-    if (h__[*kev + 1 + *kev * h_dim1] > 0.) {
+    if (h[*kev + 1 + *kev * h_dim1] > 0.) {
 	dcopy_(n, &workd[*n + 1], &c__1, &v[(*kev + 1) * v_dim1 + 1], &c__1);
     }
 
@@ -667,17 +667,17 @@ L110:
      /* ----------------------------------- */
 
     dscal_(n, &q[kplusp + *kev * q_dim1], &resid[1], &c__1);
-    if (h__[*kev + 1 + *kev * h_dim1] > 0.) {
-	daxpy_(n, &h__[*kev + 1 + *kev * h_dim1], &v[(*kev + 1) * v_dim1 + 1],
+    if (h[*kev + 1 + *kev * h_dim1] > 0.) {
+	daxpy_(n, &h[*kev + 1 + *kev * h_dim1], &v[(*kev + 1) * v_dim1 + 1],
 		 &c__1, &resid[1], &c__1);
     }
 
     if (msglvl > 1) {
 	dvout_(&debug_1.logfil, &c__1, &q[kplusp + *kev * q_dim1], &debug_1.ndigit, "_napps: sigmak = (e_{kev+p}^T*Q)*e_{kev}");
-	dvout_(&debug_1.logfil, &c__1, &h__[*kev + 1 + *kev * h_dim1], &debug_1.ndigit, "_napps: betak = e_{kev+1}^T*H*e_{kev}");
+	dvout_(&debug_1.logfil, &c__1, &h[*kev + 1 + *kev * h_dim1], &debug_1.ndigit, "_napps: betak = e_{kev+1}^T*H*e_{kev}");
 	ivout_(&debug_1.logfil, &c__1, kev, &debug_1.ndigit, "_napps: Order of the final Hessenberg matrix ");
 	if (msglvl > 2) {
-	    dmout_(&debug_1.logfil, kev, kev, &h__[h_offset], ldh, &debug_1.ndigit, "_napps: updated Hessenberg matrix H for next iteration");
+	    dmout_(&debug_1.logfil, kev, kev, &h[h_offset], ldh, &debug_1.ndigit, "_napps: updated Hessenberg matrix H for next iteration");
 	}
 
     }

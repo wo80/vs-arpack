@@ -175,7 +175,7 @@
 
 int snaup2_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, int32_t *np,
      float *tol, float *resid, int32_t *mode, int32_t *iupd, int32_t *ishift, int32_t *mxiter,
-     float *v, int32_t *ldv, float *h__, int32_t *ldh, float *ritzr, float *ritzi,
+     float *v, int32_t *ldv, float *h, int32_t *ldh, float *ritzr, float *ritzi,
      float *bounds, float *q, int32_t *ldq, float *workl, int32_t *ipntr, float *workd,
      int32_t *info)
 {
@@ -186,8 +186,7 @@ int snaup2_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, int
 
     /* Builtin functions */
     double pow_dd(double *, double *);
-    int32_t strcmp(char *, char *, ftnlen, ftnlen);
-
+    
     double sqrt(double);
 
     /* Local variables */
@@ -228,7 +227,7 @@ int snaup2_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, int
     v -= v_offset;
     h_dim1 = *ldh;
     h_offset = 1 + h_dim1;
-    h__ -= h_offset;
+    h -= h_offset;
     q_dim1 = *ldq;
     q_offset = 1 + q_dim1;
     q -= q_offset;
@@ -345,7 +344,7 @@ int snaup2_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, int
      /* Compute the first NEV steps of the Arnoldi factorization */
      /* -------------------------------------------------------- */
 
-    snaitr_(ido, bmat, n, &c__0, nev, mode, &resid[1], &rnorm, &v[v_offset], ldv, &h__[h_offset], ldh, &ipntr[1], &workd[1], info);
+    snaitr_(ido, bmat, n, &c__0, nev, mode, &resid[1], &rnorm, &v[v_offset], ldv, &h[h_offset], ldh, &ipntr[1], &workd[1], info);
 
      /* ------------------------------------------------- */
      /* ido .ne. 99 implies use of reverse communication  */
@@ -400,7 +399,7 @@ L1000:
 L20:
     update = true;
 
-    snaitr_(ido, bmat, n, nev, np, mode, &resid[1], &rnorm, &v[v_offset], ldv,&h__[h_offset], ldh, &ipntr[1], &workd[1], info);
+    snaitr_(ido, bmat, n, nev, np, mode, &resid[1], &rnorm, &v[v_offset], ldv,&h[h_offset], ldh, &ipntr[1], &workd[1], info);
 
         /* ------------------------------------------------- */
         /* ido .ne. 99 implies use of reverse communication  */
@@ -428,7 +427,7 @@ L20:
         /* of the current upper Hessenberg matrix.                */
         /* ------------------------------------------------------ */
 
-    sneigh_(&rnorm, &kplusp, &h__[h_offset], ldh, &ritzr[1], &ritzi[1], &bounds[1], &q[q_offset], ldq, &workl[1], &ierr);
+    sneigh_(&rnorm, &kplusp, &h[h_offset], ldh, &ritzr[1], &ritzi[1], &bounds[1], &q[q_offset], ldq, &workl[1], &ierr);
 
     if (ierr != 0) {
 	*info = -8;
@@ -536,7 +535,7 @@ L20:
            /*  Use h( 3,1 ) as storage to communicate  */
            /*  rnorm to _neupd if needed               */
            /* ---------------------------------------- */
-	h__[h_dim1 + 3] = rnorm;
+	h[h_dim1 + 3] = rnorm;
 
            /* -------------------------------------------- */
            /* To be consistent with sngets, we first do a  */
@@ -771,7 +770,7 @@ L50:
         /* The first 2*N locations of WORKD are used as workspace. */
         /* ------------------------------------------------------- */
 
-    snapps_(n, nev, np, &ritzr[1], &ritzi[1], &v[v_offset], ldv, &h__[h_offset], ldh, &resid[1], &q[q_offset], ldq, &workl[1], &workd[1]);
+    snapps_(n, nev, np, &ritzr[1], &ritzi[1], &v[v_offset], ldv, &h[h_offset], ldh, &resid[1], &q[q_offset], ldq, &workl[1], &workd[1]);
 
         /* ------------------------------------------- */
         /* Compute the B-norm of the updated residual. */
@@ -819,7 +818,7 @@ L100:
 
     if (msglvl > 2) {
 	svout_(&debug_1.logfil, &c__1, &rnorm, &debug_1.ndigit, "_naup2: B-norm of residual for compressed factorization");
-	smout_(&debug_1.logfil, nev, nev, &h__[h_offset], ldh, &debug_1.ndigit, "_naup2: Compressed upper Hessenberg matrix H");
+	smout_(&debug_1.logfil, nev, nev, &h[h_offset], ldh, &debug_1.ndigit, "_naup2: Compressed upper Hessenberg matrix H");
     }
 
     goto L1000;

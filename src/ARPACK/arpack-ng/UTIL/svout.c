@@ -38,7 +38,7 @@ int svout_(int32_t *lout, int32_t *n, float *sx, int32_t *
 	     ftnlen), e_wsfe(void);
 
     /* Local variables */
-    int32_t i__, k1, k2, lll;
+    int32_t i, k1, k2, lll;
     char line[80];
     int32_t ndigit;
 
@@ -67,13 +67,13 @@ int svout_(int32_t *lout, int32_t *n, float *sx, int32_t *
     i__1 = i_len(ifmt, ifmt_len);
     lll = min(i__1,80);
     i__1 = lll;
-    for (i__ = 1; i__ <= i__1; ++i__) {
-	*&line[i__ - 1] = '-';
+    for (i = 1; i <= i__1; ++i) {
+	*&line[i - 1] = '-';
 /* L10: */
     }
 
-    for (i__ = lll + 1; i__ <= 80; ++i__) {
-	*&line[i__ - 1] = ' ';
+    for (i = lll + 1; i <= 80; ++i) {
+	*&line[i - 1] = ' ';
 /* L20: */
     }
 
@@ -108,8 +108,8 @@ int svout_(int32_t *lout, int32_t *n, float *sx, int32_t *
 		do_fio(&c__1, (char *)&k1, (ftnlen)sizeof(int32_t));
 		do_fio(&c__1, (char *)&k2, (ftnlen)sizeof(int32_t));
 		i__2 = k2;
-		for (i__ = k1; i__ <= i__2; ++i__) {
-		    do_fio(&c__1, (char *)&sx[i__], (ftnlen)sizeof(float));
+		for (i = k1; i <= i__2; ++i) {
+		    do_fio(&c__1, (char *)&sx[i], (ftnlen)sizeof(float));
 		}
 		e_wsfe();
 /* L30: */
@@ -125,8 +125,8 @@ int svout_(int32_t *lout, int32_t *n, float *sx, int32_t *
 		do_fio(&c__1, (char *)&k1, (ftnlen)sizeof(int32_t));
 		do_fio(&c__1, (char *)&k2, (ftnlen)sizeof(int32_t));
 		i__2 = k2;
-		for (i__ = k1; i__ <= i__2; ++i__) {
-		    do_fio(&c__1, (char *)&sx[i__], (ftnlen)sizeof(float));
+		for (i = k1; i <= i__2; ++i) {
+		    do_fio(&c__1, (char *)&sx[i], (ftnlen)sizeof(float));
 		}
 		e_wsfe();
 /* L40: */
@@ -142,8 +142,8 @@ int svout_(int32_t *lout, int32_t *n, float *sx, int32_t *
 		do_fio(&c__1, (char *)&k1, (ftnlen)sizeof(int32_t));
 		do_fio(&c__1, (char *)&k2, (ftnlen)sizeof(int32_t));
 		i__2 = k2;
-		for (i__ = k1; i__ <= i__2; ++i__) {
-		    do_fio(&c__1, (char *)&sx[i__], (ftnlen)sizeof(float));
+		for (i = k1; i <= i__2; ++i) {
+		    do_fio(&c__1, (char *)&sx[i], (ftnlen)sizeof(float));
 		}
 		e_wsfe();
 /* L50: */
@@ -159,8 +159,8 @@ int svout_(int32_t *lout, int32_t *n, float *sx, int32_t *
 		do_fio(&c__1, (char *)&k1, (ftnlen)sizeof(int32_t));
 		do_fio(&c__1, (char *)&k2, (ftnlen)sizeof(int32_t));
 		i__2 = k2;
-		for (i__ = k1; i__ <= i__2; ++i__) {
-		    do_fio(&c__1, (char *)&sx[i__], (ftnlen)sizeof(float));
+		for (i = k1; i <= i__2; ++i) {
+		    do_fio(&c__1, (char *)&sx[i], (ftnlen)sizeof(float));
 		}
 		e_wsfe();
 /* L60: */
@@ -183,8 +183,8 @@ int svout_(int32_t *lout, int32_t *n, float *sx, int32_t *
 		do_fio(&c__1, (char *)&k1, (ftnlen)sizeof(int32_t));
 		do_fio(&c__1, (char *)&k2, (ftnlen)sizeof(int32_t));
 		i__2 = k2;
-		for (i__ = k1; i__ <= i__2; ++i__) {
-		    do_fio(&c__1, (char *)&sx[i__], (ftnlen)sizeof(float));
+		for (i = k1; i <= i__2; ++i) {
+		    do_fio(&c__1, (char *)&sx[i], (ftnlen)sizeof(float));
 		}
 		e_wsfe();
 /* L70: */
@@ -200,8 +200,8 @@ int svout_(int32_t *lout, int32_t *n, float *sx, int32_t *
 		do_fio(&c__1, (char *)&k1, (ftnlen)sizeof(int32_t));
 		do_fio(&c__1, (char *)&k2, (ftnlen)sizeof(int32_t));
 		i__2 = k2;
-		for (i__ = k1; i__ <= i__2; ++i__) {
-		    do_fio(&c__1, (char *)&sx[i__], (ftnlen)sizeof(float));
+		for (i = k1; i <= i__2; ++i) {
+		    do_fio(&c__1, (char *)&sx[i], (ftnlen)sizeof(float));
 		}
 		e_wsfe();
 /* L80: */
@@ -217,8 +217,8 @@ int svout_(int32_t *lout, int32_t *n, float *sx, int32_t *
 		do_fio(&c__1, (char *)&k1, (ftnlen)sizeof(int32_t));
 		do_fio(&c__1, (char *)&k2, (ftnlen)sizeof(int32_t));
 		i__2 = k2;
-		for (i__ = k1; i__ <= i__2; ++i__) {
-		    do_fio(&c__1, (char *)&sx[i__], (ftnlen)sizeof(float));
+		for (i = k1; i <= i__2; ++i) {
+		    do_fio(&c__1, (char *)&sx[i], (ftnlen)sizeof(float));
 		}
 		e_wsfe();
 /* L90: */
@@ -234,8 +234,8 @@ int svout_(int32_t *lout, int32_t *n, float *sx, int32_t *
 		do_fio(&c__1, (char *)&k1, (ftnlen)sizeof(int32_t));
 		do_fio(&c__1, (char *)&k2, (ftnlen)sizeof(int32_t));
 		i__2 = k2;
-		for (i__ = k1; i__ <= i__2; ++i__) {
-		    do_fio(&c__1, (char *)&sx[i__], (ftnlen)sizeof(float));
+		for (i = k1; i <= i__2; ++i) {
+		    do_fio(&c__1, (char *)&sx[i], (ftnlen)sizeof(float));
 		}
 		e_wsfe();
 /* L100: */

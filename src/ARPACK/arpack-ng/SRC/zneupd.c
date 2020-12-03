@@ -251,7 +251,7 @@
  * \EndLib
  */
 
-int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d__, zomplex *z__, int32_t *ldz,
+int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int32_t *ldz,
      zomplex *sigma, zomplex *workev, char *bmat, int32_t *n, char *which, int32_t *nev,
      double *tol, zomplex *resid, int32_t *ncv, zomplex *v, int32_t *ldv, int32_t *iparam,
      int32_t *ipntr, zomplex *workd, zomplex *workl, int32_t *lworkl, double *rwork,
@@ -264,8 +264,7 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d__, zomplex *z__, 
 
     /* Builtin functions */
     double pow_dd(double *, double *);
-    int32_t strcmp(char *, char *, ftnlen, ftnlen);
-
+    
     double d_imag(zomplex *);
     void z_div(zomplex *, zomplex *, zomplex *);
 
@@ -302,8 +301,8 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d__, zomplex *z__, 
     --resid;
     z_dim1 = *ldz;
     z_offset = 1 + z_dim1;
-    z__ -= z_offset;
-    --d__;
+    z -= z_offset;
+    --d;
     --rwork;
     --workev;
     --select;
@@ -602,7 +601,7 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d__, zomplex *z__, 
         /* ------------------------------------------ */
 
 	if (strcmp(type__, "REGULR") == 0) {
-	    zcopy_(&nconv, &workl[iheig], &c__1, &d__[1], &c__1);
+	    zcopy_(&nconv, &workl[iheig], &c__1, &d[1], &c__1);
 	}
 
         /* -------------------------------------------------------- */
@@ -628,7 +627,7 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d__, zomplex *z__, 
 
 	zunm2r_("Right", "Notranspose", n, ncv, &nconv, &workl[invsub], &ldq, 
 		&workev[1], &v[v_offset], ldv, &workd[*n + 1], &ierr);
-	zlacpy_("All", n, &nconv, &v[v_offset], ldv, &z__[z_offset], ldz);
+	zlacpy_("All", n, &nconv, &v[v_offset], ldv, &z[z_offset], ldz);
 
 	i__1 = nconv;
 	for (j = 1; j <= i__1; ++j) {
@@ -730,7 +729,7 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d__, zomplex *z__, 
            /* -------------------------------------------- */
 
 	    ztrmm_("Right", "Upper", "No transpose", "Non-unit", n, &nconv, &
-		    z_one, &workl[invsub], &ldq, &z__[z_offset], ldz);
+		    z_one, &workl[invsub], &ldq, &z[z_offset], ldz);
 	}
 
     } else {
@@ -740,7 +739,7 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d__, zomplex *z__, 
         /* Place the Ritz values computed ZNAUPD into D.    */
         /* ------------------------------------------------ */
 
-	zcopy_(&nconv, &workl[ritz], &c__1, &d__[1], &c__1);
+	zcopy_(&nconv, &workl[ritz], &c__1, &d[1], &c__1);
 	zcopy_(&nconv, &workl[ritz], &c__1, &workl[iheig], &c__1);
 	zcopy_(&nconv, &workl[bounds], &c__1, &workl[ihbds], &c__1);
 
@@ -797,16 +796,16 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d__, zomplex *z__, 
 	    i__2 = k;
 	    z_div(&z__2, &z_one, &workl[iheig + k - 1]);
 	    z__1.r = z__2.r + sigma->r, z__1.i = z__2.i + sigma->i;
-	    d__[i__2].r = z__1.r, d__[i__2].i = z__1.i;
+	    d[i__2].r = z__1.r, d[i__2].i = z__1.i;
 /* L60: */
 	}
     }
 
     if (strcmp(type__, "REGULR") != 0 && msglvl > 1) {
-	zvout_(&debug_1.logfil, &nconv, &d__[1], &debug_1.ndigit, "_neupd: Untransformed Ritz values.");
+	zvout_(&debug_1.logfil, &nconv, &d[1], &debug_1.ndigit, "_neupd: Untransformed Ritz values.");
 	zvout_(&debug_1.logfil, &nconv, &workl[ihbds], &debug_1.ndigit, "_neupd: Ritz estimates of the untransformed Ritz values.");
     } else if (msglvl > 1) {
-	zvout_(&debug_1.logfil, &nconv, &d__[1], &debug_1.ndigit, "_neupd: Converged Ritz values.");
+	zvout_(&debug_1.logfil, &nconv, &d[1], &debug_1.ndigit, "_neupd: Converged Ritz values.");
 	zvout_(&debug_1.logfil, &nconv, &workl[ihbds], &debug_1.ndigit, "_neupd: Associated Ritz estimates.");
     }
 
@@ -816,8 +815,7 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d__, zomplex *z__, 
      /* for MODE = 3. See reference 3.                  */
      /* ----------------------------------------------- */
 
-    if (*rvec && *howmny == 'A' && strcmp(type__, "SHIFTI", (
-	    ftnlen)6, (ftnlen)6) == 0) {
+    if (*rvec && *howmny == 'A' && strcmp(type__, "SHIFTI") == 0) {
 
         /* ---------------------------------------------- */
         /* Purify the computed Ritz vectors by adding a   */
@@ -844,7 +842,7 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d__, zomplex *z__, 
         /* purify all the Ritz vectors together. */
         /* ------------------------------------- */
 
-	zgeru_(n, &nconv, &z_one, &resid[1], &c__1, &workev[1], &c__1, &z__[
+	zgeru_(n, &nconv, &z_one, &resid[1], &c__1, &workev[1], &c__1, &z[
 		z_offset], ldz);
 
     }

@@ -12,7 +12,7 @@ int32_t icnteq_(int32_t *n, int32_t *array, int32_t *value)
     int32_t ret_val, i__1;
 
     /* Local variables */
-    int32_t i__, k;
+    int32_t i, k;
 
     /* Parameter adjustments */
     --array;
@@ -20,8 +20,8 @@ int32_t icnteq_(int32_t *n, int32_t *array, int32_t *value)
     /* Function Body */
     k = 0;
     i__1 = *n;
-    for (i__ = 1; i__ <= i__1; ++i__) {
-	if (array[i__] == *value) {
+    for (i = 1; i <= i__1; ++i) {
+	if (array[i] == *value) {
 	    ++k;
 	}
 /* L10: */

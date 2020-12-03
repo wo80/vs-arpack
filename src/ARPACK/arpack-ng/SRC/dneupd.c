@@ -305,7 +305,7 @@
  * \EndLib
  */
 
-int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, double *z__,
+int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, double *z,
      int32_t *ldz, double *sigmar, double *sigmai, double *workev, char *bmat, int32_t *n,
      char *which, int32_t *nev, double *tol, double *resid, int32_t *ncv, double *v,
      int32_t *ldv, int32_t *iparam, int32_t *ipntr, double *workd, double *workl,
@@ -317,8 +317,7 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
 
     /* Builtin functions */
     double pow_dd(double *, double *);
-    int32_t strcmp(char *, char *, ftnlen, ftnlen);
-
+    
     /* Local variables */
     int32_t j, k, ih, jj, np;
     double vl[1]	/* was [1][1] */;
@@ -355,7 +354,7 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
     /* Parameter adjustments */
     z_dim1 = *ldz;
     z_offset = 1 + z_dim1;
-    z__ -= z_offset;
+    z -= z_offset;
     --workd;
     --resid;
     --di;
@@ -691,7 +690,7 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
 
 	dorm2r_("Right", "Notranspose", n, ncv, &nconv, &workl[invsub], &ldq, 
 		&workev[1], &v[v_offset], ldv, &workd[*n + 1], &ierr);
-	dlacpy_("All", n, &nconv, &v[v_offset], ldv, &z__[z_offset], ldz);
+	dlacpy_("All", n, &nconv, &v[v_offset], ldv, &z[z_offset], ldz);
 
 	i__1 = nconv;
 	for (j = 1; j <= i__1; ++j) {
@@ -849,11 +848,11 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
            /* -------------------------------------------- */
 
 	    dorm2r_("Right", "Notranspose", n, ncv, &nconv, &workl[invsub], &
-		    ldq, &workev[1], &z__[z_offset], ldz, &workd[*n + 1], &
+		    ldq, &workev[1], &z[z_offset], ldz, &workd[*n + 1], &
 		    ierr, (ftnlen)5, (ftnlen)11);
 
 	    dtrmm_("Right", "Upper", "No transpose", "Non-unit", n, &nconv, &
-		    d_one, &workl[invsub], &ldq, &z__[z_offset], ldz, (ftnlen)
+		    d_one, &workl[invsub], &ldq, &z[z_offset], ldz, (ftnlen)
 		    5, (ftnlen)5, (ftnlen)12, (ftnlen)8);
 
 	}
@@ -974,8 +973,7 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
      /* for MODE = 2.                                   */
      /* ----------------------------------------------- */
 
-    if (*rvec && *howmny == 'A' && strcmp(type__, "SHIFTI", (
-	    ftnlen)6, (ftnlen)6) == 0) {
+    if (*rvec && *howmny == 'A' && strcmp(type__, "SHIFTI") == 0) {
 
         /* ---------------------------------------------- */
         /* Purify the computed Ritz vectors by adding a   */
@@ -1018,7 +1016,7 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
         /* purify all the Ritz vectors together. */
         /* ------------------------------------- */
 
-	dger_(n, &nconv, &d_one, &resid[1], &c__1, &workev[1], &c__1, &z__[
+	dger_(n, &nconv, &d_one, &resid[1], &c__1, &workev[1], &c__1, &z[
 		z_offset], ldz);
 
     }

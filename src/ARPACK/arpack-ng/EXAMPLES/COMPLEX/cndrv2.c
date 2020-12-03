@@ -18,7 +18,7 @@ int cndrv2()
     double r_imag(complex *);
 
     /* Local variables */
-    complex d__[25], h__;
+    complex d[25], h;
     int32_t j, n;
     complex s, v[6400]	/* was [256][25] */, h2, s1, s2, s3, dd[256], dl[256];
     float rd[75]	/* was [25][3] */;
@@ -195,16 +195,16 @@ int cndrv2()
     i__1 = n + 1;
     q__2.r = (float) i__1, q__2.i = 0.f;
     c_div(&q__1, &c_one, &q__2);
-    h__.r = q__1.r, h__.i = q__1.i;
-    q__1.r = h__.r * h__.r - h__.i * h__.i, q__1.i = h__.r * h__.i + h__.i * 
-	    h__.r;
+    h.r = q__1.r, h.i = q__1.i;
+    q__1.r = h.r * h.r - h.i * h.i, q__1.i = h.r * h.i + h.i * 
+	    h.r;
     h2.r = q__1.r, h2.i = q__1.i;
     c_div(&q__1, &convct_1.rho, &c_b3);
     s.r = q__1.r, s.i = q__1.i;
 
     q__3.r = -1.f, q__3.i = -0.f;
     c_div(&q__2, &q__3, &h2);
-    c_div(&q__4, &s, &h__);
+    c_div(&q__4, &s, &h);
     q__1.r = q__2.r - q__4.r, q__1.i = q__2.i - q__4.i;
     s1.r = q__1.r, s1.i = q__1.i;
     c_div(&q__2, &c_b3, &h2);
@@ -212,7 +212,7 @@ int cndrv2()
     s2.r = q__1.r, s2.i = q__1.i;
     q__3.r = -1.f, q__3.i = -0.f;
     c_div(&q__2, &q__3, &h2);
-    c_div(&q__4, &s, &h__);
+    c_div(&q__4, &s, &h);
     q__1.r = q__2.r + q__4.r, q__1.i = q__2.i + q__4.i;
     s3.r = q__1.r, s3.i = q__1.i;
 
@@ -371,7 +371,7 @@ L20:
 
 	rvec = true;
 
-	cneupd_(&rvec, "A", select, d__, v, &c__256, &sigma, workev, bmat, &n,
+	cneupd_(&rvec, "A", select, d, v, &c__256, &sigma, workev, bmat, &n,
 		 which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, 
 		workd, workl, &lworkl, rwork, &ierr, (ftnlen)1, (ftnlen)1, (
 		ftnlen)2);
@@ -428,11 +428,11 @@ L20:
 
 		cndrv2_av_(&n, &v[(j << 8) - 256], ax);
 		i__2 = j - 1;
-		q__1.r = -d__[i__2].r, q__1.i = -d__[i__2].i;
+		q__1.r = -d[i__2].r, q__1.i = -d[i__2].i;
 		caxpy_(&n, &q__1, &v[(j << 8) - 256], &c__1, ax, &c__1);
 		i__2 = j - 1;
-		rd[j - 1] = d__[i__2].r;
-		rd[j + 24] = r_imag(&d__[j - 1]);
+		rd[j - 1] = d[i__2].r;
+		rd[j + 24] = r_imag(&d[j - 1]);
 		rd[j + 49] = scnrm2_(&n, ax, &c__1);
 		rd[j + 49] /= slapy2_(&rd[j - 1], &rd[j + 24]);
 /* L60: */
@@ -548,7 +548,7 @@ int cndrv2_av_(int32_t *n, complex *v, complex *w)
     void c_div(complex *, complex *, complex *);
 
     /* Local variables */
-    complex h__;
+    complex h;
     int32_t j;
     complex s, h2, dd, dl, du;
 
@@ -560,9 +560,9 @@ int cndrv2_av_(int32_t *n, complex *v, complex *w)
     i__1 = *n + 1;
     q__2.r = (float) i__1, q__2.i = 0.f;
     c_div(&q__1, &c_one, &q__2);
-    h__.r = q__1.r, h__.i = q__1.i;
-    q__1.r = h__.r * h__.r - h__.i * h__.i, q__1.i = h__.r * h__.i + h__.i * 
-	    h__.r;
+    h.r = q__1.r, h.i = q__1.i;
+    q__1.r = h.r * h.r - h.i * h.i, q__1.i = h.r * h.i + h.i * 
+	    h.r;
     h2.r = q__1.r, h2.i = q__1.i;
     c_div(&q__1, &convct_1.rho, &c_b3);
     s.r = q__1.r, s.i = q__1.i;
@@ -570,12 +570,12 @@ int cndrv2_av_(int32_t *n, complex *v, complex *w)
     dd.r = q__1.r, dd.i = q__1.i;
     q__3.r = -1.f, q__3.i = -0.f;
     c_div(&q__2, &q__3, &h2);
-    c_div(&q__4, &s, &h__);
+    c_div(&q__4, &s, &h);
     q__1.r = q__2.r - q__4.r, q__1.i = q__2.i - q__4.i;
     dl.r = q__1.r, dl.i = q__1.i;
     q__3.r = -1.f, q__3.i = -0.f;
     c_div(&q__2, &q__3, &h2);
-    c_div(&q__4, &s, &h__);
+    c_div(&q__4, &s, &h);
     q__1.r = q__2.r + q__4.r, q__1.i = q__2.i + q__4.i;
     du.r = q__1.r, du.i = q__1.i;
 

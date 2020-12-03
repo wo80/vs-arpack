@@ -208,7 +208,7 @@
  */
 
 int cnaitr_(int32_t *ido, char *bmat, int32_t *n, int32_t *k,int32_t *np, int32_t *nb,
-     complex *resid, float *rnorm, complex *v, int32_t *ldv, complex *h__, int32_t *ldh,
+     complex *resid, float *rnorm, complex *v, int32_t *ldv, complex *h, int32_t *ldh,
      int32_t *ipntr, complex *workd, int32_t *info)
 {
     /* Initialized data */
@@ -224,7 +224,7 @@ int cnaitr_(int32_t *ido, char *bmat, int32_t *n, int32_t *k,int32_t *np, int32_
     double r_imag(complex *), sqrt(double);
 
     /* Local variables */
-    int32_t i__;
+    int32_t i;
     static int32_t j;
     static float t0, t1, t2, t3, t4, t5;
     int32_t jj;
@@ -258,7 +258,7 @@ int cnaitr_(int32_t *ido, char *bmat, int32_t *n, int32_t *k,int32_t *np, int32_
     v -= v_offset;
     h_dim1 = *ldh;
     h_offset = 1 + h_dim1;
-    h__ -= h_offset;
+    h -= h_offset;
     --ipntr;
 
     /* Function Body */
@@ -442,9 +442,9 @@ L40:
             /* use LAPACK routine clascl               */
             /* --------------------------------------- */
 
-	clascl_("General", &i__, &i__, rnorm, &s_one, n, &c__1, &v[j * v_dim1 
+	clascl_("General", &i, &i, rnorm, &s_one, n, &c__1, &v[j * v_dim1 
 		+ 1], n, &infol);
-	clascl_("General", &i__, &i__, rnorm, &s_one, n, &c__1, &workd[ipj], 
+	clascl_("General", &i, &i, rnorm, &s_one, n, &c__1, &workd[ipj], 
 		n, &infol);
     }
 
@@ -550,7 +550,7 @@ L60:
         /* ---------------------------------------- */
 
     cgemv_("C", n, &j, &c_one, &v[v_offset], ldv, &workd[ipj], &c__1, &c_zero, &
-	    h__[j * h_dim1 + 1], &c__1);
+	    h[j * h_dim1 + 1], &c__1);
 
         /* ------------------------------------ */
         /* Orthogonalize r_{j} against V_{j}.   */
@@ -558,13 +558,13 @@ L60:
         /* ------------------------------------ */
 
     q__1.r = -1.f, q__1.i = -0.f;
-    cgemv_("N", n, &j, &q__1, &v[v_offset], ldv, &h__[j * h_dim1 + 1], &c__1, 
+    cgemv_("N", n, &j, &q__1, &v[v_offset], ldv, &h[j * h_dim1 + 1], &c__1, 
 	    &c_one, &resid[1], &c__1);
 
     if (j > 1) {
 	i__1 = j + (j - 1) * h_dim1;
 	q__1.r = betaj, q__1.i = 0.f;
-	h__[i__1].r = q__1.r, h__[i__1].i = q__1.i;
+	h[i__1].r = q__1.r, h[i__1].i = q__1.i;
     }
 
     arscnd_(&t4);
@@ -653,7 +653,7 @@ L80:
 	rtemp[0] = wnorm;
 	rtemp[1] = *rnorm;
 	svout_(&debug_1.logfil, &c__2, rtemp, &debug_1.ndigit, "_naitr: re-orthogonalization; wnorm and rnorm are");
-	cvout_(&debug_1.logfil, &j, &h__[j * h_dim1 + 1], &debug_1.ndigit, "_naitr: j-th column of H");
+	cvout_(&debug_1.logfil, &j, &h[j * h_dim1 + 1], &debug_1.ndigit, "_naitr: j-th column of H");
     }
 
         /* -------------------------------------------------- */
@@ -674,7 +674,7 @@ L80:
     q__1.r = -1.f, q__1.i = -0.f;
     cgemv_("N", n, &j, &q__1, &v[v_offset], ldv, &workd[irj], &c__1, &c_one, &
 	    resid[1], &c__1);
-    caxpy_(&j, &c_one, &workd[irj], &c__1, &h__[j * h_dim1 + 1], &c__1);
+    caxpy_(&j, &c_one, &workd[irj], &c__1, &h[j * h_dim1 + 1], &c__1);
 
     orth2 = true;
     arscnd_(&t2);
@@ -798,7 +798,7 @@ L100:
 	timing_1.tcaitr += t1 - t0;
 	*ido = 99;
 	i__1 = *k + *np - 1;
-	for (i__ = max(1,*k); i__ <= i__1; ++i__) {
+	for (i = max(1,*k); i <= i__1; ++i) {
 
               /* ------------------------------------------ */
               /* Check for splitting and deflation.         */
@@ -806,25 +806,25 @@ L100:
               /* REFERENCE: LAPACK subroutine clahqr        */
               /* ------------------------------------------ */
 
-	    i__2 = i__ + i__ * h_dim1;
-	    r__1 = h__[i__2].r;
-	    r__2 = r_imag(&h__[i__ + i__ * h_dim1]);
-	    i__3 = i__ + 1 + (i__ + 1) * h_dim1;
-	    r__3 = h__[i__3].r;
-	    r__4 = r_imag(&h__[i__ + 1 + (i__ + 1) * h_dim1]);
+	    i__2 = i + i * h_dim1;
+	    r__1 = h[i__2].r;
+	    r__2 = r_imag(&h[i + i * h_dim1]);
+	    i__3 = i + 1 + (i + 1) * h_dim1;
+	    r__3 = h[i__3].r;
+	    r__4 = r_imag(&h[i + 1 + (i + 1) * h_dim1]);
 	    tst1 = slapy2_(&r__1, &r__2) + slapy2_(&r__3, &r__4);
 	    if (tst1 == 0.f) {
 		i__2 = *k + *np;
-		tst1 = clanhs_("1", &i__2, &h__[h_offset], ldh, &workd[*n + 1]);
+		tst1 = clanhs_("1", &i__2, &h[h_offset], ldh, &workd[*n + 1]);
 	    }
-	    i__2 = i__ + 1 + i__ * h_dim1;
-	    r__1 = h__[i__2].r;
-	    r__2 = r_imag(&h__[i__ + 1 + i__ * h_dim1]);
+	    i__2 = i + 1 + i * h_dim1;
+	    r__1 = h[i__2].r;
+	    r__2 = r_imag(&h[i + 1 + i * h_dim1]);
 /* Computing MAX */
 	    r__3 = ulp * tst1;
 	    if (slapy2_(&r__1, &r__2) <= dmax(r__3,smlnum)) {
-		i__3 = i__ + 1 + i__ * h_dim1;
-		h__[i__3].r = 0.f, h__[i__3].i = 0.f;
+		i__3 = i + 1 + i * h_dim1;
+		h[i__3].r = 0.f, h[i__3].i = 0.f;
 	    }
 /* L110: */
 	}
@@ -832,7 +832,7 @@ L100:
 	if (msglvl > 2) {
 	    i__1 = *k + *np;
 	    i__2 = *k + *np;
-	    cmout_(&debug_1.logfil, &i__1, &i__2, &h__[h_offset], ldh, &debug_1.ndigit, "_naitr: Final upper Hessenberg matrix H of order K+NP");
+	    cmout_(&debug_1.logfil, &i__1, &i__2, &h[h_offset], ldh, &debug_1.ndigit, "_naitr: Final upper Hessenberg matrix H of order K+NP");
 	}
 
 	goto L9000;

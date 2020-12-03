@@ -69,7 +69,7 @@ int ssconv_(int32_t *n, float *ritz, float *bounds, float *tol,
     double pow_dd(double *, double *);
 
     /* Local variables */
-    int32_t i__;
+    int32_t i;
     static float t0, t1;
     float eps23, temp;
 
@@ -94,7 +94,7 @@ int ssconv_(int32_t *n, float *ritz, float *bounds, float *tol,
 
     *nconv = 0;
     i__1 = *n;
-    for (i__ = 1; i__ <= i__1; ++i__) {
+    for (i = 1; i <= i__1; ++i) {
 
         /* --------------------------------------------------- */
         /* The i-th Ritz value is considered "converged"       */
@@ -102,9 +102,9 @@ int ssconv_(int32_t *n, float *ritz, float *bounds, float *tol,
         /* --------------------------------------------------- */
 
 /* Computing MAX */
-	r__2 = eps23, r__3 = (r__1 = ritz[i__], dabs(r__1));
+	r__2 = eps23, r__3 = (r__1 = ritz[i], dabs(r__1));
 	temp = dmax(r__2,r__3);
-	if (bounds[i__] <= *tol * temp) {
+	if (bounds[i] <= *tol * temp) {
 	    ++(*nconv);
 	}
 

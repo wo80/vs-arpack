@@ -75,7 +75,7 @@ int snconv_(int32_t *n, float *ritzr, float *ritzi, float *
     double pow_dd(double *, double *);
 
     /* Local variables */
-    int32_t i__;
+    int32_t i;
     static float t0, t1;
     float eps23, temp;
 
@@ -113,11 +113,11 @@ int snconv_(int32_t *n, float *ritzr, float *ritzi, float *
 
     *nconv = 0;
     i__1 = *n;
-    for (i__ = 1; i__ <= i__1; ++i__) {
+    for (i = 1; i <= i__1; ++i) {
 /* Computing MAX */
-	r__1 = eps23, r__2 = slapy2_(&ritzr[i__], &ritzi[i__]);
+	r__1 = eps23, r__2 = slapy2_(&ritzr[i], &ritzi[i]);
 	temp = dmax(r__1,r__2);
-	if (bounds[i__] <= *tol * temp) {
+	if (bounds[i] <= *tol * temp) {
 	    ++(*nconv);
 	}
 /* L20: */

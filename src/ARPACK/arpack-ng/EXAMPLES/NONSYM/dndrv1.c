@@ -9,7 +9,7 @@ int dndrv1()
     double d__1;
 
     /* Local variables */
-    double d__[90]	/* was [30][3] */;
+    double d[90]	/* was [30][3] */;
     int32_t j, n;
     double v[7680]	/* was [256][30] */;
     double ax[256];
@@ -284,7 +284,7 @@ L10:
 
 	rvec = true;
 
-	dneupd_(&rvec, "A", select, d__, &d__[30], v, &c__256, &sigmar, &
+	dneupd_(&rvec, "A", select, d, &d[30], v, &c__256, &sigmar, &
 		sigmai, workev, bmat, &n, which, &nev, &tol, resid, &ncv, v, &
 		c__256, iparam, ipntr, workd, workl, &lworkl, &ierr, (ftnlen)
 		1, (ftnlen)1, (ftnlen)2);
@@ -342,17 +342,17 @@ L10:
                /* tolerance)                */
                /* ------------------------- */
 
-		if (d__[j + 29] == 0.) {
+		if (d[j + 29] == 0.) {
 
                   /* ------------------ */
                   /* Ritz value is real */
                   /* ------------------ */
 
 			dndrv1_av_(&nx, &v[(j << 8) - 256], ax);
-		    d__1 = -d__[j - 1];
+		    d__1 = -d[j - 1];
 		    daxpy_(&n, &d__1, &v[(j << 8) - 256], &c__1, ax, &c__1);
-		    d__[j + 59] = dnrm2_(&n, ax, &c__1);
-		    d__[j + 59] /= (d__1 = d__[j - 1], abs(d__1));
+		    d[j + 59] = dnrm2_(&n, ax, &c__1);
+		    d[j + 59] /= (d__1 = d[j - 1], abs(d__1));
 
 		} else if (first) {
 
@@ -364,21 +364,21 @@ L10:
                   /* ---------------------- */
 
 			dndrv1_av_(&nx, &v[(j << 8) - 256], ax);
-		    d__1 = -d__[j - 1];
+		    d__1 = -d[j - 1];
 		    daxpy_(&n, &d__1, &v[(j << 8) - 256], &c__1, ax, &c__1);
-		    daxpy_(&n, &d__[j + 29], &v[(j + 1 << 8) - 256], &c__1, 
+		    daxpy_(&n, &d[j + 29], &v[(j + 1 << 8) - 256], &c__1, 
 			    ax, &c__1);
-		    d__[j + 59] = dnrm2_(&n, ax, &c__1);
+		    d[j + 59] = dnrm2_(&n, ax, &c__1);
 			dndrv1_av_(&nx, &v[(j + 1 << 8) - 256], ax);
-		    d__1 = -d__[j + 29];
+		    d__1 = -d[j + 29];
 		    daxpy_(&n, &d__1, &v[(j << 8) - 256], &c__1, ax, &c__1);
-		    d__1 = -d__[j - 1];
+		    d__1 = -d[j - 1];
 		    daxpy_(&n, &d__1, &v[(j + 1 << 8) - 256], &c__1, ax, &
 			    c__1);
 		    d__1 = dnrm2_(&n, ax, &c__1);
-		    d__[j + 59] = dlapy2_(&d__[j + 59], &d__1);
-		    d__[j + 59] /= dlapy2_(&d__[j - 1], &d__[j + 29]);
-		    d__[j + 60] = d__[j + 59];
+		    d[j + 59] = dlapy2_(&d[j + 59], &d__1);
+		    d[j + 59] /= dlapy2_(&d[j - 1], &d[j + 29]);
+		    d[j + 60] = d[j + 59];
 		    first = false;
 		} else {
 		    first = true;
@@ -391,7 +391,7 @@ L10:
             /* Display computed residuals. */
             /* --------------------------- */
 
-	    dmout_(&c__6, &nconv, &c__3, d__, &c__30, &c_n6, "Ritz values (Real,Imag) and relative residuals");
+	    dmout_(&c__6, &nconv, &c__3, d, &c__30, &c_n6, "Ritz values (Real,Imag) and relative residuals");
 	}
 
         /* ----------------------------------------- */
@@ -557,7 +557,7 @@ int dndrv1_tv_(int32_t *nx, double *x, double *y)
     int32_t i__1;
 
     /* Local variables */
-    double h__;
+    double h;
     int32_t j;
     double h2, dd, dl, du;
 
@@ -574,11 +574,11 @@ int dndrv1_tv_(int32_t *nx, double *x, double *y)
     --x;
 
     /* Function Body */
-    h__ = 1. / (double) (*nx + 1);
-    h2 = h__ * h__;
+    h = 1. / (double) (*nx + 1);
+    h2 = h * h;
     dd = 4. / h2;
-    dl = -1. / h2 - 0. / h__;
-    du = -1. / h2 + 0. / h__;
+    dl = -1. / h2 - 0. / h;
+    du = -1. / h2 + 0. / h;
 
     y[1] = dd * x[1] + du * x[2];
     i__1 = *nx - 1;

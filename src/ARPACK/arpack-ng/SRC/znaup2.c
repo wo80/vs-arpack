@@ -169,7 +169,7 @@
 
 int znaup2_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, int32_t *np,
      double *tol, zomplex *resid, int32_t *mode, int32_t *iupd, int32_t *ishift, int32_t *mxiter,
-    zomplex *v, int32_t *ldv, zomplex *h__, int32_t *ldh, zomplex *ritz, zomplex *bounds,
+    zomplex *v, int32_t *ldv, zomplex *h, int32_t *ldh, zomplex *ritz, zomplex *bounds,
      zomplex *q, int32_t *ldq, zomplex *workl, int32_t *ipntr, zomplex *workd, double *rwork,
      int32_t *info)
 {
@@ -181,12 +181,11 @@ int znaup2_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, int
 
     /* Builtin functions */
     double pow_dd(double *, double *), d_imag(zomplex *);
-    int32_t strcmp(char *, char *, ftnlen, ftnlen);
-
+    
     double sqrt(double);
 
     /* Local variables */
-    int32_t i__, j;
+    int32_t i, j;
     static float t0, t1, t2, t3;
     int32_t kp[3];
     static int32_t np0, nev0;
@@ -221,7 +220,7 @@ int znaup2_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, int
     v -= v_offset;
     h_dim1 = *ldh;
     h_offset = 1 + h_dim1;
-    h__ -= h_offset;
+    h -= h_offset;
     q_dim1 = *ldq;
     q_offset = 1 + q_dim1;
     q -= q_offset;
@@ -337,7 +336,7 @@ int znaup2_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, int
      /* Compute the first NEV steps of the Arnoldi factorization */
      /* -------------------------------------------------------- */
 
-    znaitr_(ido, bmat, n, &c__0, nev, mode, &resid[1], &rnorm, &v[v_offset], ldv, &h__[h_offset], ldh, &ipntr[1], &workd[1], info);
+    znaitr_(ido, bmat, n, &c__0, nev, mode, &resid[1], &rnorm, &v[v_offset], ldv, &h[h_offset], ldh, &ipntr[1], &workd[1], info);
 
     if (*ido != 99) {
 	goto L9000;
@@ -387,7 +386,7 @@ L1000:
 L20:
     update = true;
 
-    znaitr_(ido, bmat, n, nev, np, mode, &resid[1], &rnorm, &v[v_offset], ldv,&h__[h_offset], ldh, &ipntr[1], &workd[1], info);
+    znaitr_(ido, bmat, n, nev, np, mode, &resid[1], &rnorm, &v[v_offset], ldv,&h[h_offset], ldh, &ipntr[1], &workd[1], info);
 
     if (*ido != 99) {
 	goto L9000;
@@ -410,7 +409,7 @@ L20:
         /* of the current upper Hessenberg matrix.                */
         /* ------------------------------------------------------ */
 
-    zneigh_(&rnorm, &kplusp, &h__[h_offset], ldh, &ritz[1], &bounds[1], &q[q_offset], ldq, &workl[1], &rwork[1], &ierr);
+    zneigh_(&rnorm, &kplusp, &h[h_offset], ldh, &ritz[1], &bounds[1], &q[q_offset], ldq, &workl[1], &rwork[1], &ierr);
 
     if (ierr != 0) {
 	*info = -8;
@@ -463,16 +462,16 @@ L20:
     nconv = 0;
 
     i__1 = *nev;
-    for (i__ = 1; i__ <= i__1; ++i__) {
+    for (i = 1; i <= i__1; ++i) {
 /* Computing MAX */
-	i__2 = *np + i__;
+	i__2 = *np + i;
 	d__3 = ritz[i__2].r;
-	d__4 = d_imag(&ritz[*np + i__]);
+	d__4 = d_imag(&ritz[*np + i]);
 	d__1 = eps23, d__2 = dlapy2_(&d__3, &d__4);
 	rtemp = max(d__1,d__2);
-	i__2 = *np + i__;
+	i__2 = *np + i;
 	d__1 = bounds[i__2].r;
-	d__2 = d_imag(&bounds[*np + i__]);
+	d__2 = d_imag(&bounds[*np + i]);
 	if (dlapy2_(&d__1, &d__2) <= *tol * rtemp) {
 	    ++nconv;
 	}
@@ -533,7 +532,7 @@ L20:
            /* ---------------------------------------- */
 	i__1 = h_dim1 + 3;
 	z__1.r = rnorm, z__1.i = 0.;
-	h__[i__1].r = z__1.r, h__[i__1].i = z__1.i;
+	h[i__1].r = z__1.r, h[i__1].i = z__1.i;
 
            /* -------------------------------------------- */
            /* Sort Ritz values so that converged Ritz      */
@@ -726,7 +725,7 @@ L50:
         /* The first 2*N locations of WORKD are used as workspace. */
         /* ------------------------------------------------------- */
 
-    znapps_(n, nev, np, &ritz[1], &v[v_offset], ldv, &h__[h_offset], ldh, &resid[1], &q[q_offset], ldq, &workl[1], &workd[1]);
+    znapps_(n, nev, np, &ritz[1], &v[v_offset], ldv, &h[h_offset], ldh, &resid[1], &q[q_offset], ldq, &workl[1], &workd[1]);
 
         /* ------------------------------------------- */
         /* Compute the B-norm of the updated residual. */
@@ -777,7 +776,7 @@ L100:
 
     if (msglvl > 2) {
 	dvout_(&debug_1.logfil, &c__1, &rnorm, &debug_1.ndigit, "_naup2: B-norm of residual for compressed factorization");
-	zmout_(&debug_1.logfil, nev, nev, &h__[h_offset], ldh, &debug_1.ndigit, "_naup2: Compressed upper Hessenberg matrix H");
+	zmout_(&debug_1.logfil, nev, nev, &h[h_offset], ldh, &debug_1.ndigit, "_naup2: Compressed upper Hessenberg matrix H");
     }
 
     goto L1000;

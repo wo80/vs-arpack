@@ -12,7 +12,7 @@ int dndrv6()
     double d_imag(zomplex *);
 
     /* Local variables */
-    double d__[75]	/* was [25][3] */;
+    double d[75]	/* was [25][3] */;
     int32_t j, n;
     double v[6400]	/* was [256][25] */;
     zomplex c1, c2, c3;
@@ -442,7 +442,7 @@ L20:
         /* ----------------------------------------- */
 
 	rvec = true;
-	dneupd_(&rvec, "A", select, d__, &d__[25], v, &c__256, &sigmar, &
+	dneupd_(&rvec, "A", select, d, &d[25], v, &c__256, &sigmar, &
 		sigmai, workev, bmat, &n, which, &nev, &tol, resid, &ncv, v, &
 		c__256, iparam, ipntr, workd, workl, &lworkl, &ierr, (ftnlen)
 		1, (ftnlen)1, (ftnlen)2);
@@ -492,7 +492,7 @@ L20:
                /* eigenvalues of the original problem.*/
                /* ----------------------------------- */
 
-		if (d__[j + 24] == 0.) {
+		if (d[j + 24] == 0.) {
 
                   /* -------------------------- */
                   /* Eigenvalue is real.        */
@@ -503,7 +503,7 @@ L20:
 		    numr = ddot_(&n, &v[(j << 8) - 256], &c__1, ax, &c__1);
 			dndrv6_mv_(&n, &v[(j << 8) - 256], ax);
 		    denr = ddot_(&n, &v[(j << 8) - 256], &c__1, ax, &c__1);
-		    d__[j - 1] = numr / denr;
+		    d[j - 1] = numr / denr;
 
 		} else if (first) {
 
@@ -545,9 +545,9 @@ L20:
                   /* d=x'(Ax)/x'(Mx)*/
                   /* -------------- */
 
-		    d__[j - 1] = (numr * denr + numi * deni) / dlapy2_(&denr, 
+		    d[j - 1] = (numr * denr + numi * deni) / dlapy2_(&denr, 
 			    &deni);
-		    d__[j + 24] = (numi * denr - numr * deni) / dlapy2_(&denr,
+		    d[j + 24] = (numi * denr - numr * deni) / dlapy2_(&denr,
 			     &deni);
 		    first = false;
 
@@ -560,8 +560,8 @@ L20:
                   /* eigenvalue computed.         */
                   /* ---------------------------- */
 
-		    d__[j - 1] = d__[j - 2];
-		    d__[j + 24] = -d__[j + 23];
+		    d[j - 1] = d[j - 2];
+		    d[j + 24] = -d[j + 23];
 		    first = true;
 
 		}
@@ -587,7 +587,7 @@ L20:
 	    i__1 = nconv;
 	    for (j = 1; j <= i__1; ++j) {
 
-		if (d__[j + 24] == 0.) {
+		if (d[j + 24] == 0.) {
 
                  /* ------------------ */
                  /* Ritz value is real */
@@ -595,10 +595,10 @@ L20:
 
 			dndrv6_av_(&n, &v[(j << 8) - 256], ax);
 			dndrv6_mv_(&n, &v[(j << 8) - 256], mx);
-		    d__1 = -d__[j - 1];
+		    d__1 = -d[j - 1];
 		    daxpy_(&n, &d__1, mx, &c__1, ax, &c__1);
-		    d__[j + 49] = dnrm2_(&n, ax, &c__1);
-		    d__[j + 49] /= (d__1 = d__[j - 1], abs(d__1));
+		    d[j + 49] = dnrm2_(&n, ax, &c__1);
+		    d[j + 49] /= (d__1 = d[j - 1], abs(d__1));
 
 		} else if (first) {
 
@@ -611,22 +611,22 @@ L20:
 
 			dndrv6_av_(&n, &v[(j << 8) - 256], ax);
 			dndrv6_mv_(&n, &v[(j << 8) - 256], mx);
-		    d__1 = -d__[j - 1];
+		    d__1 = -d[j - 1];
 		    daxpy_(&n, &d__1, mx, &c__1, ax, &c__1);
 			dndrv6_mv_(&n, &v[(j + 1 << 8) - 256], mx);
-		    daxpy_(&n, &d__[j + 24], mx, &c__1, ax, &c__1);
-		    d__[j + 49] = dnrm2_(&n, ax, &c__1);
+		    daxpy_(&n, &d[j + 24], mx, &c__1, ax, &c__1);
+		    d[j + 49] = dnrm2_(&n, ax, &c__1);
 			dndrv6_av_(&n, &v[(j + 1 << 8) - 256], ax);
 			dndrv6_mv_(&n, &v[(j + 1 << 8) - 256], mx);
-		    d__1 = -d__[j - 1];
+		    d__1 = -d[j - 1];
 		    daxpy_(&n, &d__1, mx, &c__1, ax, &c__1);
 			dndrv6_mv_(&n, &v[(j << 8) - 256], mx);
-		    d__1 = -d__[j + 24];
+		    d__1 = -d[j + 24];
 		    daxpy_(&n, &d__1, mx, &c__1, ax, &c__1);
 		    d__1 = dnrm2_(&n, ax, &c__1);
-		    d__[j + 49] = dlapy2_(&d__[j + 49], &d__1);
-		    d__[j + 49] /= dlapy2_(&d__[j - 1], &d__[j + 24]);
-		    d__[j + 50] = d__[j + 49];
+		    d[j + 49] = dlapy2_(&d[j + 49], &d__1);
+		    d[j + 49] /= dlapy2_(&d[j - 1], &d[j + 24]);
+		    d[j + 50] = d[j + 49];
 		    first = false;
 		} else {
 		    first = true;
@@ -639,7 +639,7 @@ L20:
            /* Display computed residuals. */
            /* --------------------------- */
 
-	    dmout_(&c__6, &nconv, &c__3, d__, &c__25, &c_n6, "Ritz values (Real,Imag) and relative residuals");
+	    dmout_(&c__6, &nconv, &c__3, d, &c__25, &c_n6, "Ritz values (Real,Imag) and relative residuals");
 
 	}
 

@@ -9,7 +9,7 @@ int dsdrv4()
     double d__1;
 
     /* Local variables */
-    double d__[50]	/* was [25][2] */, h__;
+    double d[50]	/* was [25][2] */, h;
     int32_t j, n;
     double v[6400]	/* was [256][25] */, r1, r2, ad[256];
     double adl[256], adu[256];
@@ -216,13 +216,13 @@ int dsdrv4()
      /* on the interval [0, 1].                               */
      /* ----------------------------------------------------- */
 
-    h__ = 1. / (double) (n + 1);
-    r1 = h__ * .66666666666666663;
-    r2 = h__ * .16666666666666666;
+    h = 1. / (double) (n + 1);
+    r1 = h * .66666666666666663;
+    r2 = h * .16666666666666666;
     i__1 = n;
     for (j = 1; j <= i__1; ++j) {
-	ad[j - 1] = 2. / h__ - sigma * r1;
-	adl[j - 1] = -1. / h__ - sigma * r2;
+	ad[j - 1] = 2. / h - sigma * r1;
+	adl[j - 1] = -1. / h - sigma * r2;
 /* L20: */
     }
     dcopy_(&n, adl, &c__1, adu, &c__1);
@@ -381,7 +381,7 @@ L10:
 
 	rvec = true;
 
-	dseupd_(&rvec, "All", select, d__, v, &c__256, &sigma, bmat, &n, 
+	dseupd_(&rvec, "All", select, d, v, &c__256, &sigma, bmat, &n, 
 		which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, 
 		workd, workl, &lworkl, &ierr, (ftnlen)3, (ftnlen)1, (ftnlen)2)
 		;
@@ -439,15 +439,15 @@ L10:
 
 		dsdrv4_av_(&n, &v[(j << 8) - 256], workd);
 		dsdrv4_mv_(&n, &v[(j << 8) - 256], &workd[n]);
-		d__1 = -d__[j - 1];
+		d__1 = -d[j - 1];
 		daxpy_(&n, &d__1, &workd[n], &c__1, workd, &c__1);
-		d__[j + 24] = dnrm2_(&n, workd, &c__1);
-		d__[j + 24] /= (d__1 = d__[j - 1], abs(d__1));
+		d[j + 24] = dnrm2_(&n, workd, &c__1);
+		d[j + 24] /= (d__1 = d[j - 1], abs(d__1));
 
 /* L30: */
 	    }
 
-	    dmout_(&c__6, &nconv, &c__2, d__, &c__25, &c_n6, "Ritz values and relative residuals");
+	    dmout_(&c__6, &nconv, &c__2, d, &c__25, &c_n6, "Ritz values and relative residuals");
 
 	}
 
@@ -550,7 +550,7 @@ int dsdrv4_mv_(int32_t *n, double *v, double *w)
     int32_t i__1;
 
     /* Local variables */
-    double h__;
+    double h;
     int32_t j;
 
     /* Parameter adjustments */
@@ -569,8 +569,8 @@ int dsdrv4_mv_(int32_t *n, double *v, double *w)
 
 /*     Scale the vector w by h. */
 
-    h__ = 1. / ((double) (*n + 1) * 6.);
-    dscal_(n, &h__, &w[1], &c__1);
+    h = 1. / ((double) (*n + 1) * 6.);
+    dscal_(n, &h, &w[1], &c__1);
     return 0;
 } /* mv_ */
 
@@ -587,7 +587,7 @@ int dsdrv4_av_(int32_t *n, double *v, double *w)
     double d__1;
 
     /* Local variables */
-    double h__;
+    double h;
     int32_t j;
 
     /* Parameter adjustments */
@@ -606,8 +606,8 @@ int dsdrv4_av_(int32_t *n, double *v, double *w)
 
 /*     Scale the vector w by (1/h) */
 
-    h__ = 1. / (double) (*n + 1);
-    d__1 = 1. / h__;
+    h = 1. / (double) (*n + 1);
+    d__1 = 1. / h;
     dscal_(n, &d__1, &w[1], &c__1);
     return 0;
 } /* av_ */

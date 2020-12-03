@@ -135,7 +135,7 @@
 
 int znapps_(int32_t *n, int32_t *kev, int32_t *np, 
 	zomplex *shift, zomplex *v, int32_t *ldv, zomplex *
-	h__, int32_t *ldh, zomplex *resid, zomplex *q, int32_t *
+	h, int32_t *ldh, zomplex *resid, zomplex *q, int32_t *
 	ldq, zomplex *workl, zomplex *workd)
 {
     /* Initialized data */
@@ -153,10 +153,10 @@ int znapps_(int32_t *n, int32_t *kev, int32_t *np,
     void d_cnjg(zomplex *, zomplex *);
 
     /* Local variables */
-    double c__;
+    double c;
     zomplex f, g;
-    int32_t i__, j;
-    zomplex r__, s, t;
+    int32_t i, j;
+    zomplex r, s, t;
     static float t0, t1;
     zomplex h11, h21;
     int32_t jj;
@@ -182,7 +182,7 @@ int znapps_(int32_t *n, int32_t *kev, int32_t *np,
     v -= v_offset;
     h_dim1 = *ldh;
     h_offset = 1 + h_dim1;
-    h__ -= h_offset;
+    h -= h_offset;
     q_dim1 = *ldq;
     q_offset = 1 + q_dim1;
     q -= q_offset;
@@ -256,7 +256,7 @@ int znapps_(int32_t *n, int32_t *kev, int32_t *np,
 L20:
 
 	i__2 = kplusp - 1;
-	for (i__ = istart; i__ <= i__2; ++i__) {
+	for (i = istart; i <= i__2; ++i) {
 
            /* -------------------------------------- */
            /* Check for splitting and deflation. Use */
@@ -264,28 +264,28 @@ L20:
            /* REFERENCE: LAPACK subroutine zlahqr    */
            /* -------------------------------------- */
 
-	    i__3 = i__ + i__ * h_dim1;
-	    i__4 = i__ + 1 + (i__ + 1) * h_dim1;
-	    tst1 = (d__1 = h__[i__3].r, abs(d__1)) + (d__2 = d_imag(&h__[i__ 
-		    + i__ * h_dim1]), abs(d__2)) + ((d__3 = h__[i__4].r, abs(
-		    d__3)) + (d__4 = d_imag(&h__[i__ + 1 + (i__ + 1) * h_dim1]
+	    i__3 = i + i * h_dim1;
+	    i__4 = i + 1 + (i + 1) * h_dim1;
+	    tst1 = (d__1 = h[i__3].r, abs(d__1)) + (d__2 = d_imag(&h[i 
+		    + i * h_dim1]), abs(d__2)) + ((d__3 = h[i__4].r, abs(
+		    d__3)) + (d__4 = d_imag(&h[i + 1 + (i + 1) * h_dim1]
 		    ), abs(d__4)));
 	    if (tst1 == 0.) {
 		i__3 = kplusp - jj + 1;
-		tst1 = zlanhs_("1", &i__3, &h__[h_offset], ldh, &workl[1]);
+		tst1 = zlanhs_("1", &i__3, &h[h_offset], ldh, &workl[1]);
 	    }
-	    i__3 = i__ + 1 + i__ * h_dim1;
+	    i__3 = i + 1 + i * h_dim1;
 /* Computing MAX */
 	    d__2 = ulp * tst1;
-	    if ((d__1 = h__[i__3].r, abs(d__1)) <= max(d__2,smlnum)) {
+	    if ((d__1 = h[i__3].r, abs(d__1)) <= max(d__2,smlnum)) {
 		if (msglvl > 0) {
-		    ivout_(&debug_1.logfil, &c__1, &i__, &debug_1.ndigit, "_napps: matrix splitting at row/column no.");
+		    ivout_(&debug_1.logfil, &c__1, &i, &debug_1.ndigit, "_napps: matrix splitting at row/column no.");
 		    ivout_(&debug_1.logfil, &c__1, &jj, &debug_1.ndigit, "_napps: matrix splitting with shift number.");
-		    zvout_(&debug_1.logfil, &c__1, &h__[i__ + 1 + i__ * h_dim1], &debug_1.ndigit, "_napps: off diagonal element.");
+		    zvout_(&debug_1.logfil, &c__1, &h[i + 1 + i * h_dim1], &debug_1.ndigit, "_napps: off diagonal element.");
 		}
-		iend = i__;
-		i__3 = i__ + 1 + i__ * h_dim1;
-		h__[i__3].r = 0., h__[i__3].i = 0.;
+		iend = i;
+		i__3 = i + 1 + i * h_dim1;
+		h[i__3].r = 0., h[i__3].i = 0.;
 		goto L40;
 	    }
 /* L30: */
@@ -309,26 +309,26 @@ L40:
 	}
 
 	i__2 = istart + istart * h_dim1;
-	h11.r = h__[i__2].r, h11.i = h__[i__2].i;
+	h11.r = h[i__2].r, h11.i = h[i__2].i;
 	i__2 = istart + 1 + istart * h_dim1;
-	h21.r = h__[i__2].r, h21.i = h__[i__2].i;
+	h21.r = h[i__2].r, h21.i = h[i__2].i;
 	z__1.r = h11.r - sigma.r, z__1.i = h11.i - sigma.i;
 	f.r = z__1.r, f.i = z__1.i;
 	g.r = h21.r, g.i = h21.i;
 
 	i__2 = iend - 1;
-	for (i__ = istart; i__ <= i__2; ++i__) {
+	for (i = istart; i <= i__2; ++i) {
 
            /* ---------------------------------------------------- */
            /* Construct the plane rotation G to zero out the bulge */
            /* ---------------------------------------------------- */
 
-	    zlartg_(&f, &g, &c__, &s, &r__);
-	    if (i__ > istart) {
-		i__3 = i__ + (i__ - 1) * h_dim1;
-		h__[i__3].r = r__.r, h__[i__3].i = r__.i;
-		i__3 = i__ + 1 + (i__ - 1) * h_dim1;
-		h__[i__3].r = 0., h__[i__3].i = 0.;
+	    zlartg_(&f, &g, &c, &s, &r);
+	    if (i > istart) {
+		i__3 = i + (i - 1) * h_dim1;
+		h[i__3].r = r.r, h[i__3].i = r.i;
+		i__3 = i + 1 + (i - 1) * h_dim1;
+		h[i__3].r = 0., h[i__3].i = 0.;
 	    }
 
            /* ------------------------------------------- */
@@ -336,26 +336,26 @@ L40:
            /* ------------------------------------------- */
 
 	    i__3 = kplusp;
-	    for (j = i__; j <= i__3; ++j) {
-		i__4 = i__ + j * h_dim1;
-		z__2.r = c__ * h__[i__4].r, z__2.i = c__ * h__[i__4].i;
-		i__5 = i__ + 1 + j * h_dim1;
-		z__3.r = s.r * h__[i__5].r - s.i * h__[i__5].i, z__3.i = s.r *
-			 h__[i__5].i + s.i * h__[i__5].r;
+	    for (j = i; j <= i__3; ++j) {
+		i__4 = i + j * h_dim1;
+		z__2.r = c * h[i__4].r, z__2.i = c * h[i__4].i;
+		i__5 = i + 1 + j * h_dim1;
+		z__3.r = s.r * h[i__5].r - s.i * h[i__5].i, z__3.i = s.r *
+			 h[i__5].i + s.i * h[i__5].r;
 		z__1.r = z__2.r + z__3.r, z__1.i = z__2.i + z__3.i;
 		t.r = z__1.r, t.i = z__1.i;
-		i__4 = i__ + 1 + j * h_dim1;
+		i__4 = i + 1 + j * h_dim1;
 		d_cnjg(&z__4, &s);
 		z__3.r = -z__4.r, z__3.i = -z__4.i;
-		i__5 = i__ + j * h_dim1;
-		z__2.r = z__3.r * h__[i__5].r - z__3.i * h__[i__5].i, z__2.i =
-			 z__3.r * h__[i__5].i + z__3.i * h__[i__5].r;
-		i__6 = i__ + 1 + j * h_dim1;
-		z__5.r = c__ * h__[i__6].r, z__5.i = c__ * h__[i__6].i;
+		i__5 = i + j * h_dim1;
+		z__2.r = z__3.r * h[i__5].r - z__3.i * h[i__5].i, z__2.i =
+			 z__3.r * h[i__5].i + z__3.i * h[i__5].r;
+		i__6 = i + 1 + j * h_dim1;
+		z__5.r = c * h[i__6].r, z__5.i = c * h[i__6].i;
 		z__1.r = z__2.r + z__5.r, z__1.i = z__2.i + z__5.i;
-		h__[i__4].r = z__1.r, h__[i__4].i = z__1.i;
-		i__4 = i__ + j * h_dim1;
-		h__[i__4].r = t.r, h__[i__4].i = t.i;
+		h[i__4].r = z__1.r, h[i__4].i = z__1.i;
+		i__4 = i + j * h_dim1;
+		h[i__4].r = t.r, h[i__4].i = t.i;
 /* L50: */
 	    }
 
@@ -364,28 +364,28 @@ L40:
            /* ------------------------------------------- */
 
 /* Computing MIN */
-	    i__4 = i__ + 2;
+	    i__4 = i + 2;
 	    i__3 = min(i__4,iend);
 	    for (j = 1; j <= i__3; ++j) {
-		i__4 = j + i__ * h_dim1;
-		z__2.r = c__ * h__[i__4].r, z__2.i = c__ * h__[i__4].i;
+		i__4 = j + i * h_dim1;
+		z__2.r = c * h[i__4].r, z__2.i = c * h[i__4].i;
 		d_cnjg(&z__4, &s);
-		i__5 = j + (i__ + 1) * h_dim1;
-		z__3.r = z__4.r * h__[i__5].r - z__4.i * h__[i__5].i, z__3.i =
-			 z__4.r * h__[i__5].i + z__4.i * h__[i__5].r;
+		i__5 = j + (i + 1) * h_dim1;
+		z__3.r = z__4.r * h[i__5].r - z__4.i * h[i__5].i, z__3.i =
+			 z__4.r * h[i__5].i + z__4.i * h[i__5].r;
 		z__1.r = z__2.r + z__3.r, z__1.i = z__2.i + z__3.i;
 		t.r = z__1.r, t.i = z__1.i;
-		i__4 = j + (i__ + 1) * h_dim1;
+		i__4 = j + (i + 1) * h_dim1;
 		z__3.r = -s.r, z__3.i = -s.i;
-		i__5 = j + i__ * h_dim1;
-		z__2.r = z__3.r * h__[i__5].r - z__3.i * h__[i__5].i, z__2.i =
-			 z__3.r * h__[i__5].i + z__3.i * h__[i__5].r;
-		i__6 = j + (i__ + 1) * h_dim1;
-		z__4.r = c__ * h__[i__6].r, z__4.i = c__ * h__[i__6].i;
+		i__5 = j + i * h_dim1;
+		z__2.r = z__3.r * h[i__5].r - z__3.i * h[i__5].i, z__2.i =
+			 z__3.r * h[i__5].i + z__3.i * h[i__5].r;
+		i__6 = j + (i + 1) * h_dim1;
+		z__4.r = c * h[i__6].r, z__4.i = c * h[i__6].i;
 		z__1.r = z__2.r + z__4.r, z__1.i = z__2.i + z__4.i;
-		h__[i__4].r = z__1.r, h__[i__4].i = z__1.i;
-		i__4 = j + i__ * h_dim1;
-		h__[i__4].r = t.r, h__[i__4].i = t.i;
+		h[i__4].r = z__1.r, h[i__4].i = z__1.i;
+		i__4 = j + i * h_dim1;
+		h[i__4].r = t.r, h[i__4].i = t.i;
 /* L60: */
 	    }
 
@@ -394,27 +394,27 @@ L40:
            /* --------------------------------------------------- */
 
 /* Computing MIN */
-	    i__4 = i__ + jj;
+	    i__4 = i + jj;
 	    i__3 = min(i__4,kplusp);
 	    for (j = 1; j <= i__3; ++j) {
-		i__4 = j + i__ * q_dim1;
-		z__2.r = c__ * q[i__4].r, z__2.i = c__ * q[i__4].i;
+		i__4 = j + i * q_dim1;
+		z__2.r = c * q[i__4].r, z__2.i = c * q[i__4].i;
 		d_cnjg(&z__4, &s);
-		i__5 = j + (i__ + 1) * q_dim1;
+		i__5 = j + (i + 1) * q_dim1;
 		z__3.r = z__4.r * q[i__5].r - z__4.i * q[i__5].i, z__3.i = 
 			z__4.r * q[i__5].i + z__4.i * q[i__5].r;
 		z__1.r = z__2.r + z__3.r, z__1.i = z__2.i + z__3.i;
 		t.r = z__1.r, t.i = z__1.i;
-		i__4 = j + (i__ + 1) * q_dim1;
+		i__4 = j + (i + 1) * q_dim1;
 		z__3.r = -s.r, z__3.i = -s.i;
-		i__5 = j + i__ * q_dim1;
+		i__5 = j + i * q_dim1;
 		z__2.r = z__3.r * q[i__5].r - z__3.i * q[i__5].i, z__2.i = 
 			z__3.r * q[i__5].i + z__3.i * q[i__5].r;
-		i__6 = j + (i__ + 1) * q_dim1;
-		z__4.r = c__ * q[i__6].r, z__4.i = c__ * q[i__6].i;
+		i__6 = j + (i + 1) * q_dim1;
+		z__4.r = c * q[i__6].r, z__4.i = c * q[i__6].i;
 		z__1.r = z__2.r + z__4.r, z__1.i = z__2.i + z__4.i;
 		q[i__4].r = z__1.r, q[i__4].i = z__1.i;
-		i__4 = j + i__ * q_dim1;
+		i__4 = j + i * q_dim1;
 		q[i__4].r = t.r, q[i__4].i = t.i;
 /* L70: */
 	    }
@@ -423,11 +423,11 @@ L40:
            /* Prepare for next rotation */
            /* ------------------------- */
 
-	    if (i__ < iend - 1) {
-		i__3 = i__ + 1 + i__ * h_dim1;
-		f.r = h__[i__3].r, f.i = h__[i__3].i;
-		i__3 = i__ + 2 + i__ * h_dim1;
-		g.r = h__[i__3].r, g.i = h__[i__3].i;
+	    if (i < iend - 1) {
+		i__3 = i + 1 + i * h_dim1;
+		f.r = h[i__3].r, f.i = h[i__3].i;
+		i__3 = i + 2 + i * h_dim1;
+		g.r = h[i__3].r, g.i = h[i__3].i;
 	    }
 /* L80: */
 	}
@@ -463,36 +463,36 @@ L100:
     i__1 = *kev;
     for (j = 1; j <= i__1; ++j) {
 	i__2 = j + 1 + j * h_dim1;
-	if (h__[i__2].r < 0. || d_imag(&h__[j + 1 + j * h_dim1]) != 0.) {
+	if (h[i__2].r < 0. || d_imag(&h[j + 1 + j * h_dim1]) != 0.) {
 	    i__2 = j + 1 + j * h_dim1;
 	    i__3 = j + 1 + j * h_dim1;
-	    d__2 = h__[i__3].r;
-	    d__3 = d_imag(&h__[j + 1 + j * h_dim1]);
+	    d__2 = h[i__3].r;
+	    d__3 = d_imag(&h[j + 1 + j * h_dim1]);
 	    d__1 = dlapy2_(&d__2, &d__3);
-	    z__1.r = h__[i__2].r / d__1, z__1.i = h__[i__2].i / d__1;
+	    z__1.r = h[i__2].r / d__1, z__1.i = h[i__2].i / d__1;
 	    t.r = z__1.r, t.i = z__1.i;
 	    i__2 = kplusp - j + 1;
 	    d_cnjg(&z__1, &t);
-	    zscal_(&i__2, &z__1, &h__[j + 1 + j * h_dim1], ldh);
+	    zscal_(&i__2, &z__1, &h[j + 1 + j * h_dim1], ldh);
 /* Computing MIN */
 	    i__3 = j + 2;
 	    i__2 = min(i__3,kplusp);
-	    zscal_(&i__2, &t, &h__[(j + 1) * h_dim1 + 1], &c__1);
+	    zscal_(&i__2, &t, &h[(j + 1) * h_dim1 + 1], &c__1);
 /* Computing MIN */
 	    i__3 = j + *np + 1;
 	    i__2 = min(i__3,kplusp);
 	    zscal_(&i__2, &t, &q[(j + 1) * q_dim1 + 1], &c__1);
 	    i__2 = j + 1 + j * h_dim1;
 	    i__3 = j + 1 + j * h_dim1;
-	    d__1 = h__[i__3].r;
+	    d__1 = h[i__3].r;
 	    z__1.r = d__1, z__1.i = 0.;
-	    h__[i__2].r = z__1.r, h__[i__2].i = z__1.i;
+	    h[i__2].r = z__1.r, h[i__2].i = z__1.i;
 	}
 /* L120: */
     }
 
     i__1 = *kev;
-    for (i__ = 1; i__ <= i__1; ++i__) {
+    for (i = 1; i <= i__1; ++i) {
 
         /* ------------------------------------------ */
         /* Final check for splitting and deflation.   */
@@ -503,21 +503,21 @@ L100:
         /* we take advantage of this.                 */
         /* ------------------------------------------ */
 
-	i__2 = i__ + i__ * h_dim1;
-	i__3 = i__ + 1 + (i__ + 1) * h_dim1;
-	tst1 = (d__1 = h__[i__2].r, abs(d__1)) + (d__2 = d_imag(&h__[i__ + 
-		i__ * h_dim1]), abs(d__2)) + ((d__3 = h__[i__3].r, abs(d__3)) 
-		+ (d__4 = d_imag(&h__[i__ + 1 + (i__ + 1) * h_dim1]), abs(
+	i__2 = i + i * h_dim1;
+	i__3 = i + 1 + (i + 1) * h_dim1;
+	tst1 = (d__1 = h[i__2].r, abs(d__1)) + (d__2 = d_imag(&h[i + 
+		i * h_dim1]), abs(d__2)) + ((d__3 = h[i__3].r, abs(d__3)) 
+		+ (d__4 = d_imag(&h[i + 1 + (i + 1) * h_dim1]), abs(
 		d__4)));
 	if (tst1 == 0.) {
-	    tst1 = zlanhs_("1", kev, &h__[h_offset], ldh, &workl[1]);
+	    tst1 = zlanhs_("1", kev, &h[h_offset], ldh, &workl[1]);
 	}
-	i__2 = i__ + 1 + i__ * h_dim1;
+	i__2 = i + 1 + i * h_dim1;
 /* Computing MAX */
 	d__1 = ulp * tst1;
-	if (h__[i__2].r <= max(d__1,smlnum)) {
-	    i__3 = i__ + 1 + i__ * h_dim1;
-	    h__[i__3].r = 0., h__[i__3].i = 0.;
+	if (h[i__2].r <= max(d__1,smlnum)) {
+	    i__3 = i + 1 + i * h_dim1;
+	    h[i__3].r = 0., h[i__3].i = 0.;
 	}
 /* L130: */
     }
@@ -531,7 +531,7 @@ L100:
      /* ----------------------------------------------- */
 
     i__1 = *kev + 1 + *kev * h_dim1;
-    if (h__[i__1].r > 0.) {
+    if (h[i__1].r > 0.) {
 	zgemv_("N", n, &kplusp, &z_one, &v[v_offset], ldv, &q[(*kev + 1) * 
 		q_dim1 + 1], &c__1, &z_zero, &workd[*n + 1], &c__1);
     }
@@ -542,11 +542,11 @@ L100:
      /* -------------------------------------------------------- */
 
     i__1 = *kev;
-    for (i__ = 1; i__ <= i__1; ++i__) {
-	i__2 = kplusp - i__ + 1;
-	zgemv_("N", n, &i__2, &z_one, &v[v_offset], ldv, &q[(*kev - i__ + 1) * 
+    for (i = 1; i <= i__1; ++i) {
+	i__2 = kplusp - i + 1;
+	zgemv_("N", n, &i__2, &z_one, &v[v_offset], ldv, &q[(*kev - i + 1) * 
 		q_dim1 + 1], &c__1, &z_zero, &workd[1], &c__1);
-	zcopy_(n, &workd[1], &c__1, &v[(kplusp - i__ + 1) * v_dim1 + 1], &
+	zcopy_(n, &workd[1], &c__1, &v[(kplusp - i + 1) * v_dim1 + 1], &
 		c__1);
 /* L140: */
     }
@@ -563,7 +563,7 @@ L100:
      /* ------------------------------------------------------------ */
 
     i__1 = *kev + 1 + *kev * h_dim1;
-    if (h__[i__1].r > 0.) {
+    if (h[i__1].r > 0.) {
 	zcopy_(n, &workd[*n + 1], &c__1, &v[(*kev + 1) * v_dim1 + 1], &c__1);
     }
 
@@ -577,17 +577,17 @@ L100:
 
     zscal_(n, &q[kplusp + *kev * q_dim1], &resid[1], &c__1);
     i__1 = *kev + 1 + *kev * h_dim1;
-    if (h__[i__1].r > 0.) {
-	zaxpy_(n, &h__[*kev + 1 + *kev * h_dim1], &v[(*kev + 1) * v_dim1 + 1],
+    if (h[i__1].r > 0.) {
+	zaxpy_(n, &h[*kev + 1 + *kev * h_dim1], &v[(*kev + 1) * v_dim1 + 1],
 		 &c__1, &resid[1], &c__1);
     }
 
     if (msglvl > 1) {
 	zvout_(&debug_1.logfil, &c__1, &q[kplusp + *kev * q_dim1], &debug_1.ndigit, "_napps: sigmak = (e_{kev+p}^T*Q)*e_{kev}");
-	zvout_(&debug_1.logfil, &c__1, &h__[*kev + 1 + *kev * h_dim1], &debug_1.ndigit, "_napps: betak = e_{kev+1}^T*H*e_{kev}");
+	zvout_(&debug_1.logfil, &c__1, &h[*kev + 1 + *kev * h_dim1], &debug_1.ndigit, "_napps: betak = e_{kev+1}^T*H*e_{kev}");
 	ivout_(&debug_1.logfil, &c__1, kev, &debug_1.ndigit, "_napps: Order of the final Hessenberg matrix ");
 	if (msglvl > 2) {
-	    zmout_(&debug_1.logfil, kev, kev, &h__[h_offset], ldh, &debug_1.ndigit, "_napps: updated Hessenberg matrix H for next iteration");
+	    zmout_(&debug_1.logfil, kev, kev, &h[h_offset], ldh, &debug_1.ndigit, "_napps: updated Hessenberg matrix H for next iteration");
 	}
 
     }

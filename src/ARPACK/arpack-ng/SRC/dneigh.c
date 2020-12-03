@@ -98,7 +98,7 @@
  * \EndLib
  */
 
-int dneigh_(double *rnorm, int32_t *n, double *h__, 
+int dneigh_(double *rnorm, int32_t *n, double *h, 
 	int32_t *ldh, double *ritzr, double *ritzi, double *
 	bounds, double *q, int32_t *ldq, double *workl, int32_t *ierr)
 {
@@ -107,7 +107,7 @@ int dneigh_(double *rnorm, int32_t *n, double *h__,
     double d__1, d__2;
 
     /* Local variables */
-    int32_t i__, j;
+    int32_t i, j;
     static float t0, t1;
     double vl[1], temp;
     int32_t iconj;
@@ -130,7 +130,7 @@ int dneigh_(double *rnorm, int32_t *n, double *h__,
     --ritzr;
     h_dim1 = *ldh;
     h_offset = 1 + h_dim1;
-    h__ -= h_offset;
+    h -= h_offset;
     q_dim1 = *ldq;
     q_offset = 1 + q_dim1;
     q -= q_offset;
@@ -140,7 +140,7 @@ int dneigh_(double *rnorm, int32_t *n, double *h__,
     msglvl = debug_1.mneigh;
 
     if (msglvl > 2) {
-	dmout_(&debug_1.logfil, n, n, &h__[h_offset], ldh, &debug_1.ndigit, "_neigh: Entering upper Hessenberg matrix H ");
+	dmout_(&debug_1.logfil, n, n, &h[h_offset], ldh, &debug_1.ndigit, "_neigh: Entering upper Hessenberg matrix H ");
     }
 
      /* --------------------------------------------------------- */
@@ -151,7 +151,7 @@ int dneigh_(double *rnorm, int32_t *n, double *h__,
      /* and the last components of the Schur vectors in BOUNDS.   */
      /* --------------------------------------------------------- */
 
-    dlacpy_("All", n, n, &h__[h_offset], ldh, &workl[1], n);
+    dlacpy_("All", n, n, &h[h_offset], ldh, &workl[1], n);
     i__1 = *n - 1;
     for (j = 1; j <= i__1; ++j) {
 	bounds[j] = 0.;
@@ -196,16 +196,16 @@ int dneigh_(double *rnorm, int32_t *n, double *h__,
 
     iconj = 0;
     i__1 = *n;
-    for (i__ = 1; i__ <= i__1; ++i__) {
-	if ((d__1 = ritzi[i__], abs(d__1)) <= 0.) {
+    for (i = 1; i <= i__1; ++i) {
+	if ((d__1 = ritzi[i], abs(d__1)) <= 0.) {
 
            /* -------------------- */
            /* Real eigenvalue case */
            /* -------------------- */
 
-	    temp = dnrm2_(n, &q[i__ * q_dim1 + 1], &c__1);
+	    temp = dnrm2_(n, &q[i * q_dim1 + 1], &c__1);
 	    d__1 = 1. / temp;
-	    dscal_(n, &d__1, &q[i__ * q_dim1 + 1], &c__1);
+	    dscal_(n, &d__1, &q[i * q_dim1 + 1], &c__1);
 	} else {
 
            /* ----------------------------------------- */
@@ -217,13 +217,13 @@ int dneigh_(double *rnorm, int32_t *n, double *h__,
            /* ----------------------------------------- */
 
 	    if (iconj == 0) {
-		d__1 = dnrm2_(n, &q[i__ * q_dim1 + 1], &c__1);
-		d__2 = dnrm2_(n, &q[(i__ + 1) * q_dim1 + 1], &c__1);
+		d__1 = dnrm2_(n, &q[i * q_dim1 + 1], &c__1);
+		d__2 = dnrm2_(n, &q[(i + 1) * q_dim1 + 1], &c__1);
 		temp = dlapy2_(&d__1, &d__2);
 		d__1 = 1. / temp;
-		dscal_(n, &d__1, &q[i__ * q_dim1 + 1], &c__1);
+		dscal_(n, &d__1, &q[i * q_dim1 + 1], &c__1);
 		d__1 = 1. / temp;
-		dscal_(n, &d__1, &q[(i__ + 1) * q_dim1 + 1], &c__1);
+		dscal_(n, &d__1, &q[(i + 1) * q_dim1 + 1], &c__1);
 		iconj = 1;
 	    } else {
 		iconj = 0;
@@ -245,14 +245,14 @@ int dneigh_(double *rnorm, int32_t *n, double *h__,
 
     iconj = 0;
     i__1 = *n;
-    for (i__ = 1; i__ <= i__1; ++i__) {
-	if ((d__1 = ritzi[i__], abs(d__1)) <= 0.) {
+    for (i = 1; i <= i__1; ++i) {
+	if ((d__1 = ritzi[i], abs(d__1)) <= 0.) {
 
            /* -------------------- */
            /* Real eigenvalue case */
            /* -------------------- */
 
-	    bounds[i__] = *rnorm * (d__1 = workl[i__], abs(d__1));
+	    bounds[i] = *rnorm * (d__1 = workl[i], abs(d__1));
 	} else {
 
            /* ----------------------------------------- */
@@ -264,8 +264,8 @@ int dneigh_(double *rnorm, int32_t *n, double *h__,
            /* ----------------------------------------- */
 
 	    if (iconj == 0) {
-		bounds[i__] = *rnorm * dlapy2_(&workl[i__], &workl[i__ + 1]);
-		bounds[i__ + 1] = bounds[i__];
+		bounds[i] = *rnorm * dlapy2_(&workl[i], &workl[i + 1]);
+		bounds[i + 1] = bounds[i];
 		iconj = 1;
 	    } else {
 		iconj = 0;

@@ -100,8 +100,7 @@ int dngets_(int32_t *ishift, char *which, int32_t *kev, int32_t *np, double *rit
     int32_t i__1;
 
     /* Builtin functions */
-    int32_t strcmp(char *, char *, ftnlen, ftnlen);
-
+    
     /* Local variables */
     static float t0, t1;
     int32_t msglvl;

@@ -9,7 +9,7 @@ int sndrv1()
     float r__1;
 
     /* Local variables */
-    float d__[90]	/* was [30][3] */;
+    float d[90]	/* was [30][3] */;
     int32_t j, n;
     float v[7680]	/* was [256][30] */;
     float ax[256];
@@ -284,7 +284,7 @@ L10:
 
 	rvec = true;
 
-	sneupd_(&rvec, "A", select, d__, &d__[30], v, &c__256, &sigmar, &
+	sneupd_(&rvec, "A", select, d, &d[30], v, &c__256, &sigmar, &
 		sigmai, workev, bmat, &n, which, &nev, &tol, resid, &ncv, v, &
 		c__256, iparam, ipntr, workd, workl, &lworkl, &ierr, (ftnlen)
 		1, (ftnlen)1, (ftnlen)2);
@@ -342,17 +342,17 @@ L10:
                /* tolerance)                */
                /* ------------------------- */
 
-		if (d__[j + 29] == 0.f) {
+		if (d[j + 29] == 0.f) {
 
                   /* ------------------ */
                   /* Ritz value is real */
                   /* ------------------ */
 
 			sndrv1_av_(&nx, &v[(j << 8) - 256], ax);
-		    r__1 = -d__[j - 1];
+		    r__1 = -d[j - 1];
 		    saxpy_(&n, &r__1, &v[(j << 8) - 256], &c__1, ax, &c__1);
-		    d__[j + 59] = snrm2_(&n, ax, &c__1);
-		    d__[j + 59] /= (r__1 = d__[j - 1], dabs(r__1));
+		    d[j + 59] = snrm2_(&n, ax, &c__1);
+		    d[j + 59] /= (r__1 = d[j - 1], dabs(r__1));
 
 		} else if (first) {
 
@@ -364,21 +364,21 @@ L10:
                   /* ---------------------- */
 
 			sndrv1_av_(&nx, &v[(j << 8) - 256], ax);
-		    r__1 = -d__[j - 1];
+		    r__1 = -d[j - 1];
 		    saxpy_(&n, &r__1, &v[(j << 8) - 256], &c__1, ax, &c__1);
-		    saxpy_(&n, &d__[j + 29], &v[(j + 1 << 8) - 256], &c__1, 
+		    saxpy_(&n, &d[j + 29], &v[(j + 1 << 8) - 256], &c__1, 
 			    ax, &c__1);
-		    d__[j + 59] = snrm2_(&n, ax, &c__1);
+		    d[j + 59] = snrm2_(&n, ax, &c__1);
 			sndrv1_av_(&nx, &v[(j + 1 << 8) - 256], ax);
-		    r__1 = -d__[j + 29];
+		    r__1 = -d[j + 29];
 		    saxpy_(&n, &r__1, &v[(j << 8) - 256], &c__1, ax, &c__1);
-		    r__1 = -d__[j - 1];
+		    r__1 = -d[j - 1];
 		    saxpy_(&n, &r__1, &v[(j + 1 << 8) - 256], &c__1, ax, &
 			    c__1);
 		    r__1 = snrm2_(&n, ax, &c__1);
-		    d__[j + 59] = slapy2_(&d__[j + 59], &r__1);
-		    d__[j + 59] /= slapy2_(&d__[j - 1], &d__[j + 29]);
-		    d__[j + 60] = d__[j + 59];
+		    d[j + 59] = slapy2_(&d[j + 59], &r__1);
+		    d[j + 59] /= slapy2_(&d[j - 1], &d[j + 29]);
+		    d[j + 60] = d[j + 59];
 		    first = false;
 		} else {
 		    first = true;
@@ -391,7 +391,7 @@ L10:
             /* Display computed residuals. */
             /* --------------------------- */
 
-	    smout_(&c__6, &nconv, &c__3, d__, &c__30, &c_n6, "Ritz values (Real,Imag) and relative residuals");
+	    smout_(&c__6, &nconv, &c__3, d, &c__30, &c_n6, "Ritz values (Real,Imag) and relative residuals");
 	}
 
         /* ----------------------------------------- */
@@ -557,7 +557,7 @@ int sndrv1_tv_(int32_t *nx, float *x, float *y)
     int32_t i__1;
 
     /* Local variables */
-    float h__;
+    float h;
     int32_t j;
     float h2, dd, dl, du;
 
@@ -574,11 +574,11 @@ int sndrv1_tv_(int32_t *nx, float *x, float *y)
     --x;
 
     /* Function Body */
-    h__ = 1.f / (float) (*nx + 1);
-    h2 = h__ * h__;
+    h = 1.f / (float) (*nx + 1);
+    h2 = h * h;
     dd = 4.f / h2;
-    dl = -1.f / h2 - 0.f / h__;
-    du = -1.f / h2 + 0.f / h__;
+    dl = -1.f / h2 - 0.f / h;
+    du = -1.f / h2 + 0.f / h;
 
     y[1] = dd * x[1] + du * x[2];
     i__1 = *nx - 1;

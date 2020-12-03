@@ -100,7 +100,7 @@
  */
 
 int zneigh_(double *rnorm, int32_t *n, zomplex *
-	h__, int32_t *ldh, zomplex *ritz, zomplex *bounds, 
+	h, int32_t *ldh, zomplex *ritz, zomplex *bounds, 
 	zomplex *q, int32_t *ldq, zomplex *workl, double *
 	rwork, int32_t *ierr)
 {
@@ -132,7 +132,7 @@ int zneigh_(double *rnorm, int32_t *n, zomplex *
     --ritz;
     h_dim1 = *ldh;
     h_offset = 1 + h_dim1;
-    h__ -= h_offset;
+    h -= h_offset;
     q_dim1 = *ldq;
     q_offset = 1 + q_dim1;
     q -= q_offset;
@@ -142,7 +142,7 @@ int zneigh_(double *rnorm, int32_t *n, zomplex *
     msglvl = debug_1.mceigh;
 
     if (msglvl > 2) {
-	zmout_(&debug_1.logfil, n, n, &h__[h_offset], ldh, &debug_1.ndigit, "_neigh: Entering upper Hessenberg matrix H ");
+	zmout_(&debug_1.logfil, n, n, &h[h_offset], ldh, &debug_1.ndigit, "_neigh: Entering upper Hessenberg matrix H ");
     }
 
      /* -------------------------------------------------------- */
@@ -153,7 +153,7 @@ int zneigh_(double *rnorm, int32_t *n, zomplex *
      /*    in WORKL(1:N**2), and the Schur vectors in q.         */
      /* -------------------------------------------------------- */
 
-    zlacpy_("All", n, n, &h__[h_offset], ldh, &workl[1], n);
+    zlacpy_("All", n, n, &h[h_offset], ldh, &workl[1], n);
     zlaset_("All", n, n, &z_zero, &z_one, &q[q_offset], ldq);
     zlahqr_(&c_true, &c_true, n, &c__1, n, &workl[1], ldh, &ritz[1], &c__1, n,
 	     &q[q_offset], ldq, ierr);
