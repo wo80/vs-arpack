@@ -182,9 +182,7 @@ L10:
         /* has been exceeded.                          */
         /* ------------------------------------------- */
 
-    dnaupd_(&ido, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, 
-	    iparam, ipntr, workd, workl, &lworkl, &info, (ftnlen)1, (ftnlen)2)
-	    ;
+    dnaupd_(&ido, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, workd, workl, &lworkl, &info);
 
     if (ido == -1 || ido == 1) {
 
@@ -239,10 +237,7 @@ L10:
 
 	rvec = true;
 
-	dneupd_(&rvec, "A", select, d, &d[30], v, &c__256, &sigmar, &
-		sigmai, workev, bmat, &n, which, &nev, &tol, resid, &ncv, v, &
-		c__256, iparam, ipntr, workd, workl, &lworkl, &ierr, (ftnlen)
-		1, (ftnlen)1, (ftnlen)2);
+	dneupd_(&rvec, "A", select, d, &d[30], v, &c__256, &sigmar, &sigmai, workev, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, workd, workl, &lworkl, &ierr);
 
         /* --------------------------------------------- */
         /* The real part of the eigenvalue is returned   */
@@ -312,15 +307,13 @@ L10:
 			dndrv1_av_(&nx, &v[(j << 8) - 256], ax);
 		    d__1 = -d[j - 1];
 		    daxpy_(&n, &d__1, &v[(j << 8) - 256], &c__1, ax, &c__1);
-		    daxpy_(&n, &d[j + 29], &v[(j + 1 << 8) - 256], &c__1, 
-			    ax, &c__1);
+		    daxpy_(&n, &d[j + 29], &v[(j + 1 << 8) - 256], &c__1, ax, &c__1);
 		    d[j + 59] = dnrm2_(&n, ax, &c__1);
 			dndrv1_av_(&nx, &v[(j + 1 << 8) - 256], ax);
 		    d__1 = -d[j + 29];
 		    daxpy_(&n, &d__1, &v[(j << 8) - 256], &c__1, ax, &c__1);
 		    d__1 = -d[j - 1];
-		    daxpy_(&n, &d__1, &v[(j + 1 << 8) - 256], &c__1, ax, &
-			    c__1);
+		    daxpy_(&n, &d__1, &v[(j + 1 << 8) - 256], &c__1, ax, &c__1);
 		    d__1 = dnrm2_(&n, ax, &c__1);
 		    d[j + 59] = dlapy2_(&d[j + 59], &d__1);
 		    d[j + 59] /= dlapy2_(&d[j - 1], &d[j + 29]);

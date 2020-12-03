@@ -184,9 +184,7 @@ L10:
         /* has been exceeded.                          */
         /* ------------------------------------------- */
 
-    cnaupd_(&ido, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, 
-	    iparam, ipntr, workd, workl, &lworkl, rwork, &info, (ftnlen)1, (
-	    ftnlen)2);
+    cnaupd_(&ido, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, workd, workl, &lworkl, rwork, &info);
 
     if (ido == -1 || ido == 1) {
 
@@ -240,10 +238,7 @@ L10:
 
 	rvec = true;
 
-	cneupd_(&rvec, "A", select, d, v, &c__256, &sigma, workev, bmat, &n,
-		 which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, 
-		workd, workl, &lworkl, rwork, &ierr, (ftnlen)1, (ftnlen)1, (
-		ftnlen)2);
+	cneupd_(&rvec, "A", select, d, v, &c__256, &sigma, workev, bmat, &n,which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, workd, workl, &lworkl, rwork, &ierr);
 
         /* -------------------------------------------- */
         /* Eigenvalues are returned in the one          */

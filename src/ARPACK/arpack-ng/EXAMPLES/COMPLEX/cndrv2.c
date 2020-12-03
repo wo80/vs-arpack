@@ -244,9 +244,7 @@ L20:
         /* has been exceeded.                          */
         /* ------------------------------------------- */
 
-    cnaupd_(&ido, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, 
-	    iparam, ipntr, workd, workl, &lworkl, rwork, &info, (ftnlen)1, (
-	    ftnlen)2);
+    cnaupd_(&ido, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, workd, workl, &lworkl, rwork, &info);
 
     if (ido == -1 || ido == 1) {
 
@@ -260,8 +258,7 @@ L20:
 
 	ccopy_(&n, &workd[ipntr[0] - 1], &c__1, &workd[ipntr[1] - 1], &c__1);
 
-	cgttrs_("N", &n, &c__1, dl, dd, du, du2, ipiv, &workd[ipntr[1] - 1], &
-		n, &ierr, (ftnlen)1);
+	cgttrs_("N", &n, &c__1, dl, dd, du, du2, ipiv, &workd[ipntr[1] - 1], &n, &ierr);
 	if (ierr != 0) {
 	    printf(" \n");
 	    printf(" ERROR with _gttrs in _NDRV2.\n");
@@ -308,10 +305,7 @@ L20:
 
 	rvec = true;
 
-	cneupd_(&rvec, "A", select, d, v, &c__256, &sigma, workev, bmat, &n,
-		 which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, 
-		workd, workl, &lworkl, rwork, &ierr, (ftnlen)1, (ftnlen)1, (
-		ftnlen)2);
+	cneupd_(&rvec, "A", select, d, v, &c__256, &sigma, workev, bmat, &n,which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, workd, workl, &lworkl, rwork, &ierr);
 
         /* -------------------------------------------- */
         /* Eigenvalues are returned in the one          */

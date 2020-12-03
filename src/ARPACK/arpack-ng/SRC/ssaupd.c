@@ -12,8 +12,8 @@
  *  Reverse communication interface for the Implicitly Restarted Arnoldi
  *  Iteration.  For symmetric problems this reduces to a variant of the Lanczos
  *  method.  This method has been designed to compute approximations to a
- *  few eigenpairs of a linear operator OP that is float and symmetric
- *  with respect to a float positive semi-definite symmetric matrix B,
+ *  few eigenpairs of a linear operator OP that is real and symmetric
+ *  with respect to a real positive semi-definite symmetric matrix B,
  *  i.e.
  *
  *       B*OP = (OP`)*B.
@@ -279,7 +279,6 @@
  *                   factorization. The user is advised to check that
  *                   enough workspace and array storage has been allocated.
  *
- *
  * \Remarks
  *  1. The converged Ritz values are always returned in ascending
  *     algebraic order.  The computed Ritz values are approximate
@@ -384,7 +383,7 @@
  *             Arnoldi Iteration.
  *     sstats  ARPACK routine that initialize timing and other statistics
  *             variables.
- *     ivout   ARPACK utility routine that prints int32_ts.
+ *     ivout   ARPACK utility routine that prints integers.
  *     arscnd  ARPACK utility routine for timing.
  *     svout   ARPACK utility routine that prints vectors.
  *     slamch  LAPACK routine that determines machine constants.
@@ -416,10 +415,6 @@ int ssaupd_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, flo
 
     /* System generated locals */
     int32_t v_dim1, v_offset, i__1, i__2;
-
-    /* Builtin functions */
-    int32_t strcmp(char *, char *, ftnlen, ftnlen), s_wsfe(cilist *), e_wsfe(
-	    void), do_fio(int32_t *, char *, ftnlen);
 
     /* Local variables */
     int32_t j;
@@ -534,7 +529,7 @@ int ssaupd_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, flo
 	    nb = 1;
 	}
 	if (*tol <= 0.f) {
-	    *tol = slamch_("EpsMach");
+	    *tol = slamch_("E");
 	}
 
         /* -------------------------------------------- */
@@ -642,31 +637,31 @@ int ssaupd_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, flo
 #ifndef NO_TRACE
     if (msglvl > 0) {
 
-        /* ------------------------------------------------------ */
-        /* Version Number & Version Date are defined in version.h */
-        /* ------------------------------------------------------ */
+        printf(" ============================================= ");
+        printf(" = Symmetric implicit Arnoldi update code    = ");
+        printf(" = Version Number:     %s                 = ", ARPACK_VERSION);
+        printf(" = Version Date:       %s            = ", ARPACK_DATE);
+        printf(" ============================================= ");
+        printf(" = Summary of timing statistics              = ");
+        printf(" ============================================= ");
 
-	s_wsfe(&io___21);
-	e_wsfe();
-	s_wsfe(&io___22);
-	do_fio(&c__1, (char *)&mxiter, (ftnlen)sizeof(int32_t));
-	do_fio(&c__1, (char *)&timing_1.nopx, (ftnlen)sizeof(int32_t));
-	do_fio(&c__1, (char *)&timing_1.nbx, (ftnlen)sizeof(int32_t));
-	do_fio(&c__1, (char *)&timing_1.nrorth, (ftnlen)sizeof(int32_t));
-	do_fio(&c__1, (char *)&timing_1.nitref, (ftnlen)sizeof(int32_t));
-	do_fio(&c__1, (char *)&timing_1.nrstrt, (ftnlen)sizeof(int32_t));
-	do_fio(&c__1, (char *)&timing_1.tmvopx, (ftnlen)sizeof(float));
-	do_fio(&c__1, (char *)&timing_1.tmvbx, (ftnlen)sizeof(float));
-	do_fio(&c__1, (char *)&timing_1.tsaupd, (ftnlen)sizeof(float));
-	do_fio(&c__1, (char *)&timing_1.tsaup2, (ftnlen)sizeof(float));
-	do_fio(&c__1, (char *)&timing_1.tsaitr, (ftnlen)sizeof(float));
-	do_fio(&c__1, (char *)&timing_1.titref, (ftnlen)sizeof(float));
-	do_fio(&c__1, (char *)&timing_1.tgetv0, (ftnlen)sizeof(float));
-	do_fio(&c__1, (char *)&timing_1.tseigt, (ftnlen)sizeof(float));
-	do_fio(&c__1, (char *)&timing_1.tsgets, (ftnlen)sizeof(float));
-	do_fio(&c__1, (char *)&timing_1.tsapps, (ftnlen)sizeof(float));
-	do_fio(&c__1, (char *)&timing_1.tsconv, (ftnlen)sizeof(float));
-	e_wsfe();
+        printf(" Total number update iterations             =  %5d", mxiter);
+        printf(" Total number of OP*x operations            =  %5d", timing_1.nopx);
+        printf(" Total number of B*x operations             =  %5d", timing_1.nbx);
+        printf(" Total number of reorthogonalization steps  =  %5d", timing_1.nrorth);
+        printf(" Total number of iterative refinement steps =  %5d", timing_1.nitref);
+        printf(" Total number of restart steps              =  %5d", timing_1.nrstrt);
+        printf(" Total time in user OP*x operation          =  %12f", timing_1.tmvopx);
+        printf(" Total time in user B*x operation           =  %12f", timing_1.tmvbx);
+        printf(" Total time in Arnoldi update routine       =  %12f", timing_1.tsaupd);
+        printf(" Total time in saup2 routine                =  %12f", timing_1.tsaup2);
+        printf(" Total time in basic Arnoldi iteration loop =  %12f", timing_1.tsaitr);
+        printf(" Total time in reorthogonalization phase    =  %12f", timing_1.titref);
+        printf(" Total time in (re)start vector generation  =  %12f", timing_1.tgetv0);
+        printf(" Total time in trid eigenvalue subproblem   =  %12f", timing_1.tseigt);
+        printf(" Total time in getting the shifts           =  %12f", timing_1.tsgets);
+        printf(" Total time in applying the shifts          =  %12f", timing_1.tsapps);
+        printf(" Total time in convergence testing          =  %12f", timing_1.tsconv);
     }
 #endif
 

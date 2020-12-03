@@ -62,7 +62,7 @@
  *          = 'A': Compute NEV Ritz vectors;
  *          = 'P': Compute NEV Schur vectors;
  *          = 'S': compute some of the Ritz vectors, specified
- *                 by the bool array SELECT.
+ *                 by the logical array SELECT.
  *
  *  SELECT  Logical array of dimension NCV.  (INPUT)
  *          If HOWMNY = 'S', SELECT specifies the Ritz vectors to be
@@ -201,7 +201,7 @@
  *     Vol. 48, No. 178, April, 1987 pp. 664-673.
  *
  * \Routines called:
- *     ivout   ARPACK utility routine that prints int32_ts.
+ *     ivout   ARPACK utility routine that prints integers.
  *     cmout   ARPACK utility routine that prints matrices
  *     cvout   ARPACK utility routine that prints vectors.
  *     cgeqr2  LAPACK routine that computes the QR factorization of
@@ -220,7 +220,7 @@
  *     cgeru   Level 2 BLAS rank one update to a matrix.
  *     ccopy   Level 1 BLAS that copies one vector to another .
  *     cscal   Level 1 BLAS that scales a vector.
- *     csscal  Level 1 BLAS that scales a complex vector by a float number.
+ *     csscal  Level 1 BLAS that scales a complex vector by a real number.
  *     scnrm2  Level 1 BLAS that computes the norm of a complex vector.
  *
  * \Remarks
@@ -325,7 +325,7 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int3
      /* Get machine dependent constant. */
      /* ------------------------------- */
 
-    eps23 = slamch_("Epsilon-Machine");
+    eps23 = slamch_("E");
     d__1 = (double) eps23;
     eps23 = pow_dd(&d__1, &d_23);
 
@@ -551,8 +551,7 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int3
 	i__1 = ldh * *ncv;
 	ccopy_(&i__1, &workl[ih], &c__1, &workl[iuptri], &c__1);
 	claset_("A", ncv, ncv, &c_zero, &c_one, &workl[invsub], &ldq);
-	clahqr_(&c_true, &c_true, ncv, &c__1, ncv, &workl[iuptri], &ldh, &
-		workl[iheig], &c__1, ncv, &workl[invsub], &ldq, &ierr);
+	clahqr_(&c_true, &c_true, ncv, &c__1, ncv, &workl[iuptri], &ldh, &workl[iheig], &c__1, ncv, &workl[invsub], &ldq, &ierr);
 	ccopy_(ncv, &workl[invsub + *ncv - 1], &ldq, &workl[ihbds], &c__1);
 
 	if (ierr != 0) {
@@ -576,9 +575,7 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int3
            /* Reorder the computed upper triangular matrix. */
            /* --------------------------------------------- */
 
-	    ctrsen_("N", "V", &select[1], ncv, &workl[iuptri], &ldh, &
-		    workl[invsub], &ldq, &workl[iheig], &nconv2, &conds, &sep,
-		     &workev[1], ncv, &ierr);
+	    ctrsen_("N", "V", &select[1], ncv, &workl[iuptri], &ldh, &workl[invsub], &ldq, &workl[iheig], &nconv2, &conds, &sep,&workev[1], ncv, &ierr);
 
 	    if (nconv2 < nconv) {
 		nconv = nconv2;
@@ -623,8 +620,7 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int3
         /* columns of workl(invsub,ldq).                            */
         /* -------------------------------------------------------- */
 
-	cgeqr2_(ncv, &nconv, &workl[invsub], &ldq, &workev[1], &workev[*ncv + 
-		1], &ierr);
+	cgeqr2_(ncv, &nconv, &workl[invsub], &ldq, &workev[1], &workev[*ncv + 1], &ierr);
 
         /* ------------------------------------------------------ */
         /* * Postmultiply V by Q using cunm2r.                    */
@@ -638,8 +634,7 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int3
         /* NCONV in workl(iuptri).                                */
         /* ------------------------------------------------------ */
 
-	cunm2r_("R", "N", n, ncv, &nconv, &workl[invsub], &ldq, 
-		&workev[1], &v[v_offset], ldv, &workd[*n + 1], &ierr);
+	cunm2r_("R", "N", n, ncv, &nconv, &workl[invsub], &ldq, &workev[1], &v[v_offset], ldv, &workd[*n + 1], &ierr);
 	clacpy_("A", n, &nconv, &v[v_offset], ldv, &z[z_offset], ldz);
 
 	i__1 = nconv;
@@ -682,9 +677,7 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int3
 /* L30: */
 	    }
 
-	    ctrevc_("R", "S", &select[1], ncv, &workl[iuptri], &ldq, 
-		    vl, &c__1, &workl[invsub], &ldq, ncv, &outncv, &workev[1],
-		     &rwork[1], &ierr);
+	    ctrevc_("R", "S", &select[1], ncv, &workl[iuptri], &ldq, vl, &c__1, &workl[invsub], &ldq, ncv, &outncv, &workev[1],&rwork[1], &ierr);
 
 	    if (ierr != 0) {
 		*info = -9;
@@ -723,8 +716,7 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int3
 
 #ifndef NO_TRACE
 	    if (msglvl > 2) {
-		ccopy_(&nconv, &workl[invsub + *ncv - 1], &ldq, &workl[ihbds],
-			 &c__1);
+		ccopy_(&nconv, &workl[invsub + *ncv - 1], &ldq, &workl[ihbds],&c__1);
 		cvout_(&nconv, &workl[ihbds], &debug_1.ndigit, "_neupd: Last row of the eigenvector matrix for T");
 		if (msglvl > 3) {
 		    cmout_(ncv, ncv, &workl[invsub], &ldq, &debug_1.ndigit, "_neupd: The eigenvector matrix for T");
@@ -743,8 +735,7 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int3
            /* Form Z*Q.                                    */
            /* -------------------------------------------- */
 
-	    ctrmm_("R", "U", "N", "N", n, &nconv, &
-		    c_one, &workl[invsub], &ldq, &z[z_offset], ldz);
+	    ctrmm_("R", "U", "N", "N", n, &nconv, &c_one, &workl[invsub], &ldq, &z[z_offset], ldz);
 	}
 
     } else {
@@ -857,8 +848,7 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int3
         /* purify all the Ritz vectors together. */
         /* ------------------------------------- */
 
-	cgeru_(n, &nconv, &c_one, &resid[1], &c__1, &workev[1], &c__1, &z[
-		z_offset], ldz);
+	cgeru_(n, &nconv, &c_one, &resid[1], &c__1, &workev[1], &c__1, &z[z_offset], ldz);
 
     }
 

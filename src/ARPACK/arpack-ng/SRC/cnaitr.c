@@ -133,7 +133,7 @@
  *
  * \Routines called:
  *     cgetv0  ARPACK routine to generate the initial vector.
- *     ivout   ARPACK utility routine that prints int32_ts.
+ *     ivout   ARPACK utility routine that prints integers.
  *     arscnd  ARPACK utility routine for timing.
  *     cmout   ARPACK utility routine that prints matrices
  *     cvout   ARPACK utility routine that prints vectors.
@@ -148,7 +148,7 @@
  *     ccopy   Level 1 BLAS that copies one vector to another .
  *     cdotc   Level 1 BLAS that computes the scalar product of two vectors.
  *     cscal   Level 1 BLAS that scales a vector.
- *     csscal  Level 1 BLAS that scales a complex vector by a float number.
+ *     csscal  Level 1 BLAS that scales a complex vector by a real number.
  *     scnrm2  Level 1 BLAS that computes the norm of a vector.
  *
  * \Author
@@ -277,11 +277,11 @@ int cnaitr_(int32_t *ido, char *bmat, int32_t *n, int32_t *k,int32_t *np, int32_
         /* REFERENCE: LAPACK subroutine clahqr     */
         /* --------------------------------------- */
 
-	unfl = slamch_("safe minimum");
+	unfl = slamch_("S");
 	q__1.r = 1.f / unfl, q__1.i = 0.f / unfl;
 	ovfl = q__1.r;
 	slabad_(&unfl, &ovfl);
-	ulp = slamch_("precision");
+	ulp = slamch_("P");
 	smlnum = unfl * (*n / ulp);
 	first = false;
     }
@@ -452,10 +452,8 @@ L40:
             /* use LAPACK routine clascl               */
             /* --------------------------------------- */
 
-	clascl_("G", &i, &i, rnorm, &s_one, n, &c__1, &v[j * v_dim1 
-		+ 1], n, &infol);
-	clascl_("G", &i, &i, rnorm, &s_one, n, &c__1, &workd[ipj], 
-		n, &infol);
+	clascl_("G", &i, &i, rnorm, &s_one, n, &c__1, &v[j * v_dim1 + 1], n, &infol);
+	clascl_("G", &i, &i, rnorm, &s_one, n, &c__1, &workd[ipj], n, &infol);
     }
 
         /* ---------------------------------------------------- */
@@ -570,8 +568,7 @@ L60:
         /* WORKD(IPJ:IPJ+N-1) contains B*OP*v_{j}.  */
         /* ---------------------------------------- */
 
-    cgemv_("C", n, &j, &c_one, &v[v_offset], ldv, &workd[ipj], &c__1, &c_zero, &
-	    h[j * h_dim1 + 1], &c__1);
+    cgemv_("C", n, &j, &c_one, &v[v_offset], ldv, &workd[ipj], &c__1, &c_zero, &h[j * h_dim1 + 1], &c__1);
 
         /* ------------------------------------ */
         /* Orthogonalize r_{j} against V_{j}.   */
@@ -579,8 +576,7 @@ L60:
         /* ------------------------------------ */
 
     q__1.r = -1.f, q__1.i = -0.f;
-    cgemv_("N", n, &j, &q__1, &v[v_offset], ldv, &h[j * h_dim1 + 1], &c__1, 
-	    &c_one, &resid[1], &c__1);
+    cgemv_("N", n, &j, &q__1, &v[v_offset], ldv, &h[j * h_dim1 + 1], &c__1, &c_one, &resid[1], &c__1);
 
     if (j > 1) {
 	i__1 = j + (j - 1) * h_dim1;
@@ -691,8 +687,7 @@ L80:
         /* WORKD(IRJ:IRJ+J-1) = v(:,1:J)'*WORKD(IPJ:IPJ+N-1). */
         /* -------------------------------------------------- */
 
-    cgemv_("C", n, &j, &c_one, &v[v_offset], ldv, &workd[ipj], &c__1, &c_zero, &
-	    workd[irj], &c__1);
+    cgemv_("C", n, &j, &c_one, &v[v_offset], ldv, &workd[ipj], &c__1, &c_zero, &workd[irj], &c__1);
 
         /* ------------------------------------------- */
         /* Compute the correction to the residual:     */
@@ -702,8 +697,7 @@ L80:
         /* ------------------------------------------- */
 
     q__1.r = -1.f, q__1.i = -0.f;
-    cgemv_("N", n, &j, &q__1, &v[v_offset], ldv, &workd[irj], &c__1, &c_one, &
-	    resid[1], &c__1);
+    cgemv_("N", n, &j, &q__1, &v[v_offset], ldv, &workd[irj], &c__1, &c_one, &resid[1], &c__1);
     caxpy_(&j, &c_one, &workd[irj], &c__1, &h[j * h_dim1 + 1], &c__1);
 
     orth2 = true;

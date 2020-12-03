@@ -84,7 +84,7 @@
  * \BeginLib
  *
  * \Local variables:
- *     xxxxxx  float
+ *     xxxxxx  real
  *
  * \References:
  *  1. D.C. Sorensen, "Implicit Application of Polynomial Filters in
@@ -314,11 +314,9 @@ L20:
 L30:
 
     i__1 = *j - 1;
-    sgemv_("T", n, &i__1, &s_one, &v[v_offset], ldv, &workd[1], &c__1, &s_zero,
-	     &workd[*n + 1], &c__1);
+    sgemv_("T", n, &i__1, &s_one, &v[v_offset], ldv, &workd[1], &c__1, &s_zero,&workd[*n + 1], &c__1);
     i__1 = *j - 1;
-    sgemv_("N", n, &i__1, &s_m1, &v[v_offset], ldv, &workd[*n + 1], &c__1, &
-	    s_one, &resid[1], &c__1);
+    sgemv_("N", n, &i__1, &s_m1, &v[v_offset], ldv, &workd[*n + 1], &c__1, &s_one, &resid[1], &c__1);
 
      /* -------------------------------------------------------- */
      /* Compute the B-norm of the orthogonalized starting vector */
@@ -400,9 +398,7 @@ L50:
     if (msglvl > 0) {
 	svout_(&c__1, rnorm, &debug_1.ndigit, "_getv0: B-norm of initial / restarted starting vector");
     }
-#endif
 
-#ifndef NO_TRACE
     if (msglvl > 3) {
 	svout_(n, &resid[1], &debug_1.ndigit, "_getv0: initial / restarted starting vector");
     }

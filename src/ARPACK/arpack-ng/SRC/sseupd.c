@@ -61,7 +61,7 @@
  *          the matrix of Ritz vectors. See remark 1 below.
  *          = 'A': compute NEV Ritz vectors;
  *          = 'S': compute some of the Ritz vectors, specified
- *                 by the bool array SELECT.
+ *                 by the logical array SELECT.
  *
  *  SELECT  Logical array of dimension NCV.  (INPUT/WORKSPACE)
  *          If HOWMNY = 'S', SELECT specifies the Ritz vectors to be
@@ -94,7 +94,6 @@
  *  SIGMA   Real   (INPUT)
  *          If IPARAM(7) = 3,4,5 represents the shift. Not referenced if
  *          IPARAM(7) = 1 or 2.
- *
  *
  *  **** The remaining arguments MUST be the same as for the   ****
  *  **** call to SSAUPD that was just completed.               ****
@@ -187,7 +186,7 @@
  *     ssesrt  ARPACK routine that sorts an array X, and applies the
  *             corresponding permutation to a matrix A.
  *     ssortr  ssortr  ARPACK sorting routine.
- *     ivout   ARPACK utility routine that prints int32_ts.
+ *     ivout   ARPACK utility routine that prints integers.
  *     svout   ARPACK utility routine that prints vectors.
  *     sgeqr2  LAPACK routine that computes the QR factorization of
  *             a matrix.
@@ -421,7 +420,7 @@ int sseupd_(bool *rvec, char *howmny, bool *select, float *d, float *z, int32_t 
      /* Set machine dependent constant. */
      /* ------------------------------- */
 
-    eps23 = slamch_("Epsilon-Machine");
+    eps23 = slamch_("E");
     d__1 = (double) eps23;
     eps23 = pow_dd(&d__1, &d_23);
 
@@ -534,8 +533,7 @@ int sseupd_(bool *rvec, char *howmny, bool *select, float *d, float *z, int32_t 
 	scopy_(&i__1, &workl[ih + 1], &c__1, &workl[ihb], &c__1);
 	scopy_(ncv, &workl[ih + ldh], &c__1, &workl[ihd], &c__1);
 
-	ssteqr_("I", ncv, &workl[ihd], &workl[ihb], &workl[iq], &ldq, &
-		workl[iw], &ierr);
+	ssteqr_("I", ncv, &workl[ihd], &workl[ihb], &workl[iq], &ldq, &workl[iw], &ierr);
 
 	if (ierr != 0) {
 	    *info = -8;
@@ -600,12 +598,9 @@ L20:
 		temp = workl[ihd + leftptr - 1];
 		workl[ihd + leftptr - 1] = workl[ihd + rghtptr - 1];
 		workl[ihd + rghtptr - 1] = temp;
-		scopy_(ncv, &workl[iq + *ncv * (leftptr - 1)], &c__1, &workl[
-			iw], &c__1);
-		scopy_(ncv, &workl[iq + *ncv * (rghtptr - 1)], &c__1, &workl[
-			iq + *ncv * (leftptr - 1)], &c__1);
-		scopy_(ncv, &workl[iw], &c__1, &workl[iq + *ncv * (rghtptr - 
-			1)], &c__1);
+		scopy_(ncv, &workl[iq + *ncv * (leftptr - 1)], &c__1, &workl[iw], &c__1);
+		scopy_(ncv, &workl[iq + *ncv * (rghtptr - 1)], &c__1, &workl[iq + *ncv * (leftptr - 1)], &c__1);
+		scopy_(ncv, &workl[iw], &c__1, &workl[iq + *ncv * (rghtptr - 1)], &c__1);
 		++leftptr;
 		--rghtptr;
 
@@ -742,8 +737,7 @@ L30:
         /* columns of workl(iq,ldq).                                */
         /* -------------------------------------------------------- */
 
-	sgeqr2_(ncv, &nconv, &workl[iq], &ldq, &workl[iw + *ncv], &workl[ihb],
-		 &ierr);
+	sgeqr2_(ncv, &nconv, &workl[iq], &ldq, &workl[iw + *ncv], &workl[ihb],&ierr);
 
         /* ------------------------------------------------------ */
         /* * Postmultiply V by Q.                                 */
@@ -753,8 +747,7 @@ L30:
         /* the Ritz values in workl(ihd).                         */
         /* ------------------------------------------------------ */
 
-	sorm2r_("R", "N", n, ncv, &nconv, &workl[iq], &ldq, &
-		workl[iw + *ncv], &v[v_offset], ldv, &workd[*n + 1], &ierr);
+	sorm2r_("R", "N", n, ncv, &nconv, &workl[iq], &ldq, &workl[iw + *ncv], &v[v_offset], ldv, &workd[*n + 1], &ierr);
 	slacpy_("A", n, &nconv, &v[v_offset], ldv, &z[z_offset], ldz);
 
         /* --------------------------------------------------- */
@@ -769,8 +762,7 @@ L30:
 /* L65: */
 	}
 	workl[ihb + *ncv - 1] = 1.f;
-	sorm2r_("L", "T", ncv, &c__1, &nconv, &workl[iq], &ldq, &
-		workl[iw + *ncv], &workl[ihb], ncv, &temp, &ierr);
+	sorm2r_("L", "T", ncv, &c__1, &nconv, &workl[iq], &ldq, &workl[iw + *ncv], &workl[ihb], ncv, &temp, &ierr);
 
         /* --------------------------------------------------- */
         /* Make a copy of the last row into                    */
@@ -879,8 +871,7 @@ L30:
     }
 
     if (strcmp(type__, "REGULR") != 0) {
-	sger_(n, &nconv, &s_one, &resid[1], &c__1, &workl[iw], &c__1, &z[
-		z_offset], ldz);
+	sger_(n, &nconv, &s_one, &resid[1], &c__1, &workl[iw], &c__1, &z[z_offset], ldz);
     }
 
 L9000:

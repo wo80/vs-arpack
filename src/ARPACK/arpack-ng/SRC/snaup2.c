@@ -60,7 +60,7 @@
  *          program.
  *
  *  RITZR,  Real  arrays of length NEV+NP.  (OUTPUT)
- *  RITZI   RITZR(1:NEV) (resp. RITZI(1:NEV)) contains the float (resp.
+ *  RITZI   RITZR(1:NEV) (resp. RITZI(1:NEV)) contains the real (resp.
  *          imaginary) part of the computed Ritz values of OP.
  *
  *  BOUNDS  Real  array of length NEV+NP.  (OUTPUT)
@@ -82,7 +82,7 @@
  *          application and convergence checking.
  *
  *          On exit, the last 3*(NEV+NP) locations of WORKL contain
- *          the Ritz values (float,imaginary) and associated Ritz
+ *          the Ritz values (real,imaginary) and associated Ritz
  *          estimates of the current Hessenberg matrix.  They are
  *          listed in the same order as returned from sneigh.
  *
@@ -127,7 +127,7 @@
  * \BeginLib
  *
  * \Local variables:
- *     xxxxxx  float
+ *     xxxxxx  real
  *
  * \References:
  *  1. D.C. Sorensen, "Implicit Application of Polynomial Filters in
@@ -145,7 +145,7 @@
  *     sneigh  ARPACK compute Ritz values and error bounds routine.
  *     sngets  ARPACK reorder Ritz values and error bounds routine.
  *     ssortc  ARPACK sorting routine.
- *     ivout   ARPACK utility routine that prints int32_ts.
+ *     ivout   ARPACK utility routine that prints integers.
  *     arscnd  ARPACK utility routine for timing.
  *     smout   ARPACK utility routine that prints matrices
  *     svout   ARPACK utility routine that prints vectors.
@@ -246,7 +246,7 @@ int snaup2_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, int
         /* Get the machine dependent constant. */
         /* ----------------------------------- */
 
-	eps23 = slamch_("Epsilon-Machine");
+	eps23 = slamch_("E");
 	d__1 = (double) eps23;
 	eps23 = pow_dd(&d__1, &d_23);
 
@@ -452,12 +452,10 @@ L20:
     scopy_(&kplusp, &ritzr[1], &c__1, &workl[i__1 * i__1 + 1], &c__1);
 /* Computing 2nd power */
     i__1 = kplusp;
-    scopy_(&kplusp, &ritzi[1], &c__1, &workl[i__1 * i__1 + kplusp + 1], &c__1)
-	    ;
+    scopy_(&kplusp, &ritzi[1], &c__1, &workl[i__1 * i__1 + kplusp + 1], &c__1);
 /* Computing 2nd power */
     i__1 = kplusp;
-    scopy_(&kplusp, &bounds[1], &c__1, &workl[i__1 * i__1 + (kplusp << 1) + 1]
-	    , &c__1);
+    scopy_(&kplusp, &bounds[1], &c__1, &workl[i__1 * i__1 + (kplusp << 1) + 1], &c__1);
 
         /* ------------------------------------------------- */
         /* Select the wanted Ritz values and their bounds    */

@@ -61,7 +61,7 @@
  *          the matrix of Ritz vectors. See remark 1 below.
  *          = 'A': compute NEV Ritz vectors;
  *          = 'S': compute some of the Ritz vectors, specified
- *                 by the bool array SELECT.
+ *                 by the logical array SELECT.
  *
  *  SELECT  Logical array of dimension NCV.  (INPUT/WORKSPACE)
  *          If HOWMNY = 'S', SELECT specifies the Ritz vectors to be
@@ -94,7 +94,6 @@
  *  SIGMA   Double precision   (INPUT)
  *          If IPARAM(7) = 3,4,5 represents the shift. Not referenced if
  *          IPARAM(7) = 1 or 2.
- *
  *
  *  **** The remaining arguments MUST be the same as for the   ****
  *  **** call to DSAUPD  that was just completed.               ****
@@ -187,7 +186,7 @@
  *     dsesrt   ARPACK routine that sorts an array X, and applies the
  *             corresponding permutation to a matrix A.
  *     dsortr   dsortr   ARPACK sorting routine.
- *     ivout   ARPACK utility routine that prints int32_ts.
+ *     ivout   ARPACK utility routine that prints integers.
  *     dvout    ARPACK utility routine that prints vectors.
  *     dgeqr2   LAPACK routine that computes the QR factorization of
  *             a matrix.
@@ -421,7 +420,7 @@ int dseupd_(bool *rvec, char *howmny, bool *select, double *d, double *z, int32_
      /* Set machine dependent constant. */
      /* ------------------------------- */
 
-    eps23 = dlamch_("Epsilon-Machine");
+    eps23 = dlamch_("E");
     eps23 = pow_dd(&eps23, &d_23);
 
      /* ------------------------------------- */
@@ -533,8 +532,7 @@ int dseupd_(bool *rvec, char *howmny, bool *select, double *d, double *z, int32_
 	dcopy_(&i__1, &workl[ih + 1], &c__1, &workl[ihb], &c__1);
 	dcopy_(ncv, &workl[ih + ldh], &c__1, &workl[ihd], &c__1);
 
-	dsteqr_("I", ncv, &workl[ihd], &workl[ihb], &workl[iq], &ldq, &
-		workl[iw], &ierr);
+	dsteqr_("I", ncv, &workl[ihd], &workl[ihb], &workl[iq], &ldq, &workl[iw], &ierr);
 
 	if (ierr != 0) {
 	    *info = -8;
@@ -599,12 +597,9 @@ L20:
 		temp = workl[ihd + leftptr - 1];
 		workl[ihd + leftptr - 1] = workl[ihd + rghtptr - 1];
 		workl[ihd + rghtptr - 1] = temp;
-		dcopy_(ncv, &workl[iq + *ncv * (leftptr - 1)], &c__1, &workl[
-			iw], &c__1);
-		dcopy_(ncv, &workl[iq + *ncv * (rghtptr - 1)], &c__1, &workl[
-			iq + *ncv * (leftptr - 1)], &c__1);
-		dcopy_(ncv, &workl[iw], &c__1, &workl[iq + *ncv * (rghtptr - 
-			1)], &c__1);
+		dcopy_(ncv, &workl[iq + *ncv * (leftptr - 1)], &c__1, &workl[iw], &c__1);
+		dcopy_(ncv, &workl[iq + *ncv * (rghtptr - 1)], &c__1, &workl[iq + *ncv * (leftptr - 1)], &c__1);
+		dcopy_(ncv, &workl[iw], &c__1, &workl[iq + *ncv * (rghtptr - 1)], &c__1);
 		++leftptr;
 		--rghtptr;
 
@@ -741,8 +736,7 @@ L30:
         /* columns of workl(iq,ldq).                                */
         /* -------------------------------------------------------- */
 
-	dgeqr2_(ncv, &nconv, &workl[iq], &ldq, &workl[iw + *ncv], &workl[ihb],
-		 &ierr);
+	dgeqr2_(ncv, &nconv, &workl[iq], &ldq, &workl[iw + *ncv], &workl[ihb],&ierr);
 
         /* ------------------------------------------------------ */
         /* * Postmultiply V by Q.                                 */
@@ -752,8 +746,7 @@ L30:
         /* the Ritz values in workl(ihd).                         */
         /* ------------------------------------------------------ */
 
-	dorm2r_("R", "N", n, ncv, &nconv, &workl[iq], &ldq, &
-		workl[iw + *ncv], &v[v_offset], ldv, &workd[*n + 1], &ierr);
+	dorm2r_("R", "N", n, ncv, &nconv, &workl[iq], &ldq, &workl[iw + *ncv], &v[v_offset], ldv, &workd[*n + 1], &ierr);
 	dlacpy_("A", n, &nconv, &v[v_offset], ldv, &z[z_offset], ldz);
 
         /* --------------------------------------------------- */
@@ -768,8 +761,7 @@ L30:
 /* L65: */
 	}
 	workl[ihb + *ncv - 1] = 1.;
-	dorm2r_("L", "T", ncv, &c__1, &nconv, &workl[iq], &ldq, &
-		workl[iw + *ncv], &workl[ihb], ncv, &temp, &ierr);
+	dorm2r_("L", "T", ncv, &c__1, &nconv, &workl[iq], &ldq, &workl[iw + *ncv], &workl[ihb], ncv, &temp, &ierr);
 
         /* --------------------------------------------------- */
         /* Make a copy of the last row into                    */
@@ -878,8 +870,7 @@ L30:
     }
 
     if (*rvec && strcmp(type__, "REGULR") != 0) {
-	dger_(n, &nconv, &d_one, &resid[1], &c__1, &workl[iw], &c__1, &z[
-		z_offset], ldz);
+	dger_(n, &nconv, &d_one, &resid[1], &c__1, &workl[iw], &c__1, &z[z_offset], ldz);
     }
 
 L9000:

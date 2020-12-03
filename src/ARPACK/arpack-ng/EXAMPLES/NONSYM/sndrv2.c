@@ -221,9 +221,7 @@ L20:
         /* has been exceeded.                          */
         /* ------------------------------------------- */
 
-    snaupd_(&ido, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, 
-	    iparam, ipntr, workd, workl, &lworkl, &info, (ftnlen)1, (ftnlen)2)
-	    ;
+    snaupd_(&ido, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, workd, workl, &lworkl, &info);
 
     if (ido == -1 || ido == 1) {
 
@@ -237,8 +235,7 @@ L20:
 
 	scopy_(&n, &workd[ipntr[0] - 1], &c__1, &workd[ipntr[1] - 1], &c__1);
 
-	sgttrs_("N", &n, &c__1, dl, dd, du, du2, ipiv, &workd[ipntr[1] - 1], &
-		n, &ierr, (ftnlen)1);
+	sgttrs_("N", &n, &c__1, dl, dd, du, du2, ipiv, &workd[ipntr[1] - 1], &n, &ierr);
 	if (ierr != 0) {
 	    printf(" \n");
 	    printf(" ERROR with _gttrs in _NDRV2.\n");
@@ -285,10 +282,7 @@ L20:
 
 	rvec = true;
 
-	sneupd_(&rvec, "A", select, d, &d[25], v, &c__256, &sigmar, &
-		sigmai, workev, bmat, &n, which, &nev, &tol, resid, &ncv, v, &
-		c__256, iparam, ipntr, workd, workl, &lworkl, &ierr, (ftnlen)
-		1, (ftnlen)1, (ftnlen)2);
+	sneupd_(&rvec, "A", select, d, &d[25], v, &c__256, &sigmar, &sigmai, workev, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, workd, workl, &lworkl, &ierr);
 
         /* --------------------------------------------- */
         /* The real part of the eigenvalue is returned   */
@@ -358,15 +352,13 @@ L20:
 			sndrv2_av_(&n, &v[(j << 8) - 256], ax);
 		    r__1 = -d[j - 1];
 		    saxpy_(&n, &r__1, &v[(j << 8) - 256], &c__1, ax, &c__1);
-		    saxpy_(&n, &d[j + 24], &v[(j + 1 << 8) - 256], &c__1, 
-			    ax, &c__1);
+		    saxpy_(&n, &d[j + 24], &v[(j + 1 << 8) - 256], &c__1, ax, &c__1);
 		    d[j + 49] = snrm2_(&n, ax, &c__1);
 			sndrv2_av_(&n, &v[(j + 1 << 8) - 256], ax);
 		    r__1 = -d[j + 24];
 		    saxpy_(&n, &r__1, &v[(j << 8) - 256], &c__1, ax, &c__1);
 		    r__1 = -d[j - 1];
-		    saxpy_(&n, &r__1, &v[(j + 1 << 8) - 256], &c__1, ax, &
-			    c__1);
+		    saxpy_(&n, &r__1, &v[(j + 1 << 8) - 256], &c__1, ax, &c__1);
 		    r__1 = snrm2_(&n, ax, &c__1);
 		    d[j + 49] = slapy2_(&d[j + 49], &r__1);
 		    d[j + 50] = d[j + 49];

@@ -199,9 +199,7 @@ L10:
         /* has been exceeded.                          */
         /* ------------------------------------------- */
 
-    dnaupd_(&ido, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, 
-	    iparam, ipntr, workd, workl, &lworkl, &info, (ftnlen)1, (ftnlen)2)
-	    ;
+    dnaupd_(&ido, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, workd, workl, &lworkl, &info);
 
     if (ido == -1 || ido == 1) {
 
@@ -280,10 +278,7 @@ L10:
         /* ----------------------------------------- */
 
 	rvec = true;
-	dneupd_(&rvec, "A", select, d, &d[25], v, &c__256, &sigmar, &
-		sigmai, workev, bmat, &n, which, &nev, &tol, resid, &ncv, v, &
-		c__256, iparam, ipntr, workd, workl, &lworkl, &ierr, (ftnlen)
-		1, (ftnlen)1, (ftnlen)2);
+	dneupd_(&rvec, "A", select, d, &d[25], v, &c__256, &sigmar, &sigmai, workev, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, workd, workl, &lworkl, &ierr);
 
         /* --------------------------------------------- */
         /* The real part of the eigenvalue is returned   */

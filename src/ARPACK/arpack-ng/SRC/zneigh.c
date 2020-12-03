@@ -66,7 +66,7 @@
  *     xxxxxx  Complex*16
  *
  * \Routines called:
- *     ivout   ARPACK utility routine that prints int32_ts.
+ *     ivout   ARPACK utility routine that prints integers.
  *     arscnd  ARPACK utility routine for timing.
  *     zmout   ARPACK utility routine that prints matrices
  *     zvout   ARPACK utility routine that prints vectors.
@@ -78,9 +78,8 @@
  *     ztrevc  LAPACK routine to compute the eigenvectors of a matrix
  *             in upper triangular form
  *     zcopy   Level 1 BLAS that copies one vector to another.
- *     zdscal  Level 1 BLAS that scales a complex vector by a float number.
+ *     zdscal  Level 1 BLAS that scales a complex vector by a real number.
  *     dznrm2  Level 1 BLAS that computes the norm of a vector.
- *
  *
  * \Author
  *     Danny Sorensen               Phuong Vu
@@ -160,8 +159,7 @@ int zneigh_(double *rnorm, int32_t *n, zomplex *
 
     zlacpy_("A", n, n, &h[h_offset], ldh, &workl[1], n);
     zlaset_("A", n, n, &z_zero, &z_one, &q[q_offset], ldq);
-    zlahqr_(&c_true, &c_true, n, &c__1, n, &workl[1], ldh, &ritz[1], &c__1, n,
-	     &q[q_offset], ldq, ierr);
+    zlahqr_(&c_true, &c_true, n, &c__1, n, &workl[1], ldh, &ritz[1], &c__1, n,&q[q_offset], ldq, ierr);
     if (*ierr != 0) {
 	goto L9000;
     }
@@ -179,8 +177,7 @@ int zneigh_(double *rnorm, int32_t *n, zomplex *
      /*    eigenvectors.                                         */
      /* -------------------------------------------------------- */
 
-    ztrevc_("R", "B", select, n, &workl[1], n, vl, n, &q[q_offset], 
-	    ldq, n, n, &workl[*n * *n + 1], &rwork[1], ierr);
+    ztrevc_("R", "B", select, n, &workl[1], n, vl, n, &q[q_offset], ldq, n, n, &workl[*n * *n + 1], &rwork[1], ierr);
 
     if (*ierr != 0) {
 	goto L9000;

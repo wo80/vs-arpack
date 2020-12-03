@@ -210,9 +210,7 @@ L10:
         /* has been exceeded.                          */
         /* ------------------------------------------- */
 
-    dsaupd_(&ido, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, 
-	    iparam, ipntr, workd, workl, &lworkl, &info, (ftnlen)1, (ftnlen)2)
-	    ;
+    dsaupd_(&ido, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, workd, workl, &lworkl, &info);
 
     if (ido == -1) {
 
@@ -230,8 +228,7 @@ L10:
 
 	dsdrv5_av_(&n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
 
-	dgttrs_("Notranspose", &n, &c__1, adl, ad, adu, adu2, ipiv, &workd[
-		ipntr[1] - 1], &n, &ierr, (ftnlen)11);
+	dgttrs_("Notranspose", &n, &c__1, adl, ad, adu, adu2, ipiv, &workd[ipntr[1] - 1], &n, &ierr);
 	if (ierr != 0) {
 	    printf(" \n");
 	    printf(" Error with _gttrs in SDRV5.\n");
@@ -257,8 +254,7 @@ L10:
            /* ---------------------------------------- */
 
 	dcopy_(&n, &workd[ipntr[2] - 1], &c__1, &workd[ipntr[1] - 1], &c__1);
-	dgttrs_("Notranspose", &n, &c__1, adl, ad, adu, adu2, ipiv, &workd[
-		ipntr[1] - 1], &n, &ierr, (ftnlen)11);
+	dgttrs_("Notranspose", &n, &c__1, adl, ad, adu, adu2, ipiv, &workd[ipntr[1] - 1], &n, &ierr);
 	if (ierr != 0) {
 	    printf(" \n");
 	    printf(" Error with _gttrs in _SDRV5.\n");
@@ -322,10 +318,7 @@ L10:
 
 	rvec = true;
 
-	dseupd_(&rvec, "All", select, d, v, &c__256, &sigma, bmat, &n, 
-		which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, 
-		workd, workl, &lworkl, &ierr, (ftnlen)3, (ftnlen)1, (ftnlen)2)
-		;
+	dseupd_(&rvec, "All", select, d, v, &c__256, &sigma, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, workd, workl, &lworkl, &ierr);
 
 	if (ierr != 0) {
 

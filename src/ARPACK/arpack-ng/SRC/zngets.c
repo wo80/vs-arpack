@@ -54,8 +54,6 @@
  *  BOUNDS  Complex*16 array of length KEV+NP.  (INPUT/OUTPUT)
  *          Error bounds corresponding to the ordering in RITZ.
  *
- *
- *
  * \EndDoc
  *
  * \BeginLib
@@ -65,7 +63,7 @@
  *
  * \Routines called:
  *     zsortc  ARPACK sorting routine.
- *     ivout   ARPACK utility routine that prints int32_ts.
+ *     ivout   ARPACK utility routine that prints integers.
  *     arscnd  ARPACK utility routine for timing.
  *     zvout   ARPACK utility routine that prints vectors.
  *

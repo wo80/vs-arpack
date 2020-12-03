@@ -94,7 +94,7 @@
  *     pp 357-385.
  *
  * \Routines called:
- *     ivout   ARPACK utility routine that prints int32_ts.
+ *     ivout   ARPACK utility routine that prints integers.
  *     arscnd  ARPACK utility routine for timing.
  *     zmout   ARPACK utility routine that prints matrices
  *     zvout   ARPACK utility routine that prints vectors.
@@ -128,7 +128,7 @@
  *     comes from. Deflation as in LAPACK routine zlahqr (QR algorithm
  *     for upper Hessenberg matrices ) is used.
  *     Upon output, the subdiagonals of H are enforced to be non-negative
- *     float numbers.
+ *     real numbers.
  *
  * \EndLib
  */
@@ -202,11 +202,11 @@ int znapps_(int32_t *n, int32_t *kev, int32_t *np,
         /* REFERENCE: LAPACK subroutine zlahqr           */
         /* --------------------------------------------- */
 
-	unfl = dlamch_("safe minimum");
+	unfl = dlamch_("S");
 	z__1.r = 1. / unfl, z__1.i = 0. / unfl;
 	ovfl = z__1.r;
 	dlabad_(&unfl, &ovfl);
-	ulp = dlamch_("precision");
+	ulp = dlamch_("P");
 	smlnum = unfl * (*n / ulp);
 	first = false;
     }
@@ -542,8 +542,7 @@ L100:
 
     i__1 = *kev + 1 + *kev * h_dim1;
     if (h[i__1].r > 0.) {
-	zgemv_("N", n, &kplusp, &z_one, &v[v_offset], ldv, &q[(*kev + 1) * 
-		q_dim1 + 1], &c__1, &z_zero, &workd[*n + 1], &c__1);
+	zgemv_("N", n, &kplusp, &z_one, &v[v_offset], ldv, &q[(*kev + 1) * q_dim1 + 1], &c__1, &z_zero, &workd[*n + 1], &c__1);
     }
 
      /* -------------------------------------------------------- */
@@ -554,10 +553,8 @@ L100:
     i__1 = *kev;
     for (i = 1; i <= i__1; ++i) {
 	i__2 = kplusp - i + 1;
-	zgemv_("N", n, &i__2, &z_one, &v[v_offset], ldv, &q[(*kev - i + 1) * 
-		q_dim1 + 1], &c__1, &z_zero, &workd[1], &c__1);
-	zcopy_(n, &workd[1], &c__1, &v[(kplusp - i + 1) * v_dim1 + 1], &
-		c__1);
+	zgemv_("N", n, &i__2, &z_one, &v[v_offset], ldv, &q[(*kev - i + 1) * q_dim1 + 1], &c__1, &z_zero, &workd[1], &c__1);
+	zcopy_(n, &workd[1], &c__1, &v[(kplusp - i + 1) * v_dim1 + 1], &c__1);
 /* L140: */
     }
 
@@ -565,8 +562,7 @@ L100:
      /*  Move v(:,kplusp-kev+1:kplusp) into v(:,1:kev). */
      /* ----------------------------------------------- */
 
-    zlacpy_("A", n, kev, &v[(kplusp - *kev + 1) * v_dim1 + 1], ldv, &v[
-	    v_offset], ldv);
+    zlacpy_("A", n, kev, &v[(kplusp - *kev + 1) * v_dim1 + 1], ldv, &v[v_offset], ldv);
 
      /* ------------------------------------------------------------ */
      /* Copy the (kev+1)-st column of (V*Q) in the appropriate place */
@@ -588,8 +584,7 @@ L100:
     zscal_(n, &q[kplusp + *kev * q_dim1], &resid[1], &c__1);
     i__1 = *kev + 1 + *kev * h_dim1;
     if (h[i__1].r > 0.) {
-	zaxpy_(n, &h[*kev + 1 + *kev * h_dim1], &v[(*kev + 1) * v_dim1 + 1],
-		 &c__1, &resid[1], &c__1);
+	zaxpy_(n, &h[*kev + 1 + *kev * h_dim1], &v[(*kev + 1) * v_dim1 + 1],&c__1, &resid[1], &c__1);
     }
 
 #ifndef NO_TRACE

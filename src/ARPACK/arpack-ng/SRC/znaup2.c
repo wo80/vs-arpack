@@ -78,7 +78,6 @@
  *          the front end.  It is used in shifts calculation, shifts
  *          application and convergence checking.
  *
- *
  *  IPNTR   Integer array of length 3.  (OUTPUT)
  *          Pointer to mark the starting locations in the WORKD for
  *          vectors used by the Arnoldi iteration.
@@ -137,7 +136,7 @@
  *     zneigh   ARPACK compute Ritz values and error bounds routine.
  *     zngets   ARPACK reorder Ritz values and error bounds routine.
  *     zsortc   ARPACK sorting routine.
- *     ivout   ARPACK utility routine that prints int32_ts.
+ *     ivout   ARPACK utility routine that prints integers.
  *     arscnd  ARPACK utility routine for timing.
  *     zmout    ARPACK utility routine that prints matrices
  *     zvout    ARPACK utility routine that prints vectors.
@@ -169,7 +168,7 @@
 
 int znaup2_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, int32_t *np,
      double *tol, zomplex *resid, int32_t *mode, int32_t *iupd, int32_t *ishift, int32_t *mxiter,
-    zomplex *v, int32_t *ldv, zomplex *h, int32_t *ldh, zomplex *ritz, zomplex *bounds,
+     zomplex *v, int32_t *ldv, zomplex *h, int32_t *ldh, zomplex *ritz, zomplex *bounds,
      zomplex *q, int32_t *ldq, zomplex *workl, int32_t *ipntr, zomplex *workd, double *rwork,
      int32_t *info)
 {
@@ -255,7 +254,7 @@ int znaup2_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, int
         /* Get machine dependent constant. */
         /* ------------------------------- */
 
-	eps23 = dlamch_("Epsilon-Machine");
+	eps23 = dlamch_("E");
 	eps23 = pow_dd(&eps23, &d_23);
 
         /* ------------------------------------- */
@@ -445,8 +444,7 @@ L20:
     zcopy_(&kplusp, &ritz[1], &c__1, &workl[i__1 * i__1 + 1], &c__1);
 /* Computing 2nd power */
     i__1 = kplusp;
-    zcopy_(&kplusp, &bounds[1], &c__1, &workl[i__1 * i__1 + kplusp + 1], &
-	    c__1);
+    zcopy_(&kplusp, &bounds[1], &c__1, &workl[i__1 * i__1 + kplusp + 1], &c__1);
 
         /* ------------------------------------------------- */
         /* Select the wanted Ritz values and their bounds    */

@@ -36,7 +36,7 @@
  * \BeginLib
  *
  * \Local variables:
- *     xxxxxx  float
+ *     xxxxxx  real
  *
  * \Routines called:
  *     arscnd  ARPACK utility routine for timing.
@@ -109,7 +109,7 @@ int snconv_(int32_t *n, float *ritzr, float *ritzi, float *
      /* Get machine dependent constant. */
      /* ------------------------------- */
 
-    eps23 = slamch_("Epsilon-Machine");
+    eps23 = slamch_("E");
     d__1 = (double) eps23;
     eps23 = pow_dd(&d__1, &d_23);
 

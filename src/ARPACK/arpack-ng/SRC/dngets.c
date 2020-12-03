@@ -30,8 +30,8 @@
  *          Shift selection criteria.
  *          'LM' -> want the KEV eigenvalues of largest magnitude.
  *          'SM' -> want the KEV eigenvalues of smallest magnitude.
- *          'LR' -> want the KEV eigenvalues of largest float part.
- *          'SR' -> want the KEV eigenvalues of smallest float part.
+ *          'LR' -> want the KEV eigenvalues of largest real part.
+ *          'SR' -> want the KEV eigenvalues of smallest real part.
  *          'LI' -> want the KEV eigenvalues of largest imaginary part.
  *          'SI' -> want the KEV eigenvalues of smallest imaginary part.
  *
@@ -46,7 +46,7 @@
  *           pairs together.
  *
  *  RITZR,  Double precision array of length KEV+NP.  (INPUT/OUTPUT)
- *  RITZI   On INPUT, RITZR and RITZI contain the float and imaginary
+ *  RITZI   On INPUT, RITZR and RITZI contain the real and imaginary
  *          parts of the eigenvalues of H.
  *          On OUTPUT, RITZR and RITZI are sorted so that the unwanted
  *          eigenvalues are in the first NP locations and the wanted
@@ -61,13 +61,12 @@
  *
  *  SHIFTR, SHIFTI  *** USE deprecated as of version 2.1. ***
  *
- *
  * \EndDoc
  *
  * \BeginLib
  *
  * \Local variables:
- *     xxxxxx  float
+ *     xxxxxx  real
  *
  * \Routines called:
  *     dsortc  ARPACK sorting routine.

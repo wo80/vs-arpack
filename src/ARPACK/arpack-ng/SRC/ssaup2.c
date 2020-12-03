@@ -149,7 +149,7 @@
  *     sseigt  ARPACK compute Ritz values and error bounds routine.
  *     ssgets  ARPACK reorder Ritz values and error bounds routine.
  *     ssortr  ARPACK sorting routine.
- *     ivout   ARPACK utility routine that prints int32_ts.
+ *     ivout   ARPACK utility routine that prints integers.
  *     arscnd  ARPACK utility routine for timing.
  *     svout   ARPACK utility routine that prints vectors.
  *     slamch  LAPACK routine that determines machine constants.
@@ -255,7 +255,7 @@ int ssaup2_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, int
         /* Set machine dependent constant. */
         /* ------------------------------- */
 
-	eps23 = slamch_("Epsilon-Machine");
+	eps23 = slamch_("E");
 	d__1 = (double) eps23;
 	eps23 = pow_dd(&d__1, &d_23);
 
@@ -550,13 +550,11 @@ L20:
 		i__1 = min(nevd2,*np);
 /* Computing MAX */
 		i__2 = kplusp - nevd2 + 1, i__3 = kplusp - *np + 1;
-		sswap_(&i__1, &ritz[nevm2 + 1], &c__1, &ritz[max(i__2,i__3)], 
-			&c__1);
+		sswap_(&i__1, &ritz[nevm2 + 1], &c__1, &ritz[max(i__2,i__3)], &c__1);
 		i__1 = min(nevd2,*np);
 /* Computing MAX */
 		i__2 = kplusp - nevd2 + 1, i__3 = kplusp - *np + 1;
-		sswap_(&i__1, &bounds[nevm2 + 1], &c__1, &bounds[max(i__2,
-			i__3)], &c__1);
+		sswap_(&i__1, &bounds[nevm2 + 1], &c__1, &bounds[max(i__2,i__3)], &c__1);
 	    }
 
 	} else {

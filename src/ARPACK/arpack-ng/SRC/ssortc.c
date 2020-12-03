@@ -10,7 +10,7 @@
  * \Description:
  *  Sorts the complex array in XREAL and XIMAG into the order
  *  specified by WHICH and optionally applies the permutation to the
- *  float array Y. It is assumed that if an element of XIMAG is
+ *  real array Y. It is assumed that if an element of XIMAG is
  *  nonzero, then its negative is also an element. In other words,
  *  both members of a complex conjugate pair are to be sorted and the
  *  pairs are kept adjacent to each other.

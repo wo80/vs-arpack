@@ -230,9 +230,7 @@ L20:
         /* has been exceeded.                          */
         /* ------------------------------------------- */
 
-    dnaupd_(&ido, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, 
-	    iparam, ipntr, workd, workl, &lworkl, &info, (ftnlen)1, (ftnlen)2)
-	    ;
+    dnaupd_(&ido, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, workd, workl, &lworkl, &info);
 
     if (ido == -1) {
 
@@ -249,8 +247,7 @@ L20:
            /* ----------------------------------------- */
 
 	dndrv4_mv_(&n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
-	dgttrs_("N", &n, &c__1, dl, dd, du, du2, ipiv, &workd[ipntr[1] - 1], &
-		n, &ierr, (ftnlen)1);
+	dgttrs_("N", &n, &c__1, dl, dd, du, du2, ipiv, &workd[ipntr[1] - 1], &n, &ierr);
 	if (ierr != 0) {
 	    printf(" \n");
 	    printf(" ERROR with _gttrs in _NDRV4.\n");
@@ -276,8 +273,7 @@ L20:
            /* --------------------------------------- */
 
 	dcopy_(&n, &workd[ipntr[2] - 1], &c__1, &workd[ipntr[1] - 1], &c__1);
-	dgttrs_("N", &n, &c__1, dl, dd, du, du2, ipiv, &workd[ipntr[1] - 1], &
-		n, &ierr, (ftnlen)1);
+	dgttrs_("N", &n, &c__1, dl, dd, du, du2, ipiv, &workd[ipntr[1] - 1], &n, &ierr);
 	if (ierr != 0) {
 	    printf(" \n");
 	    printf(" ERROR with _gttrs in _NDRV4.\n");
@@ -340,10 +336,7 @@ L20:
         /* ----------------------------------------- */
 
 	rvec = true;
-	dneupd_(&rvec, "A", select, d, &d[25], v, &c__256, &sigmar, &
-		sigmai, workev, bmat, &n, which, &nev, &tol, resid, &ncv, v, &
-		c__256, iparam, ipntr, workd, workl, &lworkl, &ierr, (ftnlen)
-		1, (ftnlen)1, (ftnlen)2);
+	dneupd_(&rvec, "A", select, d, &d[25], v, &c__256, &sigmar, &sigmai, workev, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, workd, workl, &lworkl, &ierr);
 
         /* --------------------------------------------- */
         /* The real part of the eigenvalue is returned   */

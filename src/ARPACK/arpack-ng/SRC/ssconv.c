@@ -90,7 +90,7 @@ int ssconv_(int32_t *n, float *ritz, float *bounds, float *tol,
     arscnd_(&t0);
 #endif
 
-    eps23 = slamch_("Epsilon-Machine");
+    eps23 = slamch_("E");
     d__1 = (double) eps23;
     eps23 = pow_dd(&d__1, &d_23);
 

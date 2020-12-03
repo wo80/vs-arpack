@@ -233,9 +233,7 @@ L20:
         /* has been exceeded.                          */
         /* ------------------------------------------- */
 
-    dnaupd_(&ido, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, 
-	    iparam, ipntr, workd, workl, &lworkl, &info, (ftnlen)1, (ftnlen)2)
-	    ;
+    dnaupd_(&ido, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, workd, workl, &lworkl, &info);
 
     if (ido == -1) {
 
@@ -261,8 +259,7 @@ L20:
 /* L30: */
 	}
 
-	zgttrs_("N", &n, &c__1, cdl, cdd, cdu, cdu2, ipiv, ctemp, &n, &ierr, (
-		ftnlen)1);
+	zgttrs_("N", &n, &c__1, cdl, cdd, cdu, cdu2, ipiv, ctemp, &n, &ierr);
 	if (ierr != 0) {
 	    printf(" \n");
 	    printf(" ERROR with _gttrs in _NDRV5.\n");
@@ -301,8 +298,7 @@ L20:
 	    ctemp[i__2].r = z__1.r, ctemp[i__2].i = z__1.i;
 /* L50: */
 	}
-	zgttrs_("N", &n, &c__1, cdl, cdd, cdu, cdu2, ipiv, ctemp, &n, &ierr, (
-		ftnlen)1);
+	zgttrs_("N", &n, &c__1, cdl, cdd, cdu, cdu2, ipiv, ctemp, &n, &ierr);
 	if (ierr != 0) {
 	    printf(" \n");
 	    printf(" ERROR with _gttrs in _NDRV5.\n");
@@ -371,10 +367,7 @@ L20:
         /* ----------------------------------------- */
 
 	rvec = true;
-	dneupd_(&rvec, "A", select, d, &d[25], v, &c__256, &sigmar, &
-		sigmai, workev, bmat, &n, which, &nev, &tol, resid, &ncv, v, &
-		c__256, iparam, ipntr, workd, workl, &lworkl, &ierr, (ftnlen)
-		1, (ftnlen)1, (ftnlen)2);
+	dneupd_(&rvec, "A", select, d, &d[25], v, &c__256, &sigmar, &sigmai, workev, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, workd, workl, &lworkl, &ierr);
 
         /* --------------------------------------------- */
         /* The real part of the eigenvalue is returned   */
@@ -439,13 +432,10 @@ L20:
                  /* -------------- */
 			dndrv5_av_(&n, &v[(j << 8) - 256], ax);
 		    numr = ddot_(&n, &v[(j << 8) - 256], &c__1, ax, &c__1);
-		    numi = ddot_(&n, &v[(j + 1 << 8) - 256], &c__1, ax, &c__1)
-			    ;
+		    numi = ddot_(&n, &v[(j + 1 << 8) - 256], &c__1, ax, &c__1);
 			dndrv5_av_(&n, &v[(j + 1 << 8) - 256], ax);
-		    numr += ddot_(&n, &v[(j + 1 << 8) - 256], &c__1, ax, &
-			    c__1);
-		    numi = -numi + ddot_(&n, &v[(j << 8) - 256], &c__1, ax, &
-			    c__1);
+		    numr += ddot_(&n, &v[(j + 1 << 8) - 256], &c__1, ax, &c__1);
+		    numi = -numi + ddot_(&n, &v[(j << 8) - 256], &c__1, ax, &c__1);
 
                  /* -------------- */
                  /* Compute x'(Mx) */
@@ -453,22 +443,17 @@ L20:
 
 			dndrv5_mv_(&n, &v[(j << 8) - 256], ax);
 		    denr = ddot_(&n, &v[(j << 8) - 256], &c__1, ax, &c__1);
-		    deni = ddot_(&n, &v[(j + 1 << 8) - 256], &c__1, ax, &c__1)
-			    ;
+		    deni = ddot_(&n, &v[(j + 1 << 8) - 256], &c__1, ax, &c__1);
 			dndrv5_mv_(&n, &v[(j + 1 << 8) - 256], ax);
-		    denr += ddot_(&n, &v[(j + 1 << 8) - 256], &c__1, ax, &
-			    c__1);
-		    deni = -deni + ddot_(&n, &v[(j << 8) - 256], &c__1, ax, &
-			    c__1);
+		    denr += ddot_(&n, &v[(j + 1 << 8) - 256], &c__1, ax, &c__1);
+		    deni = -deni + ddot_(&n, &v[(j << 8) - 256], &c__1, ax, &c__1);
 
                  /* -------------- */
                  /* d=x'(Ax)/x'(Mx)*/
                  /* -------------- */
 
-		    d[j - 1] = (numr * denr + numi * deni) / dlapy2_(&denr, 
-			    &deni);
-		    d[j + 24] = (numi * denr - numr * deni) / dlapy2_(&denr,
-			     &deni);
+		    d[j - 1] = (numr * denr + numi * deni) / dlapy2_(&denr, &deni);
+		    d[j + 24] = (numi * denr - numr * deni) / dlapy2_(&denr,&deni);
 		    first = false;
 
 		} else {
