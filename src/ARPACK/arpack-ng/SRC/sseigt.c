@@ -157,7 +157,6 @@ int sseigt_(float *rnorm, int *n, float *h, int *ldh,
     for (k = 1; k <= i__1; ++k)
     {
         bounds[k] = *rnorm * (r__1 = bounds[k], dabs(r__1));
-        /* L30: */
     }
 
 #ifndef NO_TIMER

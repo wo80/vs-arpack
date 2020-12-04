@@ -222,7 +222,6 @@ int ssapps_(int *n, int *kev, int *np, float *
     i__1 = *np;
     for (jj = 1; jj <= i__1; ++jj)
     {
-
         istart = itop;
 
         /* -------------------------------------------------------- */
@@ -261,14 +260,13 @@ L20:
                 iend = i;
                 goto L40;
             }
-            /* L30: */
+
         }
         iend = kplusp;
 L40:
 
         if (istart < iend)
         {
-
             /* ------------------------------------------------------ */
             /* Construct the plane rotation G'(istart,istart+1,theta) */
             /* that attempts to drive h(istart+1,1) to zero.          */
@@ -310,7 +308,7 @@ L40:
                 q[j + (istart + 1) * q_dim1] = -s * q[j + istart * q_dim1] +
                                                c * q[j + (istart + 1) * q_dim1];
                 q[j + istart * q_dim1] = a1;
-                /* L60: */
+
             }
 
             /* -------------------------------------------- */
@@ -326,7 +324,6 @@ L40:
             i__2 = iend - 1;
             for (i = istart + 1; i <= i__2; ++i)
             {
-
                 /* -------------------------------------------- */
                 /* Construct the plane rotation G'(i,i+1,theta) */
                 /* that zeros the i-th bulge that was created   */
@@ -390,10 +387,7 @@ L40:
                     q[j + (i + 1) * q_dim1] = -s * q[j + i * q_dim1] +
                                               c * q[j + (i + 1) * q_dim1];
                     q[j + i * q_dim1] = a1;
-                    /* L50: */
                 }
-
-                /* L70: */
             }
 
         }
@@ -439,7 +433,7 @@ L40:
                 goto L90;
             }
             ++itop;
-            /* L80: */
+
         }
 
         /* --------------------------------- */
@@ -473,7 +467,6 @@ L90:
 
             h[i + 1 + h_dim1] = 0.f;
         }
-        /* L100: */
     }
 
     /* ----------------------------------------------- */
@@ -500,7 +493,6 @@ L90:
         i__2 = kplusp - i + 1;
         sgemv_("N", n, &i__2, &s_one, &v[v_offset], ldv, &q[(*kev - i + 1) * q_dim1 + 1], &c__1, &s_zero, &workd[1], &c__1);
         scopy_(n, &workd[1], &c__1, &v[(kplusp - i + 1) * v_dim1 + 1], &c__1);
-        /* L130: */
     }
 
     /* ----------------------------------------------- */

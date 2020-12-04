@@ -482,7 +482,6 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
 
     if (*rvec)
     {
-
         reord = false;
 
         /* ------------------------------------------------- */
@@ -496,7 +495,7 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
             i__2 = bounds + j - 1;
             workl[i__2].r = (float) j, workl[i__2].i = 0.f;
             select[j] = false;
-            /* L10: */
+
         }
 
         /* ----------------------------------- */
@@ -550,7 +549,7 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
                     reord = true;
                 }
             }
-            /* L11: */
+
         }
 
         /* --------------------------------------------------------- */
@@ -607,7 +606,6 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
 
         if (reord)
         {
-
             /* --------------------------------------------- */
             /* Reorder the computed upper triangular matrix. */
             /* --------------------------------------------- */
@@ -682,7 +680,6 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
         i__1 = nconv;
         for (j = 1; j <= i__1; ++j)
         {
-
             /* ------------------------------------------------- */
             /* Perform both a column and row scaling if the      */
             /* diagonal element of workl(invsub,ldq) is negative */
@@ -701,12 +698,10 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
                 cscal_(&nconv, &q__1, &workl[iuptri + (j - 1) * ldq], &c__1);
             }
 
-            /* L20: */
         }
 
         if (*howmny == 'A')
         {
-
             /* ------------------------------------------ */
             /* Compute the NCONV wanted eigenvectors of T */
             /* located in workl(iuptri,ldq).              */
@@ -723,7 +718,6 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
                 {
                     select[j] = false;
                 }
-                /* L30: */
             }
 
             ctrevc_("R", "S", &select[1], ncv, &workl[iuptri], &ldq, vl, &c__1, &workl[invsub], &ldq, ncv, &outncv, &workev[1],&rwork[1], &ierr);
@@ -762,7 +756,7 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
                 cdotc_(&q__1, &j, &workl[ihbds], &c__1, &workl[invsub + (j -
                         1) * ldq], &c__1);
                 workev[i__2].r = q__1.r, workev[i__2].i = q__1.i;
-                /* L40: */
+
             }
 
 #ifndef NO_TRACE
@@ -790,11 +784,9 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
 
             ctrmm_("R", "U", "N", "N", n, &nconv, &c_one, &workl[invsub], &ldq, &z[z_offset], ldz);
         }
-
     }
     else
     {
-
         /* ------------------------------------------------ */
         /* An approximate invariant subspace is not needed. */
         /* Place the Ritz values computed CNAUPD into D.    */
@@ -803,7 +795,6 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
         ccopy_(&nconv, &workl[ritz], &c__1, &d[1], &c__1);
         ccopy_(&nconv, &workl[ritz], &c__1, &workl[iheig], &c__1);
         ccopy_(&nconv, &workl[bounds], &c__1, &workl[ihbds], &c__1);
-
     }
 
     /* ---------------------------------------------- */
@@ -814,16 +805,13 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
 
     if (strcmp(type, "REGULR") == 0)
     {
-
         if (*rvec)
         {
             cscal_(ncv, &rnorm, &workl[ihbds], &c__1);
         }
-
     }
     else
     {
-
         /* ------------------------------------- */
         /*   A spectral transformation was used. */
         /* * Determine the Ritz estimates of the */
@@ -844,9 +832,8 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
             c_div(&q__2, &workl[ihbds + k - 1], &temp);
             c_div(&q__1, &q__2, &temp);
             workl[i__2].r = q__1.r, workl[i__2].i = q__1.i;
-            /* L50: */
-        }
 
+        }
     }
 
     /* --------------------------------------------------------- */
@@ -866,7 +853,7 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
             c_div(&q__2, &c_one, &workl[iheig + k - 1]);
             q__1.r = q__2.r + sigma->r, q__1.i = q__2.i + sigma->i;
             d[i__2].r = q__1.r, d[i__2].i = q__1.i;
-            /* L60: */
+
         }
     }
 
@@ -889,7 +876,6 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
 
     if (*rvec && *howmny == 'A' && strcmp(type, "SHIFTI") == 0)
     {
-
         /* ---------------------------------------------- */
         /* Purify the computed Ritz vectors by adding a   */
         /* little bit of the residual vector:             */
@@ -910,7 +896,7 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
                       workl[iheig + j - 1]);
                 workev[i__2].r = q__1.r, workev[i__2].i = q__1.i;
             }
-            /* L100: */
+
         }
         /* ------------------------------------- */
         /* Perform a rank one update to Z and    */
@@ -918,7 +904,6 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
         /* ------------------------------------- */
 
         cgeru_(n, &nconv, &c_one, &resid[1], &c__1, &workev[1], &c__1, &z[z_offset], ldz);
-
     }
 
 L9000:

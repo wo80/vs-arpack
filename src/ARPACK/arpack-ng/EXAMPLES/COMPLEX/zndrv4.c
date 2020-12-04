@@ -1,5 +1,6 @@
 /* EXAMPLES\COMPLEX\zndrv4.f -- translated by f2c (version 20100827). */
 
+#include <stdlib.h>
 #include "arpack.h"
 
 struct
@@ -193,7 +194,6 @@ int zndrv4()
         dd[i__2].r = s2.r, dd[i__2].i = s2.i;
         i__2 = j - 1;
         du[i__2].r = s3.r, du[i__2].i = s3.i;
-        /* L10: */
     }
     i__1 = n - 1;
     dd[i__1].r = s2.r, dd[i__1].i = s2.i;
@@ -260,7 +260,6 @@ L20:
 
     if (ido == -1)
     {
-
         /* ----------------------------------------- */
         /* Perform  y <--- OP*x = inv[A-SIGMA*M]*M*x */
         /* to force starting vector into the range   */
@@ -288,11 +287,9 @@ L20:
         /* --------------------------------------- */
 
         goto L20;
-
     }
     else if (ido == 1)
     {
-
         /* --------------------------------------- */
         /* Perform y <-- OP*x = inv[A-sigma*M]*M*x */
         /* M*x has been saved in workd(ipntr(3)).  */
@@ -317,11 +314,9 @@ L20:
         /* --------------------------------------- */
 
         goto L20;
-
     }
     else if (ido == 2)
     {
-
         /* ------------------------------------------- */
         /*          Perform  y <--- M*x                */
         /* Need matrix vector multiplication routine   */
@@ -336,7 +331,6 @@ L20:
         /* --------------------------------------- */
 
         goto L20;
-
     }
 
     /* --------------------------------------- */
@@ -346,7 +340,6 @@ L20:
 
     if (info < 0)
     {
-
         /* -------------------------- */
         /*  Error message, check the  */
         /*  documentation in ZNAUPD    */
@@ -356,11 +349,9 @@ L20:
         printf(" Error with _naupd info = %d\n", info);
         printf(" Check the documentation of _naupd.\n");
         printf(" \n");
-
     }
     else
     {
-
         /* ----------------------------------------- */
         /* No fatal errors occurred.                 */
         /* Post-Process using ZNEUPD .                */
@@ -388,7 +379,6 @@ L20:
 
         if (ierr != 0)
         {
-
             /* ---------------------------------- */
             /* Error condition:                   */
             /* Check the documentation of ZNEUPD . */
@@ -402,12 +392,10 @@ L20:
         }
         else
         {
-
             nconv = iparam[4];
             i__1 = nconv;
             for (j = 1; j <= i__1; ++j)
             {
-
                 zndrv4_av_(&n, &v[(j << 8) - 256], ax);
                 zndrv4_mv_(&n, &v[(j << 8) - 256], mx);
                 i__2 = j - 1;
@@ -418,7 +406,7 @@ L20:
                 rd[j + 24] = d_imag(&d[j - 1]);
                 rd[j + 49] = dznrm2_(&n, ax, &c__1);
                 rd[j + 49] /= dlapy2_(&rd[j - 1], &rd[j + 24]);
-                /* L80: */
+
             }
 
             /* --------------------------- */
@@ -460,7 +448,6 @@ L20:
         printf(" The number of OP*x is %d\n", iparam[8]);
         printf(" The convergence criterion is %e\n", tol);
         printf(" \n");
-
     }
 
     free(resid);
@@ -519,7 +506,6 @@ int zndrv4_mv_(int *n, zomplex *v, zomplex *w)
         z__2.r = z__3.r + z__6.r, z__2.i = z__3.i + z__6.i;
         z_div(&z__1, &z__2, &c_b5_dx);
         w[i__2].r = z__1.r, w[i__2].i = z__1.i;
-        /* L40: */
     }
     i__1 = *n;
     i__2 = *n - 1;
@@ -599,7 +585,6 @@ int zndrv4_av_(int *n, zomplex *v, zomplex *w)
                  .i + du.i * v[i__5].r;
         z__1.r = z__2.r + z__5.r, z__1.i = z__2.i + z__5.i;
         w[i__2].r = z__1.r, w[i__2].i = z__1.i;
-        /* L40: */
     }
     i__1 = *n;
     i__2 = *n - 1;

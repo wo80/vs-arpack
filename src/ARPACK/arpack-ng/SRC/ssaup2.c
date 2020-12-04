@@ -240,7 +240,6 @@ int ssaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
     /* Function Body */
     if (*ido == 0)
     {
-
         /* ----------------------------- */
         /* Initialize timing statistics  */
         /* & message level for debugging */
@@ -293,7 +292,6 @@ int ssaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
 
         if (*info != 0)
         {
-
             /* ------------------------------------------ */
             /* User provides the initial residual vector. */
             /* ------------------------------------------ */
@@ -312,7 +310,6 @@ int ssaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
     /* force it into the range of the operator OP. */
     /* ------------------------------------------- */
 
-    /* L10: */
 
     if (getv0)
     {
@@ -325,7 +322,6 @@ int ssaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
 
         if (rnorm == 0.f)
         {
-
             /* --------------------------------------- */
             /* The initial vector is zero. Error exit. */
             /* --------------------------------------- */
@@ -383,7 +379,6 @@ int ssaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
 
     if (*info > 0)
     {
-
         /* --------------------------------------------------- */
         /* ssaitr was unable to build an Lanczos factorization */
         /* of length NEV0. INFO is returned with the size of   */
@@ -445,7 +440,6 @@ L20:
 
     if (*info > 0)
     {
-
         /* --------------------------------------------------- */
         /* ssaitr was unable to build an Lanczos factorization */
         /* of length NEV0+NP0. INFO is returned with the size  */
@@ -539,12 +533,10 @@ L20:
             --(*np);
             ++(*nev);
         }
-        /* L30: */
     }
 
     if (nconv >= nev0 || iter > *mxiter || *np == 0)
     {
-
         /* ---------------------------------------------- */
         /* Prepare to exit. Put the converged Ritz values */
         /* and corresponding bounds in RITZ(1:NCONV) and  */
@@ -555,7 +547,6 @@ L20:
 
         if (strcmp(which, "BE") == 0)
         {
-
             /* --------------------------------------------------- */
             /* Both ends of the spectrum are requested.            */
             /* Sort the eigenvalues into algebraically decreasing  */
@@ -584,7 +575,6 @@ L20:
         }
         else
         {
-
             /* ------------------------------------------------ */
             /* LM, SM, LA, SA case.                             */
             /* Sort the eigenvalues of H into the an order that */
@@ -627,7 +617,7 @@ L20:
             r__2 = eps23, r__3 = (r__1 = ritz[j], dabs(r__1));
             temp = dmax(r__2,r__3);
             bounds[j] /= temp;
-            /* L35: */
+
         }
 
         /* -------------------------------------------------- */
@@ -652,7 +642,7 @@ L20:
             r__2 = eps23, r__3 = (r__1 = ritz[j], dabs(r__1));
             temp = dmax(r__2,r__3);
             bounds[j] *= temp;
-            /* L40: */
+
         }
 
         /* ------------------------------------------------ */
@@ -664,7 +654,6 @@ L20:
 
         if (strcmp(which, "BE") == 0)
         {
-
             /* ---------------------------------------------- */
             /* Sort the "converged" Ritz values in increasing */
             /* order.  The "threshold" values are in the      */
@@ -677,7 +666,6 @@ L20:
         }
         else
         {
-
             /* -------------------------------------------- */
             /* In LM, SM, LA, SA case, sort the "converged" */
             /* Ritz values according to WHICH so that the   */
@@ -723,11 +711,9 @@ L20:
 
         *np = nconv;
         goto L1100;
-
     }
     else if (nconv < *nev && *ishift == 1)
     {
-
         /* ------------------------------------------------- */
         /* Do not have all the requested eigenvalues yet.    */
         /* To prevent possible stagnation, adjust the number */
@@ -757,7 +743,6 @@ L20:
         {
             ssgets_(ishift, which, nev, np, &ritz[1], &bounds[1], &workl[1]);
         }
-
     }
 
 #ifndef NO_TRACE
@@ -777,7 +762,6 @@ L20:
 
     if (*ishift == 0)
     {
-
         /* --------------------------------------------------- */
         /* User specified shifts: reverse communication to     */
         /* compute the shifts. They are returned in the first  */
@@ -887,7 +871,7 @@ L100:
         rnorm = snrm2_(n, &resid[1], &c__1);
     }
     cnorm = false;
-    /* L130: */
+
 
 #ifndef NO_TRACE
     if (msglvl > 2)

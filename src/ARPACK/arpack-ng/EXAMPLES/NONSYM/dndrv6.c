@@ -172,7 +172,6 @@ int dndrv6()
         cdd[i__2].r = c2.r, cdd[i__2].i = c2.i;
         i__2 = j - 1;
         cdu[i__2].r = c3.r, cdu[i__2].i = c3.i;
-        /* L10: */
     }
     i__1 = n - 1;
     cdd[i__1].r = c2.r, cdd[i__1].i = c2.i;
@@ -239,7 +238,6 @@ L20:
 
     if (ido == -1)
     {
-
         /* ---------------------------------------------------------- */
         /*                           Perform                          */
         /* y <--- OP*x = Imaginary_Part{inv[A-(SIGMAR,SIGMAI)*M]*M*x} */
@@ -259,7 +257,7 @@ L20:
             i__3 = ipntr[1] + j - 2;
             z__1.r = workd[i__3], z__1.i = 0.;
             ctemp[i__2].r = z__1.r, ctemp[i__2].i = z__1.i;
-            /* L30: */
+
         }
 
         zgttrs_("N", &n, &c__1, cdl, cdd, cdu, cdu2, ipiv, ctemp, &c__256, &ierr);
@@ -274,7 +272,7 @@ L20:
         for (j = 1; j <= i__1; ++j)
         {
             workd[ipntr[1] + j - 2] = d_imag(&ctemp[j - 1]);
-            /* L40: */
+
         }
 
         /* --------------------------------------- */
@@ -282,11 +280,9 @@ L20:
         /* --------------------------------------- */
 
         goto L20;
-
     }
     else if (ido == 1)
     {
-
         /* ---------------------------------------------------------- */
         /*                          Perform                           */
         /* y <--- OP*x = Imaginary_Part{inv[A-(SIGMAR,SIGMAI)*M]*M*x} */
@@ -303,7 +299,7 @@ L20:
             i__3 = ipntr[2] + j - 2;
             z__1.r = workd[i__3], z__1.i = 0.;
             ctemp[i__2].r = z__1.r, ctemp[i__2].i = z__1.i;
-            /* L50: */
+
         }
         zgttrs_("N", &n, &c__1, cdl, cdd, cdu, cdu2, ipiv, ctemp, &c__256, &ierr);
         if (ierr != 0)
@@ -317,7 +313,7 @@ L20:
         for (j = 1; j <= i__1; ++j)
         {
             workd[ipntr[1] + j - 2] = d_imag(&ctemp[j - 1]);
-            /* L60: */
+
         }
 
         /* --------------------------------------- */
@@ -325,11 +321,9 @@ L20:
         /* --------------------------------------- */
 
         goto L20;
-
     }
     else if (ido == 2)
     {
-
         /* ------------------------------------------- */
         /*          Perform  y <--- M*x                */
         /* Need matrix vector multiplication routine   */
@@ -344,7 +338,6 @@ L20:
         /* --------------------------------------- */
 
         goto L20;
-
     }
 
     /* --------------------------------------- */
@@ -354,7 +347,6 @@ L20:
 
     if (info < 0)
     {
-
         /* ------------------------ */
         /* Error message, check the */
         /* documentation in DNAUPD. */
@@ -364,11 +356,9 @@ L20:
         printf(" Error with _naupd info = %d\n", info);
         printf(" Check the documentation of _naupd.\n");
         printf(" \n");
-
     }
     else
     {
-
         /* ----------------------------------------- */
         /* No fatal errors occurred.                 */
         /* Post-Process using DNEUPD.                */
@@ -396,7 +386,6 @@ L20:
 
         if (ierr != 0)
         {
-
             /* ---------------------------------- */
             /* Error condition:                   */
             /* Check the documentation of DNEUPD. */
@@ -410,13 +399,11 @@ L20:
         }
         else
         {
-
             first = true;
             nconv = iparam[4];
             i__1 = nconv;
             for (j = 1; j <= i__1; ++j)
             {
-
                 /* ----------------------------------- */
                 /* Use Rayleigh Quotient to recover    */
                 /* eigenvalues of the original problem.*/
@@ -424,7 +411,6 @@ L20:
 
                 if (d[j + 24] == 0.)
                 {
-
                     /* -------------------------- */
                     /* Eigenvalue is real.        */
                     /* Compute d = x'(Ax)/x'(Mx). */
@@ -435,11 +421,9 @@ L20:
                     dndrv6_mv_(&n, &v[(j << 8) - 256], ax);
                     denr = ddot_(&n, &v[(j << 8) - 256], &c__1, ax, &c__1);
                     d[j - 1] = numr / denr;
-
                 }
                 else if (first)
                 {
-
                     /* ---------------------- */
                     /* Eigenvalue is complex. */
                     /* Compute the first one  */
@@ -475,11 +459,9 @@ L20:
                     d[j - 1] = (numr * denr + numi * deni) / dlapy2_(&denr, &deni);
                     d[j + 24] = (numi * denr - numr * deni) / dlapy2_(&denr,&deni);
                     first = false;
-
                 }
                 else
                 {
-
                     /* ---------------------------- */
                     /* Get the second eigenvalue of */
                     /* the conjugate pair by taking */
@@ -490,10 +472,7 @@ L20:
                     d[j - 1] = d[j - 2];
                     d[j + 24] = -d[j + 23];
                     first = true;
-
                 }
-
-                /* L70: */
             }
 
             /* ------------------------- */
@@ -514,10 +493,8 @@ L20:
             i__1 = nconv;
             for (j = 1; j <= i__1; ++j)
             {
-
                 if (d[j + 24] == 0.)
                 {
-
                     /* ------------------ */
                     /* Ritz value is real */
                     /* ------------------ */
@@ -528,11 +505,9 @@ L20:
                     daxpy_(&n, &d__1, mx, &c__1, ax, &c__1);
                     d[j + 49] = dnrm2_(&n, ax, &c__1);
                     d[j + 49] /= (d__1 = d[j - 1], abs(d__1));
-
                 }
                 else if (first)
                 {
-
                     /* ---------------------- */
                     /* Ritz value is complex  */
                     /* Residual of one Ritz   */
@@ -564,8 +539,6 @@ L20:
                 {
                     first = true;
                 }
-
-                /* L80: */
             }
 
             /* --------------------------- */
@@ -607,7 +580,6 @@ L20:
         printf(" The number of OP*x is %d\n", iparam[8]);
         printf(" The convergence criterion is %e\n", tol);
         printf(" \n");
-
     }
 
     free(resid);
@@ -648,7 +620,6 @@ int dndrv6_mv_(int *n, double *v, double *w)
     for (j = 2; j <= i__1; ++j)
     {
         w[j] = v[j - 1] * 1. + v[j] * 4. + v[j + 1] * 1.;
-        /* L10: */
     }
     w[*n] = v[*n - 1] * 1. + v[*n] * 4.;
     return 0;
@@ -677,7 +648,6 @@ int dndrv6_av_(int *n, double *v, double *w)
     for (j = 2; j <= i__1; ++j)
     {
         w[j] = v[j - 1] * -2. + v[j] * 2. + v[j + 1] * 3.;
-        /* L10: */
     }
     w[*n] = v[*n - 1] * -2. + v[*n] * 2.;
     return 0;

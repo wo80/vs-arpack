@@ -440,7 +440,6 @@ int ssaupd_(int *ido, char *bmat, int *n, char *which, int *nev, float *tol,
     /* Function Body */
     if (*ido == 0)
     {
-
         /* ----------------------------- */
         /* Initialize timing statistics  */
         /* & message level for debugging */
@@ -571,7 +570,7 @@ int ssaupd_(int *ido, char *bmat, int *n, char *which, int *nev, float *tol,
         for (j = 1; j <= i__1; ++j)
         {
             workl[j] = 0.f;
-            /* L10: */
+
         }
 
         /* ----------------------------------------------------- */
@@ -662,7 +661,6 @@ int ssaupd_(int *ido, char *bmat, int *n, char *which, int *nev, float *tol,
 #ifndef NO_TRACE
     if (msglvl > 0)
     {
-
         printf("\n ============================================= ");
         printf("\n = Symmetric implicit Arnoldi update code    = ");
         printf("\n = Version Number:     %s                 = ", ARPACK_VERSION);

@@ -161,7 +161,6 @@ int dneigh_(double *rnorm, int *n, double *h,
     for (j = 1; j <= i__1; ++j)
     {
         bounds[j] = 0.;
-        /* L5: */
     }
     bounds[*n] = 1.;
     dlahqr_(&c_true, &c_true, n, &c__1, n, &workl[1], n, &ritzr[1], &ritzi[1],&c__1, &c__1, &bounds[1], &c__1, ierr);
@@ -209,7 +208,6 @@ int dneigh_(double *rnorm, int *n, double *h,
     {
         if ((d__1 = ritzi[i], abs(d__1)) <= 0.)
         {
-
             /* -------------------- */
             /* Real eigenvalue case */
             /* -------------------- */
@@ -220,7 +218,6 @@ int dneigh_(double *rnorm, int *n, double *h,
         }
         else
         {
-
             /* ----------------------------------------- */
             /* Complex conjugate pair case. Note that    */
             /* since the real and imaginary part of      */
@@ -245,7 +242,6 @@ int dneigh_(double *rnorm, int *n, double *h,
                 iconj = 0;
             }
         }
-        /* L10: */
     }
 
     dgemv_("T", n, n, &d_one, &q[q_offset], ldq, &bounds[1], &c__1, &d_zero, &workl[1], &c__1);
@@ -267,7 +263,6 @@ int dneigh_(double *rnorm, int *n, double *h,
     {
         if ((d__1 = ritzi[i], abs(d__1)) <= 0.)
         {
-
             /* -------------------- */
             /* Real eigenvalue case */
             /* -------------------- */
@@ -276,7 +271,6 @@ int dneigh_(double *rnorm, int *n, double *h,
         }
         else
         {
-
             /* ----------------------------------------- */
             /* Complex conjugate pair case. Note that    */
             /* since the real and imaginary part of      */
@@ -296,7 +290,6 @@ int dneigh_(double *rnorm, int *n, double *h,
                 iconj = 0;
             }
         }
-        /* L20: */
     }
 
 #ifndef NO_TRACE

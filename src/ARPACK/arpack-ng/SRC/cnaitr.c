@@ -269,7 +269,6 @@ int cnaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *nb,
 
     if (first)
     {
-
         /* --------------------------------------- */
         /* Set machine-dependent constants for the */
         /* the splitting and deflation criterion.  */
@@ -289,7 +288,6 @@ int cnaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *nb,
 
     if (*ido == 0)
     {
-
         /* ----------------------------- */
         /* Initialize timing statistics  */
         /* & message level for debugging */
@@ -462,7 +460,6 @@ L40:
     }
     else
     {
-
         /* --------------------------------------- */
         /* To scale both v_{j} and p_{j} carefully */
         /* use LAPACK routine clascl               */
@@ -808,7 +805,6 @@ L90:
 
     if (rnorm1 > *rnorm * .717f)
     {
-
         /* ------------------------------------- */
         /* No need for further refinement.       */
         /* The cosine of the angle between the   */
@@ -820,11 +816,9 @@ L90:
         /* ------------------------------------- */
 
         *rnorm = rnorm1;
-
     }
     else
     {
-
         /* ----------------------------------------- */
         /* Another step of iterative refinement step */
         /* is required. NITREF is used by stat.h     */
@@ -847,7 +841,7 @@ L90:
         {
             i__2 = jj;
             resid[i__2].r = 0.f, resid[i__2].i = 0.f;
-            /* L95: */
+
         }
         *rnorm = 0.f;
     }
@@ -884,7 +878,6 @@ L100:
         i__1 = *k + *np - 1;
         for (i = max(1,*k); i <= i__1; ++i)
         {
-
             /* ------------------------------------------ */
             /* Check for splitting and deflation.         */
             /* Use a standard test as in the QR algorithm */
@@ -913,7 +906,7 @@ L100:
                 i__3 = i + 1 + i * h_dim1;
                 h[i__3].r = 0.f, h[i__3].i = 0.f;
             }
-            /* L110: */
+
         }
 
 #ifndef NO_TRACE

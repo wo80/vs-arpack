@@ -201,7 +201,6 @@ int cneigh_(float *rnorm, int *n, complex *h, int *
         temp = scnrm2_(n, &q[j * q_dim1 + 1], &c__1);
         r__1 = 1.f / temp;
         csscal_(n, &r__1, &q[j * q_dim1 + 1], &c__1);
-        /* L10: */
     }
 
 #ifndef NO_TRACE

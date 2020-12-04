@@ -1,5 +1,6 @@
 /* EXAMPLES\COMPLEX\cndrv3.f -- translated by f2c (version 20100827). */
 
+#include <stdlib.h>
 #include "arpack.h"
 
 /**
@@ -150,7 +151,6 @@ int cndrv3()
         q__1.r = h.r * 1.f - h.i * 0.f, q__1.i = h.i * 1.f + h.r *
                  0.f;
         du[i__2].r = q__1.r, du[i__2].i = q__1.i;
-        /* L20: */
     }
     i__1 = n - 1;
     q__1.r = h.r * 4.f - h.i * 0.f, q__1.i = h.r * 0.f + h.i * 4.f;
@@ -218,7 +218,6 @@ L10:
 
     if (ido == -1 || ido == 1)
     {
-
         /* -------------------------------------- */
         /* Perform  y <--- OP*x = inv[M]*A*x      */
         /* The user should supply his/her own     */
@@ -244,11 +243,9 @@ L10:
         /* --------------------------------------- */
 
         goto L10;
-
     }
     else if (ido == 2)
     {
-
         /* ----------------------------------- */
         /*        Perform  y <--- M*x          */
         /* The matrix vector multiplication    */
@@ -264,7 +261,6 @@ L10:
         /* --------------------------------------- */
 
         goto L10;
-
     }
 
     /* --------------------------------------- */
@@ -274,7 +270,6 @@ L10:
 
     if (info < 0)
     {
-
         /* ------------------------ */
         /* Error message. Check the */
         /* documentation in CNAUPD. */
@@ -284,11 +279,9 @@ L10:
         printf(" Error with _naupd info = %d\n", info);
         printf(" Check the documentation of _naupd.\n");
         printf(" \n");
-
     }
     else
     {
-
         /* ----------------------------------------- */
         /* No fatal errors occurred.                 */
         /* Post-Process using CNEUPD.                */
@@ -316,7 +309,6 @@ L10:
 
         if (ierr != 0)
         {
-
             /* ---------------------------------- */
             /* Error condition:                   */
             /* Check the documentation of CNEUPD. */
@@ -330,12 +322,10 @@ L10:
         }
         else
         {
-
             nconv = iparam[4];
             i__1 = nconv;
             for (j = 1; j <= i__1; ++j)
             {
-
                 /* ------------------------- */
                 /* Compute the residual norm */
                 /*                           */
@@ -359,7 +349,7 @@ L10:
                 rd[j + 24] = r_imag(&d[j - 1]);
                 rd[j + 49] = scnrm2_(&n, ax, &c__1);
                 rd[j + 49] /= slapy2_(&rd[j - 1], &rd[j + 24]);
-                /* L80: */
+
             }
 
             /* --------------------------- */
@@ -401,7 +391,6 @@ L10:
         printf(" The number of OP*x is %d\n", iparam[8]);
         printf(" The convergence criterion is %e\n", tol);
         printf(" \n");
-
     }
 
     free(resid);
@@ -478,7 +467,6 @@ int cndrv3_av_(int *n, complex *v, complex *w)
                  .i + du.i * v[i__5].r;
         q__1.r = q__2.r + q__5.r, q__1.i = q__2.i + q__5.i;
         w[i__2].r = q__1.r, w[i__2].i = q__1.i;
-        /* L10: */
     }
     i__1 = *n;
     i__2 = *n - 1;
@@ -537,7 +525,6 @@ int cndrv3_mv_(int *n, complex *v, complex *w)
                  + v[i__5].r * 0.f;
         q__1.r = q__2.r + q__5.r, q__1.i = q__2.i + q__5.i;
         w[i__2].r = q__1.r, w[i__2].i = q__1.i;
-        /* L10: */
     }
     i__1 = *n;
     i__2 = *n - 1;

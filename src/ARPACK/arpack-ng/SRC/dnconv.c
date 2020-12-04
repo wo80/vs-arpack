@@ -122,7 +122,6 @@ int dnconv_(int *n, double *ritzr, double *ritzi,
         {
             ++(*nconv);
         }
-        /* L20: */
     }
 
 #ifndef NO_TIMER

@@ -127,7 +127,6 @@ int dsgets_(int *ishift, char *which, int *kev, int *np, double *ritz,
 
     if (strcmp(which, "BE") == 0)
     {
-
         /* --------------------------------------------------- */
         /* Both ends of the spectrum are requested.            */
         /* Sort the eigenvalues into algebraically increasing  */
@@ -147,11 +146,9 @@ int dsgets_(int *ishift, char *which, int *kev, int *np, double *ritz,
             i__1 = min(kevd2,*np);
             dswap_(&i__1, &bounds[1], &c__1, &bounds[max(kevd2,*np) + 1], &c__1);
         }
-
     }
     else
     {
-
         /* -------------------------------------------------- */
         /* LM, SM, LA, SA case.                               */
         /* Sort the eigenvalues of H into the desired order   */
@@ -166,7 +163,6 @@ int dsgets_(int *ishift, char *which, int *kev, int *np, double *ritz,
 
     if (*ishift == 1 && *np > 0)
     {
-
         /* ----------------------------------------------------- */
         /* Sort the unwanted Ritz values used as shifts so that  */
         /* the ones with largest Ritz estimates are first.       */

@@ -62,7 +62,6 @@ int ivout_(int *n, int *ix, int *idigit, char *ifmt)
 
     if (*idigit < 0)
     {
-
         ndigit = -(*idigit);
         if (ndigit <= 4)
         {
@@ -135,7 +134,6 @@ int ivout_(int *n, int *ix, int *idigit, char *ifmt)
     }
     else
     {
-
         if (ndigit <= 4)
         {
             i__1 = *n;

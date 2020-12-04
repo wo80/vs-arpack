@@ -412,7 +412,6 @@ int znaupd_(int *ido, char *bmat, int *n, char *which, int *nev, double *tol,
     /* Function Body */
     if (*ido == 0)
     {
-
         /* ----------------------------- */
         /* Initialize timing statistics  */
         /* & message level for debugging */
@@ -536,7 +535,7 @@ int znaupd_(int *ido, char *bmat, int *n, char *which, int *nev, double *tol,
         {
             i__2 = j;
             workl[i__2].r = 0., workl[i__2].i = 0.;
-            /* L10: */
+
         }
 
         /* ----------------------------------------------------------- */
@@ -632,7 +631,6 @@ int znaupd_(int *ido, char *bmat, int *n, char *which, int *nev, double *tol,
 #ifndef NO_TRACE
     if (msglvl > 0)
     {
-
         printf("\n ============================================= ");
         printf("\n = Complex implicit Arnoldi update code      = ");
         printf("\n = Version Number:     %s                 = ", ARPACK_VERSION);

@@ -1,5 +1,6 @@
 /* EXAMPLES\NONSYM\sndrv5.f -- translated by f2c (version 20100827). */
 
+#include <stdlib.h>
 #include "arpack.h"
 
 /**
@@ -165,7 +166,6 @@ int sndrv5()
         cdd[i__2].r = c2.r, cdd[i__2].i = c2.i;
         i__2 = j - 1;
         cdu[i__2].r = c3.r, cdu[i__2].i = c3.i;
-        /* L10: */
     }
     i__1 = n - 1;
     cdd[i__1].r = c2.r, cdd[i__1].i = c2.i;
@@ -232,7 +232,6 @@ L20:
 
     if (ido == -1)
     {
-
         /* ----------------------------------------------------- */
         /*                       Perform                         */
         /* y <--- OP*x = Real_Part{inv[A-(SIGMAR,SIGMAI)*M]*M*x} */
@@ -253,7 +252,7 @@ L20:
             i__3 = ipntr[1] + j - 2;
             q__1.r = workd[i__3], q__1.i = 0.f;
             ctemp[i__2].r = q__1.r, ctemp[i__2].i = q__1.i;
-            /* L30: */
+
         }
 
         cgttrs_("N", &n, &c__1, cdl, cdd, cdu, cdu2, ipiv, ctemp, &n, &ierr);
@@ -269,7 +268,7 @@ L20:
         {
             i__2 = j - 1;
             workd[ipntr[1] + j - 2] = ctemp[i__2].r;
-            /* L40: */
+
         }
 
         /* --------------------------------------- */
@@ -277,11 +276,9 @@ L20:
         /* --------------------------------------- */
 
         goto L20;
-
     }
     else if (ido == 1)
     {
-
         /* ----------------------------------------------------- */
         /*                        Perform                        */
         /* y <--- OP*x = Real_Part{inv[A-(SIGMAR,SIGMAI)*M]*M*x} */
@@ -298,7 +295,7 @@ L20:
             i__3 = ipntr[2] + j - 2;
             q__1.r = workd[i__3], q__1.i = 0.f;
             ctemp[i__2].r = q__1.r, ctemp[i__2].i = q__1.i;
-            /* L50: */
+
         }
         cgttrs_("N", &n, &c__1, cdl, cdd, cdu, cdu2, ipiv, ctemp, &n, &ierr);
         if (ierr != 0)
@@ -313,7 +310,7 @@ L20:
         {
             i__2 = j - 1;
             workd[ipntr[1] + j - 2] = ctemp[i__2].r;
-            /* L60: */
+
         }
 
         /* --------------------------------------- */
@@ -321,11 +318,9 @@ L20:
         /* --------------------------------------- */
 
         goto L20;
-
     }
     else if (ido == 2)
     {
-
         /* ------------------------------------------- */
         /*          Perform  y <--- M*x                */
         /* Need matrix vector multiplication routine   */
@@ -340,7 +335,6 @@ L20:
         /* --------------------------------------- */
 
         goto L20;
-
     }
 
     /* ---------------------------------------- */
@@ -350,7 +344,6 @@ L20:
 
     if (info < 0)
     {
-
         /* ------------------------ */
         /* Error message, check the */
         /* documentation in SNAUPD. */
@@ -360,11 +353,9 @@ L20:
         printf(" Error with _naupd info = %d\n", info);
         printf(" Check the documentation of _naupd.\n");
         printf(" \n");
-
     }
     else
     {
-
         /* ----------------------------------------- */
         /* No fatal errors occurred.                 */
         /* Post-Process using SNEUPD.                */
@@ -392,7 +383,6 @@ L20:
 
         if (ierr != 0)
         {
-
             /* ---------------------------------- */
             /* Error condition:                   */
             /* Check the documentation of SNEUPD. */
@@ -407,13 +397,11 @@ L20:
         }
         else
         {
-
             first = true;
             nconv = iparam[4];
             i__1 = nconv;
             for (j = 1; j <= i__1; ++j)
             {
-
                 /* ----------------------------------- */
                 /* Use Rayleigh Quotient to recover    */
                 /* eigenvalues of the original problem.*/
@@ -421,7 +409,6 @@ L20:
 
                 if (d[j + 24] == 0.f)
                 {
-
                     /* ------------------------- */
                     /*    Eigenvalue is real.    */
                     /* Compute d = x'(Ax)/x'(Mx).*/
@@ -432,11 +419,9 @@ L20:
                     sndrv5_mv_(&n, &v[(j << 8) - 256], ax);
                     denr = sdot_(&n, &v[(j << 8) - 256], &c__1, ax, &c__1);
                     d[j - 1] = numr / denr;
-
                 }
                 else if (first)
                 {
-
                     /* ---------------------- */
                     /* Eigenvalue is complex. */
                     /* Compute the first one  */
@@ -471,11 +456,9 @@ L20:
                     d[j - 1] = (numr * denr + numi * deni) / slapy2_(&denr, &deni);
                     d[j + 24] = (numi * denr - numr * deni) / slapy2_(&denr,&deni);
                     first = false;
-
                 }
                 else
                 {
-
                     /* ---------------------------- */
                     /* Get the second eigenvalue of */
                     /* the conjugate pair by taking */
@@ -486,10 +469,7 @@ L20:
                     d[j - 1] = d[j - 2];
                     d[j + 24] = -d[j + 23];
                     first = true;
-
                 }
-
-                /* L70: */
             }
 
             /* ------------------------- */
@@ -509,10 +489,8 @@ L20:
             i__1 = nconv;
             for (j = 1; j <= i__1; ++j)
             {
-
                 if (d[j + 24] == 0.f)
                 {
-
                     /* ------------------ */
                     /* Ritz value is real */
                     /* ------------------ */
@@ -523,11 +501,9 @@ L20:
                     saxpy_(&n, &r__1, mx, &c__1, ax, &c__1);
                     d[j + 49] = snrm2_(&n, ax, &c__1);
                     d[j + 49] /= (r__1 = d[j - 1], dabs(r__1));
-
                 }
                 else if (first)
                 {
-
                     /* ---------------------- */
                     /* Ritz value is complex  */
                     /* Residual of one Ritz   */
@@ -559,8 +535,6 @@ L20:
                 {
                     first = true;
                 }
-
-                /* L80: */
             }
 
             /* --------------------------- */
@@ -602,7 +576,6 @@ L20:
         printf(" The number of OP*x is %d\n", iparam[8]);
         printf(" The convergence criterion is %e\n", tol);
         printf(" \n");
-
     }
 
     free(resid);
@@ -643,7 +616,6 @@ int sndrv5_mv_(int *n, float *v, float *w)
     for (j = 2; j <= i__1; ++j)
     {
         w[j] = v[j - 1] * 1.f + v[j] * 4.f + v[j + 1] * 1.f;
-        /* L10: */
     }
     w[*n] = v[*n - 1] * 1.f + v[*n] * 4.f;
     return 0;
@@ -672,7 +644,6 @@ int sndrv5_av_(int *n, float *v, float *w)
     for (j = 2; j <= i__1; ++j)
     {
         w[j] = v[j - 1] * -2.f + v[j] * 2.f + v[j + 1] * 3.f;
-        /* L10: */
     }
     w[*n] = v[*n - 1] * -2.f + v[*n] * 2.f;
     return 0;

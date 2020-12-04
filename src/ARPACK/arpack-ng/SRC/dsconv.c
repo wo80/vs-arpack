@@ -96,7 +96,6 @@ int dsconv_(int *n, double *ritz, double *bounds,
     i__1 = *n;
     for (i = 1; i <= i__1; ++i)
     {
-
         /* --------------------------------------------------- */
         /* The i-th Ritz value is considered "converged"       */
         /* when: bounds(i) .le. TOL*max(eps23, abs(ritz(i)))   */
@@ -109,8 +108,6 @@ int dsconv_(int *n, double *ritz, double *bounds,
         {
             ++(*nconv);
         }
-
-        /* L10: */
     }
 
 #ifndef NO_TIMER

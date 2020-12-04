@@ -223,7 +223,6 @@ int dsapps_(int *n, int *kev, int *np,
     i__1 = *np;
     for (jj = 1; jj <= i__1; ++jj)
     {
-
         istart = itop;
 
         /* -------------------------------------------------------- */
@@ -262,14 +261,13 @@ L20:
                 iend = i;
                 goto L40;
             }
-            /* L30: */
+
         }
         iend = kplusp;
 L40:
 
         if (istart < iend)
         {
-
             /* ------------------------------------------------------ */
             /* Construct the plane rotation G'(istart,istart+1,theta) */
             /* that attempts to drive h(istart+1,1) to zero.          */
@@ -311,7 +309,7 @@ L40:
                 q[j + (istart + 1) * q_dim1] = -s * q[j + istart * q_dim1] +
                                                c * q[j + (istart + 1) * q_dim1];
                 q[j + istart * q_dim1] = a1;
-                /* L60: */
+
             }
 
             /* -------------------------------------------- */
@@ -327,7 +325,6 @@ L40:
             i__2 = iend - 1;
             for (i = istart + 1; i <= i__2; ++i)
             {
-
                 /* -------------------------------------------- */
                 /* Construct the plane rotation G'(i,i+1,theta) */
                 /* that zeros the i-th bulge that was created   */
@@ -391,10 +388,7 @@ L40:
                     q[j + (i + 1) * q_dim1] = -s * q[j + i * q_dim1] +
                                               c * q[j + (i + 1) * q_dim1];
                     q[j + i * q_dim1] = a1;
-                    /* L50: */
                 }
-
-                /* L70: */
             }
 
         }
@@ -440,7 +434,7 @@ L40:
                 goto L90;
             }
             ++itop;
-            /* L80: */
+
         }
 
         /* --------------------------------- */
@@ -474,7 +468,6 @@ L90:
 
             h[i + 1 + h_dim1] = 0.;
         }
-        /* L100: */
     }
 
     /* ----------------------------------------------- */
@@ -501,7 +494,6 @@ L90:
         i__2 = kplusp - i + 1;
         dgemv_("N", n, &i__2, &d_one, &v[v_offset], ldv, &q[(*kev - i + 1) * q_dim1 + 1], &c__1, &d_zero, &workd[1], &c__1);
         dcopy_(n, &workd[1], &c__1, &v[(kplusp - i + 1) * v_dim1 + 1], &c__1);
-        /* L130: */
     }
 
     /* ----------------------------------------------- */
@@ -512,7 +504,6 @@ L90:
     for (i = 1; i <= i__1; ++i)
     {
         dcopy_(n, &v[(*np + i) * v_dim1 + 1], &c__1, &v[i * v_dim1 + 1], &c__1);
-        /* L140: */
     }
 
     /* ------------------------------------------ */

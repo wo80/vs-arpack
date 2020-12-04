@@ -1,5 +1,6 @@
 /* EXAMPLES\COMPLEX\cndrv2.f -- translated by f2c (version 20100827). */
 
+#include <stdlib.h>
 #include "arpack.h"
 
 struct
@@ -176,7 +177,6 @@ int cndrv2()
         dd[i__2].r = s2.r, dd[i__2].i = s2.i;
         i__2 = j - 1;
         du[i__2].r = s3.r, du[i__2].i = s3.i;
-        /* L10: */
     }
     i__1 = n - 1;
     dd[i__1].r = s2.r, dd[i__1].i = s2.i;
@@ -243,7 +243,6 @@ L20:
 
     if (ido == -1 || ido == 1)
     {
-
         /* ----------------------------------------- */
         /* Perform  y <--- OP*x = inv[A-SIGMA*I]*x   */
         /* The user should supply his/her own linear */
@@ -268,7 +267,6 @@ L20:
         /* --------------------------------------- */
 
         goto L20;
-
     }
 
     /* --------------------------------------- */
@@ -278,7 +276,6 @@ L20:
 
     if (info < 0)
     {
-
         /* ------------------------ */
         /* Error message, check the */
         /* documentation in CNAUPD  */
@@ -288,11 +285,9 @@ L20:
         printf(" Error with _naupd info = %d\n", info);
         printf(" Check the documentation in _naupd.\n");
         printf(" \n");
-
     }
     else
     {
-
         /* ----------------------------------------- */
         /* No fatal errors occurred.                 */
         /* Post-Process using CNEUPD.                */
@@ -320,7 +315,6 @@ L20:
 
         if (ierr != 0)
         {
-
             /* ---------------------------------- */
             /* Error condition:                   */
             /* Check the documentation of CNEUPD. */
@@ -333,12 +327,10 @@ L20:
         }
         else
         {
-
             nconv = iparam[4];
             i__1 = nconv;
             for (j = 1; j <= i__1; ++j)
             {
-
                 /* ------------------------- */
                 /* Compute the residual norm */
                 /*                           */
@@ -361,7 +353,7 @@ L20:
                 rd[j + 24] = r_imag(&d[j - 1]);
                 rd[j + 49] = scnrm2_(&n, ax, &c__1);
                 rd[j + 49] /= slapy2_(&rd[j - 1], &rd[j + 24]);
-                /* L60: */
+
             }
 
             /* --------------------------- */
@@ -403,7 +395,6 @@ L20:
         printf(" The number of OP*x is %d\n", iparam[8]);
         printf(" The convergence criterion is %e\n", tol);
         printf(" \n");
-
     }
 
     free(resid);
@@ -485,7 +476,6 @@ int cndrv2_av_(int *n, complex *v, complex *w)
                  .i + du.i * v[i__5].r;
         q__1.r = q__2.r + q__5.r, q__1.i = q__2.i + q__5.i;
         w[i__2].r = q__1.r, w[i__2].i = q__1.i;
-        /* L10: */
     }
     i__1 = *n;
     i__2 = *n - 1;

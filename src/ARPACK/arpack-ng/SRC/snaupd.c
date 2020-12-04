@@ -442,7 +442,6 @@ int snaupd_(int *ido, char *bmat, int *n, char *which, int *nev, float *tol,
     /* Function Body */
     if (*ido == 0)
     {
-
         /* ----------------------------- */
         /* Initialize timing statistics  */
         /* & message level for debugging */
@@ -565,7 +564,7 @@ int snaupd_(int *ido, char *bmat, int *n, char *which, int *nev, float *tol,
         for (j = 1; j <= i__1; ++j)
         {
             workl[j] = 0.f;
-            /* L10: */
+
         }
 
         /* ----------------------------------------------------------- */
@@ -603,7 +602,6 @@ int snaupd_(int *ido, char *bmat, int *n, char *which, int *nev, float *tol,
         ipntr[7] = ritzi;
         ipntr[8] = bounds;
         ipntr[14] = iw;
-
     }
 
     /* ----------------------------------------------------- */
@@ -665,7 +663,6 @@ int snaupd_(int *ido, char *bmat, int *n, char *which, int *nev, float *tol,
 #ifndef NO_TRACE
     if (msglvl > 0)
     {
-
         printf("\n ============================================= ");
         printf("\n = Nonsymmetric implicit Arnoldi update code = ");
         printf("\n = Version Number:     %s                 = ", ARPACK_VERSION);

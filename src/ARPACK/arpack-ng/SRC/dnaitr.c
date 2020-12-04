@@ -267,7 +267,6 @@ int dnaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *nb,
 
     if (first)
     {
-
         /* --------------------------------------- */
         /* Set machine-dependent constants for the */
         /* the splitting and deflation criterion.  */
@@ -286,7 +285,6 @@ int dnaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *nb,
 
     if (*ido == 0)
     {
-
         /* ----------------------------- */
         /* Initialize timing statistics  */
         /* & message level for debugging */
@@ -459,7 +457,6 @@ L40:
     }
     else
     {
-
         /* --------------------------------------- */
         /* To scale both v_{j} and p_{j} carefully */
         /* use LAPACK routine SLASCL               */
@@ -791,7 +788,6 @@ L90:
 
     if (rnorm1 > *rnorm * .717f)
     {
-
         /* ------------------------------------- */
         /* No need for further refinement.       */
         /* The cosine of the angle between the   */
@@ -803,11 +799,9 @@ L90:
         /* ------------------------------------- */
 
         *rnorm = rnorm1;
-
     }
     else
     {
-
         /* ----------------------------------------- */
         /* Another step of iterative refinement step */
         /* is required. NITREF is used by stat.h     */
@@ -829,7 +823,7 @@ L90:
         for (jj = 1; jj <= i__1; ++jj)
         {
             resid[jj] = 0.;
-            /* L95: */
+
         }
         *rnorm = 0.;
     }
@@ -866,7 +860,6 @@ L100:
         i__1 = *k + *np - 1;
         for (i = max(1,*k); i <= i__1; ++i)
         {
-
             /* ------------------------------------------ */
             /* Check for splitting and deflation.         */
             /* Use a standard test as in the QR algorithm */
@@ -887,7 +880,7 @@ L100:
             {
                 h[i + 1 + i * h_dim1] = 0.;
             }
-            /* L110: */
+
         }
 
 #ifndef NO_TRACE

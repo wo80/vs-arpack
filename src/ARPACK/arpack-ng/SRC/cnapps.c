@@ -194,7 +194,6 @@ int cnapps_(int *n, int *kev, int *np, complex *
 
     if (first)
     {
-
         /* --------------------------------------------- */
         /* Set machine-dependent constants for the       */
         /* stopping criterion. If norm(H) <= sqrt(OVFL), */
@@ -266,7 +265,6 @@ L20:
         i__2 = kplusp - 1;
         for (i = istart; i <= i__2; ++i)
         {
-
             /* -------------------------------------- */
             /* Check for splitting and deflation. Use */
             /* a standard test as in the QR algorithm */
@@ -303,7 +301,7 @@ L20:
                 h[i__3].r = 0.f, h[i__3].i = 0.f;
                 goto L40;
             }
-            /* L30: */
+
         }
         iend = kplusp;
 L40:
@@ -338,7 +336,6 @@ L40:
         i__2 = iend - 1;
         for (i = istart; i <= i__2; ++i)
         {
-
             /* ---------------------------------------------------- */
             /* Construct the plane rotation G to zero out the bulge */
             /* ---------------------------------------------------- */
@@ -378,7 +375,7 @@ L40:
                 h[i__4].r = q__1.r, h[i__4].i = q__1.i;
                 i__4 = i + j * h_dim1;
                 h[i__4].r = t.r, h[i__4].i = t.i;
-                /* L50: */
+
             }
 
             /* ------------------------------------------- */
@@ -409,7 +406,7 @@ L40:
                 h[i__4].r = q__1.r, h[i__4].i = q__1.i;
                 i__4 = j + i * h_dim1;
                 h[i__4].r = t.r, h[i__4].i = t.i;
-                /* L60: */
+
             }
 
             /* --------------------------------------------------- */
@@ -440,7 +437,7 @@ L40:
                 q[i__4].r = q__1.r, q[i__4].i = q__1.i;
                 i__4 = j + i * q_dim1;
                 q[i__4].r = t.r, q[i__4].i = t.i;
-                /* L70: */
+
             }
 
             /* ------------------------- */
@@ -454,7 +451,7 @@ L40:
                 i__3 = i + 2 + i * h_dim1;
                 g.r = h[i__3].r, g.i = h[i__3].i;
             }
-            /* L80: */
+
         }
 
         /* ----------------------------- */
@@ -477,7 +474,6 @@ L100:
         /* Loop back to the top to get the next shift. */
         /* ------------------------------------------- */
 
-        /* L110: */
     }
 
     /* ------------------------------------------------- */
@@ -516,13 +512,11 @@ L100:
             q__1.r = r__1, q__1.i = 0.f;
             h[i__2].r = q__1.r, h[i__2].i = q__1.i;
         }
-        /* L120: */
     }
 
     i__1 = *kev;
     for (i = 1; i <= i__1; ++i)
     {
-
         /* ------------------------------------------ */
         /* Final check for splitting and deflation.   */
         /* Use a standard test as in the QR algorithm */
@@ -550,7 +544,6 @@ L100:
             i__3 = i + 1 + i * h_dim1;
             h[i__3].r = 0.f, h[i__3].i = 0.f;
         }
-        /* L130: */
     }
 
     /* ----------------------------------------------- */
@@ -578,7 +571,6 @@ L100:
         i__2 = kplusp - i + 1;
         cgemv_("N", n, &i__2, &c_one, &v[v_offset], ldv, &q[(*kev - i + 1) * q_dim1 + 1], &c__1, &c_zero, &workd[1], &c__1);
         ccopy_(n, &workd[1], &c__1, &v[(kplusp - i + 1) * v_dim1 + 1], &c__1);
-        /* L140: */
     }
 
     /* ----------------------------------------------- */
@@ -622,7 +614,6 @@ L100:
         {
             cmout_(kev, kev, &h[h_offset], ldh, &debug_1.ndigit, "_napps: updated Hessenberg matrix H for next iteration");
         }
-
     }
 #endif
 

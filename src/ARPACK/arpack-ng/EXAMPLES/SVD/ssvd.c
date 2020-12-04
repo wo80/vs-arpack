@@ -1,5 +1,6 @@
 /* EXAMPLES\SVD\ssvd.f -- translated by f2c (version 20100827). */
 
+#include <stdlib.h>
 #include "arpack.h"
 
 /**
@@ -315,7 +316,6 @@ L10:
 
     if (ido == -1 || ido == 1)
     {
-
         /* ------------------------------------- */
         /* Perform matrix vector multiplications */
         /*              w <--- A*x       (av())  */
@@ -335,7 +335,6 @@ L10:
         /* --------------------------------------- */
 
         goto L10;
-
     }
 
     /* -------------------------------------- */
@@ -345,7 +344,6 @@ L10:
 
     if (info < 0)
     {
-
         /* ------------------------ */
         /* Error message. Check the */
         /* documentation in SSAUPD. */
@@ -355,11 +353,9 @@ L10:
         printf(" Error with _saupd info = %d\n", info);
         printf(" Check documentation in _saupd \n");
         printf(" \n");
-
     }
     else
     {
-
         /* ------------------------------------------ */
         /* No fatal errors occurred.                  */
         /* Post-Process using SSEUPD.                 */
@@ -387,7 +383,6 @@ L10:
 
         if (ierr != 0)
         {
-
             /* ---------------------------------- */
             /* Error condition:                   */
             /* Check the documentation of SSEUPD. */
@@ -401,12 +396,10 @@ L10:
         }
         else
         {
-
             nconv = iparam[4];
             i__1 = nconv;
             for (j = 1; j <= i__1; ++j)
             {
-
                 s[j - 1] = sqrt(s[j - 1]);
 
                 /* --------------------------- */
@@ -444,7 +437,6 @@ L10:
                 saxpy_(&m, &r__1, &u[j * 500 - 500], &c__1, ax, &c__1);
                 s[j + 24] = snrm2_(&m, ax, &c__1);
 
-                /* L20: */
             }
 
             /* ----------------------------- */
@@ -485,7 +477,6 @@ L10:
         printf(" The number of OP*x is %d\n", iparam[8]);
         printf(" The convergence criterion is %e\n", tol);
         printf(" \n");
-
     }
 
     /* ----------------------- */
@@ -541,7 +532,6 @@ int ssvd_av_(int *m, int *n, float *x, float *w)
     for (i = 1; i <= i__1; ++i)
     {
         w[i] = 0.f;
-        /* L5: */
     }
     t = 0.f;
 
@@ -555,16 +545,15 @@ int ssvd_av_(int *m, int *n, float *x, float *w)
         {
             s += h;
             w[i] += k * s * (t - 1.f) * x[j];
-            /* L10: */
+
         }
         i__2 = *m;
         for (i = j + 1; i <= i__2; ++i)
         {
             s += h;
             w[i] += k * t * (s - 1.f) * x[j];
-            /* L20: */
+
         }
-        /* L30: */
     }
 
     return 0;
@@ -595,7 +584,6 @@ int ssvd_atv_(int *m, int *n, float *w, float *y)
     for (i = 1; i <= i__1; ++i)
     {
         y[i] = 0.f;
-        /* L5: */
     }
     t = 0.f;
 
@@ -609,16 +597,15 @@ int ssvd_atv_(int *m, int *n, float *w, float *y)
         {
             s += h;
             y[j] += k * s * (t - 1.f) * w[i];
-            /* L10: */
+
         }
         i__2 = *m;
         for (i = j + 1; i <= i__2; ++i)
         {
             s += h;
             y[j] += k * t * (s - 1.f) * w[i];
-            /* L20: */
+
         }
-        /* L30: */
     }
 
     return 0;

@@ -158,7 +158,6 @@ int dseigt_(double *rnorm, int *n, double *h,
     for (k = 1; k <= i__1; ++k)
     {
         bounds[k] = *rnorm * (d__1 = bounds[k], abs(d__1));
-        /* L30: */
     }
 
 #ifndef NO_TIMER

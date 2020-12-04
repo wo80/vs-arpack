@@ -171,7 +171,6 @@ int dsdrv3()
     {
         ad[j - 1] = r1;
         adl[j - 1] = r2;
-        /* L20: */
     }
     dcopy_(&n, adl, &c__1, adu, &c__1);
     dgttrf_(&n, adl, ad, adu, adu2, ipiv, &ierr);
@@ -200,7 +199,6 @@ L10:
 
     if (ido == -1 || ido == 1)
     {
-
         /* ------------------------------------ */
         /* Perform  y <--- OP*x = inv[M]*A*x.   */
         /* The user should supply his/her own   */
@@ -230,11 +228,9 @@ L10:
         /* --------------------------------------- */
 
         goto L10;
-
     }
     else if (ido == 2)
     {
-
         /* --------------------------------------- */
         /*         Perform  y <--- M*x.            */
         /* Need the matrix vector multiplication   */
@@ -250,7 +246,6 @@ L10:
         /* --------------------------------------- */
 
         goto L10;
-
     }
 
     /* --------------------------------------- */
@@ -260,7 +255,6 @@ L10:
 
     if (info < 0)
     {
-
         /* ------------------------ */
         /* Error message, check the */
         /* documentation in DSAUPD   */
@@ -270,11 +264,9 @@ L10:
         printf(" Error with _saupd info = %d\n", info);
         printf(" Check the documentation of _saupd \n");
         printf(" \n");
-
     }
     else
     {
-
         /* ----------------------------------------- */
         /* No fatal errors occurred.                 */
         /* Post-Process using DSEUPD .                */
@@ -302,7 +294,6 @@ L10:
 
         if (ierr != 0)
         {
-
             /* ---------------------------------- */
             /* Error condition:                   */
             /* Check the documentation of DSEUPD . */
@@ -316,12 +307,10 @@ L10:
         }
         else
         {
-
             nconv = iparam[4];
             i__1 = nconv;
             for (j = 1; j <= i__1; ++j)
             {
-
                 /* ------------------------- */
                 /* Compute the residual norm */
                 /*                           */
@@ -342,7 +331,6 @@ L10:
                 d[j + 24] = dnrm2_(&n, ax, &c__1);
                 d[j + 24] /= (d__1 = d[j - 1], abs(d__1));
 
-                /* L30: */
             }
 
             /* --------------------------- */
@@ -383,7 +371,6 @@ L10:
         printf(" The number of OP*x is %d\n", iparam[8]);
         printf(" The convergence criterion is %e\n", tol);
         printf(" \n");
-
     }
 
     free(resid);
@@ -422,7 +409,6 @@ int dsdrv3_mv_(int *n, double *v, double *w)
     for (j = 2; j <= i__1; ++j)
     {
         w[j] = v[j - 1] + v[j] * 4. + v[j + 1];
-        /* L100: */
     }
     j = *n;
     w[j] = v[j - 1] + v[j] * 4.;
@@ -462,7 +448,6 @@ int dsdrv3_av_(int *n, double *v, double *w)
     for (j = 2; j <= i__1; ++j)
     {
         w[j] = -v[j - 1] + v[j] * 2. - v[j + 1];
-        /* L100: */
     }
     j = *n;
     w[j] = -v[j - 1] + v[j] * 2.;

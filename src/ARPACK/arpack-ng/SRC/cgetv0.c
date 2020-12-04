@@ -176,7 +176,6 @@ int cgetv0_(int *ido, char *bmat, int *itry, bool *initv, int *n, int *j,
 
     if (*ido == 0)
     {
-
         /* ----------------------------- */
         /* Initialize timing statistics  */
         /* & message level for debugging */
@@ -402,7 +401,6 @@ L40:
     ++iter;
     if (iter <= 1)
     {
-
         /* --------------------------------- */
         /* Perform iterative refinement step */
         /* --------------------------------- */
@@ -412,7 +410,6 @@ L40:
     }
     else
     {
-
         /* ---------------------------------- */
         /* Iterative refinement step "failed" */
         /* ---------------------------------- */
@@ -422,7 +419,7 @@ L40:
         {
             i__2 = jj;
             resid[i__2].r = 0.f, resid[i__2].i = 0.f;
-            /* L45: */
+
         }
         *rnorm = 0.f;
         *ierr = -1;

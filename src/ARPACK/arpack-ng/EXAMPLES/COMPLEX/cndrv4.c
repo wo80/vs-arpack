@@ -1,5 +1,6 @@
 /* EXAMPLES\COMPLEX\cndrv4.f -- translated by f2c (version 20100827). */
 
+#include <stdlib.h>
 #include "arpack.h"
 
 struct
@@ -191,7 +192,6 @@ int cndrv4()
         dd[i__2].r = s2.r, dd[i__2].i = s2.i;
         i__2 = j - 1;
         du[i__2].r = s3.r, du[i__2].i = s3.i;
-        /* L10: */
     }
     i__1 = n - 1;
     dd[i__1].r = s2.r, dd[i__1].i = s2.i;
@@ -258,7 +258,6 @@ L20:
 
     if (ido == -1)
     {
-
         /* ----------------------------------------- */
         /* Perform  y <--- OP*x = inv[A-SIGMA*M]*M*x */
         /* to force starting vector into the range   */
@@ -286,11 +285,9 @@ L20:
         /* --------------------------------------- */
 
         goto L20;
-
     }
     else if (ido == 1)
     {
-
         /* --------------------------------------- */
         /* Perform y <-- OP*x = inv[A-sigma*M]*M*x */
         /* M*x has been saved in workd(ipntr(3)).  */
@@ -315,11 +312,9 @@ L20:
         /* --------------------------------------- */
 
         goto L20;
-
     }
     else if (ido == 2)
     {
-
         /* ------------------------------------------- */
         /*          Perform  y <--- M*x                */
         /* Need matrix vector multiplication routine   */
@@ -334,7 +329,6 @@ L20:
         /* --------------------------------------- */
 
         goto L20;
-
     }
 
     /* --------------------------------------- */
@@ -344,7 +338,6 @@ L20:
 
     if (info < 0)
     {
-
         /* -------------------------- */
         /*  Error message, check the  */
         /*  documentation in CNAUPD   */
@@ -354,11 +347,9 @@ L20:
         printf(" Error with _naupd info = %d\n", info);
         printf(" Check the documentation of _naupd.\n");
         printf(" \n");
-
     }
     else
     {
-
         /* ----------------------------------------- */
         /* No fatal errors occurred.                 */
         /* Post-Process using CNEUPD.                */
@@ -386,7 +377,6 @@ L20:
 
         if (ierr != 0)
         {
-
             /* ---------------------------------- */
             /* Error condition:                   */
             /* Check the documentation of CNEUPD. */
@@ -400,12 +390,10 @@ L20:
         }
         else
         {
-
             nconv = iparam[4];
             i__1 = nconv;
             for (j = 1; j <= i__1; ++j)
             {
-
                 cndrv4_av_(&n, &v[(j << 8) - 256], ax);
                 cndrv4_mv_(&n, &v[(j << 8) - 256], mx);
                 i__2 = j - 1;
@@ -416,7 +404,7 @@ L20:
                 rd[j + 24] = r_imag(&d[j - 1]);
                 rd[j + 49] = scnrm2_(&n, ax, &c__1);
                 rd[j + 49] /= slapy2_(&rd[j - 1], &rd[j + 24]);
-                /* L80: */
+
             }
 
             /* --------------------------- */
@@ -458,7 +446,6 @@ L20:
         printf(" The number of OP*x is %d\n", iparam[8]);
         printf(" The convergence criterion is %e\n", tol);
         printf(" \n");
-
     }
 
     free(resid);
@@ -519,7 +506,6 @@ int cndrv4_mv_(int *n, complex *v, complex *w)
         q__2.r = q__3.r + q__6.r, q__2.i = q__3.i + q__6.i;
         c_div(&q__1, &q__2, &c_b5);
         w[i__2].r = q__1.r, w[i__2].i = q__1.i;
-        /* L40: */
     }
     i__1 = *n;
     i__2 = *n - 1;
@@ -599,7 +585,6 @@ int cndrv4_av_(int *n, complex *v, complex *w)
                  .i + du.i * v[i__5].r;
         q__1.r = q__2.r + q__5.r, q__1.i = q__2.i + q__5.i;
         w[i__2].r = q__1.r, w[i__2].i = q__1.i;
-        /* L40: */
     }
     i__1 = *n;
     i__2 = *n - 1;

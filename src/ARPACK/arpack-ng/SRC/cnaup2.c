@@ -273,7 +273,6 @@ int cnaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
 
         if (*info != 0)
         {
-
             /* ------------------------------------------ */
             /* User provides the initial residual vector. */
             /* ------------------------------------------ */
@@ -292,7 +291,6 @@ int cnaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
     /* force it into the range of the operator OP. */
     /* ------------------------------------------- */
 
-    /* L10: */
 
     if (getv0)
     {
@@ -305,7 +303,6 @@ int cnaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
 
         if (rnorm == 0.f)
         {
-
             /* --------------------------------------- */
             /* The initial vector is zero. Error exit. */
             /* --------------------------------------- */
@@ -504,7 +501,6 @@ L20:
         {
             ++nconv;
         }
-        /* L25: */
     }
 
 #ifndef NO_TRACE
@@ -539,7 +535,6 @@ L20:
             --(*np);
             ++(*nev);
         }
-        /* L30: */
     }
 
     if (nconv >= nev0 || iter > *mxiter || *np == 0)
@@ -624,7 +619,7 @@ L20:
             i__3 = j;
             q__1.r = bounds[i__3].r / rtemp, q__1.i = bounds[i__3].i / rtemp;
             bounds[i__2].r = q__1.r, bounds[i__2].i = q__1.i;
-            /* L35: */
+
         }
 
         /* ------------------------------------------------- */
@@ -655,7 +650,7 @@ L20:
             i__3 = j;
             q__1.r = rtemp * bounds[i__3].r, q__1.i = rtemp * bounds[i__3].i;
             bounds[i__2].r = q__1.r, bounds[i__2].i = q__1.i;
-            /* L40: */
+
         }
 
         /* --------------------------------------------- */
@@ -694,11 +689,9 @@ L20:
 
         *np = nconv;
         goto L1100;
-
     }
     else if (nconv < nev0 && *ishift == 1)
     {
-
         /* ----------------------------------------------- */
         /* Do not have all the requested eigenvalues yet.  */
         /* To prevent possible stagnation, adjust the size */
@@ -728,7 +721,6 @@ L20:
         {
             cngets_(ishift, which, nev, np, &ritz[1], &bounds[1]);
         }
-
     }
 
 #ifndef NO_TRACE
@@ -748,7 +740,6 @@ L20:
 
     if (*ishift == 0)
     {
-
         /* ----------------------------------------------------- */
         /* User specified shifts: pop back out to get the shifts */
         /* and return them in the first 2*NP locations of WORKL. */
@@ -763,7 +754,6 @@ L50:
 
     if (*ishift != 1)
     {
-
         /* -------------------------------- */
         /* Move the NP shifts from WORKL to */
         /* RITZ, to free up WORKL           */

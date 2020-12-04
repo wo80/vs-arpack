@@ -1,5 +1,6 @@
 /* EXAMPLES\SYM\ssdrv2.f -- translated by f2c (version 20100827). */
 
+#include <stdlib.h>
 #include "arpack.h"
 
 /**
@@ -163,7 +164,6 @@ int ssdrv2()
     {
         ad[j - 1] = 2.f / h2 - sigma;
         adl[j - 1] = -1.f / h2;
-        /* L20: */
     }
     scopy_(&n, adl, &c__1, adu, &c__1);
     sgttrf_(&n, adl, ad, adu, adu2, ipiv, &ierr);
@@ -192,7 +192,6 @@ L10:
 
     if (ido == -1 || ido == 1)
     {
-
         /* -------------------------------------- */
         /* Perform y <-- OP*x = inv[A-sigma*I]*x. */
         /* The user only need the linear system   */
@@ -217,7 +216,6 @@ L10:
         /* --------------------------------------- */
 
         goto L10;
-
     }
 
     /* -------------------------------------- */
@@ -227,7 +225,6 @@ L10:
 
     if (info < 0)
     {
-
         /* -------------------------- */
         /* Error message.  Check the  */
         /* documentation in SSAUPD    */
@@ -237,11 +234,9 @@ L10:
         printf(" Error with _saupd info = %d\n", info);
         printf(" Check documentation of _saupd \n");
         printf(" \n");
-
     }
     else
     {
-
         /* ----------------------------------------- */
         /* No fatal errors occurred.                 */
         /* Post-Process using SSEUPD.                */
@@ -268,7 +263,6 @@ L10:
         /* -------------------------------------------- */
         if (ierr != 0)
         {
-
             /* ---------------------------------- */
             /* Error condition:                   */
             /* Check the documentation of SSEUPD. */
@@ -282,12 +276,10 @@ L10:
         }
         else
         {
-
             nconv = iparam[4];
             i__1 = nconv;
             for (j = 1; j <= i__1; ++j)
             {
-
                 /* ------------------------- */
                 /* Compute the residual norm */
                 /*                           */
@@ -307,7 +299,6 @@ L10:
                 d[j + 24] = snrm2_(&n, ax, &c__1);
                 d[j + 24] /= (r__1 = d[j - 1], dabs(r__1));
 
-                /* L30: */
             }
 
             /* ----------------------------- */
@@ -348,7 +339,6 @@ L10:
         printf(" The number of OP*x is %d\n", iparam[8]);
         printf(" The convergence criterion is %e\n", tol);
         printf(" \n");
-
     }
 
     free(resid);
@@ -388,7 +378,6 @@ int ssdrv2_av_(int *n, float *v, float *w)
     for (j = 2; j <= i__1; ++j)
     {
         w[j] = -v[j - 1] + v[j] * 2.f - v[j + 1];
-        /* L100: */
     }
     j = *n;
     w[j] = -v[j - 1] + v[j] * 2.f;

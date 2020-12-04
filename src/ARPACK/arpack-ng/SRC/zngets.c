@@ -120,7 +120,6 @@ int zngets_(int *ishift, char *which, int *kev, int *np, zomplex *ritz,
 
     if (*ishift == 1)
     {
-
         /* ----------------------------------------------------- */
         /* Sort the unwanted Ritz values used as shifts so that  */
         /* the ones with largest Ritz estimates are first        */
@@ -131,7 +130,6 @@ int zngets_(int *ishift, char *which, int *kev, int *np, zomplex *ritz,
         /* ----------------------------------------------------- */
 
         zsortc_("SM", &c_true, np, &bounds[1], &ritz[1]);
-
     }
 
 #ifndef NO_TIMER

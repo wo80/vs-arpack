@@ -1,5 +1,6 @@
 /* EXAMPLES\SYM\ssdrv5.f -- translated by f2c (version 20100827). */
 
+#include <stdlib.h>
 #include "arpack.h"
 
 /**
@@ -175,7 +176,6 @@ int ssdrv5()
     {
         ad[j - 1] = 2.f / h - sigma * r1;
         adl[j - 1] = -1.f / h - sigma * r2;
-        /* L20: */
     }
     scopy_(&n, adl, &c__1, adu, &c__1);
     sgttrf_(&n, adl, ad, adu, adu2, ipiv, &ierr);
@@ -204,7 +204,6 @@ L10:
 
     if (ido == -1)
     {
-
         /* ----------------------------------------- */
         /* Perform y <--- OP*x = inv[K-SIGMA*KG]*K*x */
         /* to force starting vector into the range   */
@@ -233,11 +232,9 @@ L10:
         /* --------------------------------------- */
 
         goto L10;
-
     }
     else if (ido == 1)
     {
-
         /* ---------------------------------------- */
         /* Perform y <-- OP*x=inv(K-sigma*KG)*K*x.  */
         /* K*x has been saved in workd(ipntr(3)).   */
@@ -262,11 +259,9 @@ L10:
         /* --------------------------------------- */
 
         goto L10;
-
     }
     else if (ido == 2)
     {
-
         /* ------------------------------------------- */
         /*          Perform  y <--- K*x                */
         /* Need matrix vector multiplication routine   */
@@ -281,7 +276,6 @@ L10:
         /* --------------------------------------- */
 
         goto L10;
-
     }
 
     /* --------------------------------------- */
@@ -291,7 +285,6 @@ L10:
 
     if (info < 0)
     {
-
         /* ------------------------ */
         /* Error message, check the */
         /* documentation in SSAUPD. */
@@ -301,11 +294,9 @@ L10:
         printf(" Error with _saupd info = %d\n", info);
         printf(" Check the documentation of _saupd \n");
         printf(" \n");
-
     }
     else
     {
-
         /* ----------------------------------------- */
         /* No fatal errors occurred.                 */
         /* Post-Process using SSEUPD.                */
@@ -322,7 +313,6 @@ L10:
 
         if (ierr != 0)
         {
-
             /* ---------------------------------- */
             /* Error condition:                   */
             /* Check the documentation of SSEUPD. */
@@ -336,12 +326,10 @@ L10:
         }
         else
         {
-
             nconv = iparam[4];
             i__1 = nconv;
             for (j = 1; j <= i__1; ++j)
             {
-
                 /* ------------------------- */
                 /* Compute the residual norm */
                 /*                           */
@@ -362,7 +350,6 @@ L10:
                 d[j + 24] = snrm2_(&n, ax, &c__1);
                 d[j + 24] /= (r__1 = d[j - 1], dabs(r__1));
 
-                /* L30: */
             }
 
             smout_(&nconv, &c__2, d, &c__25, &c_n6, "Ritz values and relative residuals");
@@ -400,7 +387,6 @@ L10:
         printf(" The number of OP*x is %d\n", iparam[8]);
         printf(" The convergence criterion is %e\n", tol);
         printf(" \n");
-
     }
 
     free(resid);
@@ -440,7 +426,6 @@ int ssdrv5_mv_(int *n, float *v, float *w)
     for (j = 2; j <= i__1; ++j)
     {
         w[j] = v[j - 1] + v[j] * 4.f + v[j + 1];
-        /* L100: */
     }
     j = *n;
     w[j] = v[j - 1] + v[j] * 4.f;
@@ -479,7 +464,6 @@ int ssdrv5_av_(int *n, float *v, float *w)
     for (j = 2; j <= i__1; ++j)
     {
         w[j] = -v[j - 1] + v[j] * 2.f - v[j + 1];
-        /* L100: */
     }
     j = *n;
     w[j] = -v[j - 1] + v[j] * 2.f;

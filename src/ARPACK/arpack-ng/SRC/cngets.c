@@ -119,7 +119,6 @@ int cngets_(int *ishift, char *which, int *kev, int *np, complex *ritz, complex 
 
     if (*ishift == 1)
     {
-
         /* ----------------------------------------------------- */
         /* Sort the unwanted Ritz values used as shifts so that  */
         /* the ones with largest Ritz estimates are first        */
@@ -130,7 +129,6 @@ int cngets_(int *ishift, char *which, int *kev, int *np, complex *ritz, complex 
         /* ----------------------------------------------------- */
 
         csortc_("SM", &c_true, np, &bounds[1], &ritz[1]);
-
     }
 
 #ifndef NO_TIMER

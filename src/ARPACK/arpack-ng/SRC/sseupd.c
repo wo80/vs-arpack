@@ -473,7 +473,6 @@ int sseupd_(bool *rvec, char *howmny, bool *select, float *d, float *z, int *ldz
 
     if (*rvec)
     {
-
         reord = false;
 
         /* ------------------------------------------------- */
@@ -486,7 +485,7 @@ int sseupd_(bool *rvec, char *howmny, bool *select, float *d, float *z, int *ldz
         {
             workl[bounds + j - 1] = (float) j;
             select[j] = false;
-            /* L10: */
+
         }
 
         /* ----------------------------------- */
@@ -533,7 +532,7 @@ int sseupd_(bool *rvec, char *howmny, bool *select, float *d, float *z, int *ldz
                     reord = true;
                 }
             }
-            /* L11: */
+
         }
 
         /* --------------------------------------------------------- */
@@ -586,7 +585,6 @@ int sseupd_(bool *rvec, char *howmny, bool *select, float *d, float *z, int *ldz
 
         if (reord)
         {
-
             /* ------------------------------------------- */
             /* Reordered the eigenvalues and eigenvectors  */
             /* computed by _steqr so that the "converged"  */
@@ -607,7 +605,6 @@ int sseupd_(bool *rvec, char *howmny, bool *select, float *d, float *z, int *ldz
 L20:
             if (select[leftptr])
             {
-
                 /* ----------------------------------------- */
                 /* Search, from the left, for the first Ritz */
                 /* value that has not converged.             */
@@ -618,7 +615,6 @@ L20:
             }
             else if (! select[rghtptr])
             {
-
                 /* -------------------------------------------- */
                 /* Search, from the right, the first Ritz value */
                 /* that has converged.                          */
@@ -629,7 +625,6 @@ L20:
             }
             else
             {
-
                 /* -------------------------------------------- */
                 /* Swap the Ritz value on the left that has not */
                 /* converged with the Ritz value on the right   */
@@ -669,18 +664,15 @@ L30:
         /* -------------------------------------- */
 
         scopy_(&nconv, &workl[ihd], &c__1, &d[1], &c__1);
-
     }
     else
     {
-
         /* --------------------------------------------------- */
         /* Ritz vectors not required. Load Ritz values into D. */
         /* --------------------------------------------------- */
 
         scopy_(&nconv, &workl[ritz], &c__1, &d[1], &c__1);
         scopy_(ncv, &workl[ritz], &c__1, &workl[ihd], &c__1);
-
     }
 
     /* ---------------------------------------------------------------- */
@@ -691,7 +683,6 @@ L30:
 
     if (strcmp(type, "REGULR") == 0)
     {
-
         /* ------------------------------------------------------- */
         /* Ascending sort of wanted Ritz values, vectors and error */
         /* bounds. Not necessary if only Ritz values are desired.  */
@@ -705,11 +696,9 @@ L30:
         {
             scopy_(ncv, &workl[bounds], &c__1, &workl[ihb], &c__1);
         }
-
     }
     else
     {
-
         /* ----------------------------------------------------------- */
         /* *  Make a copy of all the Ritz values.                      */
         /* *  Transform the Ritz values back to the original system.   */
@@ -732,7 +721,7 @@ L30:
             for (k = 1; k <= i__1; ++k)
             {
                 workl[ihd + k - 1] = 1.f / workl[ihd + k - 1] + *sigma;
-                /* L40: */
+
             }
         }
         else if (strcmp(type, "BUCKLE") == 0)
@@ -742,7 +731,7 @@ L30:
             {
                 workl[ihd + k - 1] = *sigma * workl[ihd + k - 1] / (workl[ihd
                                      + k - 1] - 1.f);
-                /* L50: */
+
             }
         }
         else if (strcmp(type, "CAYLEY") == 0)
@@ -752,7 +741,7 @@ L30:
             {
                 workl[ihd + k - 1] = *sigma * (workl[ihd + k - 1] + 1.f) / (
                                          workl[ihd + k - 1] - 1.f);
-                /* L60: */
+
             }
         }
 
@@ -784,7 +773,6 @@ L30:
             sscal_(ncv, &r__1, &workl[ihb], &c__1);
             ssortr_("LA", &c_true, &nconv, &d[1], &workl[ihb]);
         }
-
     }
 
     /* ---------------------------------------------- */
@@ -795,7 +783,6 @@ L30:
 
     if (*rvec && *howmny == 'A')
     {
-
         /* -------------------------------------------------------- */
         /* Compute the QR factorization of the matrix representing  */
         /* the wanted invariant subspace located in the first NCONV */
@@ -825,7 +812,7 @@ L30:
         for (j = 1; j <= i__1; ++j)
         {
             workl[ihb + j - 1] = 0.f;
-            /* L65: */
+
         }
         workl[ihb + *ncv - 1] = 1.f;
         sorm2r_("L", "T", ncv, &c__1, &nconv, &workl[iq], &ldq, &workl[iw + *ncv], &workl[ihb], ncv, &temp, &ierr);
@@ -840,31 +827,27 @@ L30:
         for (j = 1; j <= i__1; ++j)
         {
             workl[iw + *ncv + j - 1] = workl[ihb + j - 1];
-            /* L67: */
+
         }
     }
     else if (*rvec && *howmny == 'S')
     {
-
         /*     Not yet implemented. See remark 2 above. */
 
     }
 
     if (strcmp(type, "REGULR") == 0 && *rvec)
     {
-
         i__1 = *ncv;
         for (j = 1; j <= i__1; ++j)
         {
             workl[ihb + j - 1] = rnorm * (r__1 = workl[ihb + j - 1], dabs(
                                               r__1));
-            /* L70: */
-        }
 
+        }
     }
     else if (strcmp(type, "REGULR") != 0 && *rvec)
     {
-
         /* ----------------------------------------------- */
         /* *  Determine Ritz estimates of the theta.       */
         /*    If RVEC = .true. then compute Ritz estimates */
@@ -877,7 +860,6 @@ L30:
         sscal_(ncv, &bnorm2, &workl[ihb], &c__1);
         if (strcmp(type, "SHIFTI") == 0)
         {
-
             i__1 = *ncv;
             for (k = 1; k <= i__1; ++k)
             {
@@ -885,13 +867,12 @@ L30:
                 r__2 = workl[iw + k - 1];
                 workl[ihb + k - 1] = (r__1 = workl[ihb + k - 1], dabs(r__1)) /
                                      (r__2 * r__2);
-                /* L80: */
+
             }
 
         }
         else if (strcmp(type, "BUCKLE") == 0)
         {
-
             i__1 = *ncv;
             for (k = 1; k <= i__1; ++k)
             {
@@ -899,23 +880,21 @@ L30:
                 r__2 = workl[iw + k - 1] - 1.f;
                 workl[ihb + k - 1] = *sigma * (r__1 = workl[ihb + k - 1],
                                                dabs(r__1)) / (r__2 * r__2);
-                /* L90: */
+
             }
 
         }
         else if (strcmp(type, "CAYLEY") == 0)
         {
-
             i__1 = *ncv;
             for (k = 1; k <= i__1; ++k)
             {
                 workl[ihb + k - 1] = (r__1 = workl[ihb + k - 1] / workl[iw +
                                              k - 1] * (workl[iw + k - 1] - 1.f), dabs(r__1));
-                /* L100: */
+
             }
 
         }
-
     }
 
     if (strcmp(type, "REGULR") != 0 && msglvl > 1)
@@ -938,25 +917,21 @@ L30:
     if (*rvec && (strcmp(type, "SHIFTI") == 0 || strcmp(
                       type, "CAYLEY") == 0))
     {
-
         i__1 = nconv - 1;
         for (k = 0; k <= i__1; ++k)
         {
             workl[iw + k] = workl[iw + *ncv + k] / workl[iw + k];
-            /* L110: */
-        }
 
+        }
     }
     else if (*rvec && strcmp(type, "BUCKLE") == 0)
     {
-
         i__1 = nconv - 1;
         for (k = 0; k <= i__1; ++k)
         {
             workl[iw + k] = workl[iw + *ncv + k] / (workl[iw + k] - 1.f);
-            /* L120: */
-        }
 
+        }
     }
 
     if (strcmp(type, "REGULR") != 0)

@@ -279,7 +279,6 @@ int snaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
 
         if (*info != 0)
         {
-
             /* ------------------------------------------ */
             /* User provides the initial residual vector. */
             /* ------------------------------------------ */
@@ -298,7 +297,6 @@ int snaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
     /* force it into the range of the operator OP. */
     /* ------------------------------------------- */
 
-    /* L10: */
 
     if (getv0)
     {
@@ -311,7 +309,6 @@ int snaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
 
         if (rnorm == 0.f)
         {
-
             /* --------------------------------------- */
             /* The initial vector is zero. Error exit. */
             /* --------------------------------------- */
@@ -537,7 +534,6 @@ L20:
             --(*np);
             ++(*nev);
         }
-        /* L30: */
     }
 
     if (nconv >= numcnv || iter > *mxiter || *np == 0)
@@ -653,7 +649,7 @@ L20:
             r__1 = eps23, r__2 = slapy2_(&ritzr[j], &ritzi[j]);
             temp = dmax(r__1,r__2);
             bounds[j] /= temp;
-            /* L35: */
+
         }
 
         /* -------------------------------------------------- */
@@ -678,7 +674,7 @@ L20:
             r__1 = eps23, r__2 = slapy2_(&ritzr[j], &ritzi[j]);
             temp = dmax(r__1,r__2);
             bounds[j] *= temp;
-            /* L40: */
+
         }
 
         /* ---------------------------------------------- */
@@ -718,11 +714,9 @@ L20:
 
         *np = nconv;
         goto L1100;
-
     }
     else if (nconv < numcnv && *ishift == 1)
     {
-
         /* ----------------------------------------------- */
         /* Do not have all the requested eigenvalues yet.  */
         /* To prevent possible stagnation, adjust the size */
@@ -764,7 +758,6 @@ L20:
         {
             sngets_(ishift, which, nev, np, &ritzr[1], &ritzi[1], &bounds[1], &workl[1], &workl[*np + 1]);
         }
-
     }
 
 #ifndef NO_TRACE
@@ -785,7 +778,6 @@ L20:
 
     if (*ishift == 0)
     {
-
         /* ----------------------------------------------------- */
         /* User specified shifts: reverse communication to       */
         /* compute the shifts. They are returned in the first    */
@@ -809,7 +801,6 @@ L50:
 
     if (*ishift == 0)
     {
-
         /* -------------------------------- */
         /* Move the NP shifts from WORKL to */
         /* RITZR, RITZI to free up WORKL    */

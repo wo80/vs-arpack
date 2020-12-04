@@ -268,7 +268,6 @@ int dsaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *mode,
 
     if (*ido == 0)
     {
-
         /* ----------------------------- */
         /* Initialize timing statistics  */
         /* & message level for debugging */
@@ -451,7 +450,6 @@ L40:
     }
     else
     {
-
         /* --------------------------------------- */
         /* To scale both v_{j} and p_{j} carefully */
         /* use LAPACK routine SLASCL               */
@@ -563,7 +561,6 @@ L60:
 L65:
     if (*mode == 2)
     {
-
         /* -------------------------------- */
         /* Note that the B-norm of OP*v_{j} */
         /* is the inv(B)-norm of A*v_{j}.   */
@@ -818,17 +815,14 @@ L90:
 
     if (rnorm1 > *rnorm * .717f)
     {
-
         /* ------------------------------ */
         /* No need for further refinement */
         /* ------------------------------ */
 
         *rnorm = rnorm1;
-
     }
     else
     {
-
         /* ----------------------------------------- */
         /* Another step of iterative refinement step */
         /* is required. NITREF is used by stat.h     */
@@ -850,7 +844,7 @@ L90:
         for (jj = 1; jj <= i__1; ++jj)
         {
             resid[jj] = 0.;
-            /* L95: */
+
         }
         *rnorm = 0.;
     }

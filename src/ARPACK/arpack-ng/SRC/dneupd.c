@@ -547,7 +547,6 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
 
     if (*rvec)
     {
-
         reord = false;
 
         /* ------------------------------------------------- */
@@ -560,7 +559,7 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
         {
             workl[bounds + j - 1] = (double) j;
             select[j] = false;
-            /* L10: */
+
         }
 
         /* ----------------------------------- */
@@ -609,7 +608,7 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
                     reord = true;
                 }
             }
-            /* L11: */
+
         }
 
         /* --------------------------------------------------------- */
@@ -667,7 +666,6 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
 
         if (reord)
         {
-
             /* --------------------------------------------------- */
             /* Reorder the computed upper quasi-triangular matrix. */
             /* --------------------------------------------------- */
@@ -744,7 +742,6 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
         i__1 = nconv;
         for (j = 1; j <= i__1; ++j)
         {
-
             /* ------------------------------------------------- */
             /* Perform both a column and row scaling if the      */
             /* diagonal element of workl(invsub,ldq) is negative */
@@ -760,12 +757,10 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
                 dscal_(&nconv, &d_m1, &workl[iuptri + (j - 1) * ldq], &c__1);
             }
 
-            /* L20: */
         }
 
         if (*howmny == 'A')
         {
-
             /* ------------------------------------------ */
             /* Compute the NCONV wanted eigenvectors of T */
             /* located in workl(iuptri,ldq).              */
@@ -782,7 +777,6 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
                 {
                     select[j] = false;
                 }
-                /* L30: */
             }
 
             dtrevc_("R", "S", &select[1], ncv, &workl[iuptri], &ldq, vl, &c__1, &workl[invsub], &ldq, ncv, &outncv, &workev[1],&ierr);
@@ -805,10 +799,8 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
             i__1 = nconv;
             for (j = 1; j <= i__1; ++j)
             {
-
                 if (workl[iheigi + j - 1] == 0.)
                 {
-
                     /* -------------------- */
                     /* real eigenvalue case */
                     /* -------------------- */
@@ -816,11 +808,9 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
                     temp = dnrm2_(ncv, &workl[invsub + (j - 1) * ldq], &c__1);
                     d__1 = 1. / temp;
                     dscal_(ncv, &d__1, &workl[invsub + (j - 1) * ldq], &c__1);
-
                 }
                 else
                 {
-
                     /* ----------------------------------------- */
                     /* Complex conjugate pair case. Note that    */
                     /* since the real and imaginary part of      */
@@ -846,8 +836,6 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
                     }
 
                 }
-
-                /* L40: */
             }
 
             dgemv_("T", ncv, &nconv, &d_one, &workl[invsub], &ldq, &workl[ihbds], &c__1, &d_zero, &workev[1], &c__1);
@@ -858,7 +846,6 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
             {
                 if (workl[iheigi + j - 1] != 0.)
                 {
-
                     /* ----------------------------------------- */
                     /* Complex conjugate pair case. Note that    */
                     /* since the real and imaginary part of      */
@@ -876,7 +863,6 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
                         iconj = 0;
                     }
                 }
-                /* L45: */
             }
 
 #ifndef NO_TRACE
@@ -918,11 +904,9 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
             dtrmm_("R", "U", "N", "N", n, &nconv, &d_one, &workl[invsub], &ldq, &z[z_offset], ldz);
 
         }
-
     }
     else
     {
-
         /* ----------------------------------------------------- */
         /* An approximate invariant subspace is not needed.      */
         /* Place the Ritz values computed DNAUPD  into DR and DI */
@@ -943,16 +927,13 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
 
     if (strcmp(type, "REGULR") == 0)
     {
-
         if (*rvec)
         {
             dscal_(ncv, &rnorm, &workl[ihbds], &c__1);
         }
-
     }
     else
     {
-
         /* ------------------------------------- */
         /*   A spectral transformation was used. */
         /* * Determine the Ritz estimates of the */
@@ -961,7 +942,6 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
 
         if (strcmp(type, "SHIFTI") == 0)
         {
-
             if (*rvec)
             {
                 dscal_(ncv, &rnorm, &workl[ihbds], &c__1);
@@ -973,27 +953,23 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
                 temp = dlapy2_(&workl[iheigr + k - 1], &workl[iheigi + k - 1]);
                 workl[ihbds + k - 1] = (d__1 = workl[ihbds + k - 1], abs(d__1)
                                        ) / temp / temp;
-                /* L50: */
+
             }
 
         }
         else if (strcmp(type, "REALPT") == 0)
         {
-
             i__1 = *ncv;
             for (k = 1; k <= i__1; ++k)
             {
-                /* L60: */
             }
 
         }
         else if (strcmp(type, "IMAGPT") == 0)
         {
-
             i__1 = *ncv;
             for (k = 1; k <= i__1; ++k)
             {
-                /* L70: */
             }
 
         }
@@ -1010,14 +986,13 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
 
         if (strcmp(type, "SHIFTI") == 0)
         {
-
             i__1 = *ncv;
             for (k = 1; k <= i__1; ++k)
             {
                 temp = dlapy2_(&workl[iheigr + k - 1], &workl[iheigi + k - 1]);
                 workl[iheigr + k - 1] = workl[iheigr + k - 1] / temp / temp + *sigmar;
                 workl[iheigi + k - 1] = -workl[iheigi + k - 1] / temp / temp + *sigmai;
-                /* L80: */
+
             }
 
             dcopy_(&nconv, &workl[iheigr], &c__1, &dr[1], &c__1);
@@ -1031,7 +1006,6 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
             dcopy_(&nconv, &workl[iheigi], &c__1, &di[1], &c__1);
 
         }
-
     }
 
     if (strcmp(type, "SHIFTI") == 0 && msglvl > 1)
@@ -1056,7 +1030,6 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
 
     if (*rvec && *howmny == 'A' && strcmp(type, "SHIFTI") == 0)
     {
-
         /* ---------------------------------------------- */
         /* Purify the computed Ritz vectors by adding a   */
         /* little bit of the residual vector:             */
@@ -1096,7 +1069,7 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
             {
                 iconj = 0;
             }
-            /* L110: */
+
         }
 
         /* ------------------------------------- */
@@ -1105,7 +1078,6 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
         /* ------------------------------------- */
 
         dger_(n, &nconv, &d_one, &resid[1], &c__1, &workev[1], &c__1, &z[z_offset], ldz);
-
     }
 
 L9000:

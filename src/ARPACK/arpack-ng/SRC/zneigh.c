@@ -202,7 +202,6 @@ int zneigh_(double *rnorm, int *n, zomplex *
         temp = dznrm2_(n, &q[j * q_dim1 + 1], &c__1);
         d__1 = 1. / temp;
         zdscal_(n, &d__1, &q[j * q_dim1 + 1], &c__1);
-        /* L10: */
     }
 
 #ifndef NO_TRACE

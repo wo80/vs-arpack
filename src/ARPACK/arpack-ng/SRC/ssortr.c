@@ -81,7 +81,6 @@ int ssortr_(char *which, bool *apply, int *n, float *x1, float *x2)
 
     if (strcmp(which, "SA") == 0)
     {
-
         /*        X1 is sorted into decreasing order of algebraic. */
 
 L10:
@@ -123,11 +122,9 @@ L30:
         }
         igap /= 2;
         goto L10;
-
     }
     else if (strcmp(which, "SM") == 0)
     {
-
         /*        X1 is sorted into decreasing order of magnitude. */
 
 L40:
@@ -170,11 +167,9 @@ L60:
         }
         igap /= 2;
         goto L40;
-
     }
     else if (strcmp(which, "LA") == 0)
     {
-
         /*        X1 is sorted into increasing order of algebraic. */
 
 L70:
@@ -216,11 +211,9 @@ L90:
         }
         igap /= 2;
         goto L70;
-
     }
     else if (strcmp(which, "LM") == 0)
     {
-
         /*        X1 is sorted into increasing order of magnitude. */
 
 L100:

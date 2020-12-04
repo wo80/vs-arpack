@@ -176,7 +176,6 @@ int dgetv0_(int *ido, char *bmat, int *itry, bool *initv, int *n, int *j,
 
     if (*ido == 0)
     {
-
         /* ----------------------------- */
         /* Initialize timing statistics  */
         /* & message level for debugging */
@@ -398,7 +397,6 @@ L40:
     ++iter;
     if (iter <= 5)
     {
-
         /* --------------------------------- */
         /* Perform iterative refinement step */
         /* --------------------------------- */
@@ -408,7 +406,6 @@ L40:
     }
     else
     {
-
         /* ---------------------------------- */
         /* Iterative refinement step "failed" */
         /* ---------------------------------- */
@@ -417,7 +414,7 @@ L40:
         for (jj = 1; jj <= i__1; ++jj)
         {
             resid[jj] = 0.;
-            /* L45: */
+
         }
         *rnorm = 0.;
         *ierr = -1;

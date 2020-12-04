@@ -170,7 +170,6 @@ L10:
 
     if (ido == -1 || ido == 1)
     {
-
         /* ------------------------------------ */
         /* Perform matrix vector multiplication */
         /*              y <--- OP*x             */
@@ -188,7 +187,6 @@ L10:
         /* --------------------------------------- */
 
         goto L10;
-
     }
 
     /* -------------------------------------- */
@@ -198,7 +196,6 @@ L10:
 
     if (info < 0)
     {
-
         /* ------------------------ */
         /* Error message. Check the */
         /* documentation in DSAUPD. */
@@ -208,11 +205,9 @@ L10:
         printf(" Error with _saupd info = %d\n", info);
         printf(" Check documentation in _saupd \n");
         printf(" \n");
-
     }
     else
     {
-
         /* ----------------------------------------- */
         /* No fatal errors occurred.                 */
         /* Post-Process using DSEUPD.                */
@@ -239,7 +234,6 @@ L10:
 
         if (ierr != 0)
         {
-
             /* ---------------------------------- */
             /* Error condition:                   */
             /* Check the documentation of DSEUPD. */
@@ -253,12 +247,10 @@ L10:
         }
         else
         {
-
             nconv = iparam[4];
             i__1 = nconv;
             for (j = 1; j <= i__1; ++j)
             {
-
                 /* ------------------------- */
                 /* Compute the residual norm */
                 /*                           */
@@ -278,7 +270,6 @@ L10:
                 d[j + 24] = dnrm2_(&n, ax, &c__1);
                 d[j + 24] /= (d__1 = d[j - 1], abs(d__1));
 
-                /* L20: */
             }
 
             /* ----------------------------- */
@@ -319,7 +310,6 @@ L10:
         printf(" The number of OP*x is %d\n", iparam[8]);
         printf(" The convergence criterion is %e\n", tol);
         printf(" \n");
-
     }
 
     free(resid);
@@ -377,7 +367,6 @@ int dsdrv1_av_(int *nx, double *v, double *w)
         dsdrv1_tv_(nx, &v[lo + 1], &w[lo + 1]);
         daxpy_(nx, &c_b138, &v[lo - *nx + 1], &c__1, &w[lo + 1], &c__1);
         daxpy_(nx, &c_b138, &v[lo + *nx + 1], &c__1, &w[lo + 1], &c__1);
-        /* L10: */
     }
 
     lo = (*nx - 1) * *nx;
@@ -421,7 +410,6 @@ int dsdrv1_tv_(int *nx, double *x, double *y)
     for (j = 2; j <= i__1; ++j)
     {
         y[j] = dl * x[j - 1] + dd * x[j] + du * x[j + 1];
-        /* L10: */
     }
     y[*nx] = dl * x[*nx - 1] + dd * x[*nx];
     return 0;

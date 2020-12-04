@@ -547,7 +547,6 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
 
     if (*rvec)
     {
-
         reord = false;
 
         /* ------------------------------------------------- */
@@ -560,7 +559,7 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
         {
             workl[bounds + j - 1] = (float) j;
             select[j] = false;
-            /* L10: */
+
         }
 
         /* ----------------------------------- */
@@ -609,7 +608,7 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
                     reord = true;
                 }
             }
-            /* L11: */
+
         }
 
         /* --------------------------------------------------------- */
@@ -667,7 +666,6 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
 
         if (reord)
         {
-
             /* --------------------------------------------------- */
             /* Reorder the computed upper quasi-triangular matrix. */
             /* --------------------------------------------------- */
@@ -744,7 +742,6 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
         i__1 = nconv;
         for (j = 1; j <= i__1; ++j)
         {
-
             /* ------------------------------------------------- */
             /* Perform both a column and row scaling if the      */
             /* diagonal element of workl(invsub,ldq) is negative */
@@ -760,12 +757,10 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
                 sscal_(&nconv, &s_m1, &workl[iuptri + (j - 1) * ldq], &c__1);
             }
 
-            /* L20: */
         }
 
         if (*howmny == 'A')
         {
-
             /* ------------------------------------------ */
             /* Compute the NCONV wanted eigenvectors of T */
             /* located in workl(iuptri,ldq).              */
@@ -782,7 +777,6 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
                 {
                     select[j] = false;
                 }
-                /* L30: */
             }
 
             strevc_("R", "S", &select[1], ncv, &workl[iuptri], &ldq, vl, &c__1, &workl[invsub], &ldq, ncv, &outncv, &workev[1],&ierr);
@@ -805,10 +799,8 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
             i__1 = nconv;
             for (j = 1; j <= i__1; ++j)
             {
-
                 if (workl[iheigi + j - 1] == 0.f)
                 {
-
                     /* -------------------- */
                     /* real eigenvalue case */
                     /* -------------------- */
@@ -816,11 +808,9 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
                     temp = snrm2_(ncv, &workl[invsub + (j - 1) * ldq], &c__1);
                     r__1 = 1.f / temp;
                     sscal_(ncv, &r__1, &workl[invsub + (j - 1) * ldq], &c__1);
-
                 }
                 else
                 {
-
                     /* ----------------------------------------- */
                     /* Complex conjugate pair case. Note that    */
                     /* since the real and imaginary part of      */
@@ -846,8 +836,6 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
                     }
 
                 }
-
-                /* L40: */
             }
 
             sgemv_("T", ncv, &nconv, &s_one, &workl[invsub], &ldq, &workl[ihbds], &c__1, &s_zero, &workev[1], &c__1);
@@ -858,7 +846,6 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
             {
                 if (workl[iheigi + j - 1] != 0.f)
                 {
-
                     /* ----------------------------------------- */
                     /* Complex conjugate pair case. Note that    */
                     /* since the real and imaginary part of      */
@@ -876,7 +863,6 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
                         iconj = 0;
                     }
                 }
-                /* L45: */
             }
 
 #ifndef NO_TRACE
@@ -918,11 +904,9 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
             strmm_("R", "U", "N", "N", n, &nconv, &s_one, &workl[invsub], &ldq, &z[z_offset], ldz);
 
         }
-
     }
     else
     {
-
         /* ---------------------------------------------------- */
         /* An approximate invariant subspace is not needed.     */
         /* Place the Ritz values computed SNAUPD into DR and DI */
@@ -943,16 +927,13 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
 
     if (strcmp(type, "REGULR") == 0)
     {
-
         if (*rvec)
         {
             sscal_(ncv, &rnorm, &workl[ihbds], &c__1);
         }
-
     }
     else
     {
-
         /* ------------------------------------- */
         /*   A spectral transformation was used. */
         /* * Determine the Ritz estimates of the */
@@ -961,7 +942,6 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
 
         if (strcmp(type, "SHIFTI") == 0)
         {
-
             if (*rvec)
             {
                 sscal_(ncv, &rnorm, &workl[ihbds], &c__1);
@@ -973,27 +953,23 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
                 temp = slapy2_(&workl[iheigr + k - 1], &workl[iheigi + k - 1]);
                 workl[ihbds + k - 1] = (r__1 = workl[ihbds + k - 1], dabs(
                                             r__1)) / temp / temp;
-                /* L50: */
+
             }
 
         }
         else if (strcmp(type, "REALPT") == 0)
         {
-
             i__1 = *ncv;
             for (k = 1; k <= i__1; ++k)
             {
-                /* L60: */
             }
 
         }
         else if (strcmp(type, "IMAGPT") == 0)
         {
-
             i__1 = *ncv;
             for (k = 1; k <= i__1; ++k)
             {
-                /* L70: */
             }
 
         }
@@ -1010,14 +986,13 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
 
         if (strcmp(type, "SHIFTI") == 0)
         {
-
             i__1 = *ncv;
             for (k = 1; k <= i__1; ++k)
             {
                 temp = slapy2_(&workl[iheigr + k - 1], &workl[iheigi + k - 1]);
                 workl[iheigr + k - 1] = workl[iheigr + k - 1] / temp / temp + *sigmar;
                 workl[iheigi + k - 1] = -workl[iheigi + k - 1] / temp / temp + *sigmai;
-                /* L80: */
+
             }
 
             scopy_(&nconv, &workl[iheigr], &c__1, &dr[1], &c__1);
@@ -1031,7 +1006,6 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
             scopy_(&nconv, &workl[iheigi], &c__1, &di[1], &c__1);
 
         }
-
     }
 
     if (strcmp(type, "SHIFTI") == 0 && msglvl > 1)
@@ -1056,7 +1030,6 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
 
     if (*rvec && *howmny == 'A' && strcmp(type, "SHIFTI") == 0)
     {
-
         /* ---------------------------------------------- */
         /* Purify the computed Ritz vectors by adding a   */
         /* little bit of the residual vector:             */
@@ -1096,7 +1069,7 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
             {
                 iconj = 0;
             }
-            /* L110: */
+
         }
 
         /* ------------------------------------- */
@@ -1105,7 +1078,6 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
         /* ------------------------------------- */
 
         sger_(n, &nconv, &s_one, &resid[1], &c__1, &workev[1], &c__1, &z[z_offset], ldz);
-
     }
 
 L9000:

@@ -294,7 +294,6 @@ L10:
 
     if (ido == -1 || ido == 1)
     {
-
         /* ----------------------------------------- */
         /* Perform matrix vector multiplication      */
         /*                y <--- Op*x                */
@@ -312,7 +311,6 @@ L10:
         /* --------------------------------------- */
 
         goto L10;
-
     }
 
     /* -------------------------------------- */
@@ -322,7 +320,6 @@ L10:
 
     if (info < 0)
     {
-
         /* ------------------------ */
         /* Error message, check the */
         /* documentation in DNAUPD. */
@@ -332,11 +329,9 @@ L10:
         printf(" Error with _naupd info = %d\n", info);
         printf(" Check the documentation of _naupd\n");
         printf(" \n");
-
     }
     else
     {
-
         /* ----------------------------------------- */
         /* No fatal errors occurred.                 */
         /* Post-Process using DNEUPD.                */
@@ -372,7 +367,6 @@ L10:
 
         if (ierr != 0)
         {
-
             /* ---------------------------------- */
             /* Error condition:                   */
             /* Check the documentation of DNEUPD. */
@@ -386,13 +380,11 @@ L10:
         }
         else
         {
-
             first = true;
             nconv = iparam[4];
             i__1 = nconv;
             for (j = 1; j <= i__1; ++j)
             {
-
                 /* ------------------------- */
                 /* Compute the residual norm */
                 /*                           */
@@ -408,7 +400,6 @@ L10:
 
                 if (d[j + 29] == 0.)
                 {
-
                     /* ------------------ */
                     /* Ritz value is real */
                     /* ------------------ */
@@ -418,11 +409,9 @@ L10:
                     daxpy_(&n, &d__1, &v[(j << 8) - 256], &c__1, ax, &c__1);
                     d[j + 59] = dnrm2_(&n, ax, &c__1);
                     d[j + 59] /= (d__1 = d[j - 1], abs(d__1));
-
                 }
                 else if (first)
                 {
-
                     /* ---------------------- */
                     /* Ritz value is complex. */
                     /* Residual of one Ritz   */
@@ -450,8 +439,6 @@ L10:
                 {
                     first = true;
                 }
-
-                /* L20: */
             }
 
             /* --------------------------- */
@@ -492,7 +479,6 @@ L10:
         printf(" The number of OP*x is %d\n", iparam[8]);
         printf(" The convergence criterion is %e\n", tol);
         printf(" \n");
-
     }
 
     free(resid);
@@ -565,7 +551,6 @@ int dnsimp_av_(int *nx, double *v, double *w)
         daxpy_(nx, &d__1, &v[lo - *nx + 1], &c__1, &w[lo + 1], &c__1);
         d__1 = -1. / h2;
         daxpy_(nx, &d__1, &v[lo + *nx + 1], &c__1, &w[lo + 1], &c__1);
-        /* L10: */
     }
 
     lo = (*nx - 1) * *nx;
@@ -611,7 +596,6 @@ int dnsimp_tv_(int *nx, double *x, double *y)
     for (j = 2; j <= i__1; ++j)
     {
         y[j] = dl * x[j - 1] + dd * x[j] + du * x[j + 1];
-        /* L10: */
     }
     y[*nx] = dl * x[*nx - 1] + dd * x[*nx];
     return 0;

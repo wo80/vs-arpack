@@ -210,7 +210,7 @@ int dstqrb_(int *n, double *d, double *e,
         for (j = 1; j <= i__1; ++j)
         {
             z[j] = 0.;
-            /* L5: */
+
         }
         z[*n] = 1.;
     }
@@ -251,7 +251,7 @@ L10:
                 e[m] = 0.;
                 goto L30;
             }
-            /* L20: */
+
         }
     }
     m = *n;
@@ -303,7 +303,6 @@ L30:
 
     if (lend > l)
     {
-
         /*        ql iteration */
 
         /*        look for small subdiagonal element. */
@@ -323,7 +322,6 @@ L40:
                 {
                     goto L60;
                 }
-                /* L50: */
             }
         }
 
@@ -418,7 +416,6 @@ L60:
                 work[*n - 1 + i] = -s;
             }
 
-            /* L70: */
         }
 
         /*        if eigenvectors are desired, then apply saved rotations. */
@@ -450,11 +447,9 @@ L80:
             goto L40;
         }
         goto L140;
-
     }
     else
     {
-
         /*        qr iteration */
 
         /*        look for small superdiagonal element. */
@@ -474,7 +469,6 @@ L90:
                 {
                     goto L110;
                 }
-                /* L100: */
             }
         }
 
@@ -569,7 +563,6 @@ L110:
                 work[*n - 1 + i] = s;
             }
 
-            /* L120: */
         }
 
         /*        if eigenvectors are desired, then apply saved rotations. */
@@ -601,7 +594,6 @@ L130:
             goto L90;
         }
         goto L140;
-
     }
 
     /*     undo scaling if necessary */
@@ -636,7 +628,6 @@ L140:
         {
             ++(*info);
         }
-        /* L150: */
     }
     goto L190;
 
@@ -645,15 +636,12 @@ L140:
 L160:
     if (icompz == 0)
     {
-
         /*        use quick sort */
 
         dlasrt_("i", n, &d[1], info);
-
     }
     else
     {
-
         /*        use selection sort to minimize swaps of eigenvectors */
 
         i__1 = *n;
@@ -670,7 +658,6 @@ L160:
                     k = j;
                     p = d[j];
                 }
-                /* L170: */
             }
             if (k != i)
             {
@@ -684,7 +671,7 @@ L160:
                 z[i] = p;
                 /*           ************************************* */
             }
-            /* L180: */
+
         }
     }
 

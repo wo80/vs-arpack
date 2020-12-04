@@ -1,5 +1,6 @@
 /* EXAMPLES\COMPLEX\cndrv1.f -- translated by f2c (version 20100827). */
 
+#include <stdlib.h>
 #include "arpack.h"
 
 /**
@@ -179,7 +180,6 @@ L10:
 
     if (ido == -1 || ido == 1)
     {
-
         /* ----------------------------------------- */
         /* Perform matrix vector multiplication      */
         /*                y <--- OP*x                */
@@ -206,7 +206,6 @@ L10:
 
     if (info < 0)
     {
-
         /* ------------------------ */
         /* Error message, check the */
         /* documentation in CNAUPD  */
@@ -216,11 +215,9 @@ L10:
         printf(" Error with _naupd info = %d\n", info);
         printf(" Check the documentation of _naupd\n");
         printf(" \n");
-
     }
     else
     {
-
         /* ----------------------------------------- */
         /* No fatal errors occurred.                 */
         /* Post-Process using CNEUPD.                */
@@ -248,7 +245,6 @@ L10:
 
         if (ierr != 0)
         {
-
             /* ---------------------------------- */
             /* Error condition:                   */
             /* Check the documentation of CNEUPD. */
@@ -262,12 +258,10 @@ L10:
         }
         else
         {
-
             nconv = iparam[4];
             i__1 = nconv;
             for (j = 1; j <= i__1; ++j)
             {
-
                 /* ------------------------- */
                 /* Compute the residual norm */
                 /*                           */
@@ -290,7 +284,7 @@ L10:
                 rd[j + 29] = r_imag(&d[j - 1]);
                 rd[j + 59] = scnrm2_(&n, ax, &c__1);
                 rd[j + 59] /= slapy2_(&rd[j - 1], &rd[j + 29]);
-                /* L20: */
+
             }
 
             /* --------------------------- */
@@ -331,7 +325,6 @@ L10:
         printf(" The number of OP*x is %d\n", iparam[8]);
         printf(" The convergence criterion is %e\n", tol);
         printf(" \n");
-
     }
 
     free(resid);
@@ -408,7 +401,6 @@ int cndrv1_av_(int *nx, complex *v, complex *w)
         q__2.r = -1.f, q__2.i = -0.f;
         c_div(&q__1, &q__2, &h2);
         caxpy_(nx, &q__1, &v[lo + *nx + 1], &c__1, &w[lo + 1], &c__1);
-        /* L10: */
     }
 
     lo = (*nx - 1) * *nx;
@@ -488,7 +480,6 @@ int cndrv1_tv_(int *nx, complex *x, complex *y)
                  .i + du.i * x[i__5].r;
         q__1.r = q__2.r + q__5.r, q__1.i = q__2.i + q__5.i;
         y[i__2].r = q__1.r, y[i__2].i = q__1.i;
-        /* L10: */
     }
     i__1 = *nx;
     i__2 = *nx - 1;

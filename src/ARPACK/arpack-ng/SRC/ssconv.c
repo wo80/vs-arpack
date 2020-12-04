@@ -98,7 +98,6 @@ int ssconv_(int *n, float *ritz, float *bounds, float *tol,
     i__1 = *n;
     for (i = 1; i <= i__1; ++i)
     {
-
         /* --------------------------------------------------- */
         /* The i-th Ritz value is considered "converged"       */
         /* when: bounds(i) .le. TOL*max(eps23, abs(ritz(i)))   */
@@ -111,8 +110,6 @@ int ssconv_(int *n, float *ritz, float *bounds, float *tol,
         {
             ++(*nconv);
         }
-
-        /* L10: */
     }
 
 #ifndef NO_TIMER

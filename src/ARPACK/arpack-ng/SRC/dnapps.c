@@ -201,7 +201,6 @@ int dnapps_(int *n, int *kev, int *np,
 
     if (first)
     {
-
         /* --------------------------------------------- */
         /* Set machine-dependent constants for the       */
         /* stopping criterion. If norm(H) <= sqrt(OVFL), */
@@ -275,7 +274,6 @@ int dnapps_(int *n, int *kev, int *np,
 
         if (cconj)
         {
-
             /* --------------------------------------- */
             /* cconj = .true. means the previous shift */
             /* had non-zero imaginary part.            */
@@ -286,7 +284,6 @@ int dnapps_(int *n, int *kev, int *np,
         }
         else if (jj < *np && abs(sigmai) > 0.)
         {
-
             /* ---------------------------------- */
             /* Start of a complex conjugate pair. */
             /* ---------------------------------- */
@@ -295,7 +292,6 @@ int dnapps_(int *n, int *kev, int *np,
         }
         else if (jj == *np && abs(sigmai) > 0.)
         {
-
             /* -------------------------------------------- */
             /* The last shift has a nonzero imaginary part. */
             /* Don't apply it; thus the order of the        */
@@ -323,7 +319,6 @@ L20:
         i__2 = kplusp - 1;
         for (i = istart; i <= i__2; ++i)
         {
-
             /* -------------------------------------- */
             /* Check for splitting and deflation. Use */
             /* a standard test as in the QR algorithm */
@@ -355,7 +350,7 @@ L20:
                 h[i + 1 + i * h_dim1] = 0.;
                 goto L40;
             }
-            /* L30: */
+
         }
         iend = kplusp;
 L40:
@@ -391,7 +386,6 @@ L40:
         h21 = h[istart + 1 + istart * h_dim1];
         if (abs(sigmai) <= 0.)
         {
-
             /* ------------------------------------------- */
             /* Real-valued shift ==> apply single shift QR */
             /* ------------------------------------------- */
@@ -402,7 +396,6 @@ L40:
             i__2 = iend - 1;
             for (i = istart; i <= i__2; ++i)
             {
-
                 /* ---------------------------------------------------- */
                 /* Construct the plane rotation G to zero out the bulge */
                 /* ---------------------------------------------------- */
@@ -410,7 +403,6 @@ L40:
                 dlartg_(&f, &g, &c, &s, &r);
                 if (i > istart)
                 {
-
                     /* ----------------------------------------- */
                     /* The following ensures that h(1:iend-1,1), */
                     /* the first iend-2 off diagonal of elements */
@@ -439,7 +431,6 @@ L40:
                     h[i + 1 + j * h_dim1] = -s * h[i + j * h_dim1] +
                                             c * h[i + 1 + j * h_dim1];
                     h[i + j * h_dim1] = t;
-                    /* L50: */
                 }
 
                 /* ------------------------------------------- */
@@ -456,7 +447,6 @@ L40:
                     h[j + (i + 1) * h_dim1] = -s * h[j + i * h_dim1]
                                               + c * h[j + (i + 1) * h_dim1];
                     h[j + i * h_dim1] = t;
-                    /* L60: */
                 }
 
                 /* -------------------------------------------------- */
@@ -473,7 +463,6 @@ L40:
                     q[j + (i + 1) * q_dim1] = -s * q[j + i * q_dim1] +
                                               c * q[j + (i + 1) * q_dim1];
                     q[j + i * q_dim1] = t;
-                    /* L70: */
                 }
 
                 /* ------------------------- */
@@ -485,7 +474,6 @@ L40:
                     f = h[i + 1 + i * h_dim1];
                     g = h[i + 2 + i * h_dim1];
                 }
-                /* L80: */
             }
 
             /* --------------------------------- */
@@ -495,7 +483,6 @@ L40:
         }
         else
         {
-
             /* -------------------------------------------------- */
             /* Complex conjugate shifts ==> apply double shift QR */
             /* -------------------------------------------------- */
@@ -517,7 +504,6 @@ L40:
             i__2 = iend - 1;
             for (i = istart; i <= i__2; ++i)
             {
-
                 /* Computing MIN */
                 i__3 = 3, i__4 = iend - i + 1;
                 nr = min(i__3,i__4);
@@ -575,8 +561,6 @@ L40:
                         u[2] = h[i + 3 + i * h_dim1];
                     }
                 }
-
-                /* L90: */
             }
 
             /* ------------------------------------------ */
@@ -627,13 +611,11 @@ L110:
             i__2 = min(i__3,kplusp);
             dscal_(&i__2, &d_m1, &q[(j + 1) * q_dim1 + 1], &c__1);
         }
-        /* L120: */
     }
 
     i__1 = *kev;
     for (i = 1; i <= i__1; ++i)
     {
-
         /* ------------------------------------------ */
         /* Final check for splitting and deflation.   */
         /* Use a standard test as in the QR algorithm */
@@ -652,7 +634,6 @@ L110:
         {
             h[i + 1 + i * h_dim1] = 0.;
         }
-        /* L130: */
     }
 
     /* ----------------------------------------------- */
@@ -679,7 +660,6 @@ L110:
         i__2 = kplusp - i + 1;
         dgemv_("N", n, &i__2, &d_one, &v[v_offset], ldv, &q[(*kev - i + 1) * q_dim1 + 1], &c__1, &d_zero, &workd[1], &c__1);
         dcopy_(n, &workd[1], &c__1, &v[(kplusp - i + 1) * v_dim1 + 1], &c__1);
-        /* L140: */
     }
 
     /* ----------------------------------------------- */
@@ -690,7 +670,6 @@ L110:
     for (i = 1; i <= i__1; ++i)
     {
         dcopy_(n, &v[(kplusp - *kev + i) * v_dim1 + 1], &c__1, &v[i * v_dim1 + 1], &c__1);
-        /* L150: */
     }
 
     /* ------------------------------------------------------------ */
@@ -726,7 +705,6 @@ L110:
         {
             dmout_(kev, kev, &h[h_offset], ldh, &debug_1.ndigit, "_napps: updated Hessenberg matrix H for next iteration");
         }
-
     }
 #endif
 

@@ -124,7 +124,6 @@ int snconv_(int *n, float *ritzr, float *ritzi, float *
         {
             ++(*nconv);
         }
-        /* L20: */
     }
 
 #ifndef NO_TIMER

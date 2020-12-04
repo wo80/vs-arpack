@@ -1,5 +1,6 @@
 /* EXAMPLES\NONSYM\sndrv2.f -- translated by f2c (version 20100827). */
 
+#include <stdlib.h>
 #include "arpack.h"
 
 struct
@@ -155,7 +156,6 @@ int sndrv2()
         dl[j - 1] = s1;
         dd[j - 1] = s2;
         du[j - 1] = s3;
-        /* L10: */
     }
     dd[n - 1] = s2;
 
@@ -220,7 +220,6 @@ L20:
 
     if (ido == -1 || ido == 1)
     {
-
         /* ----------------------------------------- */
         /* Perform  y <--- OP*x = inv[A-SIGMA*I]*x   */
         /* The user should supply his/her own linear */
@@ -245,7 +244,6 @@ L20:
         /* --------------------------------------- */
 
         goto L20;
-
     }
 
     /* --------------------------------------- */
@@ -255,7 +253,6 @@ L20:
 
     if (info < 0)
     {
-
         /* ------------------------ */
         /* Error message, check the */
         /* documentation in SNAUPD. */
@@ -265,11 +262,9 @@ L20:
         printf(" Error with _naupd info = %d\n", info);
         printf(" Check the documentation in _naupd.\n");
         printf(" \n");
-
     }
     else
     {
-
         /* ----------------------------------------- */
         /* No fatal errors occurred.                 */
         /* Post-Process using SNEUPD.                */
@@ -298,7 +293,6 @@ L20:
 
         if (ierr != 0)
         {
-
             /* ---------------------------------- */
             /* Error condition:                   */
             /* Check the documentation of SNEUPD. */
@@ -312,13 +306,11 @@ L20:
         }
         else
         {
-
             first = true;
             nconv = iparam[4];
             i__1 = nconv;
             for (j = 1; j <= i__1; ++j)
             {
-
                 /* ------------------------- */
                 /* Compute the residual norm */
                 /*                           */
@@ -334,7 +326,6 @@ L20:
 
                 if (d[j + 24] == 0.f)
                 {
-
                     /* ------------------ */
                     /* Ritz value is real */
                     /* ------------------ */
@@ -344,11 +335,9 @@ L20:
                     saxpy_(&n, &r__1, &v[(j << 8) - 256], &c__1, ax, &c__1);
                     d[j + 49] = snrm2_(&n, ax, &c__1);
                     d[j + 49] /= (r__1 = d[j - 1], dabs(r__1));
-
                 }
                 else if (first)
                 {
-
                     /* ---------------------- */
                     /* Ritz value is complex  */
                     /* Residual of one Ritz   */
@@ -375,8 +364,6 @@ L20:
                 {
                     first = true;
                 }
-
-                /* L30: */
             }
 
             /* --------------------------- */
@@ -418,7 +405,6 @@ L20:
         printf(" The number of OP*x is %d\n", iparam[8]);
         printf(" The convergence criterion is %e\n", tol);
         printf(" \n");
-
     }
 
     free(resid);
@@ -469,7 +455,6 @@ int sndrv2_av_(int *n, float *v, float *w)
     for (j = 2; j <= i__1; ++j)
     {
         w[j] = dl * v[j - 1] + dd * v[j] + du * v[j + 1];
-        /* L10: */
     }
     w[*n] = dl * v[*n - 1] + dd * v[*n];
     return 0;
