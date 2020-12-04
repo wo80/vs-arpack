@@ -64,7 +64,7 @@
  */
 
 int dnconv_(int32_t *n, double *ritzr, double *ritzi,
-	 double *bounds, double *tol, int32_t *nconv)
+            double *bounds, double *tol, int32_t *nconv)
 {
     /* System generated locals */
     int32_t i__1;
@@ -78,21 +78,21 @@ int dnconv_(int32_t *n, double *ritzr, double *ritzi,
     static float t0, t1;
     double eps23, temp;
 
-     /* --------------------- */
-     /* Executable Statements */
-     /* --------------------- */
+    /* --------------------- */
+    /* Executable Statements */
+    /* --------------------- */
 
-     /* ----------------------------------------------------------- */
-     /* Convergence test: unlike in the symmetric code, I am not    */
-     /* using things like refined error bounds and gap condition    */
-     /* because I don't know the exact equivalent concept.          */
-     /*                                                             */
-     /* Instead the i-th Ritz value is considered "converged" when: */
-     /*                                                             */
-     /*     bounds(i) .le. ( TOL * | ritz | )                       */
-     /*                                                             */
-     /* for some appropriate choice of norm.                        */
-     /* ----------------------------------------------------------- */
+    /* ----------------------------------------------------------- */
+    /* Convergence test: unlike in the symmetric code, I am not    */
+    /* using things like refined error bounds and gap condition    */
+    /* because I don't know the exact equivalent concept.          */
+    /*                                                             */
+    /* Instead the i-th Ritz value is considered "converged" when: */
+    /*                                                             */
+    /*     bounds(i) .le. ( TOL * | ritz | )                       */
+    /*                                                             */
+    /* for some appropriate choice of norm.                        */
+    /* ----------------------------------------------------------- */
 
     /* Parameter adjustments */
     --bounds;
@@ -104,23 +104,25 @@ int dnconv_(int32_t *n, double *ritzr, double *ritzi,
     arscnd_(&t0);
 #endif
 
-     /* ------------------------------- */
-     /* Get machine dependent constant. */
-     /* ------------------------------- */
+    /* ------------------------------- */
+    /* Get machine dependent constant. */
+    /* ------------------------------- */
 
     eps23 = dlamch_("E");
     eps23 = pow_dd(&eps23, &d_23);
 
     *nconv = 0;
     i__1 = *n;
-    for (i = 1; i <= i__1; ++i) {
-/* Computing MAX */
-	d__1 = eps23, d__2 = dlapy2_(&ritzr[i], &ritzi[i]);
-	temp = max(d__1,d__2);
-	if (bounds[i] <= *tol * temp) {
-	    ++(*nconv);
-	}
-/* L20: */
+    for (i = 1; i <= i__1; ++i)
+    {
+        /* Computing MAX */
+        d__1 = eps23, d__2 = dlapy2_(&ritzr[i], &ritzi[i]);
+        temp = max(d__1,d__2);
+        if (bounds[i] <= *tol * temp)
+        {
+            ++(*nconv);
+        }
+        /* L20: */
     }
 
 #ifndef NO_TIMER
@@ -130,9 +132,9 @@ int dnconv_(int32_t *n, double *ritzr, double *ritzi,
 
     return 0;
 
-     /* ------------- */
-     /* End of dnconv */
-     /* ------------- */
+    /* ------------- */
+    /* End of dnconv */
+    /* ------------- */
 
 } /* dnconv_ */
 

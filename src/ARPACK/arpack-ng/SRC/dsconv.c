@@ -58,7 +58,7 @@
  */
 
 int dsconv_(int32_t *n, double *ritz, double *bounds,
-	 double *tol, int32_t *nconv)
+            double *tol, int32_t *nconv)
 {
     /* System generated locals */
     int32_t i__1;
@@ -72,13 +72,13 @@ int dsconv_(int32_t *n, double *ritz, double *bounds,
     static float t0, t1;
     double eps23, temp;
 
-     /* ----------------- */
-     /* External routines */
-     /* ----------------- */
+    /* ----------------- */
+    /* External routines */
+    /* ----------------- */
 
-     /* --------------------- */
-     /* Executable Statements */
-     /* --------------------- */
+    /* --------------------- */
+    /* Executable Statements */
+    /* --------------------- */
 
     /* Parameter adjustments */
     --bounds;
@@ -94,21 +94,23 @@ int dsconv_(int32_t *n, double *ritz, double *bounds,
 
     *nconv = 0;
     i__1 = *n;
-    for (i = 1; i <= i__1; ++i) {
+    for (i = 1; i <= i__1; ++i)
+    {
 
         /* --------------------------------------------------- */
         /* The i-th Ritz value is considered "converged"       */
         /* when: bounds(i) .le. TOL*max(eps23, abs(ritz(i)))   */
         /* --------------------------------------------------- */
 
-/* Computing MAX */
-	d__2 = eps23, d__3 = (d__1 = ritz[i], abs(d__1));
-	temp = max(d__2,d__3);
-	if (bounds[i] <= *tol * temp) {
-	    ++(*nconv);
-	}
+        /* Computing MAX */
+        d__2 = eps23, d__3 = (d__1 = ritz[i], abs(d__1));
+        temp = max(d__2,d__3);
+        if (bounds[i] <= *tol * temp)
+        {
+            ++(*nconv);
+        }
 
-/* L10: */
+        /* L10: */
     }
 
 #ifndef NO_TIMER
@@ -118,9 +120,9 @@ int dsconv_(int32_t *n, double *ritz, double *bounds,
 
     return 0;
 
-     /* ------------- */
-     /* End of dsconv */
-     /* ------------- */
+    /* ------------- */
+    /* End of dsconv */
+    /* ------------- */
 
 } /* dsconv_ */
 

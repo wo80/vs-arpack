@@ -92,26 +92,26 @@
  */
 
 int ssgets_(int32_t *ishift, char *which, int32_t *kev, int32_t *np, float *ritz,
-     float *bounds, float *shifts)
+            float *bounds, float *shifts)
 {
     /* System generated locals */
     int32_t i__1;
 
     /* Builtin functions */
-    
+
     /* Local variables */
     static float t0, t1;
     int32_t kevd2;
     int32_t msglvl;
 
-     /* --------------------- */
-     /* Executable Statements */
-     /* --------------------- */
+    /* --------------------- */
+    /* Executable Statements */
+    /* --------------------- */
 
-     /* ----------------------------- */
-     /* Initialize timing statistics  */
-     /* & message level for debugging */
-     /* ----------------------------- */
+    /* ----------------------------- */
+    /* Initialize timing statistics  */
+    /* & message level for debugging */
+    /* ----------------------------- */
 
     /* Parameter adjustments */
     --shifts;
@@ -125,7 +125,8 @@ int ssgets_(int32_t *ishift, char *which, int32_t *kev, int32_t *np, float *ritz
 
     msglvl = debug_1.msgets;
 
-    if (strcmp(which, "BE") == 0) {
+    if (strcmp(which, "BE") == 0)
+    {
 
         /* --------------------------------------------------- */
         /* Both ends of the spectrum are requested.            */
@@ -136,17 +137,20 @@ int ssgets_(int32_t *ishift, char *which, int32_t *kev, int32_t *np, float *ritz
         /* overlapping locations.                              */
         /* --------------------------------------------------- */
 
-	i__1 = *kev + *np;
-	ssortr_("LA", &c_true, &i__1, &ritz[1], &bounds[1]);
-	kevd2 = *kev / 2;
-	if (*kev > 1) {
-	    i__1 = min(kevd2,*np);
-	    sswap_(&i__1, &ritz[1], &c__1, &ritz[max(kevd2,*np) + 1], &c__1);
-	    i__1 = min(kevd2,*np);
-	    sswap_(&i__1, &bounds[1], &c__1, &bounds[max(kevd2,*np) + 1], &c__1);
-	}
+        i__1 = *kev + *np;
+        ssortr_("LA", &c_true, &i__1, &ritz[1], &bounds[1]);
+        kevd2 = *kev / 2;
+        if (*kev > 1)
+        {
+            i__1 = min(kevd2,*np);
+            sswap_(&i__1, &ritz[1], &c__1, &ritz[max(kevd2,*np) + 1], &c__1);
+            i__1 = min(kevd2,*np);
+            sswap_(&i__1, &bounds[1], &c__1, &bounds[max(kevd2,*np) + 1], &c__1);
+        }
 
-    } else {
+    }
+    else
+    {
 
         /* -------------------------------------------------- */
         /* LM, SM, LA, SA case.                               */
@@ -156,11 +160,12 @@ int ssgets_(int32_t *ishift, char *which, int32_t *kev, int32_t *np, float *ritz
         /* are always in the last KEV locations.              */
         /* -------------------------------------------------- */
 
-	i__1 = *kev + *np;
-	ssortr_(which, &c_true, &i__1, &ritz[1], &bounds[1]);
+        i__1 = *kev + *np;
+        ssortr_(which, &c_true, &i__1, &ritz[1], &bounds[1]);
     }
 
-    if (*ishift == 1 && *np > 0) {
+    if (*ishift == 1 && *np > 0)
+    {
 
         /* ----------------------------------------------------- */
         /* Sort the unwanted Ritz values used as shifts so that  */
@@ -170,8 +175,8 @@ int ssgets_(int32_t *ishift, char *which, int32_t *kev, int32_t *np, float *ritz
         /* are applied in subroutine ssapps.                     */
         /* ----------------------------------------------------- */
 
-	ssortr_("SM", &c_true, np, &bounds[1], &ritz[1]);
-	scopy_(np, &ritz[1], &c__1, &shifts[1], &c__1);
+        ssortr_("SM", &c_true, np, &bounds[1], &ritz[1]);
+        scopy_(np, &ritz[1], &c__1, &shifts[1], &c__1);
     }
 
 #ifndef NO_TIMER
@@ -180,21 +185,22 @@ int ssgets_(int32_t *ishift, char *which, int32_t *kev, int32_t *np, float *ritz
 #endif
 
 #ifndef NO_TRACE
-    if (msglvl > 0) {
-	ivout_(&c__1, kev, &debug_1.ndigit, "_sgets: KEV is");
-	ivout_(&c__1, np, &debug_1.ndigit, "_sgets: NP is");
-	i__1 = *kev + *np;
-	svout_(&i__1, &ritz[1], &debug_1.ndigit, "_sgets: Eigenvalues of current H matrix");
-	i__1 = *kev + *np;
-	svout_(&i__1, &bounds[1], &debug_1.ndigit, "_sgets: Associated Ritz estimates");
+    if (msglvl > 0)
+    {
+        ivout_(&c__1, kev, &debug_1.ndigit, "_sgets: KEV is");
+        ivout_(&c__1, np, &debug_1.ndigit, "_sgets: NP is");
+        i__1 = *kev + *np;
+        svout_(&i__1, &ritz[1], &debug_1.ndigit, "_sgets: Eigenvalues of current H matrix");
+        i__1 = *kev + *np;
+        svout_(&i__1, &bounds[1], &debug_1.ndigit, "_sgets: Associated Ritz estimates");
     }
 #endif
 
     return 0;
 
-     /* ------------- */
-     /* End of ssgets */
-     /* ------------- */
+    /* ------------- */
+    /* End of ssgets */
+    /* ------------- */
 
 } /* ssgets_ */
 

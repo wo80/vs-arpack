@@ -167,21 +167,21 @@
  */
 
 int cnaup2_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, int32_t *np,
-     float *tol, complex *resid, int32_t *mode, int32_t *iupd, int32_t *ishift, int32_t *mxiter,
-     complex *v, int32_t *ldv, complex *h, int32_t *ldh, complex *ritz, complex *bounds,
-     complex *q, int32_t *ldq, complex *workl, int32_t *ipntr, complex *workd, float *rwork,
-     int32_t *info)
+            float *tol, complex *resid, int32_t *mode, int32_t *iupd, int32_t *ishift, int32_t *mxiter,
+            complex *v, int32_t *ldv, complex *h, int32_t *ldh, complex *ritz, complex *bounds,
+            complex *q, int32_t *ldq, complex *workl, int32_t *ipntr, complex *workd, float *rwork,
+            int32_t *info)
 {
     /* System generated locals */
-    int32_t h_dim1, h_offset, q_dim1, q_offset, v_dim1, v_offset, i__1, i__2, 
-	    i__3;
+    int32_t h_dim1, h_offset, q_dim1, q_offset, v_dim1, v_offset, i__1, i__2,
+            i__3;
     float r__1, r__2, r__3, r__4;
     double d__1;
     complex q__1;
 
     /* Builtin functions */
     double pow_dd(double *, double *), r_imag(complex *);
-    
+
     double sqrt(double);
 
     /* Local variables */
@@ -205,9 +205,9 @@ int cnaup2_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, int
     char wprime[3];
     complex cmpnorm;
 
-     /* --------------------- */
-     /* Executable Statements */
-     /* --------------------- */
+    /* --------------------- */
+    /* Executable Statements */
+    /* --------------------- */
 
     /* Parameter adjustments */
     --workd;
@@ -228,16 +228,17 @@ int cnaup2_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, int
     --ipntr;
 
     /* Function Body */
-    if (*ido == 0) {
+    if (*ido == 0)
+    {
 
 #ifndef NO_TIMER
-	arscnd_(&t0);
+        arscnd_(&t0);
 #endif
 
-	msglvl = debug_1.mcaup2;
+        msglvl = debug_1.mcaup2;
 
-	nev0 = *nev;
-	np0 = *np;
+        nev0 = *nev;
+        np0 = *np;
 
         /* ----------------------------------- */
         /* kplusp is the bound on the largest  */
@@ -248,147 +249,160 @@ int cnaup2_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, int
         /*      iteration step.                */
         /* ----------------------------------- */
 
-	kplusp = *nev + *np;
-	nconv = 0;
-	iter = 0;
+        kplusp = *nev + *np;
+        nconv = 0;
+        iter = 0;
 
         /* ------------------------------- */
         /* Get machine dependent constant. */
         /* ------------------------------- */
 
-	eps23 = slamch_("E");
-	d__1 = (double) eps23;
-	eps23 = pow_dd(&d__1, &d_23);
+        eps23 = slamch_("E");
+        d__1 = (double) eps23;
+        eps23 = pow_dd(&d__1, &d_23);
 
         /* ------------------------------------- */
         /* Set flags for computing the first NEV */
         /* steps of the Arnoldi factorization.   */
         /* ------------------------------------- */
 
-	getv0 = true;
-	update = false;
-	ushift = false;
-	cnorm = false;
+        getv0 = true;
+        update = false;
+        ushift = false;
+        cnorm = false;
 
-	if (*info != 0) {
+        if (*info != 0)
+        {
 
-           /* ------------------------------------------ */
-           /* User provides the initial residual vector. */
-           /* ------------------------------------------ */
+            /* ------------------------------------------ */
+            /* User provides the initial residual vector. */
+            /* ------------------------------------------ */
 
-	    initv = true;
-	    *info = 0;
-	} else {
-	    initv = false;
-	}
+            initv = true;
+            *info = 0;
+        }
+        else
+        {
+            initv = false;
+        }
     }
 
-     /* ------------------------------------------- */
-     /* Get a possibly random starting vector and   */
-     /* force it into the range of the operator OP. */
-     /* ------------------------------------------- */
+    /* ------------------------------------------- */
+    /* Get a possibly random starting vector and   */
+    /* force it into the range of the operator OP. */
+    /* ------------------------------------------- */
 
-/* L10: */
+    /* L10: */
 
-    if (getv0) {
-	cgetv0_(ido, bmat, &c__1, &initv, n, &c__1, &v[v_offset], ldv, &resid[1], &rnorm, &ipntr[1], &workd[1], info);
+    if (getv0)
+    {
+        cgetv0_(ido, bmat, &c__1, &initv, n, &c__1, &v[v_offset], ldv, &resid[1], &rnorm, &ipntr[1], &workd[1], info);
 
-	if (*ido != 99) {
-	    goto L9000;
-	}
+        if (*ido != 99)
+        {
+            goto L9000;
+        }
 
-	if (rnorm == 0.f) {
+        if (rnorm == 0.f)
+        {
 
-           /* --------------------------------------- */
-           /* The initial vector is zero. Error exit. */
-           /* --------------------------------------- */
+            /* --------------------------------------- */
+            /* The initial vector is zero. Error exit. */
+            /* --------------------------------------- */
 
-	    *info = -9;
-	    goto L1100;
-	}
-	getv0 = false;
-	*ido = 0;
+            *info = -9;
+            goto L1100;
+        }
+        getv0 = false;
+        *ido = 0;
     }
 
-     /* --------------------------------- */
-     /* Back from reverse communication : */
-     /* continue with update step         */
-     /* --------------------------------- */
+    /* --------------------------------- */
+    /* Back from reverse communication : */
+    /* continue with update step         */
+    /* --------------------------------- */
 
-    if (update) {
-	goto L20;
+    if (update)
+    {
+        goto L20;
     }
 
-     /* ----------------------------------------- */
-     /* Back from computing user specified shifts */
-     /* ----------------------------------------- */
+    /* ----------------------------------------- */
+    /* Back from computing user specified shifts */
+    /* ----------------------------------------- */
 
-    if (ushift) {
-	goto L50;
+    if (ushift)
+    {
+        goto L50;
     }
 
-     /* ----------------------------------- */
-     /* Back from computing residual norm   */
-     /* at the end of the current iteration */
-     /* ----------------------------------- */
+    /* ----------------------------------- */
+    /* Back from computing residual norm   */
+    /* at the end of the current iteration */
+    /* ----------------------------------- */
 
-    if (cnorm) {
-	goto L100;
+    if (cnorm)
+    {
+        goto L100;
     }
 
-     /* -------------------------------------------------------- */
-     /* Compute the first NEV steps of the Arnoldi factorization */
-     /* -------------------------------------------------------- */
+    /* -------------------------------------------------------- */
+    /* Compute the first NEV steps of the Arnoldi factorization */
+    /* -------------------------------------------------------- */
 
     cnaitr_(ido, bmat, n, &c__0, nev, mode, &resid[1], &rnorm, &v[v_offset], ldv, &h[h_offset], ldh, &ipntr[1], &workd[1], info);
 
-    if (*ido != 99) {
-	goto L9000;
+    if (*ido != 99)
+    {
+        goto L9000;
     }
 
-    if (*info > 0) {
-	*np = *info;
-	*mxiter = iter;
-	*info = -9999;
-	goto L1200;
+    if (*info > 0)
+    {
+        *np = *info;
+        *mxiter = iter;
+        *info = -9999;
+        goto L1200;
     }
 
-     /* ------------------------------------------------------------ */
-     /*                                                              */
-     /*           M A I N  ARNOLDI  I T E R A T I O N  L O O P       */
-     /*           Each iteration implicitly restarts the Arnoldi     */
-     /*           factorization in place.                            */
-     /*                                                              */
-     /* ------------------------------------------------------------ */
+    /* ------------------------------------------------------------ */
+    /*                                                              */
+    /*           M A I N  ARNOLDI  I T E R A T I O N  L O O P       */
+    /*           Each iteration implicitly restarts the Arnoldi     */
+    /*           factorization in place.                            */
+    /*                                                              */
+    /* ------------------------------------------------------------ */
 
 L1000:
 
     ++iter;
 
 #ifndef NO_TRACE
-    if (msglvl > 0) {
-	ivout_(&c__1, &iter, &debug_1.ndigit, "_naup2: **** Start of major iteration number ****");
+    if (msglvl > 0)
+    {
+        ivout_(&c__1, &iter, &debug_1.ndigit, "_naup2: **** Start of major iteration number ****");
     }
 #endif
 
-        /* --------------------------------------------------------- */
-        /* Compute NP additional steps of the Arnoldi factorization. */
-        /* Adjust NP since NEV might have been updated by last call  */
-        /* to the shift application routine cnapps.                  */
-        /* --------------------------------------------------------- */
+    /* --------------------------------------------------------- */
+    /* Compute NP additional steps of the Arnoldi factorization. */
+    /* Adjust NP since NEV might have been updated by last call  */
+    /* to the shift application routine cnapps.                  */
+    /* --------------------------------------------------------- */
 
     *np = kplusp - *nev;
 
 #ifndef NO_TRACE
-    if (msglvl > 1) {
-	ivout_(&c__1, nev, &debug_1.ndigit, "_naup2: The length of the current Arnoldi factorization");
-	ivout_(&c__1, np, &debug_1.ndigit, "_naup2: Extend the Arnoldi factorization by");
+    if (msglvl > 1)
+    {
+        ivout_(&c__1, nev, &debug_1.ndigit, "_naup2: The length of the current Arnoldi factorization");
+        ivout_(&c__1, np, &debug_1.ndigit, "_naup2: Extend the Arnoldi factorization by");
     }
 #endif
 
-        /* --------------------------------------------------------- */
-        /* Compute NP additional steps of the Arnoldi factorization. */
-        /* --------------------------------------------------------- */
+    /* --------------------------------------------------------- */
+    /* Compute NP additional steps of the Arnoldi factorization. */
+    /* --------------------------------------------------------- */
 
     *ido = 0;
 L20:
@@ -396,422 +410,464 @@ L20:
 
     cnaitr_(ido, bmat, n, nev, np, mode, &resid[1], &rnorm, &v[v_offset], ldv,&h[h_offset], ldh, &ipntr[1], &workd[1], info);
 
-    if (*ido != 99) {
-	goto L9000;
+    if (*ido != 99)
+    {
+        goto L9000;
     }
 
-    if (*info > 0) {
-	*np = *info;
-	*mxiter = iter;
-	*info = -9999;
-	goto L1200;
+    if (*info > 0)
+    {
+        *np = *info;
+        *mxiter = iter;
+        *info = -9999;
+        goto L1200;
     }
     update = false;
 
 #ifndef NO_TRACE
-    if (msglvl > 1) {
-	svout_(&c__1, &rnorm, &debug_1.ndigit, "_naup2: Corresponding B-norm of the residual");
+    if (msglvl > 1)
+    {
+        svout_(&c__1, &rnorm, &debug_1.ndigit, "_naup2: Corresponding B-norm of the residual");
     }
 #endif
 
-        /* ------------------------------------------------------ */
-        /* Compute the eigenvalues and corresponding error bounds */
-        /* of the current upper Hessenberg matrix.                */
-        /* ------------------------------------------------------ */
+    /* ------------------------------------------------------ */
+    /* Compute the eigenvalues and corresponding error bounds */
+    /* of the current upper Hessenberg matrix.                */
+    /* ------------------------------------------------------ */
 
     cneigh_(&rnorm, &kplusp, &h[h_offset], ldh, &ritz[1], &bounds[1], &q[q_offset], ldq, &workl[1], &rwork[1], &ierr);
 
-    if (ierr != 0) {
-	*info = -8;
-	goto L1200;
+    if (ierr != 0)
+    {
+        *info = -8;
+        goto L1200;
     }
 
-        /* ------------------------------------------------- */
-        /* Select the wanted Ritz values and their bounds    */
-        /* to be used in the convergence test.               */
-        /* The wanted part of the spectrum and corresponding */
-        /* error bounds are in the last NEV loc. of RITZ,    */
-        /* and BOUNDS respectively.                          */
-        /* ------------------------------------------------- */
+    /* ------------------------------------------------- */
+    /* Select the wanted Ritz values and their bounds    */
+    /* to be used in the convergence test.               */
+    /* The wanted part of the spectrum and corresponding */
+    /* error bounds are in the last NEV loc. of RITZ,    */
+    /* and BOUNDS respectively.                          */
+    /* ------------------------------------------------- */
 
     *nev = nev0;
     *np = np0;
 
-        /* ------------------------------------------------ */
-        /* Make a copy of Ritz values and the corresponding */
-        /* Ritz estimates obtained from cneigh.             */
-        /* ------------------------------------------------ */
+    /* ------------------------------------------------ */
+    /* Make a copy of Ritz values and the corresponding */
+    /* Ritz estimates obtained from cneigh.             */
+    /* ------------------------------------------------ */
 
-/* Computing 2nd power */
+    /* Computing 2nd power */
     i__1 = kplusp;
     ccopy_(&kplusp, &ritz[1], &c__1, &workl[i__1 * i__1 + 1], &c__1);
-/* Computing 2nd power */
+    /* Computing 2nd power */
     i__1 = kplusp;
     ccopy_(&kplusp, &bounds[1], &c__1, &workl[i__1 * i__1 + kplusp + 1], &c__1);
 
-        /* ------------------------------------------------- */
-        /* Select the wanted Ritz values and their bounds    */
-        /* to be used in the convergence test.               */
-        /* The wanted part of the spectrum and corresponding */
-        /* bounds are in the last NEV loc. of RITZ           */
-        /* BOUNDS respectively.                              */
-        /* ------------------------------------------------- */
+    /* ------------------------------------------------- */
+    /* Select the wanted Ritz values and their bounds    */
+    /* to be used in the convergence test.               */
+    /* The wanted part of the spectrum and corresponding */
+    /* bounds are in the last NEV loc. of RITZ           */
+    /* BOUNDS respectively.                              */
+    /* ------------------------------------------------- */
 
     cngets_(ishift, which, nev, np, &ritz[1], &bounds[1]);
 
-        /* ---------------------------------------------------------- */
-        /* Convergence test: currently we use the following criteria. */
-        /* The relative accuracy of a Ritz value is considered        */
-        /* acceptable if:                                             */
-        /*                                                            */
-        /* error_bounds(i) .le. tol*max(eps23, magnitude_of_ritz(i)). */
-        /*                                                            */
-        /* ---------------------------------------------------------- */
+    /* ---------------------------------------------------------- */
+    /* Convergence test: currently we use the following criteria. */
+    /* The relative accuracy of a Ritz value is considered        */
+    /* acceptable if:                                             */
+    /*                                                            */
+    /* error_bounds(i) .le. tol*max(eps23, magnitude_of_ritz(i)). */
+    /*                                                            */
+    /* ---------------------------------------------------------- */
 
     nconv = 0;
 
     i__1 = *nev;
-    for (i = 1; i <= i__1; ++i) {
-/* Computing MAX */
-	i__2 = *np + i;
-	r__3 = ritz[i__2].r;
-	r__4 = r_imag(&ritz[*np + i]);
-	r__1 = eps23, r__2 = slapy2_(&r__3, &r__4);
-	rtemp = dmax(r__1,r__2);
-	i__2 = *np + i;
-	r__1 = bounds[i__2].r;
-	r__2 = r_imag(&bounds[*np + i]);
-	if (slapy2_(&r__1, &r__2) <= *tol * rtemp) {
-	    ++nconv;
-	}
-/* L25: */
+    for (i = 1; i <= i__1; ++i)
+    {
+        /* Computing MAX */
+        i__2 = *np + i;
+        r__3 = ritz[i__2].r;
+        r__4 = r_imag(&ritz[*np + i]);
+        r__1 = eps23, r__2 = slapy2_(&r__3, &r__4);
+        rtemp = dmax(r__1,r__2);
+        i__2 = *np + i;
+        r__1 = bounds[i__2].r;
+        r__2 = r_imag(&bounds[*np + i]);
+        if (slapy2_(&r__1, &r__2) <= *tol * rtemp)
+        {
+            ++nconv;
+        }
+        /* L25: */
     }
 
 #ifndef NO_TRACE
-    if (msglvl > 2) {
-	kp[0] = *nev;
-	kp[1] = *np;
-	kp[2] = nconv;
-	ivout_(&c__3, kp, &debug_1.ndigit, "_naup2: NEV, NP, NCONV are");
-	cvout_(&kplusp, &ritz[1], &debug_1.ndigit, "_naup2: The eigenvalues of H");
-	cvout_(&kplusp, &bounds[1], &debug_1.ndigit, "_naup2: Ritz estimates of the current NCV Ritz values");
+    if (msglvl > 2)
+    {
+        kp[0] = *nev;
+        kp[1] = *np;
+        kp[2] = nconv;
+        ivout_(&c__3, kp, &debug_1.ndigit, "_naup2: NEV, NP, NCONV are");
+        cvout_(&kplusp, &ritz[1], &debug_1.ndigit, "_naup2: The eigenvalues of H");
+        cvout_(&kplusp, &bounds[1], &debug_1.ndigit, "_naup2: Ritz estimates of the current NCV Ritz values");
     }
 #endif
 
-        /* ------------------------------------------------------- */
-        /* Count the number of unwanted Ritz values that have zero */
-        /* Ritz estimates. If any Ritz estimates are equal to zero */
-        /* then a leading block of H of order equal to at least    */
-        /* the number of Ritz values with zero Ritz estimates has  */
-        /* split off. None of these Ritz values may be removed by  */
-        /* shifting. Decrease NP the number of shifts to apply. If */
-        /* no shifts may be applied, then prepare to exit          */
-        /* ------------------------------------------------------- */
+    /* ------------------------------------------------------- */
+    /* Count the number of unwanted Ritz values that have zero */
+    /* Ritz estimates. If any Ritz estimates are equal to zero */
+    /* then a leading block of H of order equal to at least    */
+    /* the number of Ritz values with zero Ritz estimates has  */
+    /* split off. None of these Ritz values may be removed by  */
+    /* shifting. Decrease NP the number of shifts to apply. If */
+    /* no shifts may be applied, then prepare to exit          */
+    /* ------------------------------------------------------- */
 
     nptemp = *np;
     i__1 = nptemp;
-    for (j = 1; j <= i__1; ++j) {
-	i__2 = j;
-	if (bounds[i__2].r == 0.f && bounds[i__2].i == 0.f) {
-	    --(*np);
-	    ++(*nev);
-	}
-/* L30: */
+    for (j = 1; j <= i__1; ++j)
+    {
+        i__2 = j;
+        if (bounds[i__2].r == 0.f && bounds[i__2].i == 0.f)
+        {
+            --(*np);
+            ++(*nev);
+        }
+        /* L30: */
     }
 
-    if (nconv >= nev0 || iter > *mxiter || *np == 0) {
+    if (nconv >= nev0 || iter > *mxiter || *np == 0)
+    {
 
 #ifndef NO_TRACE
-	if (msglvl > 4) {
-/* Computing 2nd power */
-	    i__1 = kplusp;
-	    cvout_(&kplusp, &workl[i__1 * i__1 + 1], &debug_1.ndigit, "_naup2: Eigenvalues computed by _neigh:");
-/* Computing 2nd power */
-	    i__1 = kplusp;
-	    cvout_(&kplusp, &workl[i__1 * i__1 + kplusp + 1],&debug_1.ndigit, "_naup2: Ritz estimates computed by _neigh:");
-	}
+        if (msglvl > 4)
+        {
+            /* Computing 2nd power */
+            i__1 = kplusp;
+            cvout_(&kplusp, &workl[i__1 * i__1 + 1], &debug_1.ndigit, "_naup2: Eigenvalues computed by _neigh:");
+            /* Computing 2nd power */
+            i__1 = kplusp;
+            cvout_(&kplusp, &workl[i__1 * i__1 + kplusp + 1],&debug_1.ndigit, "_naup2: Ritz estimates computed by _neigh:");
+        }
 #endif
 
-           /* ---------------------------------------------- */
-           /* Prepare to exit. Put the converged Ritz values */
-           /* and corresponding bounds in RITZ(1:NCONV) and  */
-           /* BOUNDS(1:NCONV) respectively. Then sort. Be    */
-           /* careful when NCONV > NP                        */
-           /* ---------------------------------------------- */
+        /* ---------------------------------------------- */
+        /* Prepare to exit. Put the converged Ritz values */
+        /* and corresponding bounds in RITZ(1:NCONV) and  */
+        /* BOUNDS(1:NCONV) respectively. Then sort. Be    */
+        /* careful when NCONV > NP                        */
+        /* ---------------------------------------------- */
 
-           /* ---------------------------------------- */
-           /*  Use h( 3,1 ) as storage to communicate  */
-           /*  rnorm to cneupd if needed               */
-           /* ---------------------------------------- */
-	i__1 = h_dim1 + 3;
-	q__1.r = rnorm, q__1.i = 0.f;
-	h[i__1].r = q__1.r, h[i__1].i = q__1.i;
+        /* ---------------------------------------- */
+        /*  Use h( 3,1 ) as storage to communicate  */
+        /*  rnorm to cneupd if needed               */
+        /* ---------------------------------------- */
+        i__1 = h_dim1 + 3;
+        q__1.r = rnorm, q__1.i = 0.f;
+        h[i__1].r = q__1.r, h[i__1].i = q__1.i;
 
-           /* -------------------------------------------- */
-           /* Sort Ritz values so that converged Ritz      */
-           /* values appear within the first NEV locations */
-           /* of ritz and bounds, and the most desired one */
-           /* appears at the front.                        */
-           /* -------------------------------------------- */
+        /* -------------------------------------------- */
+        /* Sort Ritz values so that converged Ritz      */
+        /* values appear within the first NEV locations */
+        /* of ritz and bounds, and the most desired one */
+        /* appears at the front.                        */
+        /* -------------------------------------------- */
 
-	if (strcmp(which, "LM") == 0) {
-	    strcpy(wprime, "SM");
-	}
-	if (strcmp(which, "SM") == 0) {
-	    strcpy(wprime, "LM");
-	}
-	if (strcmp(which, "LR") == 0) {
-	    strcpy(wprime, "SR");
-	}
-	if (strcmp(which, "SR") == 0) {
-	    strcpy(wprime, "LR");
-	}
-	if (strcmp(which, "LI") == 0) {
-	    strcpy(wprime, "SI");
-	}
-	if (strcmp(which, "SI") == 0) {
-	    strcpy(wprime, "LI");
-	}
+        if (strcmp(which, "LM") == 0)
+        {
+            strcpy(wprime, "SM");
+        }
+        if (strcmp(which, "SM") == 0)
+        {
+            strcpy(wprime, "LM");
+        }
+        if (strcmp(which, "LR") == 0)
+        {
+            strcpy(wprime, "SR");
+        }
+        if (strcmp(which, "SR") == 0)
+        {
+            strcpy(wprime, "LR");
+        }
+        if (strcmp(which, "LI") == 0)
+        {
+            strcpy(wprime, "SI");
+        }
+        if (strcmp(which, "SI") == 0)
+        {
+            strcpy(wprime, "LI");
+        }
 
-	csortc_(wprime, &c_true, &kplusp, &ritz[1], &bounds[1]);
+        csortc_(wprime, &c_true, &kplusp, &ritz[1], &bounds[1]);
 
-           /* ------------------------------------------------ */
-           /* Scale the Ritz estimate of each Ritz value       */
-           /* by 1 / max(eps23, magnitude of the Ritz value).  */
-           /* ------------------------------------------------ */
+        /* ------------------------------------------------ */
+        /* Scale the Ritz estimate of each Ritz value       */
+        /* by 1 / max(eps23, magnitude of the Ritz value).  */
+        /* ------------------------------------------------ */
 
-	i__1 = nev0;
-	for (j = 1; j <= i__1; ++j) {
-/* Computing MAX */
-	    i__2 = j;
-	    r__3 = ritz[i__2].r;
-	    r__4 = r_imag(&ritz[j]);
-	    r__1 = eps23, r__2 = slapy2_(&r__3, &r__4);
-	    rtemp = dmax(r__1,r__2);
-	    i__2 = j;
-	    i__3 = j;
-	    q__1.r = bounds[i__3].r / rtemp, q__1.i = bounds[i__3].i / rtemp;
-	    bounds[i__2].r = q__1.r, bounds[i__2].i = q__1.i;
-/* L35: */
-	}
+        i__1 = nev0;
+        for (j = 1; j <= i__1; ++j)
+        {
+            /* Computing MAX */
+            i__2 = j;
+            r__3 = ritz[i__2].r;
+            r__4 = r_imag(&ritz[j]);
+            r__1 = eps23, r__2 = slapy2_(&r__3, &r__4);
+            rtemp = dmax(r__1,r__2);
+            i__2 = j;
+            i__3 = j;
+            q__1.r = bounds[i__3].r / rtemp, q__1.i = bounds[i__3].i / rtemp;
+            bounds[i__2].r = q__1.r, bounds[i__2].i = q__1.i;
+            /* L35: */
+        }
 
-           /* ------------------------------------------------- */
-           /* Sort the Ritz values according to the scaled Ritz */
-           /* estimates.  This will push all the converged ones */
-           /* towards the front of ritz, bounds (in the case    */
-           /* when NCONV < NEV.)                                */
-           /* ------------------------------------------------- */
+        /* ------------------------------------------------- */
+        /* Sort the Ritz values according to the scaled Ritz */
+        /* estimates.  This will push all the converged ones */
+        /* towards the front of ritz, bounds (in the case    */
+        /* when NCONV < NEV.)                                */
+        /* ------------------------------------------------- */
 
-	strcpy(wprime, "LM");
-	csortc_(wprime, &c_true, &nev0, &bounds[1], &ritz[1]);
+        strcpy(wprime, "LM");
+        csortc_(wprime, &c_true, &nev0, &bounds[1], &ritz[1]);
 
-           /* -------------------------------------------- */
-           /* Scale the Ritz estimate back to its original */
-           /* value.                                       */
-           /* -------------------------------------------- */
+        /* -------------------------------------------- */
+        /* Scale the Ritz estimate back to its original */
+        /* value.                                       */
+        /* -------------------------------------------- */
 
-	i__1 = nev0;
-	for (j = 1; j <= i__1; ++j) {
-/* Computing MAX */
-	    i__2 = j;
-	    r__3 = ritz[i__2].r;
-	    r__4 = r_imag(&ritz[j]);
-	    r__1 = eps23, r__2 = slapy2_(&r__3, &r__4);
-	    rtemp = dmax(r__1,r__2);
-	    i__2 = j;
-	    i__3 = j;
-	    q__1.r = rtemp * bounds[i__3].r, q__1.i = rtemp * bounds[i__3].i;
-	    bounds[i__2].r = q__1.r, bounds[i__2].i = q__1.i;
-/* L40: */
-	}
+        i__1 = nev0;
+        for (j = 1; j <= i__1; ++j)
+        {
+            /* Computing MAX */
+            i__2 = j;
+            r__3 = ritz[i__2].r;
+            r__4 = r_imag(&ritz[j]);
+            r__1 = eps23, r__2 = slapy2_(&r__3, &r__4);
+            rtemp = dmax(r__1,r__2);
+            i__2 = j;
+            i__3 = j;
+            q__1.r = rtemp * bounds[i__3].r, q__1.i = rtemp * bounds[i__3].i;
+            bounds[i__2].r = q__1.r, bounds[i__2].i = q__1.i;
+            /* L40: */
+        }
 
-           /* --------------------------------------------- */
-           /* Sort the converged Ritz values again so that  */
-           /* the "threshold" value appears at the front of */
-           /* ritz and bound.                               */
-           /* --------------------------------------------- */
+        /* --------------------------------------------- */
+        /* Sort the converged Ritz values again so that  */
+        /* the "threshold" value appears at the front of */
+        /* ritz and bound.                               */
+        /* --------------------------------------------- */
 
-	csortc_(which, &c_true, &nconv, &ritz[1], &bounds[1]);
+        csortc_(which, &c_true, &nconv, &ritz[1], &bounds[1]);
 
 #ifndef NO_TRACE
-	if (msglvl > 1) {
-	    cvout_(&kplusp, &ritz[1], &debug_1.ndigit, "_naup2: Sorted eigenvalues");
-	    cvout_(&kplusp, &bounds[1], &debug_1.ndigit, "_naup2: Sorted ritz estimates.");
-	}
+        if (msglvl > 1)
+        {
+            cvout_(&kplusp, &ritz[1], &debug_1.ndigit, "_naup2: Sorted eigenvalues");
+            cvout_(&kplusp, &bounds[1], &debug_1.ndigit, "_naup2: Sorted ritz estimates.");
+        }
 #endif
 
-           /* ---------------------------------- */
-           /* Max iterations have been exceeded. */
-           /* ---------------------------------- */
+        /* ---------------------------------- */
+        /* Max iterations have been exceeded. */
+        /* ---------------------------------- */
 
-	if (iter > *mxiter && nconv < nev0) {
-	    *info = 1;
-	}
+        if (iter > *mxiter && nconv < nev0)
+        {
+            *info = 1;
+        }
 
-           /* ------------------- */
-           /* No shifts to apply. */
-           /* ------------------- */
+        /* ------------------- */
+        /* No shifts to apply. */
+        /* ------------------- */
 
-	if (*np == 0 && nconv < nev0) {
-	    *info = 2;
-	}
+        if (*np == 0 && nconv < nev0)
+        {
+            *info = 2;
+        }
 
-	*np = nconv;
-	goto L1100;
+        *np = nconv;
+        goto L1100;
 
-    } else if (nconv < nev0 && *ishift == 1) {
+    }
+    else if (nconv < nev0 && *ishift == 1)
+    {
 
-           /* ----------------------------------------------- */
-           /* Do not have all the requested eigenvalues yet.  */
-           /* To prevent possible stagnation, adjust the size */
-           /* of NEV.                                         */
-           /* ----------------------------------------------- */
+        /* ----------------------------------------------- */
+        /* Do not have all the requested eigenvalues yet.  */
+        /* To prevent possible stagnation, adjust the size */
+        /* of NEV.                                         */
+        /* ----------------------------------------------- */
 
-	nevbef = *nev;
-/* Computing MIN */
-	i__1 = nconv, i__2 = *np / 2;
-	*nev += min(i__1,i__2);
-	if (*nev == 1 && kplusp >= 6) {
-	    *nev = kplusp / 2;
-	} else if (*nev == 1 && kplusp > 3) {
-	    *nev = 2;
-	}
-	*np = kplusp - *nev;
+        nevbef = *nev;
+        /* Computing MIN */
+        i__1 = nconv, i__2 = *np / 2;
+        *nev += min(i__1,i__2);
+        if (*nev == 1 && kplusp >= 6)
+        {
+            *nev = kplusp / 2;
+        }
+        else if (*nev == 1 && kplusp > 3)
+        {
+            *nev = 2;
+        }
+        *np = kplusp - *nev;
 
-           /* ------------------------------------- */
-           /* If the size of NEV was just increased */
-           /* resort the eigenvalues.               */
-           /* ------------------------------------- */
+        /* ------------------------------------- */
+        /* If the size of NEV was just increased */
+        /* resort the eigenvalues.               */
+        /* ------------------------------------- */
 
-	if (nevbef < *nev) {
-	    cngets_(ishift, which, nev, np, &ritz[1], &bounds[1]);
-	}
+        if (nevbef < *nev)
+        {
+            cngets_(ishift, which, nev, np, &ritz[1], &bounds[1]);
+        }
 
     }
 
 #ifndef NO_TRACE
-    if (msglvl > 0) {
-	ivout_(&c__1, &nconv, &debug_1.ndigit, "_naup2: no. of \"converged\" Ritz values at this iter.");
-	if (msglvl > 1) {
-	    kp[0] = *nev;
-	    kp[1] = *np;
-	    ivout_(&c__2, kp, &debug_1.ndigit, "_naup2: NEV and NP are");
-	    cvout_(nev, &ritz[*np + 1], &debug_1.ndigit, "_naup2: \"wanted\" Ritz values ");
-	    cvout_(nev, &bounds[*np + 1], &debug_1.ndigit, "_naup2: Ritz estimates of the \"wanted\" values ");
-	}
+    if (msglvl > 0)
+    {
+        ivout_(&c__1, &nconv, &debug_1.ndigit, "_naup2: no. of \"converged\" Ritz values at this iter.");
+        if (msglvl > 1)
+        {
+            kp[0] = *nev;
+            kp[1] = *np;
+            ivout_(&c__2, kp, &debug_1.ndigit, "_naup2: NEV and NP are");
+            cvout_(nev, &ritz[*np + 1], &debug_1.ndigit, "_naup2: \"wanted\" Ritz values ");
+            cvout_(nev, &bounds[*np + 1], &debug_1.ndigit, "_naup2: Ritz estimates of the \"wanted\" values ");
+        }
     }
 #endif
 
-    if (*ishift == 0) {
+    if (*ishift == 0)
+    {
 
-           /* ----------------------------------------------------- */
-           /* User specified shifts: pop back out to get the shifts */
-           /* and return them in the first 2*NP locations of WORKL. */
-           /* ----------------------------------------------------- */
+        /* ----------------------------------------------------- */
+        /* User specified shifts: pop back out to get the shifts */
+        /* and return them in the first 2*NP locations of WORKL. */
+        /* ----------------------------------------------------- */
 
-	ushift = true;
-	*ido = 3;
-	goto L9000;
+        ushift = true;
+        *ido = 3;
+        goto L9000;
     }
 L50:
     ushift = false;
 
-    if (*ishift != 1) {
+    if (*ishift != 1)
+    {
 
-            /* -------------------------------- */
-            /* Move the NP shifts from WORKL to */
-            /* RITZ, to free up WORKL           */
-            /* for non-exact shift case.        */
-            /* -------------------------------- */
+        /* -------------------------------- */
+        /* Move the NP shifts from WORKL to */
+        /* RITZ, to free up WORKL           */
+        /* for non-exact shift case.        */
+        /* -------------------------------- */
 
-	ccopy_(np, &workl[1], &c__1, &ritz[1], &c__1);
+        ccopy_(np, &workl[1], &c__1, &ritz[1], &c__1);
     }
 
 #ifndef NO_TRACE
-    if (msglvl > 2) {
-	ivout_(&c__1, np, &debug_1.ndigit, "_naup2: The number of shifts to apply ");
-	cvout_(np, &ritz[1], &debug_1.ndigit, "_naup2: values of the shifts");
-	if (*ishift == 1) {
-	    cvout_(np, &bounds[1], &debug_1.ndigit, "_naup2: Ritz estimates of the shifts");
-	}
+    if (msglvl > 2)
+    {
+        ivout_(&c__1, np, &debug_1.ndigit, "_naup2: The number of shifts to apply ");
+        cvout_(np, &ritz[1], &debug_1.ndigit, "_naup2: values of the shifts");
+        if (*ishift == 1)
+        {
+            cvout_(np, &bounds[1], &debug_1.ndigit, "_naup2: Ritz estimates of the shifts");
+        }
     }
 #endif
 
-        /* ------------------------------------------------------- */
-        /* Apply the NP implicit shifts by QR bulge chasing.       */
-        /* Each shift is applied to the whole upper Hessenberg     */
-        /* matrix H.                                               */
-        /* The first 2*N locations of WORKD are used as workspace. */
-        /* ------------------------------------------------------- */
+    /* ------------------------------------------------------- */
+    /* Apply the NP implicit shifts by QR bulge chasing.       */
+    /* Each shift is applied to the whole upper Hessenberg     */
+    /* matrix H.                                               */
+    /* The first 2*N locations of WORKD are used as workspace. */
+    /* ------------------------------------------------------- */
 
     cnapps_(n, nev, np, &ritz[1], &v[v_offset], ldv, &h[h_offset], ldh, &resid[1], &q[q_offset], ldq, &workl[1], &workd[1]);
 
-        /* ------------------------------------------- */
-        /* Compute the B-norm of the updated residual. */
-        /* Keep B*RESID in WORKD(1:N) to be used in    */
-        /* the first step of the next call to cnaitr.  */
-        /* ------------------------------------------- */
+    /* ------------------------------------------- */
+    /* Compute the B-norm of the updated residual. */
+    /* Keep B*RESID in WORKD(1:N) to be used in    */
+    /* the first step of the next call to cnaitr.  */
+    /* ------------------------------------------- */
 
     cnorm = true;
 #ifndef NO_TIMER
     arscnd_(&t2);
 #endif
 
-    if (*bmat == 'G') {
-	++timing_1.nbx;
-	ccopy_(n, &resid[1], &c__1, &workd[*n + 1], &c__1);
-	ipntr[1] = *n + 1;
-	ipntr[2] = 1;
-	*ido = 2;
+    if (*bmat == 'G')
+    {
+        ++timing_1.nbx;
+        ccopy_(n, &resid[1], &c__1, &workd[*n + 1], &c__1);
+        ipntr[1] = *n + 1;
+        ipntr[2] = 1;
+        *ido = 2;
 
-           /* -------------------------------- */
-           /* Exit in order to compute B*RESID */
-           /* -------------------------------- */
+        /* -------------------------------- */
+        /* Exit in order to compute B*RESID */
+        /* -------------------------------- */
 
-	goto L9000;
-    } else if (*bmat == 'I') {
-	ccopy_(n, &resid[1], &c__1, &workd[1], &c__1);
+        goto L9000;
+    }
+    else if (*bmat == 'I')
+    {
+        ccopy_(n, &resid[1], &c__1, &workd[1], &c__1);
     }
 
 L100:
 
-        /* -------------------------------- */
-        /* Back from reverse communication; */
-        /* WORKD(1:N) := B*RESID            */
-        /* -------------------------------- */
+    /* -------------------------------- */
+    /* Back from reverse communication; */
+    /* WORKD(1:N) := B*RESID            */
+    /* -------------------------------- */
 
 #ifndef NO_TIMER
-    if (*bmat == 'G') {
-	arscnd_(&t3);
-	timing_1.tmvbx += t3 - t2;
+    if (*bmat == 'G')
+    {
+        arscnd_(&t3);
+        timing_1.tmvbx += t3 - t2;
     }
 #endif
 
-    if (*bmat == 'G') {
-	cdotc_(&q__1, n, &resid[1], &c__1, &workd[1], &c__1);
-	cmpnorm.r = q__1.r, cmpnorm.i = q__1.i;
-	r__1 = cmpnorm.r;
-	r__2 = r_imag(&cmpnorm);
-	rnorm = sqrt(slapy2_(&r__1, &r__2));
-    } else if (*bmat == 'I') {
-	rnorm = scnrm2_(n, &resid[1], &c__1);
+    if (*bmat == 'G')
+    {
+        cdotc_(&q__1, n, &resid[1], &c__1, &workd[1], &c__1);
+        cmpnorm.r = q__1.r, cmpnorm.i = q__1.i;
+        r__1 = cmpnorm.r;
+        r__2 = r_imag(&cmpnorm);
+        rnorm = sqrt(slapy2_(&r__1, &r__2));
+    }
+    else if (*bmat == 'I')
+    {
+        rnorm = scnrm2_(n, &resid[1], &c__1);
     }
     cnorm = false;
 
 #ifndef NO_TRACE
-    if (msglvl > 2) {
-	svout_(&c__1, &rnorm, &debug_1.ndigit, "_naup2: B-norm of residual for compressed factorization");
-	cmout_(nev, nev, &h[h_offset], ldh, &debug_1.ndigit, "_naup2: Compressed upper Hessenberg matrix H");
+    if (msglvl > 2)
+    {
+        svout_(&c__1, &rnorm, &debug_1.ndigit, "_naup2: B-norm of residual for compressed factorization");
+        cmout_(nev, nev, &h[h_offset], ldh, &debug_1.ndigit, "_naup2: Compressed upper Hessenberg matrix H");
     }
 #endif
 
     goto L1000;
 
-     /* ------------------------------------------------------------- */
-     /*                                                               */
-     /*  E N D     O F     M A I N     I T E R A T I O N     L O O P  */
-     /*                                                               */
-     /* ------------------------------------------------------------- */
+    /* ------------------------------------------------------------- */
+    /*                                                               */
+    /*  E N D     O F     M A I N     I T E R A T I O N     L O O P  */
+    /*                                                               */
+    /* ------------------------------------------------------------- */
 
 L1100:
 
@@ -821,9 +877,9 @@ L1100:
 L1200:
     *ido = 99;
 
-     /* ---------- */
-     /* Error Exit */
-     /* ---------- */
+    /* ---------- */
+    /* Error Exit */
+    /* ---------- */
 
 #ifndef NO_TIMER
     arscnd_(&t1);
@@ -832,9 +888,9 @@ L1200:
 
 L9000:
 
-     /* ------------- */
-     /* End of cnaup2 */
-     /* ------------- */
+    /* ------------- */
+    /* End of cnaup2 */
+    /* ------------- */
 
     return 0;
 } /* cnaup2_ */

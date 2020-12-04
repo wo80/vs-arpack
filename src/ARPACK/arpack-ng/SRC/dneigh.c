@@ -97,9 +97,9 @@
  * \EndLib
  */
 
-int dneigh_(double *rnorm, int32_t *n, double *h, 
-	int32_t *ldh, double *ritzr, double *ritzi, double *
-	bounds, double *q, int32_t *ldq, double *workl, int32_t *ierr)
+int dneigh_(double *rnorm, int32_t *n, double *h,
+            int32_t *ldh, double *ritzr, double *ritzi, double *
+            bounds, double *q, int32_t *ldq, double *workl, int32_t *ierr)
 {
     /* System generated locals */
     int32_t h_dim1, h_offset, q_dim1, q_offset, i__1;
@@ -113,14 +113,14 @@ int dneigh_(double *rnorm, int32_t *n, double *h,
     bool select[1];
     int32_t msglvl;
 
-     /* --------------------- */
-     /* Executable Statements */
-     /* --------------------- */
+    /* --------------------- */
+    /* Executable Statements */
+    /* --------------------- */
 
-     /* ----------------------------- */
-     /* Initialize timing statistics  */
-     /* & message level for debugging */
-     /* ----------------------------- */
+    /* ----------------------------- */
+    /* Initialize timing statistics  */
+    /* & message level for debugging */
+    /* ----------------------------- */
 
     /* Parameter adjustments */
     --workl;
@@ -142,148 +142,169 @@ int dneigh_(double *rnorm, int32_t *n, double *h,
     msglvl = debug_1.mneigh;
 
 #ifndef NO_TRACE
-    if (msglvl > 2) {
-	dmout_(n, n, &h[h_offset], ldh, &debug_1.ndigit, "_neigh: Entering upper Hessenberg matrix H ");
+    if (msglvl > 2)
+    {
+        dmout_(n, n, &h[h_offset], ldh, &debug_1.ndigit, "_neigh: Entering upper Hessenberg matrix H ");
     }
 #endif
 
-     /* --------------------------------------------------------- */
-     /* 1. Compute the eigenvalues, the last components of the    */
-     /*    corresponding Schur vectors and the full Schur form T  */
-     /*    of the current upper Hessenberg matrix H.              */
-     /* dlahqr returns the full Schur form of H in WORKL(1:N**2)  */
-     /* and the last components of the Schur vectors in BOUNDS.   */
-     /* --------------------------------------------------------- */
+    /* --------------------------------------------------------- */
+    /* 1. Compute the eigenvalues, the last components of the    */
+    /*    corresponding Schur vectors and the full Schur form T  */
+    /*    of the current upper Hessenberg matrix H.              */
+    /* dlahqr returns the full Schur form of H in WORKL(1:N**2)  */
+    /* and the last components of the Schur vectors in BOUNDS.   */
+    /* --------------------------------------------------------- */
 
     dlacpy_("A", n, n, &h[h_offset], ldh, &workl[1], n);
     i__1 = *n - 1;
-    for (j = 1; j <= i__1; ++j) {
-	bounds[j] = 0.;
-/* L5: */
+    for (j = 1; j <= i__1; ++j)
+    {
+        bounds[j] = 0.;
+        /* L5: */
     }
     bounds[*n] = 1.;
     dlahqr_(&c_true, &c_true, n, &c__1, n, &workl[1], n, &ritzr[1], &ritzi[1],&c__1, &c__1, &bounds[1], &c__1, ierr);
-    if (*ierr != 0) {
-	goto L9000;
+    if (*ierr != 0)
+    {
+        goto L9000;
     }
 
 #ifndef NO_TRACE
-    if (msglvl > 1) {
-	dvout_(n, &bounds[1], &debug_1.ndigit, "_neigh: last row of the Schur matrix for H");
+    if (msglvl > 1)
+    {
+        dvout_(n, &bounds[1], &debug_1.ndigit, "_neigh: last row of the Schur matrix for H");
     }
 #endif
 
-     /* --------------------------------------------------------- */
-     /* 2. Compute the eigenvectors of the full Schur form T and  */
-     /*    apply the last components of the Schur vectors to get  */
-     /*    the last components of the corresponding eigenvectors. */
-     /* Remember that if the i-th and (i+1)-st eigenvalues are    */
-     /* complex conjugate pairs, then the real & imaginary part   */
-     /* of the eigenvector components are split across adjacent   */
-     /* columns of Q.                                             */
-     /* --------------------------------------------------------- */
+    /* --------------------------------------------------------- */
+    /* 2. Compute the eigenvectors of the full Schur form T and  */
+    /*    apply the last components of the Schur vectors to get  */
+    /*    the last components of the corresponding eigenvectors. */
+    /* Remember that if the i-th and (i+1)-st eigenvalues are    */
+    /* complex conjugate pairs, then the real & imaginary part   */
+    /* of the eigenvector components are split across adjacent   */
+    /* columns of Q.                                             */
+    /* --------------------------------------------------------- */
 
     dtrevc_("R", "A", select, n, &workl[1], n, vl, n, &q[q_offset], ldq, n, n,&workl[*n * *n + 1], ierr);
 
-    if (*ierr != 0) {
-	goto L9000;
+    if (*ierr != 0)
+    {
+        goto L9000;
     }
 
-     /* ---------------------------------------------- */
-     /* Scale the returning eigenvectors so that their */
-     /* euclidean norms are all one. LAPACK subroutine */
-     /* dtrevc returns each eigenvector normalized so  */
-     /* that the element of largest magnitude has      */
-     /* magnitude 1; here the magnitude of a complex   */
-     /* number (x,y) is taken to be |x| + |y|.         */
-     /* ---------------------------------------------- */
+    /* ---------------------------------------------- */
+    /* Scale the returning eigenvectors so that their */
+    /* euclidean norms are all one. LAPACK subroutine */
+    /* dtrevc returns each eigenvector normalized so  */
+    /* that the element of largest magnitude has      */
+    /* magnitude 1; here the magnitude of a complex   */
+    /* number (x,y) is taken to be |x| + |y|.         */
+    /* ---------------------------------------------- */
 
     iconj = 0;
     i__1 = *n;
-    for (i = 1; i <= i__1; ++i) {
-	if ((d__1 = ritzi[i], abs(d__1)) <= 0.) {
+    for (i = 1; i <= i__1; ++i)
+    {
+        if ((d__1 = ritzi[i], abs(d__1)) <= 0.)
+        {
 
-           /* -------------------- */
-           /* Real eigenvalue case */
-           /* -------------------- */
+            /* -------------------- */
+            /* Real eigenvalue case */
+            /* -------------------- */
 
-	    temp = dnrm2_(n, &q[i * q_dim1 + 1], &c__1);
-	    d__1 = 1. / temp;
-	    dscal_(n, &d__1, &q[i * q_dim1 + 1], &c__1);
-	} else {
+            temp = dnrm2_(n, &q[i * q_dim1 + 1], &c__1);
+            d__1 = 1. / temp;
+            dscal_(n, &d__1, &q[i * q_dim1 + 1], &c__1);
+        }
+        else
+        {
 
-           /* ----------------------------------------- */
-           /* Complex conjugate pair case. Note that    */
-           /* since the real and imaginary part of      */
-           /* the eigenvector are stored in consecutive */
-           /* columns, we further normalize by the      */
-           /* square root of two.                       */
-           /* ----------------------------------------- */
+            /* ----------------------------------------- */
+            /* Complex conjugate pair case. Note that    */
+            /* since the real and imaginary part of      */
+            /* the eigenvector are stored in consecutive */
+            /* columns, we further normalize by the      */
+            /* square root of two.                       */
+            /* ----------------------------------------- */
 
-	    if (iconj == 0) {
-		d__1 = dnrm2_(n, &q[i * q_dim1 + 1], &c__1);
-		d__2 = dnrm2_(n, &q[(i + 1) * q_dim1 + 1], &c__1);
-		temp = dlapy2_(&d__1, &d__2);
-		d__1 = 1. / temp;
-		dscal_(n, &d__1, &q[i * q_dim1 + 1], &c__1);
-		d__1 = 1. / temp;
-		dscal_(n, &d__1, &q[(i + 1) * q_dim1 + 1], &c__1);
-		iconj = 1;
-	    } else {
-		iconj = 0;
-	    }
-	}
-/* L10: */
+            if (iconj == 0)
+            {
+                d__1 = dnrm2_(n, &q[i * q_dim1 + 1], &c__1);
+                d__2 = dnrm2_(n, &q[(i + 1) * q_dim1 + 1], &c__1);
+                temp = dlapy2_(&d__1, &d__2);
+                d__1 = 1. / temp;
+                dscal_(n, &d__1, &q[i * q_dim1 + 1], &c__1);
+                d__1 = 1. / temp;
+                dscal_(n, &d__1, &q[(i + 1) * q_dim1 + 1], &c__1);
+                iconj = 1;
+            }
+            else
+            {
+                iconj = 0;
+            }
+        }
+        /* L10: */
     }
 
     dgemv_("T", n, n, &d_one, &q[q_offset], ldq, &bounds[1], &c__1, &d_zero, &workl[1], &c__1);
 
 #ifndef NO_TRACE
-    if (msglvl > 1) {
-	dvout_(n, &workl[1], &debug_1.ndigit, "_neigh: Last row of the eigenvector matrix for H");
+    if (msglvl > 1)
+    {
+        dvout_(n, &workl[1], &debug_1.ndigit, "_neigh: Last row of the eigenvector matrix for H");
     }
 #endif
 
-     /* -------------------------- */
-     /* Compute the Ritz estimates */
-     /* -------------------------- */
+    /* -------------------------- */
+    /* Compute the Ritz estimates */
+    /* -------------------------- */
 
     iconj = 0;
     i__1 = *n;
-    for (i = 1; i <= i__1; ++i) {
-	if ((d__1 = ritzi[i], abs(d__1)) <= 0.) {
+    for (i = 1; i <= i__1; ++i)
+    {
+        if ((d__1 = ritzi[i], abs(d__1)) <= 0.)
+        {
 
-           /* -------------------- */
-           /* Real eigenvalue case */
-           /* -------------------- */
+            /* -------------------- */
+            /* Real eigenvalue case */
+            /* -------------------- */
 
-	    bounds[i] = *rnorm * (d__1 = workl[i], abs(d__1));
-	} else {
+            bounds[i] = *rnorm * (d__1 = workl[i], abs(d__1));
+        }
+        else
+        {
 
-           /* ----------------------------------------- */
-           /* Complex conjugate pair case. Note that    */
-           /* since the real and imaginary part of      */
-           /* the eigenvector are stored in consecutive */
-           /* columns, we need to take the magnitude    */
-           /* of the last components of the two vectors */
-           /* ----------------------------------------- */
+            /* ----------------------------------------- */
+            /* Complex conjugate pair case. Note that    */
+            /* since the real and imaginary part of      */
+            /* the eigenvector are stored in consecutive */
+            /* columns, we need to take the magnitude    */
+            /* of the last components of the two vectors */
+            /* ----------------------------------------- */
 
-	    if (iconj == 0) {
-		bounds[i] = *rnorm * dlapy2_(&workl[i], &workl[i + 1]);
-		bounds[i + 1] = bounds[i];
-		iconj = 1;
-	    } else {
-		iconj = 0;
-	    }
-	}
-/* L20: */
+            if (iconj == 0)
+            {
+                bounds[i] = *rnorm * dlapy2_(&workl[i], &workl[i + 1]);
+                bounds[i + 1] = bounds[i];
+                iconj = 1;
+            }
+            else
+            {
+                iconj = 0;
+            }
+        }
+        /* L20: */
     }
 
 #ifndef NO_TRACE
-    if (msglvl > 2) {
-	dvout_(n, &ritzr[1], &debug_1.ndigit, "_neigh: Real part of the eigenvalues of H");
-	dvout_(n, &ritzi[1], &debug_1.ndigit, "_neigh: Imaginary part of the eigenvalues of H");
-	dvout_(n, &bounds[1], &debug_1.ndigit, "_neigh: Ritz estimates for the eigenvalues of H");
+    if (msglvl > 2)
+    {
+        dvout_(n, &ritzr[1], &debug_1.ndigit, "_neigh: Real part of the eigenvalues of H");
+        dvout_(n, &ritzi[1], &debug_1.ndigit, "_neigh: Imaginary part of the eigenvalues of H");
+        dvout_(n, &bounds[1], &debug_1.ndigit, "_neigh: Ritz estimates for the eigenvalues of H");
     }
 #endif
 
@@ -295,9 +316,9 @@ int dneigh_(double *rnorm, int32_t *n, double *h,
 L9000:
     return 0;
 
-     /* ------------- */
-     /* End of dneigh */
-     /* ------------- */
+    /* ------------- */
+    /* End of dneigh */
+    /* ------------- */
 
 } /* dneigh_ */
 

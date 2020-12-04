@@ -178,18 +178,18 @@
  */
 
 int dsaup2_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, int32_t *np,
-     double *tol, double *resid, int32_t *mode, int32_t *iupd, int32_t *ishift, int32_t *mxiter,
-     double *v, int32_t *ldv, double *h, int32_t *ldh, double *ritz, double *bounds,
-     double *q, int32_t *ldq, double *workl, int32_t *ipntr, double *workd, int32_t *info)
+            double *tol, double *resid, int32_t *mode, int32_t *iupd, int32_t *ishift, int32_t *mxiter,
+            double *v, int32_t *ldv, double *h, int32_t *ldh, double *ritz, double *bounds,
+            double *q, int32_t *ldq, double *workl, int32_t *ipntr, double *workd, int32_t *info)
 {
     /* System generated locals */
-    int32_t h_dim1, h_offset, q_dim1, q_offset, v_dim1, v_offset, i__1, i__2, 
-	    i__3;
+    int32_t h_dim1, h_offset, q_dim1, q_offset, v_dim1, v_offset, i__1, i__2,
+            i__3;
     double d__1, d__2, d__3;
 
     /* Builtin functions */
     double pow_dd(double *, double *);
-    
+
     double sqrt(double);
 
     /* Local variables */
@@ -215,9 +215,9 @@ int dsaup2_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, int
     static int32_t kplusp, msglvl;
     int32_t nptemp;
 
-     /* --------------------- */
-     /* Executable Statements */
-     /* --------------------- */
+    /* --------------------- */
+    /* Executable Statements */
+    /* --------------------- */
 
     /* Parameter adjustments */
     --workd;
@@ -237,7 +237,8 @@ int dsaup2_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, int
     --ipntr;
 
     /* Function Body */
-    if (*ido == 0) {
+    if (*ido == 0)
+    {
 
         /* ----------------------------- */
         /* Initialize timing statistics  */
@@ -245,25 +246,25 @@ int dsaup2_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, int
         /* ----------------------------- */
 
 #ifndef NO_TIMER
-	arscnd_(&t0);
+        arscnd_(&t0);
 #endif
 
-	msglvl = debug_1.msaup2;
+        msglvl = debug_1.msaup2;
 
         /* ------------------------------- */
         /* Set machine dependent constant. */
         /* ------------------------------- */
 
-	eps23 = dlamch_("E");
-	eps23 = pow_dd(&eps23, &d_23);
+        eps23 = dlamch_("E");
+        eps23 = pow_dd(&eps23, &d_23);
 
         /* ----------------------------------- */
         /* nev0 and np0 are integer variables  */
         /* hold the initial values of NEV & NP */
         /* ----------------------------------- */
 
-	nev0 = *nev;
-	np0 = *np;
+        nev0 = *nev;
+        np0 = *np;
 
         /* ----------------------------------- */
         /* kplusp is the bound on the largest  */
@@ -274,101 +275,112 @@ int dsaup2_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, int
         /*      iteration step.                */
         /* ----------------------------------- */
 
-	kplusp = nev0 + np0;
-	nconv = 0;
-	iter = 0;
+        kplusp = nev0 + np0;
+        nconv = 0;
+        iter = 0;
 
         /* ------------------------------------------- */
         /* Set flags for computing the first NEV steps */
         /* of the Lanczos factorization.               */
         /* ------------------------------------------- */
 
-	getv0 = true;
-	update = false;
-	ushift = false;
-	cnorm = false;
+        getv0 = true;
+        update = false;
+        ushift = false;
+        cnorm = false;
 
-	if (*info != 0) {
+        if (*info != 0)
+        {
 
-        /* ------------------------------------------ */
-        /* User provides the initial residual vector. */
-        /* ------------------------------------------ */
+            /* ------------------------------------------ */
+            /* User provides the initial residual vector. */
+            /* ------------------------------------------ */
 
-	    initv = true;
-	    *info = 0;
-	} else {
-	    initv = false;
-	}
+            initv = true;
+            *info = 0;
+        }
+        else
+        {
+            initv = false;
+        }
     }
 
-     /* ------------------------------------------- */
-     /* Get a possibly random starting vector and   */
-     /* force it into the range of the operator OP. */
-     /* ------------------------------------------- */
+    /* ------------------------------------------- */
+    /* Get a possibly random starting vector and   */
+    /* force it into the range of the operator OP. */
+    /* ------------------------------------------- */
 
-/* L10: */
+    /* L10: */
 
-    if (getv0) {
-	dgetv0_(ido, bmat, &c__1, &initv, n, &c__1, &v[v_offset], ldv, &resid[1], &rnorm, &ipntr[1], &workd[1], info);
+    if (getv0)
+    {
+        dgetv0_(ido, bmat, &c__1, &initv, n, &c__1, &v[v_offset], ldv, &resid[1], &rnorm, &ipntr[1], &workd[1], info);
 
-	if (*ido != 99) {
-	    goto L9000;
-	}
+        if (*ido != 99)
+        {
+            goto L9000;
+        }
 
-	if (rnorm == 0.) {
+        if (rnorm == 0.)
+        {
 
-           /* --------------------------------------- */
-           /* The initial vector is zero. Error exit. */
-           /* --------------------------------------- */
+            /* --------------------------------------- */
+            /* The initial vector is zero. Error exit. */
+            /* --------------------------------------- */
 
-	    *info = -9;
-	    goto L1200;
-	}
-	getv0 = false;
-	*ido = 0;
+            *info = -9;
+            goto L1200;
+        }
+        getv0 = false;
+        *ido = 0;
     }
 
-     /* ---------------------------------------------------------- */
-     /* Back from reverse communication: continue with update step */
-     /* ---------------------------------------------------------- */
+    /* ---------------------------------------------------------- */
+    /* Back from reverse communication: continue with update step */
+    /* ---------------------------------------------------------- */
 
-    if (update) {
-	goto L20;
+    if (update)
+    {
+        goto L20;
     }
 
-     /* ----------------------------------------- */
-     /* Back from computing user specified shifts */
-     /* ----------------------------------------- */
+    /* ----------------------------------------- */
+    /* Back from computing user specified shifts */
+    /* ----------------------------------------- */
 
-    if (ushift) {
-	goto L50;
+    if (ushift)
+    {
+        goto L50;
     }
 
-     /* ----------------------------------- */
-     /* Back from computing residual norm   */
-     /* at the end of the current iteration */
-     /* ----------------------------------- */
+    /* ----------------------------------- */
+    /* Back from computing residual norm   */
+    /* at the end of the current iteration */
+    /* ----------------------------------- */
 
-    if (cnorm) {
-	goto L100;
+    if (cnorm)
+    {
+        goto L100;
     }
 
-     /* -------------------------------------------------------- */
-     /* Compute the first NEV steps of the Lanczos factorization */
-     /* -------------------------------------------------------- */
+    /* -------------------------------------------------------- */
+    /* Compute the first NEV steps of the Lanczos factorization */
+    /* -------------------------------------------------------- */
 
     dsaitr_(ido, bmat, n, &c__0, &nev0, mode, &resid[1], &rnorm, &v[v_offset],ldv, &h[h_offset], ldh, &ipntr[1], &workd[1], info);
 
-     /* ------------------------------------------------- */
-     /* ido .ne. 99 implies use of reverse communication  */
-     /* to compute operations involving OP and possibly B */
-     /* ------------------------------------------------- */
+    /* ------------------------------------------------- */
+    /* ido .ne. 99 implies use of reverse communication  */
+    /* to compute operations involving OP and possibly B */
+    /* ------------------------------------------------- */
 
-    if (*ido != 99) {
-	goto L9000;
+    if (*ido != 99)
+    {
+        goto L9000;
     }
 
-    if (*info > 0) {
+    if (*info > 0)
+    {
 
         /* --------------------------------------------------- */
         /* dsaitr was unable to build an Lanczos factorization */
@@ -376,40 +388,42 @@ int dsaup2_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, int
         /* the factorization built. Exit main loop.            */
         /* --------------------------------------------------- */
 
-	*np = *info;
-	*mxiter = iter;
-	*info = -9999;
-	goto L1200;
+        *np = *info;
+        *mxiter = iter;
+        *info = -9999;
+        goto L1200;
     }
 
-     /* ------------------------------------------------------------ */
-     /*                                                              */
-     /*           M A I N  LANCZOS  I T E R A T I O N  L O O P       */
-     /*           Each iteration implicitly restarts the Lanczos     */
-     /*           factorization in place.                            */
-     /*                                                              */
-     /* ------------------------------------------------------------ */
+    /* ------------------------------------------------------------ */
+    /*                                                              */
+    /*           M A I N  LANCZOS  I T E R A T I O N  L O O P       */
+    /*           Each iteration implicitly restarts the Lanczos     */
+    /*           factorization in place.                            */
+    /*                                                              */
+    /* ------------------------------------------------------------ */
 
 L1000:
 
     ++iter;
 
 #ifndef NO_TRACE
-    if (msglvl > 0) {
-	ivout_(&c__1, &iter, &debug_1.ndigit, "_saup2: **** Start of major iteration number ****");
+    if (msglvl > 0)
+    {
+        ivout_(&c__1, &iter, &debug_1.ndigit, "_saup2: **** Start of major iteration number ****");
     }
 #endif
 
 #ifndef NO_TRACE
-    if (msglvl > 1) {
-	ivout_(&c__1, nev, &debug_1.ndigit, "_saup2: The length of the current Lanczos factorization");
-	ivout_(&c__1, np, &debug_1.ndigit, "_saup2: Extend the Lanczos factorization by");
+    if (msglvl > 1)
+    {
+        ivout_(&c__1, nev, &debug_1.ndigit, "_saup2: The length of the current Lanczos factorization");
+        ivout_(&c__1, np, &debug_1.ndigit, "_saup2: Extend the Lanczos factorization by");
     }
 #endif
 
-        /* ---------------------------------------------------------- */
-        /* Compute NP additional steps of the Lanczos factorization. */
-        /* ---------------------------------------------------------- */
+    /* ---------------------------------------------------------- */
+    /* Compute NP additional steps of the Lanczos factorization. */
+    /* ---------------------------------------------------------- */
 
     *ido = 0;
 L20:
@@ -417,436 +431,480 @@ L20:
 
     dsaitr_(ido, bmat, n, nev, np, mode, &resid[1], &rnorm, &v[v_offset], ldv,&h[h_offset], ldh, &ipntr[1], &workd[1], info);
 
-        /* ------------------------------------------------- */
-        /* ido .ne. 99 implies use of reverse communication  */
-        /* to compute operations involving OP and possibly B */
-        /* ------------------------------------------------- */
+    /* ------------------------------------------------- */
+    /* ido .ne. 99 implies use of reverse communication  */
+    /* to compute operations involving OP and possibly B */
+    /* ------------------------------------------------- */
 
-    if (*ido != 99) {
-	goto L9000;
+    if (*ido != 99)
+    {
+        goto L9000;
     }
 
-    if (*info > 0) {
+    if (*info > 0)
+    {
 
-           /* --------------------------------------------------- */
-           /* dsaitr was unable to build an Lanczos factorization */
-           /* of length NEV0+NP0. INFO is returned with the size  */
-           /* of the factorization built. Exit main loop.         */
-           /* --------------------------------------------------- */
+        /* --------------------------------------------------- */
+        /* dsaitr was unable to build an Lanczos factorization */
+        /* of length NEV0+NP0. INFO is returned with the size  */
+        /* of the factorization built. Exit main loop.         */
+        /* --------------------------------------------------- */
 
-	*np = *info;
-	*mxiter = iter;
-	*info = -9999;
-	goto L1200;
+        *np = *info;
+        *mxiter = iter;
+        *info = -9999;
+        goto L1200;
     }
     update = false;
 
 #ifndef NO_TRACE
-    if (msglvl > 1) {
-	dvout_(&c__1, &rnorm, &debug_1.ndigit, "_saup2: Current B-norm of residual for factorization");
+    if (msglvl > 1)
+    {
+        dvout_(&c__1, &rnorm, &debug_1.ndigit, "_saup2: Current B-norm of residual for factorization");
     }
 #endif
 
-        /* ------------------------------------------------------ */
-        /* Compute the eigenvalues and corresponding error bounds */
-        /* of the current symmetric tridiagonal matrix.           */
-        /* ------------------------------------------------------ */
+    /* ------------------------------------------------------ */
+    /* Compute the eigenvalues and corresponding error bounds */
+    /* of the current symmetric tridiagonal matrix.           */
+    /* ------------------------------------------------------ */
 
     dseigt_(&rnorm, &kplusp, &h[h_offset], ldh, &ritz[1], &bounds[1], &workl[1], &ierr);
 
-    if (ierr != 0) {
-	*info = -8;
-	goto L1200;
+    if (ierr != 0)
+    {
+        *info = -8;
+        goto L1200;
     }
 
-        /* -------------------------------------------------- */
-        /* Make a copy of eigenvalues and corresponding error */
-        /* bounds obtained from _seigt.                       */
-        /* -------------------------------------------------- */
+    /* -------------------------------------------------- */
+    /* Make a copy of eigenvalues and corresponding error */
+    /* bounds obtained from _seigt.                       */
+    /* -------------------------------------------------- */
 
     dcopy_(&kplusp, &ritz[1], &c__1, &workl[kplusp + 1], &c__1);
     dcopy_(&kplusp, &bounds[1], &c__1, &workl[(kplusp << 1) + 1], &c__1);
 
-        /* ------------------------------------------------- */
-        /* Select the wanted Ritz values and their bounds    */
-        /* to be used in the convergence test.               */
-        /* The selection is based on the requested number of */
-        /* eigenvalues instead of the current NEV and NP to  */
-        /* prevent possible misconvergence.                  */
-        /* * Wanted Ritz values := RITZ(NP+1:NEV+NP)         */
-        /* * Shifts := RITZ(1:NP) := WORKL(1:NP)             */
-        /* ------------------------------------------------- */
+    /* ------------------------------------------------- */
+    /* Select the wanted Ritz values and their bounds    */
+    /* to be used in the convergence test.               */
+    /* The selection is based on the requested number of */
+    /* eigenvalues instead of the current NEV and NP to  */
+    /* prevent possible misconvergence.                  */
+    /* * Wanted Ritz values := RITZ(NP+1:NEV+NP)         */
+    /* * Shifts := RITZ(1:NP) := WORKL(1:NP)             */
+    /* ------------------------------------------------- */
 
     *nev = nev0;
     *np = np0;
     dsgets_(ishift, which, nev, np, &ritz[1], &bounds[1], &workl[1]);
 
-        /* ----------------- */
-        /* Convergence test. */
-        /* ----------------- */
+    /* ----------------- */
+    /* Convergence test. */
+    /* ----------------- */
 
     dcopy_(nev, &bounds[*np + 1], &c__1, &workl[*np + 1], &c__1);
     dsconv_(nev, &ritz[*np + 1], &workl[*np + 1], tol, &nconv);
 
 #ifndef NO_TRACE
-    if (msglvl > 2) {
-	kp[0] = *nev;
-	kp[1] = *np;
-	kp[2] = nconv;
-	ivout_(&c__3, kp, &debug_1.ndigit, "_saup2: NEV, NP, NCONV are");
-	dvout_(&kplusp, &ritz[1], &debug_1.ndigit, "_saup2: The eigenvalues of H");
-	dvout_(&kplusp, &bounds[1], &debug_1.ndigit, "_saup2: Ritz estimates of the current NCV Ritz values");
+    if (msglvl > 2)
+    {
+        kp[0] = *nev;
+        kp[1] = *np;
+        kp[2] = nconv;
+        ivout_(&c__3, kp, &debug_1.ndigit, "_saup2: NEV, NP, NCONV are");
+        dvout_(&kplusp, &ritz[1], &debug_1.ndigit, "_saup2: The eigenvalues of H");
+        dvout_(&kplusp, &bounds[1], &debug_1.ndigit, "_saup2: Ritz estimates of the current NCV Ritz values");
     }
 #endif
 
-        /* ------------------------------------------------------- */
-        /* Count the number of unwanted Ritz values that have zero */
-        /* Ritz estimates. If any Ritz estimates are equal to zero */
-        /* then a leading block of H of order equal to at least    */
-        /* the number of Ritz values with zero Ritz estimates has  */
-        /* split off. None of these Ritz values may be removed by  */
-        /* shifting. Decrease NP the number of shifts to apply. If */
-        /* no shifts may be applied, then prepare to exit          */
-        /* ------------------------------------------------------- */
+    /* ------------------------------------------------------- */
+    /* Count the number of unwanted Ritz values that have zero */
+    /* Ritz estimates. If any Ritz estimates are equal to zero */
+    /* then a leading block of H of order equal to at least    */
+    /* the number of Ritz values with zero Ritz estimates has  */
+    /* split off. None of these Ritz values may be removed by  */
+    /* shifting. Decrease NP the number of shifts to apply. If */
+    /* no shifts may be applied, then prepare to exit          */
+    /* ------------------------------------------------------- */
 
     nptemp = *np;
     i__1 = nptemp;
-    for (j = 1; j <= i__1; ++j) {
-	if (bounds[j] == 0.) {
-	    --(*np);
-	    ++(*nev);
-	}
-/* L30: */
+    for (j = 1; j <= i__1; ++j)
+    {
+        if (bounds[j] == 0.)
+        {
+            --(*np);
+            ++(*nev);
+        }
+        /* L30: */
     }
 
-    if (nconv >= nev0 || iter > *mxiter || *np == 0) {
+    if (nconv >= nev0 || iter > *mxiter || *np == 0)
+    {
 
-           /* ---------------------------------------------- */
-           /* Prepare to exit. Put the converged Ritz values */
-           /* and corresponding bounds in RITZ(1:NCONV) and  */
-           /* BOUNDS(1:NCONV) respectively. Then sort. Be    */
-           /* careful when NCONV > NP since we don't want to */
-           /* swap overlapping locations.                    */
-           /* ---------------------------------------------- */
+        /* ---------------------------------------------- */
+        /* Prepare to exit. Put the converged Ritz values */
+        /* and corresponding bounds in RITZ(1:NCONV) and  */
+        /* BOUNDS(1:NCONV) respectively. Then sort. Be    */
+        /* careful when NCONV > NP since we don't want to */
+        /* swap overlapping locations.                    */
+        /* ---------------------------------------------- */
 
-	if (strcmp(which, "BE") == 0) {
+        if (strcmp(which, "BE") == 0)
+        {
 
-              /* --------------------------------------------------- */
-              /* Both ends of the spectrum are requested.            */
-              /* Sort the eigenvalues into algebraically decreasing  */
-              /* order first then swap low end of the spectrum next  */
-              /* to high end in appropriate locations.               */
-              /* NOTE: when np < floor(nev/2) be careful not to swap */
-              /* overlapping locations.                              */
-              /* --------------------------------------------------- */
+            /* --------------------------------------------------- */
+            /* Both ends of the spectrum are requested.            */
+            /* Sort the eigenvalues into algebraically decreasing  */
+            /* order first then swap low end of the spectrum next  */
+            /* to high end in appropriate locations.               */
+            /* NOTE: when np < floor(nev/2) be careful not to swap */
+            /* overlapping locations.                              */
+            /* --------------------------------------------------- */
 
-	    strcpy(wprime, "SA");
-	    dsortr_(wprime, &c_true, &kplusp, &ritz[1], &bounds[1]);
-	    nevd2 = nev0 / 2;
-	    nevm2 = nev0 - nevd2;
-	    if (*nev > 1) {
-		*np = kplusp - nev0;
-		i__1 = min(nevd2,*np);
-/* Computing MAX */
-		i__2 = kplusp - nevd2 + 1, i__3 = kplusp - *np + 1;
-		dswap_(&i__1, &ritz[nevm2 + 1], &c__1, &ritz[max(i__2,i__3)], &c__1);
-		i__1 = min(nevd2,*np);
-/* Computing MAX */
-		i__2 = kplusp - nevd2 + 1, i__3 = kplusp - *np + 1;
-		dswap_(&i__1, &bounds[nevm2 + 1], &c__1, &bounds[max(i__2,i__3)], &c__1);
-	    }
+            strcpy(wprime, "SA");
+            dsortr_(wprime, &c_true, &kplusp, &ritz[1], &bounds[1]);
+            nevd2 = nev0 / 2;
+            nevm2 = nev0 - nevd2;
+            if (*nev > 1)
+            {
+                *np = kplusp - nev0;
+                i__1 = min(nevd2,*np);
+                /* Computing MAX */
+                i__2 = kplusp - nevd2 + 1, i__3 = kplusp - *np + 1;
+                dswap_(&i__1, &ritz[nevm2 + 1], &c__1, &ritz[max(i__2,i__3)], &c__1);
+                i__1 = min(nevd2,*np);
+                /* Computing MAX */
+                i__2 = kplusp - nevd2 + 1, i__3 = kplusp - *np + 1;
+                dswap_(&i__1, &bounds[nevm2 + 1], &c__1, &bounds[max(i__2,i__3)], &c__1);
+            }
 
-	} else {
+        }
+        else
+        {
 
-              /* ------------------------------------------------ */
-              /* LM, SM, LA, SA case.                             */
-              /* Sort the eigenvalues of H into the an order that */
-              /* is opposite to WHICH, and apply the resulting    */
-              /* order to BOUNDS.  The eigenvalues are sorted so  */
-              /* that the wanted part are always within the first */
-              /* NEV locations.                                   */
-              /* ------------------------------------------------ */
+            /* ------------------------------------------------ */
+            /* LM, SM, LA, SA case.                             */
+            /* Sort the eigenvalues of H into the an order that */
+            /* is opposite to WHICH, and apply the resulting    */
+            /* order to BOUNDS.  The eigenvalues are sorted so  */
+            /* that the wanted part are always within the first */
+            /* NEV locations.                                   */
+            /* ------------------------------------------------ */
 
-	    if (strcmp(which, "LM") == 0) {
-		strcpy(wprime, "SM");
-	    }
-	    if (strcmp(which, "SM") == 0) {
-		strcpy(wprime, "LM");
-	    }
-	    if (strcmp(which, "LA") == 0) {
-		strcpy(wprime, "SA");
-	    }
-	    if (strcmp(which, "SA") == 0) {
-		strcpy(wprime, "LA");
-	    }
+            if (strcmp(which, "LM") == 0)
+            {
+                strcpy(wprime, "SM");
+            }
+            if (strcmp(which, "SM") == 0)
+            {
+                strcpy(wprime, "LM");
+            }
+            if (strcmp(which, "LA") == 0)
+            {
+                strcpy(wprime, "SA");
+            }
+            if (strcmp(which, "SA") == 0)
+            {
+                strcpy(wprime, "LA");
+            }
 
-	    dsortr_(wprime, &c_true, &kplusp, &ritz[1], &bounds[1]);
+            dsortr_(wprime, &c_true, &kplusp, &ritz[1], &bounds[1]);
 
-	}
+        }
 
-           /* ------------------------------------------------ */
-           /* Scale the Ritz estimate of each Ritz value       */
-           /* by 1 / max(eps23,magnitude of the Ritz value).   */
-           /* ------------------------------------------------ */
+        /* ------------------------------------------------ */
+        /* Scale the Ritz estimate of each Ritz value       */
+        /* by 1 / max(eps23,magnitude of the Ritz value).   */
+        /* ------------------------------------------------ */
 
-	i__1 = nev0;
-	for (j = 1; j <= i__1; ++j) {
-/* Computing MAX */
-	    d__2 = eps23, d__3 = (d__1 = ritz[j], abs(d__1));
-	    temp = max(d__2,d__3);
-	    bounds[j] /= temp;
-/* L35: */
-	}
+        i__1 = nev0;
+        for (j = 1; j <= i__1; ++j)
+        {
+            /* Computing MAX */
+            d__2 = eps23, d__3 = (d__1 = ritz[j], abs(d__1));
+            temp = max(d__2,d__3);
+            bounds[j] /= temp;
+            /* L35: */
+        }
 
-           /* -------------------------------------------------- */
-           /* Sort the Ritz values according to the scaled Ritz  */
-           /* esitmates.  This will push all the converged ones  */
-           /* towards the front of ritzr, ritzi, bounds          */
-           /* (in the case when NCONV < NEV.)                    */
-           /* -------------------------------------------------- */
+        /* -------------------------------------------------- */
+        /* Sort the Ritz values according to the scaled Ritz  */
+        /* esitmates.  This will push all the converged ones  */
+        /* towards the front of ritzr, ritzi, bounds          */
+        /* (in the case when NCONV < NEV.)                    */
+        /* -------------------------------------------------- */
 
-	strcpy(wprime, "LA");
-	dsortr_(wprime, &c_true, &nev0, &bounds[1], &ritz[1]);
+        strcpy(wprime, "LA");
+        dsortr_(wprime, &c_true, &nev0, &bounds[1], &ritz[1]);
 
-           /* -------------------------------------------- */
-           /* Scale the Ritz estimate back to its original */
-           /* value.                                       */
-           /* -------------------------------------------- */
+        /* -------------------------------------------- */
+        /* Scale the Ritz estimate back to its original */
+        /* value.                                       */
+        /* -------------------------------------------- */
 
-	i__1 = nev0;
-	for (j = 1; j <= i__1; ++j) {
-/* Computing MAX */
-	    d__2 = eps23, d__3 = (d__1 = ritz[j], abs(d__1));
-	    temp = max(d__2,d__3);
-	    bounds[j] *= temp;
-/* L40: */
-	}
+        i__1 = nev0;
+        for (j = 1; j <= i__1; ++j)
+        {
+            /* Computing MAX */
+            d__2 = eps23, d__3 = (d__1 = ritz[j], abs(d__1));
+            temp = max(d__2,d__3);
+            bounds[j] *= temp;
+            /* L40: */
+        }
 
-           /* ------------------------------------------------ */
-           /* Sort the "converged" Ritz values again so that   */
-           /* the "threshold" values and their associated Ritz */
-           /* estimates appear at the appropriate position in  */
-           /* ritz and bound.                                  */
-           /* ------------------------------------------------ */
+        /* ------------------------------------------------ */
+        /* Sort the "converged" Ritz values again so that   */
+        /* the "threshold" values and their associated Ritz */
+        /* estimates appear at the appropriate position in  */
+        /* ritz and bound.                                  */
+        /* ------------------------------------------------ */
 
-	if (strcmp(which, "BE") == 0) {
+        if (strcmp(which, "BE") == 0)
+        {
 
-              /* ---------------------------------------------- */
-              /* Sort the "converged" Ritz values in increasing */
-              /* order.  The "threshold" values are in the      */
-              /* middle.                                        */
-              /* ---------------------------------------------- */
+            /* ---------------------------------------------- */
+            /* Sort the "converged" Ritz values in increasing */
+            /* order.  The "threshold" values are in the      */
+            /* middle.                                        */
+            /* ---------------------------------------------- */
 
-	    strcpy(wprime, "LA");
-	    dsortr_(wprime, &c_true, &nconv, &ritz[1], &bounds[1]);
+            strcpy(wprime, "LA");
+            dsortr_(wprime, &c_true, &nconv, &ritz[1], &bounds[1]);
 
-	} else {
+        }
+        else
+        {
 
-              /* -------------------------------------------- */
-              /* In LM, SM, LA, SA case, sort the "converged" */
-              /* Ritz values according to WHICH so that the   */
-              /* "threshold" value appears at the front of    */
-              /* ritz.                                        */
-              /* -------------------------------------------- */
-	    dsortr_(which, &c_true, &nconv, &ritz[1], &bounds[1]);
+            /* -------------------------------------------- */
+            /* In LM, SM, LA, SA case, sort the "converged" */
+            /* Ritz values according to WHICH so that the   */
+            /* "threshold" value appears at the front of    */
+            /* ritz.                                        */
+            /* -------------------------------------------- */
+            dsortr_(which, &c_true, &nconv, &ritz[1], &bounds[1]);
 
-	}
+        }
 
-           /* ---------------------------------------- */
-           /*  Use h( 1,1 ) as storage to communicate  */
-           /*  rnorm to _seupd if needed               */
-           /* ---------------------------------------- */
+        /* ---------------------------------------- */
+        /*  Use h( 1,1 ) as storage to communicate  */
+        /*  rnorm to _seupd if needed               */
+        /* ---------------------------------------- */
 
-	h[h_dim1 + 1] = rnorm;
+        h[h_dim1 + 1] = rnorm;
 
 #ifndef NO_TRACE
-	if (msglvl > 1) {
-	    dvout_(&kplusp, &ritz[1], &debug_1.ndigit, "_saup2: Sorted Ritz values.");
-	    dvout_(&kplusp, &bounds[1], &debug_1.ndigit, "_saup2: Sorted ritz estimates.");
-	}
+        if (msglvl > 1)
+        {
+            dvout_(&kplusp, &ritz[1], &debug_1.ndigit, "_saup2: Sorted Ritz values.");
+            dvout_(&kplusp, &bounds[1], &debug_1.ndigit, "_saup2: Sorted ritz estimates.");
+        }
 #endif
 
-           /* ---------------------------------- */
-           /* Max iterations have been exceeded. */
-           /* ---------------------------------- */
+        /* ---------------------------------- */
+        /* Max iterations have been exceeded. */
+        /* ---------------------------------- */
 
-	if (iter > *mxiter && nconv < *nev) {
-	    *info = 1;
-	}
+        if (iter > *mxiter && nconv < *nev)
+        {
+            *info = 1;
+        }
 
-           /* ------------------- */
-           /* No shifts to apply. */
-           /* ------------------- */
+        /* ------------------- */
+        /* No shifts to apply. */
+        /* ------------------- */
 
-	if (*np == 0 && nconv < nev0) {
-	    *info = 2;
-	}
+        if (*np == 0 && nconv < nev0)
+        {
+            *info = 2;
+        }
 
-	*np = nconv;
-	goto L1100;
+        *np = nconv;
+        goto L1100;
 
-    } else if (nconv < *nev && *ishift == 1) {
+    }
+    else if (nconv < *nev && *ishift == 1)
+    {
 
-           /* ------------------------------------------------- */
-           /* Do not have all the requested eigenvalues yet.    */
-           /* To prevent possible stagnation, adjust the number */
-           /* of Ritz values and the shifts.                    */
-           /* ------------------------------------------------- */
+        /* ------------------------------------------------- */
+        /* Do not have all the requested eigenvalues yet.    */
+        /* To prevent possible stagnation, adjust the number */
+        /* of Ritz values and the shifts.                    */
+        /* ------------------------------------------------- */
 
-	nevbef = *nev;
-/* Computing MIN */
-	i__1 = nconv, i__2 = *np / 2;
-	*nev += min(i__1,i__2);
-	if (*nev == 1 && kplusp >= 6) {
-	    *nev = kplusp / 2;
-	} else if (*nev == 1 && kplusp > 2) {
-	    *nev = 2;
-	}
-	*np = kplusp - *nev;
+        nevbef = *nev;
+        /* Computing MIN */
+        i__1 = nconv, i__2 = *np / 2;
+        *nev += min(i__1,i__2);
+        if (*nev == 1 && kplusp >= 6)
+        {
+            *nev = kplusp / 2;
+        }
+        else if (*nev == 1 && kplusp > 2)
+        {
+            *nev = 2;
+        }
+        *np = kplusp - *nev;
 
-           /* ------------------------------------- */
-           /* If the size of NEV was just increased */
-           /* resort the eigenvalues.               */
-           /* ------------------------------------- */
+        /* ------------------------------------- */
+        /* If the size of NEV was just increased */
+        /* resort the eigenvalues.               */
+        /* ------------------------------------- */
 
-	if (nevbef < *nev) {
-	    dsgets_(ishift, which, nev, np, &ritz[1], &bounds[1], &workl[1]);
-	}
+        if (nevbef < *nev)
+        {
+            dsgets_(ishift, which, nev, np, &ritz[1], &bounds[1], &workl[1]);
+        }
 
     }
 
 #ifndef NO_TRACE
-    if (msglvl > 0) {
-	ivout_(&c__1, &nconv, &debug_1.ndigit, "_saup2: no. of \"converged\" Ritz values at this iter.");
-	if (msglvl > 1) {
-	    kp[0] = *nev;
-	    kp[1] = *np;
-	    ivout_(&c__2, kp, &debug_1.ndigit, "_saup2: NEV and NP are");
-	    dvout_(nev, &ritz[*np + 1], &debug_1.ndigit, "_saup2: \"wanted\" Ritz values.");
-	    dvout_(nev, &bounds[*np + 1], &debug_1.ndigit, "_saup2: Ritz estimates of the \"wanted\" values ");
-	}
+    if (msglvl > 0)
+    {
+        ivout_(&c__1, &nconv, &debug_1.ndigit, "_saup2: no. of \"converged\" Ritz values at this iter.");
+        if (msglvl > 1)
+        {
+            kp[0] = *nev;
+            kp[1] = *np;
+            ivout_(&c__2, kp, &debug_1.ndigit, "_saup2: NEV and NP are");
+            dvout_(nev, &ritz[*np + 1], &debug_1.ndigit, "_saup2: \"wanted\" Ritz values.");
+            dvout_(nev, &bounds[*np + 1], &debug_1.ndigit, "_saup2: Ritz estimates of the \"wanted\" values ");
+        }
     }
 #endif
 
-    if (*ishift == 0) {
+    if (*ishift == 0)
+    {
 
-           /* --------------------------------------------------- */
-           /* User specified shifts: reverse communication to     */
-           /* compute the shifts. They are returned in the first  */
-           /* NP locations of WORKL.                              */
-           /* --------------------------------------------------- */
+        /* --------------------------------------------------- */
+        /* User specified shifts: reverse communication to     */
+        /* compute the shifts. They are returned in the first  */
+        /* NP locations of WORKL.                              */
+        /* --------------------------------------------------- */
 
-	ushift = true;
-	*ido = 3;
-	goto L9000;
+        ushift = true;
+        *ido = 3;
+        goto L9000;
     }
 
 L50:
 
-        /* ---------------------------------- */
-        /* Back from reverse communication;   */
-        /* User specified shifts are returned */
-        /* in WORKL(1:*NP)                    */
-        /* ---------------------------------- */
+    /* ---------------------------------- */
+    /* Back from reverse communication;   */
+    /* User specified shifts are returned */
+    /* in WORKL(1:*NP)                    */
+    /* ---------------------------------- */
 
     ushift = false;
 
-        /* ------------------------------------------------------- */
-        /* Move the NP shifts to the first NP locations of RITZ to */
-        /* free up WORKL.  This is for the non-exact shift case;   */
-        /* in the exact shift case, dsgets already handles this.   */
-        /* ------------------------------------------------------- */
+    /* ------------------------------------------------------- */
+    /* Move the NP shifts to the first NP locations of RITZ to */
+    /* free up WORKL.  This is for the non-exact shift case;   */
+    /* in the exact shift case, dsgets already handles this.   */
+    /* ------------------------------------------------------- */
 
-    if (*ishift == 0) {
-	dcopy_(np, &workl[1], &c__1, &ritz[1], &c__1);
+    if (*ishift == 0)
+    {
+        dcopy_(np, &workl[1], &c__1, &ritz[1], &c__1);
     }
 
 #ifndef NO_TRACE
-    if (msglvl > 2) {
-	ivout_(&c__1, np, &debug_1.ndigit, "_saup2: The number of shifts to apply ");
-	dvout_(np, &workl[1], &debug_1.ndigit, "_saup2: shifts selected");
-	if (*ishift == 1) {
-	    dvout_(np, &bounds[1], &debug_1.ndigit, "_saup2: corresponding Ritz estimates");
-	}
+    if (msglvl > 2)
+    {
+        ivout_(&c__1, np, &debug_1.ndigit, "_saup2: The number of shifts to apply ");
+        dvout_(np, &workl[1], &debug_1.ndigit, "_saup2: shifts selected");
+        if (*ishift == 1)
+        {
+            dvout_(np, &bounds[1], &debug_1.ndigit, "_saup2: corresponding Ritz estimates");
+        }
     }
 #endif
 
-        /* ------------------------------------------------------- */
-        /* Apply the NP0 implicit shifts by QR bulge chasing.      */
-        /* Each shift is applied to the entire tridiagonal matrix. */
-        /* The first 2*N locations of WORKD are used as workspace. */
-        /* After dsapps is done, we have a Lanczos                 */
-        /* factorization of length NEV.                            */
-        /* ------------------------------------------------------- */
+    /* ------------------------------------------------------- */
+    /* Apply the NP0 implicit shifts by QR bulge chasing.      */
+    /* Each shift is applied to the entire tridiagonal matrix. */
+    /* The first 2*N locations of WORKD are used as workspace. */
+    /* After dsapps is done, we have a Lanczos                 */
+    /* factorization of length NEV.                            */
+    /* ------------------------------------------------------- */
 
     dsapps_(n, nev, np, &ritz[1], &v[v_offset], ldv, &h[h_offset], ldh, &resid[1], &q[q_offset], ldq, &workd[1]);
 
-        /* ------------------------------------------- */
-        /* Compute the B-norm of the updated residual. */
-        /* Keep B*RESID in WORKD(1:N) to be used in    */
-        /* the first step of the next call to dsaitr.  */
-        /* ------------------------------------------- */
+    /* ------------------------------------------- */
+    /* Compute the B-norm of the updated residual. */
+    /* Keep B*RESID in WORKD(1:N) to be used in    */
+    /* the first step of the next call to dsaitr.  */
+    /* ------------------------------------------- */
 
     cnorm = true;
 #ifndef NO_TIMER
     arscnd_(&t2);
 #endif
 
-    if (*bmat == 'G') {
-	++timing_1.nbx;
-	dcopy_(n, &resid[1], &c__1, &workd[*n + 1], &c__1);
-	ipntr[1] = *n + 1;
-	ipntr[2] = 1;
-	*ido = 2;
+    if (*bmat == 'G')
+    {
+        ++timing_1.nbx;
+        dcopy_(n, &resid[1], &c__1, &workd[*n + 1], &c__1);
+        ipntr[1] = *n + 1;
+        ipntr[2] = 1;
+        *ido = 2;
 
-           /* -------------------------------- */
-           /* Exit in order to compute B*RESID */
-           /* -------------------------------- */
+        /* -------------------------------- */
+        /* Exit in order to compute B*RESID */
+        /* -------------------------------- */
 
-	goto L9000;
-    } else if (*bmat == 'I') {
-	dcopy_(n, &resid[1], &c__1, &workd[1], &c__1);
+        goto L9000;
+    }
+    else if (*bmat == 'I')
+    {
+        dcopy_(n, &resid[1], &c__1, &workd[1], &c__1);
     }
 
 L100:
 
-        /* -------------------------------- */
-        /* Back from reverse communication; */
-        /* WORKD(1:N) := B*RESID            */
-        /* -------------------------------- */
+    /* -------------------------------- */
+    /* Back from reverse communication; */
+    /* WORKD(1:N) := B*RESID            */
+    /* -------------------------------- */
 
 #ifndef NO_TIMER
-    if (*bmat == 'G') {
-	arscnd_(&t3);
-	timing_1.tmvbx += t3 - t2;
+    if (*bmat == 'G')
+    {
+        arscnd_(&t3);
+        timing_1.tmvbx += t3 - t2;
     }
 #endif
 
-    if (*bmat == 'G') {
-	rnorm = ddot_(n, &resid[1], &c__1, &workd[1], &c__1);
-	rnorm = sqrt((abs(rnorm)));
-    } else if (*bmat == 'I') {
-	rnorm = dnrm2_(n, &resid[1], &c__1);
+    if (*bmat == 'G')
+    {
+        rnorm = ddot_(n, &resid[1], &c__1, &workd[1], &c__1);
+        rnorm = sqrt((abs(rnorm)));
+    }
+    else if (*bmat == 'I')
+    {
+        rnorm = dnrm2_(n, &resid[1], &c__1);
     }
     cnorm = false;
-/* L130: */
+    /* L130: */
 
 #ifndef NO_TRACE
-    if (msglvl > 2) {
-	dvout_(&c__1, &rnorm, &debug_1.ndigit, "_saup2: B-norm of residual for NEV factorization");
-	dvout_(nev, &h[(h_dim1 << 1) + 1], &debug_1.ndigit,"_saup2: main diagonal of compressed H matrix");
-	i__1 = *nev - 1;
-	dvout_(&i__1, &h[h_dim1 + 2], &debug_1.ndigit, "_saup2: subdiagonal of compressed H matrix");
+    if (msglvl > 2)
+    {
+        dvout_(&c__1, &rnorm, &debug_1.ndigit, "_saup2: B-norm of residual for NEV factorization");
+        dvout_(nev, &h[(h_dim1 << 1) + 1], &debug_1.ndigit,"_saup2: main diagonal of compressed H matrix");
+        i__1 = *nev - 1;
+        dvout_(&i__1, &h[h_dim1 + 2], &debug_1.ndigit, "_saup2: subdiagonal of compressed H matrix");
     }
 #endif
 
     goto L1000;
 
-     /* ------------------------------------------------------------- */
-     /*                                                               */
-     /*  E N D     O F     M A I N     I T E R A T I O N     L O O P  */
-     /*                                                               */
-     /* ------------------------------------------------------------- */
+    /* ------------------------------------------------------------- */
+    /*                                                               */
+    /*  E N D     O F     M A I N     I T E R A T I O N     L O O P  */
+    /*                                                               */
+    /* ------------------------------------------------------------- */
 
 L1100:
 
@@ -856,9 +914,9 @@ L1100:
 L1200:
     *ido = 99;
 
-     /* ---------- */
-     /* Error exit */
-     /* ---------- */
+    /* ---------- */
+    /* Error exit */
+    /* ---------- */
 
 #ifndef NO_TIMER
     arscnd_(&t1);
@@ -868,9 +926,9 @@ L1200:
 L9000:
     return 0;
 
-     /* ------------- */
-     /* End of dsaup2 */
-     /* ------------- */
+    /* ------------- */
+    /* End of dsaup2 */
+    /* ------------- */
 
 } /* dsaup2_ */
 

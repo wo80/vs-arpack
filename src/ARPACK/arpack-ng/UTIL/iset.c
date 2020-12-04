@@ -19,8 +19,9 @@ int iset_(int32_t *n, int32_t *value, int32_t *array, int32_t *inc)
 
     /* Function Body */
     i__1 = *n;
-    for (i = 1; i <= i__1; ++i) {
-	array[i] = *value;
+    for (i = 1; i <= i__1; ++i)
+    {
+        array[i] = *value;
     }
 
     return 0;

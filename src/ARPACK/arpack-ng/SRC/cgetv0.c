@@ -115,8 +115,8 @@
  */
 
 int cgetv0_(int32_t *ido, char *bmat, int32_t *itry, bool *initv, int32_t *n, int32_t *j,
-     complex *v, int32_t *ldv, complex *resid, float *rnorm, int32_t *ipntr, complex *workd,
-     int32_t *ierr)
+            complex *v, int32_t *ldv, complex *resid, float *rnorm, int32_t *ipntr, complex *workd,
+            int32_t *ierr)
 {
     /* Initialized data */
 
@@ -142,9 +142,9 @@ int cgetv0_(int32_t *ido, char *bmat, int32_t *itry, bool *initv, int32_t *n, in
     static float rnorm0;
     static int32_t msglvl;
 
-     /* --------------- */
-     /* Data Statements */
-     /* --------------- */
+    /* --------------- */
+    /* Data Statements */
+    /* --------------- */
 
     /* Parameter adjustments */
     --workd;
@@ -156,24 +156,26 @@ int cgetv0_(int32_t *ido, char *bmat, int32_t *itry, bool *initv, int32_t *n, in
 
     /* Function Body */
 
-     /* --------------------- */
-     /* Executable Statements */
-     /* --------------------- */
+    /* --------------------- */
+    /* Executable Statements */
+    /* --------------------- */
 
-     /* --------------------------------- */
-     /* Initialize the seed of the LAPACK */
-     /* random number generator           */
-     /* --------------------------------- */
+    /* --------------------------------- */
+    /* Initialize the seed of the LAPACK */
+    /* random number generator           */
+    /* --------------------------------- */
 
-    if (inits) {
-	iseed[0] = 1;
-	iseed[1] = 3;
-	iseed[2] = 5;
-	iseed[3] = 7;
-	inits = false;
+    if (inits)
+    {
+        iseed[0] = 1;
+        iseed[1] = 3;
+        iseed[2] = 5;
+        iseed[3] = 7;
+        inits = false;
     }
 
-    if (*ido == 0) {
+    if (*ido == 0)
+    {
 
         /* ----------------------------- */
         /* Initialize timing statistics  */
@@ -181,15 +183,15 @@ int cgetv0_(int32_t *ido, char *bmat, int32_t *itry, bool *initv, int32_t *n, in
         /* ----------------------------- */
 
 #ifndef NO_TIMER
-	arscnd_(&t0);
+        arscnd_(&t0);
 #endif
 
-	msglvl = debug_1.mgetv0;
+        msglvl = debug_1.mgetv0;
 
-	*ierr = 0;
-	iter = 0;
-	first = false;
-	orth = false;
+        *ierr = 0;
+        iter = 0;
+        first = false;
+        orth = false;
 
         /* --------------------------------------------------- */
         /* Possibly generate a random starting vector in RESID */
@@ -200,10 +202,11 @@ int cgetv0_(int32_t *ido, char *bmat, int32_t *itry, bool *initv, int32_t *n, in
         /*    idist = 3: normal  (0,1)  distribution;          */
         /* --------------------------------------------------- */
 
-	if (! (*initv)) {
-	    idist = 2;
-	    clarnv_(&idist, iseed, n, &resid[1]);
-	}
+        if (! (*initv))
+        {
+            idist = 2;
+            clarnv_(&idist, iseed, n, &resid[1]);
+        }
 
         /* -------------------------------------------------------- */
         /* Force the starting vector into the range of OP to handle */
@@ -211,35 +214,40 @@ int cgetv0_(int32_t *ido, char *bmat, int32_t *itry, bool *initv, int32_t *n, in
         /* -------------------------------------------------------- */
 
 #ifndef NO_TIMER
-	arscnd_(&t2);
+        arscnd_(&t2);
 #endif
 
-	if (*itry == 1) {
-	    ++timing_1.nopx;
-	    ipntr[1] = 1;
-	    ipntr[2] = *n + 1;
-	    ccopy_(n, &resid[1], &c__1, &workd[1], &c__1);
-	    *ido = -1;
-	    goto L9000;
-	} else if (*itry > 1 && *bmat == 'G') {
-	    ccopy_(n, &resid[1], &c__1, &workd[*n + 1], &c__1);
-	}
+        if (*itry == 1)
+        {
+            ++timing_1.nopx;
+            ipntr[1] = 1;
+            ipntr[2] = *n + 1;
+            ccopy_(n, &resid[1], &c__1, &workd[1], &c__1);
+            *ido = -1;
+            goto L9000;
+        }
+        else if (*itry > 1 && *bmat == 'G')
+        {
+            ccopy_(n, &resid[1], &c__1, &workd[*n + 1], &c__1);
+        }
     }
 
-     /* --------------------------------------- */
-     /* Back from computing OP*(initial-vector) */
-     /* --------------------------------------- */
+    /* --------------------------------------- */
+    /* Back from computing OP*(initial-vector) */
+    /* --------------------------------------- */
 
-    if (first) {
-	goto L20;
+    if (first)
+    {
+        goto L20;
     }
 
-     /* ---------------------------------------------- */
-     /* Back from computing OP*(orthogonalized-vector) */
-     /* ---------------------------------------------- */
+    /* ---------------------------------------------- */
+    /* Back from computing OP*(orthogonalized-vector) */
+    /* ---------------------------------------------- */
 
-    if (orth) {
-	goto L40;
+    if (orth)
+    {
+        goto L40;
     }
 
 #ifndef NO_TIMER
@@ -247,69 +255,78 @@ int cgetv0_(int32_t *ido, char *bmat, int32_t *itry, bool *initv, int32_t *n, in
     timing_1.tmvopx += t3 - t2;
 #endif
 
-     /* ---------------------------------------------------- */
-     /* Starting vector is now in the range of OP; r = OP*r; */
-     /* Compute B-norm of starting vector.                   */
-     /* ---------------------------------------------------- */
+    /* ---------------------------------------------------- */
+    /* Starting vector is now in the range of OP; r = OP*r; */
+    /* Compute B-norm of starting vector.                   */
+    /* ---------------------------------------------------- */
 
 #ifndef NO_TIMER
     arscnd_(&t2);
 #endif
 
     first = true;
-    if (*itry == 1) {
-	ccopy_(n, &workd[*n + 1], &c__1, &resid[1], &c__1);
+    if (*itry == 1)
+    {
+        ccopy_(n, &workd[*n + 1], &c__1, &resid[1], &c__1);
     }
-    if (*bmat == 'G') {
-	++timing_1.nbx;
-	ipntr[1] = *n + 1;
-	ipntr[2] = 1;
-	*ido = 2;
-	goto L9000;
-    } else if (*bmat == 'I') {
-	ccopy_(n, &resid[1], &c__1, &workd[1], &c__1);
+    if (*bmat == 'G')
+    {
+        ++timing_1.nbx;
+        ipntr[1] = *n + 1;
+        ipntr[2] = 1;
+        *ido = 2;
+        goto L9000;
+    }
+    else if (*bmat == 'I')
+    {
+        ccopy_(n, &resid[1], &c__1, &workd[1], &c__1);
     }
 
 L20:
 
 #ifndef NO_TIMER
-    if (*bmat == 'G') {
-	arscnd_(&t3);
-	timing_1.tmvbx += t3 - t2;
+    if (*bmat == 'G')
+    {
+        arscnd_(&t3);
+        timing_1.tmvbx += t3 - t2;
     }
 #endif
 
     first = false;
-    if (*bmat == 'G') {
-	cdotc_(&q__1, n, &resid[1], &c__1, &workd[1], &c__1);
-	cnorm.r = q__1.r, cnorm.i = q__1.i;
-	r__1 = cnorm.r;
-	r__2 = r_imag(&cnorm);
-	rnorm0 = sqrt(slapy2_(&r__1, &r__2));
-    } else if (*bmat == 'I') {
-	rnorm0 = scnrm2_(n, &resid[1], &c__1);
+    if (*bmat == 'G')
+    {
+        cdotc_(&q__1, n, &resid[1], &c__1, &workd[1], &c__1);
+        cnorm.r = q__1.r, cnorm.i = q__1.i;
+        r__1 = cnorm.r;
+        r__2 = r_imag(&cnorm);
+        rnorm0 = sqrt(slapy2_(&r__1, &r__2));
+    }
+    else if (*bmat == 'I')
+    {
+        rnorm0 = scnrm2_(n, &resid[1], &c__1);
     }
     *rnorm = rnorm0;
 
-     /* ------------------------------------------- */
-     /* Exit if this is the very first Arnoldi step */
-     /* ------------------------------------------- */
+    /* ------------------------------------------- */
+    /* Exit if this is the very first Arnoldi step */
+    /* ------------------------------------------- */
 
-    if (*j == 1) {
-	goto L50;
+    if (*j == 1)
+    {
+        goto L50;
     }
 
-     /* ------------------------------------------------------------- */
-     /* Otherwise need to B-orthogonalize the starting vector against */
-     /* the current Arnoldi basis using Gram-Schmidt with iter. ref.  */
-     /* This is the case where an invariant subspace is encountered   */
-     /* in the middle of the Arnoldi factorization.                   */
-     /*                                                               */
-     /*       s = V^{T}*B*r;   r = r - V*s;                           */
-     /*                                                               */
-     /* Stopping criteria used for iter. ref. is discussed in         */
-     /* Parlett's book, page 107 and in Gragg & Reichel TOMS paper.   */
-     /* ------------------------------------------------------------- */
+    /* ------------------------------------------------------------- */
+    /* Otherwise need to B-orthogonalize the starting vector against */
+    /* the current Arnoldi basis using Gram-Schmidt with iter. ref.  */
+    /* This is the case where an invariant subspace is encountered   */
+    /* in the middle of the Arnoldi factorization.                   */
+    /*                                                               */
+    /*       s = V^{T}*B*r;   r = r - V*s;                           */
+    /*                                                               */
+    /* Stopping criteria used for iter. ref. is discussed in         */
+    /* Parlett's book, page 107 and in Gragg & Reichel TOMS paper.   */
+    /* ------------------------------------------------------------- */
 
     orth = true;
 L30:
@@ -320,93 +337,108 @@ L30:
     q__1.r = -1.f, q__1.i = -0.f;
     cgemv_("N", n, &i__1, &q__1, &v[v_offset], ldv, &workd[*n + 1], &c__1, &c_one, &resid[1], &c__1);
 
-     /* -------------------------------------------------------- */
-     /* Compute the B-norm of the orthogonalized starting vector */
-     /* -------------------------------------------------------- */
+    /* -------------------------------------------------------- */
+    /* Compute the B-norm of the orthogonalized starting vector */
+    /* -------------------------------------------------------- */
 
 #ifndef NO_TIMER
     arscnd_(&t2);
 #endif
 
-    if (*bmat == 'G') {
-	++timing_1.nbx;
-	ccopy_(n, &resid[1], &c__1, &workd[*n + 1], &c__1);
-	ipntr[1] = *n + 1;
-	ipntr[2] = 1;
-	*ido = 2;
-	goto L9000;
-    } else if (*bmat == 'I') {
-	ccopy_(n, &resid[1], &c__1, &workd[1], &c__1);
+    if (*bmat == 'G')
+    {
+        ++timing_1.nbx;
+        ccopy_(n, &resid[1], &c__1, &workd[*n + 1], &c__1);
+        ipntr[1] = *n + 1;
+        ipntr[2] = 1;
+        *ido = 2;
+        goto L9000;
+    }
+    else if (*bmat == 'I')
+    {
+        ccopy_(n, &resid[1], &c__1, &workd[1], &c__1);
     }
 
 L40:
 
 #ifndef NO_TIMER
-    if (*bmat == 'G') {
-	arscnd_(&t3);
-	timing_1.tmvbx += t3 - t2;
+    if (*bmat == 'G')
+    {
+        arscnd_(&t3);
+        timing_1.tmvbx += t3 - t2;
     }
 #endif
 
-    if (*bmat == 'G') {
-	cdotc_(&q__1, n, &resid[1], &c__1, &workd[1], &c__1);
-	cnorm.r = q__1.r, cnorm.i = q__1.i;
-	r__1 = cnorm.r;
-	r__2 = r_imag(&cnorm);
-	*rnorm = sqrt(slapy2_(&r__1, &r__2));
-    } else if (*bmat == 'I') {
-	*rnorm = scnrm2_(n, &resid[1], &c__1);
+    if (*bmat == 'G')
+    {
+        cdotc_(&q__1, n, &resid[1], &c__1, &workd[1], &c__1);
+        cnorm.r = q__1.r, cnorm.i = q__1.i;
+        r__1 = cnorm.r;
+        r__2 = r_imag(&cnorm);
+        *rnorm = sqrt(slapy2_(&r__1, &r__2));
+    }
+    else if (*bmat == 'I')
+    {
+        *rnorm = scnrm2_(n, &resid[1], &c__1);
     }
 
-     /* ------------------------------------ */
-     /* Check for further orthogonalization. */
-     /* ------------------------------------ */
+    /* ------------------------------------ */
+    /* Check for further orthogonalization. */
+    /* ------------------------------------ */
 
 #ifndef NO_TRACE
-    if (msglvl > 2) {
-	svout_(&c__1, &rnorm0, &debug_1.ndigit, "_getv0: re-orthonalization ; rnorm0 is");
-	svout_(&c__1, rnorm, &debug_1.ndigit, "_getv0: re-orthonalization ; rnorm is");
+    if (msglvl > 2)
+    {
+        svout_(&c__1, &rnorm0, &debug_1.ndigit, "_getv0: re-orthonalization ; rnorm0 is");
+        svout_(&c__1, rnorm, &debug_1.ndigit, "_getv0: re-orthonalization ; rnorm is");
     }
 #endif
 
-    if (*rnorm > rnorm0 * .717f) {
-	goto L50;
+    if (*rnorm > rnorm0 * .717f)
+    {
+        goto L50;
     }
 
     ++iter;
-    if (iter <= 1) {
+    if (iter <= 1)
+    {
 
         /* --------------------------------- */
         /* Perform iterative refinement step */
         /* --------------------------------- */
 
-	rnorm0 = *rnorm;
-	goto L30;
-    } else {
+        rnorm0 = *rnorm;
+        goto L30;
+    }
+    else
+    {
 
         /* ---------------------------------- */
         /* Iterative refinement step "failed" */
         /* ---------------------------------- */
 
-	i__1 = *n;
-	for (jj = 1; jj <= i__1; ++jj) {
-	    i__2 = jj;
-	    resid[i__2].r = 0.f, resid[i__2].i = 0.f;
-/* L45: */
-	}
-	*rnorm = 0.f;
-	*ierr = -1;
+        i__1 = *n;
+        for (jj = 1; jj <= i__1; ++jj)
+        {
+            i__2 = jj;
+            resid[i__2].r = 0.f, resid[i__2].i = 0.f;
+            /* L45: */
+        }
+        *rnorm = 0.f;
+        *ierr = -1;
     }
 
 L50:
 
 #ifndef NO_TRACE
-    if (msglvl > 0) {
-	svout_(&c__1, rnorm, &debug_1.ndigit, "_getv0: B-norm of initial / restarted starting vector");
+    if (msglvl > 0)
+    {
+        svout_(&c__1, rnorm, &debug_1.ndigit, "_getv0: B-norm of initial / restarted starting vector");
     }
 
-    if (msglvl > 2) {
-	cvout_(n, &resid[1], &debug_1.ndigit, "_getv0: initial / restarted starting vector");
+    if (msglvl > 2)
+    {
+        cvout_(n, &resid[1], &debug_1.ndigit, "_getv0: initial / restarted starting vector");
     }
 #endif
 
@@ -420,9 +452,9 @@ L50:
 L9000:
     return 0;
 
-     /* ------------- */
-     /* End of cgetv0 */
-     /* ------------- */
+    /* ------------- */
+    /* End of cgetv0 */
+    /* ------------- */
 
 } /* cgetv0_ */
 

@@ -134,16 +134,16 @@
  */
 
 int cnapps_(int32_t *n, int32_t *kev, int32_t *np, complex *
-	shift, complex *v, int32_t *ldv, complex *h, int32_t *ldh, complex *
-	resid, complex *q, int32_t *ldq, complex *workl, complex *workd)
+            shift, complex *v, int32_t *ldv, complex *h, int32_t *ldh, complex *
+            resid, complex *q, int32_t *ldq, complex *workl, complex *workd)
 {
     /* Initialized data */
 
     static bool first = true;
 
     /* System generated locals */
-    int32_t h_dim1, h_offset, v_dim1, v_offset, q_dim1, q_offset, i__1, i__2, 
-	    i__3, i__4, i__5, i__6;
+    int32_t h_dim1, h_offset, v_dim1, v_offset, q_dim1, q_offset, i__1, i__2,
+            i__3, i__4, i__5, i__6;
     float r__1, r__2, r__3, r__4;
     complex q__1, q__2, q__3, q__4, q__5;
 
@@ -167,9 +167,9 @@ int cnapps_(int32_t *n, int32_t *kev, int32_t *np, complex *
     int32_t istart, kplusp, msglvl;
     static float smlnum;
 
-     /* -------------- */
-     /* Data statements */
-     /* -------------- */
+    /* -------------- */
+    /* Data statements */
+    /* -------------- */
 
     /* Parameter adjustments */
     --workd;
@@ -188,11 +188,12 @@ int cnapps_(int32_t *n, int32_t *kev, int32_t *np, complex *
 
     /* Function Body */
 
-     /* --------------------- */
-     /* Executable Statements */
-     /* --------------------- */
+    /* --------------------- */
+    /* Executable Statements */
+    /* --------------------- */
 
-    if (first) {
+    if (first)
+    {
 
         /* --------------------------------------------- */
         /* Set machine-dependent constants for the       */
@@ -201,19 +202,19 @@ int cnapps_(int32_t *n, int32_t *kev, int32_t *np, complex *
         /* REFERENCE: LAPACK subroutine clahqr           */
         /* --------------------------------------------- */
 
-	unfl = slamch_("S");
-	q__1.r = 1.f / unfl, q__1.i = 0.f / unfl;
-	ovfl = q__1.r;
-	slabad_(&unfl, &ovfl);
-	ulp = slamch_("P");
-	smlnum = unfl * (*n / ulp);
-	first = false;
+        unfl = slamch_("S");
+        q__1.r = 1.f / unfl, q__1.i = 0.f / unfl;
+        ovfl = q__1.r;
+        slabad_(&unfl, &ovfl);
+        ulp = slamch_("P");
+        smlnum = unfl * (*n / ulp);
+        first = false;
     }
 
-     /* ----------------------------- */
-     /* Initialize timing statistics  */
-     /* & message level for debugging */
-     /* ----------------------------- */
+    /* ----------------------------- */
+    /* Initialize timing statistics  */
+    /* & message level for debugging */
+    /* ----------------------------- */
 
 #ifndef NO_TIMER
     arscnd_(&t0);
@@ -223,88 +224,96 @@ int cnapps_(int32_t *n, int32_t *kev, int32_t *np, complex *
 
     kplusp = *kev + *np;
 
-     /* ------------------------------------------ */
-     /* Initialize Q to the identity to accumulate */
-     /* the rotations and reflections              */
-     /* ------------------------------------------ */
+    /* ------------------------------------------ */
+    /* Initialize Q to the identity to accumulate */
+    /* the rotations and reflections              */
+    /* ------------------------------------------ */
 
     claset_("A", &kplusp, &kplusp, &c_zero, &c_one, &q[q_offset], ldq);
 
-     /* -------------------------------------------- */
-     /* Quick return if there are no shifts to apply */
-     /* -------------------------------------------- */
+    /* -------------------------------------------- */
+    /* Quick return if there are no shifts to apply */
+    /* -------------------------------------------- */
 
-    if (*np == 0) {
-	goto L9000;
+    if (*np == 0)
+    {
+        goto L9000;
     }
 
-     /* -------------------------------------------- */
-     /* Chase the bulge with the application of each */
-     /* implicit shift. Each shift is applied to the */
-     /* whole matrix including each block.           */
-     /* -------------------------------------------- */
+    /* -------------------------------------------- */
+    /* Chase the bulge with the application of each */
+    /* implicit shift. Each shift is applied to the */
+    /* whole matrix including each block.           */
+    /* -------------------------------------------- */
 
     i__1 = *np;
-    for (jj = 1; jj <= i__1; ++jj) {
-	i__2 = jj;
-	sigma.r = shift[i__2].r, sigma.i = shift[i__2].i;
+    for (jj = 1; jj <= i__1; ++jj)
+    {
+        i__2 = jj;
+        sigma.r = shift[i__2].r, sigma.i = shift[i__2].i;
 
 #ifndef NO_TRACE
-	if (msglvl > 2) {
-	    ivout_(&c__1, &jj, &debug_1.ndigit, "_napps: shift number.");
-	    cvout_(&c__1, &sigma, &debug_1.ndigit, "_napps: Value of the shift ");
-	}
+        if (msglvl > 2)
+        {
+            ivout_(&c__1, &jj, &debug_1.ndigit, "_napps: shift number.");
+            cvout_(&c__1, &sigma, &debug_1.ndigit, "_napps: Value of the shift ");
+        }
 #endif
 
-	istart = 1;
+        istart = 1;
 L20:
 
-	i__2 = kplusp - 1;
-	for (i = istart; i <= i__2; ++i) {
+        i__2 = kplusp - 1;
+        for (i = istart; i <= i__2; ++i)
+        {
 
-           /* -------------------------------------- */
-           /* Check for splitting and deflation. Use */
-           /* a standard test as in the QR algorithm */
-           /* REFERENCE: LAPACK subroutine clahqr    */
-           /* -------------------------------------- */
+            /* -------------------------------------- */
+            /* Check for splitting and deflation. Use */
+            /* a standard test as in the QR algorithm */
+            /* REFERENCE: LAPACK subroutine clahqr    */
+            /* -------------------------------------- */
 
-	    i__3 = i + i * h_dim1;
-	    i__4 = i + 1 + (i + 1) * h_dim1;
-	    tst1 = (r__1 = h[i__3].r, dabs(r__1)) + (r__2 = r_imag(&h[i 
-		    + i * h_dim1]), dabs(r__2)) + ((r__3 = h[i__4].r, 
-		    dabs(r__3)) + (r__4 = r_imag(&h[i + 1 + (i + 1) * 
-		    h_dim1]), dabs(r__4)));
-	    if (tst1 == 0.f) {
-		i__3 = kplusp - jj + 1;
-		tst1 = clanhs_("1", &i__3, &h[h_offset], ldh, &workl[1]);
-	    }
-	    i__3 = i + 1 + i * h_dim1;
-/* Computing MAX */
-	    r__2 = ulp * tst1;
-	    if ((r__1 = h[i__3].r, dabs(r__1)) <= dmax(r__2,smlnum)) {
+            i__3 = i + i * h_dim1;
+            i__4 = i + 1 + (i + 1) * h_dim1;
+            tst1 = (r__1 = h[i__3].r, dabs(r__1)) + (r__2 = r_imag(&h[i
+                    + i * h_dim1]), dabs(r__2)) + ((r__3 = h[i__4].r,
+                                                    dabs(r__3)) + (r__4 = r_imag(&h[i + 1 + (i + 1) *
+                                                              h_dim1]), dabs(r__4)));
+            if (tst1 == 0.f)
+            {
+                i__3 = kplusp - jj + 1;
+                tst1 = clanhs_("1", &i__3, &h[h_offset], ldh, &workl[1]);
+            }
+            i__3 = i + 1 + i * h_dim1;
+            /* Computing MAX */
+            r__2 = ulp * tst1;
+            if ((r__1 = h[i__3].r, dabs(r__1)) <= dmax(r__2,smlnum))
+            {
 #ifndef NO_TRACE
-		if (msglvl > 0) {
-		    ivout_(&c__1, &i, &debug_1.ndigit, "_napps: matrix splitting at row/column no.");
-		    ivout_(&c__1, &jj, &debug_1.ndigit, "_napps: matrix splitting with shift number.");
-		    cvout_(&c__1, &h[i + 1 + i * h_dim1], &debug_1.ndigit, "_napps: off diagonal element.");
-		}
+                if (msglvl > 0)
+                {
+                    ivout_(&c__1, &i, &debug_1.ndigit, "_napps: matrix splitting at row/column no.");
+                    ivout_(&c__1, &jj, &debug_1.ndigit, "_napps: matrix splitting with shift number.");
+                    cvout_(&c__1, &h[i + 1 + i * h_dim1], &debug_1.ndigit, "_napps: off diagonal element.");
+                }
 #endif
 
-		iend = i;
-		i__3 = i + 1 + i * h_dim1;
-		h[i__3].r = 0.f, h[i__3].i = 0.f;
-		goto L40;
-	    }
-/* L30: */
-	}
-	iend = kplusp;
+                iend = i;
+                i__3 = i + 1 + i * h_dim1;
+                h[i__3].r = 0.f, h[i__3].i = 0.f;
+                goto L40;
+            }
+            /* L30: */
+        }
+        iend = kplusp;
 L40:
 
 #ifndef NO_TRACE
-	if (msglvl > 2) {
-	    ivout_(&c__1, &istart, &debug_1.ndigit, "_napps: Start of current block ");
-	    ivout_(&c__1, &iend, &debug_1.ndigit, "_napps: End of current block ");
-	}
+        if (msglvl > 2)
+        {
+            ivout_(&c__1, &istart, &debug_1.ndigit, "_napps: Start of current block ");
+            ivout_(&c__1, &iend, &debug_1.ndigit, "_napps: End of current block ");
+        }
 #endif
 
         /* ---------------------------------------------- */
@@ -313,133 +322,140 @@ L40:
         /* of compression since we'll discard this stuff  */
         /* ---------------------------------------------- */
 
-	if (istart == iend || istart > *kev) {
-	    goto L100;
-	}
+        if (istart == iend || istart > *kev)
+        {
+            goto L100;
+        }
 
-	i__2 = istart + istart * h_dim1;
-	h11.r = h[i__2].r, h11.i = h[i__2].i;
-	i__2 = istart + 1 + istart * h_dim1;
-	h21.r = h[i__2].r, h21.i = h[i__2].i;
-	q__1.r = h11.r - sigma.r, q__1.i = h11.i - sigma.i;
-	f.r = q__1.r, f.i = q__1.i;
-	g.r = h21.r, g.i = h21.i;
+        i__2 = istart + istart * h_dim1;
+        h11.r = h[i__2].r, h11.i = h[i__2].i;
+        i__2 = istart + 1 + istart * h_dim1;
+        h21.r = h[i__2].r, h21.i = h[i__2].i;
+        q__1.r = h11.r - sigma.r, q__1.i = h11.i - sigma.i;
+        f.r = q__1.r, f.i = q__1.i;
+        g.r = h21.r, g.i = h21.i;
 
-	i__2 = iend - 1;
-	for (i = istart; i <= i__2; ++i) {
+        i__2 = iend - 1;
+        for (i = istart; i <= i__2; ++i)
+        {
 
-           /* ---------------------------------------------------- */
-           /* Construct the plane rotation G to zero out the bulge */
-           /* ---------------------------------------------------- */
+            /* ---------------------------------------------------- */
+            /* Construct the plane rotation G to zero out the bulge */
+            /* ---------------------------------------------------- */
 
-	    clartg_(&f, &g, &c, &s, &r);
-	    if (i > istart) {
-		i__3 = i + (i - 1) * h_dim1;
-		h[i__3].r = r.r, h[i__3].i = r.i;
-		i__3 = i + 1 + (i - 1) * h_dim1;
-		h[i__3].r = 0.f, h[i__3].i = 0.f;
-	    }
+            clartg_(&f, &g, &c, &s, &r);
+            if (i > istart)
+            {
+                i__3 = i + (i - 1) * h_dim1;
+                h[i__3].r = r.r, h[i__3].i = r.i;
+                i__3 = i + 1 + (i - 1) * h_dim1;
+                h[i__3].r = 0.f, h[i__3].i = 0.f;
+            }
 
-           /* ------------------------------------------- */
-           /* Apply rotation to the left of H;  H <- G'*H */
-           /* ------------------------------------------- */
+            /* ------------------------------------------- */
+            /* Apply rotation to the left of H;  H <- G'*H */
+            /* ------------------------------------------- */
 
-	    i__3 = kplusp;
-	    for (j = i; j <= i__3; ++j) {
-		i__4 = i + j * h_dim1;
-		q__2.r = c * h[i__4].r, q__2.i = c * h[i__4].i;
-		i__5 = i + 1 + j * h_dim1;
-		q__3.r = s.r * h[i__5].r - s.i * h[i__5].i, q__3.i = s.r *
-			 h[i__5].i + s.i * h[i__5].r;
-		q__1.r = q__2.r + q__3.r, q__1.i = q__2.i + q__3.i;
-		t.r = q__1.r, t.i = q__1.i;
-		i__4 = i + 1 + j * h_dim1;
-		r_cnjg(&q__4, &s);
-		q__3.r = -q__4.r, q__3.i = -q__4.i;
-		i__5 = i + j * h_dim1;
-		q__2.r = q__3.r * h[i__5].r - q__3.i * h[i__5].i, q__2.i =
-			 q__3.r * h[i__5].i + q__3.i * h[i__5].r;
-		i__6 = i + 1 + j * h_dim1;
-		q__5.r = c * h[i__6].r, q__5.i = c * h[i__6].i;
-		q__1.r = q__2.r + q__5.r, q__1.i = q__2.i + q__5.i;
-		h[i__4].r = q__1.r, h[i__4].i = q__1.i;
-		i__4 = i + j * h_dim1;
-		h[i__4].r = t.r, h[i__4].i = t.i;
-/* L50: */
-	    }
+            i__3 = kplusp;
+            for (j = i; j <= i__3; ++j)
+            {
+                i__4 = i + j * h_dim1;
+                q__2.r = c * h[i__4].r, q__2.i = c * h[i__4].i;
+                i__5 = i + 1 + j * h_dim1;
+                q__3.r = s.r * h[i__5].r - s.i * h[i__5].i, q__3.i = s.r *
+                         h[i__5].i + s.i * h[i__5].r;
+                q__1.r = q__2.r + q__3.r, q__1.i = q__2.i + q__3.i;
+                t.r = q__1.r, t.i = q__1.i;
+                i__4 = i + 1 + j * h_dim1;
+                r_cnjg(&q__4, &s);
+                q__3.r = -q__4.r, q__3.i = -q__4.i;
+                i__5 = i + j * h_dim1;
+                q__2.r = q__3.r * h[i__5].r - q__3.i * h[i__5].i, q__2.i =
+                             q__3.r * h[i__5].i + q__3.i * h[i__5].r;
+                i__6 = i + 1 + j * h_dim1;
+                q__5.r = c * h[i__6].r, q__5.i = c * h[i__6].i;
+                q__1.r = q__2.r + q__5.r, q__1.i = q__2.i + q__5.i;
+                h[i__4].r = q__1.r, h[i__4].i = q__1.i;
+                i__4 = i + j * h_dim1;
+                h[i__4].r = t.r, h[i__4].i = t.i;
+                /* L50: */
+            }
 
-           /* ------------------------------------------- */
-           /* Apply rotation to the right of H;  H <- H*G */
-           /* ------------------------------------------- */
+            /* ------------------------------------------- */
+            /* Apply rotation to the right of H;  H <- H*G */
+            /* ------------------------------------------- */
 
-/* Computing MIN */
-	    i__4 = i + 2;
-	    i__3 = min(i__4,iend);
-	    for (j = 1; j <= i__3; ++j) {
-		i__4 = j + i * h_dim1;
-		q__2.r = c * h[i__4].r, q__2.i = c * h[i__4].i;
-		r_cnjg(&q__4, &s);
-		i__5 = j + (i + 1) * h_dim1;
-		q__3.r = q__4.r * h[i__5].r - q__4.i * h[i__5].i, q__3.i =
-			 q__4.r * h[i__5].i + q__4.i * h[i__5].r;
-		q__1.r = q__2.r + q__3.r, q__1.i = q__2.i + q__3.i;
-		t.r = q__1.r, t.i = q__1.i;
-		i__4 = j + (i + 1) * h_dim1;
-		q__3.r = -s.r, q__3.i = -s.i;
-		i__5 = j + i * h_dim1;
-		q__2.r = q__3.r * h[i__5].r - q__3.i * h[i__5].i, q__2.i =
-			 q__3.r * h[i__5].i + q__3.i * h[i__5].r;
-		i__6 = j + (i + 1) * h_dim1;
-		q__4.r = c * h[i__6].r, q__4.i = c * h[i__6].i;
-		q__1.r = q__2.r + q__4.r, q__1.i = q__2.i + q__4.i;
-		h[i__4].r = q__1.r, h[i__4].i = q__1.i;
-		i__4 = j + i * h_dim1;
-		h[i__4].r = t.r, h[i__4].i = t.i;
-/* L60: */
-	    }
+            /* Computing MIN */
+            i__4 = i + 2;
+            i__3 = min(i__4,iend);
+            for (j = 1; j <= i__3; ++j)
+            {
+                i__4 = j + i * h_dim1;
+                q__2.r = c * h[i__4].r, q__2.i = c * h[i__4].i;
+                r_cnjg(&q__4, &s);
+                i__5 = j + (i + 1) * h_dim1;
+                q__3.r = q__4.r * h[i__5].r - q__4.i * h[i__5].i, q__3.i =
+                             q__4.r * h[i__5].i + q__4.i * h[i__5].r;
+                q__1.r = q__2.r + q__3.r, q__1.i = q__2.i + q__3.i;
+                t.r = q__1.r, t.i = q__1.i;
+                i__4 = j + (i + 1) * h_dim1;
+                q__3.r = -s.r, q__3.i = -s.i;
+                i__5 = j + i * h_dim1;
+                q__2.r = q__3.r * h[i__5].r - q__3.i * h[i__5].i, q__2.i =
+                             q__3.r * h[i__5].i + q__3.i * h[i__5].r;
+                i__6 = j + (i + 1) * h_dim1;
+                q__4.r = c * h[i__6].r, q__4.i = c * h[i__6].i;
+                q__1.r = q__2.r + q__4.r, q__1.i = q__2.i + q__4.i;
+                h[i__4].r = q__1.r, h[i__4].i = q__1.i;
+                i__4 = j + i * h_dim1;
+                h[i__4].r = t.r, h[i__4].i = t.i;
+                /* L60: */
+            }
 
-           /* --------------------------------------------------- */
-           /* Accumulate the rotation in the matrix Q;  Q <- Q*G' */
-           /* --------------------------------------------------- */
+            /* --------------------------------------------------- */
+            /* Accumulate the rotation in the matrix Q;  Q <- Q*G' */
+            /* --------------------------------------------------- */
 
-/* Computing MIN */
-	    i__4 = i + jj;
-	    i__3 = min(i__4,kplusp);
-	    for (j = 1; j <= i__3; ++j) {
-		i__4 = j + i * q_dim1;
-		q__2.r = c * q[i__4].r, q__2.i = c * q[i__4].i;
-		r_cnjg(&q__4, &s);
-		i__5 = j + (i + 1) * q_dim1;
-		q__3.r = q__4.r * q[i__5].r - q__4.i * q[i__5].i, q__3.i = 
-			q__4.r * q[i__5].i + q__4.i * q[i__5].r;
-		q__1.r = q__2.r + q__3.r, q__1.i = q__2.i + q__3.i;
-		t.r = q__1.r, t.i = q__1.i;
-		i__4 = j + (i + 1) * q_dim1;
-		q__3.r = -s.r, q__3.i = -s.i;
-		i__5 = j + i * q_dim1;
-		q__2.r = q__3.r * q[i__5].r - q__3.i * q[i__5].i, q__2.i = 
-			q__3.r * q[i__5].i + q__3.i * q[i__5].r;
-		i__6 = j + (i + 1) * q_dim1;
-		q__4.r = c * q[i__6].r, q__4.i = c * q[i__6].i;
-		q__1.r = q__2.r + q__4.r, q__1.i = q__2.i + q__4.i;
-		q[i__4].r = q__1.r, q[i__4].i = q__1.i;
-		i__4 = j + i * q_dim1;
-		q[i__4].r = t.r, q[i__4].i = t.i;
-/* L70: */
-	    }
+            /* Computing MIN */
+            i__4 = i + jj;
+            i__3 = min(i__4,kplusp);
+            for (j = 1; j <= i__3; ++j)
+            {
+                i__4 = j + i * q_dim1;
+                q__2.r = c * q[i__4].r, q__2.i = c * q[i__4].i;
+                r_cnjg(&q__4, &s);
+                i__5 = j + (i + 1) * q_dim1;
+                q__3.r = q__4.r * q[i__5].r - q__4.i * q[i__5].i, q__3.i =
+                             q__4.r * q[i__5].i + q__4.i * q[i__5].r;
+                q__1.r = q__2.r + q__3.r, q__1.i = q__2.i + q__3.i;
+                t.r = q__1.r, t.i = q__1.i;
+                i__4 = j + (i + 1) * q_dim1;
+                q__3.r = -s.r, q__3.i = -s.i;
+                i__5 = j + i * q_dim1;
+                q__2.r = q__3.r * q[i__5].r - q__3.i * q[i__5].i, q__2.i =
+                             q__3.r * q[i__5].i + q__3.i * q[i__5].r;
+                i__6 = j + (i + 1) * q_dim1;
+                q__4.r = c * q[i__6].r, q__4.i = c * q[i__6].i;
+                q__1.r = q__2.r + q__4.r, q__1.i = q__2.i + q__4.i;
+                q[i__4].r = q__1.r, q[i__4].i = q__1.i;
+                i__4 = j + i * q_dim1;
+                q[i__4].r = t.r, q[i__4].i = t.i;
+                /* L70: */
+            }
 
-           /* ------------------------- */
-           /* Prepare for next rotation */
-           /* ------------------------- */
+            /* ------------------------- */
+            /* Prepare for next rotation */
+            /* ------------------------- */
 
-	    if (i < iend - 1) {
-		i__3 = i + 1 + i * h_dim1;
-		f.r = h[i__3].r, f.i = h[i__3].i;
-		i__3 = i + 2 + i * h_dim1;
-		g.r = h[i__3].r, g.i = h[i__3].i;
-	    }
-/* L80: */
-	}
+            if (i < iend - 1)
+            {
+                i__3 = i + 1 + i * h_dim1;
+                f.r = h[i__3].r, f.i = h[i__3].i;
+                i__3 = i + 2 + i * h_dim1;
+                g.r = h[i__3].r, g.i = h[i__3].i;
+            }
+            /* L80: */
+        }
 
         /* ----------------------------- */
         /* Finished applying the shift.  */
@@ -451,57 +467,61 @@ L100:
         /* Apply the same shift to the next block if there is any. */
         /* ------------------------------------------------------- */
 
-	istart = iend + 1;
-	if (iend < kplusp) {
-	    goto L20;
-	}
+        istart = iend + 1;
+        if (iend < kplusp)
+        {
+            goto L20;
+        }
 
         /* ------------------------------------------- */
         /* Loop back to the top to get the next shift. */
         /* ------------------------------------------- */
 
-/* L110: */
+        /* L110: */
     }
 
-     /* ------------------------------------------------- */
-     /* Perform a similarity transformation that makes    */
-     /* sure that the compressed H will have non-negative */
-     /* real subdiagonal elements.                        */
-     /* ------------------------------------------------- */
+    /* ------------------------------------------------- */
+    /* Perform a similarity transformation that makes    */
+    /* sure that the compressed H will have non-negative */
+    /* real subdiagonal elements.                        */
+    /* ------------------------------------------------- */
 
     i__1 = *kev;
-    for (j = 1; j <= i__1; ++j) {
-	i__2 = j + 1 + j * h_dim1;
-	if (h[i__2].r < 0.f || r_imag(&h[j + 1 + j * h_dim1]) != 0.f) {
-	    i__2 = j + 1 + j * h_dim1;
-	    i__3 = j + 1 + j * h_dim1;
-	    r__2 = h[i__3].r;
-	    r__3 = r_imag(&h[j + 1 + j * h_dim1]);
-	    r__1 = slapy2_(&r__2, &r__3);
-	    q__1.r = h[i__2].r / r__1, q__1.i = h[i__2].i / r__1;
-	    t.r = q__1.r, t.i = q__1.i;
-	    i__2 = kplusp - j + 1;
-	    r_cnjg(&q__1, &t);
-	    cscal_(&i__2, &q__1, &h[j + 1 + j * h_dim1], ldh);
-/* Computing MIN */
-	    i__3 = j + 2;
-	    i__2 = min(i__3,kplusp);
-	    cscal_(&i__2, &t, &h[(j + 1) * h_dim1 + 1], &c__1);
-/* Computing MIN */
-	    i__3 = j + *np + 1;
-	    i__2 = min(i__3,kplusp);
-	    cscal_(&i__2, &t, &q[(j + 1) * q_dim1 + 1], &c__1);
-	    i__2 = j + 1 + j * h_dim1;
-	    i__3 = j + 1 + j * h_dim1;
-	    r__1 = h[i__3].r;
-	    q__1.r = r__1, q__1.i = 0.f;
-	    h[i__2].r = q__1.r, h[i__2].i = q__1.i;
-	}
-/* L120: */
+    for (j = 1; j <= i__1; ++j)
+    {
+        i__2 = j + 1 + j * h_dim1;
+        if (h[i__2].r < 0.f || r_imag(&h[j + 1 + j * h_dim1]) != 0.f)
+        {
+            i__2 = j + 1 + j * h_dim1;
+            i__3 = j + 1 + j * h_dim1;
+            r__2 = h[i__3].r;
+            r__3 = r_imag(&h[j + 1 + j * h_dim1]);
+            r__1 = slapy2_(&r__2, &r__3);
+            q__1.r = h[i__2].r / r__1, q__1.i = h[i__2].i / r__1;
+            t.r = q__1.r, t.i = q__1.i;
+            i__2 = kplusp - j + 1;
+            r_cnjg(&q__1, &t);
+            cscal_(&i__2, &q__1, &h[j + 1 + j * h_dim1], ldh);
+            /* Computing MIN */
+            i__3 = j + 2;
+            i__2 = min(i__3,kplusp);
+            cscal_(&i__2, &t, &h[(j + 1) * h_dim1 + 1], &c__1);
+            /* Computing MIN */
+            i__3 = j + *np + 1;
+            i__2 = min(i__3,kplusp);
+            cscal_(&i__2, &t, &q[(j + 1) * q_dim1 + 1], &c__1);
+            i__2 = j + 1 + j * h_dim1;
+            i__3 = j + 1 + j * h_dim1;
+            r__1 = h[i__3].r;
+            q__1.r = r__1, q__1.i = 0.f;
+            h[i__2].r = q__1.r, h[i__2].i = q__1.i;
+        }
+        /* L120: */
     }
 
     i__1 = *kev;
-    for (i = 1; i <= i__1; ++i) {
+    for (i = 1; i <= i__1; ++i)
+    {
 
         /* ------------------------------------------ */
         /* Final check for splitting and deflation.   */
@@ -512,88 +532,96 @@ L100:
         /* we take advantage of this.                 */
         /* ------------------------------------------ */
 
-	i__2 = i + i * h_dim1;
-	i__3 = i + 1 + (i + 1) * h_dim1;
-	tst1 = (r__1 = h[i__2].r, dabs(r__1)) + (r__2 = r_imag(&h[i + 
-		i * h_dim1]), dabs(r__2)) + ((r__3 = h[i__3].r, dabs(r__3)
-		) + (r__4 = r_imag(&h[i + 1 + (i + 1) * h_dim1]), dabs(
-		r__4)));
-	if (tst1 == 0.f) {
-	    tst1 = clanhs_("1", kev, &h[h_offset], ldh, &workl[1]);
-	}
-	i__2 = i + 1 + i * h_dim1;
-/* Computing MAX */
-	r__1 = ulp * tst1;
-	if (h[i__2].r <= dmax(r__1,smlnum)) {
-	    i__3 = i + 1 + i * h_dim1;
-	    h[i__3].r = 0.f, h[i__3].i = 0.f;
-	}
-/* L130: */
+        i__2 = i + i * h_dim1;
+        i__3 = i + 1 + (i + 1) * h_dim1;
+        tst1 = (r__1 = h[i__2].r, dabs(r__1)) + (r__2 = r_imag(&h[i +
+                i * h_dim1]), dabs(r__2)) + ((r__3 = h[i__3].r, dabs(r__3)
+                                             ) + (r__4 = r_imag(&h[i + 1 + (i + 1) * h_dim1]), dabs(
+                                                     r__4)));
+        if (tst1 == 0.f)
+        {
+            tst1 = clanhs_("1", kev, &h[h_offset], ldh, &workl[1]);
+        }
+        i__2 = i + 1 + i * h_dim1;
+        /* Computing MAX */
+        r__1 = ulp * tst1;
+        if (h[i__2].r <= dmax(r__1,smlnum))
+        {
+            i__3 = i + 1 + i * h_dim1;
+            h[i__3].r = 0.f, h[i__3].i = 0.f;
+        }
+        /* L130: */
     }
 
-     /* ----------------------------------------------- */
-     /* Compute the (kev+1)-st column of (V*Q) and      */
-     /* temporarily store the result in WORKD(N+1:2*N). */
-     /* This is needed in the residual update since we  */
-     /* cannot GUARANTEE that the corresponding entry   */
-     /* of H would be zero as in exact arithmetic.      */
-     /* ----------------------------------------------- */
+    /* ----------------------------------------------- */
+    /* Compute the (kev+1)-st column of (V*Q) and      */
+    /* temporarily store the result in WORKD(N+1:2*N). */
+    /* This is needed in the residual update since we  */
+    /* cannot GUARANTEE that the corresponding entry   */
+    /* of H would be zero as in exact arithmetic.      */
+    /* ----------------------------------------------- */
 
     i__1 = *kev + 1 + *kev * h_dim1;
-    if (h[i__1].r > 0.f) {
-	cgemv_("N", n, &kplusp, &c_one, &v[v_offset], ldv, &q[(*kev + 1) * q_dim1 + 1], &c__1, &c_zero, &workd[*n + 1], &c__1);
+    if (h[i__1].r > 0.f)
+    {
+        cgemv_("N", n, &kplusp, &c_one, &v[v_offset], ldv, &q[(*kev + 1) * q_dim1 + 1], &c__1, &c_zero, &workd[*n + 1], &c__1);
     }
 
-     /* -------------------------------------------------------- */
-     /* Compute column 1 to kev of (V*Q) in backward order       */
-     /* taking advantage of the upper Hessenberg structure of Q. */
-     /* -------------------------------------------------------- */
+    /* -------------------------------------------------------- */
+    /* Compute column 1 to kev of (V*Q) in backward order       */
+    /* taking advantage of the upper Hessenberg structure of Q. */
+    /* -------------------------------------------------------- */
 
     i__1 = *kev;
-    for (i = 1; i <= i__1; ++i) {
-	i__2 = kplusp - i + 1;
-	cgemv_("N", n, &i__2, &c_one, &v[v_offset], ldv, &q[(*kev - i + 1) * q_dim1 + 1], &c__1, &c_zero, &workd[1], &c__1);
-	ccopy_(n, &workd[1], &c__1, &v[(kplusp - i + 1) * v_dim1 + 1], &c__1);
-/* L140: */
+    for (i = 1; i <= i__1; ++i)
+    {
+        i__2 = kplusp - i + 1;
+        cgemv_("N", n, &i__2, &c_one, &v[v_offset], ldv, &q[(*kev - i + 1) * q_dim1 + 1], &c__1, &c_zero, &workd[1], &c__1);
+        ccopy_(n, &workd[1], &c__1, &v[(kplusp - i + 1) * v_dim1 + 1], &c__1);
+        /* L140: */
     }
 
-     /* ----------------------------------------------- */
-     /*  Move v(:,kplusp-kev+1:kplusp) into v(:,1:kev). */
-     /* ----------------------------------------------- */
+    /* ----------------------------------------------- */
+    /*  Move v(:,kplusp-kev+1:kplusp) into v(:,1:kev). */
+    /* ----------------------------------------------- */
 
     clacpy_("A", n, kev, &v[(kplusp - *kev + 1) * v_dim1 + 1], ldv, &v[v_offset], ldv);
 
-     /* ------------------------------------------------------------ */
-     /* Copy the (kev+1)-st column of (V*Q) in the appropriate place */
-     /* ------------------------------------------------------------ */
+    /* ------------------------------------------------------------ */
+    /* Copy the (kev+1)-st column of (V*Q) in the appropriate place */
+    /* ------------------------------------------------------------ */
 
     i__1 = *kev + 1 + *kev * h_dim1;
-    if (h[i__1].r > 0.f) {
-	ccopy_(n, &workd[*n + 1], &c__1, &v[(*kev + 1) * v_dim1 + 1], &c__1);
+    if (h[i__1].r > 0.f)
+    {
+        ccopy_(n, &workd[*n + 1], &c__1, &v[(*kev + 1) * v_dim1 + 1], &c__1);
     }
 
-     /* ----------------------------------- */
-     /* Update the residual vector:         */
-     /*    r <- sigmak*r + betak*v(:,kev+1) */
-     /* where                               */
-     /*    sigmak = (e_{kev+p}'*Q)*e_{kev}  */
-     /*    betak = e_{kev+1}'*H*e_{kev}     */
-     /* ----------------------------------- */
+    /* ----------------------------------- */
+    /* Update the residual vector:         */
+    /*    r <- sigmak*r + betak*v(:,kev+1) */
+    /* where                               */
+    /*    sigmak = (e_{kev+p}'*Q)*e_{kev}  */
+    /*    betak = e_{kev+1}'*H*e_{kev}     */
+    /* ----------------------------------- */
 
     cscal_(n, &q[kplusp + *kev * q_dim1], &resid[1], &c__1);
     i__1 = *kev + 1 + *kev * h_dim1;
-    if (h[i__1].r > 0.f) {
-	caxpy_(n, &h[*kev + 1 + *kev * h_dim1], &v[(*kev + 1) * v_dim1 + 1],&c__1, &resid[1], &c__1);
+    if (h[i__1].r > 0.f)
+    {
+        caxpy_(n, &h[*kev + 1 + *kev * h_dim1], &v[(*kev + 1) * v_dim1 + 1],&c__1, &resid[1], &c__1);
     }
 
 #ifndef NO_TRACE
-    if (msglvl > 1) {
-	cvout_(&c__1, &q[kplusp + *kev * q_dim1], &debug_1.ndigit, "_napps: sigmak = (e_{kev+p}^T*Q)*e_{kev}");
-	cvout_(&c__1, &h[*kev + 1 + *kev * h_dim1], &debug_1.ndigit, "_napps: betak = e_{kev+1}^T*H*e_{kev}");
-	ivout_(&c__1, kev, &debug_1.ndigit, "_napps: Order of the final Hessenberg matrix ");
-	if (msglvl > 2) {
-	    cmout_(kev, kev, &h[h_offset], ldh, &debug_1.ndigit, "_napps: updated Hessenberg matrix H for next iteration");
-	}
+    if (msglvl > 1)
+    {
+        cvout_(&c__1, &q[kplusp + *kev * q_dim1], &debug_1.ndigit, "_napps: sigmak = (e_{kev+p}^T*Q)*e_{kev}");
+        cvout_(&c__1, &h[*kev + 1 + *kev * h_dim1], &debug_1.ndigit, "_napps: betak = e_{kev+1}^T*H*e_{kev}");
+        ivout_(&c__1, kev, &debug_1.ndigit, "_napps: Order of the final Hessenberg matrix ");
+        if (msglvl > 2)
+        {
+            cmout_(kev, kev, &h[h_offset], ldh, &debug_1.ndigit, "_napps: updated Hessenberg matrix H for next iteration");
+        }
 
     }
 #endif
@@ -606,9 +634,9 @@ L9000:
 
     return 0;
 
-     /* ------------- */
-     /* End of cnapps */
-     /* ------------- */
+    /* ------------- */
+    /* End of cnapps */
+    /* ------------- */
 
 } /* cnapps_ */
 

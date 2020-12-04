@@ -34,135 +34,171 @@ int ivout_(int32_t *n, int32_t *ix, int32_t *idigit, char *ifmt)
     --ix;
 
     /* Function Body */
-/* Computing MIN */
+    /* Computing MIN */
     i__1 = strlen(ifmt);
     lll = min(i__1,79);
     i__1 = lll;
-    for (i = 1; i <= i__1; ++i) {
-	line[i - 1] = '-';
+    for (i = 1; i <= i__1; ++i)
+    {
+        line[i - 1] = '-';
     }
-	line[lll] = '\0';
+    line[lll] = '\0';
 
     printf("\n %s\n %s", ifmt, line);
 
-    if (*n <= 0) {
-	return 0;
+    if (*n <= 0)
+    {
+        return 0;
     }
     ndigit = *idigit;
-    if (*idigit == 0) {
-	ndigit = 4;
+    if (*idigit == 0)
+    {
+        ndigit = 4;
     }
 
-/* ======================================================================= */
-/*             CODE FOR OUTPUT USING 72 COLUMNS FORMAT */
-/* ======================================================================= */
+    /* ======================================================================= */
+    /*             CODE FOR OUTPUT USING 72 COLUMNS FORMAT */
+    /* ======================================================================= */
 
-    if (*idigit < 0) {
+    if (*idigit < 0)
+    {
 
-	ndigit = -(*idigit);
-	if (ndigit <= 4) {
-	    i__1 = *n;
-	    for (k1 = 1; k1 <= i__1; k1 += 10) {
-/* Computing MIN */
-		i__2 = *n, i__3 = k1 + 9;
-		k2 = min(i__2,i__3);
-		printf("\n  %4d -   %4d: ", k1, k2);
-		for (i = k1; i <= k2; ++i) {
-		    printf("   %5d", ix[i]);
-		}
-	    }
+        ndigit = -(*idigit);
+        if (ndigit <= 4)
+        {
+            i__1 = *n;
+            for (k1 = 1; k1 <= i__1; k1 += 10)
+            {
+                /* Computing MIN */
+                i__2 = *n, i__3 = k1 + 9;
+                k2 = min(i__2,i__3);
+                printf("\n  %4d -   %4d: ", k1, k2);
+                for (i = k1; i <= k2; ++i)
+                {
+                    printf("   %5d", ix[i]);
+                }
+            }
 
-	} else if (ndigit <= 6) {
-	    i__1 = *n;
-	    for (k1 = 1; k1 <= i__1; k1 += 7) {
-/* Computing MIN */
-		i__2 = *n, i__3 = k1 + 6;
-		k2 = min(i__2,i__3);
-		printf("\n  %4d -   %4d: ", k1, k2);
-		for (i = k1; i <= k2; ++i) {
-		    printf("  %7d", ix[i]);
-		}
-	    }
+        }
+        else if (ndigit <= 6)
+        {
+            i__1 = *n;
+            for (k1 = 1; k1 <= i__1; k1 += 7)
+            {
+                /* Computing MIN */
+                i__2 = *n, i__3 = k1 + 6;
+                k2 = min(i__2,i__3);
+                printf("\n  %4d -   %4d: ", k1, k2);
+                for (i = k1; i <= k2; ++i)
+                {
+                    printf("  %7d", ix[i]);
+                }
+            }
 
-	} else if (ndigit <= 10) {
-	    i__1 = *n;
-	    for (k1 = 1; k1 <= i__1; k1 += 5) {
-/* Computing MIN */
-		i__2 = *n, i__3 = k1 + 4;
-		k2 = min(i__2,i__3);
-		printf("\n  %4d -   %4d: ", k1, k2);
-		for (i = k1; i <= k2; ++i) {
-		    printf("  %11d", ix[i]);
-		}
-	    }
+        }
+        else if (ndigit <= 10)
+        {
+            i__1 = *n;
+            for (k1 = 1; k1 <= i__1; k1 += 5)
+            {
+                /* Computing MIN */
+                i__2 = *n, i__3 = k1 + 4;
+                k2 = min(i__2,i__3);
+                printf("\n  %4d -   %4d: ", k1, k2);
+                for (i = k1; i <= k2; ++i)
+                {
+                    printf("  %11d", ix[i]);
+                }
+            }
 
-	} else {
-	    i__1 = *n;
-	    for (k1 = 1; k1 <= i__1; k1 += 3) {
-/* Computing MIN */
-		i__2 = *n, i__3 = k1 + 2;
-		k2 = min(i__2,i__3);
-		printf("\n  %4d -   %4d: ", k1, k2);
-		for (i = k1; i <= k2; ++i) {
-		    printf("  %15d", ix[i]);
-		}
-	    }
-	}
+        }
+        else
+        {
+            i__1 = *n;
+            for (k1 = 1; k1 <= i__1; k1 += 3)
+            {
+                /* Computing MIN */
+                i__2 = *n, i__3 = k1 + 2;
+                k2 = min(i__2,i__3);
+                printf("\n  %4d -   %4d: ", k1, k2);
+                for (i = k1; i <= k2; ++i)
+                {
+                    printf("  %15d", ix[i]);
+                }
+            }
+        }
 
-/* ======================================================================= */
-/*             CODE FOR OUTPUT USING 132 COLUMNS FORMAT */
-/* ======================================================================= */
+        /* ======================================================================= */
+        /*             CODE FOR OUTPUT USING 132 COLUMNS FORMAT */
+        /* ======================================================================= */
 
-    } else {
+    }
+    else
+    {
 
-	if (ndigit <= 4) {
-	    i__1 = *n;
-	    for (k1 = 1; k1 <= i__1; k1 += 20) {
-/* Computing MIN */
-		i__2 = *n, i__3 = k1 + 19;
-		k2 = min(i__2,i__3);
-		printf("\n  %4d -   %4d: ", k1, k2);
-		for (i = k1; i <= k2; ++i) {
-		    printf("   %5d", ix[i]);
-		}
-	    }
+        if (ndigit <= 4)
+        {
+            i__1 = *n;
+            for (k1 = 1; k1 <= i__1; k1 += 20)
+            {
+                /* Computing MIN */
+                i__2 = *n, i__3 = k1 + 19;
+                k2 = min(i__2,i__3);
+                printf("\n  %4d -   %4d: ", k1, k2);
+                for (i = k1; i <= k2; ++i)
+                {
+                    printf("   %5d", ix[i]);
+                }
+            }
 
-	} else if (ndigit <= 6) {
-	    i__1 = *n;
-	    for (k1 = 1; k1 <= i__1; k1 += 15) {
-/* Computing MIN */
-		i__2 = *n, i__3 = k1 + 14;
-		k2 = min(i__2,i__3);
-		printf("\n  %4d -   %4d: ", k1, k2);
-		for (i = k1; i <= k2; ++i) {
-		    printf("  %7d", ix[i]);
-		}
-	    }
+        }
+        else if (ndigit <= 6)
+        {
+            i__1 = *n;
+            for (k1 = 1; k1 <= i__1; k1 += 15)
+            {
+                /* Computing MIN */
+                i__2 = *n, i__3 = k1 + 14;
+                k2 = min(i__2,i__3);
+                printf("\n  %4d -   %4d: ", k1, k2);
+                for (i = k1; i <= k2; ++i)
+                {
+                    printf("  %7d", ix[i]);
+                }
+            }
 
-	} else if (ndigit <= 10) {
-	    i__1 = *n;
-	    for (k1 = 1; k1 <= i__1; k1 += 10) {
-/* Computing MIN */
-		i__2 = *n, i__3 = k1 + 9;
-		k2 = min(i__2,i__3);
-		printf("\n  %4d -   %4d: ", k1, k2);
-		for (i = k1; i <= k2; ++i) {
-		    printf("  %11d", ix[i]);
-		}
-	    }
+        }
+        else if (ndigit <= 10)
+        {
+            i__1 = *n;
+            for (k1 = 1; k1 <= i__1; k1 += 10)
+            {
+                /* Computing MIN */
+                i__2 = *n, i__3 = k1 + 9;
+                k2 = min(i__2,i__3);
+                printf("\n  %4d -   %4d: ", k1, k2);
+                for (i = k1; i <= k2; ++i)
+                {
+                    printf("  %11d", ix[i]);
+                }
+            }
 
-	} else {
-	    i__1 = *n;
-	    for (k1 = 1; k1 <= i__1; k1 += 7) {
-/* Computing MIN */
-		i__2 = *n, i__3 = k1 + 6;
-		k2 = min(i__2,i__3);
-		printf("\n  %4d -   %4d: ", k1, k2);
-		for (i = k1; i <= k2; ++i) {
-		    printf("  %15d", ix[i]);
-		}
-	    }
-	}
+        }
+        else
+        {
+            i__1 = *n;
+            for (k1 = 1; k1 <= i__1; k1 += 7)
+            {
+                /* Computing MIN */
+                i__2 = *n, i__3 = k1 + 6;
+                k2 = min(i__2,i__3);
+                printf("\n  %4d -   %4d: ", k1, k2);
+                for (i = k1; i <= k2; ++i)
+                {
+                    printf("  %15d", ix[i]);
+                }
+            }
+        }
     }
     printf("\n");
 

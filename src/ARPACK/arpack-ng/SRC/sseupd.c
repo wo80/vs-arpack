@@ -220,9 +220,9 @@
  */
 
 int sseupd_(bool *rvec, char *howmny, bool *select, float *d, float *z, int32_t *ldz,
-     float *sigma, char *bmat, int32_t *n, char *which, int32_t *nev, float *tol,
-     float *resid, int32_t *ncv, float *v, int32_t *ldv, int32_t *iparam, int32_t *ipntr,
-     float *workd, float *workl, int32_t *lworkl, int32_t *info)
+            float *sigma, char *bmat, int32_t *n, char *which, int32_t *nev, float *tol,
+            float *resid, int32_t *ncv, float *v, int32_t *ldv, int32_t *iparam, int32_t *ipntr,
+            float *workd, float *workl, int32_t *lworkl, int32_t *info)
 {
     /* System generated locals */
     int32_t v_dim1, v_offset, z_dim1, z_offset, i__1;
@@ -230,7 +230,7 @@ int sseupd_(bool *rvec, char *howmny, bool *select, float *d, float *z, int32_t 
     double d__1;
 
     /* Builtin functions */
-    
+
     double pow_dd(double *, double *);
 
     /* Local variables */
@@ -249,13 +249,13 @@ int sseupd_(bool *rvec, char *howmny, bool *select, float *d, float *z, int32_t 
     int32_t bounds, msglvl, ishift, numcnv;
     int32_t leftptr, rghtptr;
 
-     /* --------------------- */
-     /* Executable Statements */
-     /* --------------------- */
+    /* --------------------- */
+    /* Executable Statements */
+    /* --------------------- */
 
-     /* ---------------------- */
-     /* Set default parameters */
-     /* ---------------------- */
+    /* ---------------------- */
+    /* Set default parameters */
+    /* ---------------------- */
 
     /* Parameter adjustments */
     --workd;
@@ -278,117 +278,139 @@ int sseupd_(bool *rvec, char *howmny, bool *select, float *d, float *z, int32_t 
     nconv = iparam[5];
     *info = 0;
 
-     /* ------------ */
-     /* Quick return */
-     /* ------------ */
+    /* ------------ */
+    /* Quick return */
+    /* ------------ */
 
-    if (nconv == 0) {
-	goto L9000;
+    if (nconv == 0)
+    {
+        goto L9000;
     }
     ierr = 0;
 
-    if (nconv <= 0) {
-	ierr = -14;
+    if (nconv <= 0)
+    {
+        ierr = -14;
     }
-    if (*n <= 0) {
-	ierr = -1;
+    if (*n <= 0)
+    {
+        ierr = -1;
     }
-    if (*nev <= 0) {
-	ierr = -2;
+    if (*nev <= 0)
+    {
+        ierr = -2;
     }
-    if (*ncv <= *nev || *ncv > *n) {
-	ierr = -3;
+    if (*ncv <= *nev || *ncv > *n)
+    {
+        ierr = -3;
     }
     if (strcmp(which, "LM") != 0 && strcmp(which, "SM") != 0 &&
-        strcmp(which, "LA") != 0 && strcmp(which, "SA") != 0 &&
-	    strcmp(which, "BE") != 0) {
+            strcmp(which, "LA") != 0 && strcmp(which, "SA") != 0 &&
+            strcmp(which, "BE") != 0)
+    {
         ierr = -5;
     }
-    if (*bmat != 'I' && *bmat != 'G') {
-	ierr = -6;
+    if (*bmat != 'I' && *bmat != 'G')
+    {
+        ierr = -6;
     }
-    if (*howmny != 'A' && *howmny != 'P' && 
-	    *howmny != 'S' && *rvec) {
-	ierr = -15;
+    if (*howmny != 'A' && *howmny != 'P' &&
+            *howmny != 'S' && *rvec)
+    {
+        ierr = -15;
     }
-    if (*rvec && *howmny == 'S') {
-	ierr = -16;
+    if (*rvec && *howmny == 'S')
+    {
+        ierr = -16;
     }
 
-/* Computing 2nd power */
+    /* Computing 2nd power */
     i__1 = *ncv;
-    if (*rvec && *lworkl < i__1 * i__1 + (*ncv << 3)) {
-	ierr = -7;
+    if (*rvec && *lworkl < i__1 * i__1 + (*ncv << 3))
+    {
+        ierr = -7;
     }
 
-    if (mode == 1 || mode == 2) {
-	strcpy(type, "REGULR");
-    } else if (mode == 3) {
-	strcpy(type, "SHIFTI");
-    } else if (mode == 4) {
-	strcpy(type, "BUCKLE");
-    } else if (mode == 5) {
-	strcpy(type, "CAYLEY");
-    } else {
-	ierr = -10;
+    if (mode == 1 || mode == 2)
+    {
+        strcpy(type, "REGULR");
     }
-    if (mode == 1 && *bmat == 'G') {
-	ierr = -11;
+    else if (mode == 3)
+    {
+        strcpy(type, "SHIFTI");
     }
-    if (*nev == 1 && strcmp(which, "BE") == 0) {
-	ierr = -12;
+    else if (mode == 4)
+    {
+        strcpy(type, "BUCKLE");
+    }
+    else if (mode == 5)
+    {
+        strcpy(type, "CAYLEY");
+    }
+    else
+    {
+        ierr = -10;
+    }
+    if (mode == 1 && *bmat == 'G')
+    {
+        ierr = -11;
+    }
+    if (*nev == 1 && strcmp(which, "BE") == 0)
+    {
+        ierr = -12;
     }
 
-     /* ---------- */
-     /* Error Exit */
-     /* ---------- */
+    /* ---------- */
+    /* Error Exit */
+    /* ---------- */
 
-    if (ierr != 0) {
-	*info = ierr;
-	goto L9000;
+    if (ierr != 0)
+    {
+        *info = ierr;
+        goto L9000;
     }
 
-     /* ----------------------------------------------------- */
-     /* Pointer into WORKL for address of H, RITZ, BOUNDS, Q  */
-     /* etc... and the remaining workspace.                   */
-     /* Also update pointer to be used on output.             */
-     /* Memory is laid out as follows:                        */
-     /* workl(1:2*ncv) := generated tridiagonal matrix H      */
-     /*       The subdiagonal is stored in workl(2:ncv).      */
-     /*       The dead spot is workl(1) but upon exiting      */
-     /*       ssaupd stores the B-norm of the last residual   */
-     /*       vector in workl(1). We use this !!!             */
-     /* workl(2*ncv+1:2*ncv+ncv) := ritz values               */
-     /*       The wanted values are in the first NCONV spots. */
-     /* workl(3*ncv+1:3*ncv+ncv) := computed Ritz estimates   */
-     /*       The wanted values are in the first NCONV spots. */
-     /* NOTE: workl(1:4*ncv) is set by ssaupd and is not      */
-     /*       modified by sseupd.                             */
-     /* ----------------------------------------------------- */
+    /* ----------------------------------------------------- */
+    /* Pointer into WORKL for address of H, RITZ, BOUNDS, Q  */
+    /* etc... and the remaining workspace.                   */
+    /* Also update pointer to be used on output.             */
+    /* Memory is laid out as follows:                        */
+    /* workl(1:2*ncv) := generated tridiagonal matrix H      */
+    /*       The subdiagonal is stored in workl(2:ncv).      */
+    /*       The dead spot is workl(1) but upon exiting      */
+    /*       ssaupd stores the B-norm of the last residual   */
+    /*       vector in workl(1). We use this !!!             */
+    /* workl(2*ncv+1:2*ncv+ncv) := ritz values               */
+    /*       The wanted values are in the first NCONV spots. */
+    /* workl(3*ncv+1:3*ncv+ncv) := computed Ritz estimates   */
+    /*       The wanted values are in the first NCONV spots. */
+    /* NOTE: workl(1:4*ncv) is set by ssaupd and is not      */
+    /*       modified by sseupd.                             */
+    /* ----------------------------------------------------- */
 
-     /* ----------------------------------------------------- */
-     /* The following is used and set by sseupd.              */
-     /* workl(4*ncv+1:4*ncv+ncv) := used as workspace during  */
-     /*       computation of the eigenvectors of H. Stores    */
-     /*       the diagonal of H. Upon EXIT contains the NCV   */
-     /*       Ritz values of the original system. The first   */
-     /*       NCONV spots have the wanted values. If MODE =   */
-     /*       1 or 2 then will equal workl(2*ncv+1:3*ncv).    */
-     /* workl(5*ncv+1:5*ncv+ncv) := used as workspace during  */
-     /*       computation of the eigenvectors of H. Stores    */
-     /*       the subdiagonal of H. Upon EXIT contains the    */
-     /*       NCV corresponding Ritz estimates of the         */
-     /*       original system. The first NCONV spots have the */
-     /*       wanted values. If MODE = 1,2 then will equal    */
-     /*       workl(3*ncv+1:4*ncv).                           */
-     /* workl(6*ncv+1:6*ncv+ncv*ncv) := orthogonal Q that is  */
-     /*       the eigenvector matrix for H as returned by     */
-     /*       ssteqr. Not referenced if RVEC = .False.        */
-     /*       Ordering follows that of workl(4*ncv+1:5*ncv)   */
-     /* workl(6*ncv+ncv*ncv+1:6*ncv+ncv*ncv+2*ncv) :=         */
-     /*       Workspace. Needed by ssteqr and by sseupd.      */
-     /* GRAND total of NCV*(NCV+8) locations.                 */
-     /* ----------------------------------------------------- */
+    /* ----------------------------------------------------- */
+    /* The following is used and set by sseupd.              */
+    /* workl(4*ncv+1:4*ncv+ncv) := used as workspace during  */
+    /*       computation of the eigenvectors of H. Stores    */
+    /*       the diagonal of H. Upon EXIT contains the NCV   */
+    /*       Ritz values of the original system. The first   */
+    /*       NCONV spots have the wanted values. If MODE =   */
+    /*       1 or 2 then will equal workl(2*ncv+1:3*ncv).    */
+    /* workl(5*ncv+1:5*ncv+ncv) := used as workspace during  */
+    /*       computation of the eigenvectors of H. Stores    */
+    /*       the subdiagonal of H. Upon EXIT contains the    */
+    /*       NCV corresponding Ritz estimates of the         */
+    /*       original system. The first NCONV spots have the */
+    /*       wanted values. If MODE = 1,2 then will equal    */
+    /*       workl(3*ncv+1:4*ncv).                           */
+    /* workl(6*ncv+1:6*ncv+ncv*ncv) := orthogonal Q that is  */
+    /*       the eigenvector matrix for H as returned by     */
+    /*       ssteqr. Not referenced if RVEC = .False.        */
+    /*       Ordering follows that of workl(4*ncv+1:5*ncv)   */
+    /* workl(6*ncv+ncv*ncv+1:6*ncv+ncv*ncv+2*ncv) :=         */
+    /*       Workspace. Needed by ssteqr and by sseupd.      */
+    /* GRAND total of NCV*(NCV+8) locations.                 */
+    /* ----------------------------------------------------- */
 
     ih = ipntr[5];
     ritz = ipntr[6];
@@ -405,61 +427,67 @@ int sseupd_(bool *rvec, char *howmny, bool *select, float *d, float *z, int32_t 
     ipntr[9] = ihb;
     ipntr[10] = iq;
 
-     /* -------------------------------------- */
-     /* irz points to the Ritz values computed */
-     /*     by _seigt before exiting _saup2.   */
-     /* ibd points to the Ritz estimates       */
-     /*     computed by _seigt before exiting  */
-     /*     _saup2.                            */
-     /* -------------------------------------- */
+    /* -------------------------------------- */
+    /* irz points to the Ritz values computed */
+    /*     by _seigt before exiting _saup2.   */
+    /* ibd points to the Ritz estimates       */
+    /*     computed by _seigt before exiting  */
+    /*     _saup2.                            */
+    /* -------------------------------------- */
 
     irz = ipntr[11] + *ncv;
     ibd = irz + *ncv;
 
-     /* ------------------------------- */
-     /* Set machine dependent constant. */
-     /* ------------------------------- */
+    /* ------------------------------- */
+    /* Set machine dependent constant. */
+    /* ------------------------------- */
 
     eps23 = slamch_("E");
     d__1 = (double) eps23;
     eps23 = pow_dd(&d__1, &d_23);
 
-     /* ------------------------------------- */
-     /* RNORM is B-norm of the RESID(1:N).    */
-     /* BNORM2 is the 2 norm of B*RESID(1:N). */
-     /* Upon exit of ssaupd WORKD(1:N) has    */
-     /* B*RESID(1:N).                         */
-     /* ------------------------------------- */
+    /* ------------------------------------- */
+    /* RNORM is B-norm of the RESID(1:N).    */
+    /* BNORM2 is the 2 norm of B*RESID(1:N). */
+    /* Upon exit of ssaupd WORKD(1:N) has    */
+    /* B*RESID(1:N).                         */
+    /* ------------------------------------- */
 
     rnorm = workl[ih];
-    if (*bmat == 'I') {
-	bnorm2 = rnorm;
-    } else if (*bmat == 'G') {
-	bnorm2 = snrm2_(n, &workd[1], &c__1);
+    if (*bmat == 'I')
+    {
+        bnorm2 = rnorm;
+    }
+    else if (*bmat == 'G')
+    {
+        bnorm2 = snrm2_(n, &workd[1], &c__1);
     }
 
 #ifndef NO_TRACE
-    if (msglvl > 2) {
-	svout_(ncv, &workl[irz], &debug_1.ndigit, "_seupd: Ritz values passed in from _SAUPD.");
-	svout_(ncv, &workl[ibd], &debug_1.ndigit, "_seupd: Ritz estimates passed in from _SAUPD.");
+    if (msglvl > 2)
+    {
+        svout_(ncv, &workl[irz], &debug_1.ndigit, "_seupd: Ritz values passed in from _SAUPD.");
+        svout_(ncv, &workl[ibd], &debug_1.ndigit, "_seupd: Ritz estimates passed in from _SAUPD.");
     }
 #endif
 
-    if (*rvec) {
+    if (*rvec)
+    {
 
-	reord = false;
+        reord = false;
 
         /* ------------------------------------------------- */
         /* Use the temporary bounds array to store indices   */
         /* These will be used to mark the select array later */
         /* ------------------------------------------------- */
 
-	i__1 = *ncv;
-	for (j = 1; j <= i__1; ++j) {
-	    workl[bounds + j - 1] = (float) j;
-	    select[j] = false;
-/* L10: */
-	}
+        i__1 = *ncv;
+        for (j = 1; j <= i__1; ++j)
+        {
+            workl[bounds + j - 1] = (float) j;
+            select[j] = false;
+            /* L10: */
+        }
 
         /* ----------------------------------- */
         /* Select the wanted Ritz values.      */
@@ -471,15 +499,16 @@ int sseupd_(bool *rvec, char *howmny, bool *select, float *d, float *z, int32_t 
         /* accordingly.                        */
         /* ----------------------------------- */
 
-	np = *ncv - *nev;
-	ishift = 0;
-	ssgets_(&ishift, which, nev, &np, &workl[irz], &workl[bounds], &workl[1]);
+        np = *ncv - *nev;
+        ishift = 0;
+        ssgets_(&ishift, which, nev, &np, &workl[irz], &workl[bounds], &workl[1]);
 
 #ifndef NO_TRACE
-	if (msglvl > 2) {
-	    svout_(ncv, &workl[irz], &debug_1.ndigit, "_seupd: Ritz values after calling _SGETS.");
-	    svout_(ncv, &workl[bounds], &debug_1.ndigit, "_seupd: Ritz value indices after calling _SGETS.");
-	}
+        if (msglvl > 2)
+        {
+            svout_(ncv, &workl[irz], &debug_1.ndigit, "_seupd: Ritz values after calling _SGETS.");
+            svout_(ncv, &workl[bounds], &debug_1.ndigit, "_seupd: Ritz value indices after calling _SGETS.");
+        }
 #endif
 
         /* --------------------------------------------------- */
@@ -487,22 +516,25 @@ int sseupd_(bool *rvec, char *howmny, bool *select, float *d, float *z, int32_t 
         /* Mark the select array for possible reordering       */
         /* --------------------------------------------------- */
 
-	numcnv = 0;
-	i__1 = *ncv;
-	for (j = 1; j <= i__1; ++j) {
-/* Computing MAX */
-	    r__2 = eps23, r__3 = (r__1 = workl[irz + *ncv - j], dabs(r__1));
-	    temp1 = dmax(r__2,r__3);
-	    jj = workl[bounds + *ncv - j];
-	    if (numcnv < nconv && workl[ibd + jj - 1] <= *tol * temp1) {
-		select[jj] = true;
-		++numcnv;
-		if (jj > nconv) {
-		    reord = true;
-		}
-	    }
-/* L11: */
-	}
+        numcnv = 0;
+        i__1 = *ncv;
+        for (j = 1; j <= i__1; ++j)
+        {
+            /* Computing MAX */
+            r__2 = eps23, r__3 = (r__1 = workl[irz + *ncv - j], dabs(r__1));
+            temp1 = dmax(r__2,r__3);
+            jj = workl[bounds + *ncv - j];
+            if (numcnv < nconv && workl[ibd + jj - 1] <= *tol * temp1)
+            {
+                select[jj] = true;
+                ++numcnv;
+                if (jj > nconv)
+                {
+                    reord = true;
+                }
+            }
+            /* L11: */
+        }
 
         /* --------------------------------------------------------- */
         /* Check the count (numcnv) of converged Ritz values with    */
@@ -512,16 +544,18 @@ int sseupd_(bool *rvec, char *howmny, bool *select, float *d, float *z, int32_t 
         /* --------------------------------------------------------- */
 
 #ifndef NO_TRACE
-	if (msglvl > 2) {
-	    ivout_(&c__1, &numcnv, &debug_1.ndigit, "_seupd: Number of specified eigenvalues");
-	    ivout_(&c__1, &nconv, &debug_1.ndigit, "_seupd: Number of \"converged\" eigenvalues");
-	}
+        if (msglvl > 2)
+        {
+            ivout_(&c__1, &numcnv, &debug_1.ndigit, "_seupd: Number of specified eigenvalues");
+            ivout_(&c__1, &nconv, &debug_1.ndigit, "_seupd: Number of \"converged\" eigenvalues");
+        }
 #endif
 
-	if (numcnv != nconv) {
-	    *info = -17;
-	    goto L9000;
-	}
+        if (numcnv != nconv)
+        {
+            *info = -17;
+            goto L9000;
+        }
 
         /* --------------------------------------------------------- */
         /* Call LAPACK routine _steqr to compute the eigenvalues and */
@@ -529,133 +563,152 @@ int sseupd_(bool *rvec, char *howmny, bool *select, float *d, float *z, int32_t 
         /* Initialize the eigenvector matrix Q to the identity.      */
         /* --------------------------------------------------------- */
 
-	i__1 = *ncv - 1;
-	scopy_(&i__1, &workl[ih + 1], &c__1, &workl[ihb], &c__1);
-	scopy_(ncv, &workl[ih + ldh], &c__1, &workl[ihd], &c__1);
+        i__1 = *ncv - 1;
+        scopy_(&i__1, &workl[ih + 1], &c__1, &workl[ihb], &c__1);
+        scopy_(ncv, &workl[ih + ldh], &c__1, &workl[ihd], &c__1);
 
-	ssteqr_("I", ncv, &workl[ihd], &workl[ihb], &workl[iq], &ldq, &workl[iw], &ierr);
+        ssteqr_("I", ncv, &workl[ihd], &workl[ihb], &workl[iq], &ldq, &workl[iw], &ierr);
 
-	if (ierr != 0) {
-	    *info = -8;
-	    goto L9000;
-	}
+        if (ierr != 0)
+        {
+            *info = -8;
+            goto L9000;
+        }
 
 #ifndef NO_TRACE
-	if (msglvl > 1) {
-	    scopy_(ncv, &workl[iq + *ncv - 1], &ldq, &workl[iw], &c__1);
-	    svout_(ncv, &workl[ihd], &debug_1.ndigit, "_seupd: NCV Ritz values of the final H matrix");
-	    svout_(ncv, &workl[iw], &debug_1.ndigit, "_seupd: last row of the eigenvector matrix for H");
-	}
+        if (msglvl > 1)
+        {
+            scopy_(ncv, &workl[iq + *ncv - 1], &ldq, &workl[iw], &c__1);
+            svout_(ncv, &workl[ihd], &debug_1.ndigit, "_seupd: NCV Ritz values of the final H matrix");
+            svout_(ncv, &workl[iw], &debug_1.ndigit, "_seupd: last row of the eigenvector matrix for H");
+        }
 #endif
 
-	if (reord) {
+        if (reord)
+        {
 
-           /* ------------------------------------------- */
-           /* Reordered the eigenvalues and eigenvectors  */
-           /* computed by _steqr so that the "converged"  */
-           /* eigenvalues appear in the first NCONV       */
-           /* positions of workl(ihd), and the associated */
-           /* eigenvectors appear in the first NCONV      */
-           /* columns.                                    */
-           /* ------------------------------------------- */
+            /* ------------------------------------------- */
+            /* Reordered the eigenvalues and eigenvectors  */
+            /* computed by _steqr so that the "converged"  */
+            /* eigenvalues appear in the first NCONV       */
+            /* positions of workl(ihd), and the associated */
+            /* eigenvectors appear in the first NCONV      */
+            /* columns.                                    */
+            /* ------------------------------------------- */
 
-	    leftptr = 1;
-	    rghtptr = *ncv;
+            leftptr = 1;
+            rghtptr = *ncv;
 
-	    if (*ncv == 1) {
-		goto L30;
-	    }
+            if (*ncv == 1)
+            {
+                goto L30;
+            }
 
 L20:
-	    if (select[leftptr]) {
+            if (select[leftptr])
+            {
 
-              /* ----------------------------------------- */
-              /* Search, from the left, for the first Ritz */
-              /* value that has not converged.             */
-              /* ----------------------------------------- */
+                /* ----------------------------------------- */
+                /* Search, from the left, for the first Ritz */
+                /* value that has not converged.             */
+                /* ----------------------------------------- */
 
-		++leftptr;
+                ++leftptr;
 
-	    } else if (! select[rghtptr]) {
+            }
+            else if (! select[rghtptr])
+            {
 
-              /* -------------------------------------------- */
-              /* Search, from the right, the first Ritz value */
-              /* that has converged.                          */
-              /* -------------------------------------------- */
+                /* -------------------------------------------- */
+                /* Search, from the right, the first Ritz value */
+                /* that has converged.                          */
+                /* -------------------------------------------- */
 
-		--rghtptr;
+                --rghtptr;
 
-	    } else {
+            }
+            else
+            {
 
-              /* -------------------------------------------- */
-              /* Swap the Ritz value on the left that has not */
-              /* converged with the Ritz value on the right   */
-              /* that has converged.  Swap the associated     */
-              /* eigenvector of the tridiagonal matrix H as   */
-              /* well.                                        */
-              /* -------------------------------------------- */
+                /* -------------------------------------------- */
+                /* Swap the Ritz value on the left that has not */
+                /* converged with the Ritz value on the right   */
+                /* that has converged.  Swap the associated     */
+                /* eigenvector of the tridiagonal matrix H as   */
+                /* well.                                        */
+                /* -------------------------------------------- */
 
-		temp = workl[ihd + leftptr - 1];
-		workl[ihd + leftptr - 1] = workl[ihd + rghtptr - 1];
-		workl[ihd + rghtptr - 1] = temp;
-		scopy_(ncv, &workl[iq + *ncv * (leftptr - 1)], &c__1, &workl[iw], &c__1);
-		scopy_(ncv, &workl[iq + *ncv * (rghtptr - 1)], &c__1, &workl[iq + *ncv * (leftptr - 1)], &c__1);
-		scopy_(ncv, &workl[iw], &c__1, &workl[iq + *ncv * (rghtptr - 1)], &c__1);
-		++leftptr;
-		--rghtptr;
+                temp = workl[ihd + leftptr - 1];
+                workl[ihd + leftptr - 1] = workl[ihd + rghtptr - 1];
+                workl[ihd + rghtptr - 1] = temp;
+                scopy_(ncv, &workl[iq + *ncv * (leftptr - 1)], &c__1, &workl[iw], &c__1);
+                scopy_(ncv, &workl[iq + *ncv * (rghtptr - 1)], &c__1, &workl[iq + *ncv * (leftptr - 1)], &c__1);
+                scopy_(ncv, &workl[iw], &c__1, &workl[iq + *ncv * (rghtptr - 1)], &c__1);
+                ++leftptr;
+                --rghtptr;
 
-	    }
+            }
 
-	    if (leftptr < rghtptr) {
-		goto L20;
-	    }
+            if (leftptr < rghtptr)
+            {
+                goto L20;
+            }
 
-	}
+        }
 
 L30:
 #ifndef NO_TRACE
-	if (msglvl > 2) {
-	    svout_(ncv, &workl[ihd], &debug_1.ndigit, "_seupd: The eigenvalues of H--reordered");
-	}
+        if (msglvl > 2)
+        {
+            svout_(ncv, &workl[ihd], &debug_1.ndigit, "_seupd: The eigenvalues of H--reordered");
+        }
 #endif
 
         /* -------------------------------------- */
         /* Load the converged Ritz values into D. */
         /* -------------------------------------- */
 
-	scopy_(&nconv, &workl[ihd], &c__1, &d[1], &c__1);
+        scopy_(&nconv, &workl[ihd], &c__1, &d[1], &c__1);
 
-    } else {
+    }
+    else
+    {
 
         /* --------------------------------------------------- */
         /* Ritz vectors not required. Load Ritz values into D. */
         /* --------------------------------------------------- */
 
-	scopy_(&nconv, &workl[ritz], &c__1, &d[1], &c__1);
-	scopy_(ncv, &workl[ritz], &c__1, &workl[ihd], &c__1);
+        scopy_(&nconv, &workl[ritz], &c__1, &d[1], &c__1);
+        scopy_(ncv, &workl[ritz], &c__1, &workl[ihd], &c__1);
 
     }
 
-     /* ---------------------------------------------------------------- */
-     /* Transform the Ritz values and possibly vectors and corresponding */
-     /* Ritz estimates of OP to those of A*x=lambda*B*x. The Ritz values */
-     /* (and corresponding data) are returned in ascending order.        */
-     /* ---------------------------------------------------------------- */
+    /* ---------------------------------------------------------------- */
+    /* Transform the Ritz values and possibly vectors and corresponding */
+    /* Ritz estimates of OP to those of A*x=lambda*B*x. The Ritz values */
+    /* (and corresponding data) are returned in ascending order.        */
+    /* ---------------------------------------------------------------- */
 
-    if (strcmp(type, "REGULR") == 0) {
+    if (strcmp(type, "REGULR") == 0)
+    {
 
         /* ------------------------------------------------------- */
         /* Ascending sort of wanted Ritz values, vectors and error */
         /* bounds. Not necessary if only Ritz values are desired.  */
         /* ------------------------------------------------------- */
 
-	if (*rvec) {
-	    ssesrt_("LA", rvec, &nconv, &d[1], ncv, &workl[iq], &ldq);
-	} else {
-	    scopy_(ncv, &workl[bounds], &c__1, &workl[ihb], &c__1);
-	}
+        if (*rvec)
+        {
+            ssesrt_("LA", rvec, &nconv, &d[1], ncv, &workl[iq], &ldq);
+        }
+        else
+        {
+            scopy_(ncv, &workl[bounds], &c__1, &workl[ihb], &c__1);
+        }
 
-    } else {
+    }
+    else
+    {
 
         /* ----------------------------------------------------------- */
         /* *  Make a copy of all the Ritz values.                      */
@@ -672,28 +725,36 @@ L30:
         /*  They are only reordered.                                   */
         /* ----------------------------------------------------------- */
 
-	scopy_(ncv, &workl[ihd], &c__1, &workl[iw], &c__1);
-	if (strcmp(type, "SHIFTI") == 0) {
-	    i__1 = *ncv;
-	    for (k = 1; k <= i__1; ++k) {
-		workl[ihd + k - 1] = 1.f / workl[ihd + k - 1] + *sigma;
-/* L40: */
-	    }
-	} else if (strcmp(type, "BUCKLE") == 0) {
-	    i__1 = *ncv;
-	    for (k = 1; k <= i__1; ++k) {
-		workl[ihd + k - 1] = *sigma * workl[ihd + k - 1] / (workl[ihd 
-			+ k - 1] - 1.f);
-/* L50: */
-	    }
-	} else if (strcmp(type, "CAYLEY") == 0) {
-	    i__1 = *ncv;
-	    for (k = 1; k <= i__1; ++k) {
-		workl[ihd + k - 1] = *sigma * (workl[ihd + k - 1] + 1.f) / (
-			workl[ihd + k - 1] - 1.f);
-/* L60: */
-	    }
-	}
+        scopy_(ncv, &workl[ihd], &c__1, &workl[iw], &c__1);
+        if (strcmp(type, "SHIFTI") == 0)
+        {
+            i__1 = *ncv;
+            for (k = 1; k <= i__1; ++k)
+            {
+                workl[ihd + k - 1] = 1.f / workl[ihd + k - 1] + *sigma;
+                /* L40: */
+            }
+        }
+        else if (strcmp(type, "BUCKLE") == 0)
+        {
+            i__1 = *ncv;
+            for (k = 1; k <= i__1; ++k)
+            {
+                workl[ihd + k - 1] = *sigma * workl[ihd + k - 1] / (workl[ihd
+                                     + k - 1] - 1.f);
+                /* L50: */
+            }
+        }
+        else if (strcmp(type, "CAYLEY") == 0)
+        {
+            i__1 = *ncv;
+            for (k = 1; k <= i__1; ++k)
+            {
+                workl[ihd + k - 1] = *sigma * (workl[ihd + k - 1] + 1.f) / (
+                                         workl[ihd + k - 1] - 1.f);
+                /* L60: */
+            }
+        }
 
         /* ----------------------------------------------------------- */
         /* *  Store the wanted NCONV lambda values into D.             */
@@ -710,26 +771,30 @@ L30:
         /*  Ritz vector purification.                                  */
         /* ----------------------------------------------------------- */
 
-	scopy_(&nconv, &workl[ihd], &c__1, &d[1], &c__1);
-	ssortr_("LA", &c_true, &nconv, &workl[ihd], &workl[iw]);
-	if (*rvec) {
-	    ssesrt_("LA", rvec, &nconv, &d[1], ncv, &workl[iq], &ldq);
-	} else {
-	    scopy_(ncv, &workl[bounds], &c__1, &workl[ihb], &c__1);
-	    r__1 = bnorm2 / rnorm;
-	    sscal_(ncv, &r__1, &workl[ihb], &c__1);
-	    ssortr_("LA", &c_true, &nconv, &d[1], &workl[ihb]);
-	}
+        scopy_(&nconv, &workl[ihd], &c__1, &d[1], &c__1);
+        ssortr_("LA", &c_true, &nconv, &workl[ihd], &workl[iw]);
+        if (*rvec)
+        {
+            ssesrt_("LA", rvec, &nconv, &d[1], ncv, &workl[iq], &ldq);
+        }
+        else
+        {
+            scopy_(ncv, &workl[bounds], &c__1, &workl[ihb], &c__1);
+            r__1 = bnorm2 / rnorm;
+            sscal_(ncv, &r__1, &workl[ihb], &c__1);
+            ssortr_("LA", &c_true, &nconv, &d[1], &workl[ihb]);
+        }
 
     }
 
-     /* ---------------------------------------------- */
-     /* Compute the Ritz vectors. Transform the wanted */
-     /* eigenvectors of the symmetric tridiagonal H by */
-     /* the Lanczos basis matrix V.                    */
-     /* ---------------------------------------------- */
+    /* ---------------------------------------------- */
+    /* Compute the Ritz vectors. Transform the wanted */
+    /* eigenvectors of the symmetric tridiagonal H by */
+    /* the Lanczos basis matrix V.                    */
+    /* ---------------------------------------------- */
 
-    if (*rvec && *howmny == 'A') {
+    if (*rvec && *howmny == 'A')
+    {
 
         /* -------------------------------------------------------- */
         /* Compute the QR factorization of the matrix representing  */
@@ -737,7 +802,7 @@ L30:
         /* columns of workl(iq,ldq).                                */
         /* -------------------------------------------------------- */
 
-	sgeqr2_(ncv, &nconv, &workl[iq], &ldq, &workl[iw + *ncv], &workl[ihb],&ierr);
+        sgeqr2_(ncv, &nconv, &workl[iq], &ldq, &workl[iw + *ncv], &workl[ihb],&ierr);
 
         /* ------------------------------------------------------ */
         /* * Postmultiply V by Q.                                 */
@@ -747,8 +812,8 @@ L30:
         /* the Ritz values in workl(ihd).                         */
         /* ------------------------------------------------------ */
 
-	sorm2r_("R", "N", n, ncv, &nconv, &workl[iq], &ldq, &workl[iw + *ncv], &v[v_offset], ldv, &workd[*n + 1], &ierr);
-	slacpy_("A", n, &nconv, &v[v_offset], ldv, &z[z_offset], ldz);
+        sorm2r_("R", "N", n, ncv, &nconv, &workl[iq], &ldq, &workl[iw + *ncv], &v[v_offset], ldv, &workd[*n + 1], &ierr);
+        slacpy_("A", n, &nconv, &v[v_offset], ldv, &z[z_offset], ldz);
 
         /* --------------------------------------------------- */
         /* In order to compute the Ritz estimates for the Ritz */
@@ -756,13 +821,14 @@ L30:
         /* eigenvector matrix. Remember, it`s in factored form */
         /* --------------------------------------------------- */
 
-	i__1 = *ncv - 1;
-	for (j = 1; j <= i__1; ++j) {
-	    workl[ihb + j - 1] = 0.f;
-/* L65: */
-	}
-	workl[ihb + *ncv - 1] = 1.f;
-	sorm2r_("L", "T", ncv, &c__1, &nconv, &workl[iq], &ldq, &workl[iw + *ncv], &workl[ihb], ncv, &temp, &ierr);
+        i__1 = *ncv - 1;
+        for (j = 1; j <= i__1; ++j)
+        {
+            workl[ihb + j - 1] = 0.f;
+            /* L65: */
+        }
+        workl[ihb + *ncv - 1] = 1.f;
+        sorm2r_("L", "T", ncv, &c__1, &nconv, &workl[iq], &ldq, &workl[iw + *ncv], &workl[ihb], ncv, &temp, &ierr);
 
         /* --------------------------------------------------- */
         /* Make a copy of the last row into                    */
@@ -770,27 +836,34 @@ L30:
         /* the Ritz vector purification step below             */
         /* --------------------------------------------------- */
 
-	i__1 = nconv;
-	for (j = 1; j <= i__1; ++j) {
-	    workl[iw + *ncv + j - 1] = workl[ihb + j - 1];
-/* L67: */
-	}
-    } else if (*rvec && *howmny == 'S') {
+        i__1 = nconv;
+        for (j = 1; j <= i__1; ++j)
+        {
+            workl[iw + *ncv + j - 1] = workl[ihb + j - 1];
+            /* L67: */
+        }
+    }
+    else if (*rvec && *howmny == 'S')
+    {
 
-/*     Not yet implemented. See remark 2 above. */
+        /*     Not yet implemented. See remark 2 above. */
 
     }
 
-    if (strcmp(type, "REGULR") == 0 && *rvec) {
+    if (strcmp(type, "REGULR") == 0 && *rvec)
+    {
 
-	i__1 = *ncv;
-	for (j = 1; j <= i__1; ++j) {
-	    workl[ihb + j - 1] = rnorm * (r__1 = workl[ihb + j - 1], dabs(
-		    r__1));
-/* L70: */
-	}
+        i__1 = *ncv;
+        for (j = 1; j <= i__1; ++j)
+        {
+            workl[ihb + j - 1] = rnorm * (r__1 = workl[ihb + j - 1], dabs(
+                                              r__1));
+            /* L70: */
+        }
 
-    } else if (strcmp(type, "REGULR") != 0 && *rvec) {
+    }
+    else if (strcmp(type, "REGULR") != 0 && *rvec)
+    {
 
         /* ----------------------------------------------- */
         /* *  Determine Ritz estimates of the theta.       */
@@ -801,86 +874,103 @@ L30:
         /* *  Determine Ritz estimates of the lambda.      */
         /* ----------------------------------------------- */
 
-	sscal_(ncv, &bnorm2, &workl[ihb], &c__1);
-	if (strcmp(type, "SHIFTI") == 0) {
+        sscal_(ncv, &bnorm2, &workl[ihb], &c__1);
+        if (strcmp(type, "SHIFTI") == 0)
+        {
 
-	    i__1 = *ncv;
-	    for (k = 1; k <= i__1; ++k) {
-/* Computing 2nd power */
-		r__2 = workl[iw + k - 1];
-		workl[ihb + k - 1] = (r__1 = workl[ihb + k - 1], dabs(r__1)) /
-			 (r__2 * r__2);
-/* L80: */
-	    }
+            i__1 = *ncv;
+            for (k = 1; k <= i__1; ++k)
+            {
+                /* Computing 2nd power */
+                r__2 = workl[iw + k - 1];
+                workl[ihb + k - 1] = (r__1 = workl[ihb + k - 1], dabs(r__1)) /
+                                     (r__2 * r__2);
+                /* L80: */
+            }
 
-	} else if (strcmp(type, "BUCKLE") == 0) {
+        }
+        else if (strcmp(type, "BUCKLE") == 0)
+        {
 
-	    i__1 = *ncv;
-	    for (k = 1; k <= i__1; ++k) {
-/* Computing 2nd power */
-		r__2 = workl[iw + k - 1] - 1.f;
-		workl[ihb + k - 1] = *sigma * (r__1 = workl[ihb + k - 1], 
-			dabs(r__1)) / (r__2 * r__2);
-/* L90: */
-	    }
+            i__1 = *ncv;
+            for (k = 1; k <= i__1; ++k)
+            {
+                /* Computing 2nd power */
+                r__2 = workl[iw + k - 1] - 1.f;
+                workl[ihb + k - 1] = *sigma * (r__1 = workl[ihb + k - 1],
+                                               dabs(r__1)) / (r__2 * r__2);
+                /* L90: */
+            }
 
-	} else if (strcmp(type, "CAYLEY") == 0) {
+        }
+        else if (strcmp(type, "CAYLEY") == 0)
+        {
 
-	    i__1 = *ncv;
-	    for (k = 1; k <= i__1; ++k) {
-		workl[ihb + k - 1] = (r__1 = workl[ihb + k - 1] / workl[iw + 
-			k - 1] * (workl[iw + k - 1] - 1.f), dabs(r__1));
-/* L100: */
-	    }
+            i__1 = *ncv;
+            for (k = 1; k <= i__1; ++k)
+            {
+                workl[ihb + k - 1] = (r__1 = workl[ihb + k - 1] / workl[iw +
+                                             k - 1] * (workl[iw + k - 1] - 1.f), dabs(r__1));
+                /* L100: */
+            }
 
-	}
+        }
 
     }
 
-    if (strcmp(type, "REGULR") != 0 && msglvl > 1) {
-	svout_(&nconv, &d[1], &debug_1.ndigit, "_seupd: Untransformed converged Ritz values");
-	svout_(&nconv, &workl[ihb], &debug_1.ndigit, "_seupd: Ritz estimates of the untransformed Ritz values");
-    } else if (msglvl > 1) {
-	svout_(&nconv, &d[1], &debug_1.ndigit, "_seupd: Converged Ritz values");
-	svout_(&nconv, &workl[ihb], &debug_1.ndigit, "_seupd: Associated Ritz estimates");
+    if (strcmp(type, "REGULR") != 0 && msglvl > 1)
+    {
+        svout_(&nconv, &d[1], &debug_1.ndigit, "_seupd: Untransformed converged Ritz values");
+        svout_(&nconv, &workl[ihb], &debug_1.ndigit, "_seupd: Ritz estimates of the untransformed Ritz values");
+    }
+    else if (msglvl > 1)
+    {
+        svout_(&nconv, &d[1], &debug_1.ndigit, "_seupd: Converged Ritz values");
+        svout_(&nconv, &workl[ihb], &debug_1.ndigit, "_seupd: Associated Ritz estimates");
     }
 
-     /* ----------------------------------------------- */
-     /* Ritz vector purification step. Formally perform */
-     /* one of inverse subspace iteration. Only used    */
-     /* for MODE = 3,4,5. See reference 7               */
-     /* ----------------------------------------------- */
+    /* ----------------------------------------------- */
+    /* Ritz vector purification step. Formally perform */
+    /* one of inverse subspace iteration. Only used    */
+    /* for MODE = 3,4,5. See reference 7               */
+    /* ----------------------------------------------- */
 
     if (*rvec && (strcmp(type, "SHIFTI") == 0 || strcmp(
-	    type, "CAYLEY") == 0)) {
+                      type, "CAYLEY") == 0))
+    {
 
-	i__1 = nconv - 1;
-	for (k = 0; k <= i__1; ++k) {
-	    workl[iw + k] = workl[iw + *ncv + k] / workl[iw + k];
-/* L110: */
-	}
+        i__1 = nconv - 1;
+        for (k = 0; k <= i__1; ++k)
+        {
+            workl[iw + k] = workl[iw + *ncv + k] / workl[iw + k];
+            /* L110: */
+        }
 
-    } else if (*rvec && strcmp(type, "BUCKLE") == 0) {
+    }
+    else if (*rvec && strcmp(type, "BUCKLE") == 0)
+    {
 
-	i__1 = nconv - 1;
-	for (k = 0; k <= i__1; ++k) {
-	    workl[iw + k] = workl[iw + *ncv + k] / (workl[iw + k] - 1.f);
-/* L120: */
-	}
+        i__1 = nconv - 1;
+        for (k = 0; k <= i__1; ++k)
+        {
+            workl[iw + k] = workl[iw + *ncv + k] / (workl[iw + k] - 1.f);
+            /* L120: */
+        }
 
     }
 
-    if (strcmp(type, "REGULR") != 0) {
-	sger_(n, &nconv, &s_one, &resid[1], &c__1, &workl[iw], &c__1, &z[z_offset], ldz);
+    if (strcmp(type, "REGULR") != 0)
+    {
+        sger_(n, &nconv, &s_one, &resid[1], &c__1, &workl[iw], &c__1, &z[z_offset], ldz);
     }
 
 L9000:
 
     return 0;
 
-     /* ------------- */
-     /* End of sseupd*/
-     /* ------------- */
+    /* ------------- */
+    /* End of sseupd*/
+    /* ------------- */
 
 } /* sseupd_ */
 

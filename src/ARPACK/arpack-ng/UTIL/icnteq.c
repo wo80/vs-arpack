@@ -20,10 +20,12 @@ int icnteq_(int32_t *n, int32_t *array, int32_t *value)
     /* Function Body */
     k = 0;
     i__1 = *n;
-    for (i = 1; i <= i__1; ++i) {
-	if (array[i] == *value) {
-	    ++k;
-	}
+    for (i = 1; i <= i__1; ++i)
+    {
+        if (array[i] == *value)
+        {
+            ++k;
+        }
     }
     ret_val = k;
 

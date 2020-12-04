@@ -64,7 +64,7 @@
  */
 
 int snconv_(int32_t *n, float *ritzr, float *ritzi, float *
-	bounds, float *tol, int32_t *nconv)
+            bounds, float *tol, int32_t *nconv)
 {
     /* System generated locals */
     int32_t i__1;
@@ -79,21 +79,21 @@ int snconv_(int32_t *n, float *ritzr, float *ritzi, float *
     static float t0, t1;
     float eps23, temp;
 
-     /* --------------------- */
-     /* Executable Statements */
-     /* --------------------- */
+    /* --------------------- */
+    /* Executable Statements */
+    /* --------------------- */
 
-     /* ----------------------------------------------------------- */
-     /* Convergence test: unlike in the symmetric code, I am not    */
-     /* using things like refined error bounds and gap condition    */
-     /* because I don't know the exact equivalent concept.          */
-     /*                                                             */
-     /* Instead the i-th Ritz value is considered "converged" when: */
-     /*                                                             */
-     /*     bounds(i) .le. ( TOL * | ritz | )                       */
-     /*                                                             */
-     /* for some appropriate choice of norm.                        */
-     /* ----------------------------------------------------------- */
+    /* ----------------------------------------------------------- */
+    /* Convergence test: unlike in the symmetric code, I am not    */
+    /* using things like refined error bounds and gap condition    */
+    /* because I don't know the exact equivalent concept.          */
+    /*                                                             */
+    /* Instead the i-th Ritz value is considered "converged" when: */
+    /*                                                             */
+    /*     bounds(i) .le. ( TOL * | ritz | )                       */
+    /*                                                             */
+    /* for some appropriate choice of norm.                        */
+    /* ----------------------------------------------------------- */
 
     /* Parameter adjustments */
     --bounds;
@@ -105,9 +105,9 @@ int snconv_(int32_t *n, float *ritzr, float *ritzi, float *
     arscnd_(&t0);
 #endif
 
-     /* ------------------------------- */
-     /* Get machine dependent constant. */
-     /* ------------------------------- */
+    /* ------------------------------- */
+    /* Get machine dependent constant. */
+    /* ------------------------------- */
 
     eps23 = slamch_("E");
     d__1 = (double) eps23;
@@ -115,14 +115,16 @@ int snconv_(int32_t *n, float *ritzr, float *ritzi, float *
 
     *nconv = 0;
     i__1 = *n;
-    for (i = 1; i <= i__1; ++i) {
-/* Computing MAX */
-	r__1 = eps23, r__2 = slapy2_(&ritzr[i], &ritzi[i]);
-	temp = dmax(r__1,r__2);
-	if (bounds[i] <= *tol * temp) {
-	    ++(*nconv);
-	}
-/* L20: */
+    for (i = 1; i <= i__1; ++i)
+    {
+        /* Computing MAX */
+        r__1 = eps23, r__2 = slapy2_(&ritzr[i], &ritzi[i]);
+        temp = dmax(r__1,r__2);
+        if (bounds[i] <= *tol * temp)
+        {
+            ++(*nconv);
+        }
+        /* L20: */
     }
 
 #ifndef NO_TIMER
@@ -132,9 +134,9 @@ int snconv_(int32_t *n, float *ritzr, float *ritzi, float *
 
     return 0;
 
-     /* ------------- */
-     /* End of snconv */
-     /* ------------- */
+    /* ------------- */
+    /* End of snconv */
+    /* ------------- */
 
 } /* snconv_ */
 

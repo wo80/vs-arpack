@@ -99,9 +99,9 @@
  */
 
 int zneigh_(double *rnorm, int32_t *n, zomplex *
-	h, int32_t *ldh, zomplex *ritz, zomplex *bounds, 
-	zomplex *q, int32_t *ldq, zomplex *workl, double *
-	rwork, int32_t *ierr)
+            h, int32_t *ldh, zomplex *ritz, zomplex *bounds,
+            zomplex *q, int32_t *ldq, zomplex *workl, double *
+            rwork, int32_t *ierr)
 {
     /* System generated locals */
     int32_t h_dim1, h_offset, q_dim1, q_offset, i__1;
@@ -115,14 +115,14 @@ int zneigh_(double *rnorm, int32_t *n, zomplex *
     bool select[1];
     int32_t msglvl;
 
-     /* --------------------- */
-     /* Executable Statements */
-     /* --------------------- */
+    /* --------------------- */
+    /* Executable Statements */
+    /* --------------------- */
 
-     /* ----------------------------- */
-     /* Initialize timing statistics  */
-     /* & message level for debugging */
-     /* ----------------------------- */
+    /* ----------------------------- */
+    /* Initialize timing statistics  */
+    /* & message level for debugging */
+    /* ----------------------------- */
 
     /* Parameter adjustments */
     --rwork;
@@ -144,80 +144,87 @@ int zneigh_(double *rnorm, int32_t *n, zomplex *
     msglvl = debug_1.mceigh;
 
 #ifndef NO_TRACE
-    if (msglvl > 2) {
-	zmout_(n, n, &h[h_offset], ldh, &debug_1.ndigit, "_neigh: Entering upper Hessenberg matrix H ");
+    if (msglvl > 2)
+    {
+        zmout_(n, n, &h[h_offset], ldh, &debug_1.ndigit, "_neigh: Entering upper Hessenberg matrix H ");
     }
 #endif
 
-     /* -------------------------------------------------------- */
-     /* 1. Compute the eigenvalues, the last components of the   */
-     /*    corresponding Schur vectors and the full Schur form T */
-     /*    of the current upper Hessenberg matrix H.             */
-     /*    zlahqr returns the full Schur form of H               */
-     /*    in WORKL(1:N**2), and the Schur vectors in q.         */
-     /* -------------------------------------------------------- */
+    /* -------------------------------------------------------- */
+    /* 1. Compute the eigenvalues, the last components of the   */
+    /*    corresponding Schur vectors and the full Schur form T */
+    /*    of the current upper Hessenberg matrix H.             */
+    /*    zlahqr returns the full Schur form of H               */
+    /*    in WORKL(1:N**2), and the Schur vectors in q.         */
+    /* -------------------------------------------------------- */
 
     zlacpy_("A", n, n, &h[h_offset], ldh, &workl[1], n);
     zlaset_("A", n, n, &z_zero, &z_one, &q[q_offset], ldq);
     zlahqr_(&c_true, &c_true, n, &c__1, n, &workl[1], ldh, &ritz[1], &c__1, n,&q[q_offset], ldq, ierr);
-    if (*ierr != 0) {
-	goto L9000;
+    if (*ierr != 0)
+    {
+        goto L9000;
     }
 
     zcopy_(n, &q[*n - 1 + q_dim1], ldq, &bounds[1], &c__1);
 #ifndef NO_TRACE
-    if (msglvl > 1) {
-	zvout_(n, &bounds[1], &debug_1.ndigit, "_neigh: last row of the Schur matrix for H");
+    if (msglvl > 1)
+    {
+        zvout_(n, &bounds[1], &debug_1.ndigit, "_neigh: last row of the Schur matrix for H");
     }
 #endif
 
-     /* -------------------------------------------------------- */
-     /* 2. Compute the eigenvectors of the full Schur form T and */
-     /*    apply the Schur vectors to get the corresponding      */
-     /*    eigenvectors.                                         */
-     /* -------------------------------------------------------- */
+    /* -------------------------------------------------------- */
+    /* 2. Compute the eigenvectors of the full Schur form T and */
+    /*    apply the Schur vectors to get the corresponding      */
+    /*    eigenvectors.                                         */
+    /* -------------------------------------------------------- */
 
     ztrevc_("R", "B", select, n, &workl[1], n, vl, n, &q[q_offset], ldq, n, n, &workl[*n * *n + 1], &rwork[1], ierr);
 
-    if (*ierr != 0) {
-	goto L9000;
+    if (*ierr != 0)
+    {
+        goto L9000;
     }
 
-     /* ---------------------------------------------- */
-     /* Scale the returning eigenvectors so that their */
-     /* Euclidean norms are all one. LAPACK subroutine */
-     /* ztrevc returns each eigenvector normalized so  */
-     /* that the element of largest magnitude has      */
-     /* magnitude 1; here the magnitude of a complex   */
-     /* number (x,y) is taken to be |x| + |y|.         */
-     /* ---------------------------------------------- */
+    /* ---------------------------------------------- */
+    /* Scale the returning eigenvectors so that their */
+    /* Euclidean norms are all one. LAPACK subroutine */
+    /* ztrevc returns each eigenvector normalized so  */
+    /* that the element of largest magnitude has      */
+    /* magnitude 1; here the magnitude of a complex   */
+    /* number (x,y) is taken to be |x| + |y|.         */
+    /* ---------------------------------------------- */
 
     i__1 = *n;
-    for (j = 1; j <= i__1; ++j) {
-	temp = dznrm2_(n, &q[j * q_dim1 + 1], &c__1);
-	d__1 = 1. / temp;
-	zdscal_(n, &d__1, &q[j * q_dim1 + 1], &c__1);
-/* L10: */
+    for (j = 1; j <= i__1; ++j)
+    {
+        temp = dznrm2_(n, &q[j * q_dim1 + 1], &c__1);
+        d__1 = 1. / temp;
+        zdscal_(n, &d__1, &q[j * q_dim1 + 1], &c__1);
+        /* L10: */
     }
 
 #ifndef NO_TRACE
-    if (msglvl > 1) {
-	zcopy_(n, &q[*n + q_dim1], ldq, &workl[1], &c__1);
-	zvout_(n, &workl[1], &debug_1.ndigit, "_neigh: Last row of the eigenvector matrix for H");
+    if (msglvl > 1)
+    {
+        zcopy_(n, &q[*n + q_dim1], ldq, &workl[1], &c__1);
+        zvout_(n, &workl[1], &debug_1.ndigit, "_neigh: Last row of the eigenvector matrix for H");
     }
 #endif
 
-     /* -------------------------- */
-     /* Compute the Ritz estimates */
-     /* -------------------------- */
+    /* -------------------------- */
+    /* Compute the Ritz estimates */
+    /* -------------------------- */
 
     zcopy_(n, &q[*n + q_dim1], n, &bounds[1], &c__1);
     zdscal_(n, rnorm, &bounds[1], &c__1);
 
 #ifndef NO_TRACE
-    if (msglvl > 2) {
-	zvout_(n, &ritz[1], &debug_1.ndigit, "_neigh: The eigenvalues of H");
-	zvout_(n, &bounds[1], &debug_1.ndigit, "_neigh: Ritz estimates for the eigenvalues of H");
+    if (msglvl > 2)
+    {
+        zvout_(n, &ritz[1], &debug_1.ndigit, "_neigh: The eigenvalues of H");
+        zvout_(n, &bounds[1], &debug_1.ndigit, "_neigh: Ritz estimates for the eigenvalues of H");
     }
 #endif
 
@@ -229,9 +236,9 @@ int zneigh_(double *rnorm, int32_t *n, zomplex *
 L9000:
     return 0;
 
-     /* ------------- */
-     /* End of zneigh */
-     /* ------------- */
+    /* ------------- */
+    /* End of zneigh */
+    /* ------------- */
 
 } /* zneigh_ */
 

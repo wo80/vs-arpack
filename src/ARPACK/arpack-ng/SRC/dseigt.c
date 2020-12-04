@@ -85,9 +85,9 @@
  * \EndLib
  */
 
-int dseigt_(double *rnorm, int32_t *n, double *h, 
-	int32_t *ldh, double *eig, double *bounds, double *workl, 
-	int32_t *ierr)
+int dseigt_(double *rnorm, int32_t *n, double *h,
+            int32_t *ldh, double *eig, double *bounds, double *workl,
+            int32_t *ierr)
 {
     /* System generated locals */
     int32_t h_dim1, h_offset, i__1;
@@ -98,14 +98,14 @@ int dseigt_(double *rnorm, int32_t *n, double *h,
     static float t0, t1;
     int32_t msglvl;
 
-     /* --------------------- */
-     /* Executable Statements */
-     /* --------------------- */
+    /* --------------------- */
+    /* Executable Statements */
+    /* --------------------- */
 
-     /* ----------------------------- */
-     /* Initialize timing statistics  */
-     /* & message level for debugging */
-     /* ----------------------------- */
+    /* ----------------------------- */
+    /* Initialize timing statistics  */
+    /* & message level for debugging */
+    /* ----------------------------- */
 
     /* Parameter adjustments */
     --workl;
@@ -123,12 +123,14 @@ int dseigt_(double *rnorm, int32_t *n, double *h,
     msglvl = debug_1.mseigt;
 
 #ifndef NO_TRACE
-    if (msglvl > 0) {
-	dvout_(n, &h[(h_dim1 << 1) + 1], &debug_1.ndigit, "_seigt: main diagonal of matrix H");
-	if (*n > 1) {
-	    i__1 = *n - 1;
-	    dvout_(&i__1, &h[h_dim1 + 2], &debug_1.ndigit, "_seigt: sub diagonal of matrix H");
-	}
+    if (msglvl > 0)
+    {
+        dvout_(n, &h[(h_dim1 << 1) + 1], &debug_1.ndigit, "_seigt: main diagonal of matrix H");
+        if (*n > 1)
+        {
+            i__1 = *n - 1;
+            dvout_(&i__1, &h[h_dim1 + 2], &debug_1.ndigit, "_seigt: sub diagonal of matrix H");
+        }
     }
 #endif
 
@@ -136,24 +138,27 @@ int dseigt_(double *rnorm, int32_t *n, double *h,
     i__1 = *n - 1;
     dcopy_(&i__1, &h[h_dim1 + 2], &c__1, &workl[1], &c__1);
     dstqrb_(n, &eig[1], &workl[1], &bounds[1], &workl[*n + 1], ierr);
-    if (*ierr != 0) {
-	goto L9000;
+    if (*ierr != 0)
+    {
+        goto L9000;
     }
 #ifndef NO_TRACE
-    if (msglvl > 1) {
-	dvout_(n, &bounds[1], &debug_1.ndigit, "_seigt: last row of the eigenvector matrix for H");
+    if (msglvl > 1)
+    {
+        dvout_(n, &bounds[1], &debug_1.ndigit, "_seigt: last row of the eigenvector matrix for H");
     }
 #endif
 
-     /* --------------------------------------------- */
-     /* Finally determine the error bounds associated */
-     /* with the n Ritz values of H.                  */
-     /* --------------------------------------------- */
+    /* --------------------------------------------- */
+    /* Finally determine the error bounds associated */
+    /* with the n Ritz values of H.                  */
+    /* --------------------------------------------- */
 
     i__1 = *n;
-    for (k = 1; k <= i__1; ++k) {
-	bounds[k] = *rnorm * (d__1 = bounds[k], abs(d__1));
-/* L30: */
+    for (k = 1; k <= i__1; ++k)
+    {
+        bounds[k] = *rnorm * (d__1 = bounds[k], abs(d__1));
+        /* L30: */
     }
 
 #ifndef NO_TIMER
@@ -164,9 +169,9 @@ int dseigt_(double *rnorm, int32_t *n, double *h,
 L9000:
     return 0;
 
-     /* ------------- */
-     /* End of dseigt */
-     /* ------------- */
+    /* ------------- */
+    /* End of dseigt */
+    /* ------------- */
 
 } /* dseigt_ */
 

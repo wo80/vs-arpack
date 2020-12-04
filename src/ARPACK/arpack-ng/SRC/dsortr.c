@@ -64,178 +64,211 @@ int dsortr_(char *which, bool *apply, int32_t *n, double *x1, double *x2)
     double d__1, d__2;
 
     /* Builtin functions */
-    
+
     /* Local variables */
     int32_t i, j, igap;
     double temp;
 
-     /* ---------------- */
-     /* Scalar Arguments */
-     /* ---------------- */
+    /* ---------------- */
+    /* Scalar Arguments */
+    /* ---------------- */
 
-     /* --------------------- */
-     /* Executable Statements */
-     /* --------------------- */
+    /* --------------------- */
+    /* Executable Statements */
+    /* --------------------- */
 
     igap = *n / 2;
 
-    if (strcmp(which, "SA") == 0) {
+    if (strcmp(which, "SA") == 0)
+    {
 
-/*        X1 is sorted into decreasing order of algebraic. */
+        /*        X1 is sorted into decreasing order of algebraic. */
 
 L10:
-	if (igap == 0) {
-	    goto L9000;
-	}
-	i__1 = *n - 1;
-	for (i = igap; i <= i__1; ++i) {
-	    j = i - igap;
+        if (igap == 0)
+        {
+            goto L9000;
+        }
+        i__1 = *n - 1;
+        for (i = igap; i <= i__1; ++i)
+        {
+            j = i - igap;
 L20:
 
-	    if (j < 0) {
-		goto L30;
-	    }
+            if (j < 0)
+            {
+                goto L30;
+            }
 
-	    if (x1[j] < x1[j + igap]) {
-		temp = x1[j];
-		x1[j] = x1[j + igap];
-		x1[j + igap] = temp;
-		if (*apply) {
-		    temp = x2[j];
-		    x2[j] = x2[j + igap];
-		    x2[j + igap] = temp;
-		}
-	    } else {
-		goto L30;
-	    }
-	    j -= igap;
-	    goto L20;
+            if (x1[j] < x1[j + igap])
+            {
+                temp = x1[j];
+                x1[j] = x1[j + igap];
+                x1[j + igap] = temp;
+                if (*apply)
+                {
+                    temp = x2[j];
+                    x2[j] = x2[j + igap];
+                    x2[j + igap] = temp;
+                }
+            }
+            else
+            {
+                goto L30;
+            }
+            j -= igap;
+            goto L20;
 L30:
-	    ;
-	}
-	igap /= 2;
-	goto L10;
+            ;
+        }
+        igap /= 2;
+        goto L10;
 
-    } else if (strcmp(which, "SM") == 0) {
+    }
+    else if (strcmp(which, "SM") == 0)
+    {
 
-/*        X1 is sorted into decreasing order of magnitude. */
+        /*        X1 is sorted into decreasing order of magnitude. */
 
 L40:
-	if (igap == 0) {
-	    goto L9000;
-	}
-	i__1 = *n - 1;
-	for (i = igap; i <= i__1; ++i) {
-	    j = i - igap;
+        if (igap == 0)
+        {
+            goto L9000;
+        }
+        i__1 = *n - 1;
+        for (i = igap; i <= i__1; ++i)
+        {
+            j = i - igap;
 L50:
 
-	    if (j < 0) {
-		goto L60;
-	    }
+            if (j < 0)
+            {
+                goto L60;
+            }
 
-	    if ((d__1 = x1[j], abs(d__1)) < (d__2 = x1[j + igap], abs(d__2))) 
-		    {
-		temp = x1[j];
-		x1[j] = x1[j + igap];
-		x1[j + igap] = temp;
-		if (*apply) {
-		    temp = x2[j];
-		    x2[j] = x2[j + igap];
-		    x2[j + igap] = temp;
-		}
-	    } else {
-		goto L60;
-	    }
-	    j -= igap;
-	    goto L50;
+            if ((d__1 = x1[j], abs(d__1)) < (d__2 = x1[j + igap], abs(d__2)))
+            {
+                temp = x1[j];
+                x1[j] = x1[j + igap];
+                x1[j + igap] = temp;
+                if (*apply)
+                {
+                    temp = x2[j];
+                    x2[j] = x2[j + igap];
+                    x2[j + igap] = temp;
+                }
+            }
+            else
+            {
+                goto L60;
+            }
+            j -= igap;
+            goto L50;
 L60:
-	    ;
-	}
-	igap /= 2;
-	goto L40;
+            ;
+        }
+        igap /= 2;
+        goto L40;
 
-    } else if (strcmp(which, "LA") == 0) {
+    }
+    else if (strcmp(which, "LA") == 0)
+    {
 
-/*        X1 is sorted into increasing order of algebraic. */
+        /*        X1 is sorted into increasing order of algebraic. */
 
 L70:
-	if (igap == 0) {
-	    goto L9000;
-	}
-	i__1 = *n - 1;
-	for (i = igap; i <= i__1; ++i) {
-	    j = i - igap;
+        if (igap == 0)
+        {
+            goto L9000;
+        }
+        i__1 = *n - 1;
+        for (i = igap; i <= i__1; ++i)
+        {
+            j = i - igap;
 L80:
 
-	    if (j < 0) {
-		goto L90;
-	    }
+            if (j < 0)
+            {
+                goto L90;
+            }
 
-	    if (x1[j] > x1[j + igap]) {
-		temp = x1[j];
-		x1[j] = x1[j + igap];
-		x1[j + igap] = temp;
-		if (*apply) {
-		    temp = x2[j];
-		    x2[j] = x2[j + igap];
-		    x2[j + igap] = temp;
-		}
-	    } else {
-		goto L90;
-	    }
-	    j -= igap;
-	    goto L80;
+            if (x1[j] > x1[j + igap])
+            {
+                temp = x1[j];
+                x1[j] = x1[j + igap];
+                x1[j + igap] = temp;
+                if (*apply)
+                {
+                    temp = x2[j];
+                    x2[j] = x2[j + igap];
+                    x2[j + igap] = temp;
+                }
+            }
+            else
+            {
+                goto L90;
+            }
+            j -= igap;
+            goto L80;
 L90:
-	    ;
-	}
-	igap /= 2;
-	goto L70;
+            ;
+        }
+        igap /= 2;
+        goto L70;
 
-    } else if (strcmp(which, "LM") == 0) {
+    }
+    else if (strcmp(which, "LM") == 0)
+    {
 
-/*        X1 is sorted into increasing order of magnitude. */
+        /*        X1 is sorted into increasing order of magnitude. */
 
 L100:
-	if (igap == 0) {
-	    goto L9000;
-	}
-	i__1 = *n - 1;
-	for (i = igap; i <= i__1; ++i) {
-	    j = i - igap;
+        if (igap == 0)
+        {
+            goto L9000;
+        }
+        i__1 = *n - 1;
+        for (i = igap; i <= i__1; ++i)
+        {
+            j = i - igap;
 L110:
 
-	    if (j < 0) {
-		goto L120;
-	    }
+            if (j < 0)
+            {
+                goto L120;
+            }
 
-	    if ((d__1 = x1[j], abs(d__1)) > (d__2 = x1[j + igap], abs(d__2))) 
-		    {
-		temp = x1[j];
-		x1[j] = x1[j + igap];
-		x1[j + igap] = temp;
-		if (*apply) {
-		    temp = x2[j];
-		    x2[j] = x2[j + igap];
-		    x2[j + igap] = temp;
-		}
-	    } else {
-		goto L120;
-	    }
-	    j -= igap;
-	    goto L110;
+            if ((d__1 = x1[j], abs(d__1)) > (d__2 = x1[j + igap], abs(d__2)))
+            {
+                temp = x1[j];
+                x1[j] = x1[j + igap];
+                x1[j + igap] = temp;
+                if (*apply)
+                {
+                    temp = x2[j];
+                    x2[j] = x2[j + igap];
+                    x2[j + igap] = temp;
+                }
+            }
+            else
+            {
+                goto L120;
+            }
+            j -= igap;
+            goto L110;
 L120:
-	    ;
-	}
-	igap /= 2;
-	goto L100;
+            ;
+        }
+        igap /= 2;
+        goto L100;
     }
 
 L9000:
     return 0;
 
-     /* ------------- */
-     /* End of dsortr */
-     /* ------------- */
+    /* ------------- */
+    /* End of dsortr */
+    /* ------------- */
 
 } /* dsortr_ */
 

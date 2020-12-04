@@ -94,14 +94,14 @@ int cngets_(int32_t *ishift, char *which, int32_t *kev, int32_t *np, complex *ri
     static float t0, t1;
     int32_t msglvl;
 
-     /* --------------------- */
-     /* Executable Statements */
-     /* --------------------- */
+    /* --------------------- */
+    /* Executable Statements */
+    /* --------------------- */
 
-     /* ----------------------------- */
-     /* Initialize timing statistics  */
-     /* & message level for debugging */
-     /* ----------------------------- */
+    /* ----------------------------- */
+    /* Initialize timing statistics  */
+    /* & message level for debugging */
+    /* ----------------------------- */
 
     /* Parameter adjustments */
     --bounds;
@@ -117,7 +117,8 @@ int cngets_(int32_t *ishift, char *which, int32_t *kev, int32_t *np, complex *ri
     i__1 = *kev + *np;
     csortc_(which, &c_true, &i__1, &ritz[1], &bounds[1]);
 
-    if (*ishift == 1) {
+    if (*ishift == 1)
+    {
 
         /* ----------------------------------------------------- */
         /* Sort the unwanted Ritz values used as shifts so that  */
@@ -128,7 +129,7 @@ int cngets_(int32_t *ishift, char *which, int32_t *kev, int32_t *np, complex *ri
         /* Be careful and use 'SM' since we want to sort BOUNDS! */
         /* ----------------------------------------------------- */
 
-	csortc_("SM", &c_true, np, &bounds[1], &ritz[1]);
+        csortc_("SM", &c_true, np, &bounds[1], &ritz[1]);
 
     }
 
@@ -138,21 +139,22 @@ int cngets_(int32_t *ishift, char *which, int32_t *kev, int32_t *np, complex *ri
 #endif
 
 #ifndef NO_TRACE
-    if (msglvl > 0) {
-	ivout_(&c__1, kev, &debug_1.ndigit, "_ngets: KEV is");
-	ivout_(&c__1, np, &debug_1.ndigit, "_ngets: NP is");
-	i__1 = *kev + *np;
-	cvout_(&i__1, &ritz[1], &debug_1.ndigit, "_ngets: Eigenvalues of current H matrix ");
-	i__1 = *kev + *np;
-	cvout_(&i__1, &bounds[1], &debug_1.ndigit, "_ngets: Ritz estimates of the current KEV+NP Ritz values");
+    if (msglvl > 0)
+    {
+        ivout_(&c__1, kev, &debug_1.ndigit, "_ngets: KEV is");
+        ivout_(&c__1, np, &debug_1.ndigit, "_ngets: NP is");
+        i__1 = *kev + *np;
+        cvout_(&i__1, &ritz[1], &debug_1.ndigit, "_ngets: Eigenvalues of current H matrix ");
+        i__1 = *kev + *np;
+        cvout_(&i__1, &bounds[1], &debug_1.ndigit, "_ngets: Ritz estimates of the current KEV+NP Ritz values");
     }
 #endif
 
     return 0;
 
-     /* ------------- */
-     /* End of cngets */
-     /* ------------- */
+    /* ------------- */
+    /* End of cngets */
+    /* ------------- */
 
 } /* cngets_ */
 

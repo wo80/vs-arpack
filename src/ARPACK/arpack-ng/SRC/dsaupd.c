@@ -409,8 +409,8 @@
  */
 
 int dsaupd_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, double *tol,
-     double *resid, int32_t *ncv,double *v, int32_t *ldv, int32_t *iparam, int32_t *ipntr,
-     double *workd, double *workl, int32_t *lworkl, int32_t *info)
+            double *resid, int32_t *ncv,double *v, int32_t *ldv, int32_t *iparam, int32_t *ipntr,
+            double *workd, double *workl, int32_t *lworkl, int32_t *info)
 {
 
     /* System generated locals */
@@ -420,12 +420,12 @@ int dsaupd_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, dou
     int32_t j;
     static float t0, t1;
     static int32_t nb, ih, iq, np, iw, ldh, ldq, nev0, mode, ierr, iupd, next,
-	     ritz;
+           ritz;
     static int32_t bounds, ishift, msglvl, mxiter;
 
-     /* --------------------- */
-     /* Executable Statements */
-     /* --------------------- */
+    /* --------------------- */
+    /* Executable Statements */
+    /* --------------------- */
 
     /* Parameter adjustments */
     --workd;
@@ -438,99 +438,118 @@ int dsaupd_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, dou
     --workl;
 
     /* Function Body */
-    if (*ido == 0) {
+    if (*ido == 0)
+    {
 
         /* ----------------------------- */
         /* Initialize timing statistics  */
         /* & message level for debugging */
         /* ----------------------------- */
 
-	dstats_();
+        dstats_();
 #ifndef NO_TIMER
-	arscnd_(&t0);
+        arscnd_(&t0);
 #endif
 
-	msglvl = debug_1.msaupd;
+        msglvl = debug_1.msaupd;
 
-	ierr = 0;
-	ishift = iparam[1];
-	mxiter = iparam[3];
-/*         nb     = iparam(4) */
-	nb = 1;
+        ierr = 0;
+        ishift = iparam[1];
+        mxiter = iparam[3];
+        /*         nb     = iparam(4) */
+        nb = 1;
 
         /* ------------------------------------------ */
         /* Revision 2 performs only implicit restart. */
         /* ------------------------------------------ */
 
-	iupd = 1;
-	mode = iparam[7];
+        iupd = 1;
+        mode = iparam[7];
 
         /* -------------- */
         /* Error checking */
         /* -------------- */
 
-	if (*n <= 0) {
-	    ierr = -1;
-	} else if (*nev <= 0) {
-	    ierr = -2;
-	} else if (*ncv <= *nev || *ncv > *n) {
-	    ierr = -3;
-	}
+        if (*n <= 0)
+        {
+            ierr = -1;
+        }
+        else if (*nev <= 0)
+        {
+            ierr = -2;
+        }
+        else if (*ncv <= *nev || *ncv > *n)
+        {
+            ierr = -3;
+        }
 
         /* -------------------------------------------- */
         /* NP is the number of additional steps to      */
         /* extend the length NEV Lanczos factorization. */
         /* -------------------------------------------- */
 
-	np = *ncv - *nev;
+        np = *ncv - *nev;
 
-	if (mxiter <= 0) {
-	    ierr = -4;
-	}
-	if (strcmp(which, "LM") != 0 && strcmp(which, "SM") != 0 && strcmp(which, "LA") != 0
-	 && strcmp(which, "SA") != 0 && strcmp(which, "BE") != 0) {
-	    ierr = -5;
-	}
-	if (*bmat != 'I' && *bmat != 'G') {
-	    ierr = -6;
-	}
+        if (mxiter <= 0)
+        {
+            ierr = -4;
+        }
+        if (strcmp(which, "LM") != 0 && strcmp(which, "SM") != 0 && strcmp(which, "LA") != 0
+                && strcmp(which, "SA") != 0 && strcmp(which, "BE") != 0)
+        {
+            ierr = -5;
+        }
+        if (*bmat != 'I' && *bmat != 'G')
+        {
+            ierr = -6;
+        }
 
-/* Computing 2nd power */
-	i__1 = *ncv;
-	if (*lworkl < i__1 * i__1 + (*ncv << 3)) {
-	    ierr = -7;
-	}
-	if (mode < 1 || mode > 5) {
-	    ierr = -10;
-	} else if (mode == 1 && *bmat == 'G') {
-	    ierr = -11;
-	} else if (ishift < 0 || ishift > 1) {
-	    ierr = -12;
-	} else if (*nev == 1 && strcmp(which, "BE") == 0)
-		 {
-	    ierr = -13;
-	}
+        /* Computing 2nd power */
+        i__1 = *ncv;
+        if (*lworkl < i__1 * i__1 + (*ncv << 3))
+        {
+            ierr = -7;
+        }
+        if (mode < 1 || mode > 5)
+        {
+            ierr = -10;
+        }
+        else if (mode == 1 && *bmat == 'G')
+        {
+            ierr = -11;
+        }
+        else if (ishift < 0 || ishift > 1)
+        {
+            ierr = -12;
+        }
+        else if (*nev == 1 && strcmp(which, "BE") == 0)
+        {
+            ierr = -13;
+        }
 
         /* ---------- */
         /* Error Exit */
         /* ---------- */
 
-	if (ierr != 0) {
-	    *info = ierr;
-	    *ido = 99;
-	    goto L9000;
-	}
+        if (ierr != 0)
+        {
+            *info = ierr;
+            *ido = 99;
+            goto L9000;
+        }
 
         /* ---------------------- */
         /* Set default parameters */
         /* ---------------------- */
 
-	if (nb <= 0) {
-	    nb = 1;
-	}
-	if (*tol <= 0.) {
-	    *tol = dlamch_("E");
-	}
+        if (nb <= 0)
+        {
+            nb = 1;
+        }
+        if (*tol <= 0.)
+        {
+            *tol = dlamch_("E");
+        }
 
         /* -------------------------------------------- */
         /* NP is the number of additional steps to      */
@@ -539,20 +558,21 @@ int dsaupd_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, dou
         /* size of the invariant subspace desired.      */
         /* -------------------------------------------- */
 
-	np = *ncv - *nev;
-	nev0 = *nev;
+        np = *ncv - *nev;
+        nev0 = *nev;
 
         /* --------------------------- */
         /* Zero out internal workspace */
         /* --------------------------- */
 
-/* Computing 2nd power */
-	i__2 = *ncv;
-	i__1 = i__2 * i__2 + (*ncv << 3);
-	for (j = 1; j <= i__1; ++j) {
-	    workl[j] = 0.;
-/* L10: */
-	}
+        /* Computing 2nd power */
+        i__2 = *ncv;
+        i__1 = i__2 * i__2 + (*ncv << 3);
+        for (j = 1; j <= i__1; ++j)
+        {
+            workl[j] = 0.;
+            /* L10: */
+        }
 
         /* ----------------------------------------------------- */
         /* Pointer into WORKL for address of H, RITZ, BOUNDS, Q  */
@@ -566,40 +586,42 @@ int dsaupd_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, dou
         /* workl(4*ncv+ncv*ncv+1:7*ncv+ncv*ncv) := workspace     */
         /* ----------------------------------------------------- */
 
-	ldh = *ncv;
-	ldq = *ncv;
-	ih = 1;
-	ritz = ih + (ldh << 1);
-	bounds = ritz + *ncv;
-	iq = bounds + *ncv;
-/* Computing 2nd power */
-	i__1 = *ncv;
-	iw = iq + i__1 * i__1;
-	next = iw + *ncv * 3;
+        ldh = *ncv;
+        ldq = *ncv;
+        ih = 1;
+        ritz = ih + (ldh << 1);
+        bounds = ritz + *ncv;
+        iq = bounds + *ncv;
+        /* Computing 2nd power */
+        i__1 = *ncv;
+        iw = iq + i__1 * i__1;
+        next = iw + *ncv * 3;
 
-	ipntr[4] = next;
-	ipntr[5] = ih;
-	ipntr[6] = ritz;
-	ipntr[7] = bounds;
-	ipntr[11] = iw;
+        ipntr[4] = next;
+        ipntr[5] = ih;
+        ipntr[6] = ritz;
+        ipntr[7] = bounds;
+        ipntr[11] = iw;
     }
 
-     /* ----------------------------------------------------- */
-     /* Carry out the Implicitly restarted Lanczos Iteration. */
-     /* ----------------------------------------------------- */
+    /* ----------------------------------------------------- */
+    /* Carry out the Implicitly restarted Lanczos Iteration. */
+    /* ----------------------------------------------------- */
 
     dsaup2_(ido, bmat, n, which, &nev0, &np, tol, &resid[1], &mode, &iupd, &ishift, &mxiter, &v[v_offset], ldv, &workl[ih], &ldh, &workl[ritz], &workl[bounds], &workl[iq], &ldq, &workl[iw], &ipntr[1], &workd[1], info);
 
-     /* ------------------------------------------------ */
-     /* ido .ne. 99 implies use of reverse communication */
-     /* to compute operations involving OP or shifts.    */
-     /* ------------------------------------------------ */
+    /* ------------------------------------------------ */
+    /* ido .ne. 99 implies use of reverse communication */
+    /* to compute operations involving OP or shifts.    */
+    /* ------------------------------------------------ */
 
-    if (*ido == 3) {
-	iparam[8] = np;
+    if (*ido == 3)
+    {
+        iparam[8] = np;
     }
-    if (*ido != 99) {
-	goto L9000;
+    if (*ido != 99)
+    {
+        goto L9000;
     }
 
     iparam[3] = mxiter;
@@ -608,24 +630,27 @@ int dsaupd_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, dou
     iparam[10] = timing_1.nbx;
     iparam[11] = timing_1.nrorth;
 
-     /* ---------------------------------- */
-     /* Exit if there was an informational */
-     /* error within dsaup2 .               */
-     /* ---------------------------------- */
+    /* ---------------------------------- */
+    /* Exit if there was an informational */
+    /* error within dsaup2 .               */
+    /* ---------------------------------- */
 
-    if (*info < 0) {
-	goto L9000;
+    if (*info < 0)
+    {
+        goto L9000;
     }
-    if (*info == 2) {
-	*info = 3;
+    if (*info == 2)
+    {
+        *info = 3;
     }
 
 #ifndef NO_TRACE
-    if (msglvl > 0) {
-	ivout_(&c__1, &mxiter, &debug_1.ndigit, "_saupd: number of update iterations taken");
-	ivout_(&c__1, &np, &debug_1.ndigit, "_saupd: number of \"converged\" Ritz values");
-	dvout_(&np, &workl[ritz], &debug_1.ndigit, "_saupd: final Ritz values");
-	dvout_(&np, &workl[bounds], &debug_1.ndigit, "_saupd: corresponding error bounds");
+    if (msglvl > 0)
+    {
+        ivout_(&c__1, &mxiter, &debug_1.ndigit, "_saupd: number of update iterations taken");
+        ivout_(&c__1, &np, &debug_1.ndigit, "_saupd: number of \"converged\" Ritz values");
+        dvout_(&np, &workl[ritz], &debug_1.ndigit, "_saupd: final Ritz values");
+        dvout_(&np, &workl[bounds], &debug_1.ndigit, "_saupd: corresponding error bounds");
     }
 #endif
 
@@ -635,7 +660,8 @@ int dsaupd_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, dou
 #endif
 
 #ifndef NO_TRACE
-    if (msglvl > 0) {
+    if (msglvl > 0)
+    {
 
         printf("\n ============================================= ");
         printf("\n = Symmetric implicit Arnoldi update code    = ");
@@ -669,9 +695,9 @@ L9000:
 
     return 0;
 
-     /* ------------- */
-     /* End of dsaupd  */
-     /* ------------- */
+    /* ------------- */
+    /* End of dsaupd  */
+    /* ------------- */
 
 } /* dsaupd_ */
 

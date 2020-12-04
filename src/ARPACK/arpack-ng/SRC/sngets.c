@@ -93,25 +93,25 @@
  */
 
 int sngets_(int32_t *ishift, char *which, int32_t *kev, int32_t *np, float *ritzr,
-     float *ritzi, float *bounds, float *shiftr, float *shifti)
+            float *ritzi, float *bounds, float *shiftr, float *shifti)
 {
     /* System generated locals */
     int32_t i__1;
 
     /* Builtin functions */
-    
+
     /* Local variables */
     static float t0, t1;
     int32_t msglvl;
 
-     /* --------------------- */
-     /* Executable Statements */
-     /* --------------------- */
+    /* --------------------- */
+    /* Executable Statements */
+    /* --------------------- */
 
-     /* ----------------------------- */
-     /* Initialize timing statistics  */
-     /* & message level for debugging */
-     /* ----------------------------- */
+    /* ----------------------------- */
+    /* Initialize timing statistics  */
+    /* & message level for debugging */
+    /* ----------------------------- */
 
     /* Parameter adjustments */
     --bounds;
@@ -127,53 +127,66 @@ int sngets_(int32_t *ishift, char *which, int32_t *kev, int32_t *np, float *ritz
 
     msglvl = debug_1.mngets;
 
-     /* -------------------------------------------------- */
-     /* LM, SM, LR, SR, LI, SI case.                       */
-     /* Sort the eigenvalues of H into the desired order   */
-     /* and apply the resulting order to BOUNDS.           */
-     /* The eigenvalues are sorted so that the wanted part */
-     /* are always in the last KEV locations.              */
-     /* We first do a pre-processing sort in order to keep */
-     /* complex conjugate pairs together                   */
-     /* -------------------------------------------------- */
+    /* -------------------------------------------------- */
+    /* LM, SM, LR, SR, LI, SI case.                       */
+    /* Sort the eigenvalues of H into the desired order   */
+    /* and apply the resulting order to BOUNDS.           */
+    /* The eigenvalues are sorted so that the wanted part */
+    /* are always in the last KEV locations.              */
+    /* We first do a pre-processing sort in order to keep */
+    /* complex conjugate pairs together                   */
+    /* -------------------------------------------------- */
 
-    if (strcmp(which, "LM") == 0) {
-	i__1 = *kev + *np;
-	ssortc_("LR", &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1]);
-    } else if (strcmp(which, "SM") == 0) {
-	i__1 = *kev + *np;
-	ssortc_("SR", &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1]);
-    } else if (strcmp(which, "LR") == 0) {
-	i__1 = *kev + *np;
-	ssortc_("LM", &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1]);
-    } else if (strcmp(which, "SR") == 0) {
-	i__1 = *kev + *np;
-	ssortc_("SM", &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1]);
-    } else if (strcmp(which, "LI") == 0) {
-	i__1 = *kev + *np;
-	ssortc_("LM", &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1]);
-    } else if (strcmp(which, "SI") == 0) {
-	i__1 = *kev + *np;
-	ssortc_("SM", &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1]);
+    if (strcmp(which, "LM") == 0)
+    {
+        i__1 = *kev + *np;
+        ssortc_("LR", &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1]);
+    }
+    else if (strcmp(which, "SM") == 0)
+    {
+        i__1 = *kev + *np;
+        ssortc_("SR", &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1]);
+    }
+    else if (strcmp(which, "LR") == 0)
+    {
+        i__1 = *kev + *np;
+        ssortc_("LM", &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1]);
+    }
+    else if (strcmp(which, "SR") == 0)
+    {
+        i__1 = *kev + *np;
+        ssortc_("SM", &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1]);
+    }
+    else if (strcmp(which, "LI") == 0)
+    {
+        i__1 = *kev + *np;
+        ssortc_("LM", &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1]);
+    }
+    else if (strcmp(which, "SI") == 0)
+    {
+        i__1 = *kev + *np;
+        ssortc_("SM", &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1]);
     }
 
     i__1 = *kev + *np;
     ssortc_(which, &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1]);
 
-     /* ----------------------------------------------------- */
-     /* Increase KEV by one if the ( ritzr(np),ritzi(np) )    */
-     /* = ( ritzr(np+1),-ritzi(np+1) ) and ritz(np) .ne. zero */
-     /* Accordingly decrease NP by one. In other words keep   */
-     /* complex conjugate pairs together.                     */
-     /* ----------------------------------------------------- */
+    /* ----------------------------------------------------- */
+    /* Increase KEV by one if the ( ritzr(np),ritzi(np) )    */
+    /* = ( ritzr(np+1),-ritzi(np+1) ) and ritz(np) .ne. zero */
+    /* Accordingly decrease NP by one. In other words keep   */
+    /* complex conjugate pairs together.                     */
+    /* ----------------------------------------------------- */
 
-    if (ritzr[*np + 1] - ritzr[*np] == 0.f && ritzi[*np + 1] + ritzi[*np] == 
-	    0.f) {
-	--(*np);
-	++(*kev);
+    if (ritzr[*np + 1] - ritzr[*np] == 0.f && ritzi[*np + 1] + ritzi[*np] ==
+            0.f)
+    {
+        --(*np);
+        ++(*kev);
     }
 
-    if (*ishift == 1) {
+    if (*ishift == 1)
+    {
 
         /* ----------------------------------------------------- */
         /* Sort the unwanted Ritz values used as shifts so that  */
@@ -184,7 +197,7 @@ int sngets_(int32_t *ishift, char *which, int32_t *kev, int32_t *np, float *ritz
         /* Be careful and use 'SR' since we want to sort BOUNDS! */
         /* ----------------------------------------------------- */
 
-	ssortc_("SR", &c_true, np, &bounds[1], &ritzr[1], &ritzi[1]);
+        ssortc_("SR", &c_true, np, &bounds[1], &ritzr[1], &ritzi[1]);
     }
 
 #ifndef NO_TIMER
@@ -193,23 +206,24 @@ int sngets_(int32_t *ishift, char *which, int32_t *kev, int32_t *np, float *ritz
 #endif
 
 #ifndef NO_TRACE
-    if (msglvl > 0) {
-	ivout_(&c__1, kev, &debug_1.ndigit, "_ngets: KEV is");
-	ivout_(&c__1, np, &debug_1.ndigit, "_ngets: NP is");
-	i__1 = *kev + *np;
-	svout_(&i__1, &ritzr[1], &debug_1.ndigit, "_ngets: Eigenvalues of current H matrix -- float part");
-	i__1 = *kev + *np;
-	svout_(&i__1, &ritzi[1], &debug_1.ndigit, "_ngets: Eigenvalues of current H matrix -- imag part");
-	i__1 = *kev + *np;
-	svout_(&i__1, &bounds[1], &debug_1.ndigit, "_ngets: Ritz estimates of the current KEV+NP Ritz values");
+    if (msglvl > 0)
+    {
+        ivout_(&c__1, kev, &debug_1.ndigit, "_ngets: KEV is");
+        ivout_(&c__1, np, &debug_1.ndigit, "_ngets: NP is");
+        i__1 = *kev + *np;
+        svout_(&i__1, &ritzr[1], &debug_1.ndigit, "_ngets: Eigenvalues of current H matrix -- float part");
+        i__1 = *kev + *np;
+        svout_(&i__1, &ritzi[1], &debug_1.ndigit, "_ngets: Eigenvalues of current H matrix -- imag part");
+        i__1 = *kev + *np;
+        svout_(&i__1, &bounds[1], &debug_1.ndigit, "_ngets: Ritz estimates of the current KEV+NP Ritz values");
     }
 #endif
 
     return 0;
 
-     /* ------------- */
-     /* End of sngets */
-     /* ------------- */
+    /* ------------- */
+    /* End of sngets */
+    /* ------------- */
 
 } /* sngets_ */
 

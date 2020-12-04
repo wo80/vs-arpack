@@ -86,7 +86,7 @@
  */
 
 int sseigt_(float *rnorm, int32_t *n, float *h, int32_t *ldh,
-	 float *eig, float *bounds, float *workl, int32_t *ierr)
+            float *eig, float *bounds, float *workl, int32_t *ierr)
 {
     /* System generated locals */
     int32_t h_dim1, h_offset, i__1;
@@ -97,14 +97,14 @@ int sseigt_(float *rnorm, int32_t *n, float *h, int32_t *ldh,
     static float t0, t1;
     int32_t msglvl;
 
-     /* --------------------- */
-     /* Executable Statements */
-     /* --------------------- */
+    /* --------------------- */
+    /* Executable Statements */
+    /* --------------------- */
 
-     /* ----------------------------- */
-     /* Initialize timing statistics  */
-     /* & message level for debugging */
-     /* ----------------------------- */
+    /* ----------------------------- */
+    /* Initialize timing statistics  */
+    /* & message level for debugging */
+    /* ----------------------------- */
 
     /* Parameter adjustments */
     --workl;
@@ -122,12 +122,14 @@ int sseigt_(float *rnorm, int32_t *n, float *h, int32_t *ldh,
     msglvl = debug_1.mseigt;
 
 #ifndef NO_TRACE
-    if (msglvl > 0) {
-	svout_(n, &h[(h_dim1 << 1) + 1], &debug_1.ndigit, "_seigt: main diagonal of matrix H");
-	if (*n > 1) {
-	    i__1 = *n - 1;
-	    svout_(&i__1, &h[h_dim1 + 2], &debug_1.ndigit, "_seigt: sub diagonal of matrix H");
-	}
+    if (msglvl > 0)
+    {
+        svout_(n, &h[(h_dim1 << 1) + 1], &debug_1.ndigit, "_seigt: main diagonal of matrix H");
+        if (*n > 1)
+        {
+            i__1 = *n - 1;
+            svout_(&i__1, &h[h_dim1 + 2], &debug_1.ndigit, "_seigt: sub diagonal of matrix H");
+        }
     }
 #endif
 
@@ -135,24 +137,27 @@ int sseigt_(float *rnorm, int32_t *n, float *h, int32_t *ldh,
     i__1 = *n - 1;
     scopy_(&i__1, &h[h_dim1 + 2], &c__1, &workl[1], &c__1);
     sstqrb_(n, &eig[1], &workl[1], &bounds[1], &workl[*n + 1], ierr);
-    if (*ierr != 0) {
-	goto L9000;
+    if (*ierr != 0)
+    {
+        goto L9000;
     }
 #ifndef NO_TRACE
-    if (msglvl > 1) {
-	svout_(n, &bounds[1], &debug_1.ndigit, "_seigt: last row of the eigenvector matrix for H");
+    if (msglvl > 1)
+    {
+        svout_(n, &bounds[1], &debug_1.ndigit, "_seigt: last row of the eigenvector matrix for H");
     }
 #endif
 
-     /* --------------------------------------------- */
-     /* Finally determine the error bounds associated */
-     /* with the n Ritz values of H.                  */
-     /* --------------------------------------------- */
+    /* --------------------------------------------- */
+    /* Finally determine the error bounds associated */
+    /* with the n Ritz values of H.                  */
+    /* --------------------------------------------- */
 
     i__1 = *n;
-    for (k = 1; k <= i__1; ++k) {
-	bounds[k] = *rnorm * (r__1 = bounds[k], dabs(r__1));
-/* L30: */
+    for (k = 1; k <= i__1; ++k)
+    {
+        bounds[k] = *rnorm * (r__1 = bounds[k], dabs(r__1));
+        /* L30: */
     }
 
 #ifndef NO_TIMER
@@ -163,9 +168,9 @@ int sseigt_(float *rnorm, int32_t *n, float *h, int32_t *ldh,
 L9000:
     return 0;
 
-     /* ------------- */
-     /* End of sseigt */
-     /* ------------- */
+    /* ------------- */
+    /* End of sseigt */
+    /* ------------- */
 
 } /* sseigt_ */
 
