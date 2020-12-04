@@ -73,72 +73,77 @@ int dsdrv1()
     workl = (double*)malloc(825 * sizeof(double));
     workd = (double*)malloc(768 * sizeof(double));
 
-     /* Define maximum dimensions for all arrays. */
+    /* Define maximum dimensions for all arrays. */
 
-     const int MAXN   = 256; /* Maximum dimension of the A allowed. */
-     const int MAXNEV =  10; /* Maximum NEV allowed */
-     const int MAXNCV =  25; /* Maximum NCV allowed */
+    const int MAXN   = 256; /* Maximum dimension of the A allowed. */
+    const int MAXNEV =  10; /* Maximum NEV allowed */
+    const int MAXNCV =  25; /* Maximum NCV allowed */
 
-     /* -------------------------------------------------- */
-     /* The number NX is the number of interior points     */
-     /* in the discretization of the 2-dimensional         */
-     /* Laplacian on the unit square with zero Dirichlet   */
-     /* boundary condition.  The number N(=NX*NX) is the   */
-     /* dimension of the matrix.  A standard eigenvalue    */
-     /* problem is solved (BMAT = 'I'). NEV is the number  */
-     /* of eigenvalues to be approximated.  The user can   */
-     /* modify NEV, NCV, WHICH to solve problems of        */
-     /* different sizes, and to get different parts of the */
-     /* spectrum.  However, The following conditions must  */
-     /* be satisfied:                                      */
-     /*                   N <= MAXN,                       */
-     /*                 NEV <= MAXNEV,                     */
-     /*             NEV + 1 <= NCV <= MAXNCV               */
-     /* -------------------------------------------------- */
+    /* -------------------------------------------------- */
+    /* The number NX is the number of interior points     */
+    /* in the discretization of the 2-dimensional         */
+    /* Laplacian on the unit square with zero Dirichlet   */
+    /* boundary condition.  The number N(=NX*NX) is the   */
+    /* dimension of the matrix.  A standard eigenvalue    */
+    /* problem is solved (BMAT = 'I'). NEV is the number  */
+    /* of eigenvalues to be approximated.  The user can   */
+    /* modify NEV, NCV, WHICH to solve problems of        */
+    /* different sizes, and to get different parts of the */
+    /* spectrum.  However, The following conditions must  */
+    /* be satisfied:                                      */
+    /*                   N <= MAXN,                       */
+    /*                 NEV <= MAXNEV,                     */
+    /*             NEV + 1 <= NCV <= MAXNCV               */
+    /* -------------------------------------------------- */
 
     nx = 10;
     n = nx * nx;
     nev = 4;
     ncv = 10;
-    if (n > 256) {
-	printf(" ERROR with _SDRV1: N is greater than MAXN \n");
-	return 0;
-    } else if (nev > 10) {
-	printf(" ERROR with _SDRV1: NEV is greater than MAXNEV \n");
-	return 0;
-    } else if (ncv > 25) {
-	printf(" ERROR with _SDRV1: NCV is greater than MAXNCV \n");
-	return 0;
+    if (n > 256)
+    {
+        printf(" ERROR with _SDRV1: N is greater than MAXN \n");
+        return 0;
+    }
+    else if (nev > 10)
+    {
+        printf(" ERROR with _SDRV1: NEV is greater than MAXNEV \n");
+        return 0;
+    }
+    else if (ncv > 25)
+    {
+        printf(" ERROR with _SDRV1: NCV is greater than MAXNCV \n");
+        return 0;
     }
     bmat = "I";
     which = "SM";
 
-     /* ------------------------------------------------ */
-     /* The work array WORKL is used in DSAUPD as        */
-     /* workspace.  Its dimension LWORKL is set as       */
-     /* illustrated below.  The parameter TOL determines */
-     /* the stopping criterion.  If TOL<=0, machine      */
-     /* precision is used.  The variable IDO is used for */
-     /* reverse communication and is initially set to 0. */
-     /* Setting INFO=0 indicates that a random vector is */
-     /* generated in DSAUPD to start the Arnoldi         */
-     /* iteration.                                       */
-     /* ------------------------------------------------ */
+    /* ------------------------------------------------ */
+    /* The work array WORKL is used in DSAUPD as        */
+    /* workspace.  Its dimension LWORKL is set as       */
+    /* illustrated below.  The parameter TOL determines */
+    /* the stopping criterion.  If TOL<=0, machine      */
+    /* precision is used.  The variable IDO is used for */
+    /* reverse communication and is initially set to 0. */
+    /* Setting INFO=0 indicates that a random vector is */
+    /* generated in DSAUPD to start the Arnoldi         */
+    /* iteration.                                       */
+    /* ------------------------------------------------ */
 
     lworkl = ncv * (ncv + 8);
     tol = 0.;
     info = 0;
     ido = 0;
 
-     /* ------------------------------------------------- */
-     /* This program uses exact shifts with respect to    */
-     /* the current Hessenberg matrix (IPARAM(1) = 1).    */
-     /* IPARAM(3) specifies the maximum number of Arnoldi */
-     /* iterations allowed.  Mode 1 of DSAUPD is used     */
-     /* (IPARAM(7) = 1).  All these options may be        */
-     /* changed by the user. For details, see the         */
-     /* documentation in DSAUPD.                          */
-     /* ------------------------------------------------- */
+    /* ------------------------------------------------- */
+    /* This program uses exact shifts with respect to    */
+    /* the current Hessenberg matrix (IPARAM(1) = 1).    */
+    /* IPARAM(3) specifies the maximum number of Arnoldi */
+    /* iterations allowed.  Mode 1 of DSAUPD is used     */
+    /* (IPARAM(7) = 1).  All these options may be        */
+    /* changed by the user. For details, see the         */
+    /* documentation in DSAUPD.                          */
+    /* ------------------------------------------------- */
 
     ishfts = 1;
     maxitr = 300;
@@ -148,61 +153,65 @@ int dsdrv1()
     iparam[2] = maxitr;
     iparam[6] = mode;
 
-     /* ----------------------------------------- */
-     /* M A I N   L O O P (Reverse communication) */
-     /* ----------------------------------------- */
+    /* ----------------------------------------- */
+    /* M A I N   L O O P (Reverse communication) */
+    /* ----------------------------------------- */
 
 L10:
 
-        /* ------------------------------------------- */
-        /* Repeatedly call the routine DSAUPD and take */
-        /* actions indicated by parameter IDO until    */
-        /* either convergence is indicated or maxitr   */
-        /* has been exceeded.                          */
-        /* ------------------------------------------- */
+    /* ------------------------------------------- */
+    /* Repeatedly call the routine DSAUPD and take */
+    /* actions indicated by parameter IDO until    */
+    /* either convergence is indicated or maxitr   */
+    /* has been exceeded.                          */
+    /* ------------------------------------------- */
 
     dsaupd_(&ido, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, workd, workl, &lworkl, &info);
 
-    if (ido == -1 || ido == 1) {
+    if (ido == -1 || ido == 1)
+    {
 
-           /* ------------------------------------ */
-           /* Perform matrix vector multiplication */
-           /*              y <--- OP*x             */
-           /* The user should supply his/her own   */
-           /* matrix vector multiplication routine */
-           /* here that takes workd(ipntr(1)) as   */
-           /* the input, and return the result to  */
-           /* workd(ipntr(2)).                     */
-           /* ------------------------------------ */
+        /* ------------------------------------ */
+        /* Perform matrix vector multiplication */
+        /*              y <--- OP*x             */
+        /* The user should supply his/her own   */
+        /* matrix vector multiplication routine */
+        /* here that takes workd(ipntr(1)) as   */
+        /* the input, and return the result to  */
+        /* workd(ipntr(2)).                     */
+        /* ------------------------------------ */
 
-	dsdrv1_av_(&nx, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
+        dsdrv1_av_(&nx, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
 
-           /* --------------------------------------- */
-           /* L O O P   B A C K to call DSAUPD again. */
-           /* --------------------------------------- */
+        /* --------------------------------------- */
+        /* L O O P   B A C K to call DSAUPD again. */
+        /* --------------------------------------- */
 
-	goto L10;
+        goto L10;
 
     }
 
-     /* -------------------------------------- */
-     /* Either we have convergence or there is */
-     /* an error.                              */
-     /* -------------------------------------- */
+    /* -------------------------------------- */
+    /* Either we have convergence or there is */
+    /* an error.                              */
+    /* -------------------------------------- */
 
-    if (info < 0) {
+    if (info < 0)
+    {
 
         /* ------------------------ */
         /* Error message. Check the */
         /* documentation in DSAUPD. */
         /* ------------------------ */
 
-	printf(" \n");
-	printf(" Error with _saupd info = %d\n", info);
-	printf(" Check documentation in _saupd \n");
-	printf(" \n");
+        printf(" \n");
+        printf(" Error with _saupd info = %d\n", info);
+        printf(" Check documentation in _saupd \n");
+        printf(" \n");
 
-    } else {
+    }
+    else
+    {
 
         /* ----------------------------------------- */
         /* No fatal errors occurred.                 */
@@ -214,9 +223,9 @@ L10:
         /* desired.  (indicated by rvec = .true.)    */
         /* ----------------------------------------- */
 
-	rvec = true;
+        rvec = true;
 
-	dseupd_(&rvec, "All", select, d, v, &c__256, &sigma, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, workd, workl, &lworkl, &ierr);
+        dseupd_(&rvec, "All", select, d, v, &c__256, &sigma, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, workd, workl, &lworkl, &ierr);
         /* -------------------------------------------- */
         /* Eigenvalues are returned in the first column */
         /* of the two dimensional array D and the       */
@@ -228,81 +237,88 @@ L10:
         /* returned in V.                               */
         /* -------------------------------------------- */
 
-	if (ierr != 0) {
+        if (ierr != 0)
+        {
 
             /* ---------------------------------- */
             /* Error condition:                   */
             /* Check the documentation of DSEUPD. */
             /* ---------------------------------- */
 
-	    printf(" \n");
-	    printf(" Error with _seupd info = %d\n", ierr);
-	    printf(" Check the documentation of _seupd. \n");
-	    printf(" \n");
+            printf(" \n");
+            printf(" Error with _seupd info = %d\n", ierr);
+            printf(" Check the documentation of _seupd. \n");
+            printf(" \n");
 
-	} else {
+        }
+        else
+        {
 
-	    nconv = iparam[4];
-	    i__1 = nconv;
-	    for (j = 1; j <= i__1; ++j) {
+            nconv = iparam[4];
+            i__1 = nconv;
+            for (j = 1; j <= i__1; ++j)
+            {
 
-               /* ------------------------- */
-               /* Compute the residual norm */
-               /*                           */
-               /*   ||  A*x - lambda*x ||   */
-               /*                           */
-               /* for the NCONV accurately  */
-               /* computed eigenvalues and  */
-               /* eigenvectors.  (iparam(5) */
-               /* indicates how many are    */
-               /* accurate to the requested */
-               /* tolerance)                */
-               /* ------------------------- */
+                /* ------------------------- */
+                /* Compute the residual norm */
+                /*                           */
+                /*   ||  A*x - lambda*x ||   */
+                /*                           */
+                /* for the NCONV accurately  */
+                /* computed eigenvalues and  */
+                /* eigenvectors.  (iparam(5) */
+                /* indicates how many are    */
+                /* accurate to the requested */
+                /* tolerance)                */
+                /* ------------------------- */
 
-		dsdrv1_av_(&nx, &v[(j << 8) - 256], ax);
-		d__1 = -d[j - 1];
-		daxpy_(&n, &d__1, &v[(j << 8) - 256], &c__1, ax, &c__1);
-		d[j + 24] = dnrm2_(&n, ax, &c__1);
-		d[j + 24] /= (d__1 = d[j - 1], abs(d__1));
+                dsdrv1_av_(&nx, &v[(j << 8) - 256], ax);
+                d__1 = -d[j - 1];
+                daxpy_(&n, &d__1, &v[(j << 8) - 256], &c__1, ax, &c__1);
+                d[j + 24] = dnrm2_(&n, ax, &c__1);
+                d[j + 24] /= (d__1 = d[j - 1], abs(d__1));
 
-/* L20: */
-	    }
+                /* L20: */
+            }
 
             /* ----------------------------- */
             /* Display computed residuals    */
             /* ----------------------------- */
 
-	    dmout_(&nconv, &c__2, d, &c__25, &c_n6, "Ritz values and relative residuals");
-	}
+            dmout_(&nconv, &c__2, d, &c__25, &c_n6, "Ritz values and relative residuals");
+        }
 
         /* ---------------------------------------- */
         /* Print additional convergence information */
         /* ---------------------------------------- */
 
-	if (info == 1) {
-	    printf(" \n");
-	    printf(" Maximum number of iterations reached.\n");
-	    printf(" \n");
-	} else if (info == 3) {
-	    printf(" \n");
-	    printf(" No shifts could be applied during implicit\n");
-	    printf(" Arnoldi update try increasing NCV.\n");
-	    printf(" \n");
-	}
+        if (info == 1)
+        {
+            printf(" \n");
+            printf(" Maximum number of iterations reached.\n");
+            printf(" \n");
+        }
+        else if (info == 3)
+        {
+            printf(" \n");
+            printf(" No shifts could be applied during implicit\n");
+            printf(" Arnoldi update try increasing NCV.\n");
+            printf(" \n");
+        }
 
-	printf(" \n");
-	printf(" _SDRV1 \n");
-	printf(" ====== \n");
-	printf(" \n");
-	printf(" Size of the matrix is %d\n", n);
-	printf(" The number of Ritz values requested is %d\n", nev);
-	printf(" The number of Arnoldi vectors generated (NCV) is %d\n", ncv);
-	printf(" What portion of the spectrum: %s\n", which);
-	printf(" The number of converged Ritz values is %d\n", nconv);
-	printf(" The number of Implicit Arnoldi update iterations taken is %d\n", iparam[2]);
-	printf(" The number of OP*x is %d\n", iparam[8]);
-	printf(" The convergence criterion is %e\n", tol);
-	printf(" \n");
+        printf(" \n");
+        printf(" _SDRV1 \n");
+        printf(" ====== \n");
+        printf(" \n");
+        printf(" Size of the matrix is %d\n", n);
+        printf(" The number of Ritz values requested is %d\n", nev);
+        printf(" The number of Arnoldi vectors generated (NCV) is %d\n", ncv);
+        printf(" What portion of the spectrum: %s\n", which);
+        printf(" The number of converged Ritz values is %d\n", nconv);
+        printf(" The number of Implicit Arnoldi update iterations taken is %d\n", iparam[2]);
+        printf(" The number of OP*x is %d\n", iparam[8]);
+        printf(" The convergence criterion is %e\n", tol);
+        printf(" \n");
 
     }
 
@@ -311,9 +327,9 @@ L10:
     free(workl);
     free(workd);
 
-     /* ------------------------- */
-     /* Done with program dsdrv1. */
-     /* ------------------------- */
+    /* ------------------------- */
+    /* Done with program dsdrv1. */
+    /* ------------------------- */
 
     return 0;
 } /* MAIN__ */
@@ -351,23 +367,24 @@ int dsdrv1_av_(int32_t *nx, double *v, double *w)
     --v;
 
     /* Function Body */
-	dsdrv1_tv_(nx, &v[1], &w[1]);
+    dsdrv1_tv_(nx, &v[1], &w[1]);
     daxpy_(nx, &c_b138, &v[*nx + 1], &c__1, &w[1], &c__1);
 
     i__1 = *nx - 1;
-    for (j = 2; j <= i__1; ++j) {
-	lo = (j - 1) * *nx;
-	dsdrv1_tv_(nx, &v[lo + 1], &w[lo + 1]);
-	daxpy_(nx, &c_b138, &v[lo - *nx + 1], &c__1, &w[lo + 1], &c__1);
-	daxpy_(nx, &c_b138, &v[lo + *nx + 1], &c__1, &w[lo + 1], &c__1);
-/* L10: */
+    for (j = 2; j <= i__1; ++j)
+    {
+        lo = (j - 1) * *nx;
+        dsdrv1_tv_(nx, &v[lo + 1], &w[lo + 1]);
+        daxpy_(nx, &c_b138, &v[lo - *nx + 1], &c__1, &w[lo + 1], &c__1);
+        daxpy_(nx, &c_b138, &v[lo + *nx + 1], &c__1, &w[lo + 1], &c__1);
+        /* L10: */
     }
 
     lo = (*nx - 1) * *nx;
-	dsdrv1_tv_(nx, &v[lo + 1], &w[lo + 1]);
+    dsdrv1_tv_(nx, &v[lo + 1], &w[lo + 1]);
     daxpy_(nx, &c_b138, &v[lo - *nx + 1], &c__1, &w[lo + 1], &c__1);
 
-/*     Scale the vector w by (1/h^2), where h is the mesh size */
+    /*     Scale the vector w by (1/h^2), where h is the mesh size */
 
     n2 = *nx * *nx;
     h2 = 1. / (double) ((*nx + 1) * (*nx + 1));
@@ -386,9 +403,9 @@ int dsdrv1_tv_(int32_t *nx, double *x, double *y)
     int32_t j;
     double dd, dl, du;
 
-/*     Compute the matrix vector multiplication y<---T*x */
-/*     where T is a nx by nx tridiagonal matrix with DD on the */
-/*     diagonal, DL on the subdiagonal, and DU on the superdiagonal. */
+    /*     Compute the matrix vector multiplication y<---T*x */
+    /*     where T is a nx by nx tridiagonal matrix with DD on the */
+    /*     diagonal, DL on the subdiagonal, and DU on the superdiagonal. */
 
     /* Parameter adjustments */
     --y;
@@ -401,9 +418,10 @@ int dsdrv1_tv_(int32_t *nx, double *x, double *y)
 
     y[1] = dd * x[1] + du * x[2];
     i__1 = *nx - 1;
-    for (j = 2; j <= i__1; ++j) {
-	y[j] = dl * x[j - 1] + dd * x[j] + du * x[j + 1];
-/* L10: */
+    for (j = 2; j <= i__1; ++j)
+    {
+        y[j] = dl * x[j - 1] + dd * x[j] + du * x[j + 1];
+        /* L10: */
     }
     y[*nx] = dl * x[*nx - 1] + dd * x[*nx];
     return 0;

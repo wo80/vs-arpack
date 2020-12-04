@@ -83,70 +83,75 @@ int ssdrv6()
     workl = (float*)malloc(825 * sizeof(float));
     workd = (float*)malloc(768 * sizeof(float));
 
-     /* Define maximum dimensions for all arrays. */
+    /* Define maximum dimensions for all arrays. */
 
-     const int MAXN   = 256; /* Maximum dimension of the A allowed. */
-     const int MAXNEV =  10; /* Maximum NEV allowed */
-     const int MAXNCV =  25; /* Maximum NCV allowed */
+    const int MAXN   = 256; /* Maximum dimension of the A allowed. */
+    const int MAXNEV =  10; /* Maximum NEV allowed */
+    const int MAXNCV =  25; /* Maximum NCV allowed */
 
-     /* ------------------------------------------------ */
-     /* The number N is the dimension of the matrix. A   */
-     /* generalized eigenvalue problem is solved (BMAT = */
-     /* 'G'.) NEV is the number of eigenvalues to be     */
-     /* approximated.  Since the Cayley mode is used,    */
-     /* WHICH is set to 'LM'.  The user can modify NEV,  */
-     /* NCV, SIGMA to solve problems of different sizes, */
-     /* and to get different parts of the spectrum.      */
-     /* However, The following conditions must be        */
-     /* satisfied:                                       */
-     /*                 N <= MAXN,                       */
-     /*               NEV <= MAXNEV,                     */
-     /*           NEV + 1 <= NCV <= MAXNCV               */
-     /* ------------------------------------------------ */
+    /* ------------------------------------------------ */
+    /* The number N is the dimension of the matrix. A   */
+    /* generalized eigenvalue problem is solved (BMAT = */
+    /* 'G'.) NEV is the number of eigenvalues to be     */
+    /* approximated.  Since the Cayley mode is used,    */
+    /* WHICH is set to 'LM'.  The user can modify NEV,  */
+    /* NCV, SIGMA to solve problems of different sizes, */
+    /* and to get different parts of the spectrum.      */
+    /* However, The following conditions must be        */
+    /* satisfied:                                       */
+    /*                 N <= MAXN,                       */
+    /*               NEV <= MAXNEV,                     */
+    /*           NEV + 1 <= NCV <= MAXNCV               */
+    /* ------------------------------------------------ */
 
     n = 100;
     nev = 4;
     ncv = 20;
-    if (n > 256) {
-	printf(" ERROR with _SDRV6: N is greater than MAXN \n");
-	return 0;
-    } else if (nev > 10) {
-	printf(" ERROR with _SDRV6: NEV is greater than MAXNEV \n");
-	return 0;
-    } else if (ncv > 25) {
-	printf(" ERROR with _SDRV6: NCV is greater than MAXNCV \n");
-	return 0;
+    if (n > 256)
+    {
+        printf(" ERROR with _SDRV6: N is greater than MAXN \n");
+        return 0;
+    }
+    else if (nev > 10)
+    {
+        printf(" ERROR with _SDRV6: NEV is greater than MAXNEV \n");
+        return 0;
+    }
+    else if (ncv > 25)
+    {
+        printf(" ERROR with _SDRV6: NCV is greater than MAXNCV \n");
+        return 0;
     }
     bmat = "G";
     which = "LM";
     sigma = 150.f;
 
-     /* ------------------------------------------------ */
-     /* The work array WORKL is used in SSAUPD as        */
-     /* workspace.  Its dimension LWORKL is set as       */
-     /* illustrated below.  The parameter TOL determines */
-     /* the stopping criterion.  If TOL<=0, machine      */
-     /* precision is used.  The variable IDO is used for */
-     /* reverse communication and is initially set to 0. */
-     /* Setting INFO=0 indicates that a random vector is */
-     /* generated in SSAUPD to start the Arnoldi         */
-     /* iteration.                                       */
-     /* ------------------------------------------------ */
+    /* ------------------------------------------------ */
+    /* The work array WORKL is used in SSAUPD as        */
+    /* workspace.  Its dimension LWORKL is set as       */
+    /* illustrated below.  The parameter TOL determines */
+    /* the stopping criterion.  If TOL<=0, machine      */
+    /* precision is used.  The variable IDO is used for */
+    /* reverse communication and is initially set to 0. */
+    /* Setting INFO=0 indicates that a random vector is */
+    /* generated in SSAUPD to start the Arnoldi         */
+    /* iteration.                                       */
+    /* ------------------------------------------------ */
 
     lworkl = ncv * (ncv + 8);
     tol = 0.f;
     ido = 0;
     info = 0;
 
-     /* ------------------------------------------------- */
-     /* This program uses exact shifts with respect to    */
-     /* the current Hessenberg matrix (IPARAM(1) = 1).    */
-     /* IPARAM(3) specifies the maximum number of Arnoldi */
-     /* iterations allowed.  Mode 5 specified in the      */
-     /* documentation of SSAUPD is used (IPARAM(7) = 5).  */
-     /* All these options may be changed by the user. For */
-     /* details, see the documentation in SSAUPD.         */
-     /* ------------------------------------------------- */
+    /* ------------------------------------------------- */
+    /* This program uses exact shifts with respect to    */
+    /* the current Hessenberg matrix (IPARAM(1) = 1).    */
+    /* IPARAM(3) specifies the maximum number of Arnoldi */
+    /* iterations allowed.  Mode 5 specified in the      */
+    /* documentation of SSAUPD is used (IPARAM(7) = 5).  */
+    /* All these options may be changed by the user. For */
+    /* details, see the documentation in SSAUPD.         */
+    /* ------------------------------------------------- */
 
     ishfts = 1;
     maxitr = 300;
@@ -156,144 +161,156 @@ int ssdrv6()
     iparam[2] = maxitr;
     iparam[6] = mode;
 
-     /* ---------------------------------------------------- */
-     /* Call LAPACK routine to factor (A-sigma*M).  The      */
-     /* stiffness matrix A is the 1-d discrete Laplacian.    */
-     /* The mass matrix M is the associated mass matrix      */
-     /* arising from using piecewise linear finite elements  */
-     /* on the interval [0, 1].                              */
-     /* ---------------------------------------------------- */
+    /* ---------------------------------------------------- */
+    /* Call LAPACK routine to factor (A-sigma*M).  The      */
+    /* stiffness matrix A is the 1-d discrete Laplacian.    */
+    /* The mass matrix M is the associated mass matrix      */
+    /* arising from using piecewise linear finite elements  */
+    /* on the interval [0, 1].                              */
+    /* ---------------------------------------------------- */
 
     h = 1.f / (float) (n + 1);
     r1 = h * .66666666666666663f;
     r2 = h * .16666666666666666f;
     i__1 = n;
-    for (j = 1; j <= i__1; ++j) {
-	ad[j - 1] = 2.f / h - sigma * r1;
-	adl[j - 1] = -1.f / h - sigma * r2;
-/* L20: */
+    for (j = 1; j <= i__1; ++j)
+    {
+        ad[j - 1] = 2.f / h - sigma * r1;
+        adl[j - 1] = -1.f / h - sigma * r2;
+        /* L20: */
     }
     scopy_(&n, adl, &c__1, adu, &c__1);
     sgttrf_(&n, adl, ad, adu, adu2, ipiv, &ierr);
-    if (ierr != 0) {
-	printf(" \n");
-	printf(" Error with _gttrf in _SDRV6.\n");
-	printf(" \n");
-	return 0;
+    if (ierr != 0)
+    {
+        printf(" \n");
+        printf(" Error with _gttrf in _SDRV6.\n");
+        printf(" \n");
+        return 0;
     }
 
-     /* ----------------------------------------- */
-     /* M A I N   L O O P (Reverse communication) */
-     /* ----------------------------------------- */
+    /* ----------------------------------------- */
+    /* M A I N   L O O P (Reverse communication) */
+    /* ----------------------------------------- */
 
 L10:
 
-        /* ------------------------------------------- */
-        /* Repeatedly call the routine SSAUPD and take */
-        /* actions indicated by parameter IDO until    */
-        /* either convergence is indicated or maxitr   */
-        /* has been exceeded.                          */
-        /* ------------------------------------------- */
+    /* ------------------------------------------- */
+    /* Repeatedly call the routine SSAUPD and take */
+    /* actions indicated by parameter IDO until    */
+    /* either convergence is indicated or maxitr   */
+    /* has been exceeded.                          */
+    /* ------------------------------------------- */
 
     ssaupd_(&ido, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, workd, workl, &lworkl, &info);
 
-    if (ido == -1) {
+    if (ido == -1)
+    {
 
-           /* ----------------------------------------------------- */
-           /* Perform  y <--- OP*x = (inv[A-SIGMA*M])*(A+SIGMA*M)*x */
-           /* to force starting vector into the range of OP.  The   */
-           /* user should provide his/her matrix vector (A*x, M*x)  */
-           /* multiplication routines and a linear system solver    */
-           /* here.  The matrix vector multiplication routine takes */
-           /* workd(ipntr(1)) as the input vector.  The final       */
-           /* result is returned to workd(ipntr(2)).                */
-           /* ----------------------------------------------------- */
+        /* ----------------------------------------------------- */
+        /* Perform  y <--- OP*x = (inv[A-SIGMA*M])*(A+SIGMA*M)*x */
+        /* to force starting vector into the range of OP.  The   */
+        /* user should provide his/her matrix vector (A*x, M*x)  */
+        /* multiplication routines and a linear system solver    */
+        /* here.  The matrix vector multiplication routine takes */
+        /* workd(ipntr(1)) as the input vector.  The final       */
+        /* result is returned to workd(ipntr(2)).                */
+        /* ----------------------------------------------------- */
 
-	ssdrv6_av_(&n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
-	ssdrv6_mv_(&n, &workd[ipntr[0] - 1], temp);
-	saxpy_(&n, &sigma, temp, &c__1, &workd[ipntr[1] - 1], &c__1);
+        ssdrv6_av_(&n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
+        ssdrv6_mv_(&n, &workd[ipntr[0] - 1], temp);
+        saxpy_(&n, &sigma, temp, &c__1, &workd[ipntr[1] - 1], &c__1);
 
-	sgttrs_("Notranspose", &n, &c__1, adl, ad, adu, adu2, ipiv, &workd[ipntr[1] - 1], &n, &ierr);
-	if (ierr != 0) {
-	    printf(" \n");
-	    printf(" Error with _gttrs in _SDRV6.\n");
-	    printf(" \n");
-	    return ierr;
-	}
+        sgttrs_("Notranspose", &n, &c__1, adl, ad, adu, adu2, ipiv, &workd[ipntr[1] - 1], &n, &ierr);
+        if (ierr != 0)
+        {
+            printf(" \n");
+            printf(" Error with _gttrs in _SDRV6.\n");
+            printf(" \n");
+            return ierr;
+        }
 
-           /* --------------------------------------- */
-           /* L O O P   B A C K to call SSAUPD again. */
-           /* --------------------------------------- */
+        /* --------------------------------------- */
+        /* L O O P   B A C K to call SSAUPD again. */
+        /* --------------------------------------- */
 
-	goto L10;
+        goto L10;
 
-    } else if (ido == 1) {
+    }
+    else if (ido == 1)
+    {
 
-           /* -------------------------------------------------- */
-           /* Perform y <-- OP*x = inv[A-SIGMA*M]*(A+SIGMA*M)*x. */
-           /* M*x has been saved in workd(ipntr(3)).  The user   */
-           /* need the matrix vector multiplication (A*x)        */
-           /* routine and a linear system solver here.  The      */
-           /* matrix vector multiplication routine takes         */
-           /* workd(ipntr(1)) as the input, and the result is    */
-           /* combined with workd(ipntr(3)) to form the input    */
-           /* for the linear system solver.  The final result is */
-           /* returned to workd(ipntr(2)).                       */
-           /* -------------------------------------------------- */
+        /* -------------------------------------------------- */
+        /* Perform y <-- OP*x = inv[A-SIGMA*M]*(A+SIGMA*M)*x. */
+        /* M*x has been saved in workd(ipntr(3)).  The user   */
+        /* need the matrix vector multiplication (A*x)        */
+        /* routine and a linear system solver here.  The      */
+        /* matrix vector multiplication routine takes         */
+        /* workd(ipntr(1)) as the input, and the result is    */
+        /* combined with workd(ipntr(3)) to form the input    */
+        /* for the linear system solver.  The final result is */
+        /* returned to workd(ipntr(2)).                       */
+        /* -------------------------------------------------- */
 
-	ssdrv6_av_(&n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
-	saxpy_(&n, &sigma, &workd[ipntr[2] - 1], &c__1, &workd[ipntr[1] - 1], &c__1);
-	sgttrs_("Notranspose", &n, &c__1, adl, ad, adu, adu2, ipiv, &workd[ipntr[1] - 1], &n, &ierr);
-	if (ierr != 0) {
-	    printf(" \n");
-	    printf(" Error with _gttrs in _SDRV6. \n");
-	    printf(" \n");
-	    return ierr;
-	}
+        ssdrv6_av_(&n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
+        saxpy_(&n, &sigma, &workd[ipntr[2] - 1], &c__1, &workd[ipntr[1] - 1], &c__1);
+        sgttrs_("Notranspose", &n, &c__1, adl, ad, adu, adu2, ipiv, &workd[ipntr[1] - 1], &n, &ierr);
+        if (ierr != 0)
+        {
+            printf(" \n");
+            printf(" Error with _gttrs in _SDRV6. \n");
+            printf(" \n");
+            return ierr;
+        }
 
-           /* --------------------------------------- */
-           /* L O O P   B A C K to call SSAUPD again. */
-           /* --------------------------------------- */
+        /* --------------------------------------- */
+        /* L O O P   B A C K to call SSAUPD again. */
+        /* --------------------------------------- */
 
-	goto L10;
+        goto L10;
 
-    } else if (ido == 2) {
+    }
+    else if (ido == 2)
+    {
 
-           /* ------------------------------------------ */
-           /*             Perform  y <--- M*x.           */
-           /* Need matrix vector multiplication routine  */
-           /* here that takes workd(ipntr(1)) as input   */
-           /* and returns the result to workd(ipntr(2)). */
-           /* ------------------------------------------ */
+        /* ------------------------------------------ */
+        /*             Perform  y <--- M*x.           */
+        /* Need matrix vector multiplication routine  */
+        /* here that takes workd(ipntr(1)) as input   */
+        /* and returns the result to workd(ipntr(2)). */
+        /* ------------------------------------------ */
 
-	ssdrv6_mv_(&n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
+        ssdrv6_mv_(&n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
 
-           /* --------------------------------------- */
-           /* L O O P   B A C K to call SSAUPD again. */
-           /* --------------------------------------- */
+        /* --------------------------------------- */
+        /* L O O P   B A C K to call SSAUPD again. */
+        /* --------------------------------------- */
 
-	goto L10;
+        goto L10;
 
     }
 
-     /* --------------------------------------- */
-     /* Either we have convergence, or there is */
-     /* an error.                               */
-     /* --------------------------------------- */
+    /* --------------------------------------- */
+    /* Either we have convergence, or there is */
+    /* an error.                               */
+    /* --------------------------------------- */
 
-    if (info < 0) {
+    if (info < 0)
+    {
 
         /* ------------------------ */
         /* Error message, check the */
         /* documentation in SSAUPD  */
         /* ------------------------ */
 
-	printf(" \n");
-	printf(" Error with _saupd info = %d\n", info);
-	printf(" Check the documentation of _saupd. \n");
-	printf(" \n");
+        printf(" \n");
+        printf(" Error with _saupd info = %d\n", info);
+        printf(" Check the documentation of _saupd. \n");
+        printf(" \n");
 
-    } else {
+    }
+    else
+    {
 
         /* ----------------------------------------- */
         /* No fatal errors occurred.                 */
@@ -305,9 +322,9 @@ L10:
         /* desired.  (indicated by rvec = .true.)    */
         /* ----------------------------------------- */
 
-	rvec = true;
+        rvec = true;
 
-	sseupd_(&rvec, "All", select, d, v, &c__256, &sigma, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, workd, workl, &lworkl, &ierr);
+        sseupd_(&rvec, "All", select, d, v, &c__256, &sigma, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, workd, workl, &lworkl, &ierr);
 
         /* -------------------------------------------- */
         /* Eigenvalues are returned in the first column */
@@ -320,77 +337,84 @@ L10:
         /* returned in V.                               */
         /* -------------------------------------------- */
 
-	if (ierr != 0) {
+        if (ierr != 0)
+        {
 
-           /* ---------------------------------- */
-           /* Error condition:                   */
-           /* Check the documentation of SSEUPD. */
-           /* ---------------------------------- */
+            /* ---------------------------------- */
+            /* Error condition:                   */
+            /* Check the documentation of SSEUPD. */
+            /* ---------------------------------- */
 
-	    printf(" \n");
-	    printf(" Error with _seupd info = %d\n", ierr);
-	    printf(" Check the documentation of _seupd \n");
-	    printf(" \n");
+            printf(" \n");
+            printf(" Error with _seupd info = %d\n", ierr);
+            printf(" Check the documentation of _seupd \n");
+            printf(" \n");
 
-	} else {
+        }
+        else
+        {
 
-           /* ------------------------- */
-           /* Compute the residual norm */
-           /*                           */
-           /*   ||  A*x - lambda*x ||   */
-           /*                           */
-           /* for the NCONV accurately  */
-           /* computed eigenvalues and  */
-           /* eigenvectors.  (iparam(5) */
-           /* indicates how many are    */
-           /* accurate to the requested */
-           /* tolerance)                */
-           /* ------------------------- */
+            /* ------------------------- */
+            /* Compute the residual norm */
+            /*                           */
+            /*   ||  A*x - lambda*x ||   */
+            /*                           */
+            /* for the NCONV accurately  */
+            /* computed eigenvalues and  */
+            /* eigenvectors.  (iparam(5) */
+            /* indicates how many are    */
+            /* accurate to the requested */
+            /* tolerance)                */
+            /* ------------------------- */
 
-	    nconv = iparam[4];
-	    i__1 = nconv;
-	    for (j = 1; j <= i__1; ++j) {
-		ssdrv6_av_(&n, &v[(j << 8) - 256], ax);
-		ssdrv6_mv_(&n, &v[(j << 8) - 256], mx);
-		r__1 = -d[j - 1];
-		saxpy_(&n, &r__1, mx, &c__1, ax, &c__1);
-		d[j + 24] = snrm2_(&n, ax, &c__1);
-		d[j + 24] /= (r__1 = d[j - 1], dabs(r__1));
-/* L30: */
-	    }
+            nconv = iparam[4];
+            i__1 = nconv;
+            for (j = 1; j <= i__1; ++j)
+            {
+                ssdrv6_av_(&n, &v[(j << 8) - 256], ax);
+                ssdrv6_mv_(&n, &v[(j << 8) - 256], mx);
+                r__1 = -d[j - 1];
+                saxpy_(&n, &r__1, mx, &c__1, ax, &c__1);
+                d[j + 24] = snrm2_(&n, ax, &c__1);
+                d[j + 24] /= (r__1 = d[j - 1], dabs(r__1));
+                /* L30: */
+            }
 
-	    smout_(&nconv, &c__2, d, &c__25, &c_n6, "Ritz values and relative residuals");
+            smout_(&nconv, &c__2, d, &c__25, &c_n6, "Ritz values and relative residuals");
 
-	}
+        }
 
         /* ---------------------------------------- */
         /* Print additional convergence information */
         /* ---------------------------------------- */
 
-	if (info == 1) {
-	    printf(" \n");
-	    printf(" Maximum number of iterations reached.\n");
-	    printf(" \n");
-	} else if (info == 3) {
-	    printf(" \n");
-	    printf(" No shifts could be applied during implicit\n");
-	    printf(" Arnoldi update try increasing NCV.\n");
-	    printf(" \n");
-	}
+        if (info == 1)
+        {
+            printf(" \n");
+            printf(" Maximum number of iterations reached.\n");
+            printf(" \n");
+        }
+        else if (info == 3)
+        {
+            printf(" \n");
+            printf(" No shifts could be applied during implicit\n");
+            printf(" Arnoldi update try increasing NCV.\n");
+            printf(" \n");
+        }
 
-	printf(" \n");
-	printf(" _SDRV6 \n");
-	printf(" ====== \n");
-	printf(" \n");
-	printf(" Size of the matrix is %d\n", n);
-	printf(" The number of Ritz values requested is %d\n", nev);
-	printf(" The number of Arnoldi vectors generated (NCV) is %d\n", ncv);
-	printf(" What portion of the spectrum: %s\n", which);
-	printf(" The number of converged Ritz values is %d\n", nconv);
-	printf(" The number of Implicit Arnoldi update iterations taken is %d\n", iparam[2]);
-	printf(" The number of OP*x is %d\n", iparam[8]);
-	printf(" The convergence criterion is %e\n", tol);
-	printf(" \n");
+        printf(" \n");
+        printf(" _SDRV6 \n");
+        printf(" ====== \n");
+        printf(" \n");
+        printf(" Size of the matrix is %d\n", n);
+        printf(" The number of Ritz values requested is %d\n", nev);
+        printf(" The number of Arnoldi vectors generated (NCV) is %d\n", ncv);
+        printf(" What portion of the spectrum: %s\n", which);
+        printf(" The number of converged Ritz values is %d\n", nconv);
+        printf(" The number of Implicit Arnoldi update iterations taken is %d\n", iparam[2]);
+        printf(" The number of OP*x is %d\n", iparam[8]);
+        printf(" The convergence criterion is %e\n", tol);
+        printf(" \n");
 
     }
 
@@ -399,9 +423,9 @@ L10:
     free(workl);
     free(workd);
 
-     /* ------------------------- */
-     /* Done with program ssdrv6. */
-     /* ------------------------- */
+    /* ------------------------- */
+    /* Done with program ssdrv6. */
+    /* ------------------------- */
 
     return 0;
 } /* MAIN__ */
@@ -428,14 +452,15 @@ int ssdrv6_mv_(int32_t *n, float *v, float *w)
     /* Function Body */
     w[1] = v[1] * 4.f + v[2];
     i__1 = *n - 1;
-    for (j = 2; j <= i__1; ++j) {
-	w[j] = v[j - 1] + v[j] * 4.f + v[j + 1];
-/* L100: */
+    for (j = 2; j <= i__1; ++j)
+    {
+        w[j] = v[j - 1] + v[j] * 4.f + v[j + 1];
+        /* L100: */
     }
     j = *n;
     w[j] = v[j - 1] + v[j] * 4.f;
 
-/*     Scale the vector w by h. */
+    /*     Scale the vector w by h. */
 
     h = 1.f / ((float) (*n + 1) * 6.f);
     sscal_(n, &h, &w[1], &c__1);
@@ -466,14 +491,15 @@ int ssdrv6_av_(int32_t *n, float *v, float *w)
     /* Function Body */
     w[1] = v[1] * 2.f - v[2];
     i__1 = *n - 1;
-    for (j = 2; j <= i__1; ++j) {
-	w[j] = -v[j - 1] + v[j] * 2.f - v[j + 1];
-/* L100: */
+    for (j = 2; j <= i__1; ++j)
+    {
+        w[j] = -v[j - 1] + v[j] * 2.f - v[j + 1];
+        /* L100: */
     }
     j = *n;
     w[j] = -v[j - 1] + v[j] * 2.f;
 
-/*     Scale the vector w by (1/h). */
+    /*     Scale the vector w by (1/h). */
 
     h = 1.f / (float) (*n + 1);
     r__1 = 1.f / h;

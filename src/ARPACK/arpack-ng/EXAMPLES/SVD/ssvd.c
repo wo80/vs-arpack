@@ -98,14 +98,14 @@ int ssvd()
 
     /* Builtin functions */
 
-    int32_t s_wsle(cilist *), do_lio(int32_t *, int32_t *, char *, ftnlen), 
-	    e_wsle(void);
+    int32_t s_wsle(cilist *), do_lio(int32_t *, int32_t *, char *, ftnlen),
+            e_wsle(void);
     double sqrt(double);
 
     /* Local variables */
     int32_t j, m, n;
-    float s[50]	/* was [25][2] */, u[5000]	/* was [500][10] */, v[6250]	
-	    /* was [250][25] */;
+    float s[50]	/* was [25][2] */, u[5000]	/* was [500][10] */, v[6250]
+    /* was [250][25] */;
     float ax[500];
     int32_t ido, ncv, nev;
     float tol;
@@ -127,50 +127,50 @@ int ssvd()
     int32_t ishfts, maxitr;
     int32_t lworkl;
 
-     /* ---------------------------------------------------- */
-     /* Storage Declarations:                                */
-     /*                                                      */
-     /* It is assumed that A is M by N with M .ge. N.        */
-     /*                                                      */
-     /* The maximum dimensions for all arrays are            */
-     /* set here to accommodate a problem size of            */
-     /* M .le. MAXM  and  N .le. MAXN                        */
-     /*                                                      */
-     /* The NEV right singular vectors will be computed in   */
-     /* the N by NCV array V.                                */
-     /*                                                      */
-     /* The NEV left singular vectors will be computed in    */
-     /* the M by NEV array U.                                */
-     /*                                                      */
-     /* NEV is the number of singular values requested.      */
-     /*     See specifications for ARPACK usage below.       */
-     /*                                                      */
-     /* NCV is the largest number of basis vectors that will */
-     /*     be used in the Implicitly Restarted Arnoldi      */
-     /*     Process.  Work per major iteration is            */
-     /*     proportional to N*NCV*NCV.                       */
-     /*                                                      */
-     /* You must set:                                        */
-     /*                                                      */
-     /* MAXM:   Maximum number of rows of the A allowed.     */
-     /* MAXN:   Maximum number of columns of the A allowed.  */
-     /* MAXNEV: Maximum NEV allowed                          */
-     /* MAXNCV: Maximum NCV allowed                          */
-     /* ---------------------------------------------------- */
+    /* ---------------------------------------------------- */
+    /* Storage Declarations:                                */
+    /*                                                      */
+    /* It is assumed that A is M by N with M .ge. N.        */
+    /*                                                      */
+    /* The maximum dimensions for all arrays are            */
+    /* set here to accommodate a problem size of            */
+    /* M .le. MAXM  and  N .le. MAXN                        */
+    /*                                                      */
+    /* The NEV right singular vectors will be computed in   */
+    /* the N by NCV array V.                                */
+    /*                                                      */
+    /* The NEV left singular vectors will be computed in    */
+    /* the M by NEV array U.                                */
+    /*                                                      */
+    /* NEV is the number of singular values requested.      */
+    /*     See specifications for ARPACK usage below.       */
+    /*                                                      */
+    /* NCV is the largest number of basis vectors that will */
+    /*     be used in the Implicitly Restarted Arnoldi      */
+    /*     Process.  Work per major iteration is            */
+    /*     proportional to N*NCV*NCV.                       */
+    /*                                                      */
+    /* You must set:                                        */
+    /*                                                      */
+    /* MAXM:   Maximum number of rows of the A allowed.     */
+    /* MAXN:   Maximum number of columns of the A allowed.  */
+    /* MAXNEV: Maximum NEV allowed                          */
+    /* MAXNCV: Maximum NCV allowed                          */
+    /* ---------------------------------------------------- */
 
-     /* ----------------------------------------------- */
-     /* The following include statement and assignments */
-     /* initiate trace output from the internal         */
-     /* actions of ARPACK.  See debug.doc in the        */
-     /* DOCUMENTS directory for usage.  Initially, the  */
-     /* most useful information will be a breakdown of  */
-     /* time spent in the various stages of computation */
-     /* given by setting msaupd = 1.                    */
-     /* ----------------------------------------------- */
+    /* ----------------------------------------------- */
+    /* The following include statement and assignments */
+    /* initiate trace output from the internal         */
+    /* actions of ARPACK.  See debug.doc in the        */
+    /* DOCUMENTS directory for usage.  Initially, the  */
+    /* most useful information will be a breakdown of  */
+    /* time spent in the various stages of computation */
+    /* given by setting msaupd = 1.                    */
+    /* ----------------------------------------------- */
 
-     /* ------------------------------- */
-     /* See debug.doc for documentation */
-     /* ------------------------------- */
+    /* ------------------------------- */
+    /* See debug.doc for documentation */
+    /* ------------------------------- */
     debug_1.ndigit = -3;
     debug_1.logfil = 6;
     debug_1.msgets = 0;
@@ -181,105 +181,112 @@ int ssvd()
     debug_1.mseigt = 0;
     debug_1.mseupd = 0;
 
-     /* ----------------------------------------------- */
-     /* The following sets dimensions for this problem. */
-     /* ----------------------------------------------- */
+    /* ----------------------------------------------- */
+    /* The following sets dimensions for this problem. */
+    /* ----------------------------------------------- */
 
     m = 500;
     n = 100;
 
-     /* ---------------------------------------------- */
-     /* Specifications for ARPACK usage are set        */
-     /* below:                                         */
-     /*                                                */
-     /*    1) NEV = 4 asks for 4 singular values to be */
-     /*       computed.                                */
-     /*                                                */
-     /*    2) NCV = 20 sets the length of the Arnoldi  */
-     /*       factorization                            */
-     /*                                                */
-     /*    3) This is a standard problem               */
-     /*         (indicated by bmat  = 'I')             */
-     /*                                                */
-     /*    4) Ask for the NEV singular values of       */
-     /*       largest magnitude                        */
-     /*         (indicated by which = 'LM')            */
-     /*       See documentation in SSAUPD for the      */
-     /*       other options SM, BE.                    */
-     /*                                                */
-     /* Note: NEV and NCV must satisfy the following   */
-     /*       conditions:                              */
-     /*                 NEV <= MAXNEV,                 */
-     /*             NEV + 1 <= NCV <= MAXNCV           */
-     /* ---------------------------------------------- */
+    /* ---------------------------------------------- */
+    /* Specifications for ARPACK usage are set        */
+    /* below:                                         */
+    /*                                                */
+    /*    1) NEV = 4 asks for 4 singular values to be */
+    /*       computed.                                */
+    /*                                                */
+    /*    2) NCV = 20 sets the length of the Arnoldi  */
+    /*       factorization                            */
+    /*                                                */
+    /*    3) This is a standard problem               */
+    /*         (indicated by bmat  = 'I')             */
+    /*                                                */
+    /*    4) Ask for the NEV singular values of       */
+    /*       largest magnitude                        */
+    /*         (indicated by which = 'LM')            */
+    /*       See documentation in SSAUPD for the      */
+    /*       other options SM, BE.                    */
+    /*                                                */
+    /* Note: NEV and NCV must satisfy the following   */
+    /*       conditions:                              */
+    /*                 NEV <= MAXNEV,                 */
+    /*             NEV + 1 <= NCV <= MAXNCV           */
+    /* ---------------------------------------------- */
 
     nev = 4;
     ncv = 10;
     bmat = "I";
     which = "LM";
 
-    if (n > 250) {
-	printf(" ERROR with _SVD: N is greater than MAXN \n");
-	return 0;
-    } else if (m > 500) {
-	printf(" ERROR with _SVD: M is greater than MAXM \n");
-	return 0;
-    } else if (nev > 10) {
-	printf(" ERROR with _SVD: NEV is greater than MAXNEV \n");
-	return 0;
-    } else if (ncv > 25) {
-	printf(" ERROR with _SVD: NCV is greater than MAXNCV \n");
-	return 0;
+    if (n > 250)
+    {
+        printf(" ERROR with _SVD: N is greater than MAXN \n");
+        return 0;
+    }
+    else if (m > 500)
+    {
+        printf(" ERROR with _SVD: M is greater than MAXM \n");
+        return 0;
+    }
+    else if (nev > 10)
+    {
+        printf(" ERROR with _SVD: NEV is greater than MAXNEV \n");
+        return 0;
+    }
+    else if (ncv > 25)
+    {
+        printf(" ERROR with _SVD: NCV is greater than MAXNCV \n");
+        return 0;
     }
 
-     /* --------------------------------------------------- */
-     /* Specification of stopping rules and initial         */
-     /* conditions before calling SSAUPD                    */
-     /*                                                     */
-     /*           abs(sigmaC - sigmaT) < TOL*abs(sigmaC)    */
-     /*               computed   true                       */
-     /*                                                     */
-     /*      If TOL .le. 0,  then TOL <- macheps            */
-     /*              (machine precision) is used.           */
-     /*                                                     */
-     /* IDO  is the REVERSE COMMUNICATION parameter         */
-     /*      used to specify actions to be taken on return  */
-     /*      from SSAUPD. (See usage below.)                */
-     /*                                                     */
-     /*      It MUST initially be set to 0 before the first */
-     /*      call to SSAUPD.                                */
-     /*                                                     */
-     /* INFO on entry specifies starting vector information */
-     /*      and on return indicates error codes            */
-     /*                                                     */
-     /*      Initially, setting INFO=0 indicates that a     */
-     /*      random starting vector is requested to         */
-     /*      start the ARNOLDI iteration.  Setting INFO to  */
-     /*      a nonzero value on the initial call is used    */
-     /*      if you want to specify your own starting       */
-     /*      vector (This vector must be placed in RESID.)  */
-     /*                                                     */
-     /* The work array WORKL is used in SSAUPD as           */
-     /* workspace.  Its dimension LWORKL is set as          */
-     /* illustrated below.                                  */
-     /* --------------------------------------------------- */
+    /* --------------------------------------------------- */
+    /* Specification of stopping rules and initial         */
+    /* conditions before calling SSAUPD                    */
+    /*                                                     */
+    /*           abs(sigmaC - sigmaT) < TOL*abs(sigmaC)    */
+    /*               computed   true                       */
+    /*                                                     */
+    /*      If TOL .le. 0,  then TOL <- macheps            */
+    /*              (machine precision) is used.           */
+    /*                                                     */
+    /* IDO  is the REVERSE COMMUNICATION parameter         */
+    /*      used to specify actions to be taken on return  */
+    /*      from SSAUPD. (See usage below.)                */
+    /*                                                     */
+    /*      It MUST initially be set to 0 before the first */
+    /*      call to SSAUPD.                                */
+    /*                                                     */
+    /* INFO on entry specifies starting vector information */
+    /*      and on return indicates error codes            */
+    /*                                                     */
+    /*      Initially, setting INFO=0 indicates that a     */
+    /*      random starting vector is requested to         */
+    /*      start the ARNOLDI iteration.  Setting INFO to  */
+    /*      a nonzero value on the initial call is used    */
+    /*      if you want to specify your own starting       */
+    /*      vector (This vector must be placed in RESID.)  */
+    /*                                                     */
+    /* The work array WORKL is used in SSAUPD as           */
+    /* workspace.  Its dimension LWORKL is set as          */
+    /* illustrated below.                                  */
+    /* --------------------------------------------------- */
 
     lworkl = ncv * (ncv + 8);
     tol = 0.f;
     info = 0;
     ido = 0;
 
-     /* ------------------------------------------------- */
-     /* Specification of Algorithm Mode:                  */
-     /*                                                   */
-     /* This program uses the exact shift strategy        */
-     /* (indicated by setting IPARAM(1) = 1.)             */
-     /* IPARAM(3) specifies the maximum number of Arnoldi */
-     /* iterations allowed.  Mode 1 of SSAUPD is used     */
-     /* (IPARAM(7) = 1). All these options can be changed */
-     /* by the user. For details see the documentation in */
-     /* SSAUPD.                                           */
-     /* ------------------------------------------------- */
+    /* ------------------------------------------------- */
+    /* Specification of Algorithm Mode:                  */
+    /*                                                   */
+    /* This program uses the exact shift strategy        */
+    /* (indicated by setting IPARAM(1) = 1.)             */
+    /* IPARAM(3) specifies the maximum number of Arnoldi */
+    /* iterations allowed.  Mode 1 of SSAUPD is used     */
+    /* (IPARAM(7) = 1). All these options can be changed */
+    /* by the user. For details see the documentation in */
+    /* SSAUPD.                                           */
+    /* ------------------------------------------------- */
 
     ishfts = 1;
     maxitr = n;
@@ -291,63 +298,67 @@ int ssvd()
 
     iparam[6] = mode1;
 
-     /* ---------------------------------------------- */
-     /* M A I N   L O O P (Reverse communication loop) */
-     /* ---------------------------------------------- */
+    /* ---------------------------------------------- */
+    /* M A I N   L O O P (Reverse communication loop) */
+    /* ---------------------------------------------- */
 
 L10:
 
-        /* ------------------------------------------- */
-        /* Repeatedly call the routine SSAUPD and take */
-        /* actions indicated by parameter IDO until    */
-        /* either convergence is indicated or maxitr   */
-        /* has been exceeded.                          */
-        /* ------------------------------------------- */
+    /* ------------------------------------------- */
+    /* Repeatedly call the routine SSAUPD and take */
+    /* actions indicated by parameter IDO until    */
+    /* either convergence is indicated or maxitr   */
+    /* has been exceeded.                          */
+    /* ------------------------------------------- */
 
     ssaupd_(&ido, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__250, iparam, ipntr, workd, workl, &lworkl, &info);
 
-    if (ido == -1 || ido == 1) {
+    if (ido == -1 || ido == 1)
+    {
 
-           /* ------------------------------------- */
-           /* Perform matrix vector multiplications */
-           /*              w <--- A*x       (av())  */
-           /*              y <--- A'*w      (atv()) */
-           /* The user should supply his/her own    */
-           /* matrix vector multiplication routines */
-           /* here that takes workd(ipntr(1)) as    */
-           /* the input, and returns the result in  */
-           /* workd(ipntr(2)).                      */
-           /* ------------------------------------- */
+        /* ------------------------------------- */
+        /* Perform matrix vector multiplications */
+        /*              w <--- A*x       (av())  */
+        /*              y <--- A'*w      (atv()) */
+        /* The user should supply his/her own    */
+        /* matrix vector multiplication routines */
+        /* here that takes workd(ipntr(1)) as    */
+        /* the input, and returns the result in  */
+        /* workd(ipntr(2)).                      */
+        /* ------------------------------------- */
 
-	ssvd_av_(&m, &n, &workd[ipntr[0] - 1], ax);
-	ssvd_atv_(&m, &n, ax, &workd[ipntr[1] - 1]);
+        ssvd_av_(&m, &n, &workd[ipntr[0] - 1], ax);
+        ssvd_atv_(&m, &n, ax, &workd[ipntr[1] - 1]);
 
-           /* --------------------------------------- */
-           /* L O O P   B A C K to call SSAUPD again. */
-           /* --------------------------------------- */
+        /* --------------------------------------- */
+        /* L O O P   B A C K to call SSAUPD again. */
+        /* --------------------------------------- */
 
-	goto L10;
+        goto L10;
 
     }
 
-     /* -------------------------------------- */
-     /* Either we have convergence or there is */
-     /* an error.                              */
-     /* -------------------------------------- */
+    /* -------------------------------------- */
+    /* Either we have convergence or there is */
+    /* an error.                              */
+    /* -------------------------------------- */
 
-    if (info < 0) {
+    if (info < 0)
+    {
 
         /* ------------------------ */
         /* Error message. Check the */
         /* documentation in SSAUPD. */
         /* ------------------------ */
 
-	printf(" \n");
-	printf(" Error with _saupd info = %d\n", info);
-	printf(" Check documentation in _saupd \n");
-	printf(" \n");
+        printf(" \n");
+        printf(" Error with _saupd info = %d\n", info);
+        printf(" Check documentation in _saupd \n");
+        printf(" \n");
 
-    } else {
+    }
+    else
+    {
 
         /* ------------------------------------------ */
         /* No fatal errors occurred.                  */
@@ -362,9 +373,9 @@ L10:
         /* post processing                            */
         /* ------------------------------------------ */
 
-	rvec = true;
+        rvec = true;
 
-	sseupd_(&rvec, "All", select, s, v, &c__250, &sigma, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__250, iparam, ipntr, workd, workl, &lworkl, &ierr);
+        sseupd_(&rvec, "All", select, s, v, &c__250, &sigma, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__250, iparam, ipntr, workd, workl, &lworkl, &ierr);
 
         /* --------------------------------------------- */
         /* Singular values are returned in the first     */
@@ -374,105 +385,112 @@ L10:
         /* two dimensional array V as requested here.    */
         /* --------------------------------------------- */
 
-	if (ierr != 0) {
+        if (ierr != 0)
+        {
 
-           /* ---------------------------------- */
-           /* Error condition:                   */
-           /* Check the documentation of SSEUPD. */
-           /* ---------------------------------- */
+            /* ---------------------------------- */
+            /* Error condition:                   */
+            /* Check the documentation of SSEUPD. */
+            /* ---------------------------------- */
 
-	    printf(" \n");
-	    printf(" Error with _seupd info = %d\n", ierr);
-	    printf(" Check the documentation of _seupd. \n");
-	    printf(" \n");
+            printf(" \n");
+            printf(" Error with _seupd info = %d\n", ierr);
+            printf(" Check the documentation of _seupd. \n");
+            printf(" \n");
 
-	} else {
+        }
+        else
+        {
 
-	    nconv = iparam[4];
-	    i__1 = nconv;
-	    for (j = 1; j <= i__1; ++j) {
+            nconv = iparam[4];
+            i__1 = nconv;
+            for (j = 1; j <= i__1; ++j)
+            {
 
-		s[j - 1] = sqrt(s[j - 1]);
+                s[j - 1] = sqrt(s[j - 1]);
 
-              /* --------------------------- */
-              /* Compute the left singular   */
-              /* vectors from the formula    */
-              /*                             */
-              /*     u = Av/sigma            */
-              /*                             */
-              /* u should have norm 1 so     */
-              /* divide by norm(Av) instead. */
-              /* --------------------------- */
+                /* --------------------------- */
+                /* Compute the left singular   */
+                /* vectors from the formula    */
+                /*                             */
+                /*     u = Av/sigma            */
+                /*                             */
+                /* u should have norm 1 so     */
+                /* divide by norm(Av) instead. */
+                /* --------------------------- */
 
-		ssvd_av_(&m, &n, &v[j * 250 - 250], ax);
-		scopy_(&m, ax, &c__1, &u[j * 500 - 500], &c__1);
-		temp = 1.f / snrm2_(&m, &u[j * 500 - 500], &c__1);
-		sscal_(&m, &temp, &u[j * 500 - 500], &c__1);
+                ssvd_av_(&m, &n, &v[j * 250 - 250], ax);
+                scopy_(&m, ax, &c__1, &u[j * 500 - 500], &c__1);
+                temp = 1.f / snrm2_(&m, &u[j * 500 - 500], &c__1);
+                sscal_(&m, &temp, &u[j * 500 - 500], &c__1);
 
-              /* ------------------------- */
-              /*                           */
-              /* Compute the residual norm */
-              /*                           */
-              /*   ||  A*v - sigma*u ||    */
-              /*                           */
-              /* for the NCONV accurately  */
-              /* computed singular values  */
-              /* and vectors.  (iparam(5)  */
-              /* indicates how many are    */
-              /* accurate to the requested */
-              /* tolerance).               */
-              /* Store the result in 2nd   */
-              /* column of array S.        */
-              /* ------------------------- */
+                /* ------------------------- */
+                /*                           */
+                /* Compute the residual norm */
+                /*                           */
+                /*   ||  A*v - sigma*u ||    */
+                /*                           */
+                /* for the NCONV accurately  */
+                /* computed singular values  */
+                /* and vectors.  (iparam(5)  */
+                /* indicates how many are    */
+                /* accurate to the requested */
+                /* tolerance).               */
+                /* Store the result in 2nd   */
+                /* column of array S.        */
+                /* ------------------------- */
 
-		r__1 = -s[j - 1];
-		saxpy_(&m, &r__1, &u[j * 500 - 500], &c__1, ax, &c__1);
-		s[j + 24] = snrm2_(&m, ax, &c__1);
+                r__1 = -s[j - 1];
+                saxpy_(&m, &r__1, &u[j * 500 - 500], &c__1, ax, &c__1);
+                s[j + 24] = snrm2_(&m, ax, &c__1);
 
-/* L20: */
-	    }
+                /* L20: */
+            }
 
-           /* ----------------------------- */
-           /* Display computed residuals    */
-           /* ----------------------------- */
+            /* ----------------------------- */
+            /* Display computed residuals    */
+            /* ----------------------------- */
 
-	    smout_(&nconv, &c__2, s, &c__25, &c_n6, "Singular values and direct residuals");
-	}
+            smout_(&nconv, &c__2, s, &c__25, &c_n6, "Singular values and direct residuals");
+        }
 
         /* ---------------------------------------- */
         /* Print additional convergence information */
         /* ---------------------------------------- */
 
-	if (info == 1) {
-	    printf(" \n");
-	    printf(" Maximum number of iterations reached.\n");
-	    printf(" \n");
-	} else if (info == 3) {
-	    printf(" \n");
-	    printf(" No shifts could be applied during implicit\n");
-	    printf(" Arnoldi update try increasing NCV.\n");
-	    printf(" \n");
-	}
+        if (info == 1)
+        {
+            printf(" \n");
+            printf(" Maximum number of iterations reached.\n");
+            printf(" \n");
+        }
+        else if (info == 3)
+        {
+            printf(" \n");
+            printf(" No shifts could be applied during implicit\n");
+            printf(" Arnoldi update try increasing NCV.\n");
+            printf(" \n");
+        }
 
-	printf(" \n");
-	printf(" _SVD \n");
-	printf(" ==== \n");
-	printf(" \n");
-	printf(" Size of the matrix is %d\n", n);
-	printf(" The number of Ritz values requested is %d\n", nev);
-	printf(" The number of Arnoldi vectors generated (NCV) is %d\n", ncv);
-	printf(" What portion of the spectrum: %s\n", which);
-	printf(" The number of converged Ritz values is %d\n", nconv);
-	printf(" The number of Implicit Arnoldi update iterations taken is %d\n", iparam[2]);
-	printf(" The number of OP*x is %d\n", iparam[8]);
-	printf(" The convergence criterion is %e\n", tol);
-	printf(" \n");
+        printf(" \n");
+        printf(" _SVD \n");
+        printf(" ==== \n");
+        printf(" \n");
+        printf(" Size of the matrix is %d\n", n);
+        printf(" The number of Ritz values requested is %d\n", nev);
+        printf(" The number of Arnoldi vectors generated (NCV) is %d\n", ncv);
+        printf(" What portion of the spectrum: %s\n", which);
+        printf(" The number of converged Ritz values is %d\n", nconv);
+        printf(" The number of Implicit Arnoldi update iterations taken is %d\n", iparam[2]);
+        printf(" The number of OP*x is %d\n", iparam[8]);
+        printf(" The convergence criterion is %e\n", tol);
+        printf(" \n");
 
     }
 
-     /* ----------------------- */
-     /* Done with program ssvd. */
-     /* ----------------------- */
+    /* ----------------------- */
+    /* Done with program ssvd. */
+    /* ----------------------- */
 
     return 0;
 } /* MAIN__ */
@@ -510,7 +528,7 @@ int ssvd_av_(int32_t *m, int32_t *n, float *x, float *w)
     int32_t i, j;
     float k, s, t;
 
-/*     computes  w <- A*x */
+    /*     computes  w <- A*x */
 
     /* Parameter adjustments */
     --w;
@@ -520,29 +538,33 @@ int ssvd_av_(int32_t *m, int32_t *n, float *x, float *w)
     h = 1.f / (float) (*m + 1);
     k = 1.f / (float) (*n + 1);
     i__1 = *m;
-    for (i = 1; i <= i__1; ++i) {
-	w[i] = 0.f;
-/* L5: */
+    for (i = 1; i <= i__1; ++i)
+    {
+        w[i] = 0.f;
+        /* L5: */
     }
     t = 0.f;
 
     i__1 = *n;
-    for (j = 1; j <= i__1; ++j) {
-	t += k;
-	s = 0.f;
-	i__2 = j;
-	for (i = 1; i <= i__2; ++i) {
-	    s += h;
-	    w[i] += k * s * (t - 1.f) * x[j];
-/* L10: */
-	}
-	i__2 = *m;
-	for (i = j + 1; i <= i__2; ++i) {
-	    s += h;
-	    w[i] += k * t * (s - 1.f) * x[j];
-/* L20: */
-	}
-/* L30: */
+    for (j = 1; j <= i__1; ++j)
+    {
+        t += k;
+        s = 0.f;
+        i__2 = j;
+        for (i = 1; i <= i__2; ++i)
+        {
+            s += h;
+            w[i] += k * s * (t - 1.f) * x[j];
+            /* L10: */
+        }
+        i__2 = *m;
+        for (i = j + 1; i <= i__2; ++i)
+        {
+            s += h;
+            w[i] += k * t * (s - 1.f) * x[j];
+            /* L20: */
+        }
+        /* L30: */
     }
 
     return 0;
@@ -560,7 +582,7 @@ int ssvd_atv_(int32_t *m, int32_t *n, float *w, float *y)
     int32_t i, j;
     float k, s, t;
 
-/*     computes  y <- A'*w */
+    /*     computes  y <- A'*w */
 
     /* Parameter adjustments */
     --w;
@@ -570,29 +592,33 @@ int ssvd_atv_(int32_t *m, int32_t *n, float *w, float *y)
     h = 1.f / (float) (*m + 1);
     k = 1.f / (float) (*n + 1);
     i__1 = *n;
-    for (i = 1; i <= i__1; ++i) {
-	y[i] = 0.f;
-/* L5: */
+    for (i = 1; i <= i__1; ++i)
+    {
+        y[i] = 0.f;
+        /* L5: */
     }
     t = 0.f;
 
     i__1 = *n;
-    for (j = 1; j <= i__1; ++j) {
-	t += k;
-	s = 0.f;
-	i__2 = j;
-	for (i = 1; i <= i__2; ++i) {
-	    s += h;
-	    y[j] += k * s * (t - 1.f) * w[i];
-/* L10: */
-	}
-	i__2 = *m;
-	for (i = j + 1; i <= i__2; ++i) {
-	    s += h;
-	    y[j] += k * t * (s - 1.f) * w[i];
-/* L20: */
-	}
-/* L30: */
+    for (j = 1; j <= i__1; ++j)
+    {
+        t += k;
+        s = 0.f;
+        i__2 = j;
+        for (i = 1; i <= i__2; ++i)
+        {
+            s += h;
+            y[j] += k * s * (t - 1.f) * w[i];
+            /* L10: */
+        }
+        i__2 = *m;
+        for (i = j + 1; i <= i__2; ++i)
+        {
+            s += h;
+            y[j] += k * t * (s - 1.f) * w[i];
+            /* L20: */
+        }
+        /* L30: */
     }
 
     return 0;
