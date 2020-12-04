@@ -2,62 +2,30 @@
 
 #include "arpack.h"
 
-int zndrv1()
-{
-    /* System generated locals */
-    int32_t i__1, i__2;
-    zomplex z__1;
-
-    double d_imag(zomplex *);
-
-    /* Local variables */
-    zomplex d[30];
-    int32_t j, n;
-    zomplex v[7680]	/* was [256][30] */;
-    double rd[90]	/* was [30][3] */;
-    zomplex ax[256];
-    int32_t nx, ido, ncv, nev;
-    double tol;
-    char* bmat;
-    int32_t mode, info;
-    bool rvec;
-    int32_t ierr;
-    zomplex sigma;
-    char* which;
-    zomplex resid[256];
-    int32_t nconv;
-    zomplex workd[768];
-    int32_t ipntr[14];
-    zomplex workl[2850];
-    double rwork[30];
-    int32_t iparam[11];
-    bool select[30];
-    int32_t ishfts;
-    int32_t maxitr;
-    int32_t lworkl;
-    zomplex workev[90];
-
-    /* Fortran I/O blocks */
-
-/*     Example program to illustrate the idea of reverse communication */
-/*     for a standard complex nonsymmetric eigenvalue problem. */
-
-/*     We implement example one of ex-complex.doc in DOCUMENTS directory */
-
-/* \Example-1 */
-/*     ... Suppose we want to solve A*x = lambda*x in regular mode, */
-/*         where A is obtained from the standard central difference */
-/*         discretization of the convection-diffusion operator */
-/*                 (Laplacian u) + rho*(du / dx) */
-/*         on the unit squre [0,1]x[0,1] with zero Dirichlet boundary */
-/*         condition. */
-
-/*     ... OP = A  and  B = I. */
-
-/*     ... Assume "call av (nx,x,y)" computes y = A*x */
-
-/*     ... Use mode 1 of ZNAUPD . */
 /**
+ * \BeginDoc
+ *
+ *     Example program to illustrate the idea of reverse communication
+ *     for a standard complex nonsymmetric eigenvalue problem.
+ *
+ *     We implement example one of ex-complex.doc in DOCUMENTS directory
+ *
+ * \Example-1
+ *     ... Suppose we want to solve A*x = lambda*x in regular mode,
+ *         where A is obtained from the standard central difference
+ *         discretization of the convection-diffusion operator
+ *                 (Laplacian u) + rho*(du / dx)
+ *         on the unit squre [0,1]x[0,1] with zero Dirichlet boundary
+ *         condition.
+ *
+ *     ... OP = A  and  B = I.
+ *
+ *     ... Assume "call av (nx,x,y)" computes y = A*x
+ *
+ *     ... Use mode 1 of ZNAUPD .
+ *
+ * \EndDoc
+ *
  * \BeginLib
  *
  * \Routines called
@@ -72,35 +40,53 @@ int zndrv1()
  *             where T is a tridiagonal matrix.  It is used in routine
  *             av.
  *
- * \Author
- *     Richard Lehoucq
- *     Danny Sorensen
- *     Chao Yang
- *     Dept. of Computational &
- *     Applied Mathematics
- *     Rice University
- *     Houston, Texas
- *
- * \SCCS Information: @(#)
- * FILE: ndrv1.F   SID: 2.4   DATE OF SID: 10/17/00   RELEASE: 2
- *
- * \Remarks
- *     1. None
- *
  * \EndLib
  */
-     /* --------------------------- */
-     /* Define maximum dimensions   */
-     /* for all arrays.             */
-     /* MAXN:   Maximum dimension   */
-     /*         of the A allowed.   */
-     /* MAXNEV: Maximum NEV allowed */
-     /* MAXNCV: Maximum NCV allowed */
-     /* --------------------------- */
+int zndrv1()
+{
+    /* System generated locals */
+    int32_t i__1, i__2;
+    zomplex z__1;
 
-     /* --------------------- */
-     /* Executable Statements */
-     /* --------------------- */
+    double d_imag(zomplex *);
+
+    /* Local variables */
+    zomplex d[30];
+    int32_t j, n;
+    double rd[90]	/* was [30][3] */;
+    zomplex ax[256];
+    int32_t nx, ido, ncv, nev;
+    double tol;
+    char* bmat;
+    int32_t mode, info;
+    bool rvec;
+    int32_t ierr;
+    zomplex sigma;
+    char* which;
+    int32_t nconv;
+    zomplex *v	/* was [256][30] */;
+    zomplex *resid;
+    zomplex *workd;
+    zomplex *workl;
+    int32_t ipntr[14];
+    double rwork[30];
+    int32_t iparam[11];
+    bool select[30];
+    int32_t ishfts;
+    int32_t maxitr;
+    int32_t lworkl;
+    zomplex workev[90];
+
+    resid = (zomplex*)malloc(256 * sizeof(zomplex));
+    v = (zomplex*)malloc(7680 * sizeof(zomplex));
+    workl = (zomplex*)malloc(2850 * sizeof(zomplex));
+    workd = (zomplex*)malloc(768 * sizeof(zomplex));
+
+     /* Define maximum dimensions for all arrays. */
+
+     const int MAXN   = 256; /* Maximum dimension of the A allowed. */
+     const int MAXNEV =  12; /* Maximum NEV allowed */
+     const int MAXNCV =  30; /* Maximum NCV allowed */
 
      /* ------------------------------------------------ */
      /* The number NX is the number of interior points   */
@@ -329,10 +315,15 @@ L10:
 	printf(" The number of converged Ritz values is %d\n", nconv);
 	printf(" The number of Implicit Arnoldi update iterations taken is %d\n", iparam[2]);
 	printf(" The number of OP*x is %d\n", iparam[8]);
-	printf(" The convergence criterion is %f\n", tol);
+	printf(" The convergence criterion is %e\n", tol);
 	printf(" \n");
 
     }
+
+    free(resid);
+    free(v);
+    free(workl);
+    free(workd);
 
      /* ------------------------- */
      /* Done with program zndrv1 . */

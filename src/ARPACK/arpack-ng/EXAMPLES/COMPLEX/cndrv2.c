@@ -8,61 +8,29 @@ struct {
 
 #define convct_1 convct_
 
-int cndrv2()
-{
-    /* System generated locals */
-    int32_t i__1, i__2;
-    complex q__1, q__2, q__3, q__4;
-
-    void c_div(complex *, complex *, complex *);
-    double r_imag(complex *);
-
-    /* Local variables */
-    complex d[25], h;
-    int32_t j, n;
-    complex s, v[6400]	/* was [256][25] */, h2, s1, s2, s3, dd[256], dl[256];
-    float rd[75]	/* was [25][3] */;
-    complex ax[256], du[256], du2[256];
-    int32_t ido, ncv, nev;
-    float tol;
-    char* bmat;
-    int32_t mode, info;
-    bool rvec;
-    int32_t ierr, ipiv[256];
-    complex sigma;
-    char* which;
-    complex resid[256];
-    int32_t nconv;
-    complex workd[768];
-    int32_t ipntr[14];
-    complex workl[2000];
-    float rwork[256];
-    int32_t iparam[11];
-    bool select[25];
-    int32_t ishfts, maxitr;
-    int32_t lworkl;
-    complex workev[50];
-
-    /* Fortran I/O blocks */
-
-/*     Simple program to illustrate the idea of reverse communication */
-/*     in shift-invert mode for a standard complex nonsymmetric eigenvalue */
-/*     problem. */
-
-/*     We implement example two of ex-complex.doc in DOCUMENTS directory */
-
-/* \Example-2 */
-/*     ... Suppose we want to solve A*x = lambda*x in shift-invert mode, */
-/*         where A is derived from the central difference discretization */
-/*         of the 1-dimensional convection-diffusion operator */
-/*                   (d^2u/dx^2) + rho*(du/dx) */
-/*         on the interval [0,1] with zero Dirichlet boundary condition. */
-/*     ... The shift sigma is a complex number. */
-
-/*     ... OP = inv[A-sigma*I] and  B = I. */
-
-/*     ... Use mode 3 of CNAUPD. */
 /**
+ * \BeginDoc
+ *
+ *     Simple program to illustrate the idea of reverse communication
+ *     in shift-invert mode for a standard complex nonsymmetric eigenvalue
+ *     problem.
+ *
+ *     We implement example two of ex-complex.doc in DOCUMENTS directory
+ *
+ * \Example-2
+ *     ... Suppose we want to solve A*x = lambda*x in shift-invert mode,
+ *         where A is derived from the central difference discretization
+ *         of the 1-dimensional convection-diffusion operator
+ *                   (d^2u/dx^2) + rho*(du/dx)
+ *         on the interval [0,1] with zero Dirichlet boundary condition.
+ *     ... The shift sigma is a complex number.
+ *
+ *     ... OP = inv[A-sigma*I] and  B = I.
+ *
+ *     ... Use mode 3 of CNAUPD.
+ *
+ * \EndDoc
+ *
  * \BeginLib
  *
  * \Routines called:
@@ -77,35 +45,54 @@ int cndrv2()
  *     scnrm2  Level 1 BLAS that computes the norm of a vector.
  *     av      Matrix vector multiplication routine that computes A*x.
  *
- * \Author
- *     Richard Lehoucq
- *     Danny Sorensen
- *     Chao Yang
- *     Dept. of Computational &
- *     Applied Mathematics
- *     Rice University
- *     Houston, Texas
- *
- * \SCCS Information: @(#)
- * FILE: ndrv2.F   SID: 2.6   DATE OF SID: 10/18/00   RELEASE: 2
- *
- * \Remarks
- *     1. None
- *
  * \EndLib
  */
-     /* --------------------------- */
-     /* Define leading dimensions   */
-     /* for all arrays.             */
-     /* MAXN:   Maximum dimension   */
-     /*         of the A allowed.   */
-     /* MAXNEV: Maximum NEV allowed */
-     /* MAXNCV: Maximum NCV allowed */
-     /* --------------------------- */
+int cndrv2()
+{
+    /* System generated locals */
+    int32_t i__1, i__2;
+    complex q__1, q__2, q__3, q__4;
 
-     /* --------------------- */
-     /* Executable Statements */
-     /* --------------------- */
+    void c_div(complex *, complex *, complex *);
+    double r_imag(complex *);
+
+    /* Local variables */
+    complex d[25], h;
+    int32_t j, n;
+    complex s, h2, s1, s2, s3, dd[256], dl[256];
+    float rd[75]	/* was [25][3] */;
+    complex ax[256], du[256], du2[256];
+    int32_t ido, ncv, nev;
+    float tol;
+    char* bmat;
+    int32_t mode, info;
+    bool rvec;
+    int32_t ierr, ipiv[256];
+    complex sigma;
+    char* which;
+    int32_t nconv;
+    complex *v	/* was [256][25] */;
+    complex *resid;
+    complex *workd;
+    complex *workl;
+    int32_t ipntr[14];
+    float rwork[256];
+    int32_t iparam[11];
+    bool select[25];
+    int32_t ishfts, maxitr;
+    int32_t lworkl;
+    complex workev[50];
+
+    resid = (complex*)malloc(256 * sizeof(complex));
+    v = (complex*)malloc(6400 * sizeof(complex));
+    workl = (complex*)malloc(2000 * sizeof(complex));
+    workd = (complex*)malloc(768 * sizeof(complex));
+
+     /* Define maximum dimensions for all arrays. */
+
+     const int MAXN   = 256; /* Maximum dimension of the A allowed. */
+     const int MAXNEV =  10; /* Maximum NEV allowed */
+     const int MAXNCV =  25; /* Maximum NCV allowed */
 
      /* ------------------------------------------------ */
      /* The number N is the dimension of the matrix.  A  */
@@ -394,10 +381,15 @@ L20:
 	printf(" The number of converged Ritz values is %d\n", nconv);
 	printf(" The number of Implicit Arnoldi update iterations taken is %d\n", iparam[2]);
 	printf(" The number of OP*x is %d\n", iparam[8]);
-	printf(" The convergence criterion is %f\n", tol);
+	printf(" The convergence criterion is %e\n", tol);
 	printf(" \n");
 
     }
+
+    free(resid);
+    free(v);
+    free(workl);
+    free(workd);
 
      /* ------------------------- */
      /* Done with program cndrv2. */

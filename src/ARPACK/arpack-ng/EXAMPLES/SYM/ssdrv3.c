@@ -2,58 +2,30 @@
 
 #include "arpack.h"
 
-int ssdrv3()
-{
-    /* System generated locals */
-    int32_t i__1;
-    float r__1;
-
-    /* Local variables */
-    float d[50]	/* was [25][2] */, h;
-    int32_t j, n;
-    float v[6400]	/* was [256][25] */, r1, r2, ad[256];
-    float ax[256];
-    float mx[256], adl[256], adu[256];
-    int32_t ido, ncv, nev;
-    float tol, adu2[256];
-    char* bmat;
-    int32_t mode, info;
-    bool rvec;
-    int32_t ierr, ipiv[256];
-    float sigma;
-    char* which;
-    float resid[256];
-    int32_t nconv;
-    float workd[768];
-    int32_t ipntr[11];
-    float workl[825];
-    int32_t iparam[11];
-    bool select[25];
-    int32_t ishfts;
-    int32_t maxitr;
-    int32_t lworkl;
-
-    /* Fortran I/O blocks */
-
-/*     Program to illustrate the idea of reverse communication in */
-/*     inverse mode for a generalized symmetric eigenvalue problem. */
-/*     The following program uses the two LAPACK subroutines sgttrf.f */
-/*     and sgttrs.f to factor and solve a tridiagonal system of equations. */
-
-/*     We implement example three of ex-sym.doc in DOCUMENTS directory */
-
-/* \Example-3 */
-/*     ... Suppose we want to solve A*x = lambda*M*x in inverse mode, */
-/*         where A and M are obtained by the finite element of the */
-/*         1-dimensional discrete Laplacian */
-/*                             d^2u / dx^2 */
-/*         on the interval [0,1] with zero Dirichlet boundary condition */
-/*         using piecewise linear elements. */
-
-/*     ... OP = inv[M]*A  and  B = M. */
-
-/*     ... Use mode 2 of SSAUPD. */
 /**
+ * \BeginDoc
+ *
+ *     Program to illustrate the idea of reverse communication in
+ *     inverse mode for a generalized symmetric eigenvalue problem.
+ *     The following program uses the two LAPACK subroutines sgttrf.f
+ *     and sgttrs.f to factor and solve a tridiagonal system of equations.
+ *
+ *     We implement example three of ex-sym.doc in DOCUMENTS directory
+ *
+ * \Example-3
+ *     ... Suppose we want to solve A*x = lambda*M*x in inverse mode,
+ *         where A and M are obtained by the finite element of the
+ *         1-dimensional discrete Laplacian
+ *                             d^2u / dx^2
+ *         on the interval [0,1] with zero Dirichlet boundary condition
+ *         using piecewise linear elements.
+ *
+ *     ... OP = inv[M]*A  and  B = M.
+ *
+ *     ... Use mode 2 of SSAUPD.
+ *
+ * \EndDoc
+ *
  * \BeginLib
  *
  * \Routines called:
@@ -69,35 +41,50 @@ int ssdrv3()
  *     av      Matrix vector multiplication routine that computes A*x.
  *     mv      Matrix vector multiplication routine that computes M*x.
  *
- * \Author
- *     Richard Lehoucq
- *     Danny Sorensen
- *     Chao Yang
- *     Dept. of Computational &
- *     Applied Mathematics
- *     Rice University
- *     Houston, Texas
- *
- * \SCCS Information: @(#)
- * FILE: sdrv3.F   SID: 2.5   DATE OF SID: 10/17/00   RELEASE: 2
- *
- * \Remarks
- *     1. None
- *
  * \EndLib
  */
-     /* --------------------------- */
-     /* Define leading dimensions   */
-     /* for all arrays.             */
-     /* MAXN:   Maximum dimension   */
-     /*         of the A allowed.   */
-     /* MAXNEV: Maximum NEV allowed */
-     /* MAXNCV: Maximum NCV allowed */
-     /* --------------------------- */
+int ssdrv3()
+{
+    /* System generated locals */
+    int32_t i__1;
+    float r__1;
 
-     /* --------------------- */
-     /* Executable Statements */
-     /* --------------------- */
+    /* Local variables */
+    float d[50]	/* was [25][2] */, h;
+    int32_t j, n;
+    float r1, r2, ad[256];
+    float ax[256];
+    float mx[256], adl[256], adu[256];
+    int32_t ido, ncv, nev;
+    float tol, adu2[256];
+    char* bmat;
+    int32_t mode, info;
+    bool rvec;
+    int32_t ierr, ipiv[256];
+    float sigma;
+    char* which;
+    int32_t nconv;
+    float *v	/* was [256][25] */;
+    float *resid;
+    float *workd;
+    float *workl;
+    int32_t ipntr[11];
+    int32_t iparam[11];
+    bool select[25];
+    int32_t ishfts;
+    int32_t maxitr;
+    int32_t lworkl;
+
+    resid = (float*)malloc(256 * sizeof(float));
+    v = (float*)malloc(6400 * sizeof(float));
+    workl = (float*)malloc(825 * sizeof(float));
+    workd = (float*)malloc(768 * sizeof(float));
+
+     /* Define maximum dimensions for all arrays. */
+
+     const int MAXN   = 256; /* Maximum dimension of the A allowed. */
+     const int MAXNEV =  10; /* Maximum NEV allowed */
+     const int MAXNCV =  25; /* Maximum NCV allowed */
 
      /* -------------------------------------------------- */
      /* The number N is the dimension of the matrix. A     */
@@ -373,10 +360,15 @@ L10:
 	printf(" The number of converged Ritz values is %d\n", nconv);
 	printf(" The number of Implicit Arnoldi update iterations taken is %d\n", iparam[2]);
 	printf(" The number of OP*x is %d\n", iparam[8]);
-	printf(" The convergence criterion is %f\n", tol);
+	printf(" The convergence criterion is %e\n", tol);
 	printf(" \n");
 
     }
+
+    free(resid);
+    free(v);
+    free(workl);
+    free(workd);
 
      /* ------------------------- */
      /* Done with program ssdrv3. */

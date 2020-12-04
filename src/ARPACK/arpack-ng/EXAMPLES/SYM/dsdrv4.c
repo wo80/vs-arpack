@@ -3,62 +3,31 @@
 #include <stdlib.h>
 #include "arpack.h"
 
-int dsdrv4()
-{
-    /* System generated locals */
-    int32_t i__1;
-    double d__1;
-
-    /* Local variables */
-    double d[50]	/* was [25][2] */, h;
-    int32_t j, n;
-    double *v	/* was [256][25] */, r1, r2, ad[256];
-    double adl[256], adu[256];
-    int32_t ido, ncv, nev;
-    double tol, adu2[256];
-    char* bmat;
-    int32_t mode, info;
-    bool rvec;
-    int32_t ierr, ipiv[256];
-    double sigma;
-    char* which;
-    double *resid;
-    int32_t nconv;
-    double *workd;
-    int32_t ipntr[11];
-    double *workl;
-    int32_t iparam[11];
-    bool select[25];
-    int32_t ishfts, maxitr;
-    int32_t lworkl;
-
-    resid = (double*)malloc(256 * sizeof(double));
-    v = (double*)malloc(6400 * sizeof(double));
-    workl = (double*)malloc(825 * sizeof(double));
-    workd = (double*)malloc(768 * sizeof(double));
-
-    /* Fortran I/O blocks */
-
-/*     Program to illustrate the idea of reverse communication */
-/*     in shift and invert mode for a generalized symmetric eigenvalue */
-/*     problem.  The following program uses the two LAPACK subroutines */
-/*     dgttrf.f and dgttrs to factor and solve a tridiagonal system of */
-/*     equations. */
-
-/*     We implement example four of ex-sym.doc in DOCUMENTS directory */
-
-/* \Example-4 */
-/*     ... Suppose we want to solve A*x = lambda*M*x in inverse mode, */
-/*         where A and M are obtained from the finite element discretrization */
-/*         of the 1-dimensional discrete Laplacian */
-/*                             d^2u / dx^2 */
-/*         on the interval [0,1] with zero Dirichlet boundary condition */
-/*         using piecewise linear elements. */
-
-/*     ... OP = (inv[A - sigma*M])*M  and  B = M. */
-
-/*     ... Use mode 3 of DSAUPD. */
 /**
+ * \BeginDoc
+ *
+ *     Program to illustrate the idea of reverse communication
+ *     in shift and invert mode for a generalized symmetric eigenvalue
+ *     problem.  The following program uses the two LAPACK subroutines
+ *     dgttrf.f and dgttrs to factor and solve a tridiagonal system of
+ *     equations.
+ *
+ *     We implement example four of ex-sym.doc in DOCUMENTS directory
+ *
+ * \Example-4
+ *     ... Suppose we want to solve A*x = lambda*M*x in inverse mode,
+ *         where A and M are obtained from the finite element discretrization
+ *         of the 1-dimensional discrete Laplacian
+ *                             d^2u / dx^2
+ *         on the interval [0,1] with zero Dirichlet boundary condition
+ *         using piecewise linear elements.
+ *
+ *     ... OP = (inv[A - sigma*M])*M  and  B = M.
+ *
+ *     ... Use mode 3 of DSAUPD.
+ *
+ * \EndDoc
+ *
  * \BeginLib
  *
  * \Routines called:
@@ -74,35 +43,48 @@ int dsdrv4()
  *     av      Matrix vector multiplication routine that computes A*x.
  *     mv      Matrix vector multiplication routine that computes M*x.
  *
- * \Author
- *     Richard Lehoucq
- *     Danny Sorensen
- *     Chao Yang
- *     Dept. of Computational &
- *     Applied Mathematics
- *     Rice University
- *     Houston, Texas
- *
- * \SCCS Information: @(#)
- * FILE: sdrv4.F   SID: 2.5   DATE OF SID: 10/17/00   RELEASE: 2
- *
- * \Remarks
- *     1. None
- *
  * \EndLib
  */
-     /* --------------------------- */
-     /* Define leading dimensions   */
-     /* for all arrays.             */
-     /* MAXN:   Maximum dimension   */
-     /*         of the A allowed.   */
-     /* MAXNEV: Maximum NEV allowed */
-     /* MAXNCV: Maximum NCV allowed */
-     /* --------------------------- */
+int dsdrv4()
+{
+    /* System generated locals */
+    int32_t i__1;
+    double d__1;
 
-     /* --------------------- */
-     /* Executable Statements */
-     /* --------------------- */
+    /* Local variables */
+    double d[50]	/* was [25][2] */, h;
+    int32_t j, n;
+    double r1, r2, ad[256];
+    double adl[256], adu[256];
+    int32_t ido, ncv, nev;
+    double tol, adu2[256];
+    char* bmat;
+    int32_t mode, info;
+    bool rvec;
+    int32_t ierr, ipiv[256];
+    double sigma;
+    char* which;
+    int32_t nconv;
+    double *v	/* was [256][25] */;
+    double *resid;
+    double *workd;
+    double *workl;
+    int32_t ipntr[11];
+    int32_t iparam[11];
+    bool select[25];
+    int32_t ishfts, maxitr;
+    int32_t lworkl;
+
+    resid = (double*)malloc(256 * sizeof(double));
+    v = (double*)malloc(6400 * sizeof(double));
+    workl = (double*)malloc(825 * sizeof(double));
+    workd = (double*)malloc(768 * sizeof(double));
+
+     /* Define maximum dimensions for all arrays. */
+
+     const int MAXN   = 256; /* Maximum dimension of the A allowed. */
+     const int MAXNEV =  10; /* Maximum NEV allowed */
+     const int MAXNCV =  25; /* Maximum NCV allowed */
 
      /* -------------------------------------------------- */
      /* The number N is the dimension of the matrix.  A    */
@@ -401,7 +383,7 @@ L10:
 	printf(" The number of converged Ritz values is %d\n", nconv);
 	printf(" The number of Implicit Arnoldi update iterations taken is %d\n", iparam[2]);
 	printf(" The number of OP*x is %d\n", iparam[8]);
-	printf(" The convergence criterion is %f\n", tol);
+	printf(" The convergence criterion is %e\n", tol);
 	printf(" \n");
 
     }

@@ -2,92 +2,61 @@
 
 #include "arpack.h"
 
-int sssimp()
-{
-    /* System generated locals */
-    int32_t i__1;
-    float r__1;
-
-    /* Builtin functions */
-
-    int32_t s_wsle(cilist *), do_lio(int32_t *, int32_t *, char *, ftnlen), 
-	    e_wsle(void);
-
-    /* Local variables */
-    float d[50]	/* was [25][2] */;
-    int32_t j, n;
-    float v[6400]	/* was [256][25] */;
-    float ax[256];
-    int32_t nx, ido, ncv, nev;
-    float tol;
-    char* bmat;
-    int32_t info;
-    bool rvec;
-    int32_t ierr, mode1;
-    float sigma;
-    char* which;
-    float resid[256];
-    int32_t nconv;
-    float workd[768];
-    int32_t ipntr[11];
-    float workl[825];
-    int32_t iparam[11];
-    bool select[25];
-    int32_t ishfts, maxitr;
-    int32_t lworkl;
-
-    /* Fortran I/O blocks */
-
-/*     This example program is intended to illustrate the */
-/*     simplest case of using ARPACK in considerable detail. */
-/*     This code may be used to understand basic usage of ARPACK */
-/*     and as a template for creating an interface to ARPACK. */
-
-/*     This code shows how to use ARPACK to find a few eigenvalues */
-/*     (lambda) and corresponding eigenvectors (x) for the standard */
-/*     eigenvalue problem: */
-
-/*                        A*x = lambda*x */
-
-/*     where A is an n by n real symmetric matrix. */
-
-/*     The main points illustrated here are */
-
-/*        1) How to declare sufficient memory to find NEV */
-/*           eigenvalues of largest magnitude.  Other options */
-/*           are available. */
-
-/*        2) Illustration of the reverse communication interface */
-/*           needed to utilize the top level ARPACK routine SSAUPD */
-/*           that computes the quantities needed to construct */
-/*           the desired eigenvalues and eigenvectors(if requested). */
-
-/*        3) How to extract the desired eigenvalues and eigenvectors */
-/*           using the ARPACK routine SSEUPD. */
-
-/*     The only thing that must be supplied in order to use this */
-/*     routine on your problem is to change the array dimensions */
-/*     appropriately, to specify WHICH eigenvalues you want to compute */
-/*     and to supply a matrix-vector product */
-
-/*                         w <-  Av */
-
-/*     in place of the call to AV( ) below. */
-
-/*     Once usage of this routine is understood, you may wish to explore */
-/*     the other available options to improve convergence, to solve generalized */
-/*     problems, etc.  Look at the file ex-sym.doc in DOCUMENTS directory. */
-/*     This codes implements */
-
-/* \Example-1 */
-/*     ... Suppose we want to solve A*x = lambda*x in regular mode, */
-/*         where A is derived from the central difference discretization */
-/*         of the 2-dimensional Laplacian on the unit square with */
-/*         zero Dirichlet boundary condition. */
-/*     ... OP = A  and  B = I. */
-/*     ... Assume "call av (n,x,y)" computes y = A*x */
-/*     ... Use mode 1 of SSAUPD. */
 /**
+ * \BeginDoc
+ *
+ *     This example program is intended to illustrate the
+ *     simplest case of using ARPACK in considerable detail.
+ *     This code may be used to understand basic usage of ARPACK
+ *     and as a template for creating an interface to ARPACK.
+ *
+ *     This code shows how to use ARPACK to find a few eigenvalues
+ *     (lambda) and corresponding eigenvectors (x) for the standard
+ *     eigenvalue problem:
+ *
+ *                        A*x = lambda*x
+ *
+ *     where A is an n by n real symmetric matrix.
+ *
+ *     The main points illustrated here are
+ *
+ *        1) How to declare sufficient memory to find NEV
+ *           eigenvalues of largest magnitude.  Other options
+ *           are available.
+ *
+ *        2) Illustration of the reverse communication interface
+ *           needed to utilize the top level ARPACK routine SSAUPD
+ *           that computes the quantities needed to construct
+ *           the desired eigenvalues and eigenvectors(if requested).
+ *
+ *        3) How to extract the desired eigenvalues and eigenvectors
+ *           using the ARPACK routine SSEUPD.
+ *
+ *     The only thing that must be supplied in order to use this
+ *     routine on your problem is to change the array dimensions
+ *     appropriately, to specify WHICH eigenvalues you want to compute
+ *     and to supply a matrix-vector product
+ *
+ *                         w <-  Av
+ *
+ *     in place of the call to AV( ) below.
+ *
+ *     Once usage of this routine is understood, you may wish to explore
+ *     the other available options to improve convergence, to solve generalized
+ *     problems, etc.  Look at the file ex-sym.doc in DOCUMENTS directory.
+ *     This codes implements
+ *
+ * \Example-1
+ *     ... Suppose we want to solve A*x = lambda*x in regular mode,
+ *         where A is derived from the central difference discretization
+ *         of the 2-dimensional Laplacian on the unit square with
+ *         zero Dirichlet boundary condition.
+ *     ... OP = A  and  B = I.
+ *     ... Assume "call av (n,x,y)" computes y = A*x
+ *     ... Use mode 1 of SSAUPD.
+ *
+ * \EndDoc
+ *
  * \BeginLib
  *
  * \Routines called:
@@ -97,23 +66,42 @@ int sssimp()
  *     snrm2   Level 1 BLAS that computes the norm of a vector.
  *     saxpy   Level 1 BLAS that computes y <- alpha*x+y.
  *
- * \Author
- *     Richard Lehoucq
- *     Danny Sorensen
- *     Chao Yang
- *     Dept. of Computational &
- *     Applied Mathematics
- *     Rice University
- *     Houston, Texas
- *
- * \SCCS Information: @(#)
- * FILE: ssimp.F   SID: 2.6   DATE OF SID: 10/17/00   RELEASE: 2
- *
- * \Remarks
- *     1. None
- *
  * \EndLib
  */
+int sssimp()
+{
+    /* System generated locals */
+    int32_t i__1;
+    float r__1;
+
+    /* Local variables */
+    float d[50]	/* was [25][2] */;
+    int32_t j, n;
+    float ax[256];
+    int32_t nx, ido, ncv, nev;
+    float tol;
+    char* bmat;
+    int32_t info;
+    bool rvec;
+    int32_t ierr, mode1;
+    float sigma;
+    char* which;
+    int32_t nconv;
+    float *v	/* was [256][25] */;
+    float *resid;
+    float *workd;
+    float *workl;
+    int32_t ipntr[11];
+    int32_t iparam[11];
+    bool select[25];
+    int32_t ishfts, maxitr;
+    int32_t lworkl;
+
+    resid = (float*)malloc(256 * sizeof(float));
+    v = (float*)malloc(6400 * sizeof(float));
+    workl = (float*)malloc(825 * sizeof(float));
+    workd = (float*)malloc(768 * sizeof(float));
+
      /* ---------------------------------------------------- */
      /* Storage Declarations:                                */
      /*                                                      */
@@ -136,10 +124,6 @@ int sssimp()
      /* MAXNCV: Maximum NCV allowed.                         */
      /* ---------------------------------------------------- */
 
-     /* --------------------- */
-     /* Executable Statements */
-     /* --------------------- */
-
      /* ----------------------------------------------- */
      /* The following include statement and assignments */
      /* initiate trace output from the internal         */
@@ -149,9 +133,6 @@ int sssimp()
      /* time spent in the various stages of computation */
      /* given by setting msaupd = 1.                    */
      /* ----------------------------------------------- */
-
-/* \SCCS Information: @(#) */
-/* FILE: debug.h   SID: 2.3   DATE OF SID: 11/16/95   RELEASE: 2 */
 
      /* ------------------------------- */
      /* See debug.doc for documentation */
@@ -439,10 +420,15 @@ L10:
 	printf(" The number of converged Ritz values is %d\n", nconv);
 	printf(" The number of Implicit Arnoldi update iterations taken is %d\n", iparam[2]);
 	printf(" The number of OP*x is %d\n", iparam[8]);
-	printf(" The convergence criterion is %f\n", tol);
+	printf(" The convergence criterion is %e\n", tol);
 	printf(" \n");
 
     }
+
+    free(resid);
+    free(v);
+    free(workl);
+    free(workd);
 
      /* ------------------------- */
      /* Done with program sssimp. */

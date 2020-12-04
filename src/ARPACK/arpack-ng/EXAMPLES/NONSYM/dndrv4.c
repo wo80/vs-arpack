@@ -9,6 +9,49 @@ struct {
 
 #define convct_1 convct_
 
+/**
+ * \BeginDoc
+ *
+ *     Simple program to illustrate the idea of reverse communication
+ *     in shift-invert mode for a generalized nonsymmetric eigenvalue
+ *     problem.
+ *
+ *     We implement example four of ex-nonsym.doc in DOCUMENTS directory
+ *
+ * \Example-4
+ *     ... Suppose we want to solve A*x = lambda*B*x in inverse mode,
+ *         where A and B are derived from the finite element discretization
+ *         of the 1-dimensional convection-diffusion operator
+ *                           (d^2u / dx^2) + rho*(du/dx)
+ *         on the interval [0,1] with zero Dirichlet boundary condition
+ *         using linear elements.
+ *
+ *     ... The shift sigma is a real number.
+ *
+ *     ... OP = inv[A-SIGMA*M]*M  and  B = M.
+ *
+ *     ... Use mode 3 of DNAUPD.
+ *
+ * \EndDoc
+ *
+ * \BeginLib
+ *
+ * \Routines called:
+ *     dnaupd  ARPACK reverse communication interface routine.
+ *     dneupd  ARPACK routine that returns Ritz values and (optionally)
+ *             Ritz vectors.
+ *     dgttrf  LAPACK tridiagonal factorization routine.
+ *     dgttrs  LAPACK tridiagonal linear system solve routine.
+ *     dlapy2  LAPACK routine to compute sqrt(x**2+y**2) carefully.
+ *     daxpy   Level 1 BLAS that computes y <- alpha*x+y.
+ *     dcopy   Level 1 BLAS that copies one vector to another.
+ *     ddot    Level 1 BLAS that computes the dot product of two vectors.
+ *     dnrm2   Level 1 BLAS that computes the norm of a vector.
+ *     av      Matrix vector multiplication routine that computes A*x.
+ *     mv      Matrix vector multiplication routine that computes M*x.
+ *
+ * \EndLib
+ */
 int dndrv4()
 {
     /* System generated locals */
@@ -19,9 +62,8 @@ int dndrv4()
     double d[75]	/* was [25][3] */, h;
     int32_t j, n;
     double s, s1, s2, s3;
-    double* v	/* was [256][25] */;
-    double *ax, *mx;
-    double *dd, *dl, *du, *du2;
+    double* ax, *mx;
+    double* dd, *dl, *du, *du2;
     int32_t ido, ncv, nev;
     double tol;
     char* bmat;
@@ -29,12 +71,13 @@ int dndrv4()
     bool rvec;
     int32_t ierr, ipiv[256];
     char* which;
-    double* resid;
     int32_t nconv;
-    double *workd;
+    double* v	/* was [256][25] */;
+    double* resid;
+    double* workd;
+    double* workl;
     bool first;
     int32_t ipntr[14];
-    double *workl;
     int32_t iparam[11];
     double sigmai;
     bool select[25];
@@ -55,73 +98,11 @@ int dndrv4()
     workl = (double*)malloc(2025 * sizeof(double));
     workd = (double*)malloc(768 * sizeof(double));
 
-    /* Fortran I/O blocks */
+     /* Define maximum dimensions for all arrays. */
 
-/*     Simple program to illustrate the idea of reverse communication */
-/*     in shift-invert mode for a generalized nonsymmetric eigenvalue */
-/*     problem. */
-
-/*     We implement example four of ex-nonsym.doc in DOCUMENTS directory */
-
-/* \Example-4 */
-/*     ... Suppose we want to solve A*x = lambda*B*x in inverse mode, */
-/*         where A and B are derived from the finite element discretization */
-/*         of the 1-dimensional convection-diffusion operator */
-/*                           (d^2u / dx^2) + rho*(du/dx) */
-/*         on the interval [0,1] with zero Dirichlet boundary condition */
-/*         using linear elements. */
-
-/*     ... The shift sigma is a real number. */
-
-/*     ... OP = inv[A-SIGMA*M]*M  and  B = M. */
-
-/*     ... Use mode 3 of DNAUPD. */
-/**
- * \BeginLib
- *
- * \Routines called:
- *     dnaupd  ARPACK reverse communication interface routine.
- *     dneupd  ARPACK routine that returns Ritz values and (optionally)
- *             Ritz vectors.
- *     dgttrf  LAPACK tridiagonal factorization routine.
- *     dgttrs  LAPACK tridiagonal linear system solve routine.
- *     dlapy2  LAPACK routine to compute sqrt(x**2+y**2) carefully.
- *     daxpy   Level 1 BLAS that computes y <- alpha*x+y.
- *     dcopy   Level 1 BLAS that copies one vector to another.
- *     ddot    Level 1 BLAS that computes the dot product of two vectors.
- *     dnrm2   Level 1 BLAS that computes the norm of a vector.
- *     av      Matrix vector multiplication routine that computes A*x.
- *     mv      Matrix vector multiplication routine that computes M*x.
- *
- * \Author
- *     Richard Lehoucq
- *     Danny Sorensen
- *     Chao Yang
- *     Dept. of Computational &
- *     Applied Mathematics
- *     Rice University
- *     Houston, Texas
- *
- * \SCCS Information: @(#)
- * FILE: ndrv4.F   SID: 2.5   DATE OF SID: 10/17/00   RELEASE: 2
- *
- * \Remarks
- *     1. None
- *
- * \EndLib
- */
-     /* --------------------------- */
-     /* Define leading dimensions   */
-     /* for all arrays.             */
-     /* MAXN:   Maximum dimension   */
-     /*         of the A allowed.   */
-     /* MAXNEV: Maximum NEV allowed */
-     /* MAXNCV: Maximum NCV allowed */
-     /* --------------------------- */
-
-     /* --------------------- */
-     /* Executable Statements */
-     /* --------------------- */
+     const int MAXN   = 256; /* Maximum dimension of the A allowed. */
+     const int MAXNEV =  10; /* Maximum NEV allowed */
+     const int MAXNCV =  25; /* Maximum NCV allowed */
 
      /* -------------------------------------------------- */
      /* The number N is the dimension of the matrix.  A    */
@@ -477,7 +458,7 @@ L20:
 	printf(" The number of converged Ritz values is %d\n", nconv);
 	printf(" The number of Implicit Arnoldi update iterations taken is %d\n", iparam[2]);
 	printf(" The number of OP*x is %d\n", iparam[8]);
-	printf(" The convergence criterion is %f\n", tol);
+	printf(" The convergence criterion is %e\n", tol);
 	printf(" \n");
 
     }

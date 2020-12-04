@@ -3,6 +3,44 @@
 #include <stdlib.h>
 #include "arpack.h"
 
+/**
+ * \BeginDoc
+ *
+ *     Simple program to illustrate the idea of reverse communication
+ *     in shift-invert mode for a generalized nonsymmetric eigenvalue problem.
+ *
+ *     We implement example five of ex-nonsym.doc in DOCUMENTS directory
+ *
+ * \Example-5
+ *
+ *     ... Suppose we want to solve A*x = lambda*B*x in shift-invert mode
+ *         The matrix A is the tridiagonal matrix with 2 on the diagonal,
+ *         -2 on the subdiagonal and 3 on the superdiagonal.  The matrix M
+ *         is the tridiagonal matrix with 4 on the diagonal and 1 on the
+ *         off-diagonals.
+ *     ... The shift sigma is a complex number (sigmar, sigmai).
+ *     ... OP = Real_Part{inv[A-(SIGMAR,SIGMAI)*M]*M and  B = M.
+ *     ... Use mode 3 of DNAUPD.
+ *
+ * \EndDoc
+ *
+ * \BeginLib
+ *
+ * \Routines called:
+ *     dnaupd  ARPACK reverse communication interface routine.
+ *     dneupd  ARPACK routine that returns Ritz values and (optionally)
+ *             Ritz vectors.
+ *     zgttrf  LAPACK complex matrix factorization routine.
+ *     zgttrs  LAPACK complex linear system solve routine.
+ *     dlapy2  LAPACK routine to compute sqrt(x**2+y**2) carefully.
+ *     daxpy   Level 1 BLAS that computes y <- alpha*x+y.
+ *     ddot    Level 1 BLAS that computes the dot product of two vectors.
+ *     dnrm2   Level 1 BLAS that computes the norm of a vector
+ *     av      Matrix vector subroutine that computes A*x.
+ *     mv      Matrix vector subroutine that computes M*x.
+ *
+ * \EndLib
+ */
 int dndrv5()
 {
     /* System generated locals */
@@ -13,7 +51,6 @@ int dndrv5()
     /* Local variables */
     double d[75]	/* was [25][3] */;
     int32_t j, n;
-    double *v	/* was [256][25] */;
     zomplex c1, c2, c3;
     double* ax, * mx;
     int32_t ido, ncv, nev;
@@ -28,13 +65,14 @@ int dndrv5()
     int32_t ierr, ipiv[256];
     double numi, numr;
     char* which;
-    double* resid;
     zomplex ctemp[256];
     int32_t nconv;
+    double* v	/* was [256][25] */;
+    double* resid;
     double* workd;
+    double* workl;
     bool first;
     int32_t ipntr[14];
-    double *workl;
     int32_t iparam[11];
     double sigmai;
     bool select[25];
@@ -54,68 +92,11 @@ int dndrv5()
     workl = (double*)malloc(2025 * sizeof(double));
     workd = (double*)malloc(768 * sizeof(double));
 
-    /* Fortran I/O blocks */
+     /* Define maximum dimensions for all arrays. */
 
-/*     Simple program to illustrate the idea of reverse communication */
-/*     in shift-invert mode for a generalized nonsymmetric eigenvalue problem. */
-
-/*     We implement example five of ex-nonsym.doc in DOCUMENTS directory */
-
-/* \Example-5 */
-
-/*     ... Suppose we want to solve A*x = lambda*B*x in shift-invert mode */
-/*         The matrix A is the tridiagonal matrix with 2 on the diagonal, */
-/*         -2 on the subdiagonal and 3 on the superdiagonal.  The matrix M */
-/*         is the tridiagonal matrix with 4 on the diagonal and 1 on the */
-/*         off-diagonals. */
-/*     ... The shift sigma is a complex number (sigmar, sigmai). */
-/*     ... OP = Real_Part{inv[A-(SIGMAR,SIGMAI)*M]*M and  B = M. */
-/*     ... Use mode 3 of DNAUPD. */
-/**
- * \BeginLib
- *
- * \Routines called:
- *     dnaupd  ARPACK reverse communication interface routine.
- *     dneupd  ARPACK routine that returns Ritz values and (optionally)
- *             Ritz vectors.
- *     zgttrf  LAPACK complex matrix factorization routine.
- *     zgttrs  LAPACK complex linear system solve routine.
- *     dlapy2  LAPACK routine to compute sqrt(x**2+y**2) carefully.
- *     daxpy   Level 1 BLAS that computes y <- alpha*x+y.
- *     ddot    Level 1 BLAS that computes the dot product of two vectors.
- *     dnrm2   Level 1 BLAS that computes the norm of a vector
- *     av      Matrix vector subroutine that computes A*x.
- *     mv      Matrix vector subroutine that computes M*x.
- *
- * \Author
- *     Richard Lehoucq
- *     Danny Sorensen
- *     Chao Yang
- *     Dept. of Computational &
- *     Applied Mathematics
- *     Rice University
- *     Houston, Texas
- *
- * \SCCS Information: @(#)
- * FILE: ndrv5.F   SID: 2.5   DATE OF SID: 10/17/00   RELEASE: 2
- *
- * \Remarks
- *     1. None
- *
- * \EndLib
- */
-     /* --------------------------- */
-     /* Define leading dimensions   */
-     /* for all arrays.             */
-     /* MAXN:   Maximum dimension   */
-     /*         of the A allowed.   */
-     /* MAXNEV: Maximum NEV allowed */
-     /* MAXNCV: Maximum NCV allowed */
-     /* --------------------------- */
-
-     /* --------------------- */
-     /* Executable Statements */
-     /* --------------------- */
+     const int MAXN   = 256; /* Maximum dimension of the A allowed. */
+     const int MAXNEV =  10; /* Maximum NEV allowed */
+     const int MAXNCV =  25; /* Maximum NCV allowed */
 
      /* -------------------------------------------------- */
      /* The number N is the dimension of the matrix.  A    */
@@ -584,7 +565,7 @@ L20:
 	printf(" The number of converged Ritz values is %d\n", nconv);
 	printf(" The number of Implicit Arnoldi update iterations taken is %d\n", iparam[2]);
 	printf(" The number of OP*x is %d\n", iparam[8]);
-	printf(" The convergence criterion is %f\n", tol);
+	printf(" The convergence criterion is %e\n", tol);
 	printf(" \n");
 
     }

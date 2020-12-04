@@ -3,96 +3,63 @@
 #include <stdlib.h>
 #include "arpack.h"
 
-int dnsimp()
-{
-    /* System generated locals */
-    int32_t i__1;
-    double d__1;
-
-    /* Local variables */
-    double d[90]	/* was [30][3] */;
-    int32_t j, n;
-    double *v	/* was [256][30] */;
-    double ax[256];
-    int32_t nx, ido, ncv, nev;
-    double tol;
-    char* bmat;
-    int32_t info;
-    bool rvec;
-    int32_t ierr, mode1;
-    char* which;
-    double* resid;
-    int32_t nconv;
-    double* workd;
-    bool first;
-    int32_t ipntr[14];
-    double *workl;
-    int32_t iparam[11];
-    double sigmai;
-    bool select[30];
-    double sigmar;
-    int32_t ishfts, maxitr, lworkl;
-    double workev[90];
-
-    resid = (double*)malloc(256 * sizeof(double));
-    v = (double*)malloc(7680 * sizeof(double));
-    workl = (double*)malloc(2880 * sizeof(double));
-    workd = (double*)malloc(768 * sizeof(double));
-
-    /* Fortran I/O blocks */
-
-/*     This example program is intended to illustrate the */
-/*     simplest case of using ARPACK in considerable detail. */
-/*     This code may be used to understand basic usage of ARPACK */
-/*     and as a template for creating an interface to ARPACK. */
-
-/*     This code shows how to use ARPACK to find a few eigenvalues */
-/*     (lambda) and corresponding eigenvectors (x) for the standard */
-/*     eigenvalue problem: */
-
-/*                        A*x = lambda*x */
-
-/*     where A is a n by n real nonsymmetric matrix. */
-
-/*     The main points illustrated here are */
-
-/*        1) How to declare sufficient memory to find NEV */
-/*           eigenvalues of largest magnitude.  Other options */
-/*           are available. */
-
-/*        2) Illustration of the reverse communication interface */
-/*           needed to utilize the top level ARPACK routine DNAUPD */
-/*           that computes the quantities needed to construct */
-/*           the desired eigenvalues and eigenvectors(if requested). */
-
-/*        3) How to extract the desired eigenvalues and eigenvectors */
-/*           using the ARPACK routine DNEUPD. */
-
-/*     The only thing that must be supplied in order to use this */
-/*     routine on your problem is to change the array dimensions */
-/*     appropriately, to specify WHICH eigenvalues you want to compute */
-/*     and to supply a matrix-vector product */
-
-/*                         w <-  Av */
-
-/*     in place of the call to AV( )  below. */
-
-/*     Once usage of this routine is understood, you may wish to explore */
-/*     the other available options to improve convergence, to solve generalized */
-/*     problems, etc.  Look at the file ex-nonsym.doc in DOCUMENTS directory. */
-/*     This codes implements */
-
-/* \Example-1 */
-/*     ... Suppose we want to solve A*x = lambda*x in regular mode, */
-/*         where A is obtained from the standard central difference */
-/*         discretization of the convection-diffusion operator */
-/*                 (Laplacian u) + rho*(du / dx) */
-/*         on the unit square, with zero Dirichlet boundary condition. */
-
-/*     ... OP = A  and  B = I. */
-/*     ... Assume "call av (nx,x,y)" computes y = A*x */
-/*     ... Use mode 1 of DNAUPD. */
 /**
+ * \BeginDoc
+ *
+ *     This example program is intended to illustrate the
+ *     simplest case of using ARPACK in considerable detail.
+ *     This code may be used to understand basic usage of ARPACK
+ *     and as a template for creating an interface to ARPACK.
+ *
+ *     This code shows how to use ARPACK to find a few eigenvalues
+ *     (lambda) and corresponding eigenvectors (x) for the standard
+ *     eigenvalue problem:
+ *
+ *                        A*x = lambda*x
+ *
+ *     where A is a n by n real nonsymmetric matrix.
+ *
+ *     The main points illustrated here are
+ *
+ *        1) How to declare sufficient memory to find NEV
+ *           eigenvalues of largest magnitude.  Other options
+ *           are available.
+ *
+ *        2) Illustration of the reverse communication interface
+ *           needed to utilize the top level ARPACK routine DNAUPD
+ *           that computes the quantities needed to construct
+ *           the desired eigenvalues and eigenvectors(if requested).
+ *
+ *        3) How to extract the desired eigenvalues and eigenvectors
+ *           using the ARPACK routine DNEUPD.
+ *
+ *     The only thing that must be supplied in order to use this
+ *     routine on your problem is to change the array dimensions
+ *     appropriately, to specify WHICH eigenvalues you want to compute
+ *     and to supply a matrix-vector product
+ *
+ *                         w <-  Av
+ *
+ *     in place of the call to AV( )  below.
+ *
+ *     Once usage of this routine is understood, you may wish to explore
+ *     the other available options to improve convergence, to solve generalized
+ *     problems, etc.  Look at the file ex-nonsym.doc in DOCUMENTS directory.
+ *     This codes implements
+ *
+ * \Example-1
+ *     ... Suppose we want to solve A*x = lambda*x in regular mode,
+ *         where A is obtained from the standard central difference
+ *         discretization of the convection-diffusion operator
+ *                 (Laplacian u) + rho*(du / dx)
+ *         on the unit square, with zero Dirichlet boundary condition.
+ *
+ *     ... OP = A  and  B = I.
+ *     ... Assume "call av (nx,x,y)" computes y = A*x
+ *     ... Use mode 1 of DNAUPD.
+ *
+ * \EndDoc
+ *
  * \BeginLib
  *
  * \Routines called:
@@ -107,23 +74,44 @@ int dnsimp()
  *             where T is a tridiagonal matrix.  It is used in routine
  *             av.
  *
- * \Author
- *     Richard Lehoucq
- *     Danny Sorensen
- *     Chao Yang
- *     Dept. of Computational &
- *     Applied Mathematics
- *     Rice University
- *     Houston, Texas
- *
- * \SCCS Information: @(#)
- * FILE: nsimp.F   SID: 2.5   DATE OF SID: 10/17/00   RELEASE: 2
- *
- * \Remarks
- *     1. None
- *
  * \EndLib
  */
+int dnsimp()
+{
+    /* System generated locals */
+    int32_t i__1;
+    double d__1;
+
+    /* Local variables */
+    double d[90]	/* was [30][3] */;
+    int32_t j, n;
+    double ax[256];
+    int32_t nx, ido, ncv, nev;
+    double tol;
+    char* bmat;
+    int32_t info;
+    bool rvec;
+    int32_t ierr, mode1;
+    char* which;
+    int32_t nconv;
+    double *v	/* was [256][30] */;
+    double* resid;
+    double* workd;
+    double *workl;
+    bool first;
+    int32_t ipntr[14];
+    int32_t iparam[11];
+    double sigmai;
+    bool select[30];
+    double sigmar;
+    int32_t ishfts, maxitr, lworkl;
+    double workev[90];
+
+    resid = (double*)malloc(256 * sizeof(double));
+    v = (double*)malloc(7680 * sizeof(double));
+    workl = (double*)malloc(2880 * sizeof(double));
+    workd = (double*)malloc(768 * sizeof(double));
+
      /* ---------------------------------------------------- */
      /* Storage Declarations:                                */
      /*                                                      */
@@ -146,10 +134,6 @@ int dnsimp()
      /* MAXNCV: Maximum NCV allowed.                         */
      /* ---------------------------------------------------- */
 
-     /* --------------------- */
-     /* Executable Statements */
-     /* --------------------- */
-
      /* ----------------------------------------------- */
      /* The following include statement and assignments */
      /* initiate trace output from the internal         */
@@ -160,20 +144,17 @@ int dnsimp()
      /* given by setting mnaupd = 1.                    */
      /* ----------------------------------------------- */
 
-/* \SCCS Information: @(#) */
-/* FILE: debug.h   SID: 2.3   DATE OF SID: 11/16/95   RELEASE: 2 */
-
      /* ------------------------------- */
      /* See debug.doc for documentation */
      /* ------------------------------- */
     debug_1.ndigit = -3;
     debug_1.logfil = 6;
-    debug_1.mnaitr = 1;
-    debug_1.mnapps = 1;
-    debug_1.mnaupd = 2;
-    debug_1.mnaup2 = 1;
-    debug_1.mneigh = 1;
-    debug_1.mneupd = 1;
+    debug_1.mnaitr = 0;
+    debug_1.mnapps = 0;
+    debug_1.mnaupd = 1;
+    debug_1.mnaup2 = 0;
+    debug_1.mneigh = 0;
+    debug_1.mneupd = 0;
 
      /* ----------------------------------------------- */
      /* The following sets dimensions for this problem. */
@@ -488,7 +469,7 @@ L10:
 	printf(" The number of converged Ritz values is %d\n", nconv);
 	printf(" The number of Implicit Arnoldi update iterations taken is %d\n", iparam[2]);
 	printf(" The number of OP*x is %d\n", iparam[8]);
-	printf(" The convergence criterion is %f\n", tol);
+	printf(" The convergence criterion is %e\n", tol);
 	printf(" \n");
 
     }

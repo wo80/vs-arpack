@@ -2,6 +2,94 @@
 
 #include "arpack.h"
 
+/**
+ * \BeginDoc
+ *
+ *     This example program is intended to illustrate the
+ *     the use of ARPACK to compute the Singular Value Decomposition.
+ *
+ *     This code shows how to use ARPACK to find a few of the
+ *     largest singular values(sigma) and corresponding right singular
+ *     vectors (v) for the the matrix A by solving the symmetric problem:
+ *
+ *                        (A'*A)*v = sigma*v
+ *
+ *     where A is an m by n real matrix.
+ *
+ *     This code may be easily modified to estimate the 2-norm
+ *     condition number  largest(sigma)/smallest(sigma) by setting
+ *     which = 'BE' below.  This will ask for a few of the smallest
+ *     and a few of the largest singular values simultaneously.
+ *     The condition number could then be estimated by taking
+ *     the ratio of the largest and smallest singular values.
+ *
+ *     This formulation is appropriate when  m  .ge.  n.
+ *     Reverse the roles of A and A' in the case that  m .le. n.
+ *
+ *     The main points illustrated here are
+ *
+ *        1) How to declare sufficient memory to find NEV
+ *           largest singular values of A .
+ *
+ *        2) Illustration of the reverse communication interface
+ *           needed to utilize the top level ARPACK routine DSAUPD
+ *           that computes the quantities needed to construct
+ *           the desired singular values and vectors(if requested).
+ *
+ *        3) How to extract the desired singular values and vectors
+ *           using the ARPACK routine DSEUPD.
+ *
+ *        4) How to construct the left singular vectors U from the
+ *           right singular vectors V to obtain the decomposition
+ *
+ *                        A*V = U*S
+ *
+ *           where S = diag(sigma_1, sigma_2, ..., sigma_k).
+ *
+ *     The only thing that must be supplied in order to use this
+ *     routine on your problem is to change the array dimensions
+ *     appropriately, to specify WHICH singular values you want to
+ *     compute and to supply a the matrix-vector products
+
+ *                         w <-  Ax
+ *                         y <-  A'w
+ *
+ *     in place of the calls  to AV( ) and ATV( ) respectively below.
+ *
+ *     Further documentation is available in the header of DSAUPD
+ *     which may be found in the SRC directory.
+ *
+ *     This codes implements
+ *
+ * \Example-1
+ *     ... Suppose we want to solve A'A*v = sigma*v in regular mode,
+ *         where A is derived from the simplest finite difference
+ *         discretization of the 2-dimensional kernel  K(s,t)dt  where
+ *
+ *                 K(s,t) =  s(t-1)   if 0 .le. s .le. t .le. 1,
+ *                           t(s-1)   if 0 .le. t .lt. s .le. 1.
+ *
+ *         See subroutines AV  and ATV for details.
+ *     ... OP = A'*A  and  B = I.
+ *     ... Assume "call av (n,x,y)" computes y = A*x
+ *     ... Assume "call atv (n,y,w)" computes w = A'*y
+ *     ... Assume exact shifts are used
+ *
+ * \EndDoc
+ *
+ * \BeginLib
+ *
+ * \Routines called:
+ *     dsaupd  ARPACK reverse communication interface routine.
+ *     dseupd  ARPACK routine that returns Ritz values and (optionally)
+ *             Ritz vectors.
+ *     dnrm2   Level 1 BLAS that computes the norm of a vector.
+ *     daxpy   Level 1 BLAS that computes y <- alpha*x+y.
+ *     dscal   Level 1 BLAS thst computes x <- x*alpha.
+ *     dcopy   Level 1 BLAS thst computes y <- x.
+ *
+ * \EndLib
+ */
 int dsvd()
 {
     /* System generated locals */
@@ -38,107 +126,6 @@ int dsvd()
     bool select[25];
     int32_t ishfts, maxitr, lworkl;
 
-    /* Fortran I/O blocks */
-
-/*     This example program is intended to illustrate the */
-/*     the use of ARPACK to compute the Singular Value Decomposition. */
-
-/*     This code shows how to use ARPACK to find a few of the */
-/*     largest singular values(sigma) and corresponding right singular */
-/*     vectors (v) for the the matrix A by solving the symmetric problem: */
-
-/*                        (A'*A)*v = sigma*v */
-
-/*     where A is an m by n real matrix. */
-
-/*     This code may be easily modified to estimate the 2-norm */
-/*     condition number  largest(sigma)/smallest(sigma) by setting */
-/*     which = 'BE' below.  This will ask for a few of the smallest */
-/*     and a few of the largest singular values simultaneously. */
-/*     The condition number could then be estimated by taking */
-/*     the ratio of the largest and smallest singular values. */
-
-/*     This formulation is appropriate when  m  .ge.  n. */
-/*     Reverse the roles of A and A' in the case that  m .le. n. */
-
-/*     The main points illustrated here are */
-
-/*        1) How to declare sufficient memory to find NEV */
-/*           largest singular values of A . */
-
-/*        2) Illustration of the reverse communication interface */
-/*           needed to utilize the top level ARPACK routine DSAUPD */
-/*           that computes the quantities needed to construct */
-/*           the desired singular values and vectors(if requested). */
-
-/*        3) How to extract the desired singular values and vectors */
-/*           using the ARPACK routine DSEUPD. */
-
-/*        4) How to construct the left singular vectors U from the */
-/*           right singular vectors V to obtain the decomposition */
-
-/*                        A*V = U*S */
-
-/*           where S = diag(sigma_1, sigma_2, ..., sigma_k). */
-
-/*     The only thing that must be supplied in order to use this */
-/*     routine on your problem is to change the array dimensions */
-/*     appropriately, to specify WHICH singular values you want to */
-/*     compute and to supply a the matrix-vector products */
-
-/*                         w <-  Ax */
-/*                         y <-  A'w */
-
-/*     in place of the calls  to AV( ) and ATV( ) respectively below. */
-
-/*     Further documentation is available in the header of DSAUPD */
-/*     which may be found in the SRC directory. */
-
-/*     This codes implements */
-
-/* \Example-1 */
-/*     ... Suppose we want to solve A'A*v = sigma*v in regular mode, */
-/*         where A is derived from the simplest finite difference */
-/*         discretization of the 2-dimensional kernel  K(s,t)dt  where */
-
-/*                 K(s,t) =  s(t-1)   if 0 .le. s .le. t .le. 1, */
-/*                           t(s-1)   if 0 .le. t .lt. s .le. 1. */
-
-/*         See subroutines AV  and ATV for details. */
-/*     ... OP = A'*A  and  B = I. */
-/*     ... Assume "call av (n,x,y)" computes y = A*x */
-/*     ... Assume "call atv (n,y,w)" computes w = A'*y */
-/*     ... Assume exact shifts are used */
-/*     ... */
-/**
- * \BeginLib
- *
- * \Routines called:
- *     dsaupd  ARPACK reverse communication interface routine.
- *     dseupd  ARPACK routine that returns Ritz values and (optionally)
- *             Ritz vectors.
- *     dnrm2   Level 1 BLAS that computes the norm of a vector.
- *     daxpy   Level 1 BLAS that computes y <- alpha*x+y.
- *     dscal   Level 1 BLAS thst computes x <- x*alpha.
- *     dcopy   Level 1 BLAS thst computes y <- x.
- *
- * \Author
- *     Richard Lehoucq
- *     Danny Sorensen
- *     Chao Yang
- *     Dept. of Computational &
- *     Applied Mathematics
- *     Rice University
- *     Houston, Texas
- *
- * \SCCS Information: @(#)
- * FILE: svd.F   SID: 2.4   DATE OF SID: 10/17/00   RELEASE: 2
- *
- * \Remarks
- *     1. None
- *
- * \EndLib
- */
      /* ---------------------------------------------------- */
      /* Storage Declarations:                                */
      /*                                                      */
@@ -170,10 +157,6 @@ int dsvd()
      /* MAXNCV: Maximum NCV allowed                          */
      /* ---------------------------------------------------- */
 
-     /* --------------------- */
-     /* Executable Statements */
-     /* --------------------- */
-
      /* ----------------------------------------------- */
      /* The following include statement and assignments */
      /* initiate trace output from the internal         */
@@ -183,9 +166,6 @@ int dsvd()
      /* time spent in the various stages of computation */
      /* given by setting msaupd = 1.                    */
      /* ----------------------------------------------- */
-
-/* \SCCS Information: @(#) */
-/* FILE: debug.h   SID: 2.3   DATE OF SID: 11/16/95   RELEASE: 2 */
 
      /* ------------------------------- */
      /* See debug.doc for documentation */
@@ -484,7 +464,7 @@ L10:
 	printf(" The number of converged Ritz values is %d\n", nconv);
 	printf(" The number of Implicit Arnoldi update iterations taken is %d\n", iparam[2]);
 	printf(" The number of OP*x is %d\n", iparam[8]);
-	printf(" The convergence criterion is %f\n", tol);
+	printf(" The convergence criterion is %e\n", tol);
 	printf(" \n");
 
     }

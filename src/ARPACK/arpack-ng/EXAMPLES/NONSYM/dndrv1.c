@@ -3,63 +3,30 @@
 #include <stdlib.h>
 #include "arpack.h"
 
-int dndrv1()
-{
-    /* System generated locals */
-    int32_t i__1;
-    double d__1;
-
-    /* Local variables */
-    double d[90]	/* was [30][3] */;
-    int32_t j, n;
-    double *v	/* was [256][30] */;
-    double ax[256];
-    int32_t nx, ido, ncv, nev;
-    double tol;
-    char* bmat;
-    int32_t mode, info;
-    bool rvec;
-    int32_t ierr;
-    char* which;
-    double* resid;
-    int32_t nconv;
-    double* workd;
-    bool first;
-    int32_t ipntr[14];
-    double *workl;
-    int32_t iparam[11];
-    double sigmai;
-    bool select[30];
-    double sigmar;
-    int32_t ishfts, maxitr, lworkl;
-    double workev[90];
-
-    resid = (double*)malloc(256 * sizeof(double));
-    v = (double*)malloc(7680 * sizeof(double));
-    workl = (double*)malloc(2880 * sizeof(double));
-    workd = (double*)malloc(768 * sizeof(double));
-
-    /* Fortran I/O blocks */
-
-/*     Example program to illustrate the idea of reverse communication */
-/*     for a standard nonsymmetric eigenvalue problem. */
-
-/*     We implement example one of ex-nonsym.doc in DOCUMENTS directory */
-
-/* \Example-1 */
-/*     ... Suppose we want to solve A*x = lambda*x in regular mode, */
-/*         where A is obtained from the standard central difference */
-/*         discretization of the convection-diffusion operator */
-/*                 (Laplacian u) + rho*(du / dx) */
-/*         on the unit square [0,1]x[0,1] with zero Dirichlet boundary */
-/*         condition. */
-
-/*     ... OP = A  and  B = I. */
-
-/*     ... Assume "call av (nx,x,y)" computes y = A*x.c */
-
-/*     ... Use mode 1 of DNAUPD. */
 /**
+ * \BeginDoc
+ *
+ *     Example program to illustrate the idea of reverse communication
+ *     for a standard nonsymmetric eigenvalue problem.
+ *
+ *     We implement example one of ex-nonsym.doc in DOCUMENTS directory
+ *
+ * \Example-1
+ *     ... Suppose we want to solve A*x = lambda*x in regular mode,
+ *         where A is obtained from the standard central difference
+ *         discretization of the convection-diffusion operator
+ *                 (Laplacian u) + rho*(du / dx)
+ *         on the unit square [0,1]x[0,1] with zero Dirichlet boundary
+ *         condition.
+ *
+ *     ... OP = A  and  B = I.
+ *
+ *     ... Assume "call av (nx,x,y)" computes y = A*x.c
+ *
+ *     ... Use mode 1 of DNAUPD.
+ *
+ * \EndDoc
+ *
  * \BeginLib
  *
  * \Routines called:
@@ -74,35 +41,49 @@ int dndrv1()
  *             where T is a tridiagonal matrix.  It is used in routine
  *             av.
  *
- * \Author
- *     Richard Lehoucq
- *     Danny Sorensen
- *     Chao Yang
- *     Dept. of Computational &
- *     Applied Mathematics
- *     Rice University
- *     Houston, Texas
- *
- * \SCCS Information: @(#)
- * FILE: ndrv1.F   SID: 2.5   DATE OF SID: 10/17/00   RELEASE: 2
- *
- * \Remarks
- *     1. None
- *
  * \EndLib
  */
-     /* --------------------------- */
-     /* Define maximum dimensions   */
-     /* for all arrays.             */
-     /* MAXN:   Maximum dimension   */
-     /*         of the A allowed.   */
-     /* MAXNEV: Maximum NEV allowed */
-     /* MAXNCV: Maximum NCV allowed */
-     /* --------------------------- */
+int dndrv1()
+{
+    /* System generated locals */
+    int32_t i__1;
+    double d__1;
 
-     /* --------------------- */
-     /* Executable Statements */
-     /* --------------------- */
+    /* Local variables */
+    double d[90]	/* was [30][3] */;
+    int32_t j, n;
+    double ax[256];
+    int32_t nx, ido, ncv, nev;
+    double tol;
+    char* bmat;
+    int32_t mode, info;
+    bool rvec;
+    int32_t ierr;
+    char* which;
+    int32_t nconv;
+    double* v	/* was [256][30] */;
+    double* resid;
+    double* workd;
+    double* workl;
+    bool first;
+    int32_t ipntr[14];
+    int32_t iparam[11];
+    double sigmai;
+    bool select[30];
+    double sigmar;
+    int32_t ishfts, maxitr, lworkl;
+    double workev[90];
+
+    resid = (double*)malloc(256 * sizeof(double));
+    v = (double*)malloc(7680 * sizeof(double));
+    workl = (double*)malloc(2880 * sizeof(double));
+    workd = (double*)malloc(768 * sizeof(double));
+
+     /* Define maximum dimensions for all arrays. */
+
+     const int MAXN   = 256; /* Maximum dimension of the A allowed. */
+     const int MAXNEV =  12; /* Maximum NEV allowed */
+     const int MAXNCV =  30; /* Maximum NCV allowed */
 
      /* ------------------------------------------------ */
      /* The number NX is the number of interior points   */
@@ -365,7 +346,7 @@ L10:
 	printf(" The number of converged Ritz values is %d\n", nconv);
 	printf(" The number of Implicit Arnoldi update iterations taken is %d\n", iparam[2]);
 	printf(" The number of OP*x is %d\n", iparam[8]);
-	printf(" The convergence criterion is %f\n", tol);
+	printf(" The convergence criterion is %e\n", tol);
 	printf(" \n");
 
     }

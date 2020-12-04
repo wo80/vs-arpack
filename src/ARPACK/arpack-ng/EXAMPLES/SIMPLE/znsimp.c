@@ -2,93 +2,61 @@
 
 #include "arpack.h"
 
-int znsimp()
-{
-    /* System generated locals */
-    int32_t i__1, i__2;
-    zomplex z__1;
-
-    /* Builtin functions */
-
-    int32_t s_wsle(cilist *), do_lio(int32_t *, int32_t *, char *, ftnlen), 
-	    e_wsle(void);
-    double d_imag(zomplex *);
-
-    /* Local variables */
-    zomplex d[30];
-    int32_t j, n;
-    zomplex v[7680]	/* was [256][30] */;
-    double rd[90]	/* was [30][3] */;
-    zomplex ax[256];
-    int32_t nx, ido, ncv, nev;
-    double tol;
-    char* bmat;
-    int32_t info;
-    bool rvec;
-    int32_t ierr, mode1;
-    zomplex sigma;
-    char* which;
-    zomplex resid[256];
-    int32_t nconv;
-    zomplex workd[768];
-    int32_t ipntr[14];
-    zomplex workl[2850];
-    double rwork[30];
-    int32_t iparam[11];
-    bool select[30];
-    int32_t ishfts, maxitr;
-    int32_t lworkl;
-    zomplex workev[60];
-
-    /* Fortran I/O blocks */
-
-/*     This example program is intended to illustrate the */
-/*     simplest case of using ARPACK in considerable detail. */
-/*     This code may be used to understand basic usage of ARPACK */
-/*     and as a template for creating an interface to ARPACK. */
-
-/*     This code shows how to use ARPACK to find a few eigenvalues */
-/*     (lambda) and corresponding eigenvectors (x) for the standard */
-/*     eigenvalue problem: */
-
-/*                        A*x = lambda*x */
-
-/*     where A is a general n by n complex matrix. */
-
-/*     The main points illustrated here are */
-
-/*        1) How to declare sufficient memory to find NEV */
-/*           eigenvalues of largest magnitude.  Other options */
-/*           are available. */
-
-/*        2) Illustration of the reverse communication interface */
-/*           needed to utilize the top level ARPACK routine ZNAUPD */
-/*           that computes the quantities needed to construct */
-/*           the desired eigenvalues and eigenvectors(if requested). */
-
-/*        3) How to extract the desired eigenvalues and eigenvectors */
-/*           using the ARPACK routine ZNEUPD . */
-
-/*     The only thing that must be supplied in order to use this */
-/*     routine on your problem is to change the array dimensions */
-/*     appropriately, to specify WHICH eigenvalues you want to compute */
-/*     and to supply a matrix-vector product */
-
-/*                         w <-  Av */
-
-/*     in place of the call to AV( )  below. */
-
-/*     Once usage of this routine is understood, you may wish to explore */
-/*     the other available options to improve convergence, to solve generalized */
-/*     problems, etc.  Look at the file ex-complex.doc in DOCUMENTS directory. */
-/*     This codes implements */
-
-/* \Example-1 */
-/*     ... Suppose we want to solve A*x = lambda*x in regular mode, */
-/*     ... OP = A  and  B = I. */
-/*     ... Assume "call av (nx,x,y)" computes y = A*x */
-/*     ... Use mode 1 of ZNAUPD . */
 /**
+ * \BeginDoc
+ *
+/**
+ * \BeginDoc
+ *
+ *     This example program is intended to illustrate the
+ *     simplest case of using ARPACK in considerable detail.
+ *     This code may be used to understand basic usage of ARPACK
+ *     and as a template for creating an interface to ARPACK.
+ *
+ *     This code shows how to use ARPACK to find a few eigenvalues
+ *     (lambda) and corresponding eigenvectors (x) for the standard
+ *     eigenvalue problem:
+ *
+ *                        A*x = lambda*x
+ *
+ *     where A is a general n by n complex matrix.
+ *
+ *     The main points illustrated here are
+ *
+ *        1) How to declare sufficient memory to find NEV
+ *           eigenvalues of largest magnitude.  Other options
+ *           are available.
+ *
+ *        2) Illustration of the reverse communication interface
+ *           needed to utilize the top level ARPACK routine ZNAUPD
+ *           that computes the quantities needed to construct
+ *           the desired eigenvalues and eigenvectors(if requested).
+ *
+ *        3) How to extract the desired eigenvalues and eigenvectors
+ *           using the ARPACK routine ZNEUPD .
+ *
+ *     The only thing that must be supplied in order to use this
+ *     routine on your problem is to change the array dimensions
+ *     appropriately, to specify WHICH eigenvalues you want to compute
+ *     and to supply a matrix-vector product
+ *
+ *                         w <-  Av
+ *
+ *     in place of the call to AV( )  below.
+ *
+ *     Once usage of this routine is understood, you may wish to explore
+ *     the other available options to improve convergence, to solve generalized
+ *     problems, etc.  Look at the file ex-complex.doc in DOCUMENTS directory.
+ *     This codes implements
+ *
+ * \Example-1
+ *     ... Suppose we want to solve A*x = lambda*x in regular mode,
+ *     ... OP = A  and  B = I.
+ *     ... Assume "call av (nx,x,y)" computes y = A*x
+ *     ... Use mode 1 of ZNAUPD .
+ *
+ * \EndDoc
+ *
  * \BeginLib
  *
  * \Routines called
@@ -103,23 +71,49 @@ int znsimp()
  *             where T is a tridiagonal matrix.  It is used in routine
  *             av.
  *
- * \Author
- *     Richard Lehoucq
- *     Danny Sorensen
- *     Chao Yang
- *     Dept. of Computational &
- *     Applied Mathematics
- *     Rice University
- *     Houston, Texas
- *
- * \SCCS Information: @(#)
- * FILE: nsimp.F   SID: 2.4   DATE OF SID: 10/20/00   RELEASE: 2
- *
- * \Remarks
- *     1. None
- *
  * \EndLib
  */
+int znsimp()
+{
+    /* System generated locals */
+    int32_t i__1, i__2;
+    zomplex z__1;
+
+    /* Builtin functions */
+
+    double d_imag(zomplex *);
+
+    /* Local variables */
+    zomplex d[30];
+    int32_t j, n;
+    double rd[90]	/* was [30][3] */;
+    zomplex ax[256];
+    int32_t nx, ido, ncv, nev;
+    double tol;
+    char* bmat;
+    int32_t info;
+    bool rvec;
+    int32_t ierr, mode1;
+    zomplex sigma;
+    char* which;
+    int32_t nconv;
+    zomplex *v	/* was [256][30] */;
+    zomplex *resid;
+    zomplex *workd;
+    zomplex *workl;
+    int32_t ipntr[14];
+    double rwork[30];
+    int32_t iparam[11];
+    bool select[30];
+    int32_t ishfts, maxitr;
+    int32_t lworkl;
+    zomplex workev[60];
+
+    resid = (zomplex*)malloc(256 * sizeof(zomplex));
+    v = (zomplex*)malloc(7680 * sizeof(zomplex));
+    workl = (zomplex*)malloc(2850 * sizeof(zomplex));
+    workd = (zomplex*)malloc(768 * sizeof(zomplex));
+
      /* ---------------------------------------------------- */
      /* Storage Declarations:                                */
      /*                                                      */
@@ -142,10 +136,6 @@ int znsimp()
      /* MAXNCV: Maximum NCV allowed.                         */
      /* ---------------------------------------------------- */
 
-     /* --------------------- */
-     /* Executable Statements */
-     /* --------------------- */
-
      /* ----------------------------------------------- */
      /* The following include statement and assignments */
      /* initiate trace output from the internal         */
@@ -155,9 +145,6 @@ int znsimp()
      /* time spent in the various stages of computation */
      /* given by setting mcaupd = 1                     */
      /* ----------------------------------------------- */
-
-/* \SCCS Information: @(#) */
-/* FILE: debug.h   SID: 2.3   DATE OF SID: 11/16/95   RELEASE: 2 */
 
      /* ------------------------------- */
      /* See debug.doc for documentation */
@@ -452,7 +439,7 @@ L10:
 	printf(" The number of converged Ritz values is %d\n", nconv);
 	printf(" The number of Implicit Arnoldi update iterations taken is %d\n", iparam[2]);
 	printf(" The number of OP*x is %d\n", iparam[8]);
-	printf(" The convergence criterion is %f\n", tol);
+	printf(" The convergence criterion is %e\n", tol);
 	printf(" \n");
 
     }

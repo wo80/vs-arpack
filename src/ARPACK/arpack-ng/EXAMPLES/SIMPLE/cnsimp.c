@@ -2,89 +2,58 @@
 
 #include "arpack.h"
 
-int cnsimp()
-{
-    /* System generated locals */
-    int32_t i__1, i__2;
-    complex q__1;
-
-    /* Builtin functions */
-    double r_imag(complex *);
-
-    /* Local variables */
-    complex d[30];
-    int32_t j, n;
-    complex v[7680]	/* was [256][30] */;
-    float rd[90]	/* was [30][3] */;
-    complex ax[256];
-    int32_t nx, ido, ncv, nev;
-    float tol;
-    char* bmat;
-    int32_t info;
-    bool rvec;
-    int32_t ierr, mode1;
-    complex sigma;
-    char* which;
-    complex resid[256];
-    int32_t nconv;
-    complex workd[768];
-    int32_t ipntr[14];
-    complex workl[2850];
-    float rwork[30];
-    int32_t iparam[11];
-    bool select[30];
-    int32_t ishfts, maxitr, lworkl;
-    complex workev[60];
-
-    /* Fortran I/O blocks */
-
-/*     This example program is intended to illustrate the */
-/*     simplest case of using ARPACK in considerable detail. */
-/*     This code may be used to understand basic usage of ARPACK */
-/*     and as a template for creating an interface to ARPACK. */
-
-/*     This code shows how to use ARPACK to find a few eigenvalues */
-/*     (lambda) and corresponding eigenvectors (x) for the standard */
-/*     eigenvalue problem: */
-
-/*                        A*x = lambda*x */
-
-/*     where A is a general n by n complex matrix. */
-
-/*     The main points illustrated here are */
-
-/*        1) How to declare sufficient memory to find NEV */
-/*           eigenvalues of largest magnitude.  Other options */
-/*           are available. */
-
-/*        2) Illustration of the reverse communication interface */
-/*           needed to utilize the top level ARPACK routine CNAUPD */
-/*           that computes the quantities needed to construct */
-/*           the desired eigenvalues and eigenvectors(if requested). */
-
-/*        3) How to extract the desired eigenvalues and eigenvectors */
-/*           using the ARPACK routine CNEUPD. */
-
-/*     The only thing that must be supplied in order to use this */
-/*     routine on your problem is to change the array dimensions */
-/*     appropriately, to specify WHICH eigenvalues you want to compute */
-/*     and to supply a matrix-vector product */
-
-/*                         w <-  Av */
-
-/*     in place of the call to AV( )  below. */
-
-/*     Once usage of this routine is understood, you may wish to explore */
-/*     the other available options to improve convergence, to solve generalized */
-/*     problems, etc.  Look at the file ex-complex.doc in DOCUMENTS directory. */
-/*     This codes implements */
-
-/* \Example-1 */
-/*     ... Suppose we want to solve A*x = lambda*x in regular mode, */
-/*     ... OP = A  and  B = I. */
-/*     ... Assume "call av (nx,x,y)" computes y = A*x */
-/*     ... Use mode 1 of CNAUPD. */
 /**
+ * \BeginDoc
+ *
+ *     This example program is intended to illustrate the
+ *     simplest case of using ARPACK in considerable detail.
+ *     This code may be used to understand basic usage of ARPACK
+ *     and as a template for creating an interface to ARPACK.
+ *
+ *     This code shows how to use ARPACK to find a few eigenvalues
+ *     (lambda) and corresponding eigenvectors (x) for the standard
+ *     eigenvalue problem:
+ *
+ *                        A*x = lambda*x
+ *
+ *     where A is a general n by n complex matrix.
+ *
+ *     The main points illustrated here are
+ *
+ *        1) How to declare sufficient memory to find NEV
+ *           eigenvalues of largest magnitude.  Other options
+ *           are available.
+ *
+ *        2) Illustration of the reverse communication interface
+ *           needed to utilize the top level ARPACK routine CNAUPD
+ *           that computes the quantities needed to construct
+ *           the desired eigenvalues and eigenvectors(if requested).
+ *
+ *        3) How to extract the desired eigenvalues and eigenvectors
+ *           using the ARPACK routine CNEUPD.
+ *
+ *     The only thing that must be supplied in order to use this
+ *     routine on your problem is to change the array dimensions
+ *     appropriately, to specify WHICH eigenvalues you want to compute
+ *     and to supply a matrix-vector product
+ *
+ *                         w <-  Av
+ *
+ *     in place of the call to AV( )  below.
+ *
+ *     Once usage of this routine is understood, you may wish to explore
+ *     the other available options to improve convergence, to solve generalized
+ *     problems, etc.  Look at the file ex-complex.doc in DOCUMENTS directory.
+ *     This codes implements
+ *
+ * \Example-1
+ *     ... Suppose we want to solve A*x = lambda*x in regular mode,
+ *     ... OP = A  and  B = I.
+ *     ... Assume "call av (nx,x,y)" computes y = A*x
+ *     ... Use mode 1 of CNAUPD.
+ *
+ * \EndDoc
+ *
  * \BeginLib
  *
  * \Routines called
@@ -99,23 +68,47 @@ int cnsimp()
  *             where T is a tridiagonal matrix.  It is used in routine
  *             av.
  *
- * \Author
- *     Richard Lehoucq
- *     Danny Sorensen
- *     Chao Yang
- *     Dept. of Computational &
- *     Applied Mathematics
- *     Rice University
- *     Houston, Texas
- *
- * \SCCS Information: @(#)
- * FILE: nsimp.F   SID: 2.4   DATE OF SID: 10/20/00   RELEASE: 2
- *
- * \Remarks
- *     1. None
- *
  * \EndLib
  */
+int cnsimp()
+{
+    /* System generated locals */
+    int32_t i__1, i__2;
+    complex q__1;
+
+    /* Builtin functions */
+    double r_imag(complex *);
+
+    /* Local variables */
+    complex d[30];
+    int32_t j, n;
+    float rd[90]	/* was [30][3] */;
+    complex ax[256];
+    int32_t nx, ido, ncv, nev;
+    float tol;
+    char* bmat;
+    int32_t info;
+    bool rvec;
+    int32_t ierr, mode1;
+    complex sigma;
+    char* which;
+    int32_t nconv;
+    complex *v	/* was [256][30] */;
+    complex *resid;
+    complex *workd;
+    complex *workl;
+    int32_t ipntr[14];
+    float rwork[30];
+    int32_t iparam[11];
+    bool select[30];
+    int32_t ishfts, maxitr, lworkl;
+    complex workev[60];
+
+    resid = (complex*)malloc(256 * sizeof(complex));
+    v = (complex*)malloc(7680 * sizeof(complex));
+    workl = (complex*)malloc(2850 * sizeof(complex));
+    workd = (complex*)malloc(768 * sizeof(complex));
+
      /* ---------------------------------------------------- */
      /* Storage Declarations:                                */
      /*                                                      */
@@ -138,10 +131,6 @@ int cnsimp()
      /* MAXNCV: Maximum NCV allowed.                         */
      /* ---------------------------------------------------- */
 
-     /* --------------------- */
-     /* Executable Statements */
-     /* --------------------- */
-
      /* ----------------------------------------------- */
      /* The following include statement and assignments */
      /* initiate trace output from the internal         */
@@ -151,9 +140,6 @@ int cnsimp()
      /* time spent in the various stages of computation */
      /* given by setting mcaupd = 1                     */
      /* ----------------------------------------------- */
-
-/* \SCCS Information: @(#) */
-/* FILE: debug.h   SID: 2.3   DATE OF SID: 11/16/95   RELEASE: 2 */
 
      /* ------------------------------- */
      /* See debug.doc for documentation */
@@ -448,7 +434,7 @@ L10:
 	printf(" The number of converged Ritz values is %d\n", nconv);
 	printf(" The number of Implicit Arnoldi update iterations taken is %d\n", iparam[2]);
 	printf(" The number of OP*x is %d\n", iparam[8]);
-	printf(" The convergence criterion is %f\n", tol);
+	printf(" The convergence criterion is %e\n", tol);
 	printf(" \n");
 
     }

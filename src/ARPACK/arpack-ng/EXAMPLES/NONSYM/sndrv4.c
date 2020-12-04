@@ -8,61 +8,31 @@ struct {
 
 #define convct_1 convct_
 
-int sndrv4()
-{
-    /* System generated locals */
-    int32_t i__1;
-    float r__1;
-
-    /* Local variables */
-    float d[75]	/* was [25][3] */, h;
-    int32_t j, n;
-    float s, v[6400]	/* was [256][25] */, s1, s2, s3, dd[256], dl[256];
-    float ax[256], du[256];
-    float mx[256], du2[256];
-    int32_t ido, ncv, nev;
-    float tol;
-    char* bmat;
-    int32_t mode, info;
-    bool rvec;
-    int32_t ierr, ipiv[256];
-    char* which;
-    float resid[256];
-    int32_t nconv;
-    float workd[768];
-    bool first;
-    int32_t ipntr[14];
-    float workl[2025];
-    int32_t iparam[11];
-    float sigmai;
-    bool select[25];
-    float sigmar;
-    int32_t ishfts, maxitr;
-    int32_t lworkl;
-    float workev[75];
-
-    /* Fortran I/O blocks */
-
-/*     Simple program to illustrate the idea of reverse communication */
-/*     in shift-invert mode for a generalized nonsymmetric eigenvalue */
-/*     problem. */
-
-/*     We implement example four of ex-nonsym.doc in DOCUMENTS directory */
-
-/* \Example-4 */
-/*     ... Suppose we want to solve A*x = lambda*B*x in inverse mode, */
-/*         where A and B are derived from the finite element discretization */
-/*         of the 1-dimensional convection-diffusion operator */
-/*                           (d^2u / dx^2) + rho*(du/dx) */
-/*         on the interval [0,1] with zero Dirichlet boundary condition */
-/*         using linear elements. */
-
-/*     ... The shift sigma is a real number. */
-
-/*     ... OP = inv[A-SIGMA*M]*M  and  B = M. */
-
-/*     ... Use mode 3 of SNAUPD. */
 /**
+ * \BeginDoc
+ *
+ *     Simple program to illustrate the idea of reverse communication
+ *     in shift-invert mode for a generalized nonsymmetric eigenvalue
+ *     problem.
+ *
+ *     We implement example four of ex-nonsym.doc in DOCUMENTS directory
+ *
+ * \Example-4
+ *     ... Suppose we want to solve A*x = lambda*B*x in inverse mode,
+ *         where A and B are derived from the finite element discretization
+ *         of the 1-dimensional convection-diffusion operator
+ *                           (d^2u / dx^2) + rho*(du/dx)
+ *         on the interval [0,1] with zero Dirichlet boundary condition
+ *         using linear elements.
+ *
+ *     ... The shift sigma is a real number.
+ *
+ *     ... OP = inv[A-SIGMA*M]*M  and  B = M.
+ *
+ *     ... Use mode 3 of SNAUPD.
+ *
+ * \EndDoc
+ *
  * \BeginLib
  *
  * \Routines called:
@@ -79,35 +49,52 @@ int sndrv4()
  *     av      Matrix vector multiplication routine that computes A*x.
  *     mv      Matrix vector multiplication routine that computes M*x.
  *
- * \Author
- *     Richard Lehoucq
- *     Danny Sorensen
- *     Chao Yang
- *     Dept. of Computational &
- *     Applied Mathematics
- *     Rice University
- *     Houston, Texas
- *
- * \SCCS Information: @(#)
- * FILE: ndrv4.F   SID: 2.5   DATE OF SID: 10/17/00   RELEASE: 2
- *
- * \Remarks
- *     1. None
- *
  * \EndLib
  */
-     /* --------------------------- */
-     /* Define leading dimensions   */
-     /* for all arrays.             */
-     /* MAXN:   Maximum dimension   */
-     /*         of the A allowed.   */
-     /* MAXNEV: Maximum NEV allowed */
-     /* MAXNCV: Maximum NCV allowed */
-     /* --------------------------- */
+int sndrv4()
+{
+    /* System generated locals */
+    int32_t i__1;
+    float r__1;
 
-     /* --------------------- */
-     /* Executable Statements */
-     /* --------------------- */
+    /* Local variables */
+    float d[75]	/* was [25][3] */, h;
+    int32_t j, n;
+    float s, s1, s2, s3, dd[256], dl[256];
+    float ax[256], du[256];
+    float mx[256], du2[256];
+    int32_t ido, ncv, nev;
+    float tol;
+    char* bmat;
+    int32_t mode, info;
+    bool rvec;
+    int32_t ierr, ipiv[256];
+    char* which;
+    int32_t nconv;
+    float *v	/* was [256][25] */;
+    float *resid;
+    float *workd;
+    float *workl;
+    bool first;
+    int32_t ipntr[14];
+    int32_t iparam[11];
+    float sigmai;
+    bool select[25];
+    float sigmar;
+    int32_t ishfts, maxitr;
+    int32_t lworkl;
+    float workev[75];
+
+    resid = (float*)malloc(256 * sizeof(float));
+    v = (float*)malloc(6400 * sizeof(float));
+    workl = (float*)malloc(2025 * sizeof(float));
+    workd = (float*)malloc(768 * sizeof(float));
+
+     /* Define maximum dimensions for all arrays. */
+
+     const int MAXN   = 256; /* Maximum dimension of the A allowed. */
+     const int MAXNEV =  10; /* Maximum NEV allowed */
+     const int MAXNCV =  25; /* Maximum NCV allowed */
 
      /* -------------------------------------------------- */
      /* The number N is the dimension of the matrix.  A    */
@@ -463,10 +450,15 @@ L20:
 	printf(" The number of converged Ritz values is %d\n", nconv);
 	printf(" The number of Implicit Arnoldi update iterations taken is %d\n", iparam[2]);
 	printf(" The number of OP*x is %d\n", iparam[8]);
-	printf(" The convergence criterion is %f\n", tol);
+	printf(" The convergence criterion is %e\n", tol);
 	printf(" \n");
 
     }
+
+    free(resid);
+    free(v);
+    free(workl);
+    free(workd);
 
      /* ------------------------- */
      /* Done with program sndrv4. */
