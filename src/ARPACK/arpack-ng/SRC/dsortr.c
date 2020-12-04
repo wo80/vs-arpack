@@ -57,16 +57,16 @@
  * \EndLib
  */
 
-int dsortr_(char *which, bool *apply, int32_t *n, double *x1, double *x2)
+int dsortr_(char *which, bool *apply, int *n, double *x1, double *x2)
 {
     /* System generated locals */
-    int32_t i__1;
+    int i__1;
     double d__1, d__2;
 
     /* Builtin functions */
 
     /* Local variables */
-    int32_t i, j, igap;
+    int i, j, igap;
     double temp;
 
     /* ---------------- */

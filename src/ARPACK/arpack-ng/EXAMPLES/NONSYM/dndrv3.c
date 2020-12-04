@@ -45,35 +45,35 @@
 int dndrv3()
 {
     /* System generated locals */
-    int32_t i__1;
+    int i__1;
     double d__1;
 
     /* Local variables */
     double d[75]	/* was [25][3] */, h;
-    int32_t j, n;
+    int j, n;
     double md[256], me[255];
     double ax[256];
     double mx[256];
-    int32_t ido, ncv, nev;
+    int ido, ncv, nev;
     double tol;
     char* bmat;
-    int32_t mode, info;
+    int mode, info;
     bool rvec;
-    int32_t ierr;
+    int ierr;
     char* which;
-    int32_t nconv;
+    int nconv;
     double* v	/* was [256][25] */;
     double* resid;
     double* workd;
     double* workl;
     bool first;
-    int32_t ipntr[14];
-    int32_t iparam[11];
+    int ipntr[14];
+    int iparam[11];
     double sigmai;
     bool select[25];
     double sigmar;
-    int32_t ishfts;
-    int32_t maxitr, lworkl;
+    int ishfts;
+    int maxitr, lworkl;
     double workev[75];
 
     resid = (double*)malloc(256 * sizeof(double));
@@ -443,14 +443,14 @@ L10:
 
 /*     matrix vector multiplication subroutine */
 
-int dndrv3_av_(int32_t *n, double *v, double *w)
+int dndrv3_av_(int *n, double *v, double *w)
 {
     /* System generated locals */
-    int32_t i__1;
+    int i__1;
 
     /* Local variables */
     double h;
-    int32_t j;
+    int j;
     double s, dd, dl, du;
 
     /*     Compute the matrix vector multiplication y<---A*x */
@@ -483,14 +483,14 @@ int dndrv3_av_(int32_t *n, double *v, double *w)
 } /* av_ */
 
 /* ------------------------------------------------------------------------ */
-int dndrv3_mv_(int32_t *n, double *v, double *w)
+int dndrv3_mv_(int *n, double *v, double *w)
 {
     /* System generated locals */
-    int32_t i__1;
+    int i__1;
 
     /* Local variables */
     double h;
-    int32_t j;
+    int j;
 
     /*     Compute the matrix vector multiplication y<---M*x */
     /*     where M is the mass matrix formed by using piecewise linear */

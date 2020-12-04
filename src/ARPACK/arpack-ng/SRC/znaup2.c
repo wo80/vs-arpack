@@ -166,14 +166,14 @@
  * \EndLib
  */
 
-int znaup2_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, int32_t *np,
-            double *tol, zomplex *resid, int32_t *mode, int32_t *iupd, int32_t *ishift, int32_t *mxiter,
-            zomplex *v, int32_t *ldv, zomplex *h, int32_t *ldh, zomplex *ritz, zomplex *bounds,
-            zomplex *q, int32_t *ldq, zomplex *workl, int32_t *ipntr, zomplex *workd, double *rwork,
-            int32_t *info)
+int znaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
+            double *tol, zomplex *resid, int *mode, int *iupd, int *ishift, int *mxiter,
+            zomplex *v, int *ldv, zomplex *h, int *ldh, zomplex *ritz, zomplex *bounds,
+            zomplex *q, int *ldq, zomplex *workl, int *ipntr, zomplex *workd, double *rwork,
+            int *info)
 {
     /* System generated locals */
-    int32_t h_dim1, h_offset, q_dim1, q_offset, v_dim1, v_offset, i__1, i__2,
+    int h_dim1, h_offset, q_dim1, q_offset, v_dim1, v_offset, i__1, i__2,
             i__3;
     double d__1, d__2, d__3, d__4;
     zomplex z__1;
@@ -184,22 +184,22 @@ int znaup2_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, int
     double sqrt(double);
 
     /* Local variables */
-    int32_t i, j;
+    int i, j;
     static float t0, t1, t2, t3;
-    int32_t kp[3];
-    static int32_t np0, nev0;
+    int kp[3];
+    static int np0, nev0;
     static double eps23;
-    int32_t ierr;
-    static int32_t iter;
+    int ierr;
+    static int iter;
     static bool getv0, cnorm;
-    static int32_t nconv;
+    static int nconv;
     double rtemp;
     static bool initv;
     static double rnorm;
-    static int32_t nevbef;
+    static int nevbef;
     static bool update, ushift;
-    static int32_t kplusp, msglvl;
-    int32_t nptemp;
+    static int kplusp, msglvl;
+    int nptemp;
     char wprime[3];
     zomplex cmpnorm;
 

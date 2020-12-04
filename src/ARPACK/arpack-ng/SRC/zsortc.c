@@ -59,10 +59,10 @@
  * \EndLib
  */
 
-int zsortc_(char *which, bool *apply, int32_t *n, zomplex *x, zomplex *y)
+int zsortc_(char *which, bool *apply, int *n, zomplex *x, zomplex *y)
 {
     /* System generated locals */
-    int32_t i__1, i__2, i__3;
+    int i__1, i__2, i__3;
     double d__1, d__2;
 
     /* Builtin functions */
@@ -70,7 +70,7 @@ int zsortc_(char *which, bool *apply, int32_t *n, zomplex *x, zomplex *y)
     double d_imag(zomplex *);
 
     /* Local variables */
-    int32_t i, j, igap;
+    int i, j, igap;
     zomplex temp;
     double temp1, temp2;
 

@@ -85,17 +85,17 @@
  * \EndLib
  */
 
-int sseigt_(float *rnorm, int32_t *n, float *h, int32_t *ldh,
-            float *eig, float *bounds, float *workl, int32_t *ierr)
+int sseigt_(float *rnorm, int *n, float *h, int *ldh,
+            float *eig, float *bounds, float *workl, int *ierr)
 {
     /* System generated locals */
-    int32_t h_dim1, h_offset, i__1;
+    int h_dim1, h_offset, i__1;
     float r__1;
 
     /* Local variables */
-    int32_t k;
+    int k;
     static float t0, t1;
-    int32_t msglvl;
+    int msglvl;
 
     /* --------------------- */
     /* Executable Statements */

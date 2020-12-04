@@ -106,11 +106,11 @@
  * \EndLib
  */
 
-int dstqrb_(int32_t *n, double *d, double *e,
-            double *z, double *work, int32_t *info)
+int dstqrb_(int *n, double *d, double *e,
+            double *z, double *work, int *info)
 {
     /* System generated locals */
-    int32_t i__1, i__2;
+    int i__1, i__2;
     double d__1, d__2;
 
     /* Builtin functions */
@@ -118,19 +118,19 @@ int dstqrb_(int32_t *n, double *d, double *e,
 
     /* Local variables */
     double b, c, f, g;
-    int32_t i, j, k, l, m;
+    int i, j, k, l, m;
     double p, r, s;
-    int32_t l1, ii, mm, lm1, mm1, nm1;
+    int l1, ii, mm, lm1, mm1, nm1;
     double rt1, rt2, eps;
-    int32_t lsv;
+    int lsv;
     double tst, eps2;
-    int32_t lend, jtot;
+    int lend, jtot;
     double anorm;
-    int32_t lendm1, lendp1;
-    int32_t iscale;
+    int lendm1, lendp1;
+    int iscale;
     double safmin;
     double safmax;
-    int32_t lendsv, nmaxit, icompz;
+    int lendsv, nmaxit, icompz;
     double ssfmax, ssfmin;
 
     /* Parameter adjustments */

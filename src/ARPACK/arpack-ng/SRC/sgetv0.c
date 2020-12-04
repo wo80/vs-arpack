@@ -117,30 +117,30 @@
  * \EndLib
  */
 
-int sgetv0_(int32_t *ido, char *bmat, int32_t *itry, bool *initv, int32_t *n, int32_t *j,
-            float *v, int32_t *ldv, float *resid, float *rnorm, int32_t *ipntr, float *workd,
-            int32_t *ierr)
+int sgetv0_(int *ido, char *bmat, int *itry, bool *initv, int *n, int *j,
+            float *v, int *ldv, float *resid, float *rnorm, int *ipntr, float *workd,
+            int *ierr)
 {
     /* Initialized data */
 
     static bool inits = true;
 
     /* System generated locals */
-    int32_t v_dim1, v_offset, i__1;
+    int v_dim1, v_offset, i__1;
 
     /* Builtin functions */
     double sqrt(double);
 
     /* Local variables */
     static float t0, t1, t2, t3;
-    int32_t jj;
-    static int32_t iter;
+    int jj;
+    static int iter;
     static bool orth;
-    static int32_t iseed[4];
-    int32_t idist;
+    static int iseed[4];
+    int idist;
     static bool first;
     static float rnorm0;
-    static int32_t msglvl;
+    static int msglvl;
 
     /* --------------- */
     /* Data Statements */

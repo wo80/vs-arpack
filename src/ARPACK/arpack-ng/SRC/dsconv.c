@@ -57,18 +57,18 @@
  * \EndLib
  */
 
-int dsconv_(int32_t *n, double *ritz, double *bounds,
-            double *tol, int32_t *nconv)
+int dsconv_(int *n, double *ritz, double *bounds,
+            double *tol, int *nconv)
 {
     /* System generated locals */
-    int32_t i__1;
+    int i__1;
     double d__1, d__2, d__3;
 
     /* Builtin functions */
     double pow_dd(double *, double *);
 
     /* Local variables */
-    int32_t i;
+    int i;
     static float t0, t1;
     double eps23, temp;
 

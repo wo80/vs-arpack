@@ -52,34 +52,34 @@ struct
 int sndrv2()
 {
     /* System generated locals */
-    int32_t i__1;
+    int i__1;
     float r__1;
 
     /* Local variables */
     float d[75]	/* was [25][3] */, h;
-    int32_t j, n;
+    int j, n;
     float s, s1, s2, s3, dd[256], dl[256];
     float ax[256], du[256], du2[256];
-    int32_t ido, ncv, nev;
+    int ido, ncv, nev;
     float tol;
     char* bmat;
-    int32_t mode, info;
+    int mode, info;
     bool rvec;
-    int32_t ierr, ipiv[256];
+    int ierr, ipiv[256];
     char* which;
-    int32_t nconv;
+    int nconv;
     float *v	/* was [256][25] */;
     float *resid;
     float *workd;
     float *workl;
     bool first;
-    int32_t ipntr[14];
-    int32_t iparam[11];
+    int ipntr[14];
+    int iparam[11];
     float sigmai;
     bool select[25];
     float sigmar;
-    int32_t ishfts, maxitr;
-    int32_t lworkl;
+    int ishfts, maxitr;
+    int lworkl;
     float workev[75];
 
     resid = (float*)malloc(256 * sizeof(float));
@@ -437,14 +437,14 @@ L20:
 
 /*     matrix vector multiplication subroutine */
 
-int sndrv2_av_(int32_t *n, float *v, float *w)
+int sndrv2_av_(int *n, float *v, float *w)
 {
     /* System generated locals */
-    int32_t i__1;
+    int i__1;
 
     /* Local variables */
     float h;
-    int32_t j;
+    int j;
     float s, dd, dl, du;
 
     /*     Compute the matrix vector multiplication y<---A*x */

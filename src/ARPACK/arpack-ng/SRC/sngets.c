@@ -92,17 +92,17 @@
  * \EndLib
  */
 
-int sngets_(int32_t *ishift, char *which, int32_t *kev, int32_t *np, float *ritzr,
+int sngets_(int *ishift, char *which, int *kev, int *np, float *ritzr,
             float *ritzi, float *bounds, float *shiftr, float *shifti)
 {
     /* System generated locals */
-    int32_t i__1;
+    int i__1;
 
     /* Builtin functions */
 
     /* Local variables */
     static float t0, t1;
-    int32_t msglvl;
+    int msglvl;
 
     /* --------------------- */
     /* Executable Statements */

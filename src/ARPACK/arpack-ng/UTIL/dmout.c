@@ -22,17 +22,17 @@
 
 /* ----------------------------------------------------------------------- */
 
-int dmout_(int32_t *m, int32_t *n, double *a, int32_t *lda, int32_t *idigit, char *ifmt)
+int dmout_(int *m, int *n, double *a, int *lda, int *idigit, char *ifmt)
 {
     /* Initialized data */
 
     /* System generated locals */
-    int32_t a_dim1, a_offset, i__1, i__2, i__3;
+    int a_dim1, a_offset, i__1, i__2, i__3;
 
     /* Local variables */
-    int32_t i, j, k1, k2, lll;
+    int i, j, k1, k2, lll;
     char line[80];
-    int32_t ndigit;
+    int ndigit;
 
     /* Parameter adjustments */
     a_dim1 = *lda;

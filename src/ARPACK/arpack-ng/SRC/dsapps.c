@@ -129,9 +129,9 @@
  * \EndLib
  */
 
-int dsapps_(int32_t *n, int32_t *kev, int32_t *np,
-            double *shift, double *v, int32_t *ldv, double *h,
-            int32_t *ldh, double *resid, double *q, int32_t *ldq,
+int dsapps_(int *n, int *kev, int *np,
+            double *shift, double *v, int *ldv, double *h,
+            int *ldh, double *resid, double *q, int *ldq,
             double *workd)
 {
     /* Initialized data */
@@ -139,20 +139,20 @@ int dsapps_(int32_t *n, int32_t *kev, int32_t *np,
     static bool first = true;
 
     /* System generated locals */
-    int32_t h_dim1, h_offset, q_dim1, q_offset, v_dim1, v_offset, i__1, i__2,
+    int h_dim1, h_offset, q_dim1, q_offset, v_dim1, v_offset, i__1, i__2,
             i__3, i__4;
     double d__1, d__2;
 
     /* Local variables */
     double c, f, g;
-    int32_t i, j;
+    int i, j;
     double r, s, a1, a2, a3, a4;
     static float t0, t1;
-    int32_t jj;
+    int jj;
     double big;
-    int32_t iend, itop;
+    int iend, itop;
     static double epsmch;
-    int32_t istart, kplusp, msglvl;
+    int istart, kplusp, msglvl;
 
     /* -------------- */
     /* Data statements */

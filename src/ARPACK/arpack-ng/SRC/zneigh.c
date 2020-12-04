@@ -98,22 +98,22 @@
  * \EndLib
  */
 
-int zneigh_(double *rnorm, int32_t *n, zomplex *
-            h, int32_t *ldh, zomplex *ritz, zomplex *bounds,
-            zomplex *q, int32_t *ldq, zomplex *workl, double *
-            rwork, int32_t *ierr)
+int zneigh_(double *rnorm, int *n, zomplex *
+            h, int *ldh, zomplex *ritz, zomplex *bounds,
+            zomplex *q, int *ldq, zomplex *workl, double *
+            rwork, int *ierr)
 {
     /* System generated locals */
-    int32_t h_dim1, h_offset, q_dim1, q_offset, i__1;
+    int h_dim1, h_offset, q_dim1, q_offset, i__1;
     double d__1;
 
     /* Local variables */
-    int32_t j;
+    int j;
     static float t0, t1;
     zomplex vl[1];
     double temp;
     bool select[1];
-    int32_t msglvl;
+    int msglvl;
 
     /* --------------------- */
     /* Executable Statements */

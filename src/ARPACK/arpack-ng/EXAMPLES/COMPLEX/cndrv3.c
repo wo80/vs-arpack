@@ -44,7 +44,7 @@
 int cndrv3()
 {
     /* System generated locals */
-    int32_t i__1, i__2;
+    int i__1, i__2;
     complex q__1, q__2;
 
     void c_div(complex *, complex *, complex *);
@@ -52,30 +52,30 @@ int cndrv3()
 
     /* Local variables */
     complex d[25], h;
-    int32_t j, n;
+    int j, n;
     complex dd[256], dl[256];
     float rd[75]	/* was [25][3] */;
     complex ax[256], du[256];
     complex mx[256], du2[256];
-    int32_t ido, ncv, nev;
+    int ido, ncv, nev;
     float tol;
     char* bmat;
-    int32_t mode, info;
+    int mode, info;
     bool rvec;
-    int32_t ierr, ipiv[256];
+    int ierr, ipiv[256];
     complex sigma;
     char* which;
-    int32_t nconv;
+    int nconv;
     complex *v	/* was [256][25] */;
     complex *resid;
     complex *workd;
     complex *workl;
-    int32_t ipntr[14];
+    int ipntr[14];
     float rwork[256];
-    int32_t iparam[11];
+    int iparam[11];
     bool select[25];
-    int32_t ishfts, maxitr;
-    int32_t lworkl;
+    int ishfts, maxitr;
+    int lworkl;
     complex workev[50];
 
     resid = (complex*)malloc(256 * sizeof(complex));
@@ -416,10 +416,10 @@ L10:
 
 /*     matrix vector multiplication subroutine */
 
-int cndrv3_av_(int32_t *n, complex *v, complex *w)
+int cndrv3_av_(int *n, complex *v, complex *w)
 {
     /* System generated locals */
-    int32_t i__1, i__2, i__3, i__4, i__5;
+    int i__1, i__2, i__3, i__4, i__5;
     complex q__1, q__2, q__3, q__4, q__5;
 
     /* Builtin functions */
@@ -427,7 +427,7 @@ int cndrv3_av_(int32_t *n, complex *v, complex *w)
 
     /* Local variables */
     complex h;
-    int32_t j;
+    int j;
     complex s, dd, dl, du;
 
     /*     Compute the matrix vector multiplication y<---A*x */
@@ -493,10 +493,10 @@ int cndrv3_av_(int32_t *n, complex *v, complex *w)
 } /* av_ */
 
 /* ------------------------------------------------------------------------ */
-int cndrv3_mv_(int32_t *n, complex *v, complex *w)
+int cndrv3_mv_(int *n, complex *v, complex *w)
 {
     /* System generated locals */
-    int32_t i__1, i__2, i__3, i__4, i__5;
+    int i__1, i__2, i__3, i__4, i__5;
     complex q__1, q__2, q__3, q__4, q__5;
 
     /* Builtin functions */
@@ -504,7 +504,7 @@ int cndrv3_mv_(int32_t *n, complex *v, complex *w)
 
     /* Local variables */
     complex h;
-    int32_t j;
+    int j;
 
     /*     Compute the matrix vector multiplication y<---M*x */
     /*     where M is the mass matrix formed by using piecewise linear elements */

@@ -85,14 +85,14 @@
  * \EndLib
  */
 
-int cngets_(int32_t *ishift, char *which, int32_t *kev, int32_t *np, complex *ritz, complex *bounds)
+int cngets_(int *ishift, char *which, int *kev, int *np, complex *ritz, complex *bounds)
 {
     /* System generated locals */
-    int32_t i__1;
+    int i__1;
 
     /* Local variables */
     static float t0, t1;
-    int32_t msglvl;
+    int msglvl;
 
     /* --------------------- */
     /* Executable Statements */

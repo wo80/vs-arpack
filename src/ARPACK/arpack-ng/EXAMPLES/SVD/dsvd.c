@@ -93,38 +93,38 @@
 int dsvd()
 {
     /* System generated locals */
-    int32_t i__1;
+    int i__1;
     double d__1;
 
     /* Builtin functions */
 
-    int32_t s_wsle(cilist *), do_lio(int32_t *, int32_t *, char *, ftnlen),
+    int s_wsle(cilist *), do_lio(int *, int *, char *, ftnlen),
             e_wsle(void);
     double sqrt(double);
 
     /* Local variables */
-    int32_t j, m, n;
+    int j, m, n;
     double s[50]	/* was [25][2] */, u[5000]	/* was [500][10] */,
                v[6250]	/* was [250][25] */;
     double ax[500];
-    int32_t ido, ncv, nev;
+    int ido, ncv, nev;
     double tol;
     char* bmat;
-    int32_t info;
+    int info;
     bool rvec;
-    int32_t ierr;
+    int ierr;
     double temp;
-    int32_t mode1;
+    int mode1;
     double sigma;
     char* which;
     double resid[250];
-    int32_t nconv;
+    int nconv;
     double workd[750];
-    int32_t ipntr[11];
+    int ipntr[11];
     double workl[825];
-    int32_t iparam[11];
+    int iparam[11];
     bool select[25];
-    int32_t ishfts, maxitr, lworkl;
+    int ishfts, maxitr, lworkl;
 
     /* ---------------------------------------------------- */
     /* Storage Declarations:                                */
@@ -517,14 +517,14 @@ L10:
 
 /* ------------------------------------------------------------------- */
 
-int dsvd_av_(int32_t *m, int32_t *n, double *x, double *w)
+int dsvd_av_(int *m, int *n, double *x, double *w)
 {
     /* System generated locals */
-    int32_t i__1, i__2;
+    int i__1, i__2;
 
     /* Local variables */
     double h;
-    int32_t i, j;
+    int i, j;
     double k, s, t;
 
     /*     computes  w <- A*x */
@@ -571,14 +571,14 @@ int dsvd_av_(int32_t *m, int32_t *n, double *x, double *w)
 
 /* ------------------------------------------------------------------- */
 
-int dsvd_atv_(int32_t *m, int32_t *n, double *w, double *y)
+int dsvd_atv_(int *m, int *n, double *w, double *y)
 {
     /* System generated locals */
-    int32_t i__1, i__2;
+    int i__1, i__2;
 
     /* Local variables */
     double h;
-    int32_t i, j;
+    int i, j;
     double k, s, t;
 
     /*     computes  y <- A'*w */

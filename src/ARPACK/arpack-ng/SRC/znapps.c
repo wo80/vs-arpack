@@ -133,9 +133,9 @@
  * \EndLib
  */
 
-int znapps_(int32_t *n, int32_t *kev, int32_t *np,
-            zomplex *shift, zomplex *v, int32_t *ldv, zomplex *
-            h, int32_t *ldh, zomplex *resid, zomplex *q, int32_t *
+int znapps_(int *n, int *kev, int *np,
+            zomplex *shift, zomplex *v, int *ldv, zomplex *
+            h, int *ldh, zomplex *resid, zomplex *q, int *
             ldq, zomplex *workl, zomplex *workd)
 {
     /* Initialized data */
@@ -143,7 +143,7 @@ int znapps_(int32_t *n, int32_t *kev, int32_t *np,
     static bool first = true;
 
     /* System generated locals */
-    int32_t h_dim1, h_offset, v_dim1, v_offset, q_dim1, q_offset, i__1, i__2,
+    int h_dim1, h_offset, v_dim1, v_offset, q_dim1, q_offset, i__1, i__2,
             i__3, i__4, i__5, i__6;
     double d__1, d__2, d__3, d__4;
     zomplex z__1, z__2, z__3, z__4, z__5;
@@ -155,17 +155,17 @@ int znapps_(int32_t *n, int32_t *kev, int32_t *np,
     /* Local variables */
     double c;
     zomplex f, g;
-    int32_t i, j;
+    int i, j;
     zomplex r, s, t;
     static float t0, t1;
     zomplex h11, h21;
-    int32_t jj;
+    int jj;
     static double ulp;
     double tst1;
-    int32_t iend;
+    int iend;
     static double unfl, ovfl;
     zomplex sigma;
-    int32_t istart, kplusp, msglvl;
+    int istart, kplusp, msglvl;
     static double smlnum;
 
     /* -------------- */

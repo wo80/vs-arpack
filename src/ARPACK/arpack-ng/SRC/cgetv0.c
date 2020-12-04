@@ -114,16 +114,16 @@
  * \EndLib
  */
 
-int cgetv0_(int32_t *ido, char *bmat, int32_t *itry, bool *initv, int32_t *n, int32_t *j,
-            complex *v, int32_t *ldv, complex *resid, float *rnorm, int32_t *ipntr, complex *workd,
-            int32_t *ierr)
+int cgetv0_(int *ido, char *bmat, int *itry, bool *initv, int *n, int *j,
+            complex *v, int *ldv, complex *resid, float *rnorm, int *ipntr, complex *workd,
+            int *ierr)
 {
     /* Initialized data */
 
     static bool inits = true;
 
     /* System generated locals */
-    int32_t v_dim1, v_offset, i__1, i__2;
+    int v_dim1, v_offset, i__1, i__2;
     float r__1, r__2;
     complex q__1;
 
@@ -132,15 +132,15 @@ int cgetv0_(int32_t *ido, char *bmat, int32_t *itry, bool *initv, int32_t *n, in
 
     /* Local variables */
     static float t0, t1, t2, t3;
-    int32_t jj;
-    static int32_t iter;
+    int jj;
+    static int iter;
     static bool orth;
-    static int32_t iseed[4];
-    int32_t idist;
+    static int iseed[4];
+    int idist;
     complex cnorm;
     static bool first;
     static float rnorm0;
-    static int32_t msglvl;
+    static int msglvl;
 
     /* --------------- */
     /* Data Statements */

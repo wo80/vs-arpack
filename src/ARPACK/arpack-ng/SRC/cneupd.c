@@ -251,14 +251,14 @@
  * \EndLib
  */
 
-int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int32_t *ldz,
-            complex *sigma, complex *workev, char *bmat, int32_t *n, char *which, int32_t *nev,
-            float *tol, complex *resid, int32_t *ncv, complex *v, int32_t *ldv, int32_t *iparam,
-            int32_t *ipntr, complex *workd, complex *workl, int32_t *lworkl, float *rwork,
-            int32_t *info)
+int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int *ldz,
+            complex *sigma, complex *workev, char *bmat, int *n, char *which, int *nev,
+            float *tol, complex *resid, int *ncv, complex *v, int *ldv, int *iparam,
+            int *ipntr, complex *workd, complex *workl, int *lworkl, float *rwork,
+            int *info)
 {
     /* System generated locals */
-    int32_t v_dim1, v_offset, z_dim1, z_offset, i__1, i__2;
+    int v_dim1, v_offset, z_dim1, z_offset, i__1, i__2;
     float r__1, r__2, r__3, r__4;
     double d__1;
     complex q__1, q__2;
@@ -270,25 +270,25 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int3
     void c_div(complex *, complex *, complex *);
 
     /* Local variables */
-    int32_t j, k, ih, jj, iq, np;
+    int j, k, ih, jj, iq, np;
     complex vl[1];
-    int32_t wr, ibd, ldh, ldq;
+    int wr, ibd, ldh, ldq;
     float sep;
-    int32_t irz, mode;
+    int irz, mode;
     float eps23;
-    int32_t ierr;
+    int ierr;
     complex temp;
-    int32_t iwev;
+    int iwev;
     char type[7];
-    int32_t ritz, iheig;
-    int32_t ihbds;
+    int ritz, iheig;
+    int ihbds;
     float conds;
     bool reord;
-    int32_t nconv;
+    int nconv;
     float rtemp;
     complex rnorm;
-    int32_t nconv2;
-    int32_t bounds, invsub, iuptri, msglvl, outncv, numcnv, ishift;
+    int nconv2;
+    int bounds, invsub, iuptri, msglvl, outncv, numcnv, ishift;
 
     /* --------------------- */
     /* Executable Statements */

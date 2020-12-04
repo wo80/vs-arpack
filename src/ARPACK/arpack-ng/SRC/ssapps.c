@@ -129,29 +129,29 @@
  * \EndLib
  */
 
-int ssapps_(int32_t *n, int32_t *kev, int32_t *np, float *
-            shift, float *v, int32_t *ldv, float *h, int32_t *ldh, float *resid,
-            float *q, int32_t *ldq, float *workd)
+int ssapps_(int *n, int *kev, int *np, float *
+            shift, float *v, int *ldv, float *h, int *ldh, float *resid,
+            float *q, int *ldq, float *workd)
 {
     /* Initialized data */
 
     static bool first = true;
 
     /* System generated locals */
-    int32_t h_dim1, h_offset, q_dim1, q_offset, v_dim1, v_offset, i__1, i__2,
+    int h_dim1, h_offset, q_dim1, q_offset, v_dim1, v_offset, i__1, i__2,
             i__3, i__4;
     float r__1, r__2;
 
     /* Local variables */
     float c, f, g;
-    int32_t i, j;
+    int i, j;
     float r, s, a1, a2, a3, a4;
     static float t0, t1;
-    int32_t jj;
+    int jj;
     float big;
-    int32_t iend, itop;
+    int iend, itop;
     static float epsmch;
-    int32_t istart, kplusp, msglvl;
+    int istart, kplusp, msglvl;
 
     /* -------------- */
     /* Data statements */

@@ -378,21 +378,21 @@
  * \EndLib
  */
 
-int cnaupd_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, float *tol,
-            complex *resid, int32_t *ncv, complex *v, int32_t *ldv, int32_t *iparam, int32_t *ipntr,
-            complex *workd, complex *workl, int32_t *lworkl, float *rwork, int32_t *info)
+int cnaupd_(int *ido, char *bmat, int *n, char *which, int *nev, float *tol,
+            complex *resid, int *ncv, complex *v, int *ldv, int *iparam, int *ipntr,
+            complex *workd, complex *workl, int *lworkl, float *rwork, int *info)
 {
 
     /* System generated locals */
-    int32_t v_dim1, v_offset, i__1, i__2;
+    int v_dim1, v_offset, i__1, i__2;
 
     /* Local variables */
-    int32_t j;
+    int j;
     static float t0, t1;
-    static int32_t nb, ih, iq, np, iw, ldh, ldq, nev0, mode;
-    int32_t ierr;
-    static int32_t iupd, next, ritz;
-    static int32_t bounds, ishift, msglvl, mxiter;
+    static int nb, ih, iq, np, iw, ldh, ldq, nev0, mode;
+    int ierr;
+    static int iupd, next, ritz;
+    static int bounds, ishift, msglvl, mxiter;
 
     /* --------------------- */
     /* Executable Statements */

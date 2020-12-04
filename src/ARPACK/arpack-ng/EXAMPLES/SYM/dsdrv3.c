@@ -47,33 +47,33 @@
 int dsdrv3()
 {
     /* System generated locals */
-    int32_t i__1;
+    int i__1;
     double d__1;
 
     /* Local variables */
     double d[50]	/* was [25][2] */, h;
-    int32_t j, n;
+    int j, n;
     double r1, r2, ad[256];
     double ax[256];
     double mx[256], adl[256], adu[256];
-    int32_t ido, ncv, nev;
+    int ido, ncv, nev;
     double tol, adu2[256];
     char* bmat;
-    int32_t mode, info;
+    int mode, info;
     bool rvec;
-    int32_t ierr, ipiv[256];
+    int ierr, ipiv[256];
     double sigma;
     char* which;
-    int32_t nconv;
+    int nconv;
     double *v	/* was [256][25] */;
     double *resid;
     double* workd;
     double *workl;
-    int32_t ipntr[11];
-    int32_t iparam[11];
+    int ipntr[11];
+    int iparam[11];
     bool select[25];
-    int32_t ishfts, maxitr;
-    int32_t lworkl;
+    int ishfts, maxitr;
+    int lworkl;
 
     resid = (double*)malloc(256 * sizeof(double));
     v = (double*)malloc(6400 * sizeof(double));
@@ -403,14 +403,14 @@ L10:
 /*     where the matrix is the 1 dimensional mass matrix */
 /*     on the interval [0,1]. */
 
-int dsdrv3_mv_(int32_t *n, double *v, double *w)
+int dsdrv3_mv_(int *n, double *v, double *w)
 {
     /* System generated locals */
-    int32_t i__1;
+    int i__1;
 
     /* Local variables */
     double h;
-    int32_t j;
+    int j;
 
     /* Parameter adjustments */
     --w;
@@ -442,15 +442,15 @@ int dsdrv3_mv_(int32_t *n, double *v, double *w)
 /*     on the interval [0,1] with zero Dirichlet boundary condition using */
 /*     piecewise linear elements. */
 
-int dsdrv3_av_(int32_t *n, double *v, double *w)
+int dsdrv3_av_(int *n, double *v, double *w)
 {
     /* System generated locals */
-    int32_t i__1;
+    int i__1;
     double d__1;
 
     /* Local variables */
     double h;
-    int32_t j;
+    int j;
 
     /* Parameter adjustments */
     --w;

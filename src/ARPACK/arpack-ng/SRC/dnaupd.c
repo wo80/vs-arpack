@@ -408,22 +408,22 @@
  * \EndLib
  */
 
-int dnaupd_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, double *tol,
-            double *resid, int32_t *ncv,double *v, int32_t *ldv, int32_t *iparam, int32_t *ipntr,
-            double *workd, double *workl, int32_t *lworkl, int32_t *info)
+int dnaupd_(int *ido, char *bmat, int *n, char *which, int *nev, double *tol,
+            double *resid, int *ncv,double *v, int *ldv, int *iparam, int *ipntr,
+            double *workd, double *workl, int *lworkl, int *info)
 {
 
     /* System generated locals */
-    int32_t v_dim1, v_offset, i__1, i__2;
+    int v_dim1, v_offset, i__1, i__2;
 
     /* Local variables */
-    int32_t j;
+    int j;
     static float t0, t1;
-    static int32_t nb, ih, iq, np, iw, ldh, ldq, nev0, mode;
-    int32_t ierr;
-    static int32_t iupd, next, ritzi;
-    static int32_t ritzr;
-    static int32_t bounds, ishift, msglvl, mxiter;
+    static int nb, ih, iq, np, iw, ldh, ldq, nev0, mode;
+    int ierr;
+    static int iupd, next, ritzi;
+    static int ritzr;
+    static int bounds, ishift, msglvl, mxiter;
 
     /* --------------------- */
     /* Executable Statements */

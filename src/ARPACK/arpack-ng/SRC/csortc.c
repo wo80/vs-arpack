@@ -59,10 +59,10 @@
  * \EndLib
  */
 
-int csortc_(char *which, bool *apply, int32_t *n, complex *x, complex *y)
+int csortc_(char *which, bool *apply, int *n, complex *x, complex *y)
 {
     /* System generated locals */
-    int32_t i__1, i__2, i__3;
+    int i__1, i__2, i__3;
     float r__1, r__2;
 
     /* Builtin functions */
@@ -70,7 +70,7 @@ int csortc_(char *which, bool *apply, int32_t *n, complex *x, complex *y)
     double r_imag(complex *);
 
     /* Local variables */
-    int32_t i, j, igap;
+    int i, j, igap;
     complex temp;
     float temp1, temp2;
 

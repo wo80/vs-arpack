@@ -306,41 +306,41 @@
  */
 
 int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, double *z,
-            int32_t *ldz, double *sigmar, double *sigmai, double *workev, char *bmat, int32_t *n,
-            char *which, int32_t *nev, double *tol, double *resid, int32_t *ncv, double *v,
-            int32_t *ldv, int32_t *iparam, int32_t *ipntr, double *workd, double *workl,
-            int32_t *lworkl, int32_t *info)
+            int *ldz, double *sigmar, double *sigmai, double *workev, char *bmat, int *n,
+            char *which, int *nev, double *tol, double *resid, int *ncv, double *v,
+            int *ldv, int *iparam, int *ipntr, double *workd, double *workl,
+            int *lworkl, int *info)
 {
     /* System generated locals */
-    int32_t v_dim1, v_offset, z_dim1, z_offset, i__1;
+    int v_dim1, v_offset, z_dim1, z_offset, i__1;
     double d__1, d__2;
 
     /* Builtin functions */
     double pow_dd(double *, double *);
 
     /* Local variables */
-    int32_t j, k, ih, jj, np;
+    int j, k, ih, jj, np;
     double vl[1]	/* was [1][1] */;
-    int32_t ibd, ldh, ldq, iri;
+    int ibd, ldh, ldq, iri;
     double sep;
-    int32_t irr, wri, wrr;
-    int32_t mode;
+    int irr, wri, wrr;
+    int mode;
     double eps23;
-    int32_t ierr;
+    int ierr;
     double temp;
-    int32_t iwev;
+    int iwev;
     char type[7];
     double temp1;
-    int32_t ihbds, iconj;
+    int ihbds, iconj;
     double conds;
     bool reord;
-    int32_t nconv;
-    int32_t iwork[1];
+    int nconv;
+    int iwork[1];
     double rnorm;
-    int32_t ritzi;
-    int32_t ritzr;
-    int32_t nconv2;
-    int32_t iheigi, iheigr, bounds, invsub, iuptri, msglvl, outncv, ishift,
+    int ritzi;
+    int ritzr;
+    int nconv2;
+    int iheigi, iheigr, bounds, invsub, iuptri, msglvl, outncv, ishift,
             numcnv;
 
     /* --------------------- */
@@ -599,7 +599,7 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
             d__1 = eps23, d__2 = dlapy2_(&workl[irr + *ncv - j], &workl[iri +
                                          *ncv - j]);
             temp1 = max(d__1,d__2);
-            jj = (int32_t) workl[bounds + *ncv - j];
+            jj = (int) workl[bounds + *ncv - j];
             if (numcnv < nconv && workl[ibd + jj - 1] <= *tol * temp1)
             {
                 select[jj] = true;

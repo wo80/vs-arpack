@@ -44,7 +44,7 @@
 int zndrv3()
 {
     /* System generated locals */
-    int32_t i__1, i__2;
+    int i__1, i__2;
     zomplex z__1, z__2;
 
     void z_div(zomplex *, zomplex *, zomplex *);
@@ -52,31 +52,31 @@ int zndrv3()
 
     /* Local variables */
     zomplex d[25], h;
-    int32_t j, n;
+    int j, n;
     zomplex dd[256], dl[256];
     double rd[75]	/* was [25][3] */;
     zomplex ax[256], du[256];
     zomplex mx[256], du2[256];
-    int32_t ido, ncv, nev;
+    int ido, ncv, nev;
     double tol;
     char* bmat;
-    int32_t mode, info;
+    int mode, info;
     bool rvec;
-    int32_t ierr, ipiv[256];
+    int ierr, ipiv[256];
     zomplex sigma;
     char* which;
-    int32_t nconv;
+    int nconv;
     zomplex *v	/* was [256][25] */;
     zomplex *resid;
     zomplex *workd;
     zomplex *workl;
-    int32_t ipntr[14];
+    int ipntr[14];
     double rwork[256];
-    int32_t iparam[11];
+    int iparam[11];
     bool select[25];
-    int32_t ishfts;
-    int32_t maxitr;
-    int32_t lworkl;
+    int ishfts;
+    int maxitr;
+    int lworkl;
     zomplex workev[50];
 
     resid = (zomplex*)malloc(256 * sizeof(zomplex));
@@ -414,10 +414,10 @@ L10:
 
 /*     matrix vector multiplication subroutine */
 
-int zndrv3_av_(int32_t *n, zomplex *v, zomplex *w)
+int zndrv3_av_(int *n, zomplex *v, zomplex *w)
 {
     /* System generated locals */
-    int32_t i__1, i__2, i__3, i__4, i__5;
+    int i__1, i__2, i__3, i__4, i__5;
     zomplex z__1, z__2, z__3, z__4, z__5;
 
     /* Builtin functions */
@@ -425,7 +425,7 @@ int zndrv3_av_(int32_t *n, zomplex *v, zomplex *w)
 
     /* Local variables */
     zomplex h;
-    int32_t j;
+    int j;
     zomplex s, dd, dl, du;
 
     /*     Compute the matrix vector multiplication y<---A*x */
@@ -491,10 +491,10 @@ int zndrv3_av_(int32_t *n, zomplex *v, zomplex *w)
 } /* av_ */
 
 /* ------------------------------------------------------------------------ */
-int zndrv3_mv_(int32_t *n, zomplex *v, zomplex *w)
+int zndrv3_mv_(int *n, zomplex *v, zomplex *w)
 {
     /* System generated locals */
-    int32_t i__1, i__2, i__3, i__4, i__5;
+    int i__1, i__2, i__3, i__4, i__5;
     zomplex z__1, z__2, z__3, z__4, z__5;
 
     /* Builtin functions */
@@ -502,7 +502,7 @@ int zndrv3_mv_(int32_t *n, zomplex *v, zomplex *w)
 
     /* Local variables */
     zomplex h;
-    int32_t j;
+    int j;
 
     /*     Compute the matrix vector multiplication y<---M*x */
     /*     where M is the mass matrix formed by using piecewise linear elements */

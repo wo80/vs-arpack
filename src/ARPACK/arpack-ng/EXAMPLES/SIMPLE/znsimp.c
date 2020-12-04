@@ -76,7 +76,7 @@
 int znsimp()
 {
     /* System generated locals */
-    int32_t i__1, i__2;
+    int i__1, i__2;
     zomplex z__1;
 
     /* Builtin functions */
@@ -85,28 +85,28 @@ int znsimp()
 
     /* Local variables */
     zomplex d[30];
-    int32_t j, n;
+    int j, n;
     double rd[90]	/* was [30][3] */;
     zomplex ax[256];
-    int32_t nx, ido, ncv, nev;
+    int nx, ido, ncv, nev;
     double tol;
     char* bmat;
-    int32_t info;
+    int info;
     bool rvec;
-    int32_t ierr, mode1;
+    int ierr, mode1;
     zomplex sigma;
     char* which;
-    int32_t nconv;
+    int nconv;
     zomplex *v	/* was [256][30] */;
     zomplex *resid;
     zomplex *workd;
     zomplex *workl;
-    int32_t ipntr[14];
+    int ipntr[14];
     double rwork[30];
-    int32_t iparam[11];
+    int iparam[11];
     bool select[30];
-    int32_t ishfts, maxitr;
-    int32_t lworkl;
+    int ishfts, maxitr;
+    int lworkl;
     zomplex workev[60];
 
     resid = (zomplex*)malloc(256 * sizeof(zomplex));
@@ -474,19 +474,19 @@ L10:
 /*     The matrix used is the convection-diffusion operator */
 /*     discretized using centered difference. */
 
-int znsimp_av_(int32_t *nx, zomplex *v, zomplex *w)
+int znsimp_av_(int *nx, zomplex *v, zomplex *w)
 {
     /* System generated locals */
-    int32_t i__1;
+    int i__1;
     zomplex z__1, z__2;
 
     /* Builtin functions */
     void z_div(zomplex *, zomplex *, zomplex *);
 
     /* Local variables */
-    int32_t j;
+    int j;
     zomplex h2;
-    int32_t lo;
+    int lo;
 
     /*     Computes w <--- OP*v, where OP is the nx*nx by nx*nx block */
     /*     tridiagonal matrix */
@@ -543,10 +543,10 @@ int znsimp_av_(int32_t *nx, zomplex *v, zomplex *w)
 } /* av_ */
 
 /* ========================================================================= */
-int znsimp_tv_(int32_t *nx, zomplex *x, zomplex *y)
+int znsimp_tv_(int *nx, zomplex *x, zomplex *y)
 {
     /* System generated locals */
-    int32_t i__1, i__2, i__3, i__4, i__5;
+    int i__1, i__2, i__3, i__4, i__5;
     zomplex z__1, z__2, z__3, z__4, z__5;
 
     /* Builtin functions */
@@ -554,7 +554,7 @@ int znsimp_tv_(int32_t *nx, zomplex *x, zomplex *y)
 
     /* Local variables */
     zomplex h;
-    int32_t j;
+    int j;
     zomplex h2, dd, dl, du;
 
     /*     Compute the matrix vector multiplication y<---T*x */

@@ -306,13 +306,13 @@
  */
 
 int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float *z,
-            int32_t *ldz, float *sigmar, float *sigmai, float *workev, char *bmat, int32_t *n,
-            char *which, int32_t *nev, float *tol, float *resid, int32_t *ncv, float *v,
-            int32_t *ldv, int32_t *iparam, int32_t *ipntr, float *workd, float *workl, int32_t *lworkl,
-            int32_t *info)
+            int *ldz, float *sigmar, float *sigmai, float *workev, char *bmat, int *n,
+            char *which, int *nev, float *tol, float *resid, int *ncv, float *v,
+            int *ldv, int *iparam, int *ipntr, float *workd, float *workl, int *lworkl,
+            int *info)
 {
     /* System generated locals */
-    int32_t v_dim1, v_offset, z_dim1, z_offset, i__1;
+    int v_dim1, v_offset, z_dim1, z_offset, i__1;
     float r__1, r__2;
     double d__1;
 
@@ -320,26 +320,26 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
     double pow_dd(double *, double *);
 
     /* Local variables */
-    int32_t j, k, ih, jj, np;
+    int j, k, ih, jj, np;
     float vl[1]	/* was [1][1] */;
-    int32_t ibd, ldh, ldq, iri;
+    int ibd, ldh, ldq, iri;
     float sep;
-    int32_t irr, wri, wrr, mode;
+    int irr, wri, wrr, mode;
     float eps23;
-    int32_t ierr;
+    int ierr;
     float temp;
-    int32_t iwev;
+    int iwev;
     char type[7];
     float temp1;
-    int32_t ihbds, iconj;
+    int ihbds, iconj;
     float conds;
     bool reord;
-    int32_t nconv, iwork[1];
+    int nconv, iwork[1];
     float rnorm;
-    int32_t ritzi;
-    int32_t ritzr;
-    int32_t nconv2;
-    int32_t iheigi, iheigr, bounds, invsub, iuptri, msglvl, outncv, ishift,
+    int ritzi;
+    int ritzr;
+    int nconv2;
+    int iheigi, iheigr, bounds, invsub, iuptri, msglvl, outncv, ishift,
             numcnv;
 
     /* --------------------- */

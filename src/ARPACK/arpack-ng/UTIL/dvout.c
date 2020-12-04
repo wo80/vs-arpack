@@ -19,16 +19,16 @@
 
 /* ----------------------------------------------------------------------- */
 
-int dvout_(int32_t *n, double *sx, int32_t *idigit, char *ifmt)
+int dvout_(int *n, double *sx, int *idigit, char *ifmt)
 {
 
     /* System generated locals */
-    int32_t i__1, i__2, i__3;
+    int i__1, i__2, i__3;
 
     /* Local variables */
-    int32_t i, k1, k2, lll;
+    int i, k1, k2, lll;
     char line[80];
-    int32_t ndigit;
+    int ndigit;
 
     /* Parameter adjustments */
     --sx;

@@ -173,14 +173,14 @@
  * \EndLib
  */
 
-int dnaup2_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, int32_t *np,
-            double *tol, double *resid, int32_t *mode, int32_t *iupd, int32_t *ishift, int32_t *mxiter,
-            double *v, int32_t *ldv, double *h, int32_t *ldh, double *ritzr, double *ritzi,
-            double *bounds, double *q, int32_t *ldq, double *workl, int32_t *ipntr, double *workd,
-            int32_t *info)
+int dnaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
+            double *tol, double *resid, int *mode, int *iupd, int *ishift, int *mxiter,
+            double *v, int *ldv, double *h, int *ldh, double *ritzr, double *ritzi,
+            double *bounds, double *q, int *ldq, double *workl, int *ipntr, double *workd,
+            int *info)
 {
     /* System generated locals */
-    int32_t h_dim1, h_offset, q_dim1, q_offset, v_dim1, v_offset, i__1, i__2;
+    int h_dim1, h_offset, q_dim1, q_offset, v_dim1, v_offset, i__1, i__2;
     double d__1, d__2;
 
     /* Builtin functions */
@@ -189,25 +189,25 @@ int dnaup2_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, int
     double sqrt(double);
 
     /* Local variables */
-    int32_t j;
+    int j;
     static float t0, t1, t2, t3;
-    int32_t kp[4];
-    static int32_t np0, nev0;
+    int kp[4];
+    static int np0, nev0;
     static double eps23;
-    int32_t ierr;
-    static int32_t iter;
+    int ierr;
+    static int iter;
     double temp;
     static bool getv0, cnorm;
-    static int32_t nconv;
+    static int nconv;
     static bool initv;
     static double rnorm;
-    static int32_t nevbef;
+    static int nevbef;
     static bool update;
     char wprime[3];
     static bool ushift;
-    static int32_t kplusp, msglvl;
-    int32_t nptemp;
-    static int32_t numcnv;
+    static int kplusp, msglvl;
+    int nptemp;
+    static int numcnv;
 
     /* --------------------- */
     /* Executable Statements */

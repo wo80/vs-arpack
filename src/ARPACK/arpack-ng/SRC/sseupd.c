@@ -219,13 +219,13 @@
  * \EndLib
  */
 
-int sseupd_(bool *rvec, char *howmny, bool *select, float *d, float *z, int32_t *ldz,
-            float *sigma, char *bmat, int32_t *n, char *which, int32_t *nev, float *tol,
-            float *resid, int32_t *ncv, float *v, int32_t *ldv, int32_t *iparam, int32_t *ipntr,
-            float *workd, float *workl, int32_t *lworkl, int32_t *info)
+int sseupd_(bool *rvec, char *howmny, bool *select, float *d, float *z, int *ldz,
+            float *sigma, char *bmat, int *n, char *which, int *nev, float *tol,
+            float *resid, int *ncv, float *v, int *ldv, int *iparam, int *ipntr,
+            float *workd, float *workl, int *lworkl, int *info)
 {
     /* System generated locals */
-    int32_t v_dim1, v_offset, z_dim1, z_offset, i__1;
+    int v_dim1, v_offset, z_dim1, z_offset, i__1;
     float r__1, r__2, r__3;
     double d__1;
 
@@ -234,20 +234,20 @@ int sseupd_(bool *rvec, char *howmny, bool *select, float *d, float *z, int32_t 
     double pow_dd(double *, double *);
 
     /* Local variables */
-    int32_t j, k, ih, jj, iq, np, iw, ibd, ihb, ihd, ldh, ldq, irz, mode;
+    int j, k, ih, jj, iq, np, iw, ibd, ihb, ihd, ldh, ldq, irz, mode;
     float eps23;
-    int32_t ierr;
+    int ierr;
     float temp;
-    int32_t next;
+    int next;
     char type[7];
-    int32_t ritz;
+    int ritz;
     float temp1;
     bool reord;
-    int32_t nconv;
+    int nconv;
     float rnorm;
     float bnorm2;
-    int32_t bounds, msglvl, ishift, numcnv;
-    int32_t leftptr, rghtptr;
+    int bounds, msglvl, ishift, numcnv;
+    int leftptr, rghtptr;
 
     /* --------------------- */
     /* Executable Statements */

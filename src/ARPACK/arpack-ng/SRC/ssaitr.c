@@ -202,36 +202,36 @@
  * \EndLib
  */
 
-int ssaitr_(int32_t *ido, char *bmat, int32_t *n, int32_t *k,int32_t *np, int32_t *mode,
-            float *resid, float *rnorm, float *v, int32_t *ldv, float *h, int32_t *ldh,
-            int32_t *ipntr, float *workd, int32_t *info)
+int ssaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *mode,
+            float *resid, float *rnorm, float *v, int *ldv, float *h, int *ldh,
+            int *ipntr, float *workd, int *info)
 {
     /* Initialized data */
 
     static bool first = true;
 
     /* System generated locals */
-    int32_t h_dim1, h_offset, v_dim1, v_offset, i__1;
+    int h_dim1, h_offset, v_dim1, v_offset, i__1;
 
     /* Builtin functions */
     double sqrt(double);
 
     /* Local variables */
-    int32_t i;
-    static int32_t j;
+    int i;
+    static int j;
     static float t0, t1, t2, t3, t4, t5;
-    int32_t jj;
-    static int32_t ipj, irj, ivj, ierr, iter;
-    static int32_t itry;
+    int jj;
+    static int ipj, irj, ivj, ierr, iter;
+    static int itry;
     float temp1;
     static bool orth1, orth2, step3, step4;
-    int32_t infol;
+    int infol;
     float xtemp[2];
     static float wnorm;
     static float rnorm1;
     static float safmin;
     static bool rstart;
-    static int32_t msglvl;
+    static int msglvl;
 
     /* --------------- */
     /* Data statements */

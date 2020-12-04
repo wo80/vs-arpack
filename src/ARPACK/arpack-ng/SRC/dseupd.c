@@ -219,13 +219,13 @@
  * \EndLib
  */
 
-int dseupd_(bool *rvec, char *howmny, bool *select, double *d, double *z, int32_t *ldz,
-            double *sigma, char *bmat, int32_t *n, char *which, int32_t *nev, double *tol,
-            double *resid, int32_t *ncv, double *v, int32_t *ldv, int32_t *iparam, int32_t *ipntr,
-            double *workd, double *workl, int32_t *lworkl, int32_t *info)
+int dseupd_(bool *rvec, char *howmny, bool *select, double *d, double *z, int *ldz,
+            double *sigma, char *bmat, int *n, char *which, int *nev, double *tol,
+            double *resid, int *ncv, double *v, int *ldv, int *iparam, int *ipntr,
+            double *workd, double *workl, int *lworkl, int *info)
 {
     /* System generated locals */
-    int32_t v_dim1, v_offset, z_dim1, z_offset, i__1;
+    int v_dim1, v_offset, z_dim1, z_offset, i__1;
     double d__1, d__2, d__3;
 
     /* Builtin functions */
@@ -233,21 +233,21 @@ int dseupd_(bool *rvec, char *howmny, bool *select, double *d, double *z, int32_
     double pow_dd(double *, double *);
 
     /* Local variables */
-    int32_t j, k, ih, jj, iq, np, iw, ibd, ihb, ihd, ldh, ldq, irz;
-    int32_t mode;
+    int j, k, ih, jj, iq, np, iw, ibd, ihb, ihd, ldh, ldq, irz;
+    int mode;
     double eps23;
-    int32_t ierr;
+    int ierr;
     double temp;
-    int32_t next;
+    int next;
     char type[7];
-    int32_t ritz;
+    int ritz;
     double temp1;
     bool reord;
-    int32_t nconv;
+    int nconv;
     double rnorm;
     double bnorm2;
-    int32_t bounds, msglvl, ishift, numcnv;
-    int32_t leftptr, rghtptr;
+    int bounds, msglvl, ishift, numcnv;
+    int leftptr, rghtptr;
 
     /* --------------------- */
     /* Executable Statements */
@@ -522,7 +522,7 @@ int dseupd_(bool *rvec, char *howmny, bool *select, double *d, double *z, int32_
             /* Computing MAX */
             d__2 = eps23, d__3 = (d__1 = workl[irz + *ncv - j], abs(d__1));
             temp1 = max(d__2,d__3);
-            jj = (int32_t) workl[bounds + *ncv - j];
+            jj = (int) workl[bounds + *ncv - j];
             if (numcnv < nconv && workl[ibd + jj - 1] <= *tol * temp1)
             {
                 select[jj] = true;

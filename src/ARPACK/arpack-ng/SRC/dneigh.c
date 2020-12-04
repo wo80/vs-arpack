@@ -97,21 +97,21 @@
  * \EndLib
  */
 
-int dneigh_(double *rnorm, int32_t *n, double *h,
-            int32_t *ldh, double *ritzr, double *ritzi, double *
-            bounds, double *q, int32_t *ldq, double *workl, int32_t *ierr)
+int dneigh_(double *rnorm, int *n, double *h,
+            int *ldh, double *ritzr, double *ritzi, double *
+            bounds, double *q, int *ldq, double *workl, int *ierr)
 {
     /* System generated locals */
-    int32_t h_dim1, h_offset, q_dim1, q_offset, i__1;
+    int h_dim1, h_offset, q_dim1, q_offset, i__1;
     double d__1, d__2;
 
     /* Local variables */
-    int32_t i, j;
+    int i, j;
     static float t0, t1;
     double vl[1], temp;
-    int32_t iconj;
+    int iconj;
     bool select[1];
-    int32_t msglvl;
+    int msglvl;
 
     /* --------------------- */
     /* Executable Statements */

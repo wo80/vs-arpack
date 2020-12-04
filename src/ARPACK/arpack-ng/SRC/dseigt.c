@@ -85,18 +85,18 @@
  * \EndLib
  */
 
-int dseigt_(double *rnorm, int32_t *n, double *h,
-            int32_t *ldh, double *eig, double *bounds, double *workl,
-            int32_t *ierr)
+int dseigt_(double *rnorm, int *n, double *h,
+            int *ldh, double *eig, double *bounds, double *workl,
+            int *ierr)
 {
     /* System generated locals */
-    int32_t h_dim1, h_offset, i__1;
+    int h_dim1, h_offset, i__1;
     double d__1;
 
     /* Local variables */
-    int32_t k;
+    int k;
     static float t0, t1;
-    int32_t msglvl;
+    int msglvl;
 
     /* --------------------- */
     /* Executable Statements */

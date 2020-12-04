@@ -85,15 +85,15 @@
  * \EndLib
  */
 
-int zngets_(int32_t *ishift, char *which, int32_t *kev, int32_t *np, zomplex *ritz,
+int zngets_(int *ishift, char *which, int *kev, int *np, zomplex *ritz,
             zomplex *bounds)
 {
     /* System generated locals */
-    int32_t i__1;
+    int i__1;
 
     /* Local variables */
     static float t0, t1;
-    int32_t msglvl;
+    int msglvl;
 
     /* --------------------- */
     /* Executable Statements */

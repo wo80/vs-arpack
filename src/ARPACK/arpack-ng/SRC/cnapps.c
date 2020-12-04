@@ -133,16 +133,16 @@
  * \EndLib
  */
 
-int cnapps_(int32_t *n, int32_t *kev, int32_t *np, complex *
-            shift, complex *v, int32_t *ldv, complex *h, int32_t *ldh, complex *
-            resid, complex *q, int32_t *ldq, complex *workl, complex *workd)
+int cnapps_(int *n, int *kev, int *np, complex *
+            shift, complex *v, int *ldv, complex *h, int *ldh, complex *
+            resid, complex *q, int *ldq, complex *workl, complex *workd)
 {
     /* Initialized data */
 
     static bool first = true;
 
     /* System generated locals */
-    int32_t h_dim1, h_offset, v_dim1, v_offset, q_dim1, q_offset, i__1, i__2,
+    int h_dim1, h_offset, v_dim1, v_offset, q_dim1, q_offset, i__1, i__2,
             i__3, i__4, i__5, i__6;
     float r__1, r__2, r__3, r__4;
     complex q__1, q__2, q__3, q__4, q__5;
@@ -154,17 +154,17 @@ int cnapps_(int32_t *n, int32_t *kev, int32_t *np, complex *
     /* Local variables */
     float c;
     complex f, g;
-    int32_t i, j;
+    int i, j;
     complex r, s, t;
     static float t0, t1;
     complex h11, h21;
-    int32_t jj;
+    int jj;
     static float ulp;
     float tst1;
-    int32_t iend;
+    int iend;
     static float unfl, ovfl;
     complex sigma;
-    int32_t istart, kplusp, msglvl;
+    int istart, kplusp, msglvl;
     static float smlnum;
 
     /* -------------- */

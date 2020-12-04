@@ -66,17 +66,17 @@
  * \EndLib
  */
 
-int ssesrt_(char *which, bool *apply, int32_t *n, float *x,int32_t *na, float *a,
-            int32_t *lda)
+int ssesrt_(char *which, bool *apply, int *n, float *x,int *na, float *a,
+            int *lda)
 {
     /* System generated locals */
-    int32_t a_dim1, a_offset, i__1;
+    int a_dim1, a_offset, i__1;
     float r__1, r__2;
 
     /* Builtin functions */
 
     /* Local variables */
-    int32_t i, j, igap;
+    int i, j, igap;
     float temp;
 
     /* ---------------- */

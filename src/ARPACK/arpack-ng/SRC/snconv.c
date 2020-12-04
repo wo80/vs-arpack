@@ -63,11 +63,11 @@
  * \EndLib
  */
 
-int snconv_(int32_t *n, float *ritzr, float *ritzi, float *
-            bounds, float *tol, int32_t *nconv)
+int snconv_(int *n, float *ritzr, float *ritzi, float *
+            bounds, float *tol, int *nconv)
 {
     /* System generated locals */
-    int32_t i__1;
+    int i__1;
     float r__1, r__2;
     double d__1;
 
@@ -75,7 +75,7 @@ int snconv_(int32_t *n, float *ritzr, float *ritzi, float *
     double pow_dd(double *, double *);
 
     /* Local variables */
-    int32_t i;
+    int i;
     static float t0, t1;
     float eps23, temp;
 

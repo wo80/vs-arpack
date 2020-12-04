@@ -166,14 +166,14 @@
  * \EndLib
  */
 
-int cnaup2_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, int32_t *np,
-            float *tol, complex *resid, int32_t *mode, int32_t *iupd, int32_t *ishift, int32_t *mxiter,
-            complex *v, int32_t *ldv, complex *h, int32_t *ldh, complex *ritz, complex *bounds,
-            complex *q, int32_t *ldq, complex *workl, int32_t *ipntr, complex *workd, float *rwork,
-            int32_t *info)
+int cnaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
+            float *tol, complex *resid, int *mode, int *iupd, int *ishift, int *mxiter,
+            complex *v, int *ldv, complex *h, int *ldh, complex *ritz, complex *bounds,
+            complex *q, int *ldq, complex *workl, int *ipntr, complex *workd, float *rwork,
+            int *info)
 {
     /* System generated locals */
-    int32_t h_dim1, h_offset, q_dim1, q_offset, v_dim1, v_offset, i__1, i__2,
+    int h_dim1, h_offset, q_dim1, q_offset, v_dim1, v_offset, i__1, i__2,
             i__3;
     float r__1, r__2, r__3, r__4;
     double d__1;
@@ -185,23 +185,23 @@ int cnaup2_(int32_t *ido, char *bmat, int32_t *n, char *which, int32_t *nev, int
     double sqrt(double);
 
     /* Local variables */
-    int32_t i, j;
+    int i, j;
     static float t0, t1, t2, t3;
-    int32_t kp[3];
-    static int32_t np0, nev0;
+    int kp[3];
+    static int np0, nev0;
     static float eps23;
-    int32_t ierr;
-    static int32_t iter;
+    int ierr;
+    static int iter;
     static bool getv0;
     static bool cnorm;
-    static int32_t nconv;
+    static int nconv;
     float rtemp;
     static bool initv;
     static float rnorm;
-    static int32_t nevbef;
+    static int nevbef;
     static bool update, ushift;
-    static int32_t kplusp, msglvl;
-    int32_t nptemp;
+    static int kplusp, msglvl;
+    int nptemp;
     char wprime[3];
     complex cmpnorm;
 

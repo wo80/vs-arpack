@@ -64,16 +64,16 @@
  * \EndLib
  */
 
-int dsortc_(char *which, bool *apply, int32_t *n, double *xfloat, double *ximag, double *y)
+int dsortc_(char *which, bool *apply, int *n, double *xfloat, double *ximag, double *y)
 {
     /* System generated locals */
-    int32_t i__1;
+    int i__1;
     double d__1, d__2;
 
     /* Builtin functions */
 
     /* Local variables */
-    int32_t i, j, igap;
+    int i, j, igap;
     double temp, temp1, temp2;
 
     /* ---------------- */

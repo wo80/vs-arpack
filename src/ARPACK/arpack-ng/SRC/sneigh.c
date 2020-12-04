@@ -97,21 +97,21 @@
  * \EndLib
  */
 
-int sneigh_(float *rnorm, int32_t *n, float *h, int32_t *ldh,
-            float *ritzr, float *ritzi, float *bounds, float *q, int32_t *ldq, float *
-            workl, int32_t *ierr)
+int sneigh_(float *rnorm, int *n, float *h, int *ldh,
+            float *ritzr, float *ritzi, float *bounds, float *q, int *ldq, float *
+            workl, int *ierr)
 {
     /* System generated locals */
-    int32_t h_dim1, h_offset, q_dim1, q_offset, i__1;
+    int h_dim1, h_offset, q_dim1, q_offset, i__1;
     float r__1, r__2;
 
     /* Local variables */
-    int32_t i, j;
+    int i, j;
     static float t0, t1;
     float vl[1], temp;
-    int32_t iconj;
+    int iconj;
     bool select[1];
-    int32_t msglvl;
+    int msglvl;
 
     /* --------------------- */
     /* Executable Statements */

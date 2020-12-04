@@ -19,16 +19,16 @@
 
 /* ----------------------------------------------------------------------- */
 
-int zvout_(int32_t *n, zomplex *cx, int32_t *idigit, char *ifmt)
+int zvout_(int *n, zomplex *cx, int *idigit, char *ifmt)
 {
 
     /* System generated locals */
-    int32_t i__1, i__2, i__3;
+    int i__1, i__2, i__3;
 
     /* Local variables */
-    int32_t i, k1, k2, lll;
+    int i, k1, k2, lll;
     char line[80];
-    int32_t ndigit;
+    int ndigit;
 
     /* Parameter adjustments */
     --cx;

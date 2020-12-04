@@ -45,34 +45,34 @@
 int cndrv1()
 {
     /* System generated locals */
-    int32_t i__1, i__2;
+    int i__1, i__2;
     complex q__1;
 
     double r_imag(complex *);
 
     /* Local variables */
     complex d[30];
-    int32_t j, n;
+    int j, n;
     float rd[90]	/* was [30][3] */;
     complex ax[256];
-    int32_t nx, ido, ncv, nev;
+    int nx, ido, ncv, nev;
     float tol;
     char* bmat;
-    int32_t mode, info;
+    int mode, info;
     bool rvec;
-    int32_t ierr;
+    int ierr;
     complex sigma;
     char* which;
-    int32_t nconv;
+    int nconv;
     complex *v	/* was [256][30] */;
     complex *resid;
     complex *workd;
     complex *workl;
-    int32_t ipntr[14];
+    int ipntr[14];
     float rwork[30];
-    int32_t iparam[11];
+    int iparam[11];
     bool select[30];
-    int32_t ishfts, maxitr, lworkl;
+    int ishfts, maxitr, lworkl;
     complex workev[90];
 
     resid = (complex*)malloc(256 * sizeof(complex));
@@ -353,19 +353,19 @@ L10:
 /*     The matrix used is the convection-diffusion operator */
 /*     discretized using centered difference. */
 
-int cndrv1_av_(int32_t *nx, complex *v, complex *w)
+int cndrv1_av_(int *nx, complex *v, complex *w)
 {
     /* System generated locals */
-    int32_t i__1;
+    int i__1;
     complex q__1, q__2;
 
     /* Builtin functions */
     void c_div(complex *, complex *, complex *);
 
     /* Local variables */
-    int32_t j;
+    int j;
     complex h2;
-    int32_t lo;
+    int lo;
 
     /*     Computes w <--- OP*v, where OP is the nx*nx by nx*nx block */
     /*     tridiagonal matrix */
@@ -421,10 +421,10 @@ int cndrv1_av_(int32_t *nx, complex *v, complex *w)
 } /* av_ */
 
 /* ========================================================================= */
-int cndrv1_tv_(int32_t *nx, complex *x, complex *y)
+int cndrv1_tv_(int *nx, complex *x, complex *y)
 {
     /* System generated locals */
-    int32_t i__1, i__2, i__3, i__4, i__5;
+    int i__1, i__2, i__3, i__4, i__5;
     complex q__1, q__2, q__3, q__4, q__5;
 
     /* Builtin functions */
@@ -432,7 +432,7 @@ int cndrv1_tv_(int32_t *nx, complex *x, complex *y)
 
     /* Local variables */
     complex h;
-    int32_t j;
+    int j;
     complex h2, dd, dl, du;
 
     /*     Compute the matrix vector multiplication y<---T*x */

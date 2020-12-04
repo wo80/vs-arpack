@@ -46,32 +46,32 @@
 int dndrv1()
 {
     /* System generated locals */
-    int32_t i__1;
+    int i__1;
     double d__1;
 
     /* Local variables */
     double d[90]	/* was [30][3] */;
-    int32_t j, n;
+    int j, n;
     double ax[256];
-    int32_t nx, ido, ncv, nev;
+    int nx, ido, ncv, nev;
     double tol;
     char* bmat;
-    int32_t mode, info;
+    int mode, info;
     bool rvec;
-    int32_t ierr;
+    int ierr;
     char* which;
-    int32_t nconv;
+    int nconv;
     double* v	/* was [256][30] */;
     double* resid;
     double* workd;
     double* workl;
     bool first;
-    int32_t ipntr[14];
-    int32_t iparam[11];
+    int ipntr[14];
+    int iparam[11];
     double sigmai;
     bool select[30];
     double sigmar;
-    int32_t ishfts, maxitr, lworkl;
+    int ishfts, maxitr, lworkl;
     double workev[90];
 
     resid = (double*)malloc(256 * sizeof(double));
@@ -391,16 +391,16 @@ L10:
 /*     The matrix used is the 2 dimensional convection-diffusion */
 /*     operator discretized using central difference. */
 
-int dndrv1_av_(int32_t *nx, double *v, double *w)
+int dndrv1_av_(int *nx, double *v, double *w)
 {
     /* System generated locals */
-    int32_t i__1;
+    int i__1;
     double d__1;
 
     /* Local variables */
-    int32_t j;
+    int j;
     double h2;
-    int32_t lo;
+    int lo;
 
     /*     Computes w <--- OP*v, where OP is the nx*nx by nx*nx block */
     /*     tridiagonal matrix */
@@ -454,14 +454,14 @@ int dndrv1_av_(int32_t *nx, double *v, double *w)
 } /* av_ */
 
 /* ========================================================================= */
-int dndrv1_tv_(int32_t *nx, double *x, double *y)
+int dndrv1_tv_(int *nx, double *x, double *y)
 {
     /* System generated locals */
-    int32_t i__1;
+    int i__1;
 
     /* Local variables */
     double h;
-    int32_t j;
+    int j;
     double h2, dd, dl, du;
 
     /*     Compute the matrix vector multiplication y<---T*x */

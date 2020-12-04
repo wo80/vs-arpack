@@ -64,16 +64,16 @@
  * \EndLib
  */
 
-int ssortc_(char *which, bool *apply, int32_t *n, float *xfloat, float *ximag, float *y)
+int ssortc_(char *which, bool *apply, int *n, float *xfloat, float *ximag, float *y)
 {
     /* System generated locals */
-    int32_t i__1;
+    int i__1;
     float r__1, r__2;
 
     /* Builtin functions */
 
     /* Local variables */
-    int32_t i, j, igap;
+    int i, j, igap;
     float temp, temp1, temp2;
 
     /* ---------------- */

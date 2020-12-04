@@ -2,13 +2,13 @@
 
 #include "arpack.h"
 
-int iswap_(int32_t *n, int32_t *sx, int32_t *incx, int32_t *sy, int32_t *incy)
+int iswap_(int *n, int *sx, int *incx, int *sy, int *incy)
 {
     /* System generated locals */
-    int32_t i__1;
+    int i__1;
 
     /* Local variables */
-    int32_t i, m, ix, iy, mp1, stemp;
+    int i, m, ix, iy, mp1, stemp;
 
     /*     interchanges two vectors. */
     /*     uses unrolled loops for increments equal to 1. */

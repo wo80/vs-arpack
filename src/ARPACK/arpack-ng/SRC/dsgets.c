@@ -91,18 +91,18 @@
  * \EndLib
  */
 
-int dsgets_(int32_t *ishift, char *which, int32_t *kev, int32_t *np, double *ritz,
+int dsgets_(int *ishift, char *which, int *kev, int *np, double *ritz,
             double *bounds, double *shifts)
 {
     /* System generated locals */
-    int32_t i__1;
+    int i__1;
 
     /* Builtin functions */
 
     /* Local variables */
     static float t0, t1;
-    int32_t kevd2;
-    int32_t msglvl;
+    int kevd2;
+    int msglvl;
 
     /* --------------------- */
     /* Executable Statements */

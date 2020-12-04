@@ -43,44 +43,44 @@
 int sndrv5()
 {
     /* System generated locals */
-    int32_t i__1, i__2, i__3;
+    int i__1, i__2, i__3;
     float r__1, r__2;
     complex q__1;
 
     /* Local variables */
     float d[75]	/* was [25][3] */;
-    int32_t j, n;
+    int j, n;
     complex c1, c2, c3;
     float ax[256];
     float mx[256];
     complex cdd[256], cdl[256], cdu[256];
-    int32_t ido, ncv, nev;
+    int ido, ncv, nev;
     float tol;
     complex cdu2[256];
     float deni;
     char* bmat;
-    int32_t mode;
+    int mode;
     float denr;
-    int32_t info;
+    int info;
     bool rvec;
-    int32_t ierr, ipiv[256];
+    int ierr, ipiv[256];
     float numi;
     float numr;
     char* which;
     complex ctemp[256];
-    int32_t nconv;
+    int nconv;
     float *v	/* was [256][25] */;
     float *resid;
     float *workd;
     float *workl;
     bool first;
-    int32_t ipntr[14];
-    int32_t iparam[11];
+    int ipntr[14];
+    int iparam[11];
     float sigmai;
     bool select[25];
     float sigmar;
-    int32_t ishfts, maxitr;
-    int32_t lworkl;
+    int ishfts, maxitr;
+    int lworkl;
     float workev[75];
 
     resid = (float*)malloc(256 * sizeof(float));
@@ -621,13 +621,13 @@ L20:
 
 /*     matrix vector multiplication subroutine */
 
-int sndrv5_mv_(int32_t *n, float *v, float *w)
+int sndrv5_mv_(int *n, float *v, float *w)
 {
     /* System generated locals */
-    int32_t i__1;
+    int i__1;
 
     /* Local variables */
-    int32_t j;
+    int j;
 
     /*     Compute the matrix vector multiplication y<---M*x */
     /*     where M is a n by n symmetric tridiagonal matrix with 4 on the */
@@ -650,13 +650,13 @@ int sndrv5_mv_(int32_t *n, float *v, float *w)
 } /* mv_ */
 
 /* ------------------------------------------------------------------ */
-int sndrv5_av_(int32_t *n, float *v, float *w)
+int sndrv5_av_(int *n, float *v, float *w)
 {
     /* System generated locals */
-    int32_t i__1;
+    int i__1;
 
     /* Local variables */
-    int32_t j;
+    int j;
 
     /*     Compute the matrix vector multiplication y<---A*x */
     /*     where M is a n by n symmetric tridiagonal matrix with 2 on the */

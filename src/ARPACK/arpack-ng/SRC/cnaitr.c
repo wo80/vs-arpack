@@ -207,16 +207,16 @@
  * \EndLib
  */
 
-int cnaitr_(int32_t *ido, char *bmat, int32_t *n, int32_t *k,int32_t *np, int32_t *nb,
-            complex *resid, float *rnorm, complex *v, int32_t *ldv, complex *h, int32_t *ldh,
-            int32_t *ipntr, complex *workd, int32_t *info)
+int cnaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *nb,
+            complex *resid, float *rnorm, complex *v, int *ldv, complex *h, int *ldh,
+            int *ipntr, complex *workd, int *info)
 {
     /* Initialized data */
 
     static bool first = true;
 
     /* System generated locals */
-    int32_t h_dim1, h_offset, v_dim1, v_offset, i__1, i__2, i__3;
+    int h_dim1, h_offset, v_dim1, v_offset, i__1, i__2, i__3;
     float r__1, r__2, r__3, r__4;
     complex q__1;
 
@@ -224,26 +224,26 @@ int cnaitr_(int32_t *ido, char *bmat, int32_t *n, int32_t *k,int32_t *np, int32_
     double r_imag(complex *), sqrt(double);
 
     /* Local variables */
-    int32_t i;
-    static int32_t j;
+    int i;
+    static int j;
     static float t0, t1, t2, t3, t4, t5;
-    int32_t jj;
-    static int32_t ipj, irj, ivj;
+    int jj;
+    static int ipj, irj, ivj;
     static float ulp;
     float tst1;
-    static int32_t ierr, iter;
+    static int ierr, iter;
     static float unfl, ovfl;
-    static int32_t itry;
+    static int itry;
     float temp1;
     static bool orth1, orth2, step3, step4;
     static float betaj;
-    int32_t infol;
+    int infol;
     complex cnorm;
     float rtemp[2];
     static float wnorm;
     static float rnorm1;
     static bool rstart;
-    static int32_t msglvl;
+    static int msglvl;
     static float smlnum;
 
     /* --------------- */

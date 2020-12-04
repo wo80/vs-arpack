@@ -66,17 +66,17 @@
  * \EndLib
  */
 
-int dsesrt_(char *which, bool *apply, int32_t *n, double *x, int32_t *na, double *a,
-            int32_t *lda)
+int dsesrt_(char *which, bool *apply, int *n, double *x, int *na, double *a,
+            int *lda)
 {
     /* System generated locals */
-    int32_t a_dim1, a_offset, i__1;
+    int a_dim1, a_offset, i__1;
     double d__1, d__2;
 
     /* Builtin functions */
 
     /* Local variables */
-    int32_t i, j, igap;
+    int i, j, igap;
     double temp;
 
     /* ---------------- */

@@ -44,7 +44,7 @@
 int dndrv6()
 {
     /* System generated locals */
-    int32_t i__1, i__2, i__3;
+    int i__1, i__2, i__3;
     double d__1, d__2;
     zomplex z__1;
 
@@ -52,35 +52,35 @@ int dndrv6()
 
     /* Local variables */
     double d[75]	/* was [25][3] */;
-    int32_t j, n;
+    int j, n;
     zomplex c1, c2, c3;
     double *ax, * mx;
     zomplex;
-    int32_t ido, ncv, nev;
+    int ido, ncv, nev;
     double tol;
     zomplex *cdd, *cdl, *cdu, *cdu2;
     double deni;
     char* bmat;
-    int32_t mode;
+    int mode;
     double denr;
-    int32_t info;
+    int info;
     bool rvec;
-    int32_t ierr, ipiv[256];
+    int ierr, ipiv[256];
     double numi, numr;
     char* which;
     zomplex ctemp[256];
-    int32_t nconv;
+    int nconv;
     double *v	/* was [256][25] */;
     double *resid;
     double *workd;
     double *workl;
     bool first;
-    int32_t ipntr[14];
-    int32_t iparam[11];
+    int ipntr[14];
+    int iparam[11];
     double sigmai;
     bool select[25];
     double sigmar;
-    int32_t ishfts, maxitr, lworkl;
+    int ishfts, maxitr, lworkl;
     double workev[75];
 
     cdd = (zomplex*)malloc(256 * sizeof(zomplex));
@@ -626,13 +626,13 @@ L20:
 
 /*     matrix vector multiplication subroutine */
 
-int dndrv6_mv_(int32_t *n, double *v, double *w)
+int dndrv6_mv_(int *n, double *v, double *w)
 {
     /* System generated locals */
-    int32_t i__1;
+    int i__1;
 
     /* Local variables */
-    int32_t j;
+    int j;
 
     /*     Compute the matrix vector multiplication y<---M*x */
     /*     where M is a n by n symmetric tridiagonal matrix with 4 on the */
@@ -655,13 +655,13 @@ int dndrv6_mv_(int32_t *n, double *v, double *w)
 } /* mv_ */
 
 /* ------------------------------------------------------------------ */
-int dndrv6_av_(int32_t *n, double *v, double *w)
+int dndrv6_av_(int *n, double *v, double *w)
 {
     /* System generated locals */
-    int32_t i__1;
+    int i__1;
 
     /* Local variables */
-    int32_t j;
+    int j;
 
     /*     Compute the matrix vector multiplication y<---A*x */
     /*     where M is a n by n symmetric tridiagonal matrix with 2 on the */

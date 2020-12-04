@@ -207,41 +207,41 @@
  * \EndLib
  */
 
-int dnaitr_(int32_t *ido, char *bmat, int32_t *n, int32_t *k,int32_t *np, int32_t *nb,
-            double *resid, double *rnorm, double *v, int32_t *ldv, double *h, int32_t *ldh,
-            int32_t *ipntr, double *workd, int32_t *info)
+int dnaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *nb,
+            double *resid, double *rnorm, double *v, int *ldv, double *h, int *ldh,
+            int *ipntr, double *workd, int *info)
 {
     /* Initialized data */
 
     static bool first = true;
 
     /* System generated locals */
-    int32_t h_dim1, h_offset, v_dim1, v_offset, i__1, i__2;
+    int h_dim1, h_offset, v_dim1, v_offset, i__1, i__2;
     double d__1, d__2;
 
     /* Builtin functions */
     double sqrt(double);
 
     /* Local variables */
-    int32_t i;
-    static int32_t j;
+    int i;
+    static int j;
     static float t0, t1, t2, t3, t4, t5;
-    int32_t jj;
-    static int32_t ipj, irj, ivj;
+    int jj;
+    static int ipj, irj, ivj;
     static double ulp;
     double tst1;
-    static int32_t ierr, iter;
+    static int ierr, iter;
     static double unfl, ovfl;
-    static int32_t itry;
+    static int itry;
     double temp1;
     static bool orth1, orth2, step3, step4;
     static double betaj;
-    int32_t infol;
+    int infol;
     double xtemp[2];
     static double wnorm;
     static double rnorm1;
     static bool rstart;
-    static int32_t msglvl;
+    static int msglvl;
     static double smlnum;
 
     /* --------------- */

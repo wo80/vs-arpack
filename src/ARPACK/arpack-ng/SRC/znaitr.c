@@ -207,16 +207,16 @@
  * \EndLib
  */
 
-int znaitr_(int32_t *ido, char *bmat, int32_t *n, int32_t *k,int32_t *np, int32_t *nb,
-            zomplex *resid, double *rnorm, zomplex *v, int32_t *ldv, zomplex *h, int32_t *ldh,
-            int32_t *ipntr, zomplex *workd, int32_t *info)
+int znaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *nb,
+            zomplex *resid, double *rnorm, zomplex *v, int *ldv, zomplex *h, int *ldh,
+            int *ipntr, zomplex *workd, int *info)
 {
     /* Initialized data */
 
     static bool first = true;
 
     /* System generated locals */
-    int32_t h_dim1, h_offset, v_dim1, v_offset, i__1, i__2, i__3;
+    int h_dim1, h_offset, v_dim1, v_offset, i__1, i__2, i__3;
     double d__1, d__2, d__3, d__4;
     zomplex z__1;
 
@@ -224,26 +224,26 @@ int znaitr_(int32_t *ido, char *bmat, int32_t *n, int32_t *k,int32_t *np, int32_
     double d_imag(zomplex *), sqrt(double);
 
     /* Local variables */
-    int32_t i;
-    static int32_t j;
+    int i;
+    static int j;
     static float t0, t1, t2, t3, t4, t5;
-    int32_t jj;
-    static int32_t ipj, irj, ivj;
+    int jj;
+    static int ipj, irj, ivj;
     static double ulp;
     double tst1;
-    static int32_t ierr, iter;
+    static int ierr, iter;
     static double unfl, ovfl;
-    static int32_t itry;
+    static int itry;
     double temp1;
     static bool orth1, orth2, step3, step4;
     static double betaj;
-    int32_t infol;
+    int infol;
     zomplex cnorm;
     double rtemp[2];
     static double wnorm;
     static double rnorm1;
     static bool rstart;
-    static int32_t msglvl;
+    static int msglvl;
     static double smlnum;
 
     /* --------------- */

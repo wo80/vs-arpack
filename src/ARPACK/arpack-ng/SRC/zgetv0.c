@@ -114,16 +114,16 @@
  * \EndLib
  */
 
-int zgetv0_(int32_t *ido, char *bmat, int32_t *itry, bool *initv, int32_t *n, int32_t *j,
-            zomplex *v, int32_t *ldv, zomplex *resid, double *rnorm, int32_t *ipntr, zomplex *workd,
-            int32_t *ierr)
+int zgetv0_(int *ido, char *bmat, int *itry, bool *initv, int *n, int *j,
+            zomplex *v, int *ldv, zomplex *resid, double *rnorm, int *ipntr, zomplex *workd,
+            int *ierr)
 {
     /* Initialized data */
 
     static bool inits = true;
 
     /* System generated locals */
-    int32_t v_dim1, v_offset, i__1, i__2;
+    int v_dim1, v_offset, i__1, i__2;
     double d__1, d__2;
     zomplex z__1;
 
@@ -132,15 +132,15 @@ int zgetv0_(int32_t *ido, char *bmat, int32_t *itry, bool *initv, int32_t *n, in
 
     /* Local variables */
     static float t0, t1, t2, t3;
-    int32_t jj;
-    static int32_t iter;
+    int jj;
+    static int iter;
     static bool orth;
-    static int32_t iseed[4];
-    int32_t idist;
+    static int iseed[4];
+    int idist;
     zomplex cnorm;
     static bool first;
     static double rnorm0;
-    static int32_t msglvl;
+    static int msglvl;
 
     /* --------------- */
     /* Data Statements */

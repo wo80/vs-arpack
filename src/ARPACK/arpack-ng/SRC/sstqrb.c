@@ -106,11 +106,11 @@
  * \EndLib
  */
 
-int sstqrb_(int32_t *n, float *d, float *e, float *z, float *
-            work, int32_t *info)
+int sstqrb_(int *n, float *d, float *e, float *z, float *
+            work, int *info)
 {
     /* System generated locals */
-    int32_t i__1, i__2;
+    int i__1, i__2;
     float r__1, r__2;
 
     /* Builtin functions */
@@ -118,20 +118,20 @@ int sstqrb_(int32_t *n, float *d, float *e, float *z, float *
 
     /* Local variables */
     float b, c, f, g;
-    int32_t i, j, k, l, m;
+    int i, j, k, l, m;
     float p, r, s;
-    int32_t l1, ii, mm, lm1, mm1, nm1;
+    int l1, ii, mm, lm1, mm1, nm1;
     float rt1, rt2, eps;
-    int32_t lsv;
+    int lsv;
     float tst, eps2;
-    int32_t lend, jtot;
+    int lend, jtot;
     float anorm;
-    int32_t lendm1, lendp1;
-    int32_t iscale;
+    int lendm1, lendp1;
+    int iscale;
     float safmin, safmax;
-    int32_t lendsv;
+    int lendsv;
     float ssfmin;
-    int32_t nmaxit, icompz;
+    int nmaxit, icompz;
     float ssfmax;
 
     /* Parameter adjustments */

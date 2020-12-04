@@ -42,31 +42,31 @@
 int ssdrv1()
 {
     /* System generated locals */
-    int32_t i__1;
+    int i__1;
     float r__1;
 
     /* Local variables */
     float d[50]	/* was [25][2] */;
-    int32_t j, n;
+    int j, n;
     float ax[256];
-    int32_t nx, ido, ncv, nev;
+    int nx, ido, ncv, nev;
     float tol;
     char* bmat;
-    int32_t mode, info;
+    int mode, info;
     bool rvec;
-    int32_t ierr;
+    int ierr;
     float sigma;
     char* which;
-    int32_t nconv;
+    int nconv;
     float *v	/* was [256][25] */;
     float *resid;
     float *workd;
     float *workl;
-    int32_t ipntr[11];
-    int32_t iparam[11];
+    int ipntr[11];
+    int iparam[11];
     bool select[25];
-    int32_t ishfts;
-    int32_t maxitr, lworkl;
+    int ishfts;
+    int maxitr, lworkl;
 
     resid = (float*)malloc(256 * sizeof(float));
     v = (float*)malloc(6400 * sizeof(float));
@@ -351,16 +351,16 @@ L10:
 
 /*     The subroutine TV is called to computed y<---T*x. */
 
-int ssdrv1_av_(int32_t *nx, float *v, float *w)
+int ssdrv1_av_(int *nx, float *v, float *w)
 {
     /* System generated locals */
-    int32_t i__1;
+    int i__1;
     float r__1;
 
     /* Local variables */
-    int32_t j;
+    int j;
     float h2;
-    int32_t n2, lo;
+    int n2, lo;
 
     /* Parameter adjustments */
     --w;
@@ -394,13 +394,13 @@ int ssdrv1_av_(int32_t *nx, float *v, float *w)
 } /* av_ */
 
 /* ------------------------------------------------------------------- */
-int ssdrv1_tv_(int32_t *nx, float *x, float *y)
+int ssdrv1_tv_(int *nx, float *x, float *y)
 {
     /* System generated locals */
-    int32_t i__1;
+    int i__1;
 
     /* Local variables */
-    int32_t j;
+    int j;
     float dd, dl, du;
 
     /*     Compute the matrix vector multiplication y<---T*x */

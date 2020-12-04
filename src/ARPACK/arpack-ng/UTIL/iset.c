@@ -6,13 +6,13 @@
 
 /*     Only work with increment equal to 1 right now. */
 
-int iset_(int32_t *n, int32_t *value, int32_t *array, int32_t *inc)
+int iset_(int *n, int *value, int *array, int *inc)
 {
     /* System generated locals */
-    int32_t i__1;
+    int i__1;
 
     /* Local variables */
-    int32_t i;
+    int i;
 
     /* Parameter adjustments */
     --array;

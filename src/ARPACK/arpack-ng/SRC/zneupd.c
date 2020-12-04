@@ -251,14 +251,14 @@
  * \EndLib
  */
 
-int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int32_t *ldz,
-            zomplex *sigma, zomplex *workev, char *bmat, int32_t *n, char *which, int32_t *nev,
-            double *tol, zomplex *resid, int32_t *ncv, zomplex *v, int32_t *ldv, int32_t *iparam,
-            int32_t *ipntr, zomplex *workd, zomplex *workl, int32_t *lworkl, double *rwork,
-            int32_t *info)
+int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int *ldz,
+            zomplex *sigma, zomplex *workev, char *bmat, int *n, char *which, int *nev,
+            double *tol, zomplex *resid, int *ncv, zomplex *v, int *ldv, int *iparam,
+            int *ipntr, zomplex *workd, zomplex *workl, int *lworkl, double *rwork,
+            int *info)
 {
     /* System generated locals */
-    int32_t v_dim1, v_offset, z_dim1, z_offset, i__1, i__2;
+    int v_dim1, v_offset, z_dim1, z_offset, i__1, i__2;
     double d__1, d__2, d__3, d__4;
     zomplex z__1, z__2;
 
@@ -269,24 +269,24 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int3
     void z_div(zomplex *, zomplex *, zomplex *);
 
     /* Local variables */
-    int32_t j, k, ih, jj, iq, np;
+    int j, k, ih, jj, iq, np;
     zomplex vl[1];
-    int32_t wr, ibd, ldh, ldq;
+    int wr, ibd, ldh, ldq;
     double sep;
-    int32_t irz, mode;
+    int irz, mode;
     double eps23;
-    int32_t ierr;
+    int ierr;
     zomplex temp;
-    int32_t iwev;
+    int iwev;
     char type[7];
-    int32_t ritz, iheig, ihbds;
+    int ritz, iheig, ihbds;
     double conds;
     bool reord;
-    int32_t nconv;
+    int nconv;
     double rtemp;
     zomplex rnorm;
-    int32_t nconv2;
-    int32_t bounds, invsub, iuptri, msglvl, outncv, numcnv, ishift;
+    int nconv2;
+    int bounds, invsub, iuptri, msglvl, outncv, numcnv, ishift;
 
     /* --------------------- */
     /* Executable Statements */
@@ -534,7 +534,7 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int3
             d__1 = eps23, d__2 = dlapy2_(&d__3, &d__4);
             rtemp = max(d__1,d__2);
             i__2 = bounds + *ncv - j;
-            jj = (int32_t) workl[i__2].r;
+            jj = (int) workl[i__2].r;
             i__2 = ibd + jj - 1;
             d__1 = workl[i__2].r;
             d__2 = d_imag(&workl[ibd + jj - 1]);

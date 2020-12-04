@@ -6,13 +6,13 @@
 
 /*     Count the number of elements equal to a specified integer value. */
 
-int icnteq_(int32_t *n, int32_t *array, int32_t *value)
+int icnteq_(int *n, int *array, int *value)
 {
     /* System generated locals */
-    int32_t ret_val, i__1;
+    int ret_val, i__1;
 
     /* Local variables */
-    int32_t i, k;
+    int i, k;
 
     /* Parameter adjustments */
     --array;
