@@ -217,8 +217,7 @@ int cndrv4()
     /* --------------------------------------------------- */
 
     /* Computing 2nd power */
-    i__1 = ncv;
-    lworkl = i__1 * i__1 * 3 + ncv * 5;
+    lworkl = ncv * ncv * 3 + ncv * 5;
     tol = 0.f;
     ido = 0;
     info = 0;
@@ -270,7 +269,7 @@ L20:
         /* workd(ipntr(2)).                          */
         /* ----------------------------------------- */
 
-        cndrv4_mv_(&n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
+        cndrv4_mv_(n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
         cgttrs_("N", &n, &c__1, dl, dd, du, du2, ipiv, &workd[ipntr[1] - 1], &n, &ierr);
         if (ierr != 0)
         {
@@ -322,7 +321,7 @@ L20:
         /* and returns the result to workd(ipntr(2)).  */
         /* ------------------------------------------- */
 
-        cndrv4_mv_(&n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
+        cndrv4_mv_(n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
 
         /* --------------------------------------- */
         /* L O O P   B A C K to call CNAUPD again. */
@@ -391,11 +390,10 @@ L20:
         else
         {
             nconv = iparam[4];
-            i__1 = nconv;
-            for (j = 1; j <= i__1; ++j)
+            for (j = 1; j <= nconv; ++j)
             {
-                cndrv4_av_(&n, &v[(j << 8) - 256], ax);
-                cndrv4_mv_(&n, &v[(j << 8) - 256], mx);
+                cndrv4_av_(n, &v[(j << 8) - 256], ax);
+                cndrv4_mv_(n, &v[(j << 8) - 256], mx);
                 i__2 = j - 1;
                 q__1.r = -d[i__2].r, q__1.i = -d[i__2].i;
                 caxpy_(&n, &q__1, mx, &c__1, ax, &c__1);
@@ -460,7 +458,7 @@ L20:
 
 /*     matrix vector multiplication subroutine */
 
-int cndrv4_mv_(int *n, complex *v, complex *w)
+int cndrv4_mv_(const int n, complex *v, complex *w)
 {
     /* System generated locals */
     int i__1, i__2, i__3, i__4, i__5;
@@ -489,45 +487,40 @@ int cndrv4_mv_(int *n, complex *v, complex *w)
     q__2.r = q__3.r + q__4.r, q__2.i = q__3.i + q__4.i;
     c_div(&q__1, &q__2, &c_b5);
     w[1].r = q__1.r, w[1].i = q__1.i;
-    i__1 = *n - 1;
+    i__1 = n - 1;
     for (j = 2; j <= i__1; ++j)
     {
         i__2 = j;
         i__3 = j - 1;
-        q__4.r = v[i__3].r * 1.f - v[i__3].i * 0.f, q__4.i = v[i__3].i * 1.f
-                 + v[i__3].r * 0.f;
+        q__4.r = v[i__3].r * 1.f - v[i__3].i * 0.f, q__4.i = v[i__3].i * 1.f + v[i__3].r * 0.f;
         i__4 = j;
-        q__5.r = v[i__4].r * 4.f - v[i__4].i * 0.f, q__5.i = v[i__4].i * 4.f
-                 + v[i__4].r * 0.f;
+        q__5.r = v[i__4].r * 4.f - v[i__4].i * 0.f, q__5.i = v[i__4].i * 4.f + v[i__4].r * 0.f;
         q__3.r = q__4.r + q__5.r, q__3.i = q__4.i + q__5.i;
         i__5 = j + 1;
-        q__6.r = v[i__5].r * 1.f - v[i__5].i * 0.f, q__6.i = v[i__5].i * 1.f
-                 + v[i__5].r * 0.f;
+        q__6.r = v[i__5].r * 1.f - v[i__5].i * 0.f, q__6.i = v[i__5].i * 1.f + v[i__5].r * 0.f;
         q__2.r = q__3.r + q__6.r, q__2.i = q__3.i + q__6.i;
         c_div(&q__1, &q__2, &c_b5);
         w[i__2].r = q__1.r, w[i__2].i = q__1.i;
     }
-    i__1 = *n;
-    i__2 = *n - 1;
-    q__3.r = v[i__2].r * 1.f - v[i__2].i * 0.f, q__3.i = v[i__2].i * 1.f + v[
-                 i__2].r * 0.f;
-    i__3 = *n;
-    q__4.r = v[i__3].r * 4.f - v[i__3].i * 0.f, q__4.i = v[i__3].i * 4.f + v[
-                 i__3].r * 0.f;
+    i__1 = n;
+    i__2 = n - 1;
+    q__3.r = v[i__2].r * 1.f - v[i__2].i * 0.f, q__3.i = v[i__2].i * 1.f + v[i__2].r * 0.f;
+    i__3 = n;
+    q__4.r = v[i__3].r * 4.f - v[i__3].i * 0.f, q__4.i = v[i__3].i * 4.f + v[i__3].r * 0.f;
     q__2.r = q__3.r + q__4.r, q__2.i = q__3.i + q__4.i;
     c_div(&q__1, &q__2, &c_b5);
     w[i__1].r = q__1.r, w[i__1].i = q__1.i;
 
-    i__1 = *n + 1;
+    i__1 = n + 1;
     q__2.r = (float) i__1, q__2.i = 0.f;
     c_div(&q__1, &c_one, &q__2);
     h.r = q__1.r, h.i = q__1.i;
-    cscal_(n, &h, &w[1], &c__1);
+    cscal_(&n, &h, &w[1], &c__1);
     return 0;
 } /* mv_ */
 
 /* ------------------------------------------------------------------ */
-int cndrv4_av_(int *n, complex *v, complex *w)
+int cndrv4_av_(const int n, complex *v, complex *w)
 {
     /* System generated locals */
     int i__1, i__2, i__3, i__4, i__5;
@@ -546,7 +539,7 @@ int cndrv4_av_(int *n, complex *v, complex *w)
     --v;
 
     /* Function Body */
-    i__1 = *n + 1;
+    i__1 = n + 1;
     q__2.r = (float) i__1, q__2.i = 0.f;
     c_div(&q__1, &c_one, &q__2);
     h.r = q__1.r, h.i = q__1.i;
@@ -563,36 +556,29 @@ int cndrv4_av_(int *n, complex *v, complex *w)
     q__1.r = q__2.r + s.r, q__1.i = q__2.i + s.i;
     du.r = q__1.r, du.i = q__1.i;
 
-    q__2.r = dd.r * v[1].r - dd.i * v[1].i, q__2.i = dd.r * v[1].i + dd.i * v[
-                 1].r;
-    q__3.r = du.r * v[2].r - du.i * v[2].i, q__3.i = du.r * v[2].i + du.i * v[
-                 2].r;
+    q__2.r = dd.r * v[1].r - dd.i * v[1].i, q__2.i = dd.r * v[1].i + dd.i * v[1].r;
+    q__3.r = du.r * v[2].r - du.i * v[2].i, q__3.i = du.r * v[2].i + du.i * v[2].r;
     q__1.r = q__2.r + q__3.r, q__1.i = q__2.i + q__3.i;
     w[1].r = q__1.r, w[1].i = q__1.i;
-    i__1 = *n - 1;
+    i__1 = n - 1;
     for (j = 2; j <= i__1; ++j)
     {
         i__2 = j;
         i__3 = j - 1;
-        q__3.r = dl.r * v[i__3].r - dl.i * v[i__3].i, q__3.i = dl.r * v[i__3]
-                 .i + dl.i * v[i__3].r;
+        q__3.r = dl.r * v[i__3].r - dl.i * v[i__3].i, q__3.i = dl.r * v[i__3].i + dl.i * v[i__3].r;
         i__4 = j;
-        q__4.r = dd.r * v[i__4].r - dd.i * v[i__4].i, q__4.i = dd.r * v[i__4]
-                 .i + dd.i * v[i__4].r;
+        q__4.r = dd.r * v[i__4].r - dd.i * v[i__4].i, q__4.i = dd.r * v[i__4].i + dd.i * v[i__4].r;
         q__2.r = q__3.r + q__4.r, q__2.i = q__3.i + q__4.i;
         i__5 = j + 1;
-        q__5.r = du.r * v[i__5].r - du.i * v[i__5].i, q__5.i = du.r * v[i__5]
-                 .i + du.i * v[i__5].r;
+        q__5.r = du.r * v[i__5].r - du.i * v[i__5].i, q__5.i = du.r * v[i__5].i + du.i * v[i__5].r;
         q__1.r = q__2.r + q__5.r, q__1.i = q__2.i + q__5.i;
         w[i__2].r = q__1.r, w[i__2].i = q__1.i;
     }
-    i__1 = *n;
-    i__2 = *n - 1;
-    q__2.r = dl.r * v[i__2].r - dl.i * v[i__2].i, q__2.i = dl.r * v[i__2].i +
-             dl.i * v[i__2].r;
-    i__3 = *n;
-    q__3.r = dd.r * v[i__3].r - dd.i * v[i__3].i, q__3.i = dd.r * v[i__3].i +
-             dd.i * v[i__3].r;
+    i__1 = n;
+    i__2 = n - 1;
+    q__2.r = dl.r * v[i__2].r - dl.i * v[i__2].i, q__2.i = dl.r * v[i__2].i + dl.i * v[i__2].r;
+    i__3 = n;
+    q__3.r = dd.r * v[i__3].r - dd.i * v[i__3].i, q__3.i = dd.r * v[i__3].i + dd.i * v[i__3].r;
     q__1.r = q__2.r + q__3.r, q__1.i = q__2.i + q__3.i;
     w[i__1].r = q__1.r, w[i__1].i = q__1.i;
     return 0;

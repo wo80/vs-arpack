@@ -248,9 +248,7 @@ int dnsimp()
     /*                                                     */
     /* --------------------------------------------------- */
 
-    /* Computing 2nd power */
-    i__1 = ncv;
-    lworkl = i__1 * i__1 * 3 + ncv * 6;
+    lworkl = ncv * ncv * 3 + ncv * 6;
     tol = 0.;
     ido = 0;
     info = 0;
@@ -304,7 +302,7 @@ L10:
         /* product to workd(ipntr(2)).               */
         /* ----------------------------------------- */
 
-        dnsimp_av_(&nx, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
+        dnsimp_av_(nx, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
 
         /* --------------------------------------- */
         /* L O O P   B A C K to call DNAUPD again. */
@@ -382,8 +380,7 @@ L10:
         {
             first = true;
             nconv = iparam[4];
-            i__1 = nconv;
-            for (j = 1; j <= i__1; ++j)
+            for (j = 1; j <= nconv; ++j)
             {
                 /* ------------------------- */
                 /* Compute the residual norm */
@@ -404,7 +401,7 @@ L10:
                     /* Ritz value is real */
                     /* ------------------ */
 
-                    dnsimp_av_(&nx, &v[(j << 8) - 256], ax);
+                    dnsimp_av_(nx, &v[(j << 8) - 256], ax);
                     d__1 = -d[j - 1];
                     daxpy_(&n, &d__1, &v[(j << 8) - 256], &c__1, ax, &c__1);
                     d[j + 59] = dnrm2_(&n, ax, &c__1);
@@ -419,12 +416,12 @@ L10:
                     /* pair is computed.      */
                     /* ---------------------- */
 
-                    dnsimp_av_(&nx, &v[(j << 8) - 256], ax);
+                    dnsimp_av_(nx, &v[(j << 8) - 256], ax);
                     d__1 = -d[j - 1];
                     daxpy_(&n, &d__1, &v[(j << 8) - 256], &c__1, ax, &c__1);
                     daxpy_(&n, &d[j + 29], &v[(j + 1 << 8) - 256], &c__1, ax, &c__1);
                     d[j + 59] = dnrm2_(&n, ax, &c__1);
-                    dnsimp_av_(&nx, &v[(j + 1 << 8) - 256], ax);
+                    dnsimp_av_(nx, &v[(j + 1 << 8) - 256], ax);
                     d__1 = -d[j + 29];
                     daxpy_(&n, &d__1, &v[(j << 8) - 256], &c__1, ax, &c__1);
                     d__1 = -d[j - 1];
@@ -500,7 +497,7 @@ L10:
 /*     The matrix used is the 2 dimensional convection-diffusion */
 /*     operator discretized using central difference. */
 
-int dnsimp_av_(int *nx, double *v, double *w)
+int dnsimp_av_(const int nx, double *v, double *w)
 {
     /* System generated locals */
     int i__1;
@@ -536,33 +533,33 @@ int dnsimp_av_(int *nx, double *v, double *w)
     --v;
 
     /* Function Body */
-    h2 = 1. / (double) ((*nx + 1) * (*nx + 1));
+    h2 = 1. / (double) ((nx + 1) * (nx + 1));
 
     dnsimp_tv_(nx, &v[1], &w[1]);
     d__1 = -1. / h2;
-    daxpy_(nx, &d__1, &v[*nx + 1], &c__1, &w[1], &c__1);
+    daxpy_(&nx, &d__1, &v[nx + 1], &c__1, &w[1], &c__1);
 
-    i__1 = *nx - 1;
+    i__1 = nx - 1;
     for (j = 2; j <= i__1; ++j)
     {
-        lo = (j - 1) * *nx;
+        lo = (j - 1) * nx;
         dnsimp_tv_(nx, &v[lo + 1], &w[lo + 1]);
         d__1 = -1. / h2;
-        daxpy_(nx, &d__1, &v[lo - *nx + 1], &c__1, &w[lo + 1], &c__1);
+        daxpy_(&nx, &d__1, &v[lo - nx + 1], &c__1, &w[lo + 1], &c__1);
         d__1 = -1. / h2;
-        daxpy_(nx, &d__1, &v[lo + *nx + 1], &c__1, &w[lo + 1], &c__1);
+        daxpy_(&nx, &d__1, &v[lo + nx + 1], &c__1, &w[lo + 1], &c__1);
     }
 
-    lo = (*nx - 1) * *nx;
+    lo = (nx - 1) * nx;
     dnsimp_tv_(nx, &v[lo + 1], &w[lo + 1]);
     d__1 = -1. / h2;
-    daxpy_(nx, &d__1, &v[lo - *nx + 1], &c__1, &w[lo + 1], &c__1);
+    daxpy_(&nx, &d__1, &v[lo - nx + 1], &c__1, &w[lo + 1], &c__1);
 
     return 0;
 } /* av_ */
 
 /* ========================================================================= */
-int dnsimp_tv_(int *nx, double *x, double *y)
+int dnsimp_tv_(const int nx, double *x, double *y)
 {
     /* System generated locals */
     int i__1;
@@ -585,19 +582,19 @@ int dnsimp_tv_(int *nx, double *x, double *y)
     --x;
 
     /* Function Body */
-    h = 1. / (double) (*nx + 1);
+    h = 1. / (double) (nx + 1);
     h2 = h * h;
     dd = 4. / h2;
     dl = -1. / h2 - 50. / h;
     du = -1. / h2 + 50. / h;
 
     y[1] = dd * x[1] + du * x[2];
-    i__1 = *nx - 1;
+    i__1 = nx - 1;
     for (j = 2; j <= i__1; ++j)
     {
         y[j] = dl * x[j - 1] + dd * x[j] + du * x[j + 1];
     }
-    y[*nx] = dl * x[*nx - 1] + dd * x[*nx];
+    y[nx] = dl * x[nx - 1] + dd * x[nx];
     return 0;
 } /* tv_ */
 

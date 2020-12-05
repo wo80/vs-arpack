@@ -154,9 +154,7 @@ int sndrv3()
     /* generated in SNAUPD to start the Arnoldi iteration. */
     /* --------------------------------------------------- */
 
-    /* Computing 2nd power */
-    i__1 = ncv;
-    lworkl = i__1 * i__1 * 3 + ncv * 6;
+    lworkl = ncv * ncv * 3 + ncv * 6;
     tol = 0.f;
     ido = 0;
     info = 0;
@@ -206,7 +204,7 @@ L10:
         /* be returned to workd(ipntr(2)).        */
         /* -------------------------------------- */
 
-        sndrv3_av_(&n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
+        sndrv3_av_(n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
         spttrs_(&n, &c__1, md, me, &workd[ipntr[1] - 1], &n, &ierr);
         if (ierr != 0)
         {
@@ -232,7 +230,7 @@ L10:
         /* workd(ipntr(2)).                    */
         /* ----------------------------------- */
 
-        sndrv3_mv_(&n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
+        sndrv3_mv_(n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
 
         /* --------------------------------------- */
         /* L O O P   B A C K to call SNAUPD again. */
@@ -324,8 +322,8 @@ L10:
                     /* Ritz value is real */
                     /* ------------------ */
 
-                    sndrv3_av_(&n, &v[(j << 8) - 256], ax);
-                    sndrv3_mv_(&n, &v[(j << 8) - 256], mx);
+                    sndrv3_av_(n, &v[(j << 8) - 256], ax);
+                    sndrv3_mv_(n, &v[(j << 8) - 256], mx);
                     r__1 = -d[j - 1];
                     saxpy_(&n, &r__1, mx, &c__1, ax, &c__1);
                     d[j + 49] = snrm2_(&n, ax, &c__1);
@@ -340,20 +338,20 @@ L10:
                     /* pair is computed.      */
                     /* ---------------------- */
 
-                    sndrv3_av_(&n, &v[(j << 8) - 256], ax);
-                    sndrv3_mv_(&n, &v[(j << 8) - 256], mx);
+                    sndrv3_av_(n, &v[(j << 8) - 256], ax);
+                    sndrv3_mv_(n, &v[(j << 8) - 256], mx);
                     r__1 = -d[j - 1];
                     saxpy_(&n, &r__1, mx, &c__1, ax, &c__1);
-                    sndrv3_mv_(&n, &v[(j + 1 << 8) - 256], mx);
+                    sndrv3_mv_(n, &v[(j + 1 << 8) - 256], mx);
                     saxpy_(&n, &d[j + 24], mx, &c__1, ax, &c__1);
                     /* Computing 2nd power */
                     r__1 = snrm2_(&n, ax, &c__1);
                     d[j + 49] = r__1 * r__1;
-                    sndrv3_av_(&n, &v[(j + 1 << 8) - 256], ax);
-                    sndrv3_mv_(&n, &v[(j + 1 << 8) - 256], mx);
+                    sndrv3_av_(n, &v[(j + 1 << 8) - 256], ax);
+                    sndrv3_mv_(n, &v[(j + 1 << 8) - 256], mx);
                     r__1 = -d[j - 1];
                     saxpy_(&n, &r__1, mx, &c__1, ax, &c__1);
-                    sndrv3_mv_(&n, &v[(j << 8) - 256], mx);
+                    sndrv3_mv_(n, &v[(j << 8) - 256], mx);
                     r__1 = -d[j + 24];
                     saxpy_(&n, &r__1, mx, &c__1, ax, &c__1);
                     r__1 = snrm2_(&n, ax, &c__1);
@@ -425,7 +423,7 @@ L10:
 
 /*     matrix vector multiplication subroutine */
 
-int sndrv3_av_(int *n, float *v, float *w)
+int sndrv3_av_(const int n, float *v, float *w)
 {
     /* System generated locals */
     int i__1;
@@ -447,24 +445,24 @@ int sndrv3_av_(int *n, float *v, float *w)
     --v;
 
     /* Function Body */
-    h = 1.f / (float) (*n + 1);
+    h = 1.f / (float) (n + 1);
     s = 5.f;
     dd = 2.f / h;
     dl = -1.f / h - s;
     du = -1.f / h + s;
 
     w[1] = dd * v[1] + du * v[2];
-    i__1 = *n - 1;
+    i__1 = n - 1;
     for (j = 2; j <= i__1; ++j)
     {
         w[j] = dl * v[j - 1] + dd * v[j] + du * v[j + 1];
     }
-    w[*n] = dl * v[*n - 1] + dd * v[*n];
+    w[n] = dl * v[n - 1] + dd * v[n];
     return 0;
 } /* av_ */
 
 /* ------------------------------------------------------------------------ */
-int sndrv3_mv_(int *n, float *v, float *w)
+int sndrv3_mv_(const int n, float *v, float *w)
 {
     /* System generated locals */
     int i__1;
@@ -483,15 +481,15 @@ int sndrv3_mv_(int *n, float *v, float *w)
 
     /* Function Body */
     w[1] = v[1] * 4.f + v[2] * 1.f;
-    i__1 = *n - 1;
+    i__1 = n - 1;
     for (j = 2; j <= i__1; ++j)
     {
         w[j] = v[j - 1] * 1.f + v[j] * 4.f + v[j + 1] * 1.f;
     }
-    w[*n] = v[*n - 1] * 1.f + v[*n] * 4.f;
+    w[n] = v[n - 1] * 1.f + v[n] * 4.f;
 
-    h = 1.f / (float) (*n + 1);
-    sscal_(n, &h, &w[1], &c__1);
+    h = 1.f / (float) (n + 1);
+    sscal_(&n, &h, &w[1], &c__1);
     return 0;
 } /* mv_ */
 

@@ -159,8 +159,7 @@ int ssdrv2()
     /* --------------------------------------------------- */
 
     h2 = 1.f / (float) ((n + 1) * (n + 1));
-    i__1 = n;
-    for (j = 1; j <= i__1; ++j)
+    for (j = 1; j <= n; ++j)
     {
         ad[j - 1] = 2.f / h2 - sigma;
         adl[j - 1] = -1.f / h2;
@@ -202,7 +201,7 @@ L10:
 
         scopy_(&n, &workd[ipntr[0] - 1], &c__1, &workd[ipntr[1] - 1], &c__1);
 
-        sgttrs_("Notranspose", &n, &c__1, adl, ad, adu, adu2, ipiv, &workd[ipntr[1] - 1], &n, &ierr);
+        sgttrs_("N", &n, &c__1, adl, ad, adu, adu2, ipiv, &workd[ipntr[1] - 1], &n, &ierr);
         if (ierr != 0)
         {
             printf(" \n");
@@ -249,7 +248,7 @@ L10:
 
         rvec = true;
 
-        sseupd_(&rvec, "All", select, d, v, &c__256, &sigma, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, workd, workl, &lworkl, &ierr);
+        sseupd_(&rvec, "A", select, d, v, &c__256, &sigma, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, workd, workl, &lworkl, &ierr);
 
         /* -------------------------------------------- */
         /* Eigenvalues are returned in the first column */
@@ -277,8 +276,7 @@ L10:
         else
         {
             nconv = iparam[4];
-            i__1 = nconv;
-            for (j = 1; j <= i__1; ++j)
+            for (j = 1; j <= nconv; ++j)
             {
                 /* ------------------------- */
                 /* Compute the residual norm */
@@ -293,7 +291,7 @@ L10:
                 /* tolerance)                */
                 /* ------------------------- */
 
-                ssdrv2_av_(&n, &v[(j << 8) - 256], ax);
+                ssdrv2_av_(n, &v[(j << 8) - 256], ax);
                 r__1 = -d[j - 1];
                 saxpy_(&n, &r__1, &v[(j << 8) - 256], &c__1, ax, &c__1);
                 d[j + 24] = snrm2_(&n, ax, &c__1);
@@ -358,7 +356,7 @@ L10:
 /*     where the matrix is the 1 dimensional discrete Laplacian on */
 /*     the interval [0,1] with zero Dirichlet boundary condition. */
 
-int ssdrv2_av_(int *n, float *v, float *w)
+int ssdrv2_av_(const int n, float *v, float *w)
 {
     /* System generated locals */
     int i__1;
@@ -374,19 +372,19 @@ int ssdrv2_av_(int *n, float *v, float *w)
 
     /* Function Body */
     w[1] = v[1] * 2.f - v[2];
-    i__1 = *n - 1;
+    i__1 = n - 1;
     for (j = 2; j <= i__1; ++j)
     {
         w[j] = -v[j - 1] + v[j] * 2.f - v[j + 1];
     }
-    j = *n;
+    j = n;
     w[j] = -v[j - 1] + v[j] * 2.f;
 
     /*     Scale the vector w by (1 / h^2). */
 
-    h2 = 1.f / (float) ((*n + 1) * (*n + 1));
+    h2 = 1.f / (float) ((n + 1) * (n + 1));
     r__1 = 1.f / h2;
-    sscal_(n, &r__1, &w[1], &c__1);
+    sscal_(&n, &r__1, &w[1], &c__1);
     return 0;
 } /* av_ */
 

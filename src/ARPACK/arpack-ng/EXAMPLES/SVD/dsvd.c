@@ -326,8 +326,8 @@ L10:
         /* workd(ipntr(2)).                      */
         /* ------------------------------------- */
 
-        dsvd_av_(&m, &n, &workd[ipntr[0] - 1], ax);
-        dsvd_atv_(&m, &n, ax, &workd[ipntr[1] - 1]);
+        dsvd_av_(m, n, &workd[ipntr[0] - 1], ax);
+        dsvd_atv_(m, n, ax, &workd[ipntr[1] - 1]);
 
         /* --------------------------------------- */
         /* L O O P   B A C K to call DSAUPD again. */
@@ -370,7 +370,7 @@ L10:
 
         rvec = true;
 
-        dseupd_(&rvec, "All", select, s, v, &c__250, &sigma, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__250, iparam, ipntr, workd, workl, &lworkl, &ierr);
+        dseupd_(&rvec, "A", select, s, v, &c__250, &sigma, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__250, iparam, ipntr, workd, workl, &lworkl, &ierr);
 
         /* --------------------------------------------- */
         /* Singular values are returned in the first     */
@@ -396,8 +396,7 @@ L10:
         else
         {
             nconv = iparam[4];
-            i__1 = nconv;
-            for (j = 1; j <= i__1; ++j)
+            for (j = 1; j <= nconv; ++j)
             {
                 s[j - 1] = sqrt(s[j - 1]);
 
@@ -411,7 +410,7 @@ L10:
                 /* divide by norm(Av) instead. */
                 /* --------------------------- */
 
-                dsvd_av_(&m, &n, &v[j * 250 - 250], ax);
+                dsvd_av_(m, n, &v[j * 250 - 250], ax);
                 dcopy_(&m, ax, &c__1, &u[j * 500 - 500], &c__1);
                 temp = 1. / dnrm2_(&m, &u[j * 500 - 500], &c__1);
                 dscal_(&m, &temp, &u[j * 500 - 500], &c__1);
@@ -508,7 +507,7 @@ L10:
 
 /* ------------------------------------------------------------------- */
 
-int dsvd_av_(int *m, int *n, double *x, double *w)
+int dsvd_av_(const int m, const int n, double *x, double *w)
 {
     /* System generated locals */
     int i__1, i__2;
@@ -525,16 +524,16 @@ int dsvd_av_(int *m, int *n, double *x, double *w)
     --x;
 
     /* Function Body */
-    h = 1. / (double) (*m + 1);
-    k = 1. / (double) (*n + 1);
-    i__1 = *m;
+    h = 1. / (double) (m + 1);
+    k = 1. / (double) (n + 1);
+    i__1 = m;
     for (i = 1; i <= i__1; ++i)
     {
         w[i] = 0.;
     }
     t = 0.;
 
-    i__1 = *n;
+    i__1 = n;
     for (j = 1; j <= i__1; ++j)
     {
         t += k;
@@ -546,7 +545,7 @@ int dsvd_av_(int *m, int *n, double *x, double *w)
             w[i] += k * s * (t - 1.) * x[j];
 
         }
-        i__2 = *m;
+        i__2 = m;
         for (i = j + 1; i <= i__2; ++i)
         {
             s += h;
@@ -560,7 +559,7 @@ int dsvd_av_(int *m, int *n, double *x, double *w)
 
 /* ------------------------------------------------------------------- */
 
-int dsvd_atv_(int *m, int *n, double *w, double *y)
+int dsvd_atv_(const int m, const int n, double *w, double *y)
 {
     /* System generated locals */
     int i__1, i__2;
@@ -577,16 +576,16 @@ int dsvd_atv_(int *m, int *n, double *w, double *y)
     --y;
 
     /* Function Body */
-    h = 1. / (double) (*m + 1);
-    k = 1. / (double) (*n + 1);
-    i__1 = *n;
+    h = 1. / (double) (m + 1);
+    k = 1. / (double) (n + 1);
+    i__1 = n;
     for (i = 1; i <= i__1; ++i)
     {
         y[i] = 0.;
     }
     t = 0.;
 
-    i__1 = *n;
+    i__1 = n;
     for (j = 1; j <= i__1; ++j)
     {
         t += k;
@@ -598,7 +597,7 @@ int dsvd_atv_(int *m, int *n, double *w, double *y)
             y[j] += k * s * (t - 1.) * w[i];
 
         }
-        i__2 = *m;
+        i__2 = m;
         for (i = j + 1; i <= i__2; ++i)
         {
             s += h;

@@ -193,9 +193,7 @@ int dndrv4()
     /* generated in DNAUPD to start the Arnoldi iteration. */
     /* --------------------------------------------------- */
 
-    /* Computing 2nd power */
-    i__1 = ncv;
-    lworkl = i__1 * i__1 * 3 + ncv * 6;
+    lworkl = ncv * ncv * 3 + ncv * 6;
     tol = 0.;
     ido = 0;
     info = 0;
@@ -247,7 +245,7 @@ L20:
         /* workd(ipntr(2)).                          */
         /* ----------------------------------------- */
 
-        dndrv4_mv_(&n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
+        dndrv4_mv_(n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
         dgttrs_("N", &n, &c__1, dl, dd, du, du2, ipiv, &workd[ipntr[1] - 1], &n, &ierr);
         if (ierr != 0)
         {
@@ -299,7 +297,7 @@ L20:
         /* and returns the result to workd(ipntr(2)).  */
         /* ------------------------------------------- */
 
-        dndrv4_mv_(&n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
+        dndrv4_mv_(n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
 
         /* --------------------------------------- */
         /* L O O P   B A C K to call DNAUPD again. */
@@ -369,8 +367,7 @@ L20:
         {
             first = true;
             nconv = iparam[4];
-            i__1 = nconv;
-            for (j = 1; j <= i__1; ++j)
+            for (j = 1; j <= nconv; ++j)
             {
                 /* ------------------------- */
                 /* Compute the residual norm */
@@ -391,8 +388,8 @@ L20:
                     /* Ritz value is real */
                     /* ------------------ */
 
-                    dndrv4_av_(&n, &v[(j << 8) - 256], ax);
-                    dndrv4_mv_(&n, &v[(j << 8) - 256], mx);
+                    dndrv4_av_(n, &v[(j << 8) - 256], ax);
+                    dndrv4_mv_(n, &v[(j << 8) - 256], mx);
                     d__1 = -d[j - 1];
                     daxpy_(&n, &d__1, mx, &c__1, ax, &c__1);
                     d[j + 49] = dnrm2_(&n, ax, &c__1);
@@ -407,18 +404,18 @@ L20:
                     /* pair is computed.      */
                     /* ---------------------- */
 
-                    dndrv4_av_(&n, &v[(j << 8) - 256], ax);
-                    dndrv4_mv_(&n, &v[(j << 8) - 256], mx);
+                    dndrv4_av_(n, &v[(j << 8) - 256], ax);
+                    dndrv4_mv_(n, &v[(j << 8) - 256], mx);
                     d__1 = -d[j - 1];
                     daxpy_(&n, &d__1, mx, &c__1, ax, &c__1);
-                    dndrv4_mv_(&n, &v[(j + 1 << 8) - 256], mx);
+                    dndrv4_mv_(n, &v[(j + 1 << 8) - 256], mx);
                     daxpy_(&n, &d[j + 24], mx, &c__1, ax, &c__1);
                     d[j + 49] = dnrm2_(&n, ax, &c__1);
-                    dndrv4_av_(&n, &v[(j + 1 << 8) - 256], ax);
-                    dndrv4_mv_(&n, &v[(j + 1 << 8) - 256], mx);
+                    dndrv4_av_(n, &v[(j + 1 << 8) - 256], ax);
+                    dndrv4_mv_(n, &v[(j + 1 << 8) - 256], mx);
                     d__1 = -d[j - 1];
                     daxpy_(&n, &d__1, mx, &c__1, ax, &c__1);
-                    dndrv4_mv_(&n, &v[(j << 8) - 256], mx);
+                    dndrv4_mv_(n, &v[(j << 8) - 256], mx);
                     d__1 = -d[j + 24];
                     daxpy_(&n, &d__1, mx, &c__1, ax, &c__1);
                     d__1 = dnrm2_(&n, ax, &c__1);
@@ -490,7 +487,7 @@ L20:
 
 /*     matrix vector multiplication subroutine */
 
-int dndrv4_mv_(int *n, double *v, double *w)
+int dndrv4_mv_(const int n, double *v, double *w)
 {
     /* System generated locals */
     int i__1;
@@ -509,20 +506,20 @@ int dndrv4_mv_(int *n, double *v, double *w)
 
     /* Function Body */
     w[1] = (v[1] * 4. + v[2] * 1.) / 6.;
-    i__1 = *n - 1;
+    i__1 = n - 1;
     for (j = 2; j <= i__1; ++j)
     {
         w[j] = (v[j - 1] * 1. + v[j] * 4. + v[j + 1] * 1.) / 6.;
     }
-    w[*n] = (v[*n - 1] * 1. + v[*n] * 4.) / 6.;
+    w[n] = (v[n - 1] * 1. + v[n] * 4.) / 6.;
 
-    h = 1. / (double) (*n + 1);
-    dscal_(n, &h, &w[1], &c__1);
+    h = 1. / (double) (n + 1);
+    dscal_(&n, &h, &w[1], &c__1);
     return 0;
 } /* mv_ */
 
 /* ------------------------------------------------------------------ */
-int dndrv4_av_(int *n, double *v, double *w)
+int dndrv4_av_(const int n, double *v, double *w)
 {
     /* System generated locals */
     int i__1;
@@ -545,19 +542,19 @@ int dndrv4_av_(int *n, double *v, double *w)
     --v;
 
     /* Function Body */
-    h = 1. / (double) (*n + 1);
+    h = 1. / (double) (n + 1);
     s = convct_1.rho / 2.;
     dd = 2. / h;
     dl = -1. / h - s;
     du = -1. / h + s;
 
     w[1] = dd * v[1] + du * v[2];
-    i__1 = *n - 1;
+    i__1 = n - 1;
     for (j = 2; j <= i__1; ++j)
     {
         w[j] = dl * v[j - 1] + dd * v[j] + du * v[j + 1];
     }
-    w[*n] = dl * v[*n - 1] + dd * v[*n];
+    w[n] = dl * v[n - 1] + dd * v[n];
     return 0;
 } /* av_ */
 

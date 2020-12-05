@@ -251,9 +251,7 @@ int znsimp()
     /*                                                     */
     /* --------------------------------------------------- */
 
-    /* Computing 2nd power */
-    i__1 = ncv;
-    lworkl = i__1 * i__1 * 3 + ncv * 5;
+    lworkl = ncv * ncv * 3 + ncv * 5;
     tol = 0.f;
     ido = 0;
     info = 0;
@@ -309,7 +307,7 @@ L10:
         /* array workd(ipntr(2)).                    */
         /* ----------------------------------------- */
 
-        znsimp_av_(&nx, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
+        znsimp_av_(nx, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
 
         /* --------------------------------------- */
         /* L O O P   B A C K to call ZNAUPD  again. */
@@ -384,8 +382,7 @@ L10:
         else
         {
             nconv = iparam[4];
-            i__1 = nconv;
-            for (j = 1; j <= i__1; ++j)
+            for (j = 1; j <= nconv; ++j)
             {
                 /* ------------------------- */
                 /* Compute the residual norm */
@@ -400,7 +397,7 @@ L10:
                 /* tolerance)                */
                 /* ------------------------- */
 
-                znsimp_av_(&nx, &v[(j << 8) - 256], ax);
+                znsimp_av_(nx, &v[(j << 8) - 256], ax);
                 i__2 = j - 1;
                 z__1.r = -d[i__2].r, z__1.i = -d[i__2].i;
                 zaxpy_(&n, &z__1, &v[(j << 8) - 256], &c__1, ax, &c__1);
@@ -466,7 +463,7 @@ L10:
 /*     The matrix used is the convection-diffusion operator */
 /*     discretized using centered difference. */
 
-int znsimp_av_(int *nx, zomplex *v, zomplex *w)
+int znsimp_av_(const int nx, zomplex *v, zomplex *w)
 {
     /* System generated locals */
     int i__1;
@@ -501,7 +498,7 @@ int znsimp_av_(int *nx, zomplex *v, zomplex *w)
     --v;
 
     /* Function Body */
-    i__1 = (*nx + 1) * (*nx + 1);
+    i__1 = (nx + 1) * (nx + 1);
     z__2.r = (double) i__1, z__2.i = 0.;
     z_div(&z__1, &c_b137, &z__2);
     h2.r = z__1.r, h2.i = z__1.i;
@@ -509,32 +506,32 @@ int znsimp_av_(int *nx, zomplex *v, zomplex *w)
     znsimp_tv_(nx, &v[1], &w[1]);
     z__2.r = -1., z__2.i = -0.;
     z_div(&z__1, &z__2, &h2);
-    zaxpy_(nx, &z__1, &v[*nx + 1], &c__1, &w[1], &c__1);
+    zaxpy_(&nx, &z__1, &v[nx + 1], &c__1, &w[1], &c__1);
 
-    i__1 = *nx - 1;
+    i__1 = nx - 1;
     for (j = 2; j <= i__1; ++j)
     {
-        lo = (j - 1) * *nx;
+        lo = (j - 1) * nx;
         znsimp_tv_(nx, &v[lo + 1], &w[lo + 1]);
         z__2.r = -1., z__2.i = -0.;
         z_div(&z__1, &z__2, &h2);
-        zaxpy_(nx, &z__1, &v[lo - *nx + 1], &c__1, &w[lo + 1], &c__1);
+        zaxpy_(&nx, &z__1, &v[lo - nx + 1], &c__1, &w[lo + 1], &c__1);
         z__2.r = -1., z__2.i = -0.;
         z_div(&z__1, &z__2, &h2);
-        zaxpy_(nx, &z__1, &v[lo + *nx + 1], &c__1, &w[lo + 1], &c__1);
+        zaxpy_(&nx, &z__1, &v[lo + nx + 1], &c__1, &w[lo + 1], &c__1);
     }
 
-    lo = (*nx - 1) * *nx;
+    lo = (nx - 1) * nx;
     znsimp_tv_(nx, &v[lo + 1], &w[lo + 1]);
     z__2.r = -1., z__2.i = -0.;
     z_div(&z__1, &z__2, &h2);
-    zaxpy_(nx, &z__1, &v[lo - *nx + 1], &c__1, &w[lo + 1], &c__1);
+    zaxpy_(&nx, &z__1, &v[lo - nx + 1], &c__1, &w[lo + 1], &c__1);
 
     return 0;
 } /* av_ */
 
 /* ========================================================================= */
-int znsimp_tv_(int *nx, zomplex *x, zomplex *y)
+int znsimp_tv_(const int nx, zomplex *x, zomplex *y)
 {
     /* System generated locals */
     int i__1, i__2, i__3, i__4, i__5;
@@ -557,12 +554,11 @@ int znsimp_tv_(int *nx, zomplex *x, zomplex *y)
     --x;
 
     /* Function Body */
-    i__1 = *nx + 1;
+    i__1 = nx + 1;
     z__2.r = (double) i__1, z__2.i = 0.;
     z_div(&z__1, &c_b137, &z__2);
     h.r = z__1.r, h.i = z__1.i;
-    z__1.r = h.r * h.r - h.i * h.i, z__1.i = h.r * h.i + h.i *
-             h.r;
+    z__1.r = h.r * h.r - h.i * h.i, z__1.i = h.r * h.i + h.i * h.r;
     h2.r = z__1.r, h2.i = z__1.i;
     z_div(&z__1, &c_b151_dx, &h2);
     dd.r = z__1.r, dd.i = z__1.i;
@@ -579,36 +575,29 @@ int znsimp_tv_(int *nx, zomplex *x, zomplex *y)
     z__1.r = z__2.r + z__4.r, z__1.i = z__2.i + z__4.i;
     du.r = z__1.r, du.i = z__1.i;
 
-    z__2.r = dd.r * x[1].r - dd.i * x[1].i, z__2.i = dd.r * x[1].i + dd.i * x[
-                 1].r;
-    z__3.r = du.r * x[2].r - du.i * x[2].i, z__3.i = du.r * x[2].i + du.i * x[
-                 2].r;
+    z__2.r = dd.r * x[1].r - dd.i * x[1].i, z__2.i = dd.r * x[1].i + dd.i * x[1].r;
+    z__3.r = du.r * x[2].r - du.i * x[2].i, z__3.i = du.r * x[2].i + du.i * x[2].r;
     z__1.r = z__2.r + z__3.r, z__1.i = z__2.i + z__3.i;
     y[1].r = z__1.r, y[1].i = z__1.i;
-    i__1 = *nx - 1;
+    i__1 = nx - 1;
     for (j = 2; j <= i__1; ++j)
     {
         i__2 = j;
         i__3 = j - 1;
-        z__3.r = dl.r * x[i__3].r - dl.i * x[i__3].i, z__3.i = dl.r * x[i__3]
-                 .i + dl.i * x[i__3].r;
+        z__3.r = dl.r * x[i__3].r - dl.i * x[i__3].i, z__3.i = dl.r * x[i__3].i + dl.i * x[i__3].r;
         i__4 = j;
-        z__4.r = dd.r * x[i__4].r - dd.i * x[i__4].i, z__4.i = dd.r * x[i__4]
-                 .i + dd.i * x[i__4].r;
+        z__4.r = dd.r * x[i__4].r - dd.i * x[i__4].i, z__4.i = dd.r * x[i__4].i + dd.i * x[i__4].r;
         z__2.r = z__3.r + z__4.r, z__2.i = z__3.i + z__4.i;
         i__5 = j + 1;
-        z__5.r = du.r * x[i__5].r - du.i * x[i__5].i, z__5.i = du.r * x[i__5]
-                 .i + du.i * x[i__5].r;
+        z__5.r = du.r * x[i__5].r - du.i * x[i__5].i, z__5.i = du.r * x[i__5].i + du.i * x[i__5].r;
         z__1.r = z__2.r + z__5.r, z__1.i = z__2.i + z__5.i;
         y[i__2].r = z__1.r, y[i__2].i = z__1.i;
     }
-    i__1 = *nx;
-    i__2 = *nx - 1;
-    z__2.r = dl.r * x[i__2].r - dl.i * x[i__2].i, z__2.i = dl.r * x[i__2].i +
-             dl.i * x[i__2].r;
-    i__3 = *nx;
-    z__3.r = dd.r * x[i__3].r - dd.i * x[i__3].i, z__3.i = dd.r * x[i__3].i +
-             dd.i * x[i__3].r;
+    i__1 = nx;
+    i__2 = nx - 1;
+    z__2.r = dl.r * x[i__2].r - dl.i * x[i__2].i, z__2.i = dl.r * x[i__2].i + dl.i * x[i__2].r;
+    i__3 = nx;
+    z__3.r = dd.r * x[i__3].r - dd.i * x[i__3].i, z__3.i = dd.r * x[i__3].i + dd.i * x[i__3].r;
     z__1.r = z__2.r + z__3.r, z__1.i = z__2.i + z__3.i;
     y[i__1].r = z__1.r, y[i__1].i = z__1.i;
     return 0;

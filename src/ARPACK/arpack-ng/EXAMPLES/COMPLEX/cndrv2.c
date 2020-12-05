@@ -148,8 +148,7 @@ int cndrv2()
     q__2.r = (float) i__1, q__2.i = 0.f;
     c_div(&q__1, &c_one, &q__2);
     h.r = q__1.r, h.i = q__1.i;
-    q__1.r = h.r * h.r - h.i * h.i, q__1.i = h.r * h.i + h.i *
-             h.r;
+    q__1.r = h.r * h.r - h.i * h.i, q__1.i = h.r * h.i + h.i * h.r;
     h2.r = q__1.r, h2.i = q__1.i;
     c_div(&q__1, &convct_1.rho, &c_b3);
     s.r = q__1.r, s.i = q__1.i;
@@ -202,8 +201,7 @@ int cndrv2()
     /* --------------------------------------------------- */
 
     /* Computing 2nd power */
-    i__1 = ncv;
-    lworkl = i__1 * i__1 * 3 + ncv * 5;
+    lworkl = ncv * ncv * 3 + ncv * 5;
     tol = 0.f;
     ido = 0;
     info = 0;
@@ -328,8 +326,7 @@ L20:
         else
         {
             nconv = iparam[4];
-            i__1 = nconv;
-            for (j = 1; j <= i__1; ++j)
+            for (j = 1; j <= nconv; ++j)
             {
                 /* ------------------------- */
                 /* Compute the residual norm */
@@ -344,7 +341,7 @@ L20:
                 /* tolerance)                */
                 /* ------------------------- */
 
-                cndrv2_av_(&n, &v[(j << 8) - 256], ax);
+                cndrv2_av_(n, &v[(j << 8) - 256], ax);
                 i__2 = j - 1;
                 q__1.r = -d[i__2].r, q__1.i = -d[i__2].i;
                 caxpy_(&n, &q__1, &v[(j << 8) - 256], &c__1, ax, &c__1);
@@ -413,7 +410,7 @@ L20:
 
 /*     matrix vector multiplication subroutine */
 
-int cndrv2_av_(int *n, complex *v, complex *w)
+int cndrv2_av_(const int n, complex *v, complex *w)
 {
     /* System generated locals */
     int i__1, i__2, i__3, i__4, i__5;
@@ -432,12 +429,11 @@ int cndrv2_av_(int *n, complex *v, complex *w)
     --v;
 
     /* Function Body */
-    i__1 = *n + 1;
+    i__1 = n + 1;
     q__2.r = (float) i__1, q__2.i = 0.f;
     c_div(&q__1, &c_one, &q__2);
     h.r = q__1.r, h.i = q__1.i;
-    q__1.r = h.r * h.r - h.i * h.i, q__1.i = h.r * h.i + h.i *
-             h.r;
+    q__1.r = h.r * h.r - h.i * h.i, q__1.i = h.r * h.i + h.i * h.r;
     h2.r = q__1.r, h2.i = q__1.i;
     c_div(&q__1, &convct_1.rho, &c_b3);
     s.r = q__1.r, s.i = q__1.i;
@@ -454,36 +450,29 @@ int cndrv2_av_(int *n, complex *v, complex *w)
     q__1.r = q__2.r + q__4.r, q__1.i = q__2.i + q__4.i;
     du.r = q__1.r, du.i = q__1.i;
 
-    q__2.r = dd.r * v[1].r - dd.i * v[1].i, q__2.i = dd.r * v[1].i + dd.i * v[
-                 1].r;
-    q__3.r = du.r * v[2].r - du.i * v[2].i, q__3.i = du.r * v[2].i + du.i * v[
-                 2].r;
+    q__2.r = dd.r * v[1].r - dd.i * v[1].i, q__2.i = dd.r * v[1].i + dd.i * v[1].r;
+    q__3.r = du.r * v[2].r - du.i * v[2].i, q__3.i = du.r * v[2].i + du.i * v[2].r;
     q__1.r = q__2.r + q__3.r, q__1.i = q__2.i + q__3.i;
     w[1].r = q__1.r, w[1].i = q__1.i;
-    i__1 = *n - 1;
+    i__1 = n - 1;
     for (j = 2; j <= i__1; ++j)
     {
         i__2 = j;
         i__3 = j - 1;
-        q__3.r = dl.r * v[i__3].r - dl.i * v[i__3].i, q__3.i = dl.r * v[i__3]
-                 .i + dl.i * v[i__3].r;
+        q__3.r = dl.r * v[i__3].r - dl.i * v[i__3].i, q__3.i = dl.r * v[i__3].i + dl.i * v[i__3].r;
         i__4 = j;
-        q__4.r = dd.r * v[i__4].r - dd.i * v[i__4].i, q__4.i = dd.r * v[i__4]
-                 .i + dd.i * v[i__4].r;
+        q__4.r = dd.r * v[i__4].r - dd.i * v[i__4].i, q__4.i = dd.r * v[i__4].i + dd.i * v[i__4].r;
         q__2.r = q__3.r + q__4.r, q__2.i = q__3.i + q__4.i;
         i__5 = j + 1;
-        q__5.r = du.r * v[i__5].r - du.i * v[i__5].i, q__5.i = du.r * v[i__5]
-                 .i + du.i * v[i__5].r;
+        q__5.r = du.r * v[i__5].r - du.i * v[i__5].i, q__5.i = du.r * v[i__5].i + du.i * v[i__5].r;
         q__1.r = q__2.r + q__5.r, q__1.i = q__2.i + q__5.i;
         w[i__2].r = q__1.r, w[i__2].i = q__1.i;
     }
-    i__1 = *n;
-    i__2 = *n - 1;
-    q__2.r = dl.r * v[i__2].r - dl.i * v[i__2].i, q__2.i = dl.r * v[i__2].i +
-             dl.i * v[i__2].r;
-    i__3 = *n;
-    q__3.r = dd.r * v[i__3].r - dd.i * v[i__3].i, q__3.i = dd.r * v[i__3].i +
-             dd.i * v[i__3].r;
+    i__1 = n;
+    i__2 = n - 1;
+    q__2.r = dl.r * v[i__2].r - dl.i * v[i__2].i, q__2.i = dl.r * v[i__2].i + dl.i * v[i__2].r;
+    i__3 = n;
+    q__3.r = dd.r * v[i__3].r - dd.i * v[i__3].i, q__3.i = dd.r * v[i__3].i + dd.i * v[i__3].r;
     q__1.r = q__2.r + q__3.r, q__1.i = q__2.i + q__3.i;
     w[i__1].r = q__1.r, w[i__1].i = q__1.i;
     return 0;

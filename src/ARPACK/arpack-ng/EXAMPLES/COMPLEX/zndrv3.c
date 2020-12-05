@@ -175,8 +175,7 @@ int zndrv3()
     /* --------------------------------------------------- */
 
     /* Computing 2nd power */
-    i__1 = ncv;
-    lworkl = i__1 * i__1 * 3 + ncv * 5;
+    lworkl = ncv * ncv * 3 + ncv * 5;
     tol = 0.f;
     ido = 0;
     info = 0;
@@ -226,7 +225,7 @@ L10:
         /* be returned to workd(ipntr(2)).        */
         /* -------------------------------------- */
 
-        zndrv3_av_(&n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
+        zndrv3_av_(n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
         zgttrs_("N", &n, &c__1, dl, dd, du, du2, ipiv, &workd[ipntr[1] - 1], &n, &ierr);
         if (ierr != 0)
         {
@@ -252,7 +251,7 @@ L10:
         /* workd(ipntr(2)).                    */
         /* ----------------------------------- */
 
-        zndrv3_mv_(&n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
+        zndrv3_mv_(n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
 
         /* --------------------------------------- */
         /* L O O P   B A C K to call ZNAUPD  again. */
@@ -321,8 +320,7 @@ L10:
         else
         {
             nconv = iparam[4];
-            i__1 = nconv;
-            for (j = 1; j <= i__1; ++j)
+            for (j = 1; j <= nconv; ++j)
             {
                 /* ------------------------- */
                 /* Compute the residual norm */
@@ -337,8 +335,8 @@ L10:
                 /* tolerance)                */
                 /* ------------------------- */
 
-                zndrv3_av_(&n, &v[(j << 8) - 256], ax);
-                zndrv3_mv_(&n, &v[(j << 8) - 256], mx);
+                zndrv3_av_(n, &v[(j << 8) - 256], ax);
+                zndrv3_mv_(n, &v[(j << 8) - 256], mx);
                 i__2 = j - 1;
                 z__1.r = -d[i__2].r, z__1.i = -d[i__2].i;
                 zaxpy_(&n, &z__1, mx, &c__1, ax, &c__1);
@@ -403,7 +401,7 @@ L10:
 
 /*     matrix vector multiplication subroutine */
 
-int zndrv3_av_(int *n, zomplex *v, zomplex *w)
+int zndrv3_av_(const int n, zomplex *v, zomplex *w)
 {
     /* System generated locals */
     int i__1, i__2, i__3, i__4, i__5;
@@ -426,7 +424,7 @@ int zndrv3_av_(int *n, zomplex *v, zomplex *w)
     --v;
 
     /* Function Body */
-    i__1 = *n + 1;
+    i__1 = n + 1;
     z__2.r = (double) i__1, z__2.i = 0.;
     z_div(&z__1, &c_b137, &z__2);
     h.r = z__1.r, h.i = z__1.i;
@@ -443,43 +441,36 @@ int zndrv3_av_(int *n, zomplex *v, zomplex *w)
     z__1.r = z__2.r + s.r, z__1.i = z__2.i + s.i;
     du.r = z__1.r, du.i = z__1.i;
 
-    z__2.r = dd.r * v[1].r - dd.i * v[1].i, z__2.i = dd.r * v[1].i + dd.i * v[
-                 1].r;
-    z__3.r = du.r * v[2].r - du.i * v[2].i, z__3.i = du.r * v[2].i + du.i * v[
-                 2].r;
+    z__2.r = dd.r * v[1].r - dd.i * v[1].i, z__2.i = dd.r * v[1].i + dd.i * v[1].r;
+    z__3.r = du.r * v[2].r - du.i * v[2].i, z__3.i = du.r * v[2].i + du.i * v[2].r;
     z__1.r = z__2.r + z__3.r, z__1.i = z__2.i + z__3.i;
     w[1].r = z__1.r, w[1].i = z__1.i;
-    i__1 = *n - 1;
+    i__1 = n - 1;
     for (j = 2; j <= i__1; ++j)
     {
         i__2 = j;
         i__3 = j - 1;
-        z__3.r = dl.r * v[i__3].r - dl.i * v[i__3].i, z__3.i = dl.r * v[i__3]
-                 .i + dl.i * v[i__3].r;
+        z__3.r = dl.r * v[i__3].r - dl.i * v[i__3].i, z__3.i = dl.r * v[i__3].i + dl.i * v[i__3].r;
         i__4 = j;
-        z__4.r = dd.r * v[i__4].r - dd.i * v[i__4].i, z__4.i = dd.r * v[i__4]
-                 .i + dd.i * v[i__4].r;
+        z__4.r = dd.r * v[i__4].r - dd.i * v[i__4].i, z__4.i = dd.r * v[i__4].i + dd.i * v[i__4].r;
         z__2.r = z__3.r + z__4.r, z__2.i = z__3.i + z__4.i;
         i__5 = j + 1;
-        z__5.r = du.r * v[i__5].r - du.i * v[i__5].i, z__5.i = du.r * v[i__5]
-                 .i + du.i * v[i__5].r;
+        z__5.r = du.r * v[i__5].r - du.i * v[i__5].i, z__5.i = du.r * v[i__5].i + du.i * v[i__5].r;
         z__1.r = z__2.r + z__5.r, z__1.i = z__2.i + z__5.i;
         w[i__2].r = z__1.r, w[i__2].i = z__1.i;
     }
-    i__1 = *n;
-    i__2 = *n - 1;
-    z__2.r = dl.r * v[i__2].r - dl.i * v[i__2].i, z__2.i = dl.r * v[i__2].i +
-             dl.i * v[i__2].r;
-    i__3 = *n;
-    z__3.r = dd.r * v[i__3].r - dd.i * v[i__3].i, z__3.i = dd.r * v[i__3].i +
-             dd.i * v[i__3].r;
+    i__1 = n;
+    i__2 = n - 1;
+    z__2.r = dl.r * v[i__2].r - dl.i * v[i__2].i, z__2.i = dl.r * v[i__2].i + dl.i * v[i__2].r;
+    i__3 = n;
+    z__3.r = dd.r * v[i__3].r - dd.i * v[i__3].i, z__3.i = dd.r * v[i__3].i + dd.i * v[i__3].r;
     z__1.r = z__2.r + z__3.r, z__1.i = z__2.i + z__3.i;
     w[i__1].r = z__1.r, w[i__1].i = z__1.i;
     return 0;
 } /* av_ */
 
 /* ------------------------------------------------------------------------ */
-int zndrv3_mv_(int *n, zomplex *v, zomplex *w)
+int zndrv3_mv_(const int n, zomplex *v, zomplex *w)
 {
     /* System generated locals */
     int i__1, i__2, i__3, i__4, i__5;
@@ -505,38 +496,33 @@ int zndrv3_mv_(int *n, zomplex *v, zomplex *w)
     z__3.r = v[2].r * 1. - v[2].i * 0., z__3.i = v[2].i * 1. + v[2].r * 0.;
     z__1.r = z__2.r + z__3.r, z__1.i = z__2.i + z__3.i;
     w[1].r = z__1.r, w[1].i = z__1.i;
-    i__1 = *n - 1;
+    i__1 = n - 1;
     for (j = 2; j <= i__1; ++j)
     {
         i__2 = j;
         i__3 = j - 1;
-        z__3.r = v[i__3].r * 1. - v[i__3].i * 0., z__3.i = v[i__3].i * 1. + v[
-                     i__3].r * 0.;
+        z__3.r = v[i__3].r * 1. - v[i__3].i * 0., z__3.i = v[i__3].i * 1. + v[i__3].r * 0.;
         i__4 = j;
-        z__4.r = v[i__4].r * 4. - v[i__4].i * 0., z__4.i = v[i__4].i * 4. + v[
-                     i__4].r * 0.;
+        z__4.r = v[i__4].r * 4. - v[i__4].i * 0., z__4.i = v[i__4].i * 4. + v[i__4].r * 0.;
         z__2.r = z__3.r + z__4.r, z__2.i = z__3.i + z__4.i;
         i__5 = j + 1;
-        z__5.r = v[i__5].r * 1. - v[i__5].i * 0., z__5.i = v[i__5].i * 1. + v[
-                     i__5].r * 0.;
+        z__5.r = v[i__5].r * 1. - v[i__5].i * 0., z__5.i = v[i__5].i * 1. + v[i__5].r * 0.;
         z__1.r = z__2.r + z__5.r, z__1.i = z__2.i + z__5.i;
         w[i__2].r = z__1.r, w[i__2].i = z__1.i;
     }
-    i__1 = *n;
-    i__2 = *n - 1;
-    z__2.r = v[i__2].r * 1. - v[i__2].i * 0., z__2.i = v[i__2].i * 1. + v[
-                 i__2].r * 0.;
-    i__3 = *n;
-    z__3.r = v[i__3].r * 4. - v[i__3].i * 0., z__3.i = v[i__3].i * 4. + v[
-                 i__3].r * 0.;
+    i__1 = n;
+    i__2 = n - 1;
+    z__2.r = v[i__2].r * 1. - v[i__2].i * 0., z__2.i = v[i__2].i * 1. + v[i__2].r * 0.;
+    i__3 = n;
+    z__3.r = v[i__3].r * 4. - v[i__3].i * 0., z__3.i = v[i__3].i * 4. + v[i__3].r * 0.;
     z__1.r = z__2.r + z__3.r, z__1.i = z__2.i + z__3.i;
     w[i__1].r = z__1.r, w[i__1].i = z__1.i;
 
-    i__1 = *n + 1;
+    i__1 = n + 1;
     z__2.r = (double) i__1, z__2.i = 0.;
     z_div(&z__1, &c_b137, &z__2);
     h.r = z__1.r, h.i = z__1.i;
-    zscal_(n, &h, &w[1], &c__1);
+    zscal_(&n, &h, &w[1], &c__1);
     return 0;
 } /* mv_ */
 

@@ -166,8 +166,7 @@ int dsdrv3()
 
     r1 = h * .66666666666666663;
     r2 = h * .16666666666666666;
-    i__1 = n;
-    for (j = 1; j <= i__1; ++j)
+    for (j = 1; j <= n; ++j)
     {
         ad[j - 1] = r1;
         adl[j - 1] = r2;
@@ -212,9 +211,9 @@ L10:
         /* overwrites workd(ipntr(1)).          */
         /* ------------------------------------ */
 
-        dsdrv3_av_(&n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
+        dsdrv3_av_(n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
         dcopy_(&n, &workd[ipntr[1] - 1], &c__1, &workd[ipntr[0] - 1], &c__1);
-        dgttrs_("Notranspose", &n, &c__1, adl, ad, adu, adu2, ipiv, &workd[ipntr[1] - 1], &n, &ierr);
+        dgttrs_("N", &n, &c__1, adl, ad, adu, adu2, ipiv, &workd[ipntr[1] - 1], &n, &ierr);
         if (ierr != 0)
         {
             printf(" \n");
@@ -239,7 +238,7 @@ L10:
         /* workd(ipntr(2)).                        */
         /* --------------------------------------- */
 
-        dsdrv3_mv_(&n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
+        dsdrv3_mv_(n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
 
         /* --------------------------------------- */
         /* L O O P   B A C K to call DSAUPD  again. */
@@ -279,7 +278,7 @@ L10:
 
         rvec = true;
 
-        dseupd_(&rvec, "All", select, d, v, &c__256, &sigma, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, workd, workl, &lworkl, &ierr);
+        dseupd_(&rvec, "A", select, d, v, &c__256, &sigma, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, workd, workl, &lworkl, &ierr);
 
         /* -------------------------------------------- */
         /* Eigenvalues are returned in the first column */
@@ -308,8 +307,7 @@ L10:
         else
         {
             nconv = iparam[4];
-            i__1 = nconv;
-            for (j = 1; j <= i__1; ++j)
+            for (j = 1; j <= nconv; ++j)
             {
                 /* ------------------------- */
                 /* Compute the residual norm */
@@ -324,8 +322,8 @@ L10:
                 /* tolerance)                */
                 /* ------------------------- */
 
-                dsdrv3_av_(&n, &v[(j << 8) - 256], ax);
-                dsdrv3_mv_(&n, &v[(j << 8) - 256], mx);
+                dsdrv3_av_(n, &v[(j << 8) - 256], ax);
+                dsdrv3_mv_(n, &v[(j << 8) - 256], mx);
                 d__1 = -d[j - 1];
                 daxpy_(&n, &d__1, mx, &c__1, ax, &c__1);
                 d[j + 24] = dnrm2_(&n, ax, &c__1);
@@ -390,7 +388,7 @@ L10:
 /*     where the matrix is the 1 dimensional mass matrix */
 /*     on the interval [0,1]. */
 
-int dsdrv3_mv_(int *n, double *v, double *w)
+int dsdrv3_mv_(const int n, double *v, double *w)
 {
     /* System generated locals */
     int i__1;
@@ -405,18 +403,18 @@ int dsdrv3_mv_(int *n, double *v, double *w)
 
     /* Function Body */
     w[1] = v[1] * 4. + v[2];
-    i__1 = *n - 1;
+    i__1 = n - 1;
     for (j = 2; j <= i__1; ++j)
     {
         w[j] = v[j - 1] + v[j] * 4. + v[j + 1];
     }
-    j = *n;
+    j = n;
     w[j] = v[j - 1] + v[j] * 4.;
 
     /*     Scale the vector w by h. */
 
-    h = 1. / ((double) (*n + 1) * 6.);
-    dscal_(n, &h, &w[1], &c__1);
+    h = 1. / ((double) (n + 1) * 6.);
+    dscal_(&n, &h, &w[1], &c__1);
     return 0;
 } /* mv_ */
 
@@ -428,7 +426,7 @@ int dsdrv3_mv_(int *n, double *v, double *w)
 /*     on the interval [0,1] with zero Dirichlet boundary condition using */
 /*     piecewise linear elements. */
 
-int dsdrv3_av_(int *n, double *v, double *w)
+int dsdrv3_av_(const int n, double *v, double *w)
 {
     /* System generated locals */
     int i__1;
@@ -444,19 +442,19 @@ int dsdrv3_av_(int *n, double *v, double *w)
 
     /* Function Body */
     w[1] = v[1] * 2. - v[2];
-    i__1 = *n - 1;
+    i__1 = n - 1;
     for (j = 2; j <= i__1; ++j)
     {
         w[j] = -v[j - 1] + v[j] * 2. - v[j + 1];
     }
-    j = *n;
+    j = n;
     w[j] = -v[j - 1] + v[j] * 2.;
 
     /*     Scale the vector w by (1 / h). */
 
-    h = 1. / (double) (*n + 1);
+    h = 1. / (double) (n + 1);
     d__1 = 1. / h;
-    dscal_(n, &d__1, &w[1], &c__1);
+    dscal_(&n, &d__1, &w[1], &c__1);
     return 0;
 } /* av_ */
 

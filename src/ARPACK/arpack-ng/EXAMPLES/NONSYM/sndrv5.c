@@ -190,9 +190,7 @@ int sndrv5()
     /* generated in SNAUPD to start the Arnoldi iteration. */
     /* --------------------------------------------------- */
 
-    /* Computing 2nd power */
-    i__1 = ncv;
-    lworkl = i__1 * i__1 * 3 + ncv * 6;
+    lworkl = ncv * ncv * 3 + ncv * 6;
     tol = 0.f;
     ido = 0;
     info = 0;
@@ -244,9 +242,8 @@ L20:
         /* workd(ipntr(2)).                                      */
         /* ----------------------------------------------------- */
 
-        sndrv5_mv_(&n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
-        i__1 = n;
-        for (j = 1; j <= i__1; ++j)
+        sndrv5_mv_(n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
+        for (j = 1; j <= n; ++j)
         {
             i__2 = j - 1;
             i__3 = ipntr[1] + j - 2;
@@ -263,8 +260,7 @@ L20:
             printf(" \n");
             return ierr;
         }
-        i__1 = n;
-        for (j = 1; j <= i__1; ++j)
+        for (j = 1; j <= n; ++j)
         {
             i__2 = j - 1;
             workd[ipntr[1] + j - 2] = ctemp[i__2].r;
@@ -288,8 +284,7 @@ L20:
         /* the result to workd(ipntr(2)).                        */
         /* ----------------------------------------------------- */
 
-        i__1 = n;
-        for (j = 1; j <= i__1; ++j)
+        for (j = 1; j <= n; ++j)
         {
             i__2 = j - 1;
             i__3 = ipntr[2] + j - 2;
@@ -305,8 +300,7 @@ L20:
             printf(" \n");
             return ierr;
         }
-        i__1 = n;
-        for (j = 1; j <= i__1; ++j)
+        for (j = 1; j <= n; ++j)
         {
             i__2 = j - 1;
             workd[ipntr[1] + j - 2] = ctemp[i__2].r;
@@ -328,7 +322,7 @@ L20:
         /* and returns the result to workd(ipntr(2)).  */
         /* ------------------------------------------- */
 
-        sndrv5_mv_(&n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
+        sndrv5_mv_(n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
 
         /* --------------------------------------- */
         /* L O O P   B A C K to call SNAUPD again. */
@@ -399,8 +393,7 @@ L20:
         {
             first = true;
             nconv = iparam[4];
-            i__1 = nconv;
-            for (j = 1; j <= i__1; ++j)
+            for (j = 1; j <= nconv; ++j)
             {
                 /* ----------------------------------- */
                 /* Use Rayleigh Quotient to recover    */
@@ -414,9 +407,9 @@ L20:
                     /* Compute d = x'(Ax)/x'(Mx).*/
                     /* ------------------------- */
 
-                    sndrv5_av_(&n, &v[(j << 8) - 256], ax);
+                    sndrv5_av_(n, &v[(j << 8) - 256], ax);
                     numr = sdot_(&n, &v[(j << 8) - 256], &c__1, ax, &c__1);
-                    sndrv5_mv_(&n, &v[(j << 8) - 256], ax);
+                    sndrv5_mv_(n, &v[(j << 8) - 256], ax);
                     denr = sdot_(&n, &v[(j << 8) - 256], &c__1, ax, &c__1);
                     d[j - 1] = numr / denr;
                 }
@@ -431,10 +424,10 @@ L20:
                     /* -------------- */
                     /* Compute x'(Ax) */
                     /* -------------- */
-                    sndrv5_av_(&n, &v[(j << 8) - 256], ax);
+                    sndrv5_av_(n, &v[(j << 8) - 256], ax);
                     numr = sdot_(&n, &v[(j << 8) - 256], &c__1, ax, &c__1);
                     numi = sdot_(&n, &v[(j + 1 << 8) - 256], &c__1, ax, &c__1);
-                    sndrv5_av_(&n, &v[(j + 1 << 8) - 256], ax);
+                    sndrv5_av_(n, &v[(j + 1 << 8) - 256], ax);
                     numr += sdot_(&n, &v[(j + 1 << 8) - 256], &c__1, ax, &c__1);
                     numi = -numi + sdot_(&n, &v[(j << 8) - 256], &c__1, ax, &c__1);
 
@@ -442,10 +435,10 @@ L20:
                     /* Compute x'(Mx) */
                     /* -------------- */
 
-                    sndrv5_mv_(&n, &v[(j << 8) - 256], ax);
+                    sndrv5_mv_(n, &v[(j << 8) - 256], ax);
                     denr = sdot_(&n, &v[(j << 8) - 256], &c__1, ax, &c__1);
                     deni = sdot_(&n, &v[(j + 1 << 8) - 256], &c__1, ax, &c__1);
-                    sndrv5_mv_(&n, &v[(j + 1 << 8) - 256], ax);
+                    sndrv5_mv_(n, &v[(j + 1 << 8) - 256], ax);
                     denr += sdot_(&n, &v[(j + 1 << 8) - 256], &c__1, ax, &c__1);
                     deni = -deni + sdot_(&n, &v[(j << 8) - 256], &c__1, ax, &c__1);
 
@@ -486,8 +479,7 @@ L20:
             /* ------------------------- */
 
             first = true;
-            i__1 = nconv;
-            for (j = 1; j <= i__1; ++j)
+            for (j = 1; j <= nconv; ++j)
             {
                 if (d[j + 24] == 0.f)
                 {
@@ -495,8 +487,8 @@ L20:
                     /* Ritz value is real */
                     /* ------------------ */
 
-                    sndrv5_av_(&n, &v[(j << 8) - 256], ax);
-                    sndrv5_mv_(&n, &v[(j << 8) - 256], mx);
+                    sndrv5_av_(n, &v[(j << 8) - 256], ax);
+                    sndrv5_mv_(n, &v[(j << 8) - 256], mx);
                     r__1 = -d[j - 1];
                     saxpy_(&n, &r__1, mx, &c__1, ax, &c__1);
                     d[j + 49] = snrm2_(&n, ax, &c__1);
@@ -511,18 +503,18 @@ L20:
                     /* pair is computed.      */
                     /* ---------------------- */
 
-                    sndrv5_av_(&n, &v[(j << 8) - 256], ax);
-                    sndrv5_mv_(&n, &v[(j << 8) - 256], mx);
+                    sndrv5_av_(n, &v[(j << 8) - 256], ax);
+                    sndrv5_mv_(n, &v[(j << 8) - 256], mx);
                     r__1 = -d[j - 1];
                     saxpy_(&n, &r__1, mx, &c__1, ax, &c__1);
-                    sndrv5_mv_(&n, &v[(j + 1 << 8) - 256], mx);
+                    sndrv5_mv_(n, &v[(j + 1 << 8) - 256], mx);
                     saxpy_(&n, &d[j + 24], mx, &c__1, ax, &c__1);
                     d[j + 49] = snrm2_(&n, ax, &c__1);
-                    sndrv5_av_(&n, &v[(j + 1 << 8) - 256], ax);
-                    sndrv5_mv_(&n, &v[(j + 1 << 8) - 256], mx);
+                    sndrv5_av_(n, &v[(j + 1 << 8) - 256], ax);
+                    sndrv5_mv_(n, &v[(j + 1 << 8) - 256], mx);
                     r__1 = -d[j - 1];
                     saxpy_(&n, &r__1, mx, &c__1, ax, &c__1);
-                    sndrv5_mv_(&n, &v[(j << 8) - 256], mx);
+                    sndrv5_mv_(n, &v[(j << 8) - 256], mx);
                     r__1 = -d[j + 24];
                     saxpy_(&n, &r__1, mx, &c__1, ax, &c__1);
                     r__1 = snrm2_(&n, ax, &c__1);
@@ -594,7 +586,7 @@ L20:
 
 /*     matrix vector multiplication subroutine */
 
-int sndrv5_mv_(int *n, float *v, float *w)
+int sndrv5_mv_(const int n, float *v, float *w)
 {
     /* System generated locals */
     int i__1;
@@ -612,17 +604,17 @@ int sndrv5_mv_(int *n, float *v, float *w)
 
     /* Function Body */
     w[1] = v[1] * 4.f + v[2] * 1.f;
-    i__1 = *n - 1;
+    i__1 = n - 1;
     for (j = 2; j <= i__1; ++j)
     {
         w[j] = v[j - 1] * 1.f + v[j] * 4.f + v[j + 1] * 1.f;
     }
-    w[*n] = v[*n - 1] * 1.f + v[*n] * 4.f;
+    w[n] = v[n - 1] * 1.f + v[n] * 4.f;
     return 0;
 } /* mv_ */
 
 /* ------------------------------------------------------------------ */
-int sndrv5_av_(int *n, float *v, float *w)
+int sndrv5_av_(const int n, float *v, float *w)
 {
     /* System generated locals */
     int i__1;
@@ -640,12 +632,12 @@ int sndrv5_av_(int *n, float *v, float *w)
 
     /* Function Body */
     w[1] = v[1] * 2.f + v[2] * 3.f;
-    i__1 = *n - 1;
+    i__1 = n - 1;
     for (j = 2; j <= i__1; ++j)
     {
         w[j] = v[j - 1] * -2.f + v[j] * 2.f + v[j + 1] * 3.f;
     }
-    w[*n] = v[*n - 1] * -2.f + v[*n] * 2.f;
+    w[n] = v[n - 1] * -2.f + v[n] * 2.f;
     return 0;
 } /* av_ */
 

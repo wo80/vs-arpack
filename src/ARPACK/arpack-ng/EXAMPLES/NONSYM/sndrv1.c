@@ -136,9 +136,7 @@ int sndrv1()
     /* generated in SNAUPD to start the Arnoldi iteration. */
     /* --------------------------------------------------- */
 
-    /* Computing 2nd power */
-    i__1 = ncv;
-    lworkl = i__1 * i__1 * 3 + ncv * 6;
+    lworkl = ncv * ncv * 3 + ncv * 6;
     tol = 0.f;
     ido = 0;
     info = 0;
@@ -188,7 +186,7 @@ L10:
         /* product to workd(ipntr(2)).               */
         /* ----------------------------------------- */
 
-        sndrv1_av_(&nx, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
+        sndrv1_av_(nx, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
 
         /* --------------------------------------- */
         /* L O O P   B A C K to call SNAUPD again. */
@@ -259,8 +257,7 @@ L10:
         {
             first = true;
             nconv = iparam[4];
-            i__1 = nconv;
-            for (j = 1; j <= i__1; ++j)
+            for (j = 1; j <= nconv; ++j)
             {
                 /* ------------------------- */
                 /* Compute the residual norm */
@@ -281,7 +278,7 @@ L10:
                     /* Ritz value is real */
                     /* ------------------ */
 
-                    sndrv1_av_(&nx, &v[(j << 8) - 256], ax);
+                    sndrv1_av_(nx, &v[(j << 8) - 256], ax);
                     r__1 = -d[j - 1];
                     saxpy_(&n, &r__1, &v[(j << 8) - 256], &c__1, ax, &c__1);
                     d[j + 59] = snrm2_(&n, ax, &c__1);
@@ -296,12 +293,12 @@ L10:
                     /* pair is computed.      */
                     /* ---------------------- */
 
-                    sndrv1_av_(&nx, &v[(j << 8) - 256], ax);
+                    sndrv1_av_(nx, &v[(j << 8) - 256], ax);
                     r__1 = -d[j - 1];
                     saxpy_(&n, &r__1, &v[(j << 8) - 256], &c__1, ax, &c__1);
                     saxpy_(&n, &d[j + 29], &v[(j + 1 << 8) - 256], &c__1, ax, &c__1);
                     d[j + 59] = snrm2_(&n, ax, &c__1);
-                    sndrv1_av_(&nx, &v[(j + 1 << 8) - 256], ax);
+                    sndrv1_av_(nx, &v[(j + 1 << 8) - 256], ax);
                     r__1 = -d[j + 29];
                     saxpy_(&n, &r__1, &v[(j << 8) - 256], &c__1, ax, &c__1);
                     r__1 = -d[j - 1];
@@ -377,7 +374,7 @@ L10:
 /*     The matrix used is the 2 dimensional convection-diffusion */
 /*     operator discretized using central difference. */
 
-int sndrv1_av_(int *nx, float *v, float *w)
+int sndrv1_av_(const int nx, float *v, float *w)
 {
     /* System generated locals */
     int i__1;
@@ -413,33 +410,33 @@ int sndrv1_av_(int *nx, float *v, float *w)
     --v;
 
     /* Function Body */
-    h2 = 1.f / (float) ((*nx + 1) * (*nx + 1));
+    h2 = 1.f / (float) ((nx + 1) * (nx + 1));
 
     sndrv1_tv_(nx, &v[1], &w[1]);
     r__1 = -1.f / h2;
-    saxpy_(nx, &r__1, &v[*nx + 1], &c__1, &w[1], &c__1);
+    saxpy_(&nx, &r__1, &v[nx + 1], &c__1, &w[1], &c__1);
 
-    i__1 = *nx - 1;
+    i__1 = nx - 1;
     for (j = 2; j <= i__1; ++j)
     {
-        lo = (j - 1) * *nx;
+        lo = (j - 1) * nx;
         sndrv1_tv_(nx, &v[lo + 1], &w[lo + 1]);
         r__1 = -1.f / h2;
-        saxpy_(nx, &r__1, &v[lo - *nx + 1], &c__1, &w[lo + 1], &c__1);
+        saxpy_(&nx, &r__1, &v[lo - nx + 1], &c__1, &w[lo + 1], &c__1);
         r__1 = -1.f / h2;
-        saxpy_(nx, &r__1, &v[lo + *nx + 1], &c__1, &w[lo + 1], &c__1);
+        saxpy_(&nx, &r__1, &v[lo + nx + 1], &c__1, &w[lo + 1], &c__1);
     }
 
-    lo = (*nx - 1) * *nx;
+    lo = (nx - 1) * nx;
     sndrv1_tv_(nx, &v[lo + 1], &w[lo + 1]);
     r__1 = -1.f / h2;
-    saxpy_(nx, &r__1, &v[lo - *nx + 1], &c__1, &w[lo + 1], &c__1);
+    saxpy_(&nx, &r__1, &v[lo - nx + 1], &c__1, &w[lo + 1], &c__1);
 
     return 0;
 } /* av_ */
 
 /* ========================================================================= */
-int sndrv1_tv_(int *nx, float *x, float *y)
+int sndrv1_tv_(const int nx, float *x, float *y)
 {
     /* System generated locals */
     int i__1;
@@ -462,19 +459,19 @@ int sndrv1_tv_(int *nx, float *x, float *y)
     --x;
 
     /* Function Body */
-    h = 1.f / (float) (*nx + 1);
+    h = 1.f / (float) (nx + 1);
     h2 = h * h;
     dd = 4.f / h2;
     dl = -1.f / h2 - 0.f / h;
     du = -1.f / h2 + 0.f / h;
 
     y[1] = dd * x[1] + du * x[2];
-    i__1 = *nx - 1;
+    i__1 = nx - 1;
     for (j = 2; j <= i__1; ++j)
     {
         y[j] = dl * x[j - 1] + dd * x[j] + du * x[j + 1];
     }
-    y[*nx] = dl * x[*nx - 1] + dd * x[*nx];
+    y[nx] = dl * x[nx - 1] + dd * x[nx];
     return 0;
 } /* tv_ */
 

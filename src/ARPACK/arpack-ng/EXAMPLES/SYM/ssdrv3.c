@@ -167,8 +167,7 @@ int ssdrv3()
 
     r1 = h * .66666666666666663f;
     r2 = h * .16666666666666666f;
-    i__1 = n;
-    for (j = 1; j <= i__1; ++j)
+    for (j = 1; j <= n; ++j)
     {
         ad[j - 1] = r1;
         adl[j - 1] = r2;
@@ -213,9 +212,9 @@ L10:
         /* overwrites workd(ipntr(1)).          */
         /* ------------------------------------ */
 
-        ssdrv3_av_(&n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
+        ssdrv3_av_(n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
         scopy_(&n, &workd[ipntr[1] - 1], &c__1, &workd[ipntr[0] - 1], &c__1);
-        sgttrs_("Notranspose", &n, &c__1, adl, ad, adu, adu2, ipiv, &workd[ipntr[1] - 1], &n, &ierr);
+        sgttrs_("N", &n, &c__1, adl, ad, adu, adu2, ipiv, &workd[ipntr[1] - 1], &n, &ierr);
         if (ierr != 0)
         {
             printf(" \n");
@@ -240,7 +239,7 @@ L10:
         /* workd(ipntr(2)).                        */
         /* --------------------------------------- */
 
-        ssdrv3_mv_(&n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
+        ssdrv3_mv_(n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
 
         /* --------------------------------------- */
         /* L O O P   B A C K to call SSAUPD again. */
@@ -280,7 +279,7 @@ L10:
 
         rvec = true;
 
-        sseupd_(&rvec, "All", select, d, v, &c__256, &sigma, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, workd, workl, &lworkl, &ierr);
+        sseupd_(&rvec, "A", select, d, v, &c__256, &sigma, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, workd, workl, &lworkl, &ierr);
 
         /* -------------------------------------------- */
         /* Eigenvalues are returned in the first column */
@@ -309,8 +308,7 @@ L10:
         else
         {
             nconv = iparam[4];
-            i__1 = nconv;
-            for (j = 1; j <= i__1; ++j)
+            for (j = 1; j <= nconv; ++j)
             {
                 /* ------------------------- */
                 /* Compute the residual norm */
@@ -325,8 +323,8 @@ L10:
                 /* tolerance)                */
                 /* ------------------------- */
 
-                ssdrv3_av_(&n, &v[(j << 8) - 256], ax);
-                ssdrv3_mv_(&n, &v[(j << 8) - 256], mx);
+                ssdrv3_av_(n, &v[(j << 8) - 256], ax);
+                ssdrv3_mv_(n, &v[(j << 8) - 256], mx);
                 r__1 = -d[j - 1];
                 saxpy_(&n, &r__1, mx, &c__1, ax, &c__1);
                 d[j + 24] = snrm2_(&n, ax, &c__1);
@@ -391,7 +389,7 @@ L10:
 /*     where the matrix is the 1 dimensional mass matrix */
 /*     on the interval [0,1]. */
 
-int ssdrv3_mv_(int *n, float *v, float *w)
+int ssdrv3_mv_(const int n, float *v, float *w)
 {
     /* System generated locals */
     int i__1;
@@ -406,18 +404,18 @@ int ssdrv3_mv_(int *n, float *v, float *w)
 
     /* Function Body */
     w[1] = v[1] * 4.f + v[2];
-    i__1 = *n - 1;
+    i__1 = n - 1;
     for (j = 2; j <= i__1; ++j)
     {
         w[j] = v[j - 1] + v[j] * 4.f + v[j + 1];
     }
-    j = *n;
+    j = n;
     w[j] = v[j - 1] + v[j] * 4.f;
 
     /*     Scale the vector w by h. */
 
-    h = 1.f / ((float) (*n + 1) * 6.f);
-    sscal_(n, &h, &w[1], &c__1);
+    h = 1.f / ((float) (n + 1) * 6.f);
+    sscal_(&n, &h, &w[1], &c__1);
     return 0;
 } /* mv_ */
 
@@ -429,7 +427,7 @@ int ssdrv3_mv_(int *n, float *v, float *w)
 /*     on the interval [0,1] with zero Dirichlet boundary condition using */
 /*     piecewise linear elements. */
 
-int ssdrv3_av_(int *n, float *v, float *w)
+int ssdrv3_av_(const int n, float *v, float *w)
 {
     /* System generated locals */
     int i__1;
@@ -445,19 +443,19 @@ int ssdrv3_av_(int *n, float *v, float *w)
 
     /* Function Body */
     w[1] = v[1] * 2.f - v[2];
-    i__1 = *n - 1;
+    i__1 = n - 1;
     for (j = 2; j <= i__1; ++j)
     {
         w[j] = -v[j - 1] + v[j] * 2.f - v[j + 1];
     }
-    j = *n;
+    j = n;
     w[j] = -v[j - 1] + v[j] * 2.f;
 
     /*     Scale the vector w by (1 / h). */
 
-    h = 1.f / (float) (*n + 1);
+    h = 1.f / (float) (n + 1);
     r__1 = 1.f / h;
-    sscal_(n, &r__1, &w[1], &c__1);
+    sscal_(&n, &r__1, &w[1], &c__1);
     return 0;
 } /* av_ */
 

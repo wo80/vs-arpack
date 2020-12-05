@@ -292,7 +292,7 @@ L10:
         /* workd(ipntr(2)).                     */
         /* ------------------------------------ */
 
-        dssimp_av_(&nx, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
+        dssimp_av_(nx, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
 
         /* --------------------------------------- */
         /* L O O P   B A C K to call DSAUPD again. */
@@ -367,8 +367,7 @@ L10:
         else
         {
             nconv = iparam[4];
-            i__1 = nconv;
-            for (j = 1; j <= i__1; ++j)
+            for (j = 1; j <= nconv; ++j)
             {
                 /* ------------------------- */
                 /* Compute the residual norm */
@@ -383,7 +382,7 @@ L10:
                 /* tolerance)                */
                 /* ------------------------- */
 
-                dssimp_av_(&nx, &v[(j << 8) - 256], ax);
+                dssimp_av_(nx, &v[(j << 8) - 256], ax);
                 d__1 = -d[j - 1];
                 daxpy_(&n, &d__1, &v[(j << 8) - 256], &c__1, ax, &c__1);
                 d[j + 24] = dnrm2_(&n, ax, &c__1);
@@ -460,7 +459,7 @@ L10:
 
 /*     The subroutine TV is called to computed y<---T*x. */
 
-int dssimp_av_(int *nx, double *v, double *w)
+int dssimp_av_(const int nx, double *v, double *w)
 {
     /* System generated locals */
     int i__1;
@@ -477,32 +476,32 @@ int dssimp_av_(int *nx, double *v, double *w)
 
     /* Function Body */
     dssimp_tv_(nx, &v[1], &w[1]);
-    daxpy_(nx, &c_b138, &v[*nx + 1], &c__1, &w[1], &c__1);
+    daxpy_(&nx, &c_b138, &v[nx + 1], &c__1, &w[1], &c__1);
 
-    i__1 = *nx - 1;
+    i__1 = nx - 1;
     for (j = 2; j <= i__1; ++j)
     {
-        lo = (j - 1) * *nx;
+        lo = (j - 1) * nx;
         dssimp_tv_(nx, &v[lo + 1], &w[lo + 1]);
-        daxpy_(nx, &c_b138, &v[lo - *nx + 1], &c__1, &w[lo + 1], &c__1);
-        daxpy_(nx, &c_b138, &v[lo + *nx + 1], &c__1, &w[lo + 1], &c__1);
+        daxpy_(&nx, &c_b138, &v[lo - nx + 1], &c__1, &w[lo + 1], &c__1);
+        daxpy_(&nx, &c_b138, &v[lo + nx + 1], &c__1, &w[lo + 1], &c__1);
     }
 
-    lo = (*nx - 1) * *nx;
+    lo = (nx - 1) * nx;
     dssimp_tv_(nx, &v[lo + 1], &w[lo + 1]);
-    daxpy_(nx, &c_b138, &v[lo - *nx + 1], &c__1, &w[lo + 1], &c__1);
+    daxpy_(&nx, &c_b138, &v[lo - nx + 1], &c__1, &w[lo + 1], &c__1);
 
     /*     Scale the vector w by (1/h^2), where h is the mesh size */
 
-    n2 = *nx * *nx;
-    h2 = 1. / (double) ((*nx + 1) * (*nx + 1));
+    n2 = nx * nx;
+    h2 = 1. / (double) ((nx + 1) * (nx + 1));
     d__1 = 1. / h2;
     dscal_(&n2, &d__1, &w[1], &c__1);
     return 0;
 } /* av_ */
 
 /* ------------------------------------------------------------------- */
-int dssimp_tv_(int *nx, double *x, double *y)
+int dssimp_tv_(const int nx, double *x, double *y)
 {
     /* System generated locals */
     int i__1;
@@ -525,12 +524,12 @@ int dssimp_tv_(int *nx, double *x, double *y)
     du = -1.;
 
     y[1] = dd * x[1] + du * x[2];
-    i__1 = *nx - 1;
+    i__1 = nx - 1;
     for (j = 2; j <= i__1; ++j)
     {
         y[j] = dl * x[j - 1] + dd * x[j] + du * x[j + 1];
     }
-    y[*nx] = dl * x[*nx - 1] + dd * x[*nx];
+    y[nx] = dl * x[nx - 1] + dd * x[nx];
     return 0;
 } /* tv_ */
 

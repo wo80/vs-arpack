@@ -327,8 +327,8 @@ L10:
         /* workd(ipntr(2)).                      */
         /* ------------------------------------- */
 
-        ssvd_av_(&m, &n, &workd[ipntr[0] - 1], ax);
-        ssvd_atv_(&m, &n, ax, &workd[ipntr[1] - 1]);
+        ssvd_av_(m, n, &workd[ipntr[0] - 1], ax);
+        ssvd_atv_(m, n, ax, &workd[ipntr[1] - 1]);
 
         /* --------------------------------------- */
         /* L O O P   B A C K to call SSAUPD again. */
@@ -371,7 +371,7 @@ L10:
 
         rvec = true;
 
-        sseupd_(&rvec, "All", select, s, v, &c__250, &sigma, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__250, iparam, ipntr, workd, workl, &lworkl, &ierr);
+        sseupd_(&rvec, "A", select, s, v, &c__250, &sigma, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__250, iparam, ipntr, workd, workl, &lworkl, &ierr);
 
         /* --------------------------------------------- */
         /* Singular values are returned in the first     */
@@ -397,8 +397,7 @@ L10:
         else
         {
             nconv = iparam[4];
-            i__1 = nconv;
-            for (j = 1; j <= i__1; ++j)
+            for (j = 1; j <= nconv; ++j)
             {
                 s[j - 1] = sqrt(s[j - 1]);
 
@@ -412,7 +411,7 @@ L10:
                 /* divide by norm(Av) instead. */
                 /* --------------------------- */
 
-                ssvd_av_(&m, &n, &v[j * 250 - 250], ax);
+                ssvd_av_(m, n, &v[j * 250 - 250], ax);
                 scopy_(&m, ax, &c__1, &u[j * 500 - 500], &c__1);
                 temp = 1.f / snrm2_(&m, &u[j * 500 - 500], &c__1);
                 sscal_(&m, &temp, &u[j * 500 - 500], &c__1);
@@ -509,7 +508,7 @@ L10:
 
 /* ------------------------------------------------------------------- */
 
-int ssvd_av_(int *m, int *n, float *x, float *w)
+int ssvd_av_(const int m, const int n, float *x, float *w)
 {
     /* System generated locals */
     int i__1, i__2;
@@ -526,16 +525,16 @@ int ssvd_av_(int *m, int *n, float *x, float *w)
     --x;
 
     /* Function Body */
-    h = 1.f / (float) (*m + 1);
-    k = 1.f / (float) (*n + 1);
-    i__1 = *m;
+    h = 1.f / (float) (m + 1);
+    k = 1.f / (float) (n + 1);
+    i__1 = m;
     for (i = 1; i <= i__1; ++i)
     {
         w[i] = 0.f;
     }
     t = 0.f;
 
-    i__1 = *n;
+    i__1 = n;
     for (j = 1; j <= i__1; ++j)
     {
         t += k;
@@ -547,7 +546,7 @@ int ssvd_av_(int *m, int *n, float *x, float *w)
             w[i] += k * s * (t - 1.f) * x[j];
 
         }
-        i__2 = *m;
+        i__2 = m;
         for (i = j + 1; i <= i__2; ++i)
         {
             s += h;
@@ -561,7 +560,7 @@ int ssvd_av_(int *m, int *n, float *x, float *w)
 
 /* ------------------------------------------------------------------- */
 
-int ssvd_atv_(int *m, int *n, float *w, float *y)
+int ssvd_atv_(const int m, const int n, float *w, float *y)
 {
     /* System generated locals */
     int i__1, i__2;
@@ -578,16 +577,16 @@ int ssvd_atv_(int *m, int *n, float *w, float *y)
     --y;
 
     /* Function Body */
-    h = 1.f / (float) (*m + 1);
-    k = 1.f / (float) (*n + 1);
-    i__1 = *n;
+    h = 1.f / (float) (m + 1);
+    k = 1.f / (float) (n + 1);
+    i__1 = n;
     for (i = 1; i <= i__1; ++i)
     {
         y[i] = 0.f;
     }
     t = 0.f;
 
-    i__1 = *n;
+    i__1 = n;
     for (j = 1; j <= i__1; ++j)
     {
         t += k;
@@ -599,7 +598,7 @@ int ssvd_atv_(int *m, int *n, float *w, float *y)
             y[j] += k * s * (t - 1.f) * w[i];
 
         }
-        i__2 = *m;
+        i__2 = m;
         for (i = j + 1; i <= i__2; ++i)
         {
             s += h;
