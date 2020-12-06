@@ -48,30 +48,19 @@ int dsdrv1()
 
     /* Local variables */
     double d[50]	/* was [25][2] */;
-    int j, n;
-    double ax[256];
-    int nx, ido, ncv, nev;
-    double tol;
-    int mode, info;
+    int j;
+
+    int mode;
     bool rvec;
     int ierr;
     int nconv;
     double sigma;
-    char* which;
-    char* bmat;
-    double *v	/* was [256][25] */;
-    double *resid;
-    double *workd;
-    double *workl;
+
+
     int ipntr[11];
     int iparam[11];
     bool select[25];
-    int ishfts, maxitr, lworkl;
-
-    resid = (double*)malloc(256 * sizeof(double));
-    v = (double*)malloc(6400 * sizeof(double));
-    workl = (double*)malloc(825 * sizeof(double));
-    workd = (double*)malloc(768 * sizeof(double));
+    int ishfts, maxitr;
 
     /* Define maximum dimensions for all arrays. */
 
@@ -96,10 +85,10 @@ int dsdrv1()
     /*             NEV + 1 <= NCV <= MAXNCV               */
     /* -------------------------------------------------- */
 
-    nx = 10;
-    n = nx * nx;
-    nev = 4;
-    ncv = 10;
+    int nx = 10;
+    int n = nx * nx;
+    int nev = 4;
+    int ncv = 10;
     if (n > 256)
     {
         printf(" ERROR with _SDRV1: N is greater than MAXN \n");
@@ -115,8 +104,8 @@ int dsdrv1()
         printf(" ERROR with _SDRV1: NCV is greater than MAXNCV \n");
         return 0;
     }
-    bmat = "I";
-    which = "SM";
+    char* bmat = "I";
+    char* which = "SM";
 
     /* ------------------------------------------------ */
     /* The work array WORKL is used in DSAUPD as        */
@@ -130,10 +119,16 @@ int dsdrv1()
     /* iteration.                                       */
     /* ------------------------------------------------ */
 
-    lworkl = ncv * (ncv + 8);
-    tol = 0.;
-    info = 0;
-    ido = 0;
+    int lworkl = ncv * (ncv + 8);
+    double tol = 0.;
+    int info = 0;
+    int ido = 0;
+
+    double* ax = (double*)malloc(n * sizeof(double));
+    double* resid = (double*)malloc(n * sizeof(double));
+    double* v = (double*)malloc(n * ncv * sizeof(double));
+    double* workl = (double*)malloc(lworkl * sizeof(double));
+    double* workd = (double*)malloc(3 * n * sizeof(double));
 
     /* ------------------------------------------------- */
     /* This program uses exact shifts with respect to    */
@@ -166,7 +161,7 @@ L10:
     /* has been exceeded.                          */
     /* ------------------------------------------- */
 
-    dsaupd_(&ido, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, workd, workl, &lworkl, &info);
+    dsaupd_(&ido, bmat, &n, which, &nev, &tol, resid, &ncv, v, &n, iparam, ipntr, workd, workl, &lworkl, &info);
 
     if (ido == -1 || ido == 1)
     {
@@ -203,114 +198,118 @@ L10:
 
         printf(" \n");
         printf(" Error with _saupd info = %d\n", info);
-        printf(" Check documentation in _saupd \n");
+        printf(" Check the documentation of _saupd.\n");
         printf(" \n");
+
+        ierr = info;
+        goto EXIT;
     }
-    else
+
+    /* ----------------------------------------- */
+    /* No fatal errors occurred.                 */
+    /* Post-Process using DSEUPD.                */
+    /*                                           */
+    /* Computed eigenvalues may be extracted.    */
+    /*                                           */
+    /* Eigenvectors may also be computed now if  */
+    /* desired.  (indicated by rvec = .true.)    */
+    /* ----------------------------------------- */
+
+    rvec = true;
+
+    dseupd_(&rvec, "A", select, d, v, &n, &sigma, bmat, &n, which, &nev, &tol, resid, &ncv, v, &n, iparam, ipntr, workd, workl, &lworkl, &ierr);
+    /* -------------------------------------------- */
+    /* Eigenvalues are returned in the first column */
+    /* of the two dimensional array D and the       */
+    /* corresponding eigenvectors are returned in   */
+    /* the first NEV columns of the two dimensional */
+    /* array V if requested.  Otherwise, an         */
+    /* orthogonal basis for the invariant subspace  */
+    /* corresponding to the eigenvalues in D is     */
+    /* returned in V.                               */
+    /* -------------------------------------------- */
+
+    if (ierr != 0)
     {
-        /* ----------------------------------------- */
-        /* No fatal errors occurred.                 */
-        /* Post-Process using DSEUPD.                */
-        /*                                           */
-        /* Computed eigenvalues may be extracted.    */
-        /*                                           */
-        /* Eigenvectors may also be computed now if  */
-        /* desired.  (indicated by rvec = .true.)    */
-        /* ----------------------------------------- */
-
-        rvec = true;
-
-        dseupd_(&rvec, "A", select, d, v, &c__256, &sigma, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, workd, workl, &lworkl, &ierr);
-        /* -------------------------------------------- */
-        /* Eigenvalues are returned in the first column */
-        /* of the two dimensional array D and the       */
-        /* corresponding eigenvectors are returned in   */
-        /* the first NEV columns of the two dimensional */
-        /* array V if requested.  Otherwise, an         */
-        /* orthogonal basis for the invariant subspace  */
-        /* corresponding to the eigenvalues in D is     */
-        /* returned in V.                               */
-        /* -------------------------------------------- */
-
-        if (ierr != 0)
-        {
-            /* ---------------------------------- */
-            /* Error condition:                   */
-            /* Check the documentation of DSEUPD. */
-            /* ---------------------------------- */
-
-            printf(" \n");
-            printf(" Error with _seupd info = %d\n", ierr);
-            printf(" Check the documentation of _seupd. \n");
-            printf(" \n");
-
-        }
-        else
-        {
-            nconv = iparam[4];
-            for (j = 1; j <= nconv; ++j)
-            {
-                /* ------------------------- */
-                /* Compute the residual norm */
-                /*                           */
-                /*   ||  A*x - lambda*x ||   */
-                /*                           */
-                /* for the NCONV accurately  */
-                /* computed eigenvalues and  */
-                /* eigenvectors.  (iparam(5) */
-                /* indicates how many are    */
-                /* accurate to the requested */
-                /* tolerance)                */
-                /* ------------------------- */
-
-                dsdrv1_av_(nx, &v[(j << 8) - 256], ax);
-                d__1 = -d[j - 1];
-                daxpy_(&n, &d__1, &v[(j << 8) - 256], &c__1, ax, &c__1);
-                d[j + 24] = dnrm2_(&n, ax, &c__1);
-                d[j + 24] /= (d__1 = d[j - 1], abs(d__1));
-
-            }
-
-            /* ----------------------------- */
-            /* Display computed residuals    */
-            /* ----------------------------- */
-
-            dmout_(&nconv, &c__2, d, &c__25, &c_n6, "Ritz values and relative residuals");
-        }
-
-        /* ---------------------------------------- */
-        /* Print additional convergence information */
-        /* ---------------------------------------- */
-
-        if (info == 1)
-        {
-            printf(" \n");
-            printf(" Maximum number of iterations reached.\n");
-            printf(" \n");
-        }
-        else if (info == 3)
-        {
-            printf(" \n");
-            printf(" No shifts could be applied during implicit\n");
-            printf(" Arnoldi update try increasing NCV.\n");
-            printf(" \n");
-        }
+        /* ---------------------------------- */
+        /* Error condition:                   */
+        /* Check the documentation of DSEUPD. */
+        /* ---------------------------------- */
 
         printf(" \n");
-        printf(" _SDRV1 \n");
-        printf(" ====== \n");
+        printf(" Error with _seupd info = %d\n", ierr);
+        printf(" Check the documentation of _seupd. \n");
         printf(" \n");
-        printf(" Size of the matrix is %d\n", n);
-        printf(" The number of Ritz values requested is %d\n", nev);
-        printf(" The number of Arnoldi vectors generated (NCV) is %d\n", ncv);
-        printf(" What portion of the spectrum: %s\n", which);
-        printf(" The number of converged Ritz values is %d\n", nconv);
-        printf(" The number of Implicit Arnoldi update iterations taken is %d\n", iparam[2]);
-        printf(" The number of OP*x is %d\n", iparam[8]);
-        printf(" The convergence criterion is %e\n", tol);
+
+        goto EXIT;
+    }
+
+    nconv = iparam[4];
+    for (j = 1; j <= nconv; ++j)
+    {
+        int k = (j - 1) * n;
+
+        /* ------------------------- */
+        /* Compute the residual norm */
+        /*                           */
+        /*   ||  A*x - lambda*x ||   */
+        /*                           */
+        /* for the NCONV accurately  */
+        /* computed eigenvalues and  */
+        /* eigenvectors.  (iparam(5) */
+        /* indicates how many are    */
+        /* accurate to the requested */
+        /* tolerance)                */
+        /* ------------------------- */
+
+        dsdrv1_av_(nx, &v[k], ax);
+        d__1 = -d[j - 1];
+        daxpy_(&n, &d__1, &v[k], &c__1, ax, &c__1);
+        d[j + 24] = dnrm2_(&n, ax, &c__1);
+        d[j + 24] /= (d__1 = d[j - 1], abs(d__1));
+
+    }
+
+    /* ----------------------------- */
+    /* Display computed residuals    */
+    /* ----------------------------- */
+
+    dmout_(&nconv, &c__2, d, &c__25, &c_n6, "Ritz values and relative residuals");
+    /* ---------------------------------------- */
+    /* Print additional convergence information */
+    /* ---------------------------------------- */
+
+    if (info == 1)
+    {
+        printf(" \n");
+        printf(" Maximum number of iterations reached.\n");
+        printf(" \n");
+    }
+    else if (info == 3)
+    {
+        printf(" \n");
+        printf(" No shifts could be applied during implicit\n");
+        printf(" Arnoldi update try increasing NCV.\n");
         printf(" \n");
     }
 
+    printf(" \n");
+    printf(" _SDRV1 \n");
+    printf(" ====== \n");
+    printf(" \n");
+    printf(" Size of the matrix is %d\n", n);
+    printf(" The number of Ritz values requested is %d\n", nev);
+    printf(" The number of Arnoldi vectors generated (NCV) is %d\n", ncv);
+    printf(" What portion of the spectrum: %s\n", which);
+    printf(" The number of converged Ritz values is %d\n", nconv);
+    printf(" The number of Implicit Arnoldi update iterations taken is %d\n", iparam[2]);
+    printf(" The number of OP*x is %d\n", iparam[8]);
+    printf(" The convergence criterion is %e\n", tol);
+    printf(" \n");
+
+EXIT:
+
+    free(ax);
     free(resid);
     free(v);
     free(workl);
@@ -320,8 +319,8 @@ L10:
     /* Done with program dsdrv1. */
     /* ------------------------- */
 
-    return 0;
-} /* MAIN__ */
+    return ierr;
+}
 
 /* ------------------------------------------------------------------ */
 /*     matrix vector subroutine */

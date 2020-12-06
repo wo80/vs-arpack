@@ -60,35 +60,23 @@ int cndrv2()
 
     /* Local variables */
     complex d[25], h;
-    int j, n;
-    complex s, h2, s1, s2, s3, dd[256], dl[256];
+    int j;
+    complex s, h2, s1, s2, s3;
     float rd[75]	/* was [25][3] */;
-    complex ax[256], du[256], du2[256];
-    int ido, ncv, nev;
-    float tol;
-    char* bmat;
-    int mode, info;
+
+    int mode;
     bool rvec;
     int ierr, ipiv[256];
     complex sigma;
-    char* which;
+
     int nconv;
-    complex *v	/* was [256][25] */;
-    complex *resid;
-    complex *workd;
-    complex *workl;
     int ipntr[14];
     float rwork[256];
     int iparam[11];
     bool select[25];
     int ishfts, maxitr;
-    int lworkl;
-    complex workev[50];
 
-    resid = (complex*)malloc(256 * sizeof(complex));
-    v = (complex*)malloc(6400 * sizeof(complex));
-    workl = (complex*)malloc(2000 * sizeof(complex));
-    workd = (complex*)malloc(768 * sizeof(complex));
+    complex workev[50];
 
     /* Define maximum dimensions for all arrays. */
 
@@ -111,9 +99,9 @@ int cndrv2()
     /*           NEV + 2 <= NCV <= MAXNCV               */
     /* ------------------------------------------------ */
 
-    n = 100;
-    nev = 4;
-    ncv = 20;
+    int n = 100;
+    int nev = 4;
+    int ncv = 20;
     if (n > 256)
     {
         printf(" ERROR with _NDRV2: N is greater than MAXN \n");
@@ -129,8 +117,8 @@ int cndrv2()
         printf(" ERROR with _NDRV2: NCV is greater than MAXNCV \n");
         return 0;
     }
-    bmat = "I";
-    which = "LM";
+    char* bmat = "I";
+    char* which = "LM";
     sigma.r = 0.f, sigma.i = 0.f;
 
     /* -------------------------------------------------- */
@@ -142,6 +130,11 @@ int cndrv2()
     /* the interval [0, 1] with zero Dirichlet boundary   */
     /* condition.                                         */
     /* -------------------------------------------------- */
+
+    complex* du = (complex*)malloc(n * sizeof(complex));
+    complex* dd = (complex*)malloc(n * sizeof(complex));
+    complex* dl = (complex*)malloc(n * sizeof(complex));
+    complex* du2 = (complex*)malloc(n * sizeof(complex));
 
     convct_1.rho.r = 10.f, convct_1.rho.i = 0.f;
     i__1 = n + 1;
@@ -201,10 +194,16 @@ int cndrv2()
     /* --------------------------------------------------- */
 
     /* Computing 2nd power */
-    lworkl = ncv * ncv * 3 + ncv * 5;
-    tol = 0.f;
-    ido = 0;
-    info = 0;
+    int lworkl = ncv * ncv * 3 + ncv * 5;
+    float tol = 0.f;
+    int ido = 0;
+    int info = 0;
+
+    complex* ax = (complex*)malloc(n * sizeof(complex));
+    complex* resid = (complex*)malloc(n * sizeof(complex));
+    complex* v = (complex*)malloc(n * ncv * sizeof(complex));
+    complex* workl = (complex*)malloc(lworkl * sizeof(complex));
+    complex* workd = (complex*)malloc(3 * n * sizeof(complex));
 
     /* ------------------------------------------------- */
     /* This program uses exact shifts with respect to    */
@@ -237,7 +236,7 @@ L20:
     /* has been exceeded.                          */
     /* ------------------------------------------- */
 
-    cnaupd_(&ido, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, workd, workl, &lworkl, rwork, &info);
+    cnaupd_(&ido, bmat, &n, which, &nev, &tol, resid, &ncv, v, &n, iparam, ipntr, workd, workl, &lworkl, rwork, &info);
 
     if (ido == -1 || ido == 1)
     {
@@ -257,7 +256,7 @@ L20:
             printf(" \n");
             printf(" ERROR with _gttrs in _NDRV2.\n");
             printf(" \n");
-            return ierr;
+            goto EXIT;
         }
 
         /* --------------------------------------- */
@@ -281,119 +280,129 @@ L20:
 
         printf(" \n");
         printf(" Error with _naupd info = %d\n", info);
-        printf(" Check the documentation in _naupd.\n");
+        printf(" Check the documentation of _naupd.\n");
         printf(" \n");
+
+        ierr = info;
+        goto EXIT;
     }
-    else
+
+    /* ----------------------------------------- */
+    /* No fatal errors occurred.                 */
+    /* Post-Process using CNEUPD.                */
+    /*                                           */
+    /* Computed eigenvalues may be extracted.    */
+    /*                                           */
+    /* Eigenvectors may also be computed now if  */
+    /* desired.  (indicated by rvec = .true.)    */
+    /* ----------------------------------------- */
+
+    rvec = true;
+
+    cneupd_(&rvec, "A", select, d, v, &n, &sigma, workev, bmat, &n,which, &nev, &tol, resid, &ncv, v, &n, iparam, ipntr, workd, workl, &lworkl, rwork, &ierr);
+
+    /* -------------------------------------------- */
+    /* Eigenvalues are returned in the one          */
+    /* dimensional array D.  The corresponding      */
+    /* eigenvectors are returned in the first NCONV */
+    /* (=IPARAM(5)) columns of the two dimensional  */
+    /* array V if requested.  Otherwise, an         */
+    /* orthogonal basis for the invariant subspace  */
+    /* corresponding to the eigenvalues in D is     */
+    /* returned in V.                               */
+    /* -------------------------------------------- */
+
+    if (ierr != 0)
     {
-        /* ----------------------------------------- */
-        /* No fatal errors occurred.                 */
-        /* Post-Process using CNEUPD.                */
-        /*                                           */
-        /* Computed eigenvalues may be extracted.    */
-        /*                                           */
-        /* Eigenvectors may also be computed now if  */
-        /* desired.  (indicated by rvec = .true.)    */
-        /* ----------------------------------------- */
-
-        rvec = true;
-
-        cneupd_(&rvec, "A", select, d, v, &c__256, &sigma, workev, bmat, &n,which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, workd, workl, &lworkl, rwork, &ierr);
-
-        /* -------------------------------------------- */
-        /* Eigenvalues are returned in the one          */
-        /* dimensional array D.  The corresponding      */
-        /* eigenvectors are returned in the first NCONV */
-        /* (=IPARAM(5)) columns of the two dimensional  */
-        /* array V if requested.  Otherwise, an         */
-        /* orthogonal basis for the invariant subspace  */
-        /* corresponding to the eigenvalues in D is     */
-        /* returned in V.                               */
-        /* -------------------------------------------- */
-
-        if (ierr != 0)
-        {
-            /* ---------------------------------- */
-            /* Error condition:                   */
-            /* Check the documentation of CNEUPD. */
-            /* ---------------------------------- */
-
-            printf(" \n");
-            printf(" Error with _neupd info = %d\n", ierr);
-            printf(" Check the documentation of _neupd. \n");
-            printf(" \n");
-        }
-        else
-        {
-            nconv = iparam[4];
-            for (j = 1; j <= nconv; ++j)
-            {
-                /* ------------------------- */
-                /* Compute the residual norm */
-                /*                           */
-                /*   ||  A*x - lambda*x ||   */
-                /*                           */
-                /* for the NCONV accurately  */
-                /* computed eigenvalues and  */
-                /* eigenvectors.  (iparam(5) */
-                /* indicates how many are    */
-                /* accurate to the requested */
-                /* tolerance)                */
-                /* ------------------------- */
-
-                cndrv2_av_(n, &v[(j << 8) - 256], ax);
-                i__2 = j - 1;
-                q__1.r = -d[i__2].r, q__1.i = -d[i__2].i;
-                caxpy_(&n, &q__1, &v[(j << 8) - 256], &c__1, ax, &c__1);
-                i__2 = j - 1;
-                rd[j - 1] = d[i__2].r;
-                rd[j + 24] = r_imag(&d[j - 1]);
-                rd[j + 49] = scnrm2_(&n, ax, &c__1);
-                rd[j + 49] /= slapy2_(&rd[j - 1], &rd[j + 24]);
-
-            }
-
-            /* --------------------------- */
-            /* Display computed residuals. */
-            /* --------------------------- */
-
-            smout_(&nconv, &c__3, rd, &c__25, &c_n6, "Ritz values (Real, Imag) and relative residuals");
-
-        }
-
-        /* ----------------------------------------- */
-        /* Print additional convergence information. */
-        /* ----------------------------------------- */
-
-        if (info == 1)
-        {
-            printf(" \n");
-            printf(" Maximum number of iterations reached.\n");
-            printf(" \n");
-        }
-        else if (info == 3)
-        {
-            printf(" \n");
-            printf(" No shifts could be applied during implicit\n");
-            printf(" Arnoldi update try increasing NCV.\n");
-            printf(" \n");
-        }
+        /* ---------------------------------- */
+        /* Error condition:                   */
+        /* Check the documentation of CNEUPD. */
+        /* ---------------------------------- */
 
         printf(" \n");
-        printf("_NDRV2 \n");
-        printf("====== \n");
+        printf(" Error with _neupd info = %d\n", ierr);
+        printf(" Check the documentation of _neupd. \n");
         printf(" \n");
-        printf(" Size of the matrix is %d\n", n);
-        printf(" The number of Ritz values requested is %d\n", nev);
-        printf(" The number of Arnoldi vectors generated (NCV) is %d\n", ncv);
-        printf(" What portion of the spectrum: %s\n", which);
-        printf(" The number of converged Ritz values is %d\n", nconv);
-        printf(" The number of Implicit Arnoldi update iterations taken is %d\n", iparam[2]);
-        printf(" The number of OP*x is %d\n", iparam[8]);
-        printf(" The convergence criterion is %e\n", tol);
+
+        goto EXIT;
+    }
+
+    nconv = iparam[4];
+    for (j = 1; j <= nconv; ++j)
+    {
+        int k = (j - 1) * n;
+
+        /* ------------------------- */
+        /* Compute the residual norm */
+        /*                           */
+        /*   ||  A*x - lambda*x ||   */
+        /*                           */
+        /* for the NCONV accurately  */
+        /* computed eigenvalues and  */
+        /* eigenvectors.  (iparam(5) */
+        /* indicates how many are    */
+        /* accurate to the requested */
+        /* tolerance)                */
+        /* ------------------------- */
+
+        cndrv2_av_(n, &v[k], ax);
+        i__2 = j - 1;
+        q__1.r = -d[i__2].r, q__1.i = -d[i__2].i;
+        caxpy_(&n, &q__1, &v[k], &c__1, ax, &c__1);
+        i__2 = j - 1;
+        rd[j - 1] = d[i__2].r;
+        rd[j + 24] = r_imag(&d[j - 1]);
+        rd[j + 49] = scnrm2_(&n, ax, &c__1);
+        rd[j + 49] /= slapy2_(&rd[j - 1], &rd[j + 24]);
+
+    }
+
+    /* --------------------------- */
+    /* Display computed residuals. */
+    /* --------------------------- */
+
+    smout_(&nconv, &c__3, rd, &c__25, &c_n6, "Ritz values (Real, Imag) and relative residuals");
+
+    /* ----------------------------------------- */
+    /* Print additional convergence information. */
+    /* ----------------------------------------- */
+
+    if (info == 1)
+    {
+        printf(" \n");
+        printf(" Maximum number of iterations reached.\n");
+        printf(" \n");
+    }
+    else if (info == 3)
+    {
+        printf(" \n");
+        printf(" No shifts could be applied during implicit\n");
+        printf(" Arnoldi update try increasing NCV.\n");
         printf(" \n");
     }
 
+    printf(" \n");
+    printf("_NDRV2 \n");
+    printf("====== \n");
+    printf(" \n");
+    printf(" Size of the matrix is %d\n", n);
+    printf(" The number of Ritz values requested is %d\n", nev);
+    printf(" The number of Arnoldi vectors generated (NCV) is %d\n", ncv);
+    printf(" What portion of the spectrum: %s\n", which);
+    printf(" The number of converged Ritz values is %d\n", nconv);
+    printf(" The number of Implicit Arnoldi update iterations taken is %d\n", iparam[2]);
+    printf(" The number of OP*x is %d\n", iparam[8]);
+    printf(" The convergence criterion is %e\n", tol);
+    printf(" \n");
+
+EXIT:
+
+    free(du);
+    free(dd);
+    free(dl);
+    free(du2);
+
+    free(ax);
     free(resid);
     free(v);
     free(workl);
@@ -403,8 +412,8 @@ L20:
     /* Done with program cndrv2. */
     /* ------------------------- */
 
-    return 0;
-} /* MAIN__ */
+    return ierr;
+}
 
 /* ------------------------------------------------------------------- */
 

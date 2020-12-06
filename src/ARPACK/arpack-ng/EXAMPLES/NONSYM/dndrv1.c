@@ -51,33 +51,23 @@ int dndrv1()
 
     /* Local variables */
     double d[90]	/* was [30][3] */;
-    int j, n;
-    double ax[256];
-    int nx, ido, ncv, nev;
-    double tol;
-    char* bmat;
-    int mode, info;
+    int j;
+
+
+
+    int mode;
     bool rvec;
     int ierr;
-    char* which;
+
     int nconv;
-    double* v	/* was [256][30] */;
-    double* resid;
-    double* workd;
-    double* workl;
     bool first;
     int ipntr[14];
     int iparam[11];
     double sigmai;
     bool select[30];
     double sigmar;
-    int ishfts, maxitr, lworkl;
+    int ishfts, maxitr;
     double workev[90];
-
-    resid = (double*)malloc(256 * sizeof(double));
-    v = (double*)malloc(7680 * sizeof(double));
-    workl = (double*)malloc(2880 * sizeof(double));
-    workd = (double*)malloc(768 * sizeof(double));
 
     /* Define maximum dimensions for all arrays. */
 
@@ -103,10 +93,10 @@ int dndrv1()
     /*           NEV + 2 <= NCV <= MAXNCV               */
     /* ------------------------------------------------ */
 
-    nx = 10;
-    n = nx * nx;
-    nev = 4;
-    ncv = 20;
+    int nx = 10;
+    int n = nx * nx;
+    int nev = 4;
+    int ncv = 20;
     if (n > 256)
     {
         printf(" ERROR with _NDRV1: N is greater than MAXN \n");
@@ -122,8 +112,8 @@ int dndrv1()
         printf(" ERROR with _NDRV1: NCV is greater than MAXNCV \n");
         return 0;
     }
-    bmat = "I";
-    which = "SM";
+    char* bmat = "I";
+    char* which = "SM";
 
     /* --------------------------------------------------- */
     /* The work array WORKL is used in DNAUPD as           */
@@ -136,10 +126,16 @@ int dndrv1()
     /* generated in DNAUPD to start the Arnoldi iteration. */
     /* --------------------------------------------------- */
 
-    lworkl = ncv * ncv * 3 + ncv * 6;
-    tol = 0.;
-    ido = 0;
-    info = 0;
+    int lworkl = ncv * ncv * 3 + ncv * 6;
+    double tol = 0.;
+    int ido = 0;
+    int info = 0;
+
+    double* ax = (double*)malloc(n * sizeof(double));
+    double* resid = (double*)malloc(n * sizeof(double));
+    double* v = (double*)malloc(n * ncv * sizeof(double));
+    double* workl = (double*)malloc(lworkl * sizeof(double));
+    double* workd = (double*)malloc(3 * n * sizeof(double));
 
     /* ------------------------------------------------- */
     /* This program uses exact shifts with respect to    */
@@ -172,7 +168,7 @@ L10:
     /* has been exceeded.                          */
     /* ------------------------------------------- */
 
-    dnaupd_(&ido, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, workd, workl, &lworkl, &info);
+    dnaupd_(&ido, bmat, &n, which, &nev, &tol, resid, &ncv, v, &n, iparam, ipntr, workd, workl, &lworkl, &info);
 
     if (ido == -1 || ido == 1)
     {
@@ -209,152 +205,157 @@ L10:
 
         printf(" \n");
         printf(" Error with _naupd info = %d\n", info);
-        printf(" Check the documentation of _naupd\n");
+        printf(" Check the documentation of _naupd.\n");
         printf(" \n");
+
+        ierr = info;
+        goto EXIT;
     }
-    else
+
+    /* ----------------------------------------- */
+    /* No fatal errors occurred.                 */
+    /* Post-Process using DNEUPD.                */
+    /*                                           */
+    /* Computed eigenvalues may be extracted.    */
+    /*                                           */
+    /* Eigenvectors may also be computed now if  */
+    /* desired.  (indicated by rvec = .true.)    */
+    /* ----------------------------------------- */
+
+    rvec = true;
+
+    dneupd_(&rvec, "A", select, d, &d[30], v, &n, &sigmar, &sigmai, workev, bmat, &n, which, &nev, &tol, resid, &ncv, v, &n, iparam, ipntr, workd, workl, &lworkl, &ierr);
+
+    /* --------------------------------------------- */
+    /* The real part of the eigenvalue is returned   */
+    /* in the first column of the two dimensional    */
+    /* array D, and the imaginary part is returned   */
+    /* in the second column of D.  The corresponding */
+    /* eigenvectors are returned in the first NEV    */
+    /* columns of the two dimensional array V if     */
+    /* requested.  Otherwise, an orthogonal basis    */
+    /* for the invariant subspace corresponding to   */
+    /* the eigenvalues in D is returned in V.        */
+    /* --------------------------------------------- */
+
+    if (ierr != 0)
     {
-        /* ----------------------------------------- */
-        /* No fatal errors occurred.                 */
-        /* Post-Process using DNEUPD.                */
-        /*                                           */
-        /* Computed eigenvalues may be extracted.    */
-        /*                                           */
-        /* Eigenvectors may also be computed now if  */
-        /* desired.  (indicated by rvec = .true.)    */
-        /* ----------------------------------------- */
+        /* ---------------------------------- */
+        /* Error condition:                   */
+        /* Check the documentation of DNEUPD. */
+        /* ---------------------------------- */
 
-        rvec = true;
+        printf(" \n");
+        printf(" Error with _neupd info = %d\n", ierr);
+        printf(" Check the documentation of _neupd. \n");
+        printf(" \n");
 
-        dneupd_(&rvec, "A", select, d, &d[30], v, &c__256, &sigmar, &sigmai, workev, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, workd, workl, &lworkl, &ierr);
+        goto EXIT;
+    }
 
-        /* --------------------------------------------- */
-        /* The real part of the eigenvalue is returned   */
-        /* in the first column of the two dimensional    */
-        /* array D, and the imaginary part is returned   */
-        /* in the second column of D.  The corresponding */
-        /* eigenvectors are returned in the first NEV    */
-        /* columns of the two dimensional array V if     */
-        /* requested.  Otherwise, an orthogonal basis    */
-        /* for the invariant subspace corresponding to   */
-        /* the eigenvalues in D is returned in V.        */
-        /* --------------------------------------------- */
+    first = true;
+    nconv = iparam[4];
+    for (j = 1; j <= nconv; ++j)
+    {
+        int k = (j - 1) * n;
 
-        if (ierr != 0)
+        /* ------------------------- */
+        /* Compute the residual norm */
+        /*                           */
+        /*   ||  A*x - lambda*x ||   */
+        /*                           */
+        /* for the NCONV accurately  */
+        /* computed eigenvalues and  */
+        /* eigenvectors.  (iparam(5) */
+        /* indicates how many are    */
+        /* accurate to the requested */
+        /* tolerance)                */
+        /* ------------------------- */
+
+        if (d[j + 29] == 0.)
         {
-            /* ---------------------------------- */
-            /* Error condition:                   */
-            /* Check the documentation of DNEUPD. */
-            /* ---------------------------------- */
+            /* ------------------ */
+            /* Ritz value is real */
+            /* ------------------ */
 
-            printf(" \n");
-            printf(" Error with _neupd info = %d\n", ierr);
-            printf(" Check the documentation of _neupd. \n");
-            printf(" \n");
+            dndrv1_av_(nx, &v[k], ax);
+            d__1 = -d[j - 1];
+            daxpy_(&n, &d__1, &v[k], &c__1, ax, &c__1);
+            d[j + 59] = dnrm2_(&n, ax, &c__1);
+            d[j + 59] /= (d__1 = d[j - 1], abs(d__1));
+        }
+        else if (first)
+        {
+            /* ---------------------- */
+            /* Ritz value is complex. */
+            /* Residual of one Ritz   */
+            /* value of the conjugate */
+            /* pair is computed.      */
+            /* ---------------------- */
 
+            dndrv1_av_(nx, &v[k], ax);
+            d__1 = -d[j - 1];
+            daxpy_(&n, &d__1, &v[k], &c__1, ax, &c__1);
+            daxpy_(&n, &d[j + 29], &v[j * n], &c__1, ax, &c__1);
+            d[j + 59] = dnrm2_(&n, ax, &c__1);
+            dndrv1_av_(nx, &v[j * n], ax);
+            d__1 = -d[j + 29];
+            daxpy_(&n, &d__1, &v[k], &c__1, ax, &c__1);
+            d__1 = -d[j - 1];
+            daxpy_(&n, &d__1, &v[j * n], &c__1, ax, &c__1);
+            d__1 = dnrm2_(&n, ax, &c__1);
+            d[j + 59] = dlapy2_(&d[j + 59], &d__1);
+            d[j + 59] /= dlapy2_(&d[j - 1], &d[j + 29]);
+            d[j + 60] = d[j + 59];
+            first = false;
         }
         else
         {
             first = true;
-            nconv = iparam[4];
-            for (j = 1; j <= nconv; ++j)
-            {
-                /* ------------------------- */
-                /* Compute the residual norm */
-                /*                           */
-                /*   ||  A*x - lambda*x ||   */
-                /*                           */
-                /* for the NCONV accurately  */
-                /* computed eigenvalues and  */
-                /* eigenvectors.  (iparam(5) */
-                /* indicates how many are    */
-                /* accurate to the requested */
-                /* tolerance)                */
-                /* ------------------------- */
-
-                if (d[j + 29] == 0.)
-                {
-                    /* ------------------ */
-                    /* Ritz value is real */
-                    /* ------------------ */
-
-                    dndrv1_av_(nx, &v[(j << 8) - 256], ax);
-                    d__1 = -d[j - 1];
-                    daxpy_(&n, &d__1, &v[(j << 8) - 256], &c__1, ax, &c__1);
-                    d[j + 59] = dnrm2_(&n, ax, &c__1);
-                    d[j + 59] /= (d__1 = d[j - 1], abs(d__1));
-                }
-                else if (first)
-                {
-                    /* ---------------------- */
-                    /* Ritz value is complex. */
-                    /* Residual of one Ritz   */
-                    /* value of the conjugate */
-                    /* pair is computed.      */
-                    /* ---------------------- */
-
-                    dndrv1_av_(nx, &v[(j << 8) - 256], ax);
-                    d__1 = -d[j - 1];
-                    daxpy_(&n, &d__1, &v[(j << 8) - 256], &c__1, ax, &c__1);
-                    daxpy_(&n, &d[j + 29], &v[(j + 1 << 8) - 256], &c__1, ax, &c__1);
-                    d[j + 59] = dnrm2_(&n, ax, &c__1);
-                    dndrv1_av_(nx, &v[(j + 1 << 8) - 256], ax);
-                    d__1 = -d[j + 29];
-                    daxpy_(&n, &d__1, &v[(j << 8) - 256], &c__1, ax, &c__1);
-                    d__1 = -d[j - 1];
-                    daxpy_(&n, &d__1, &v[(j + 1 << 8) - 256], &c__1, ax, &c__1);
-                    d__1 = dnrm2_(&n, ax, &c__1);
-                    d[j + 59] = dlapy2_(&d[j + 59], &d__1);
-                    d[j + 59] /= dlapy2_(&d[j - 1], &d[j + 29]);
-                    d[j + 60] = d[j + 59];
-                    first = false;
-                }
-                else
-                {
-                    first = true;
-                }
-            }
-
-            /* --------------------------- */
-            /* Display computed residuals. */
-            /* --------------------------- */
-
-            dmout_(&nconv, &c__3, d, &c__30, &c_n6, "Ritz values (Real,Imag) and relative residuals");
         }
+    }
 
-        /* ----------------------------------------- */
-        /* Print additional convergence information. */
-        /* ----------------------------------------- */
+    /* --------------------------- */
+    /* Display computed residuals. */
+    /* --------------------------- */
 
-        if (info == 1)
-        {
-            printf(" \n");
-            printf(" Maximum number of iterations reached.\n");
-            printf(" \n");
-        }
-        else if (info == 3)
-        {
-            printf(" \n");
-            printf(" No shifts could be applied during implicit\n");
-            printf(" Arnoldi update try increasing NCV.\n");
-            printf(" \n");
-        }
+    dmout_(&nconv, &c__3, d, &c__30, &c_n6, "Ritz values (Real,Imag) and relative residuals");
 
+    /* ----------------------------------------- */
+    /* Print additional convergence information. */
+    /* ----------------------------------------- */
+
+    if (info == 1)
+    {
         printf(" \n");
-        printf(" _NDRV1 \n");
-        printf(" ====== \n");
+        printf(" Maximum number of iterations reached.\n");
         printf(" \n");
-        printf(" Size of the matrix is %d\n", n);
-        printf(" The number of Ritz values requested is %d\n", nev);
-        printf(" The number of Arnoldi vectors generated (NCV) is %d\n", ncv);
-        printf(" What portion of the spectrum: %s\n", which);
-        printf(" The number of converged Ritz values is %d\n", nconv);
-        printf(" The number of Implicit Arnoldi update iterations taken is %d\n", iparam[2]);
-        printf(" The number of OP*x is %d\n", iparam[8]);
-        printf(" The convergence criterion is %e\n", tol);
+    }
+    else if (info == 3)
+    {
+        printf(" \n");
+        printf(" No shifts could be applied during implicit\n");
+        printf(" Arnoldi update try increasing NCV.\n");
         printf(" \n");
     }
 
+    printf(" \n");
+    printf(" _NDRV1 \n");
+    printf(" ====== \n");
+    printf(" \n");
+    printf(" Size of the matrix is %d\n", n);
+    printf(" The number of Ritz values requested is %d\n", nev);
+    printf(" The number of Arnoldi vectors generated (NCV) is %d\n", ncv);
+    printf(" What portion of the spectrum: %s\n", which);
+    printf(" The number of converged Ritz values is %d\n", nconv);
+    printf(" The number of Implicit Arnoldi update iterations taken is %d\n", iparam[2]);
+    printf(" The number of OP*x is %d\n", iparam[8]);
+    printf(" The convergence criterion is %e\n", tol);
+    printf(" \n");
+
+EXIT:
+
+    free(ax);
     free(resid);
     free(v);
     free(workl);
@@ -364,8 +365,8 @@ L10:
     /* Done with program dndrv1. */
     /* ------------------------- */
 
-    return 0;
-} /* MAIN__ */
+    return ierr;
+}
 
 /* ========================================================================== */
 

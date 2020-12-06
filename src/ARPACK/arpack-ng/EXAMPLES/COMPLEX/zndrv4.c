@@ -63,38 +63,24 @@ int zndrv4()
 
     /* Local variables */
     zomplex d[25], h;
-    int j, n;
-    zomplex s, s1, s2, s3, dd[256], dl[
-        256];
+    int j;
+    zomplex s, s1, s2, s3;
     double rd[75]	/* was [25][3] */;
-    zomplex ax[256], du[256];
-    zomplex mx[256], du2[256];
-    int ido, ncv, nev;
-    double tol;
-    char* bmat;
-    int mode, info;
+
+    int mode;
     bool rvec;
     int ierr, ipiv[256];
     zomplex sigma;
-    char* which;
+
     int nconv;
-    zomplex *v	/* was [256][25] */;
-    zomplex *resid;
-    zomplex *workd;
-    zomplex *workl;
     int ipntr[14];
     double rwork[256];
     int iparam[11];
     bool select[25];
     int ishfts;
     int maxitr;
-    int lworkl;
-    zomplex workev[50];
 
-    resid = (zomplex*)malloc(256 * sizeof(zomplex));
-    v = (zomplex*)malloc(6400 * sizeof(zomplex));
-    workl = (zomplex*)malloc(2000 * sizeof(zomplex));
-    workd = (zomplex*)malloc(768 * sizeof(zomplex));
+    zomplex workev[50];
 
     /* Define maximum dimensions for all arrays. */
 
@@ -117,9 +103,9 @@ int zndrv4()
     /*               NEV + 2 <= NCV <= MAXNCV             */
     /* -------------------------------------------------- */
 
-    n = 100;
-    nev = 4;
-    ncv = 20;
+    int n = 100;
+    int nev = 4;
+    int ncv = 20;
     if (n > 256)
     {
         printf(" ERROR with _NDRV4: N is greater than MAXN \n");
@@ -135,8 +121,8 @@ int zndrv4()
         printf(" ERROR with _NDRV4: NCV is greater than MAXNCV \n");
         return 0;
     }
-    bmat = "G";
-    which = "LM";
+    char* bmat = "G";
+    char* which = "LM";
     sigma.r = 1., sigma.i = 0.;
 
     /* ------------------------------------------------ */
@@ -151,6 +137,11 @@ int zndrv4()
     /* symmetric tridiagonal matrix with 4.0 on the     */
     /* diagonal and 1.0 on the off-diagonals.           */
     /* ------------------------------------------------ */
+
+    zomplex* du = (zomplex*)malloc(n * sizeof(zomplex));
+    zomplex* dd = (zomplex*)malloc(n * sizeof(zomplex));
+    zomplex* dl = (zomplex*)malloc(n * sizeof(zomplex));
+    zomplex* du2 = (zomplex*)malloc(n * sizeof(zomplex));
 
     convct_1.rho.r = 10., convct_1.rho.i = 0.;
     i__1 = n + 1;
@@ -219,10 +210,17 @@ int zndrv4()
     /* --------------------------------------------------- */
 
     /* Computing 2nd power */
-    lworkl = ncv * ncv * 3 + ncv * 5;
-    tol = 0.f;
-    ido = 0;
-    info = 0;
+    int lworkl = ncv * ncv * 3 + ncv * 5;
+    double tol = 0.;
+    int ido = 0;
+    int info = 0;
+
+    zomplex* ax = (zomplex*)malloc(n * sizeof(zomplex));
+    zomplex* mx = (zomplex*)malloc(n * sizeof(zomplex));
+    zomplex* resid = (zomplex*)malloc(n * sizeof(zomplex));
+    zomplex* v = (zomplex*)malloc(n * ncv * sizeof(zomplex));
+    zomplex* workl = (zomplex*)malloc(lworkl * sizeof(zomplex));
+    zomplex* workd = (zomplex*)malloc(3 * n * sizeof(zomplex));
 
     /* ------------------------------------------------- */
     /* This program uses exact shifts with respect to    */
@@ -255,7 +253,7 @@ L20:
     /* has been exceeded.                          */
     /* ------------------------------------------- */
 
-    znaupd_(&ido, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, workd, workl, &lworkl, rwork, &info);
+    znaupd_(&ido, bmat, &n, which, &nev, &tol, resid, &ncv, v, &n, iparam, ipntr, workd, workl, &lworkl, rwork, &info);
 
     if (ido == -1)
     {
@@ -278,7 +276,7 @@ L20:
             printf(" \n");
             printf(" ERROR with _gttrs in _NDRV4.\n");
             printf(" \n");
-            return ierr;
+            goto EXIT;
         }
 
         /* --------------------------------------- */
@@ -305,7 +303,7 @@ L20:
             printf(" \n");
             printf(" ERROR with _gttrs in _NDRV4.\n");
             printf(" \n");
-            return ierr;
+            goto EXIT;
         }
 
         /* --------------------------------------- */
@@ -348,113 +346,123 @@ L20:
         printf(" Error with _naupd info = %d\n", info);
         printf(" Check the documentation of _naupd.\n");
         printf(" \n");
+
+        ierr = info;
+        goto EXIT;
     }
-    else
+
+    /* ----------------------------------------- */
+    /* No fatal errors occurred.                 */
+    /* Post-Process using ZNEUPD .                */
+    /*                                           */
+    /* Computed eigenvalues may be extracted.    */
+    /*                                           */
+    /* Eigenvectors may also be computed now if  */
+    /* desired.  (indicated by rvec = .true.)    */
+    /* ----------------------------------------- */
+
+    rvec = true;
+
+    zneupd_(&rvec, "A", select, d, v, &n, &sigma, workev, bmat, &n,which, &nev, &tol, resid, &ncv, v, &n, iparam, ipntr, workd, workl, &lworkl, rwork, &ierr);
+
+    /* -------------------------------------------- */
+    /* Eigenvalues are returned in the one          */
+    /* dimensional array D.  The corresponding      */
+    /* eigenvectors are returned in the first NCONV */
+    /* (=IPARAM(5)) columns of the two dimensional  */
+    /* array V if requested.  Otherwise, an         */
+    /* orthogonal basis for the invariant subspace  */
+    /* corresponding to the eigenvalues in D is     */
+    /* returned in V.                               */
+    /* -------------------------------------------- */
+
+    if (ierr != 0)
     {
-        /* ----------------------------------------- */
-        /* No fatal errors occurred.                 */
-        /* Post-Process using ZNEUPD .                */
-        /*                                           */
-        /* Computed eigenvalues may be extracted.    */
-        /*                                           */
-        /* Eigenvectors may also be computed now if  */
-        /* desired.  (indicated by rvec = .true.)    */
-        /* ----------------------------------------- */
-
-        rvec = true;
-
-        zneupd_(&rvec, "A", select, d, v, &c__256, &sigma, workev, bmat, &n,which, &nev, &tol, resid, &ncv, v, &c__256, iparam, ipntr, workd, workl, &lworkl, rwork, &ierr);
-
-        /* -------------------------------------------- */
-        /* Eigenvalues are returned in the one          */
-        /* dimensional array D.  The corresponding      */
-        /* eigenvectors are returned in the first NCONV */
-        /* (=IPARAM(5)) columns of the two dimensional  */
-        /* array V if requested.  Otherwise, an         */
-        /* orthogonal basis for the invariant subspace  */
-        /* corresponding to the eigenvalues in D is     */
-        /* returned in V.                               */
-        /* -------------------------------------------- */
-
-        if (ierr != 0)
-        {
-            /* ---------------------------------- */
-            /* Error condition:                   */
-            /* Check the documentation of ZNEUPD . */
-            /* ---------------------------------- */
-
-            printf(" \n");
-            printf(" Error with _neupd info = %d\n", ierr);
-            printf(" Check the documentation of _neupd. \n");
-            printf(" \n");
-
-        }
-        else
-        {
-            nconv = iparam[4];
-            for (j = 1; j <= nconv; ++j)
-            {
-                zndrv4_av_(n, &v[(j << 8) - 256], ax);
-                zndrv4_mv_(n, &v[(j << 8) - 256], mx);
-                i__2 = j - 1;
-                z__1.r = -d[i__2].r, z__1.i = -d[i__2].i;
-                zaxpy_(&n, &z__1, mx, &c__1, ax, &c__1);
-                i__2 = j - 1;
-                rd[j - 1] = d[i__2].r;
-                rd[j + 24] = d_imag(&d[j - 1]);
-                rd[j + 49] = dznrm2_(&n, ax, &c__1);
-                rd[j + 49] /= dlapy2_(&rd[j - 1], &rd[j + 24]);
-
-            }
-
-            /* --------------------------- */
-            /* Display computed residuals. */
-            /* --------------------------- */
-
-            dmout_(&nconv, &c__3, rd, &c__25, &c_n6, "Ritz values (Real, Imag) and direct residuals");
-
-        }
-
-        /* ----------------------------------------- */
-        /* Print additional convergence information. */
-        /* ----------------------------------------- */
-
-        if (info == 1)
-        {
-            printf(" \n");
-            printf(" Maximum number of iterations reached.\n");
-            printf(" \n");
-        }
-        else if (info == 3)
-        {
-            printf(" \n");
-            printf(" No shifts could be applied during implicit\n");
-            printf(" Arnoldi update try increasing NCV.\n");
-            printf(" \n");
-        }
+        /* ---------------------------------- */
+        /* Error condition:                   */
+        /* Check the documentation of ZNEUPD . */
+        /* ---------------------------------- */
 
         printf(" \n");
-        printf("_NDRV4 \n");
-        printf("====== \n");
+        printf(" Error with _neupd info = %d\n", ierr);
+        printf(" Check the documentation of _neupd. \n");
         printf(" \n");
-        printf(" Size of the matrix is %d\n", n);
-        printf(" The number of Ritz values requested is %d\n", nev);
-        printf(" The number of Arnoldi vectors generated (NCV) is %d\n", ncv);
-        printf(" What portion of the spectrum: %s\n", which);
-        printf(" The number of converged Ritz values is %d\n", nconv);
-        printf(" The number of Implicit Arnoldi update iterations taken is %d\n", iparam[2]);
-        printf(" The number of OP*x is %d\n", iparam[8]);
-        printf(" The convergence criterion is %e\n", tol);
+
+        goto EXIT;
+    }
+
+    nconv = iparam[4];
+    for (j = 1; j <= nconv; ++j)
+    {
+        int k = (j - 1) * n;
+
+        zndrv4_av_(n, &v[k], ax);
+        zndrv4_mv_(n, &v[k], mx);
+        i__2 = j - 1;
+        z__1.r = -d[i__2].r, z__1.i = -d[i__2].i;
+        zaxpy_(&n, &z__1, mx, &c__1, ax, &c__1);
+        i__2 = j - 1;
+        rd[j - 1] = d[i__2].r;
+        rd[j + 24] = d_imag(&d[j - 1]);
+        rd[j + 49] = dznrm2_(&n, ax, &c__1);
+        rd[j + 49] /= dlapy2_(&rd[j - 1], &rd[j + 24]);
+
+    }
+
+    /* --------------------------- */
+    /* Display computed residuals. */
+    /* --------------------------- */
+
+    dmout_(&nconv, &c__3, rd, &c__25, &c_n6, "Ritz values (Real, Imag) and direct residuals");
+
+    /* ----------------------------------------- */
+    /* Print additional convergence information. */
+    /* ----------------------------------------- */
+
+    if (info == 1)
+    {
+        printf(" \n");
+        printf(" Maximum number of iterations reached.\n");
+        printf(" \n");
+    }
+    else if (info == 3)
+    {
+        printf(" \n");
+        printf(" No shifts could be applied during implicit\n");
+        printf(" Arnoldi update try increasing NCV.\n");
         printf(" \n");
     }
 
+    printf(" \n");
+    printf("_NDRV4 \n");
+    printf("====== \n");
+    printf(" \n");
+    printf(" Size of the matrix is %d\n", n);
+    printf(" The number of Ritz values requested is %d\n", nev);
+    printf(" The number of Arnoldi vectors generated (NCV) is %d\n", ncv);
+    printf(" What portion of the spectrum: %s\n", which);
+    printf(" The number of converged Ritz values is %d\n", nconv);
+    printf(" The number of Implicit Arnoldi update iterations taken is %d\n", iparam[2]);
+    printf(" The number of OP*x is %d\n", iparam[8]);
+    printf(" The convergence criterion is %e\n", tol);
+    printf(" \n");
+
+EXIT:
+
+    free(du);
+    free(dd);
+    free(dl);
+    free(du2);
+
+    free(ax);
+    free(mx);
     free(resid);
     free(v);
     free(workl);
     free(workd);
 
-    return 0;
-} /* MAIN__ */
+    return ierr;
+}
 
 /* ========================================================================== */
 

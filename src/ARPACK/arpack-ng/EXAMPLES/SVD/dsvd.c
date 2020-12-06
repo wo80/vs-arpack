@@ -99,33 +99,24 @@ int dsvd()
 
     /* Builtin functions */
 
-    int s_wsle(cilist *), do_lio(int *, int *, char *, ftnlen),
-            e_wsle(void);
     double sqrt(double);
 
     /* Local variables */
-    int j, m, n;
-    double s[50]	/* was [25][2] */, u[5000]	/* was [500][10] */,
-               v[6250]	/* was [250][25] */;
-    double ax[500];
-    int ido, ncv, nev;
-    double tol;
-    char* bmat;
-    int info;
+    int j;
+
+    double s[50]	/* was [25][2] */;
+
     bool rvec;
     int ierr;
     double temp;
     int mode1;
     double sigma;
-    char* which;
-    double resid[250];
+
     int nconv;
-    double workd[750];
     int ipntr[11];
-    double workl[825];
     int iparam[11];
     bool select[25];
-    int ishfts, maxitr, lworkl;
+    int ishfts, maxitr;
 
     /* ---------------------------------------------------- */
     /* Storage Declarations:                                */
@@ -185,8 +176,8 @@ int dsvd()
     /* The following sets dimensions for this problem. */
     /* ----------------------------------------------- */
 
-    m = 500;
-    n = 100;
+    int m = 500;
+    int n = 100;
 
     /* ---------------------------------------------- */
     /* Specifications for ARPACK usage are set        */
@@ -213,10 +204,10 @@ int dsvd()
     /*             NEV + 1 <= NCV <= MAXNCV           */
     /* ---------------------------------------------- */
 
-    nev = 4;
-    ncv = 10;
-    bmat = "I";
-    which = "LM";
+    int nev = 4;
+    int ncv = 10;
+    char* bmat = "I";
+    char* which = "LM";
 
     if (n > 250)
     {
@@ -271,10 +262,17 @@ int dsvd()
     /* illustrated below.                                  */
     /* --------------------------------------------------- */
 
-    lworkl = ncv * (ncv + 8);
-    tol = 0.;
-    info = 0;
-    ido = 0;
+    int lworkl = ncv * (ncv + 8);
+    double tol = 0.;
+    int info = 0;
+    int ido = 0;
+
+    double* ax = (double*)malloc(m * sizeof(double));
+    double* u = (double*)malloc(m * nev * sizeof(double));
+    double* v = (double*)malloc(n * ncv * sizeof(double));
+    double* resid = (double*)malloc(n * sizeof(double));
+    double* workl = (double*)malloc(lworkl * sizeof(double));
+    double* workd = (double*)malloc(3 * n * sizeof(double));
 
     /* ------------------------------------------------- */
     /* Specification of Algorithm Mode:                  */
@@ -311,7 +309,7 @@ L10:
     /* has been exceeded.                          */
     /* ------------------------------------------- */
 
-    dsaupd_(&ido, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__250, iparam, ipntr, workd, workl, &lworkl, &info);
+    dsaupd_(&ido, bmat, &n, which, &nev, &tol, resid, &ncv, v, &n /* was &c__250 */, iparam, ipntr, workd, workl, &lworkl, &info);
 
     if (ido == -1 || ido == 1)
     {
@@ -352,137 +350,146 @@ L10:
         printf(" Error with _saupd info = %d\n", info);
         printf(" Check documentation in _saupd \n");
         printf(" \n");
+
+        ierr = info;
+        goto EXIT;
     }
-    else
+
+    /* ------------------------------------------ */
+    /* No fatal errors occurred.                  */
+    /* Post-Process using DSEUPD.                 */
+    /*                                            */
+    /* Computed singular values may be extracted. */
+    /*                                            */
+    /* Singular vectors may also be computed now  */
+    /* if desired.  (indicated by rvec = .true.)  */
+    /*                                            */
+    /* The routine DSEUPD now called to do this   */
+    /* post processing                            */
+    /* ------------------------------------------ */
+
+    rvec = true;
+
+    dseupd_(&rvec, "A", select, s, v, &n /* was &c__250 */, &sigma, bmat, &n, which, &nev, &tol, resid, &ncv, v, &n /* was &c__250 */, iparam, ipntr, workd, workl, &lworkl, &ierr);
+
+    /* --------------------------------------------- */
+    /* Singular values are returned in the first     */
+    /* column of the two dimensional array S         */
+    /* and the corresponding right singular vectors  */
+    /* are returned in the first NEV columns of the  */
+    /* two dimensional array V as requested here.    */
+    /* --------------------------------------------- */
+
+    if (ierr != 0)
     {
-        /* ------------------------------------------ */
-        /* No fatal errors occurred.                  */
-        /* Post-Process using DSEUPD.                 */
-        /*                                            */
-        /* Computed singular values may be extracted. */
-        /*                                            */
-        /* Singular vectors may also be computed now  */
-        /* if desired.  (indicated by rvec = .true.)  */
-        /*                                            */
-        /* The routine DSEUPD now called to do this   */
-        /* post processing                            */
-        /* ------------------------------------------ */
-
-        rvec = true;
-
-        dseupd_(&rvec, "A", select, s, v, &c__250, &sigma, bmat, &n, which, &nev, &tol, resid, &ncv, v, &c__250, iparam, ipntr, workd, workl, &lworkl, &ierr);
-
-        /* --------------------------------------------- */
-        /* Singular values are returned in the first     */
-        /* column of the two dimensional array S         */
-        /* and the corresponding right singular vectors  */
-        /* are returned in the first NEV columns of the  */
-        /* two dimensional array V as requested here.    */
-        /* --------------------------------------------- */
-
-        if (ierr != 0)
-        {
-            /* ---------------------------------- */
-            /* Error condition:                   */
-            /* Check the documentation of DSEUPD. */
-            /* ---------------------------------- */
-
-            printf(" \n");
-            printf(" Error with _seupd info = %d\n", ierr);
-            printf(" Check the documentation of _seupd. \n");
-            printf(" \n");
-
-        }
-        else
-        {
-            nconv = iparam[4];
-            for (j = 1; j <= nconv; ++j)
-            {
-                s[j - 1] = sqrt(s[j - 1]);
-
-                /* --------------------------- */
-                /* Compute the left singular   */
-                /* vectors from the formula    */
-                /*                             */
-                /*     u = Av/sigma            */
-                /*                             */
-                /* u should have norm 1 so     */
-                /* divide by norm(Av) instead. */
-                /* --------------------------- */
-
-                dsvd_av_(m, n, &v[j * 250 - 250], ax);
-                dcopy_(&m, ax, &c__1, &u[j * 500 - 500], &c__1);
-                temp = 1. / dnrm2_(&m, &u[j * 500 - 500], &c__1);
-                dscal_(&m, &temp, &u[j * 500 - 500], &c__1);
-
-                /* ------------------------- */
-                /*                           */
-                /* Compute the residual norm */
-                /*                           */
-                /*   ||  A*v - sigma*u ||    */
-                /*                           */
-                /* for the NCONV accurately  */
-                /* computed singular values  */
-                /* and vectors.  (iparam(5)  */
-                /* indicates how many are    */
-                /* accurate to the requested */
-                /* tolerance).               */
-                /* Store the result in 2nd   */
-                /* column of array S.        */
-                /* ------------------------- */
-
-                d__1 = -s[j - 1];
-                daxpy_(&m, &d__1, &u[j * 500 - 500], &c__1, ax, &c__1);
-                s[j + 24] = dnrm2_(&m, ax, &c__1);
-
-            }
-
-            /* ----------------------------- */
-            /* Display computed residuals    */
-            /* ----------------------------- */
-
-            dmout_(&nconv, &c__2, s, &c__25, &c_n6, "Singular values and direct residuals");
-        }
-
-        /* ---------------------------------------- */
-        /* Print additional convergence information */
-        /* ---------------------------------------- */
-
-        if (info == 1)
-        {
-            printf(" \n");
-            printf(" Maximum number of iterations reached.\n");
-            printf(" \n");
-        }
-        else if (info == 3)
-        {
-            printf(" \n");
-            printf(" No shifts could be applied during implicit\n");
-            printf(" Arnoldi update try increasing NCV.\n");
-            printf(" \n");
-        }
+        /* ---------------------------------- */
+        /* Error condition:                   */
+        /* Check the documentation of DSEUPD. */
+        /* ---------------------------------- */
 
         printf(" \n");
-        printf(" _SVD \n");
-        printf(" ==== \n");
+        printf(" Error with _seupd info = %d\n", ierr);
+        printf(" Check the documentation of _seupd. \n");
         printf(" \n");
-        printf(" Size of the matrix is %d\n", n);
-        printf(" The number of Ritz values requested is %d\n", nev);
-        printf(" The number of Arnoldi vectors generated (NCV) is %d\n", ncv);
-        printf(" What portion of the spectrum: %s\n", which);
-        printf(" The number of converged Ritz values is %d\n", nconv);
-        printf(" The number of Implicit Arnoldi update iterations taken is %d\n", iparam[2]);
-        printf(" The number of OP*x is %d\n", iparam[8]);
-        printf(" The convergence criterion is %e\n", tol);
+
+        goto EXIT;
+    }
+
+    nconv = iparam[4];
+    for (j = 1; j <= nconv; ++j)
+    {
+        s[j - 1] = sqrt(s[j - 1]);
+
+        /* --------------------------- */
+        /* Compute the left singular   */
+        /* vectors from the formula    */
+        /*                             */
+        /*     u = Av/sigma            */
+        /*                             */
+        /* u should have norm 1 so     */
+        /* divide by norm(Av) instead. */
+        /* --------------------------- */
+
+        dsvd_av_(m, n, &v[(j - 1) * n], ax);
+        dcopy_(&m, ax, &c__1, &u[(j - 1) * m], &c__1);
+        temp = 1. / dnrm2_(&m, &u[(j - 1) * m], &c__1);
+        dscal_(&m, &temp, &u[(j - 1) * m], &c__1);
+
+        /* ------------------------- */
+        /*                           */
+        /* Compute the residual norm */
+        /*                           */
+        /*   ||  A*v - sigma*u ||    */
+        /*                           */
+        /* for the NCONV accurately  */
+        /* computed singular values  */
+        /* and vectors.  (iparam(5)  */
+        /* indicates how many are    */
+        /* accurate to the requested */
+        /* tolerance).               */
+        /* Store the result in 2nd   */
+        /* column of array S.        */
+        /* ------------------------- */
+
+        d__1 = -s[j - 1];
+        daxpy_(&m, &d__1, &u[(j - 1) * m], &c__1, ax, &c__1);
+        s[j + 24] = dnrm2_(&m, ax, &c__1);
+
+    }
+
+    /* ----------------------------- */
+    /* Display computed residuals    */
+    /* ----------------------------- */
+
+    dmout_(&nconv, &c__2, s, &c__25, &c_n6, "Singular values and direct residuals");
+
+    /* ---------------------------------------- */
+    /* Print additional convergence information */
+    /* ---------------------------------------- */
+
+    if (info == 1)
+    {
+        printf(" \n");
+        printf(" Maximum number of iterations reached.\n");
         printf(" \n");
     }
+    else if (info == 3)
+    {
+        printf(" \n");
+        printf(" No shifts could be applied during implicit\n");
+        printf(" Arnoldi update try increasing NCV.\n");
+        printf(" \n");
+    }
+
+    printf(" \n");
+    printf(" _SVD \n");
+    printf(" ==== \n");
+    printf(" \n");
+    printf(" Size of the matrix is %d\n", n);
+    printf(" The number of Ritz values requested is %d\n", nev);
+    printf(" The number of Arnoldi vectors generated (NCV) is %d\n", ncv);
+    printf(" What portion of the spectrum: %s\n", which);
+    printf(" The number of converged Ritz values is %d\n", nconv);
+    printf(" The number of Implicit Arnoldi update iterations taken is %d\n", iparam[2]);
+    printf(" The number of OP*x is %d\n", iparam[8]);
+    printf(" The convergence criterion is %e\n", tol);
+    printf(" \n");
+
+EXIT:
+
+    free(ax);
+    free(resid);
+    free(u);
+    free(v);
+    free(workl);
+    free(workd);
 
     /* ----------------------- */
     /* Done with program dsvd. */
     /* ----------------------- */
 
-    return 0;
-} /* MAIN__ */
+    return ierr;
+}
 
 /* ------------------------------------------------------------------ */
 /*     matrix vector subroutines */
