@@ -2,26 +2,20 @@
 
 #include "arpack.h"
 
-/* ----------------------------------------------------------------------- */
-/*  Routine:    SMOUT */
-
-/*  Purpose:    Real matrix output routine. */
-
-/*  Usage:      CALL SMOUT (LOUT, M, N, A, LDA, IDIGIT, IFMT) */
-
-/*  Arguments */
-/*     M      - Number of rows of A.  (Input) */
-/*     N      - Number of columns of A.  (Input) */
-/*     A      - Real M by N matrix to be printed.  (Input) */
-/*     LDA    - Leading dimension of A exactly as specified in the */
-/*              dimension statement of the calling program.  (Input) */
-/*     IFMT   - Format to be used in printing matrix A.  (Input) */
-/*     IDIGIT - Print up to IABS(IDIGIT) decimal digits per number.  (In) */
-/*              If IDIGIT .LT. 0, printing is done with 72 columns. */
-/*              If IDIGIT .GT. 0, printing is done with 132 columns. */
-
-/* ----------------------------------------------------------------------- */
-
+/**
+ * \Name: SMOUT
+ *        Real matrix output routine.
+ *
+ *     M      - Number of rows of A.  (Input)
+ *     N      - Number of columns of A.  (Input)
+ *     A      - Real M by N matrix to be printed.  (Input)
+ *     LDA    - Leading dimension of A exactly as specified in the
+ *              dimension statement of the calling program.  (Input)
+ *     IFMT   - Format to be used in printing matrix A.  (Input)
+ *     IDIGIT - Print up to IABS(IDIGIT) decimal digits per number.  (In)
+ *              If IDIGIT .LT. 0, printing is done with 72 columns.
+ *              If IDIGIT .GT. 0, printing is done with 132 columns.
+ */
 int smout_(int *m, int *n, float *a, int *lda, int *idigit, char *ifmt)
 {
     /* Initialized data */
@@ -33,6 +27,8 @@ int smout_(int *m, int *n, float *a, int *lda, int *idigit, char *ifmt)
     int i, j, k1, k2, lll;
     char line[80];
     int ndigit;
+    int cols = *n;
+    int rows = *m;
 
     /* Parameter adjustments */
     a_dim1 = *lda;
@@ -58,225 +54,109 @@ int smout_(int *m, int *n, float *a, int *lda, int *idigit, char *ifmt)
         return 0;
     }
     ndigit = *idigit;
-    if (*idigit == 0)
+    if (ndigit == 0)
     {
         ndigit = 4;
     }
-
-    /* ======================================================================= */
-    /*             CODE FOR OUTPUT USING 72 COLUMNS FORMAT */
-    /* ======================================================================= */
-
-    if (*idigit < 0)
+    else if (ndigit < 0)
     {
-        ndigit = -(*idigit);
-        if (ndigit <= 4)
-        {
-            i__1 = *n;
-            for (k1 = 1; k1 <= i__1; k1 += 5)
-            {
-                /* Computing MIN */
-                i__2 = *n, i__3 = k1 + 4;
-                k2 = min(i__2,i__3);
-                printf("\n          ");
-                for (i = k1; i <= k2; ++i)
-                {
-                    printf("     Col %4d ", i);
-                }
-                i__2 = *m;
-                for (i = 1; i <= i__2; ++i)
-                {
-                    printf("\n  Row %4d:  ", i);
-                    for (j = k1; j <= k2; ++j)
-                    {
-                        printf(" %12.3e", a[i + j * a_dim1]);
-                    }
-                }
-            }
-
-        }
-        else if (ndigit <= 6)
-        {
-            i__1 = *n;
-            for (k1 = 1; k1 <= i__1; k1 += 4)
-            {
-                /* Computing MIN */
-                i__2 = *n, i__3 = k1 + 3;
-                k2 = min(i__2,i__3);
-                printf("\n          ");
-                for (i = k1; i <= k2; ++i)
-                {
-                    printf("      Col %4d  ", i);
-                }
-                i__2 = *m;
-                for (i = 1; i <= i__2; ++i)
-                {
-                    printf("\n  Row %4d:  ", i);
-                    for (j = k1; j <= k2; ++j)
-                    {
-                        printf(" %14.5e", a[i + j * a_dim1]);
-                    }
-                }
-            }
-
-        }
-        else if (ndigit <= 10)
-        {
-            i__1 = *n;
-            for (k1 = 1; k1 <= i__1; k1 += 3)
-            {
-                /* Computing MIN */
-                i__2 = *n, i__3 = k1 + 2;
-                k2 = min(i__2,i__3);
-                printf("\n          ");
-                for (i = k1; i <= k2; ++i)
-                {
-                    printf("        Col %4d    ", i);
-                }
-                i__2 = *m;
-                for (i = 1; i <= i__2; ++i)
-                {
-                    printf("\n  Row %4d:  ", i);
-                    for (j = k1; j <= k2; ++j)
-                    {
-                        printf(" %18.9e", a[i + j * a_dim1]);
-                    }
-                }
-            }
-
-        }
-        else
-        {
-            i__1 = *n;
-            for (k1 = 1; k1 <= i__1; k1 += 2)
-            {
-                /* Computing MIN */
-                i__2 = *n, i__3 = k1 + 1;
-                k2 = min(i__2,i__3);
-                printf("\n          ");
-                for (i = k1; i <= k2; ++i)
-                {
-                    printf("          Col %4d      ", i);
-                }
-                i__2 = *m;
-                for (i = 1; i <= i__2; ++i)
-                {
-                    printf("\n  Row %4d:  ", i);
-                    for (j = k1; j <= k2; ++j)
-                    {
-                        printf(" %22.13e", a[i + j * a_dim1]);
-                    }
-                }
-            }
-        }
-
-        /* ======================================================================= */
-        /*             CODE FOR OUTPUT USING 132 COLUMNS FORMAT */
-        /* ======================================================================= */
-
+        /* 132 COLUMNS FORMAT WAS REMOVED */
+        ndigit = -ndigit;
     }
-    else
+
+    /* =============================================================== */
+    /*         CODE FOR OUTPUT USING 72 COLUMNS FORMAT                 */
+    /* =============================================================== */
+
+    if (ndigit <= 4)
     {
-        if (ndigit <= 4)
+        for (k1 = 1; k1 <= cols; k1 += 5)
         {
-            i__1 = *n;
-            for (k1 = 1; k1 <= i__1; k1 += 10)
+            /* Computing MIN */
+            i__2 = *n, i__3 = k1 + 4;
+            k2 = min(i__2,i__3);
+            printf("\n          ");
+            for (i = k1; i <= k2; ++i)
             {
-                /* Computing MIN */
-                i__2 = *n, i__3 = k1 + 9;
-                k2 = min(i__2,i__3);
-                printf("\n          ");
-                for (i = k1; i <= k2; ++i)
+                printf("     Col %4d ", i);
+            }
+            for (i = 1; i <= rows; ++i)
+            {
+                printf("\n  Row %4d:  ", i);
+                for (j = k1; j <= k2; ++j)
                 {
-                    printf("     Col %4d ", i);
-                }
-                i__2 = *m;
-                for (i = 1; i <= i__2; ++i)
-                {
-                    printf("\n  Row %4d:  ", i);
-                    for (j = k1; j <= k2; ++j)
-                    {
-                        printf(" %12.3e", a[i + j * a_dim1]);
-                    }
+                    printf(" %12.3e", a[i + j * a_dim1]);
                 }
             }
-
         }
-        else if (ndigit <= 6)
+    }
+    else if (ndigit <= 6)
+    {
+        for (k1 = 1; k1 <= cols; k1 += 4)
         {
-            i__1 = *n;
-            for (k1 = 1; k1 <= i__1; k1 += 8)
+            /* Computing MIN */
+            i__3 = k1 + 3;
+            k2 = min(cols,i__3);
+            printf("\n          ");
+            for (i = k1; i <= k2; ++i)
             {
-                /* Computing MIN */
-                i__2 = *n, i__3 = k1 + 7;
-                k2 = min(i__2,i__3);
-                printf("\n          ");
-                for (i = k1; i <= k2; ++i)
+                printf("      Col %4d  ", i);
+            }
+            for (i = 1; i <= rows; ++i)
+            {
+                printf("\n  Row %4d:  ", i);
+                for (j = k1; j <= k2; ++j)
                 {
-                    printf("      Col %4d  ", i);
-                }
-                i__2 = *m;
-                for (i = 1; i <= i__2; ++i)
-                {
-                    printf("\n  Row %4d:  ", i);
-                    for (j = k1; j <= k2; ++j)
-                    {
-                        printf(" %14.5e", a[i + j * a_dim1]);
-                    }
+                    printf(" %14.5e", a[i + j * a_dim1]);
                 }
             }
-
         }
-        else if (ndigit <= 10)
+    }
+    else if (ndigit <= 10)
+    {
+        for (k1 = 1; k1 <= cols; k1 += 3)
         {
-            i__1 = *n;
-            for (k1 = 1; k1 <= i__1; k1 += 6)
+            /* Computing MIN */
+            i__3 = k1 + 2;
+            k2 = min(cols,i__3);
+            printf("\n          ");
+            for (i = k1; i <= k2; ++i)
             {
-                /* Computing MIN */
-                i__2 = *n, i__3 = k1 + 5;
-                k2 = min(i__2,i__3);
-                printf("\n          ");
-                for (i = k1; i <= k2; ++i)
-                {
-                    printf("        Col %4d    ", i);
-                }
-                i__2 = *m;
-                for (i = 1; i <= i__2; ++i)
-                {
-                    printf("\n  Row %4d:  ", i);
-                    for (j = k1; j <= k2; ++j)
-                    {
-                        printf(" %18.9e", a[i + j * a_dim1]);
-                    }
-                }
+                printf("        Col %4d    ", i);
             }
-
-        }
-        else
-        {
-            i__1 = *n;
-            for (k1 = 1; k1 <= i__1; k1 += 5)
+            for (i = 1; i <= rows; ++i)
             {
-                /* Computing MIN */
-                i__2 = *n, i__3 = k1 + 4;
-                k2 = min(i__2,i__3);
-                printf("\n          ");
-                for (i = k1; i <= k2; ++i)
+                printf("\n  Row %4d:  ", i);
+                for (j = k1; j <= k2; ++j)
                 {
-                    printf("          Col %4d      ", i);
-                }
-                i__2 = *m;
-                for (i = 1; i <= i__2; ++i)
-                {
-                    printf("\n  Row %4d:  ", i);
-                    for (j = k1; j <= k2; ++j)
-                    {
-                        printf(" %22.13e", a[i + j * a_dim1]);
-                    }
+                    printf(" %18.9e", a[i + j * a_dim1]);
                 }
             }
         }
     }
+    else
+    {
+        for (k1 = 1; k1 <= cols; k1 += 2)
+        {
+            /* Computing MIN */
+            i__3 = k1 + 1;
+            k2 = min(cols,i__3);
+            printf("\n          ");
+            for (i = k1; i <= k2; ++i)
+            {
+                printf("          Col %4d      ", i);
+            }
+            for (i = 1; i <= rows; ++i)
+            {
+                printf("\n  Row %4d:  ", i);
+                for (j = k1; j <= k2; ++j)
+                {
+                    printf(" %22.13e", a[i + j * a_dim1]);
+                }
+            }
+        }
+    }
+
     printf("\n");
 
     return 0;

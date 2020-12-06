@@ -2,23 +2,17 @@
 
 #include "arpack.h"
 
-/* ----------------------------------------------------------------------- */
-/*  Routine:    CVOUT */
-
-/*  Purpose:    Complex vector output routine. */
-
-/*  Usage:      CALL CVOUT (LOUT, N, CX, IDIGIT, IFMT) */
-
-/*  Arguments */
-/*     N      - Length of array CX.  (Input) */
-/*     CX     - Complex array to be printed.  (Input) */
-/*     IFMT   - Format to be used in printing array CX.  (Input) */
-/*     IDIGIT - Print up to IABS(IDIGIT) decimal digits per number.  (In) */
-/*              If IDIGIT .LT. 0, printing is done with 72 columns. */
-/*              If IDIGIT .GT. 0, printing is done with 132 columns. */
-
-/* ----------------------------------------------------------------------- */
-
+/**
+ * \Name: CVOUT
+ *        Complex vector output routine.
+ *
+ *     N      - Length of array CX.  (Input) */
+/*     CX     - Complex array to be printed.  (Input)
+ *     IFMT   - Format to be used in printing array CX.  (Input)
+ *     IDIGIT - Print up to IABS(IDIGIT) decimal digits per number.  (In)
+ *              If IDIGIT .LT. 0, printing is done with 72 columns.
+ *              If IDIGIT .GT. 0, printing is done with 132 columns.
+ */
 int cvout_(int *n, complex *cx, int *idigit, char *ifmt)
 {
 
@@ -29,6 +23,7 @@ int cvout_(int *n, complex *cx, int *idigit, char *ifmt)
     int i, k1, k2, lll;
     char line[80];
     int ndigit;
+    int len = *n;
 
     /* Parameter adjustments */
     --cx;
@@ -51,140 +46,70 @@ int cvout_(int *n, complex *cx, int *idigit, char *ifmt)
         return 0;
     }
     ndigit = *idigit;
-    if (*idigit == 0)
+    if (ndigit == 0)
     {
         ndigit = 4;
     }
-
-    /* ======================================================================= */
-    /*             CODE FOR OUTPUT USING 72 COLUMNS FORMAT */
-    /* ======================================================================= */
-
-    if (*idigit < 0)
+    else if (ndigit < 0)
     {
-        ndigit = -(*idigit);
-        if (ndigit <= 4)
-        {
-            i__1 = *n;
-            for (k1 = 1; k1 <= i__1; k1 += 2)
-            {
-                /* Computing MIN */
-                i__2 = *n, i__3 = k1 + 1;
-                k2 = min(i__2,i__3);
-                printf("\n  %4d -   %4d:  ", k1, k2);
-                for (i = k1; i <= k2; ++i)
-                {
-                    printf("(  %10.3e   %10.3e)  ", cx[i].r, cx[i].i);
-                }
-            }
-        }
-        else if (ndigit <= 6)
-        {
-            i__1 = *n;
-            for (k1 = 1; k1 <= i__1; k1 += 2)
-            {
-                /* Computing MIN */
-                i__2 = *n, i__3 = k1 + 1;
-                k2 = min(i__2,i__3);
-                printf("\n  %4d -   %4d:  ", k1, k2);
-                for (i = k1; i <= k2; ++i)
-                {
-                    printf("(  %12.5e   %12.5e)  ", cx[i].r, cx[i].i);
-                }
-            }
-        }
-        else if (ndigit <= 8)
-        {
-            i__1 = *n;
-            for (k1 = 1; k1 <= i__1; k1 += 2)
-            {
-                /* Computing MIN */
-                i__2 = *n, i__3 = k1 + 1;
-                k2 = min(i__2,i__3);
-                printf("\n  %4d -   %4d:  ", k1, k2);
-                for (i = k1; i <= k2; ++i)
-                {
-                    printf("(  %14.7e   %14.7e)  ", cx[i].r, cx[i].i);
-                }
-            }
-        }
-        else
-        {
-            i__1 = *n;
-            for (k1 = 1; k1 <= i__1; ++k1)
-            {
-                printf("  %4d:  (  %20.13e   %20.13e)  ", k1, cx[i].r, cx[i].i);
-            }
-        }
+        /* 132 COLUMNS FORMAT WAS REMOVED */
+        ndigit = -ndigit;
+    }
 
-        /* ======================================================================= */
-        /*             CODE FOR OUTPUT USING 132 COLUMNS FORMAT */
-        /* ======================================================================= */
+    /* =============================================================== */
+    /*         CODE FOR OUTPUT USING 72 COLUMNS FORMAT                 */
+    /* =============================================================== */
 
+    if (ndigit <= 4)
+    {
+        for (k1 = 1; k1 <= len; k1 += 2)
+        {
+            /* Computing MIN */
+            i__3 = k1 + 1;
+            k2 = min(len,i__3);
+            printf("\n  %4d - %4d:  ", k1, k2);
+            for (i = k1; i <= k2; ++i)
+            {
+                printf("(  %10.3e   %10.3e)  ", cx[i].r, cx[i].i);
+            }
+        }
+    }
+    else if (ndigit <= 6)
+    {
+        for (k1 = 1; k1 <= len; k1 += 2)
+        {
+            /* Computing MIN */
+            i__3 = k1 + 1;
+            k2 = min(len,i__3);
+            printf("\n  %4d - %4d:  ", k1, k2);
+            for (i = k1; i <= k2; ++i)
+            {
+                printf("(  %12.5e   %12.5e)  ", cx[i].r, cx[i].i);
+            }
+        }
+    }
+    else if (ndigit <= 8)
+    {
+        for (k1 = 1; k1 <= len; k1 += 2)
+        {
+            /* Computing MIN */
+            i__3 = k1 + 1;
+            k2 = min(len,i__3);
+            printf("\n  %4d - %4d:  ", k1, k2);
+            for (i = k1; i <= k2; ++i)
+            {
+                printf("(  %14.7e   %14.7e)  ", cx[i].r, cx[i].i);
+            }
+        }
     }
     else
     {
-        if (ndigit <= 4)
+        for (k1 = 1; k1 <= len; ++k1)
         {
-            i__1 = *n;
-            for (k1 = 1; k1 <= i__1; k1 += 4)
-            {
-                /* Computing MIN */
-                i__2 = *n, i__3 = k1 + 3;
-                k2 = min(i__2,i__3);
-                printf("\n  %4d -   %4d:  ", k1, k2);
-                for (i = k1; i <= k2; ++i)
-                {
-                    printf("(  %10.3e   %10.3e)  ", cx[i].r, cx[i].i);
-                }
-            }
-        }
-        else if (ndigit <= 6)
-        {
-            i__1 = *n;
-            for (k1 = 1; k1 <= i__1; k1 += 3)
-            {
-                /* Computing MIN */
-                i__2 = *n, i__3 = k1 + 2;
-                k2 = min(i__2,i__3);
-                printf("\n  %4d -   %4d:  ", k1, k2);
-                for (i = k1; i <= k2; ++i)
-                {
-                    printf("(  %12.5e   %12.5e)  ", cx[i].r, cx[i].i);
-                }
-            }
-        }
-        else if (ndigit <= 8)
-        {
-            i__1 = *n;
-            for (k1 = 1; k1 <= i__1; k1 += 3)
-            {
-                /* Computing MIN */
-                i__2 = *n, i__3 = k1 + 2;
-                k2 = min(i__2,i__3);
-                printf("\n  %4d -   %4d:  ", k1, k2);
-                for (i = k1; i <= k2; ++i)
-                {
-                    printf("(  %14.7e   %14.7e)  ", cx[i].r, cx[i].i);
-                }
-            }
-        }
-        else
-        {
-            i__1 = *n;
-            for (k1 = 1; k1 <= i__1; k1 += 2)
-            {
-                /* Computing MIN */
-                i__2 = *n, i__3 = k1 + 1;
-                k2 = min(i__2,i__3);
-                printf("\n  %4d -   %4d:  ", k1, k2);
-                for (i = k1; i <= k2; ++i)
-                {
-                    printf("(  %20.13e   %20.13e)  ", cx[i].r, cx[i].i);
-                }
-            }
+            printf("  %4d:  (  %20.13e   %20.13e)  ", k1, cx[i].r, cx[i].i);
         }
     }
+
     printf("\n");
     return 0;
 
