@@ -17,7 +17,7 @@ int zvout_(int *n, zomplex *cx, int *idigit, char *ifmt)
 {
 
     /* System generated locals */
-    int i__1, i__2, i__3;
+    int i__1, i__3;
 
     /* Local variables */
     int i, k1, k2, lll;

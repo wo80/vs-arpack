@@ -23,7 +23,7 @@ int zmout_(int *m, int *n, zomplex *a, int *lda, int *idigit, char *ifmt)
     zomplex d__1;
 
     /* System generated locals */
-    int a_dim1, a_offset, i__1, i__2, i__3;
+    int a_dim1, a_offset, i__1, i__3;
 
     /* Local variables */
     int i, j, k1, k2, lll;

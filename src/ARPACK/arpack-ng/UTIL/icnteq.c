@@ -6,7 +6,7 @@
 
 /*     Count the number of elements equal to a specified integer value. */
 
-int icnteq_(int *n, int *array, int *value)
+int __icnteq_(int *n, int *array, int *value)
 {
     /* System generated locals */
     int ret_val, i__1;

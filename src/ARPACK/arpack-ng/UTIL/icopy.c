@@ -35,7 +35,7 @@
 
 /* -------------------------------------------------------------------- */
 
-int icopy_(int *n, int *lx, int *incx, int *ly, int *incy)
+int __icopy_(int *n, int *lx, int *incx, int *ly, int *incy)
 {
     /* System generated locals */
     int i__1;

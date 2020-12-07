@@ -465,8 +465,9 @@ L90:
                 /* Computing 2nd power */
                 r__2 = (r__1 = e[m - 1], dabs(r__1));
                 tst = r__2 * r__2;
-                if (tst <= eps2 * (r__1 = d[m], dabs(r__1)) * (r__2 = d[m
-                        - 1], dabs(r__2)) + safmin)
+                r__1 = d[m];
+                r__2 = d[m - 1];
+                if (tst <= eps2 * dabs(r__1) * dabs(r__2) + safmin)
                 {
                     goto L110;
                 }

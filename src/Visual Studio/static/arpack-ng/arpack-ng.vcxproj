@@ -204,10 +204,6 @@
     <ClCompile Include="..\..\..\ARPACK\arpack-ng\UTIL\cvout.c" />
     <ClCompile Include="..\..\..\ARPACK\arpack-ng\UTIL\dmout.c" />
     <ClCompile Include="..\..\..\ARPACK\arpack-ng\UTIL\dvout.c" />
-    <ClCompile Include="..\..\..\ARPACK\arpack-ng\UTIL\icnteq.c" />
-    <ClCompile Include="..\..\..\ARPACK\arpack-ng\UTIL\icopy.c" />
-    <ClCompile Include="..\..\..\ARPACK\arpack-ng\UTIL\iset.c" />
-    <ClCompile Include="..\..\..\ARPACK\arpack-ng\UTIL\iswap.c" />
     <ClCompile Include="..\..\..\ARPACK\arpack-ng\UTIL\ivout.c" />
     <ClCompile Include="..\..\..\ARPACK\arpack-ng\UTIL\second.c" />
     <ClCompile Include="..\..\..\ARPACK\arpack-ng\UTIL\smout.c" />

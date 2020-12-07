@@ -17,7 +17,7 @@ int svout_(int *n, float *sx, int *idigit, char *ifmt)
 {
 
     /* System generated locals */
-    int i__1, i__2, i__3;
+    int i__1, i__3;
 
     /* Local variables */
     int i, k1, k2, lll;
@@ -65,8 +65,8 @@ int svout_(int *n, float *sx, int *idigit, char *ifmt)
         for (k1 = 1; k1 <= len; k1 += 5)
         {
             /* Computing MIN */
-            i__2 = *n, i__3 = k1 + 4;
-            k2 = min(i__2,i__3);
+            i__3 = k1 + 4;
+            k2 = min(len,i__3);
             printf("\n  %4d - %4d:", k1, k2);
             for (i = k1; i <= k2; ++i)
             {

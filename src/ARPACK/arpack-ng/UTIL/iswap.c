@@ -2,7 +2,7 @@
 
 #include "arpack.h"
 
-int iswap_(int *n, int *sx, int *incx, int *sy, int *incy)
+int __iswap_(int *n, int *sx, int *incx, int *sy, int *incy)
 {
     /* System generated locals */
     int i__1;

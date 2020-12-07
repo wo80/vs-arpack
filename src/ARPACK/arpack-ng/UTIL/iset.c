@@ -6,7 +6,7 @@
 
 /*     Only work with increment equal to 1 right now. */
 
-int iset_(int *n, int *value, int *array, int *inc)
+int __iset_(int *n, int *value, int *array, int *inc)
 {
     /* System generated locals */
     int i__1;

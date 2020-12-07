@@ -21,7 +21,7 @@ int dmout_(int *m, int *n, double *a, int *lda, int *idigit, char *ifmt)
     /* Initialized data */
 
     /* System generated locals */
-    int a_dim1, a_offset, i__1, i__2, i__3;
+    int a_dim1, a_offset, i__1, i__3;
 
     /* Local variables */
     int i, j, k1, k2, lll;
@@ -73,8 +73,8 @@ int dmout_(int *m, int *n, double *a, int *lda, int *idigit, char *ifmt)
         for (k1 = 1; k1 <= cols; k1 += 5)
         {
             /* Computing MIN */
-            i__2 = *n, i__3 = k1 + 4;
-            k2 = min(i__2,i__3);
+            i__3 = k1 + 4;
+            k2 = min(cols,i__3);
             printf("\n          ");
             for (i = k1; i <= k2; ++i)
             {
