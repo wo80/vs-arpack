@@ -349,8 +349,9 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int 
     {
         ierr = -3;
     }
-    else if (strcmp(which, "LM") != 0 && strcmp(which, "SM") != 0 && strcmp(which, "LR") != 0
-             && strcmp(which, "SR") != 0 && strcmp(which, "LI") != 0 && strcmp(which, "SI") != 0)
+    else if (strcmp(which, "LM") != 0 && strcmp(which, "SM") != 0 &&
+             strcmp(which, "LR") != 0 && strcmp(which, "SR") != 0 &&
+             strcmp(which, "LI") != 0 && strcmp(which, "SI") != 0)
     {
         ierr = -5;
     }
@@ -366,8 +367,7 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int 
         {
             ierr = -7;
         }
-        else if (*howmny != 'A' && *
-                 howmny != 'P' && *howmny != 'S' && *rvec)
+        else if (*howmny != 'A' && *howmny != 'P' && *howmny != 'S' && *rvec)
         {
             ierr = -13;
         }
@@ -694,7 +694,6 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int 
                 z__1.r = -1., z__1.i = -0.;
                 zscal_(&nconv, &z__1, &workl[iuptri + (j - 1) * ldq], &c__1);
             }
-
         }
 
         if (*howmny == 'A')
@@ -750,10 +749,8 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int 
                 /* ---------------------------------------- */
 
                 i__2 = j;
-                zdotc_(&z__1, &j, &workl[ihbds], &c__1, &workl[invsub + (j -
-                        1) * ldq], &c__1);
+                zdotc_(&z__1, &j, &workl[ihbds], &c__1, &workl[invsub + (j - 1) * ldq], &c__1);
                 workev[i__2].r = z__1.r, workev[i__2].i = z__1.i;
-
             }
 
 #ifndef NO_TRACE
@@ -829,7 +826,6 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int 
             z_div(&z__2, &workl[ihbds + k - 1], &temp);
             z_div(&z__1, &z__2, &temp);
             workl[i__2].r = z__1.r, workl[i__2].i = z__1.i;
-
         }
     }
 
@@ -850,7 +846,6 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int 
             z_div(&z__2, &z_one, &workl[iheig + k - 1]);
             z__1.r = z__2.r + sigma->r, z__1.i = z__2.i + sigma->i;
             d[i__2].r = z__1.r, d[i__2].i = z__1.i;
-
         }
     }
 
@@ -889,11 +884,9 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int 
             if (workl[i__2].r != 0. || workl[i__2].i != 0.)
             {
                 i__2 = j;
-                z_div(&z__1, &workl[invsub + (j - 1) * ldq + *ncv - 1], &
-                      workl[iheig + j - 1]);
+                z_div(&z__1, &workl[invsub + (j - 1) * ldq + *ncv - 1], &workl[iheig + j - 1]);
                 workev[i__2].r = z__1.r, workev[i__2].i = z__1.i;
             }
-
         }
         /* ------------------------------------- */
         /* Perform a rank one update to Z and    */

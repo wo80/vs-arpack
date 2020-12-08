@@ -2,13 +2,9 @@
 
 #include "arpack.h"
 
-/* \SCCS Information: @(#) */
-/* FILE: statn.F   SID: 2.2   DATE OF SID: 4/20/96   RELEASE: 2 */
-
-/* ------------------------------------------- */
-/* Initialize statistic and timing information */
-/* for complex nonsymmetric Arnoldi code.      */
-/* ------------------------------------------- */
+/**
+ * Initialize statistic and timing information for complex nonsymmetric Arnoldi code.
+ */
 int zstatn_(void)
 {
 
@@ -31,16 +27,14 @@ int zstatn_(void)
     timing_1.titref = 0.f;
     timing_1.tgetv0 = 0.f;
     timing_1.trvec = 0.f;
+
     /* -------------------------------------------------- */
     /* User time including reverse communication overhead */
     /* -------------------------------------------------- */
+
     timing_1.tmvopx = 0.f;
     timing_1.tmvbx = 0.f;
+
     return 0;
-
-    /* ------------- */
-    /* End of zstatn */
-    /* ------------- */
-
 } /* zstatn_ */
 

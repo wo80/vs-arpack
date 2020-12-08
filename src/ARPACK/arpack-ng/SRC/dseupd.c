@@ -305,8 +305,8 @@ int dseupd_(bool *rvec, char *howmny, bool *select, double *d, double *z, int *l
         ierr = -3;
     }
     if (strcmp(which, "LM") != 0 && strcmp(which, "SM") != 0 &&
-            strcmp(which, "LA") != 0 && strcmp(which, "SA") != 0 &&
-            strcmp(which, "BE") != 0)
+        strcmp(which, "LA") != 0 && strcmp(which, "SA") != 0 &&
+        strcmp(which, "BE") != 0)
     {
         ierr = -5;
     }
@@ -314,8 +314,7 @@ int dseupd_(bool *rvec, char *howmny, bool *select, double *d, double *z, int *l
     {
         ierr = -6;
     }
-    if (*howmny != 'A' && *howmny != 'P' &&
-            *howmny != 'S' && *rvec)
+    if (*howmny != 'A' && *howmny != 'P' && *howmny != 'S' && *rvec)
     {
         ierr = -15;
     }
@@ -531,7 +530,6 @@ int dseupd_(bool *rvec, char *howmny, bool *select, double *d, double *z, int *l
                     reord = true;
                 }
             }
-
         }
 
         /* --------------------------------------------------------- */
@@ -610,7 +608,6 @@ L20:
                 /* ----------------------------------------- */
 
                 ++leftptr;
-
             }
             else if (! select[rghtptr])
             {
@@ -620,7 +617,6 @@ L20:
                 /* -------------------------------------------- */
 
                 --rghtptr;
-
             }
             else
             {
@@ -640,14 +636,12 @@ L20:
                 dcopy_(ncv, &workl[iw], &c__1, &workl[iq + *ncv * (rghtptr - 1)], &c__1);
                 ++leftptr;
                 --rghtptr;
-
             }
 
             if (leftptr < rghtptr)
             {
                 goto L20;
             }
-
         }
 
 L30:
@@ -720,7 +714,6 @@ L30:
             for (k = 1; k <= i__1; ++k)
             {
                 workl[ihd + k - 1] = 1. / workl[ihd + k - 1] + *sigma;
-
             }
         }
         else if (strcmp(type, "BUCKLE") == 0)
@@ -728,9 +721,7 @@ L30:
             i__1 = *ncv;
             for (k = 1; k <= i__1; ++k)
             {
-                workl[ihd + k - 1] = *sigma * workl[ihd + k - 1] / (workl[ihd
-                                     + k - 1] - 1.);
-
+                workl[ihd + k - 1] = *sigma * workl[ihd + k - 1] / (workl[ihd + k - 1] - 1.);
             }
         }
         else if (strcmp(type, "CAYLEY") == 0)
@@ -738,9 +729,7 @@ L30:
             i__1 = *ncv;
             for (k = 1; k <= i__1; ++k)
             {
-                workl[ihd + k - 1] = *sigma * (workl[ihd + k - 1] + 1.) / (
-                                         workl[ihd + k - 1] - 1.);
-
+                workl[ihd + k - 1] = *sigma * (workl[ihd + k - 1] + 1.) / (workl[ihd + k - 1] - 1.);
             }
         }
 
@@ -811,7 +800,6 @@ L30:
         for (j = 1; j <= i__1; ++j)
         {
             workl[ihb + j - 1] = 0.;
-
         }
         workl[ihb + *ncv - 1] = 1.;
         dorm2r_("L", "T", ncv, &c__1, &nconv, &workl[iq], &ldq, &workl[iw + *ncv], &workl[ihb], ncv, &temp, &ierr);
@@ -826,7 +814,6 @@ L30:
         for (j = 1; j <= i__1; ++j)
         {
             workl[iw + *ncv + j - 1] = workl[ihb + j - 1];
-
         }
     }
     else if (*rvec && *howmny == 'S')
@@ -840,9 +827,8 @@ L30:
         i__1 = *ncv;
         for (j = 1; j <= i__1; ++j)
         {
-            workl[ihb + j - 1] = rnorm * (d__1 = workl[ihb + j - 1], abs(d__1)
-                                         );
-
+            d__1 = workl[ihb + j - 1];
+            workl[ihb + j - 1] = rnorm * abs(d__1);
         }
     }
     else if (strcmp(type, "REGULR") != 0 && *rvec)
@@ -863,10 +849,9 @@ L30:
             for (k = 1; k <= i__1; ++k)
             {
                 /* Computing 2nd power */
+                d__1 = workl[ihb + k - 1];
                 d__2 = workl[iw + k - 1];
-                workl[ihb + k - 1] = (d__1 = workl[ihb + k - 1], abs(d__1)) /
-                                     (d__2 * d__2);
-
+                workl[ihb + k - 1] = abs(d__1) / (d__2 * d__2);
             }
 
         }
@@ -876,10 +861,9 @@ L30:
             for (k = 1; k <= i__1; ++k)
             {
                 /* Computing 2nd power */
+                d__1 = workl[ihb + k - 1];
                 d__2 = workl[iw + k - 1] - 1.;
-                workl[ihb + k - 1] = *sigma * (d__1 = workl[ihb + k - 1], abs(
-                                                   d__1)) / (d__2 * d__2);
-
+                workl[ihb + k - 1] = *sigma * abs(d__1) / (d__2 * d__2);
             }
 
         }
@@ -888,9 +872,8 @@ L30:
             i__1 = *ncv;
             for (k = 1; k <= i__1; ++k)
             {
-                workl[ihb + k - 1] = (d__1 = workl[ihb + k - 1] / workl[iw +
-                                             k - 1] * (workl[iw + k - 1] - 1.), abs(d__1));
-
+                d__1 = workl[ihb + k - 1] / workl[iw + k - 1] * (workl[iw + k - 1] - 1.);
+                workl[ihb + k - 1] = abs(d__1);
             }
 
         }
@@ -920,7 +903,6 @@ L30:
         for (k = 0; k <= i__1; ++k)
         {
             workl[iw + k] = workl[iw + *ncv + k] / workl[iw + k];
-
         }
     }
     else if (*rvec && strcmp(type, "BUCKLE") == 0)
@@ -929,7 +911,6 @@ L30:
         for (k = 0; k <= i__1; ++k)
         {
             workl[iw + k] = workl[iw + *ncv + k] / (workl[iw + k] - 1.);
-
         }
     }
 

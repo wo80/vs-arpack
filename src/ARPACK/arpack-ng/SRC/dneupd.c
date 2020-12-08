@@ -951,8 +951,8 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
             for (k = 1; k <= i__1; ++k)
             {
                 temp = dlapy2_(&workl[iheigr + k - 1], &workl[iheigi + k - 1]);
-                workl[ihbds + k - 1] = (d__1 = workl[ihbds + k - 1], abs(d__1)
-                                       ) / temp / temp;
+                d__1 = workl[ihbds + k - 1];
+                workl[ihbds + k - 1] = abs(d__1) / temp / temp;
 
             }
 
@@ -1047,21 +1047,15 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
         {
             if (workl[iheigi + j - 1] == 0. && workl[iheigr + j - 1] != 0.)
             {
-                workev[j] = workl[invsub + (j - 1) * ldq + *ncv - 1] / workl[
-                                iheigr + j - 1];
+                workev[j] = workl[invsub + (j - 1) * ldq + *ncv - 1] / workl[iheigr + j - 1];
             }
             else if (iconj == 0)
             {
                 temp = dlapy2_(&workl[iheigr + j - 1], &workl[iheigi + j - 1]);
                 if (temp != 0.)
                 {
-                    workev[j] = (workl[invsub + (j - 1) * ldq + *ncv - 1] *
-                                 workl[iheigr + j - 1] + workl[invsub + j * ldq + *
-                                         ncv - 1] * workl[iheigi + j - 1]) / temp / temp;
-                    workev[j + 1] = (workl[invsub + j * ldq + *ncv - 1] *
-                                     workl[iheigr + j - 1] - workl[invsub + (j - 1) *
-                                             ldq + *ncv - 1] * workl[iheigi + j - 1]) / temp /
-                                    temp;
+                    workev[j] = (workl[invsub + (j - 1) * ldq + *ncv - 1] * workl[iheigr + j - 1] + workl[invsub + j * ldq + * ncv - 1] * workl[iheigi + j - 1]) / temp / temp;
+                    workev[j + 1] = (workl[invsub + j * ldq + *ncv - 1] * workl[iheigr + j - 1] - workl[invsub + (j - 1) * ldq + *ncv - 1] * workl[iheigi + j - 1]) / temp / temp;
                 }
                 iconj = 1;
             }

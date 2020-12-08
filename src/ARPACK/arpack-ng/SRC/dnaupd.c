@@ -488,8 +488,9 @@ int dnaupd_(int *ido, char *bmat, int *n, char *which, int *nev, double *tol,
         {
             ierr = -4;
         }
-        else if (strcmp(which, "LM") != 0 && strcmp(which, "SM") != 0 && strcmp(which, "LR") != 0
-                 && strcmp(which, "SR") != 0 && strcmp(which, "LI") != 0 && strcmp(which, "SI") != 0)
+        else if (strcmp(which, "LM") != 0 && strcmp(which, "SM") != 0 &&
+                 strcmp(which, "LR") != 0 && strcmp(which, "SR") != 0 &&
+                 strcmp(which, "LI") != 0 && strcmp(which, "SI") != 0)
         {
             ierr = -5;
         }
@@ -644,8 +645,13 @@ int dnaupd_(int *ido, char *bmat, int *n, char *which, int *nev, double *tol,
         *info = 3;
     }
 
+#ifndef NO_TIMER
+    arscnd_(&t1);
+    timing_1.tnaupd = t1 - t0;
+#endif
+
 #ifndef NO_TRACE
-    if (msglvl > 0)
+    if (msglvl > 1)
     {
         ivout_(&c__1, &mxiter, &debug_1.ndigit, "_naupd: Number of update iterations taken");
         ivout_(&c__1, &np, &debug_1.ndigit, "_naupd: Number of wanted \"converged\" Ritz values");
@@ -653,14 +659,7 @@ int dnaupd_(int *ido, char *bmat, int *n, char *which, int *nev, double *tol,
         dvout_(&np, &workl[ritzi], &debug_1.ndigit, "_naupd: Imaginary part of the final Ritz values");
         dvout_(&np, &workl[bounds], &debug_1.ndigit, "_naupd: Associated Ritz estimates");
     }
-#endif
 
-#ifndef NO_TIMER
-    arscnd_(&t1);
-    timing_1.tnaupd = t1 - t0;
-#endif
-
-#ifndef NO_TRACE
     if (msglvl > 0)
     {
         printf("\n ============================================= ");

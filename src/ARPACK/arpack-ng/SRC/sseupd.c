@@ -305,8 +305,8 @@ int sseupd_(bool *rvec, char *howmny, bool *select, float *d, float *z, int *ldz
         ierr = -3;
     }
     if (strcmp(which, "LM") != 0 && strcmp(which, "SM") != 0 &&
-            strcmp(which, "LA") != 0 && strcmp(which, "SA") != 0 &&
-            strcmp(which, "BE") != 0)
+        strcmp(which, "LA") != 0 && strcmp(which, "SA") != 0 &&
+        strcmp(which, "BE") != 0)
     {
         ierr = -5;
     }
@@ -532,7 +532,6 @@ int sseupd_(bool *rvec, char *howmny, bool *select, float *d, float *z, int *ldz
                     reord = true;
                 }
             }
-
         }
 
         /* --------------------------------------------------------- */
@@ -611,7 +610,6 @@ L20:
                 /* ----------------------------------------- */
 
                 ++leftptr;
-
             }
             else if (! select[rghtptr])
             {
@@ -621,7 +619,6 @@ L20:
                 /* -------------------------------------------- */
 
                 --rghtptr;
-
             }
             else
             {
@@ -648,7 +645,6 @@ L20:
             {
                 goto L20;
             }
-
         }
 
 L30:
@@ -721,7 +717,6 @@ L30:
             for (k = 1; k <= i__1; ++k)
             {
                 workl[ihd + k - 1] = 1.f / workl[ihd + k - 1] + *sigma;
-
             }
         }
         else if (strcmp(type, "BUCKLE") == 0)
@@ -729,9 +724,7 @@ L30:
             i__1 = *ncv;
             for (k = 1; k <= i__1; ++k)
             {
-                workl[ihd + k - 1] = *sigma * workl[ihd + k - 1] / (workl[ihd
-                                     + k - 1] - 1.f);
-
+                workl[ihd + k - 1] = *sigma * workl[ihd + k - 1] / (workl[ihd + k - 1] - 1.f);
             }
         }
         else if (strcmp(type, "CAYLEY") == 0)
@@ -739,9 +732,7 @@ L30:
             i__1 = *ncv;
             for (k = 1; k <= i__1; ++k)
             {
-                workl[ihd + k - 1] = *sigma * (workl[ihd + k - 1] + 1.f) / (
-                                         workl[ihd + k - 1] - 1.f);
-
+                workl[ihd + k - 1] = *sigma * (workl[ihd + k - 1] + 1.f) / (workl[ihd + k - 1] - 1.f);
             }
         }
 
@@ -841,8 +832,7 @@ L30:
         i__1 = *ncv;
         for (j = 1; j <= i__1; ++j)
         {
-            workl[ihb + j - 1] = rnorm * (r__1 = workl[ihb + j - 1], dabs(
-                                              r__1));
+            workl[ihb + j - 1] = rnorm * (r__1 = workl[ihb + j - 1], dabs(r__1));
 
         }
     }
@@ -865,11 +855,8 @@ L30:
             {
                 /* Computing 2nd power */
                 r__2 = workl[iw + k - 1];
-                workl[ihb + k - 1] = (r__1 = workl[ihb + k - 1], dabs(r__1)) /
-                                     (r__2 * r__2);
-
+                workl[ihb + k - 1] = (r__1 = workl[ihb + k - 1], dabs(r__1)) / (r__2 * r__2);
             }
-
         }
         else if (strcmp(type, "BUCKLE") == 0)
         {
@@ -878,22 +865,16 @@ L30:
             {
                 /* Computing 2nd power */
                 r__2 = workl[iw + k - 1] - 1.f;
-                workl[ihb + k - 1] = *sigma * (r__1 = workl[ihb + k - 1],
-                                               dabs(r__1)) / (r__2 * r__2);
-
+                workl[ihb + k - 1] = *sigma * (r__1 = workl[ihb + k - 1], dabs(r__1)) / (r__2 * r__2);
             }
-
         }
         else if (strcmp(type, "CAYLEY") == 0)
         {
             i__1 = *ncv;
             for (k = 1; k <= i__1; ++k)
             {
-                workl[ihb + k - 1] = (r__1 = workl[ihb + k - 1] / workl[iw +
-                                             k - 1] * (workl[iw + k - 1] - 1.f), dabs(r__1));
-
+                workl[ihb + k - 1] = (r__1 = workl[ihb + k - 1] / workl[iw + k - 1] * (workl[iw + k - 1] - 1.f), dabs(r__1));
             }
-
         }
     }
 
@@ -914,14 +895,12 @@ L30:
     /* for MODE = 3,4,5. See reference 7               */
     /* ----------------------------------------------- */
 
-    if (*rvec && (strcmp(type, "SHIFTI") == 0 || strcmp(
-                      type, "CAYLEY") == 0))
+    if (*rvec && (strcmp(type, "SHIFTI") == 0 || strcmp(type, "CAYLEY") == 0))
     {
         i__1 = nconv - 1;
         for (k = 0; k <= i__1; ++k)
         {
             workl[iw + k] = workl[iw + *ncv + k] / workl[iw + k];
-
         }
     }
     else if (*rvec && strcmp(type, "BUCKLE") == 0)
@@ -930,7 +909,6 @@ L30:
         for (k = 0; k <= i__1; ++k)
         {
             workl[iw + k] = workl[iw + *ncv + k] / (workl[iw + k] - 1.f);
-
         }
     }
 

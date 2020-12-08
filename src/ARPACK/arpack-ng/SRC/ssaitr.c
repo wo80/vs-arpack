@@ -623,14 +623,11 @@ L65:
     }
 #ifndef NO_TIMER
     arscnd_(&t4);
+    arscnd_(&t2);
 #endif
 
     orth1 = true;
     iter = 0;
-
-#ifndef NO_TIMER
-    arscnd_(&t2);
-#endif
 
     if (*bmat == 'G')
     {

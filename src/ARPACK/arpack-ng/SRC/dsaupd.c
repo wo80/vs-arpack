@@ -570,7 +570,6 @@ int dsaupd_(int *ido, char *bmat, int *n, char *which, int *nev, double *tol,
         for (j = 1; j <= i__1; ++j)
         {
             workl[j] = 0.;
-
         }
 
         /* ----------------------------------------------------- */
@@ -643,22 +642,20 @@ int dsaupd_(int *ido, char *bmat, int *n, char *which, int *nev, double *tol,
         *info = 3;
     }
 
-#ifndef NO_TRACE
-    if (msglvl > 0)
-    {
-        ivout_(&c__1, &mxiter, &debug_1.ndigit, "_saupd: number of update iterations taken");
-        ivout_(&c__1, &np, &debug_1.ndigit, "_saupd: number of \"converged\" Ritz values");
-        dvout_(&np, &workl[ritz], &debug_1.ndigit, "_saupd: final Ritz values");
-        dvout_(&np, &workl[bounds], &debug_1.ndigit, "_saupd: corresponding error bounds");
-    }
-#endif
-
 #ifndef NO_TIMER
     arscnd_(&t1);
     timing_1.tsaupd = t1 - t0;
 #endif
 
 #ifndef NO_TRACE
+    if (msglvl > 1)
+    {
+        ivout_(&c__1, &mxiter, &debug_1.ndigit, "_saupd: number of update iterations taken");
+        ivout_(&c__1, &np, &debug_1.ndigit, "_saupd: number of \"converged\" Ritz values");
+        dvout_(&np, &workl[ritz], &debug_1.ndigit, "_saupd: final Ritz values");
+        dvout_(&np, &workl[bounds], &debug_1.ndigit, "_saupd: corresponding error bounds");
+    }
+
     if (msglvl > 0)
     {
         printf("\n ============================================= ");

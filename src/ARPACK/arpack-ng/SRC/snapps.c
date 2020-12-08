@@ -324,17 +324,18 @@ L20:
             /* REFERENCE: LAPACK subroutine slahqr    */
             /* -------------------------------------- */
 
-            tst1 = (r__1 = h[i + i * h_dim1], dabs(r__1)) + (r__2 = h[
-                        i + 1 + (i + 1) * h_dim1], dabs(r__2));
+            r__1 = h[i + i * h_dim1];
+            r__2 = h[i + 1 + (i + 1) * h_dim1];
+            tst1 = dabs(r__1) + dabs(r__2);
             if (tst1 == 0.f)
             {
                 i__3 = kplusp - jj + 1;
                 tst1 = slanhs_("1", &i__3, &h[h_offset], ldh, &workl[1]);
             }
             /* Computing MAX */
+            r__1 = h[i + 1 + i * h_dim1];
             r__2 = ulp * tst1;
-            if ((r__1 = h[i + 1 + i * h_dim1], dabs(r__1)) <= dmax(r__2,
-                    smlnum))
+            if (dabs(r__1) <= dmax(r__2, smlnum))
             {
 #ifndef NO_TRACE
                 if (msglvl > 0)
@@ -425,10 +426,8 @@ L40:
                 i__3 = kplusp;
                 for (j = i; j <= i__3; ++j)
                 {
-                    t = c * h[i + j * h_dim1] + s * h[i + 1 + j *
-                                                      h_dim1];
-                    h[i + 1 + j * h_dim1] = -s * h[i + j * h_dim1] +
-                                            c * h[i + 1 + j * h_dim1];
+                    t = c * h[i + j * h_dim1] + s * h[i + 1 + j * h_dim1];
+                    h[i + 1 + j * h_dim1] = -s * h[i + j * h_dim1] + c * h[i + 1 + j * h_dim1];
                     h[i + j * h_dim1] = t;
                 }
 
@@ -441,10 +440,8 @@ L40:
                 i__3 = min(i__4,iend);
                 for (j = 1; j <= i__3; ++j)
                 {
-                    t = c * h[j + i * h_dim1] + s * h[j + (i + 1) *
-                                                      h_dim1];
-                    h[j + (i + 1) * h_dim1] = -s * h[j + i * h_dim1]
-                                              + c * h[j + (i + 1) * h_dim1];
+                    t = c * h[j + i * h_dim1] + s * h[j + (i + 1) * h_dim1];
+                    h[j + (i + 1) * h_dim1] = -s * h[j + i * h_dim1] + c * h[j + (i + 1) * h_dim1];
                     h[j + i * h_dim1] = t;
                 }
 
@@ -457,10 +454,8 @@ L40:
                 i__3 = min(i__4,kplusp);
                 for (j = 1; j <= i__3; ++j)
                 {
-                    t = c * q[j + i * q_dim1] + s * q[j + (i + 1) *
-                                                      q_dim1];
-                    q[j + (i + 1) * q_dim1] = -s * q[j + i * q_dim1] +
-                                              c * q[j + (i + 1) * q_dim1];
+                    t = c * q[j + i * q_dim1] + s * q[j + (i + 1) * q_dim1];
+                    q[j + (i + 1) * q_dim1] = -s * q[j + i * q_dim1] + c * q[j + (i + 1) * q_dim1];
                     q[j + i * q_dim1] = t;
                 }
 
@@ -621,8 +616,9 @@ L110:
         /* REFERENCE: LAPACK subroutine slahqr        */
         /* ------------------------------------------ */
 
-        tst1 = (r__1 = h[i + i * h_dim1], dabs(r__1)) + (r__2 = h[i
-                + 1 + (i + 1) * h_dim1], dabs(r__2));
+        r__1 = h[i + i * h_dim1];
+        r__2 = h[i + 1 + (i + 1) * h_dim1];
+        tst1 = dabs(r__1) + dabs(r__2);
         if (tst1 == 0.f)
         {
             tst1 = slanhs_("1", kev, &h[h_offset], ldh, &workl[1]);

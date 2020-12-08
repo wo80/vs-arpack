@@ -598,13 +598,10 @@ L60:
 
 #ifndef NO_TIMER
     arscnd_(&t4);
+    arscnd_(&t2);
 #endif
 
     orth1 = true;
-
-#ifndef NO_TIMER
-    arscnd_(&t2);
-#endif
 
     if (*bmat == 'G')
     {
@@ -823,7 +820,6 @@ L90:
         for (jj = 1; jj <= i__1; ++jj)
         {
             resid[jj] = 0.;
-
         }
         *rnorm = 0.;
     }
@@ -880,7 +876,6 @@ L100:
             {
                 h[i + 1 + i * h_dim1] = 0.;
             }
-
         }
 
 #ifndef NO_TRACE

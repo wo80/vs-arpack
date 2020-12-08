@@ -2,33 +2,11 @@
 
 #include "arpack.h"
 
-/* ------------------------------------------- */
-/* Initialize statistic and timing information */
-/* for nonsymmetric Arnoldi code.              */
-/* ------------------------------------------- */
-
-/* \Author */
-/*     Danny Sorensen               Phuong Vu */
-/*     Richard Lehoucq              CRPC / Rice University */
-/*     Dept. of Computational &     Houston, Texas */
-/*     Applied Mathematics */
-/*     Rice University */
-/*     Houston, Texas */
-
-/* \SCCS Information: @(#) */
-/* FILE: statn.F   SID: 2.4   DATE OF SID: 4/20/96   RELEASE: 2 */
-
+/**
+ * Initialize statistic and timing information for nonsymmetric Arnoldi code.
+ */
 int dstatn_(void)
 {
-
-    /* ------------------------------ */
-    /* See stat.doc for documentation */
-    /* ------------------------------ */
-
-    /* --------------------- */
-    /* Executable Statements */
-    /* --------------------- */
-
     /* ------------------------------ */
     /* See stat.doc for documentation */
     /* ------------------------------ */
@@ -58,10 +36,5 @@ int dstatn_(void)
     timing_1.tmvbx = 0.f;
 
     return 0;
-
-    /* ------------- */
-    /* End of dstatn */
-    /* ------------- */
-
 } /* dstatn_ */
 

@@ -282,14 +282,11 @@ L40:
             /* This will create a "bulge".                           */
             /* ----------------------------------------------------- */
 
-            a1 = c * h[istart + (h_dim1 << 1)] + s * h[istart + 1 +
-                    h_dim1];
-            a2 = c * h[istart + 1 + h_dim1] + s * h[istart + 1 + (
-                    h_dim1 << 1)];
-            a4 = c * h[istart + 1 + (h_dim1 << 1)] - s * h[istart + 1 +
-                    h_dim1];
-            a3 = c * h[istart + 1 + h_dim1] - s * h[istart + (h_dim1 <<
-                                                    1)];
+            a1 = c * h[istart + (h_dim1 << 1)] + s * h[istart + 1 + h_dim1];
+            a2 = c * h[istart + 1 + h_dim1] + s * h[istart + 1 + (h_dim1 << 1)];
+            a4 = c * h[istart + 1 + (h_dim1 << 1)] - s * h[istart + 1 + h_dim1];
+            a3 = c * h[istart + 1 + h_dim1] - s * h[istart + (h_dim1 << 1)];
+
             h[istart + (h_dim1 << 1)] = c * a1 + s * a2;
             h[istart + 1 + (h_dim1 << 1)] = c * a4 - s * a3;
             h[istart + 1 + h_dim1] = c * a3 + s * a4;
@@ -303,12 +300,9 @@ L40:
             i__2 = min(i__3,kplusp);
             for (j = 1; j <= i__2; ++j)
             {
-                a1 = c * q[j + istart * q_dim1] + s * q[j + (istart + 1) *
-                                                        q_dim1];
-                q[j + (istart + 1) * q_dim1] = -s * q[j + istart * q_dim1] +
-                                               c * q[j + (istart + 1) * q_dim1];
+                a1 = c * q[j + istart * q_dim1] + s * q[j + (istart + 1) * q_dim1];
+                q[j + (istart + 1) * q_dim1] = -s * q[j + istart * q_dim1] + c * q[j + (istart + 1) * q_dim1];
                 q[j + istart * q_dim1] = a1;
-
             }
 
             /* -------------------------------------------- */
@@ -360,14 +354,10 @@ L40:
 
                 h[i + h_dim1] = r;
 
-                a1 = c * h[i + (h_dim1 << 1)] + s * h[i + 1 +
-                                                      h_dim1];
-                a2 = c * h[i + 1 + h_dim1] + s * h[i + 1 + (h_dim1
-                                                   << 1)];
-                a3 = c * h[i + 1 + h_dim1] - s * h[i + (h_dim1 << 1)
-                                                  ];
-                a4 = c * h[i + 1 + (h_dim1 << 1)] - s * h[i + 1 +
-                        h_dim1];
+                a1 = c * h[i + (h_dim1 << 1)] + s * h[i + 1 + h_dim1];
+                a2 = c * h[i + 1 + h_dim1] + s * h[i + 1 + (h_dim1 << 1)];
+                a3 = c * h[i + 1 + h_dim1] - s * h[i + (h_dim1 << 1)];
+                a4 = c * h[i + 1 + (h_dim1 << 1)] - s * h[i + 1 + h_dim1];
 
                 h[i + (h_dim1 << 1)] = c * a1 + s * a2;
                 h[i + 1 + (h_dim1 << 1)] = c * a4 - s * a3;
@@ -382,10 +372,8 @@ L40:
                 i__3 = min(i__4,kplusp);
                 for (j = 1; j <= i__3; ++j)
                 {
-                    a1 = c * q[j + i * q_dim1] + s * q[j + (i + 1) *
-                                                       q_dim1];
-                    q[j + (i + 1) * q_dim1] = -s * q[j + i * q_dim1] +
-                                              c * q[j + (i + 1) * q_dim1];
+                    a1 = c * q[j + i * q_dim1] + s * q[j + (i + 1) * q_dim1];
+                    q[j + (i + 1) * q_dim1] = -s * q[j + i * q_dim1] + c * q[j + (i + 1) * q_dim1];
                     q[j + i * q_dim1] = a1;
                 }
             }
@@ -433,7 +421,6 @@ L40:
                 goto L90;
             }
             ++itop;
-
         }
 
         /* --------------------------------- */

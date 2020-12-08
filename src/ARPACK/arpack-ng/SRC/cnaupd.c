@@ -613,22 +613,20 @@ int cnaupd_(int *ido, char *bmat, int *n, char *which, int *nev, float *tol,
         *info = 3;
     }
 
-#ifndef NO_TRACE
-    if (msglvl > 0)
-    {
-        ivout_(&c__1, &mxiter, &debug_1.ndigit, "_naupd: Number of update iterations taken");
-        ivout_(&c__1, &np, &debug_1.ndigit, "_naupd: Number of wanted \"converged\" Ritz values");
-        cvout_(&np, &workl[ritz], &debug_1.ndigit, "_naupd: The final Ritz values");
-        cvout_(&np, &workl[bounds], &debug_1.ndigit, "_naupd: Associated Ritz estimates");
-    }
-#endif
-
 #ifndef NO_TIMER
     arscnd_(&t1);
     timing_1.tcaupd = t1 - t0;
 #endif
 
 #ifndef NO_TRACE
+    if (msglvl > 1)
+    {
+        ivout_(&c__1, &mxiter, &debug_1.ndigit, "_naupd: Number of update iterations taken");
+        ivout_(&c__1, &np, &debug_1.ndigit, "_naupd: Number of wanted \"converged\" Ritz values");
+        cvout_(&np, &workl[ritz], &debug_1.ndigit, "_naupd: The final Ritz values");
+        cvout_(&np, &workl[bounds], &debug_1.ndigit, "_naupd: Associated Ritz estimates");
+    }
+
     if (msglvl > 0)
     {
         printf("\n ============================================= ");

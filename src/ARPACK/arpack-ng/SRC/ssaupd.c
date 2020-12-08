@@ -643,22 +643,20 @@ int ssaupd_(int *ido, char *bmat, int *n, char *which, int *nev, float *tol,
         *info = 3;
     }
 
-#ifndef NO_TRACE
-    if (msglvl > 0)
-    {
-        ivout_(&c__1, &mxiter, &debug_1.ndigit, "_saupd: number of update iterations taken");
-        ivout_(&c__1, &np, &debug_1.ndigit, "_saupd: number of \"converged\" Ritz values");
-        svout_(&np, &workl[ritz], &debug_1.ndigit, "_saupd: final Ritz values");
-        svout_(&np, &workl[bounds], &debug_1.ndigit, "_saupd: corresponding error bounds");
-    }
-#endif
-
 #ifndef NO_TIMER
     arscnd_(&t1);
     timing_1.tsaupd = t1 - t0;
 #endif
 
 #ifndef NO_TRACE
+    if (msglvl > 1)
+    {
+        ivout_(&c__1, &mxiter, &debug_1.ndigit, "_saupd: number of update iterations taken");
+        ivout_(&c__1, &np, &debug_1.ndigit, "_saupd: number of \"converged\" Ritz values");
+        svout_(&np, &workl[ritz], &debug_1.ndigit, "_saupd: final Ritz values");
+        svout_(&np, &workl[bounds], &debug_1.ndigit, "_saupd: corresponding error bounds");
+    }
+
     if (msglvl > 0)
     {
         printf("\n ============================================= ");

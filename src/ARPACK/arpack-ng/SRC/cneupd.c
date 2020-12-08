@@ -632,7 +632,6 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
                 }
             }
 #endif
-
         }
 
         /* ------------------------------------------- */
@@ -697,7 +696,6 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
                 q__1.r = -1.f, q__1.i = -0.f;
                 cscal_(&nconv, &q__1, &workl[iuptri + (j - 1) * ldq], &c__1);
             }
-
         }
 
         if (*howmny == 'A')
@@ -753,10 +751,8 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
                 /* ---------------------------------------- */
 
                 i__2 = j;
-                cdotc_(&q__1, &j, &workl[ihbds], &c__1, &workl[invsub + (j -
-                        1) * ldq], &c__1);
+                cdotc_(&q__1, &j, &workl[ihbds], &c__1, &workl[invsub + (j - 1) * ldq], &c__1);
                 workev[i__2].r = q__1.r, workev[i__2].i = q__1.i;
-
             }
 
 #ifndef NO_TRACE
@@ -853,7 +849,6 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
             c_div(&q__2, &c_one, &workl[iheig + k - 1]);
             q__1.r = q__2.r + sigma->r, q__1.i = q__2.i + sigma->i;
             d[i__2].r = q__1.r, d[i__2].i = q__1.i;
-
         }
     }
 
@@ -892,12 +887,11 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
             if (workl[i__2].r != 0.f || workl[i__2].i != 0.f)
             {
                 i__2 = j;
-                c_div(&q__1, &workl[invsub + (j - 1) * ldq + *ncv - 1], &
-                      workl[iheig + j - 1]);
+                c_div(&q__1, &workl[invsub + (j - 1) * ldq + *ncv - 1], &workl[iheig + j - 1]);
                 workev[i__2].r = q__1.r, workev[i__2].i = q__1.i;
             }
-
         }
+
         /* ------------------------------------- */
         /* Perform a rank one update to Z and    */
         /* purify all the Ritz vectors together. */

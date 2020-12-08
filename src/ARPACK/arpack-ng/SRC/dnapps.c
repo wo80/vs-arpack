@@ -325,8 +325,9 @@ L20:
             /* REFERENCE: LAPACK subroutine dlahqr    */
             /* -------------------------------------- */
 
-            tst1 = (d__1 = h[i + i * h_dim1], abs(d__1)) + (d__2 = h[
-                        i + 1 + (i + 1) * h_dim1], abs(d__2));
+            d__1 = h[i + i * h_dim1];
+            d__2 = h[i + 1 + (i + 1) * h_dim1];
+            tst1 = abs(d__1) + abs(d__2);
             if (tst1 == 0.)
             {
                 i__3 = kplusp - jj + 1;
@@ -426,10 +427,8 @@ L40:
                 i__3 = kplusp;
                 for (j = i; j <= i__3; ++j)
                 {
-                    t = c * h[i + j * h_dim1] + s * h[i + 1 + j *
-                                                      h_dim1];
-                    h[i + 1 + j * h_dim1] = -s * h[i + j * h_dim1] +
-                                            c * h[i + 1 + j * h_dim1];
+                    t = c * h[i + j * h_dim1] + s * h[i + 1 + j * h_dim1];
+                    h[i + 1 + j * h_dim1] = -s * h[i + j * h_dim1] + c * h[i + 1 + j * h_dim1];
                     h[i + j * h_dim1] = t;
                 }
 
@@ -442,10 +441,8 @@ L40:
                 i__3 = min(i__4,iend);
                 for (j = 1; j <= i__3; ++j)
                 {
-                    t = c * h[j + i * h_dim1] + s * h[j + (i + 1) *
-                                                      h_dim1];
-                    h[j + (i + 1) * h_dim1] = -s * h[j + i * h_dim1]
-                                              + c * h[j + (i + 1) * h_dim1];
+                    t = c * h[j + i * h_dim1] + s * h[j + (i + 1) * h_dim1];
+                    h[j + (i + 1) * h_dim1] = -s * h[j + i * h_dim1] + c * h[j + (i + 1) * h_dim1];
                     h[j + i * h_dim1] = t;
                 }
 
@@ -458,10 +455,8 @@ L40:
                 i__3 = min(i__4,kplusp);
                 for (j = 1; j <= i__3; ++j)
                 {
-                    t = c * q[j + i * q_dim1] + s * q[j + (i + 1) *
-                                                      q_dim1];
-                    q[j + (i + 1) * q_dim1] = -s * q[j + i * q_dim1] +
-                                              c * q[j + (i + 1) * q_dim1];
+                    t = c * q[j + i * q_dim1] + s * q[j + (i + 1) * q_dim1];
+                    q[j + (i + 1) * q_dim1] = -s * q[j + i * q_dim1] + c * q[j + (i + 1) * q_dim1];
                     q[j + i * q_dim1] = t;
                 }
 
@@ -622,8 +617,9 @@ L110:
         /* REFERENCE: LAPACK subroutine dlahqr        */
         /* ------------------------------------------ */
 
-        tst1 = (d__1 = h[i + i * h_dim1], abs(d__1)) + (d__2 = h[i
-                + 1 + (i + 1) * h_dim1], abs(d__2));
+        d__1 = h[i + i * h_dim1];
+        d__2 = h[i + 1 + (i + 1) * h_dim1];
+        tst1 = abs(d__1) + abs(d__2);
         if (tst1 == 0.)
         {
             tst1 = dlanhs_("1", kev, &h[h_offset], ldh, &workl[1]);

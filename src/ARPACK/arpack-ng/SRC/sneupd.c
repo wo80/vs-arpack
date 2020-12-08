@@ -834,7 +834,6 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
                     {
                         iconj = 0;
                     }
-
                 }
             }
 
@@ -951,8 +950,7 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
             for (k = 1; k <= i__1; ++k)
             {
                 temp = slapy2_(&workl[iheigr + k - 1], &workl[iheigi + k - 1]);
-                workl[ihbds + k - 1] = (r__1 = workl[ihbds + k - 1], dabs(
-                                            r__1)) / temp / temp;
+                workl[ihbds + k - 1] = (r__1 = workl[ihbds + k - 1], dabs(r__1)) / temp / temp;
 
             }
 
@@ -963,7 +961,6 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
             for (k = 1; k <= i__1; ++k)
             {
             }
-
         }
         else if (strcmp(type, "IMAGPT") == 0)
         {
@@ -971,7 +968,6 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
             for (k = 1; k <= i__1; ++k)
             {
             }
-
         }
 
         /* --------------------------------------------------------- */
@@ -992,7 +988,6 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
                 temp = slapy2_(&workl[iheigr + k - 1], &workl[iheigi + k - 1]);
                 workl[iheigr + k - 1] = workl[iheigr + k - 1] / temp / temp + *sigmar;
                 workl[iheigi + k - 1] = -workl[iheigi + k - 1] / temp / temp + *sigmai;
-
             }
 
             scopy_(&nconv, &workl[iheigr], &c__1, &dr[1], &c__1);
@@ -1047,21 +1042,15 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
         {
             if (workl[iheigi + j - 1] == 0.f && workl[iheigr + j - 1] != 0.f)
             {
-                workev[j] = workl[invsub + (j - 1) * ldq + *ncv - 1] / workl[
-                                iheigr + j - 1];
+                workev[j] = workl[invsub + (j - 1) * ldq + *ncv - 1] / workl[iheigr + j - 1];
             }
             else if (iconj == 0)
             {
                 temp = slapy2_(&workl[iheigr + j - 1], &workl[iheigi + j - 1]);
                 if (temp != 0.f)
                 {
-                    workev[j] = (workl[invsub + (j - 1) * ldq + *ncv - 1] *
-                                 workl[iheigr + j - 1] + workl[invsub + j * ldq + *
-                                         ncv - 1] * workl[iheigi + j - 1]) / temp / temp;
-                    workev[j + 1] = (workl[invsub + j * ldq + *ncv - 1] *
-                                     workl[iheigr + j - 1] - workl[invsub + (j - 1) *
-                                             ldq + *ncv - 1] * workl[iheigi + j - 1]) / temp /
-                                    temp;
+                    workev[j] = (workl[invsub + (j - 1) * ldq + *ncv - 1] * workl[iheigr + j - 1] + workl[invsub + j * ldq + *ncv - 1] * workl[iheigi + j - 1]) / temp / temp;
+                    workev[j + 1] = (workl[invsub + j * ldq + *ncv - 1] * workl[iheigr + j - 1] - workl[invsub + (j - 1) * ldq + *ncv - 1] * workl[iheigi + j - 1]) / temp / temp;
                 }
                 iconj = 1;
             }

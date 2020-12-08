@@ -564,7 +564,6 @@ int snaupd_(int *ido, char *bmat, int *n, char *which, int *nev, float *tol,
         for (j = 1; j <= i__1; ++j)
         {
             workl[j] = 0.f;
-
         }
 
         /* ----------------------------------------------------------- */
@@ -644,8 +643,13 @@ int snaupd_(int *ido, char *bmat, int *n, char *which, int *nev, float *tol,
         *info = 3;
     }
 
+#ifndef NO_TIMER
+    arscnd_(&t1);
+    timing_1.tnaupd = t1 - t0;
+#endif
+
 #ifndef NO_TRACE
-    if (msglvl > 0)
+    if (msglvl > 1)
     {
         ivout_(&c__1, &mxiter, &debug_1.ndigit, "_naupd: Number of update iterations taken");
         ivout_(&c__1, &np, &debug_1.ndigit, "_naupd: Number of wanted \"converged\" Ritz values");
@@ -653,14 +657,7 @@ int snaupd_(int *ido, char *bmat, int *n, char *which, int *nev, float *tol,
         svout_(&np, &workl[ritzi], &debug_1.ndigit, "_naupd: Imaginary part of the final Ritz values");
         svout_(&np, &workl[bounds], &debug_1.ndigit, "_naupd: Associated Ritz estimates");
     }
-#endif
 
-#ifndef NO_TIMER
-    arscnd_(&t1);
-    timing_1.tnaupd = t1 - t0;
-#endif
-
-#ifndef NO_TRACE
     if (msglvl > 0)
     {
         printf("\n ============================================= ");

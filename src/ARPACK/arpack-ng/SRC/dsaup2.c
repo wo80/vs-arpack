@@ -570,7 +570,6 @@ L20:
                 i__2 = kplusp - nevd2 + 1, i__3 = kplusp - *np + 1;
                 dswap_(&i__1, &bounds[nevm2 + 1], &c__1, &bounds[max(i__2,i__3)], &c__1);
             }
-
         }
         else
         {
@@ -601,7 +600,6 @@ L20:
             }
 
             dsortr_(wprime, &c_true, &kplusp, &ritz[1], &bounds[1]);
-
         }
 
         /* ------------------------------------------------ */
@@ -609,14 +607,12 @@ L20:
         /* by 1 / max(eps23,magnitude of the Ritz value).   */
         /* ------------------------------------------------ */
 
-        i__1 = nev0;
-        for (j = 1; j <= i__1; ++j)
+        for (j = 1; j <= nev0; ++j)
         {
             /* Computing MAX */
             d__2 = eps23, d__3 = (d__1 = ritz[j], abs(d__1));
             temp = max(d__2,d__3);
             bounds[j] /= temp;
-
         }
 
         /* -------------------------------------------------- */
@@ -634,8 +630,7 @@ L20:
         /* value.                                       */
         /* -------------------------------------------- */
 
-        i__1 = nev0;
-        for (j = 1; j <= i__1; ++j)
+        for (j = 1; j <= nev0; ++j)
         {
             /* Computing MAX */
             d__2 = eps23, d__3 = (d__1 = ritz[j], abs(d__1));
