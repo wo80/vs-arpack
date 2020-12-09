@@ -140,7 +140,6 @@
  *
  * \EndLib
  */
-
 int snapps_(int *n, int *kev, int *np, float *
             shiftr, float *shifti, float *v, int *ldv, float *h, int *ldh,
             float *resid, float *q, int *ldq, float *workl, float *workd)
@@ -172,10 +171,6 @@ int snapps_(int *n, int *kev, int *np, float *
     int istart, kplusp, msglvl;
     static float smlnum;
 
-    /* -------------- */
-    /* Data statements */
-    /* -------------- */
-
     /* Parameter adjustments */
     --workd;
     --resid;
@@ -193,10 +188,6 @@ int snapps_(int *n, int *kev, int *np, float *
     q -= q_offset;
 
     /* Function Body */
-
-    /* --------------------- */
-    /* Executable Statements */
-    /* --------------------- */
 
     if (first)
     {

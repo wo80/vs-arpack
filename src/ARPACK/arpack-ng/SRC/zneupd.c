@@ -250,7 +250,6 @@
  *
  * \EndLib
  */
-
 int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int *ldz,
             zomplex *sigma, zomplex *workev, char *bmat, int *n, char *which, int *nev,
             double *tol, zomplex *resid, int *ncv, zomplex *v, int *ldv, int *iparam,
@@ -288,13 +287,6 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int 
     int nconv2;
     int bounds, invsub, iuptri, msglvl, outncv, numcnv, ishift;
 
-    /* --------------------- */
-    /* Executable Statements */
-    /* --------------------- */
-
-    /* ---------------------- */
-    /* Set default parameters */
-    /* ---------------------- */
 
     /* Parameter adjustments */
     --workd;

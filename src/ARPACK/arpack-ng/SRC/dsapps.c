@@ -128,7 +128,6 @@
  *
  * \EndLib
  */
-
 int dsapps_(int *n, int *kev, int *np,
             double *shift, double *v, int *ldv, double *h,
             int *ldh, double *resid, double *q, int *ldq,
@@ -154,10 +153,6 @@ int dsapps_(int *n, int *kev, int *np,
     static double epsmch;
     int istart, kplusp, msglvl;
 
-    /* -------------- */
-    /* Data statements */
-    /* -------------- */
-
     /* Parameter adjustments */
     --workd;
     --resid;
@@ -173,10 +168,6 @@ int dsapps_(int *n, int *kev, int *np,
     q -= q_offset;
 
     /* Function Body */
-
-    /* --------------------- */
-    /* Executable Statements */
-    /* --------------------- */
 
     if (first)
     {

@@ -176,7 +176,6 @@
  *
  * \EndLib
  */
-
 int dsaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
             double *tol, double *resid, int *mode, int *iupd, int *ishift, int *mxiter,
             double *v, int *ldv, double *h, int *ldh, double *ritz, double *bounds,
@@ -214,10 +213,6 @@ int dsaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
     static bool ushift;
     static int kplusp, msglvl;
     int nptemp;
-
-    /* --------------------- */
-    /* Executable Statements */
-    /* --------------------- */
 
     /* Parameter adjustments */
     --workd;

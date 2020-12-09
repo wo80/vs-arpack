@@ -206,7 +206,6 @@
  *
  * \EndLib
  */
-
 int dnaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *nb,
             double *resid, double *rnorm, double *v, int *ldv, double *h, int *ldh,
             int *ipntr, double *workd, int *info)
@@ -244,9 +243,6 @@ int dnaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *nb,
     static int msglvl;
     static double smlnum;
 
-    /* --------------- */
-    /* Data statements */
-    /* --------------- */
 
     /* Parameter adjustments */
     --workd;
@@ -260,10 +256,6 @@ int dnaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *nb,
     --ipntr;
 
     /* Function Body */
-
-    /* --------------------- */
-    /* Executable Statements */
-    /* --------------------- */
 
     if (first)
     {

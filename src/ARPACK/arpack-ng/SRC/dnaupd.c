@@ -407,7 +407,6 @@
  *
  * \EndLib
  */
-
 int dnaupd_(int *ido, char *bmat, int *n, char *which, int *nev, double *tol,
             double *resid, int *ncv,double *v, int *ldv, int *iparam, int *ipntr,
             double *workd, double *workl, int *lworkl, int *info)
@@ -424,10 +423,6 @@ int dnaupd_(int *ido, char *bmat, int *n, char *which, int *nev, double *tol,
     static int iupd, next, ritzi;
     static int ritzr;
     static int bounds, ishift, msglvl, mxiter;
-
-    /* --------------------- */
-    /* Executable Statements */
-    /* --------------------- */
 
     /* Parameter adjustments */
     --workd;
@@ -494,8 +489,7 @@ int dnaupd_(int *ido, char *bmat, int *n, char *which, int *nev, double *tol,
         {
             ierr = -5;
         }
-        else if (*bmat != 'I' && *bmat !=
-                 'G')
+        else if (*bmat != 'I' && *bmat != 'G')
         {
             ierr = -6;
         }
@@ -565,7 +559,6 @@ int dnaupd_(int *ido, char *bmat, int *n, char *which, int *nev, double *tol,
         for (j = 1; j <= i__1; ++j)
         {
             workl[j] = 0.;
-
         }
 
         /* ----------------------------------------------------------- */

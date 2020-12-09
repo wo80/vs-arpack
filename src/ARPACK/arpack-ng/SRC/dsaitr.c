@@ -201,7 +201,6 @@
  *
  * \EndLib
  */
-
 int dsaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *mode,
             double *resid, double *rnorm, double *v, int *ldv, double *h, int *ldh,
             int *ipntr, double *workd, int *info)
@@ -233,9 +232,6 @@ int dsaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *mode,
     static bool rstart;
     static int msglvl;
 
-    /* --------------- */
-    /* Data statements */
-    /* --------------- */
 
     /* Parameter adjustments */
     --workd;
@@ -249,10 +245,6 @@ int dsaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *mode,
     --ipntr;
 
     /* Function Body */
-
-    /* --------------------- */
-    /* Executable Statements */
-    /* --------------------- */
 
     if (first)
     {

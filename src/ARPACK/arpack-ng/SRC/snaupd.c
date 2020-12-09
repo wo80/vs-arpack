@@ -407,7 +407,6 @@
  *
  * \EndLib
  */
-
 int snaupd_(int *ido, char *bmat, int *n, char *which, int *nev, float *tol,
             float *resid, int *ncv, float *v, int *ldv, int *iparam, int *ipntr,
             float *workd, float *workl, int *lworkl, int *info)
@@ -424,10 +423,6 @@ int snaupd_(int *ido, char *bmat, int *n, char *which, int *nev, float *tol,
     static int iupd, next, ritzi;
     static int ritzr;
     static int bounds, ishift, msglvl, mxiter;
-
-    /* --------------------- */
-    /* Executable Statements */
-    /* --------------------- */
 
     /* Parameter adjustments */
     --workd;
@@ -488,13 +483,13 @@ int snaupd_(int *ido, char *bmat, int *n, char *which, int *nev, float *tol,
         {
             ierr = -4;
         }
-        else if (strcmp(which, "LM") != 0 && strcmp(which, "SM") != 0 && strcmp(which, "LR") != 0
-                 && strcmp(which, "SR") != 0 && strcmp(which, "LI") != 0 && strcmp(which, "SI") != 0)
+        else if (strcmp(which, "LM") != 0 && strcmp(which, "SM") != 0 &&
+                 strcmp(which, "LR") != 0 && strcmp(which, "SR") != 0 &&
+                 strcmp(which, "LI") != 0 && strcmp(which, "SI") != 0)
         {
             ierr = -5;
         }
-        else if (*bmat != 'I' && *bmat !=
-                 'G')
+        else if (*bmat != 'I' && *bmat != 'G')
         {
             ierr = -6;
         }

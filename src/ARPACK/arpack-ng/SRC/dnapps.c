@@ -140,7 +140,6 @@
  *
  * \EndLib
  */
-
 int dnapps_(int *n, int *kev, int *np,
             double *shiftr, double *shifti, double *v, int *ldv,
             double *h, int *ldh, double *resid, double *q,
@@ -173,10 +172,6 @@ int dnapps_(int *n, int *kev, int *np,
     double sigmar;
     static double smlnum;
 
-    /* -------------- */
-    /* Data statements */
-    /* -------------- */
-
     /* Parameter adjustments */
     --workd;
     --resid;
@@ -194,10 +189,6 @@ int dnapps_(int *n, int *kev, int *np,
     q -= q_offset;
 
     /* Function Body */
-
-    /* --------------------- */
-    /* Executable Statements */
-    /* --------------------- */
 
     if (first)
     {
@@ -351,7 +342,6 @@ L20:
                 h[i + 1 + i * h_dim1] = 0.;
                 goto L40;
             }
-
         }
         iend = kplusp;
 L40:

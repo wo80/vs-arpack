@@ -165,7 +165,6 @@
  *
  * \EndLib
  */
-
 int cnaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
             float *tol, complex *resid, int *mode, int *iupd, int *ishift, int *mxiter,
             complex *v, int *ldv, complex *h, int *ldh, complex *ritz, complex *bounds,
@@ -204,10 +203,6 @@ int cnaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
     int nptemp;
     char wprime[3];
     complex cmpnorm;
-
-    /* --------------------- */
-    /* Executable Statements */
-    /* --------------------- */
 
     /* Parameter adjustments */
     --workd;

@@ -206,7 +206,6 @@
  *
  * \EndLib
  */
-
 int znaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *nb,
             zomplex *resid, double *rnorm, zomplex *v, int *ldv, zomplex *h, int *ldh,
             int *ipntr, zomplex *workd, int *info)
@@ -246,9 +245,6 @@ int znaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *nb,
     static int msglvl;
     static double smlnum;
 
-    /* --------------- */
-    /* Data statements */
-    /* --------------- */
 
     /* Parameter adjustments */
     --workd;
@@ -262,10 +258,6 @@ int znaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *nb,
     --ipntr;
 
     /* Function Body */
-
-    /* --------------------- */
-    /* Executable Statements */
-    /* --------------------- */
 
     if (first)
     {

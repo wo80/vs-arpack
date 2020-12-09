@@ -132,7 +132,6 @@
  *
  * \EndLib
  */
-
 int znapps_(int *n, int *kev, int *np,
             zomplex *shift, zomplex *v, int *ldv, zomplex *
             h, int *ldh, zomplex *resid, zomplex *q, int *
@@ -168,10 +167,6 @@ int znapps_(int *n, int *kev, int *np,
     int istart, kplusp, msglvl;
     static double smlnum;
 
-    /* -------------- */
-    /* Data statements */
-    /* -------------- */
-
     /* Parameter adjustments */
     --workd;
     --resid;
@@ -188,10 +183,6 @@ int znapps_(int *n, int *kev, int *np,
     q -= q_offset;
 
     /* Function Body */
-
-    /* --------------------- */
-    /* Executable Statements */
-    /* --------------------- */
 
     if (first)
     {
@@ -303,7 +294,6 @@ L20:
                 h[i__3].r = 0., h[i__3].i = 0.;
                 goto L40;
             }
-
         }
         iend = kplusp;
 L40:
@@ -375,7 +365,6 @@ L40:
                 h[i__4].r = z__1.r, h[i__4].i = z__1.i;
                 i__4 = i + j * h_dim1;
                 h[i__4].r = t.r, h[i__4].i = t.i;
-
             }
 
             /* ------------------------------------------- */

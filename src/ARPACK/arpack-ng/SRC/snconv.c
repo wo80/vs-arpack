@@ -62,7 +62,6 @@
  *
  * \EndLib
  */
-
 int snconv_(int *n, float *ritzr, float *ritzi, float *
             bounds, float *tol, int *nconv)
 {
@@ -79,9 +78,6 @@ int snconv_(int *n, float *ritzr, float *ritzi, float *
     static float t0, t1;
     float eps23, temp;
 
-    /* --------------------- */
-    /* Executable Statements */
-    /* --------------------- */
 
     /* ----------------------------------------------------------- */
     /* Convergence test: unlike in the symmetric code, I am not    */

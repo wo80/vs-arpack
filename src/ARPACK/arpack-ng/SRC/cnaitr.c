@@ -206,7 +206,6 @@
  *
  * \EndLib
  */
-
 int cnaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *nb,
             complex *resid, float *rnorm, complex *v, int *ldv, complex *h, int *ldh,
             int *ipntr, complex *workd, int *info)
@@ -246,9 +245,6 @@ int cnaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *nb,
     static int msglvl;
     static float smlnum;
 
-    /* --------------- */
-    /* Data statements */
-    /* --------------- */
 
     /* Parameter adjustments */
     --workd;
@@ -262,10 +258,6 @@ int cnaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *nb,
     --ipntr;
 
     /* Function Body */
-
-    /* --------------------- */
-    /* Executable Statements */
-    /* --------------------- */
 
     if (first)
     {

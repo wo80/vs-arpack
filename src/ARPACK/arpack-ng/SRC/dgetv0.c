@@ -116,7 +116,6 @@
  *
  * \EndLib
  */
-
 int dgetv0_(int *ido, char *bmat, int *itry, bool *initv, int *n, int *j,
             double *v, int *ldv, double *resid, double *rnorm, int *ipntr, double *workd,
             int *ierr)
@@ -142,10 +141,6 @@ int dgetv0_(int *ido, char *bmat, int *itry, bool *initv, int *n, int *j,
     static double rnorm0;
     static int msglvl;
 
-    /* --------------- */
-    /* Data Statements */
-    /* --------------- */
-
     /* Parameter adjustments */
     --workd;
     --resid;
@@ -156,9 +151,6 @@ int dgetv0_(int *ido, char *bmat, int *itry, bool *initv, int *n, int *j,
 
     /* Function Body */
 
-    /* --------------------- */
-    /* Executable Statements */
-    /* --------------------- */
 
     /* --------------------------------- */
     /* Initialize the seed of the LAPACK */

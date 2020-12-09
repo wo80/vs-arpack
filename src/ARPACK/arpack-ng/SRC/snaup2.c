@@ -172,7 +172,6 @@
  *
  * \EndLib
  */
-
 int snaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
             float *tol, float *resid, int *mode, int *iupd, int *ishift, int *mxiter,
             float *v, int *ldv, float *h, int *ldh, float *ritzr, float *ritzi,
@@ -210,10 +209,6 @@ int snaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
     static int kplusp, msglvl;
     int nptemp;
     static int numcnv;
-
-    /* --------------------- */
-    /* Executable Statements */
-    /* --------------------- */
 
     /* Parameter adjustments */
     --workd;

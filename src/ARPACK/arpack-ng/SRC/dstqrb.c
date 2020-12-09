@@ -105,7 +105,6 @@
  *
  * \EndLib
  */
-
 int dstqrb_(int *n, double *d, double *e,
             double *z, double *work, int *info)
 {

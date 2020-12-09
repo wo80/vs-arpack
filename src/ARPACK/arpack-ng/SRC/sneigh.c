@@ -96,7 +96,6 @@
  *
  * \EndLib
  */
-
 int sneigh_(float *rnorm, int *n, float *h, int *ldh,
             float *ritzr, float *ritzi, float *bounds, float *q, int *ldq, float *
             workl, int *ierr)
@@ -113,9 +112,6 @@ int sneigh_(float *rnorm, int *n, float *h, int *ldh,
     bool select[1];
     int msglvl;
 
-    /* --------------------- */
-    /* Executable Statements */
-    /* --------------------- */
 
     /* ----------------------------- */
     /* Initialize timing statistics  */

@@ -84,7 +84,6 @@
  *
  * \EndLib
  */
-
 int zngets_(int *ishift, char *which, int *kev, int *np, zomplex *ritz,
             zomplex *bounds)
 {
@@ -95,9 +94,6 @@ int zngets_(int *ishift, char *which, int *kev, int *np, zomplex *ritz,
     static float t0, t1;
     int msglvl;
 
-    /* --------------------- */
-    /* Executable Statements */
-    /* --------------------- */
 
     /* ----------------------------- */
     /* Initialize timing statistics  */

@@ -250,7 +250,6 @@
  *
  * \EndLib
  */
-
 int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int *ldz,
             complex *sigma, complex *workev, char *bmat, int *n, char *which, int *nev,
             float *tol, complex *resid, int *ncv, complex *v, int *ldv, int *iparam,
@@ -290,13 +289,6 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
     int nconv2;
     int bounds, invsub, iuptri, msglvl, outncv, numcnv, ishift;
 
-    /* --------------------- */
-    /* Executable Statements */
-    /* --------------------- */
-
-    /* ---------------------- */
-    /* Set default parameters */
-    /* ---------------------- */
 
     /* Parameter adjustments */
     --workd;

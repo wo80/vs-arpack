@@ -65,7 +65,6 @@
  *
  * \EndLib
  */
-
 int dsesrt_(char *which, bool *apply, int *n, double *x, int *na, double *a,
             int *lda)
 {
@@ -73,19 +72,9 @@ int dsesrt_(char *which, bool *apply, int *n, double *x, int *na, double *a,
     int a_dim1, a_offset, i__1;
     double d__1, d__2;
 
-    /* Builtin functions */
-
     /* Local variables */
     int i, j, igap;
     double temp;
-
-    /* ---------------- */
-    /* Scalar Arguments */
-    /* ---------------- */
-
-    /* --------------------- */
-    /* Executable Statements */
-    /* --------------------- */
 
     /* Parameter adjustments */
     a_dim1 = *lda;

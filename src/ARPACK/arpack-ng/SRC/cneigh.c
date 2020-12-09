@@ -97,7 +97,6 @@
  *
  * \EndLib
  */
-
 int cneigh_(float *rnorm, int *n, complex *h, int *
             ldh, complex *ritz, complex *bounds, complex *q, int *ldq,
             complex *workl, float *rwork, int *ierr)
@@ -114,9 +113,6 @@ int cneigh_(float *rnorm, int *n, complex *h, int *
     bool select[1];
     int msglvl;
 
-    /* --------------------- */
-    /* Executable Statements */
-    /* --------------------- */
 
     /* ----------------------------- */
     /* Initialize timing statistics  */

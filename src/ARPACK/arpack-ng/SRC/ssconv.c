@@ -56,7 +56,6 @@
  *
  * \EndLib
  */
-
 int ssconv_(int *n, float *ritz, float *bounds, float *tol,
             int *nconv)
 {
@@ -72,14 +71,6 @@ int ssconv_(int *n, float *ritz, float *bounds, float *tol,
     int i;
     static float t0, t1;
     float eps23, temp;
-
-    /* ----------------- */
-    /* External routines */
-    /* ----------------- */
-
-    /* --------------------- */
-    /* Executable Statements */
-    /* --------------------- */
 
     /* Parameter adjustments */
     --bounds;

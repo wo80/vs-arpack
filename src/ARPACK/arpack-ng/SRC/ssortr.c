@@ -56,26 +56,16 @@
  *
  * \EndLib
  */
-
 int ssortr_(char *which, bool *apply, int *n, float *x1, float *x2)
 {
     /* System generated locals */
     int i__1;
     float r__1, r__2;
 
-    /* Builtin functions */
-
     /* Local variables */
     int i, j, igap;
     float temp;
 
-    /* ---------------- */
-    /* Scalar Arguments */
-    /* ---------------- */
-
-    /* --------------------- */
-    /* Executable Statements */
-    /* --------------------- */
 
     igap = *n / 2;
 

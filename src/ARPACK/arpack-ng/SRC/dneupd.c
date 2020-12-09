@@ -304,7 +304,6 @@
  *
  * \EndLib
  */
-
 int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, double *z,
             int *ldz, double *sigmar, double *sigmai, double *workev, char *bmat, int *n,
             char *which, int *nev, double *tol, double *resid, int *ncv, double *v,
@@ -343,13 +342,6 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
     int iheigi, iheigr, bounds, invsub, iuptri, msglvl, outncv, ishift,
             numcnv;
 
-    /* --------------------- */
-    /* Executable Statements */
-    /* --------------------- */
-
-    /* ---------------------- */
-    /* Set default parameters */
-    /* ---------------------- */
 
     /* Parameter adjustments */
     z_dim1 = *ldz;

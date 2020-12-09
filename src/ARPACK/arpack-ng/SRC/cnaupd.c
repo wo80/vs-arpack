@@ -377,7 +377,6 @@
  *
  * \EndLib
  */
-
 int cnaupd_(int *ido, char *bmat, int *n, char *which, int *nev, float *tol,
             complex *resid, int *ncv, complex *v, int *ldv, int *iparam, int *ipntr,
             complex *workd, complex *workl, int *lworkl, float *rwork, int *info)
@@ -393,10 +392,6 @@ int cnaupd_(int *ido, char *bmat, int *n, char *which, int *nev, float *tol,
     int ierr;
     static int iupd, next, ritz;
     static int bounds, ishift, msglvl, mxiter;
-
-    /* --------------------- */
-    /* Executable Statements */
-    /* --------------------- */
 
     /* Parameter adjustments */
     --workd;
@@ -458,13 +453,13 @@ int cnaupd_(int *ido, char *bmat, int *n, char *which, int *nev, float *tol,
         {
             ierr = -4;
         }
-        else if (strcmp(which, "LM") != 0 && strcmp(which, "SM") != 0 && strcmp(which, "LR") != 0
-                 && strcmp(which, "SR") != 0 && strcmp(which, "LI") != 0 && strcmp(which, "SI") != 0)
+        else if (strcmp(which, "LM") != 0 && strcmp(which, "SM") != 0 &&
+                 strcmp(which, "LR") != 0 && strcmp(which, "SR") != 0 &&
+                 strcmp(which, "LI") != 0 && strcmp(which, "SI") != 0)
         {
             ierr = -5;
         }
-        else if (*bmat != 'I' && *bmat !=
-                 'G')
+        else if (*bmat != 'I' && *bmat != 'G')
         {
             ierr = -6;
         }
@@ -535,7 +530,6 @@ int cnaupd_(int *ido, char *bmat, int *n, char *which, int *nev, float *tol,
         {
             i__2 = j;
             workl[i__2].r = 0.f, workl[i__2].i = 0.f;
-
         }
 
         /* ----------------------------------------------------------- */

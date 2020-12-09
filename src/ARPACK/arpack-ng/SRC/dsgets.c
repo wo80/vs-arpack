@@ -90,23 +90,17 @@
  *
  * \EndLib
  */
-
 int dsgets_(int *ishift, char *which, int *kev, int *np, double *ritz,
             double *bounds, double *shifts)
 {
     /* System generated locals */
     int i__1;
 
-    /* Builtin functions */
-
     /* Local variables */
     static float t0, t1;
     int kevd2;
     int msglvl;
 
-    /* --------------------- */
-    /* Executable Statements */
-    /* --------------------- */
 
     /* ----------------------------- */
     /* Initialize timing statistics  */

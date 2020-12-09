@@ -58,7 +58,6 @@
  *
  * \EndLib
  */
-
 int zsortc_(char *which, bool *apply, int *n, zomplex *x, zomplex *y)
 {
     /* System generated locals */
@@ -74,9 +73,6 @@ int zsortc_(char *which, bool *apply, int *n, zomplex *x, zomplex *y)
     zomplex temp;
     double temp1, temp2;
 
-    /* --------------------- */
-    /* Executable Statements */
-    /* --------------------- */
 
     igap = *n / 2;
 

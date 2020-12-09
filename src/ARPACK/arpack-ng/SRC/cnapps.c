@@ -132,7 +132,6 @@
  *
  * \EndLib
  */
-
 int cnapps_(int *n, int *kev, int *np, complex *
             shift, complex *v, int *ldv, complex *h, int *ldh, complex *
             resid, complex *q, int *ldq, complex *workl, complex *workd)
@@ -167,10 +166,6 @@ int cnapps_(int *n, int *kev, int *np, complex *
     int istart, kplusp, msglvl;
     static float smlnum;
 
-    /* -------------- */
-    /* Data statements */
-    /* -------------- */
-
     /* Parameter adjustments */
     --workd;
     --resid;
@@ -187,10 +182,6 @@ int cnapps_(int *n, int *kev, int *np, complex *
     q -= q_offset;
 
     /* Function Body */
-
-    /* --------------------- */
-    /* Executable Statements */
-    /* --------------------- */
 
     if (first)
     {
@@ -374,7 +365,6 @@ L40:
                 h[i__4].r = q__1.r, h[i__4].i = q__1.i;
                 i__4 = i + j * h_dim1;
                 h[i__4].r = t.r, h[i__4].i = t.i;
-
             }
 
             /* ------------------------------------------- */
@@ -403,7 +393,6 @@ L40:
                 h[i__4].r = q__1.r, h[i__4].i = q__1.i;
                 i__4 = j + i * h_dim1;
                 h[i__4].r = t.r, h[i__4].i = t.i;
-
             }
 
             /* --------------------------------------------------- */
@@ -432,7 +421,6 @@ L40:
                 q[i__4].r = q__1.r, q[i__4].i = q__1.i;
                 i__4 = j + i * q_dim1;
                 q[i__4].r = t.r, q[i__4].i = t.i;
-
             }
 
             /* ------------------------- */
@@ -446,7 +434,6 @@ L40:
                 i__3 = i + 2 + i * h_dim1;
                 g.r = h[i__3].r, g.i = h[i__3].i;
             }
-
         }
 
         /* ----------------------------- */

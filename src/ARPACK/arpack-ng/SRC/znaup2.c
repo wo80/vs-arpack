@@ -165,7 +165,6 @@
  *
  * \EndLib
  */
-
 int znaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
             double *tol, zomplex *resid, int *mode, int *iupd, int *ishift, int *mxiter,
             zomplex *v, int *ldv, zomplex *h, int *ldh, zomplex *ritz, zomplex *bounds,
@@ -202,10 +201,6 @@ int znaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
     int nptemp;
     char wprime[3];
     zomplex cmpnorm;
-
-    /* --------------------- */
-    /* Executable Statements */
-    /* --------------------- */
 
     /* Parameter adjustments */
     --workd;

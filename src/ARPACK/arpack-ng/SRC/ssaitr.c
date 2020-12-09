@@ -201,7 +201,6 @@
  *
  * \EndLib
  */
-
 int ssaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *mode,
             float *resid, float *rnorm, float *v, int *ldv, float *h, int *ldh,
             int *ipntr, float *workd, int *info)
@@ -233,9 +232,6 @@ int ssaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *mode,
     static bool rstart;
     static int msglvl;
 
-    /* --------------- */
-    /* Data statements */
-    /* --------------- */
 
     /* Parameter adjustments */
     --workd;
@@ -249,10 +245,6 @@ int ssaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *mode,
     --ipntr;
 
     /* Function Body */
-
-    /* --------------------- */
-    /* Executable Statements */
-    /* --------------------- */
 
     if (first)
     {

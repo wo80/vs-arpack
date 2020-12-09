@@ -304,7 +304,6 @@
  *
  * \EndLib
  */
-
 int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float *z,
             int *ldz, float *sigmar, float *sigmai, float *workev, char *bmat, int *n,
             char *which, int *nev, float *tol, float *resid, int *ncv, float *v,
@@ -342,13 +341,6 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
     int iheigi, iheigr, bounds, invsub, iuptri, msglvl, outncv, ishift,
             numcnv;
 
-    /* --------------------- */
-    /* Executable Statements */
-    /* --------------------- */
-
-    /* ---------------------- */
-    /* Set default parameters */
-    /* ---------------------- */
 
     /* Parameter adjustments */
     z_dim1 = *ldz;

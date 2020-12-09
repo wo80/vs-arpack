@@ -97,7 +97,6 @@
  *
  * \EndLib
  */
-
 int zneigh_(double *rnorm, int *n, zomplex *
             h, int *ldh, zomplex *ritz, zomplex *bounds,
             zomplex *q, int *ldq, zomplex *workl, double *
@@ -115,9 +114,6 @@ int zneigh_(double *rnorm, int *n, zomplex *
     bool select[1];
     int msglvl;
 
-    /* --------------------- */
-    /* Executable Statements */
-    /* --------------------- */
 
     /* ----------------------------- */
     /* Initialize timing statistics  */

@@ -84,7 +84,6 @@
  *
  * \EndLib
  */
-
 int cngets_(int *ishift, char *which, int *kev, int *np, complex *ritz, complex *bounds)
 {
     /* System generated locals */
@@ -94,9 +93,6 @@ int cngets_(int *ishift, char *which, int *kev, int *np, complex *ritz, complex 
     static float t0, t1;
     int msglvl;
 
-    /* --------------------- */
-    /* Executable Statements */
-    /* --------------------- */
 
     /* ----------------------------- */
     /* Initialize timing statistics  */

@@ -65,7 +65,6 @@
  *
  * \EndLib
  */
-
 int ssesrt_(char *which, bool *apply, int *n, float *x,int *na, float *a,
             int *lda)
 {
@@ -73,19 +72,9 @@ int ssesrt_(char *which, bool *apply, int *n, float *x,int *na, float *a,
     int a_dim1, a_offset, i__1;
     float r__1, r__2;
 
-    /* Builtin functions */
-
     /* Local variables */
     int i, j, igap;
     float temp;
-
-    /* ---------------- */
-    /* Scalar Arguments */
-    /* ---------------- */
-
-    /* --------------------- */
-    /* Executable Statements */
-    /* --------------------- */
 
     /* Parameter adjustments */
     a_dim1 = *lda;

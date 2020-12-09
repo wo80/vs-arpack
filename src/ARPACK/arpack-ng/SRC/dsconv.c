@@ -56,7 +56,6 @@
  *
  * \EndLib
  */
-
 int dsconv_(int *n, double *ritz, double *bounds,
             double *tol, int *nconv)
 {
@@ -71,14 +70,6 @@ int dsconv_(int *n, double *ritz, double *bounds,
     int i;
     static float t0, t1;
     double eps23, temp;
-
-    /* ----------------- */
-    /* External routines */
-    /* ----------------- */
-
-    /* --------------------- */
-    /* Executable Statements */
-    /* --------------------- */
 
     /* Parameter adjustments */
     --bounds;

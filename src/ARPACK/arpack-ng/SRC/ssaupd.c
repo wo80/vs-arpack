@@ -407,7 +407,6 @@
  *
  * \EndLib
  */
-
 int ssaupd_(int *ido, char *bmat, int *n, char *which, int *nev, float *tol,
             float *resid, int *ncv, float *v, int *ldv, int *iparam, int *ipntr,
             float *workd, float *workl, int *lworkl, int *info)
@@ -422,10 +421,6 @@ int ssaupd_(int *ido, char *bmat, int *n, char *which, int *nev, float *tol,
     static int nb, ih, iq, np, iw, ldh, ldq, nev0, mode, ierr, iupd, next,
            ritz;
     static int bounds, ishift, msglvl, mxiter;
-
-    /* --------------------- */
-    /* Executable Statements */
-    /* --------------------- */
 
     /* Parameter adjustments */
     --workd;
@@ -493,8 +488,9 @@ int ssaupd_(int *ido, char *bmat, int *n, char *which, int *nev, float *tol,
         {
             ierr = -4;
         }
-        if (strcmp(which, "LM") != 0 && strcmp(which, "SM") != 0 && strcmp(which, "LA") != 0
-                && strcmp(which, "SA") != 0 && strcmp(which, "BE") != 0)
+        if (strcmp(which, "LM") != 0 && strcmp(which, "SM") != 0 &&
+            strcmp(which, "LA") != 0 && strcmp(which, "SA") != 0 &&
+            strcmp(which, "BE") != 0)
         {
             ierr = -5;
         }
@@ -570,7 +566,6 @@ int ssaupd_(int *ido, char *bmat, int *n, char *which, int *nev, float *tol,
         for (j = 1; j <= i__1; ++j)
         {
             workl[j] = 0.f;
-
         }
 
         /* ----------------------------------------------------- */

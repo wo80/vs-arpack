@@ -91,22 +91,16 @@
  *
  * \EndLib
  */
-
 int sngets_(int *ishift, char *which, int *kev, int *np, float *ritzr,
             float *ritzi, float *bounds, float *shiftr, float *shifti)
 {
     /* System generated locals */
     int i__1;
 
-    /* Builtin functions */
-
     /* Local variables */
     static float t0, t1;
     int msglvl;
 
-    /* --------------------- */
-    /* Executable Statements */
-    /* --------------------- */
 
     /* ----------------------------- */
     /* Initialize timing statistics  */

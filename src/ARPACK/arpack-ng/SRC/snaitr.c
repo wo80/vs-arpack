@@ -206,7 +206,6 @@
  *
  * \EndLib
  */
-
 int snaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *nb,
             float *resid, float *rnorm, float *v, int *ldv, float *h, int *ldh,
             int *ipntr, float *workd, int *info)
@@ -244,9 +243,6 @@ int snaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *nb,
     static int msglvl;
     static float smlnum;
 
-    /* --------------- */
-    /* Data statements */
-    /* --------------- */
 
     /* Parameter adjustments */
     --workd;
@@ -260,10 +256,6 @@ int snaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *nb,
     --ipntr;
 
     /* Function Body */
-
-    /* --------------------- */
-    /* Executable Statements */
-    /* --------------------- */
 
     if (first)
     {

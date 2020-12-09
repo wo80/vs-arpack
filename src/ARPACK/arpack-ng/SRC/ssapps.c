@@ -128,7 +128,6 @@
  *
  * \EndLib
  */
-
 int ssapps_(int *n, int *kev, int *np, float *
             shift, float *v, int *ldv, float *h, int *ldh, float *resid,
             float *q, int *ldq, float *workd)
@@ -153,10 +152,6 @@ int ssapps_(int *n, int *kev, int *np, float *
     static float epsmch;
     int istart, kplusp, msglvl;
 
-    /* -------------- */
-    /* Data statements */
-    /* -------------- */
-
     /* Parameter adjustments */
     --workd;
     --resid;
@@ -172,10 +167,6 @@ int ssapps_(int *n, int *kev, int *np, float *
     q -= q_offset;
 
     /* Function Body */
-
-    /* --------------------- */
-    /* Executable Statements */
-    /* --------------------- */
 
     if (first)
     {
@@ -377,7 +368,6 @@ L40:
                     q[j + i * q_dim1] = a1;
                 }
             }
-
         }
 
         /* ------------------------ */

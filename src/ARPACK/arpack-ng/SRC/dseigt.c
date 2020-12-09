@@ -84,7 +84,6 @@
  *
  * \EndLib
  */
-
 int dseigt_(double *rnorm, int *n, double *h,
             int *ldh, double *eig, double *bounds, double *workl,
             int *ierr)
@@ -98,9 +97,6 @@ int dseigt_(double *rnorm, int *n, double *h,
     static float t0, t1;
     int msglvl;
 
-    /* --------------------- */
-    /* Executable Statements */
-    /* --------------------- */
 
     /* ----------------------------- */
     /* Initialize timing statistics  */

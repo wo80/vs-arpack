@@ -407,7 +407,6 @@
  *
  * \EndLib
  */
-
 int dsaupd_(int *ido, char *bmat, int *n, char *which, int *nev, double *tol,
             double *resid, int *ncv,double *v, int *ldv, int *iparam, int *ipntr,
             double *workd, double *workl, int *lworkl, int *info)
@@ -422,10 +421,6 @@ int dsaupd_(int *ido, char *bmat, int *n, char *which, int *nev, double *tol,
     static int nb, ih, iq, np, iw, ldh, ldq, nev0, mode, ierr, iupd, next,
            ritz;
     static int bounds, ishift, msglvl, mxiter;
-
-    /* --------------------- */
-    /* Executable Statements */
-    /* --------------------- */
 
     /* Parameter adjustments */
     --workd;
@@ -493,8 +488,9 @@ int dsaupd_(int *ido, char *bmat, int *n, char *which, int *nev, double *tol,
         {
             ierr = -4;
         }
-        if (strcmp(which, "LM") != 0 && strcmp(which, "SM") != 0 && strcmp(which, "LA") != 0
-                && strcmp(which, "SA") != 0 && strcmp(which, "BE") != 0)
+        if (strcmp(which, "LM") != 0 && strcmp(which, "SM") != 0 &&
+            strcmp(which, "LA") != 0 && strcmp(which, "SA") != 0 &&
+            strcmp(which, "BE") != 0)
         {
             ierr = -5;
         }

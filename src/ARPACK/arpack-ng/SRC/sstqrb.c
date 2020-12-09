@@ -105,7 +105,6 @@
  *
  * \EndLib
  */
-
 int sstqrb_(int *n, float *d, float *e, float *z, float *
             work, int *info)
 {

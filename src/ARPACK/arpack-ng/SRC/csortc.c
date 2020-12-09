@@ -58,7 +58,6 @@
  *
  * \EndLib
  */
-
 int csortc_(char *which, bool *apply, int *n, complex *x, complex *y)
 {
     /* System generated locals */
@@ -74,9 +73,6 @@ int csortc_(char *which, bool *apply, int *n, complex *x, complex *y)
     complex temp;
     float temp1, temp2;
 
-    /* --------------------- */
-    /* Executable Statements */
-    /* --------------------- */
 
     igap = *n / 2;
 

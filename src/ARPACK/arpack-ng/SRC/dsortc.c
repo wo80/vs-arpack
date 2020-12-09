@@ -63,26 +63,16 @@
  *
  * \EndLib
  */
-
 int dsortc_(char *which, bool *apply, int *n, double *xfloat, double *ximag, double *y)
 {
     /* System generated locals */
     int i__1;
     double d__1, d__2;
 
-    /* Builtin functions */
-
     /* Local variables */
     int i, j, igap;
     double temp, temp1, temp2;
 
-    /* ---------------- */
-    /* Scalar Arguments */
-    /* ---------------- */
-
-    /* --------------------- */
-    /* Executable Statements */
-    /* --------------------- */
 
     igap = *n / 2;
 

@@ -96,7 +96,6 @@
  *
  * \EndLib
  */
-
 int dneigh_(double *rnorm, int *n, double *h,
             int *ldh, double *ritzr, double *ritzi, double *
             bounds, double *q, int *ldq, double *workl, int *ierr)
@@ -113,9 +112,6 @@ int dneigh_(double *rnorm, int *n, double *h,
     bool select[1];
     int msglvl;
 
-    /* --------------------- */
-    /* Executable Statements */
-    /* --------------------- */
 
     /* ----------------------------- */
     /* Initialize timing statistics  */

@@ -218,7 +218,6 @@
  *
  * \EndLib
  */
-
 int sseupd_(bool *rvec, char *howmny, bool *select, float *d, float *z, int *ldz,
             float *sigma, char *bmat, int *n, char *which, int *nev, float *tol,
             float *resid, int *ncv, float *v, int *ldv, int *iparam, int *ipntr,
@@ -249,13 +248,6 @@ int sseupd_(bool *rvec, char *howmny, bool *select, float *d, float *z, int *ldz
     int bounds, msglvl, ishift, numcnv;
     int leftptr, rghtptr;
 
-    /* --------------------- */
-    /* Executable Statements */
-    /* --------------------- */
-
-    /* ---------------------- */
-    /* Set default parameters */
-    /* ---------------------- */
 
     /* Parameter adjustments */
     --workd;

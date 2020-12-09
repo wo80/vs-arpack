@@ -113,7 +113,6 @@
  *
  * \EndLib
  */
-
 int cgetv0_(int *ido, char *bmat, int *itry, bool *initv, int *n, int *j,
             complex *v, int *ldv, complex *resid, float *rnorm, int *ipntr, complex *workd,
             int *ierr)
@@ -142,10 +141,6 @@ int cgetv0_(int *ido, char *bmat, int *itry, bool *initv, int *n, int *j,
     static float rnorm0;
     static int msglvl;
 
-    /* --------------- */
-    /* Data Statements */
-    /* --------------- */
-
     /* Parameter adjustments */
     --workd;
     --resid;
@@ -156,9 +151,6 @@ int cgetv0_(int *ido, char *bmat, int *itry, bool *initv, int *n, int *j,
 
     /* Function Body */
 
-    /* --------------------- */
-    /* Executable Statements */
-    /* --------------------- */
 
     /* --------------------------------- */
     /* Initialize the seed of the LAPACK */

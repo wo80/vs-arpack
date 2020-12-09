@@ -84,7 +84,6 @@
  *
  * \EndLib
  */
-
 int sseigt_(float *rnorm, int *n, float *h, int *ldh,
             float *eig, float *bounds, float *workl, int *ierr)
 {
@@ -97,9 +96,6 @@ int sseigt_(float *rnorm, int *n, float *h, int *ldh,
     static float t0, t1;
     int msglvl;
 
-    /* --------------------- */
-    /* Executable Statements */
-    /* --------------------- */
 
     /* ----------------------------- */
     /* Initialize timing statistics  */
