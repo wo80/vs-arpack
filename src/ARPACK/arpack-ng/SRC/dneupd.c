@@ -798,7 +798,7 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
                     /* -------------------- */
 
                     temp = dnrm2_(ncv, &workl[invsub + (j - 1) * ldq], &c__1);
-                    d__1 = 1. / temp;
+                    d__1 = 1.0 / temp;
                     dscal_(ncv, &d__1, &workl[invsub + (j - 1) * ldq], &c__1);
                 }
                 else
@@ -816,9 +816,9 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
                         d__1 = dnrm2_(ncv, &workl[invsub + (j - 1) * ldq], &c__1);
                         d__2 = dnrm2_(ncv, &workl[invsub + j * ldq], &c__1);
                         temp = dlapy2_(&d__1, &d__2);
-                        d__1 = 1. / temp;
+                        d__1 = 1.0 / temp;
                         dscal_(ncv, &d__1, &workl[invsub + (j - 1) * ldq], &c__1);
-                        d__1 = 1. / temp;
+                        d__1 = 1.0 / temp;
                         dscal_(ncv, &d__1, &workl[invsub + j * ldq], &c__1);
                         iconj = 1;
                     }

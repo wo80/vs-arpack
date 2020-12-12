@@ -270,7 +270,7 @@ int znaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *nb,
         /* --------------------------------------- */
 
         unfl = dlamch_("S");
-        z__1.r = 1. / unfl, z__1.i = 0. / unfl;
+        z__1.r = 1.0 / unfl, z__1.i = 0.0 / unfl;
         ovfl = z__1.r;
         dlabad_(&unfl, &ovfl);
         ulp = dlamch_("P");
@@ -446,7 +446,7 @@ L40:
     zcopy_(n, &resid[1], &c__1, &v[j * v_dim1 + 1], &c__1);
     if (*rnorm >= unfl)
     {
-        temp1 = 1. / *rnorm;
+        temp1 = 1.0 / *rnorm;
         zdscal_(n, &temp1, &v[j * v_dim1 + 1], &c__1);
         zdscal_(n, &temp1, &workd[ipj], &c__1);
     }

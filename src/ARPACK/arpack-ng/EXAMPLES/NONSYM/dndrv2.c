@@ -138,7 +138,7 @@ int dndrv2()
     double* du2 = (double*)malloc(n * sizeof(double));
 
     convct_1.rho = 10.;
-    h = 1. / (double) (n + 1);
+    h = 1.0 / (double) (n + 1);
     s = convct_1.rho * h / 2.0;
 
     s1 = -1. - s;
@@ -451,7 +451,7 @@ int dndrv2_av_(const int n, double *v, double *w)
     --v;
 
     /* Function Body */
-    h = 1. / (double) (n + 1);
+    h = 1.0 / (double) (n + 1);
     s = convct_1.rho * h / 2.0;
     dd = 2.0;
     dl = -1. - s;

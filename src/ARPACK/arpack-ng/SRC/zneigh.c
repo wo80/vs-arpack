@@ -196,7 +196,7 @@ int zneigh_(double *rnorm, int *n, zomplex *
     for (j = 1; j <= i__1; ++j)
     {
         temp = dznrm2_(n, &q[j * q_dim1 + 1], &c__1);
-        d__1 = 1. / temp;
+        d__1 = 1.0 / temp;
         zdscal_(n, &d__1, &q[j * q_dim1 + 1], &c__1);
     }
 

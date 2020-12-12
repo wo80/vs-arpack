@@ -452,8 +452,8 @@ int sndrv3_av_(const int n, float *v, float *w)
     h = 1.0f / (float) (n + 1);
     s = 5.0f;
     dd = 2.0f / h;
-    dl = -1.f / h - s;
-    du = -1.f / h + s;
+    dl = -1.0f / h - s;
+    du = -1.0f / h + s;
 
     w[1] = dd * v[1] + du * v[2];
     i__1 = n - 1;

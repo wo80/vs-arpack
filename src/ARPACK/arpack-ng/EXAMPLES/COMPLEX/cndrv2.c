@@ -143,7 +143,7 @@ int cndrv2()
     h.r = q__1.r, h.i = q__1.i;
     q__1.r = h.r * h.r - h.i * h.i, q__1.i = h.r * h.i + h.i * h.r;
     h2.r = q__1.r, h2.i = q__1.i;
-    c_div(&q__1, &convct_1.rho, &c_b3);
+    c_div(&q__1, &convct_1.rho, &c_two);
     s.r = q__1.r, s.i = q__1.i;
 
     q__3.r = -1.f, q__3.i = -0.f;
@@ -151,7 +151,7 @@ int cndrv2()
     c_div(&q__4, &s, &h);
     q__1.r = q__2.r - q__4.r, q__1.i = q__2.i - q__4.i;
     s1.r = q__1.r, s1.i = q__1.i;
-    c_div(&q__2, &c_b3, &h2);
+    c_div(&q__2, &c_two, &h2);
     q__1.r = q__2.r - sigma.r, q__1.i = q__2.i - sigma.i;
     s2.r = q__1.r, s2.i = q__1.i;
     q__3.r = -1.f, q__3.i = -0.f;
@@ -444,9 +444,9 @@ int cndrv2_av_(const int n, complex *v, complex *w)
     h.r = q__1.r, h.i = q__1.i;
     q__1.r = h.r * h.r - h.i * h.i, q__1.i = h.r * h.i + h.i * h.r;
     h2.r = q__1.r, h2.i = q__1.i;
-    c_div(&q__1, &convct_1.rho, &c_b3);
+    c_div(&q__1, &convct_1.rho, &c_two);
     s.r = q__1.r, s.i = q__1.i;
-    c_div(&q__1, &c_b3, &h2);
+    c_div(&q__1, &c_two, &h2);
     dd.r = q__1.r, dd.i = q__1.i;
     q__3.r = -1.f, q__3.i = -0.f;
     c_div(&q__2, &q__3, &h2);

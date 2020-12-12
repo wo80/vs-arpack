@@ -728,7 +728,7 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int 
             for (j = 1; j <= i__1; ++j)
             {
                 rtemp = dznrm2_(ncv, &workl[invsub + (j - 1) * ldq], &c__1);
-                rtemp = 1. / rtemp;
+                rtemp = 1.0 / rtemp;
                 zdscal_(ncv, &rtemp, &workl[invsub + (j - 1) * ldq], &c__1);
 
                 /* ---------------------------------------- */

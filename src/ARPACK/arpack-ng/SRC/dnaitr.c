@@ -268,7 +268,7 @@ int dnaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *nb,
         /* --------------------------------------- */
 
         unfl = dlamch_("S");
-        ovfl = 1. / unfl;
+        ovfl = 1.0 / unfl;
         dlabad_(&unfl, &ovfl);
         ulp = dlamch_("P");
         smlnum = unfl * (*n / ulp);
@@ -443,7 +443,7 @@ L40:
     dcopy_(n, &resid[1], &c__1, &v[j * v_dim1 + 1], &c__1);
     if (*rnorm >= unfl)
     {
-        temp1 = 1. / *rnorm;
+        temp1 = 1.0 / *rnorm;
         dscal_(n, &temp1, &v[j * v_dim1 + 1], &c__1);
         dscal_(n, &temp1, &workd[ipj], &c__1);
     }

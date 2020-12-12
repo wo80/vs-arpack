@@ -194,7 +194,7 @@ int znapps_(int *n, int *kev, int *np,
         /* --------------------------------------------- */
 
         unfl = dlamch_("S");
-        z__1.r = 1. / unfl, z__1.i = 0. / unfl;
+        z__1.r = 1.0 / unfl, z__1.i = 0.0 / unfl;
         ovfl = z__1.r;
         dlabad_(&unfl, &ovfl);
         ulp = dlamch_("P");

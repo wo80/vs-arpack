@@ -200,7 +200,7 @@ int dnapps_(int *n, int *kev, int *np,
         /* --------------------------------------------- */
 
         unfl = dlamch_("S");
-        ovfl = 1. / unfl;
+        ovfl = 1.0 / unfl;
         dlabad_(&unfl, &ovfl);
         ulp = dlamch_("P");
         smlnum = unfl * (*n / ulp);

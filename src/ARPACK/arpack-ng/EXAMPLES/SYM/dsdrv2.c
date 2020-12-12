@@ -156,11 +156,11 @@ int dsdrv2()
     /* is the 1-d Laplacian.                               */
     /* --------------------------------------------------- */
 
-    h2 = 1. / (double) ((n + 1) * (n + 1));
+    h2 = 1.0 / (double) ((n + 1) * (n + 1));
     for (j = 1; j <= n; ++j)
     {
         ad[j - 1] = 2. / h2 - sigma;
-        adl[j - 1] = -1. / h2;
+        adl[j - 1] = -1.0 / h2;
     }
     dcopy_(&n, adl, &c__1, adu, &c__1);
     dgttrf_(&n, adl, ad, adu, adu2, ipiv, &ierr);
@@ -388,8 +388,8 @@ int dsdrv2_av_(const int n, double *v, double *w)
 
     /*     Scale the vector w by (1 / h^2). */
 
-    h2 = 1. / (double) ((n + 1) * (n + 1));
-    d__1 = 1. / h2;
+    h2 = 1.0 / (double) ((n + 1) * (n + 1));
+    d__1 = 1.0 / h2;
     dscal_(&n, &d__1, &w[1], &c__1);
     return 0;
 } /* av_ */

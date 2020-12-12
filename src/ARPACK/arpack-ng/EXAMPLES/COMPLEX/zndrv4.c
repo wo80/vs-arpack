@@ -146,9 +146,9 @@ int zndrv4()
     convct_1.rho.r = 10., convct_1.rho.i = 0.0;
     i__1 = n + 1;
     z__2.r = (double) i__1, z__2.i = 0.0;
-    z_div(&z__1, &c_b137, &z__2);
+    z_div(&z__1, &z_one, &z__2);
     h.r = z__1.r, h.i = z__1.i;
-    z_div(&z__1, &convct_1.rho, &c_b3_dx);
+    z_div(&z__1, &convct_1.rho, &z_two);
     s.r = z__1.r, s.i = z__1.i;
 
     z__4.r = -1., z__4.i = -0.;
@@ -156,15 +156,15 @@ int zndrv4()
     z__2.r = z__3.r - s.r, z__2.i = z__3.i - s.i;
     z__6.r = sigma.r * h.r - sigma.i * h.i, z__6.i = sigma.r * h.i +
              sigma.i * h.r;
-    z_div(&z__5, &z__6, &c_b5_dx);
+    z_div(&z__5, &z__6, &z_six);
     z__1.r = z__2.r - z__5.r, z__1.i = z__2.i - z__5.i;
     s1.r = z__1.r, s1.i = z__1.i;
-    z_div(&z__2, &c_b3_dx, &h);
+    z_div(&z__2, &z_two, &h);
     z__5.r = sigma.r * 4. - sigma.i * 0., z__5.i = sigma.i * 4.0 + sigma.r *
              0.0;
     z__4.r = z__5.r * h.r - z__5.i * h.i, z__4.i = z__5.r * h.i +
              z__5.i * h.r;
-    z_div(&z__3, &z__4, &c_b5_dx);
+    z_div(&z__3, &z__4, &z_six);
     z__1.r = z__2.r - z__3.r, z__1.i = z__2.i - z__3.i;
     s2.r = z__1.r, s2.i = z__1.i;
     z__4.r = -1., z__4.i = -0.;
@@ -172,7 +172,7 @@ int zndrv4()
     z__2.r = z__3.r + s.r, z__2.i = z__3.i + s.i;
     z__6.r = sigma.r * h.r - sigma.i * h.i, z__6.i = sigma.r * h.i +
              sigma.i * h.r;
-    z_div(&z__5, &z__6, &c_b5_dx);
+    z_div(&z__5, &z__6, &z_six);
     z__1.r = z__2.r - z__5.r, z__1.i = z__2.i - z__5.i;
     s3.r = z__1.r, s3.i = z__1.i;
 
@@ -493,7 +493,7 @@ int zndrv4_mv_(const int n, zomplex *v, zomplex *w)
     z__3.r = v[1].r * 4. - v[1].i * 0., z__3.i = v[1].i * 4.0 + v[1].r * 0.0;
     z__4.r = v[2].r * 1. - v[2].i * 0., z__4.i = v[2].i * 1. + v[2].r * 0.0;
     z__2.r = z__3.r + z__4.r, z__2.i = z__3.i + z__4.i;
-    z_div(&z__1, &z__2, &c_b5_dx);
+    z_div(&z__1, &z__2, &z_six);
     w[1].r = z__1.r, w[1].i = z__1.i;
     i__1 = n - 1;
     for (j = 2; j <= i__1; ++j)
@@ -507,7 +507,7 @@ int zndrv4_mv_(const int n, zomplex *v, zomplex *w)
         i__5 = j + 1;
         z__6.r = v[i__5].r * 1. - v[i__5].i * 0., z__6.i = v[i__5].i * 1. + v[i__5].r * 0.0;
         z__2.r = z__3.r + z__6.r, z__2.i = z__3.i + z__6.i;
-        z_div(&z__1, &z__2, &c_b5_dx);
+        z_div(&z__1, &z__2, &z_six);
         w[i__2].r = z__1.r, w[i__2].i = z__1.i;
     }
     i__1 = n;
@@ -516,12 +516,12 @@ int zndrv4_mv_(const int n, zomplex *v, zomplex *w)
     i__3 = n;
     z__4.r = v[i__3].r * 4. - v[i__3].i * 0., z__4.i = v[i__3].i * 4.0 + v[i__3].r * 0.0;
     z__2.r = z__3.r + z__4.r, z__2.i = z__3.i + z__4.i;
-    z_div(&z__1, &z__2, &c_b5_dx);
+    z_div(&z__1, &z__2, &z_six);
     w[i__1].r = z__1.r, w[i__1].i = z__1.i;
 
     i__1 = n + 1;
     z__2.r = (double) i__1, z__2.i = 0.0;
-    z_div(&z__1, &c_b137, &z__2);
+    z_div(&z__1, &z_one, &z__2);
     h.r = z__1.r, h.i = z__1.i;
     zscal_(&n, &h, &w[1], &c__1);
     return 0;
@@ -549,11 +549,11 @@ int zndrv4_av_(const int n, zomplex *v, zomplex *w)
     /* Function Body */
     i__1 = n + 1;
     z__2.r = (double) i__1, z__2.i = 0.0;
-    z_div(&z__1, &c_b137, &z__2);
+    z_div(&z__1, &z_one, &z__2);
     h.r = z__1.r, h.i = z__1.i;
-    z_div(&z__1, &convct_1.rho, &c_b3_dx);
+    z_div(&z__1, &convct_1.rho, &z_two);
     s.r = z__1.r, s.i = z__1.i;
-    z_div(&z__1, &c_b3_dx, &h);
+    z_div(&z__1, &z_two, &h);
     dd.r = z__1.r, dd.i = z__1.i;
     z__3.r = -1., z__3.i = -0.;
     z_div(&z__2, &z__3, &h);

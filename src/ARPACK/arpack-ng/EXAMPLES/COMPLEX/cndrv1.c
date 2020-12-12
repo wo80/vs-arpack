@@ -439,7 +439,7 @@ int cndrv1_tv_(const int nx, complex *x, complex *y)
     h.r = q__1.r, h.i = q__1.i;
     q__1.r = h.r * h.r - h.i * h.i, q__1.i = h.r * h.i + h.i * h.r;
     h2.r = q__1.r, h2.i = q__1.i;
-    c_div(&q__1, &c_b151, &h2);
+    c_div(&q__1, &c_four, &h2);
     dd.r = q__1.r, dd.i = q__1.i;
     q__3.r = -1.f, q__3.i = -0.f;
     c_div(&q__2, &q__3, &h2);

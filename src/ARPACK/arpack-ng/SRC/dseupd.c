@@ -705,7 +705,7 @@ L30:
             i__1 = *ncv;
             for (k = 1; k <= i__1; ++k)
             {
-                workl[ihd + k - 1] = 1. / workl[ihd + k - 1] + *sigma;
+                workl[ihd + k - 1] = 1.0 / workl[ihd + k - 1] + *sigma;
             }
         }
         else if (strcmp(type, "BUCKLE") == 0)

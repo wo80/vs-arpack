@@ -191,7 +191,7 @@ int dstqrb_(int *n, double *d, double *e,
     d__1 = eps;
     eps2 = d__1 * d__1;
     safmin = dlamch_("S");
-    safmax = 1. / safmin;
+    safmax = 1.0 / safmin;
     ssfmax = sqrt(safmax) / 3.0;
     ssfmin = sqrt(safmin) / eps2;
 

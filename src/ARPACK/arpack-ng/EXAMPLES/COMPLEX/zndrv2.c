@@ -140,11 +140,11 @@ int zndrv2()
     convct_1.rho.r = 10., convct_1.rho.i = 0.0;
     i__1 = n + 1;
     z__2.r = (double) i__1, z__2.i = 0.0;
-    z_div(&z__1, &c_b137, &z__2);
+    z_div(&z__1, &z_one, &z__2);
     h.r = z__1.r, h.i = z__1.i;
     z__1.r = h.r * h.r - h.i * h.i, z__1.i = h.r * h.i + h.i * h.r;
     h2.r = z__1.r, h2.i = z__1.i;
-    z_div(&z__1, &convct_1.rho, &c_b3_dx);
+    z_div(&z__1, &convct_1.rho, &z_two);
     s.r = z__1.r, s.i = z__1.i;
 
     z__3.r = -1., z__3.i = -0.;
@@ -152,7 +152,7 @@ int zndrv2()
     z_div(&z__4, &s, &h);
     z__1.r = z__2.r - z__4.r, z__1.i = z__2.i - z__4.i;
     s1.r = z__1.r, s1.i = z__1.i;
-    z_div(&z__2, &c_b3_dx, &h2);
+    z_div(&z__2, &z_two, &h2);
     z__1.r = z__2.r - sigma.r, z__1.i = z__2.i - sigma.i;
     s2.r = z__1.r, s2.i = z__1.i;
     z__3.r = -1., z__3.i = -0.;
@@ -441,13 +441,13 @@ int zndrv2_av_(const int n, zomplex *v, zomplex *w)
     /* Function Body */
     i__1 = n + 1;
     z__2.r = (double) i__1, z__2.i = 0.0;
-    z_div(&z__1, &c_b137, &z__2);
+    z_div(&z__1, &z_one, &z__2);
     h.r = z__1.r, h.i = z__1.i;
     z__1.r = h.r * h.r - h.i * h.i, z__1.i = h.r * h.i + h.i * h.r;
     h2.r = z__1.r, h2.i = z__1.i;
-    z_div(&z__1, &convct_1.rho, &c_b3_dx);
+    z_div(&z__1, &convct_1.rho, &z_two);
     s.r = z__1.r, s.i = z__1.i;
-    z_div(&z__1, &c_b3_dx, &h2);
+    z_div(&z__1, &z_two, &h2);
     dd.r = z__1.r, dd.i = z__1.i;
     z__3.r = -1., z__3.i = -0.;
     z_div(&z__2, &z__3, &h2);

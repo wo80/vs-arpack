@@ -126,7 +126,7 @@ int zndrv3()
 
     i__1 = n + 1;
     z__2.r = (double) i__1, z__2.i = 0.0;
-    z_div(&z__1, &c_b137, &z__2);
+    z_div(&z__1, &z_one, &z__2);
     h.r = z__1.r, h.i = z__1.i;
     i__1 = n - 1;
     for (j = 1; j <= i__1; ++j)
@@ -434,11 +434,11 @@ int zndrv3_av_(const int n, zomplex *v, zomplex *w)
     /* Function Body */
     i__1 = n + 1;
     z__2.r = (double) i__1, z__2.i = 0.0;
-    z_div(&z__1, &c_b137, &z__2);
+    z_div(&z__1, &z_one, &z__2);
     h.r = z__1.r, h.i = z__1.i;
-    z_div(&z__1, &c_b164_dx, &c_b3_dx);
+    z_div(&z__1, &z_ten, &z_two);
     s.r = z__1.r, s.i = z__1.i;
-    z_div(&z__1, &c_b3_dx, &h);
+    z_div(&z__1, &z_two, &h);
     dd.r = z__1.r, dd.i = z__1.i;
     z__3.r = -1., z__3.i = -0.;
     z_div(&z__2, &z__3, &h);
@@ -528,7 +528,7 @@ int zndrv3_mv_(const int n, zomplex *v, zomplex *w)
 
     i__1 = n + 1;
     z__2.r = (double) i__1, z__2.i = 0.0;
-    z_div(&z__1, &c_b137, &z__2);
+    z_div(&z__1, &z_one, &z__2);
     h.r = z__1.r, h.i = z__1.i;
     zscal_(&n, &h, &w[1], &c__1);
     return 0;

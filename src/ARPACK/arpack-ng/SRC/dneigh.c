@@ -209,7 +209,7 @@ int dneigh_(double *rnorm, int *n, double *h,
             /* -------------------- */
 
             temp = dnrm2_(n, &q[i * q_dim1 + 1], &c__1);
-            d__1 = 1. / temp;
+            d__1 = 1.0 / temp;
             dscal_(n, &d__1, &q[i * q_dim1 + 1], &c__1);
         }
         else
@@ -227,9 +227,9 @@ int dneigh_(double *rnorm, int *n, double *h,
                 d__1 = dnrm2_(n, &q[i * q_dim1 + 1], &c__1);
                 d__2 = dnrm2_(n, &q[(i + 1) * q_dim1 + 1], &c__1);
                 temp = dlapy2_(&d__1, &d__2);
-                d__1 = 1. / temp;
+                d__1 = 1.0 / temp;
                 dscal_(n, &d__1, &q[i * q_dim1 + 1], &c__1);
-                d__1 = 1. / temp;
+                d__1 = 1.0 / temp;
                 dscal_(n, &d__1, &q[(i + 1) * q_dim1 + 1], &c__1);
                 iconj = 1;
             }

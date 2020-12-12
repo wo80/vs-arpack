@@ -144,12 +144,12 @@ int dndrv4()
     double* du2 = (double*)malloc(n * sizeof(double));
 
     convct_1.rho = 10.;
-    h = 1. / (double) (n + 1);
+    h = 1.0 / (double) (n + 1);
     s = convct_1.rho / 2.0;
 
-    s1 = -1. / h - s - sigmar * h / 6.;
+    s1 = -1.0 / h - s - sigmar * h / 6.;
     s2 = 2. / h - sigmar * 4. * h / 6.;
-    s3 = -1. / h + s - sigmar * h / 6.;
+    s3 = -1.0 / h + s - sigmar * h / 6.;
 
     i__1 = n - 1;
     for (j = 1; j <= i__1; ++j)
@@ -517,7 +517,7 @@ int dndrv4_mv_(const int n, double *v, double *w)
     }
     w[n] = (v[n - 1] * 1. + v[n] * 4.) / 6.;
 
-    h = 1. / (double) (n + 1);
+    h = 1.0 / (double) (n + 1);
     dscal_(&n, &h, &w[1], &c__1);
     return 0;
 } /* mv_ */
@@ -546,11 +546,11 @@ int dndrv4_av_(const int n, double *v, double *w)
     --v;
 
     /* Function Body */
-    h = 1. / (double) (n + 1);
+    h = 1.0 / (double) (n + 1);
     s = convct_1.rho / 2.0;
     dd = 2. / h;
-    dl = -1. / h - s;
-    du = -1. / h + s;
+    dl = -1.0 / h - s;
+    du = -1.0 / h + s;
 
     w[1] = dd * v[1] + du * v[2];
     i__1 = n - 1;

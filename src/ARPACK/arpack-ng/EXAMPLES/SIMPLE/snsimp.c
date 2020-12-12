@@ -538,7 +538,7 @@ int snsimp_av_(const int nx, float *v, float *w)
     h2 = 1.0f / (float) ((nx + 1) * (nx + 1));
 
     snsimp_tv_(nx, &v[1], &w[1]);
-    r__1 = -1.f / h2;
+    r__1 = -1.0f / h2;
     saxpy_(&nx, &r__1, &v[nx + 1], &c__1, &w[1], &c__1);
 
     i__1 = nx - 1;
@@ -546,15 +546,15 @@ int snsimp_av_(const int nx, float *v, float *w)
     {
         lo = (j - 1) * nx;
         snsimp_tv_(nx, &v[lo + 1], &w[lo + 1]);
-        r__1 = -1.f / h2;
+        r__1 = -1.0f / h2;
         saxpy_(&nx, &r__1, &v[lo - nx + 1], &c__1, &w[lo + 1], &c__1);
-        r__1 = -1.f / h2;
+        r__1 = -1.0f / h2;
         saxpy_(&nx, &r__1, &v[lo + nx + 1], &c__1, &w[lo + 1], &c__1);
     }
 
     lo = (nx - 1) * nx;
     snsimp_tv_(nx, &v[lo + 1], &w[lo + 1]);
-    r__1 = -1.f / h2;
+    r__1 = -1.0f / h2;
     saxpy_(&nx, &r__1, &v[lo - nx + 1], &c__1, &w[lo + 1], &c__1);
 
     return 0;
@@ -587,8 +587,8 @@ int snsimp_tv_(const int nx, float *x, float *y)
     h = 1.0f / (float) (nx + 1);
     h2 = h * h;
     dd = 4.0f / h2;
-    dl = -1.f / h2 - 50.f / h;
-    du = -1.f / h2 + 50.f / h;
+    dl = -1.0f / h2 - 50.0f / h;
+    du = -1.0f / h2 + 50.0f / h;
 
     y[1] = dd * x[1] + du * x[2];
     i__1 = nx - 1;

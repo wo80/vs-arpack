@@ -147,9 +147,9 @@ int sndrv4()
     h = 1.0f / (float) (n + 1);
     s = convct_1.rho / 2.0f;
 
-    s1 = -1.f / h - s - sigmar * h / 6.0f;
+    s1 = -1.0f / h - s - sigmar * h / 6.0f;
     s2 = 2.0f / h - sigmar * 4.0f * h / 6.0f;
-    s3 = -1.f / h + s - sigmar * h / 6.0f;
+    s3 = -1.0f / h + s - sigmar * h / 6.0f;
 
     i__1 = n - 1;
     for (j = 1; j <= i__1; ++j)
@@ -549,8 +549,8 @@ int sndrv4_av_(const int n, float *v, float *w)
     h = 1.0f / (float) (n + 1);
     s = convct_1.rho / 2.0f;
     dd = 2.0f / h;
-    dl = -1.f / h - s;
-    du = -1.f / h + s;
+    dl = -1.0f / h - s;
+    du = -1.0f / h + s;
 
     w[1] = dd * v[1] + du * v[2];
     i__1 = n - 1;

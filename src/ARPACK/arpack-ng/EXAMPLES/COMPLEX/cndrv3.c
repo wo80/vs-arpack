@@ -438,9 +438,9 @@ int cndrv3_av_(const int n, complex *v, complex *w)
     q__2.r = (float) i__1, q__2.i = 0.0f;
     c_div(&q__1, &c_one, &q__2);
     h.r = q__1.r, h.i = q__1.i;
-    c_div(&q__1, &c_b164, &c_b3);
+    c_div(&q__1, &c_ten, &c_two);
     s.r = q__1.r, s.i = q__1.i;
-    c_div(&q__1, &c_b3, &h);
+    c_div(&q__1, &c_two, &h);
     dd.r = q__1.r, dd.i = q__1.i;
     q__3.r = -1.f, q__3.i = -0.f;
     c_div(&q__2, &q__3, &h);

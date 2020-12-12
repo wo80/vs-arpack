@@ -412,7 +412,7 @@ L10:
 
         dsvd_av_(m, n, &v[(j - 1) * n], ax);
         dcopy_(&m, ax, &c__1, &u[(j - 1) * m], &c__1);
-        temp = 1. / dnrm2_(&m, &u[(j - 1) * m], &c__1);
+        temp = 1.0 / dnrm2_(&m, &u[(j - 1) * m], &c__1);
         dscal_(&m, &temp, &u[(j - 1) * m], &c__1);
 
         /* ------------------------- */
@@ -531,8 +531,8 @@ int dsvd_av_(const int m, const int n, double *x, double *w)
     --x;
 
     /* Function Body */
-    h = 1. / (double) (m + 1);
-    k = 1. / (double) (n + 1);
+    h = 1.0 / (double) (m + 1);
+    k = 1.0 / (double) (n + 1);
     i__1 = m;
     for (i = 1; i <= i__1; ++i)
     {
@@ -583,8 +583,8 @@ int dsvd_atv_(const int m, const int n, double *w, double *y)
     --y;
 
     /* Function Body */
-    h = 1. / (double) (m + 1);
-    k = 1. / (double) (n + 1);
+    h = 1.0 / (double) (m + 1);
+    k = 1.0 / (double) (n + 1);
     i__1 = n;
     for (i = 1; i <= i__1; ++i)
     {

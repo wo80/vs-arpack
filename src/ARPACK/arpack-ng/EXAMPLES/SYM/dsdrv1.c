@@ -356,26 +356,26 @@ int dsdrv1_av_(const int nx, double *v, double *w)
 
     /* Function Body */
     dsdrv1_tv_(nx, &v[1], &w[1]);
-    daxpy_(&nx, &c_b138, &v[nx + 1], &c__1, &w[1], &c__1);
+    daxpy_(&nx, &d_m1, &v[nx + 1], &c__1, &w[1], &c__1);
 
     i__1 = nx - 1;
     for (j = 2; j <= i__1; ++j)
     {
         lo = (j - 1) * nx;
         dsdrv1_tv_(nx, &v[lo + 1], &w[lo + 1]);
-        daxpy_(&nx, &c_b138, &v[lo - nx + 1], &c__1, &w[lo + 1], &c__1);
-        daxpy_(&nx, &c_b138, &v[lo + nx + 1], &c__1, &w[lo + 1], &c__1);
+        daxpy_(&nx, &d_m1, &v[lo - nx + 1], &c__1, &w[lo + 1], &c__1);
+        daxpy_(&nx, &d_m1, &v[lo + nx + 1], &c__1, &w[lo + 1], &c__1);
     }
 
     lo = (nx - 1) * nx;
     dsdrv1_tv_(nx, &v[lo + 1], &w[lo + 1]);
-    daxpy_(&nx, &c_b138, &v[lo - nx + 1], &c__1, &w[lo + 1], &c__1);
+    daxpy_(&nx, &d_m1, &v[lo - nx + 1], &c__1, &w[lo + 1], &c__1);
 
     /*     Scale the vector w by (1/h^2), where h is the mesh size */
 
     n2 = nx * nx;
-    h2 = 1. / (double) ((nx + 1) * (nx + 1));
-    d__1 = 1. / h2;
+    h2 = 1.0 / (double) ((nx + 1) * (nx + 1));
+    d__1 = 1.0 / h2;
     dscal_(&n2, &d__1, &w[1], &c__1);
     return 0;
 } /* av_ */

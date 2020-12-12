@@ -436,7 +436,7 @@ L40:
     dcopy_(n, &resid[1], &c__1, &v[j * v_dim1 + 1], &c__1);
     if (*rnorm >= safmin)
     {
-        temp1 = 1. / *rnorm;
+        temp1 = 1.0 / *rnorm;
         dscal_(n, &temp1, &v[j * v_dim1 + 1], &c__1);
         dscal_(n, &temp1, &workd[ipj], &c__1);
     }

@@ -411,10 +411,10 @@ int dndrv1_av_(const int nx, double *v, double *w)
     --v;
 
     /* Function Body */
-    h2 = 1. / (double) ((nx + 1) * (nx + 1));
+    h2 = 1.0 / (double) ((nx + 1) * (nx + 1));
 
     dndrv1_tv_(nx, &v[1], &w[1]);
-    d__1 = -1. / h2;
+    d__1 = -1.0 / h2;
     daxpy_(&nx, &d__1, &v[nx + 1], &c__1, &w[1], &c__1);
 
     i__1 = nx - 1;
@@ -422,15 +422,15 @@ int dndrv1_av_(const int nx, double *v, double *w)
     {
         lo = (j - 1) * nx;
         dndrv1_tv_(nx, &v[lo + 1], &w[lo + 1]);
-        d__1 = -1. / h2;
+        d__1 = -1.0 / h2;
         daxpy_(&nx, &d__1, &v[lo - nx + 1], &c__1, &w[lo + 1], &c__1);
-        d__1 = -1. / h2;
+        d__1 = -1.0 / h2;
         daxpy_(&nx, &d__1, &v[lo + nx + 1], &c__1, &w[lo + 1], &c__1);
     }
 
     lo = (nx - 1) * nx;
     dndrv1_tv_(nx, &v[lo + 1], &w[lo + 1]);
-    d__1 = -1. / h2;
+    d__1 = -1.0 / h2;
     daxpy_(&nx, &d__1, &v[lo - nx + 1], &c__1, &w[lo + 1], &c__1);
 
     return 0;
@@ -460,11 +460,11 @@ int dndrv1_tv_(const int nx, double *x, double *y)
     --x;
 
     /* Function Body */
-    h = 1. / (double) (nx + 1);
+    h = 1.0 / (double) (nx + 1);
     h2 = h * h;
-    dd = 4. / h2;
-    dl = -1. / h2 - 0. / h;
-    du = -1. / h2 + 0. / h;
+    dd = 4.0 / h2;
+    dl = -1.0 / h2 - 0.0 / h;
+    du = -1.0 / h2 + 0.0 / h;
 
     y[1] = dd * x[1] + du * x[2];
     i__1 = nx - 1;

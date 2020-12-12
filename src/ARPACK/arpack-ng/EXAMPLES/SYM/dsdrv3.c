@@ -161,7 +161,7 @@ int dsdrv3()
     /* elements on the interval [0, 1].               */
     /* ---------------------------------------------- */
 
-    h = 1. / (double) (n + 1);
+    h = 1.0 / (double) (n + 1);
 
     r1 = h * .66666666666666663;
     r2 = h * .16666666666666666;
@@ -421,7 +421,7 @@ int dsdrv3_mv_(const int n, double *v, double *w)
 
     /*     Scale the vector w by h. */
 
-    h = 1. / ((double) (n + 1) * 6.);
+    h = 1.0 / ((double) (n + 1) * 6.);
     dscal_(&n, &h, &w[1], &c__1);
     return 0;
 } /* mv_ */
@@ -460,8 +460,8 @@ int dsdrv3_av_(const int n, double *v, double *w)
 
     /*     Scale the vector w by (1 / h). */
 
-    h = 1. / (double) (n + 1);
-    d__1 = 1. / h;
+    h = 1.0 / (double) (n + 1);
+    d__1 = 1.0 / h;
     dscal_(&n, &d__1, &w[1], &c__1);
     return 0;
 } /* av_ */

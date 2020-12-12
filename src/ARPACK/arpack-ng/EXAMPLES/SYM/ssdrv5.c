@@ -173,7 +173,7 @@ int ssdrv5()
     for (j = 1; j <= n; ++j)
     {
         ad[j - 1] = 2.0f / h - sigma * r1;
-        adl[j - 1] = -1.f / h - sigma * r2;
+        adl[j - 1] = -1.0f / h - sigma * r2;
     }
     scopy_(&n, adl, &c__1, adu, &c__1);
     sgttrf_(&n, adl, ad, adu, adu2, ipiv, &ierr);
