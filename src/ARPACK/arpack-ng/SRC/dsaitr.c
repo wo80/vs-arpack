@@ -607,7 +607,7 @@ L65:
     h[j + (h_dim1 << 1)] = workd[irj + j - 1];
     if (j == 1 || rstart)
     {
-        h[j + h_dim1] = 0.;
+        h[j + h_dim1] = 0.0;
     }
     else
     {
@@ -728,7 +728,7 @@ L80:
 
     if (j == 1 || rstart)
     {
-        h[j + h_dim1] = 0.;
+        h[j + h_dim1] = 0.0;
     }
     h[j + (h_dim1 << 1)] += workd[irj + j - 1];
 
@@ -832,10 +832,10 @@ L90:
         i__1 = *n;
         for (jj = 1; jj <= i__1; ++jj)
         {
-            resid[jj] = 0.;
+            resid[jj] = 0.0;
 
         }
-        *rnorm = 0.;
+        *rnorm = 0.0;
     }
 
     /* -------------------------------------------- */

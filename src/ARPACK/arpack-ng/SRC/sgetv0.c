@@ -405,10 +405,10 @@ L40:
         i__1 = *n;
         for (jj = 1; jj <= i__1; ++jj)
         {
-            resid[jj] = 0.f;
+            resid[jj] = 0.0f;
 
         }
-        *rnorm = 0.f;
+        *rnorm = 0.0f;
         *ierr = -1;
     }
 

@@ -263,7 +263,7 @@ int dsvd()
     /* --------------------------------------------------- */
 
     int lworkl = ncv * (ncv + 8);
-    double tol = 0.;
+    double tol = 0.0;
     int info = 0;
     int ido = 0;
 
@@ -536,15 +536,15 @@ int dsvd_av_(const int m, const int n, double *x, double *w)
     i__1 = m;
     for (i = 1; i <= i__1; ++i)
     {
-        w[i] = 0.;
+        w[i] = 0.0;
     }
-    t = 0.;
+    t = 0.0;
 
     i__1 = n;
     for (j = 1; j <= i__1; ++j)
     {
         t += k;
-        s = 0.;
+        s = 0.0;
         i__2 = j;
         for (i = 1; i <= i__2; ++i)
         {
@@ -588,15 +588,15 @@ int dsvd_atv_(const int m, const int n, double *w, double *y)
     i__1 = n;
     for (i = 1; i <= i__1; ++i)
     {
-        y[i] = 0.;
+        y[i] = 0.0;
     }
-    t = 0.;
+    t = 0.0;
 
     i__1 = n;
     for (j = 1; j <= i__1; ++j)
     {
         t += k;
-        s = 0.;
+        s = 0.0;
         i__2 = j;
         for (i = 1; i <= i__2; ++i)
         {

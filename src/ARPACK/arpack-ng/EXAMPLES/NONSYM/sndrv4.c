@@ -122,8 +122,8 @@ int sndrv4()
     }
     char* bmat = "G";
     char* which = "LM";
-    sigmar = 1.f;
-    sigmai = 0.f;
+    sigmar = 1.0f;
+    sigmai = 0.0f;
 
     /* ------------------------------------------------ */
     /* Construct C = A - SIGMA*M in real arithmetic,    */
@@ -144,12 +144,12 @@ int sndrv4()
     float* du2 = (float*)malloc(n * sizeof(float));
 
     convct_1.rho = 10.f;
-    h = 1.f / (float) (n + 1);
-    s = convct_1.rho / 2.f;
+    h = 1.0f / (float) (n + 1);
+    s = convct_1.rho / 2.0f;
 
-    s1 = -1.f / h - s - sigmar * h / 6.f;
-    s2 = 2.f / h - sigmar * 4.f * h / 6.f;
-    s3 = -1.f / h + s - sigmar * h / 6.f;
+    s1 = -1.f / h - s - sigmar * h / 6.0f;
+    s2 = 2.0f / h - sigmar * 4.0f * h / 6.0f;
+    s3 = -1.f / h + s - sigmar * h / 6.0f;
 
     i__1 = n - 1;
     for (j = 1; j <= i__1; ++j)
@@ -181,7 +181,7 @@ int sndrv4()
     /* --------------------------------------------------- */
 
     int lworkl = ncv * ncv * 3 + ncv * 6;
-    float tol = 0.f;
+    float tol = 0.0f;
     int ido = 0;
     int info = 0;
 
@@ -380,7 +380,7 @@ L20:
         /* tolerance)                */
         /* ------------------------- */
 
-        if (d[j + 24] == 0.f)
+        if (d[j + 24] == 0.0f)
         {
             /* ------------------ */
             /* Ritz value is real */
@@ -509,15 +509,15 @@ int sndrv4_mv_(const int n, float *v, float *w)
     --v;
 
     /* Function Body */
-    w[1] = (v[1] * 4.f + v[2] * 1.f) / 6.f;
+    w[1] = (v[1] * 4.0f + v[2] * 1.0f) / 6.0f;
     i__1 = n - 1;
     for (j = 2; j <= i__1; ++j)
     {
-        w[j] = (v[j - 1] * 1.f + v[j] * 4.f + v[j + 1] * 1.f) / 6.f;
+        w[j] = (v[j - 1] * 1.0f + v[j] * 4.0f + v[j + 1] * 1.0f) / 6.0f;
     }
-    w[n] = (v[n - 1] * 1.f + v[n] * 4.f) / 6.f;
+    w[n] = (v[n - 1] * 1.0f + v[n] * 4.0f) / 6.0f;
 
-    h = 1.f / (float) (n + 1);
+    h = 1.0f / (float) (n + 1);
     sscal_(&n, &h, &w[1], &c__1);
     return 0;
 } /* mv_ */
@@ -546,9 +546,9 @@ int sndrv4_av_(const int n, float *v, float *w)
     --v;
 
     /* Function Body */
-    h = 1.f / (float) (n + 1);
-    s = convct_1.rho / 2.f;
-    dd = 2.f / h;
+    h = 1.0f / (float) (n + 1);
+    s = convct_1.rho / 2.0f;
+    dd = 2.0f / h;
     dl = -1.f / h - s;
     du = -1.f / h + s;
 

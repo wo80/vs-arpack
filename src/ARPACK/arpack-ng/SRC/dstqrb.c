@@ -179,7 +179,7 @@ int dstqrb_(int *n, double *d, double *e,
     {
         if (icompz == 2)
         {
-            z[1] = 1.;
+            z[1] = 1.0;
         }
         return 0;
     }
@@ -192,7 +192,7 @@ int dstqrb_(int *n, double *d, double *e,
     eps2 = d__1 * d__1;
     safmin = dlamch_("S");
     safmax = 1. / safmin;
-    ssfmax = sqrt(safmax) / 3.;
+    ssfmax = sqrt(safmax) / 3.0;
     ssfmin = sqrt(safmin) / eps2;
 
     /*     compute the eigenvalues and eigenvectors of the tridiagonal */
@@ -208,10 +208,10 @@ int dstqrb_(int *n, double *d, double *e,
         i__1 = *n - 1;
         for (j = 1; j <= i__1; ++j)
         {
-            z[j] = 0.;
+            z[j] = 0.0;
 
         }
-        z[*n] = 1.;
+        z[*n] = 1.0;
     }
     /*     ************************************* */
 
@@ -232,7 +232,7 @@ L10:
     }
     if (l1 > 1)
     {
-        e[l1 - 1] = 0.;
+        e[l1 - 1] = 0.0;
     }
     if (l1 <= nm1)
     {
@@ -247,7 +247,7 @@ L10:
             if (tst <= sqrt((d__1 = d[m], abs(d__1))) * sqrt((d__2 = d[m
                     + 1], abs(d__2))) * eps)
             {
-                e[m] = 0.;
+                e[m] = 0.0;
                 goto L30;
             }
 
@@ -329,7 +329,7 @@ L40:
 L60:
         if (m < lend)
         {
-            e[m] = 0.;
+            e[m] = 0.0;
         }
         p = d[l];
         if (m == l)
@@ -363,7 +363,7 @@ L60:
             }
             d[l] = rt1;
             d[l + 1] = rt2;
-            e[l] = 0.;
+            e[l] = 0.0;
             l += 2;
             if (l <= lend)
             {
@@ -384,9 +384,9 @@ L60:
         r = dlapy2_(&g, &d_one);
         g = d[m] - p + e[l] / (g + d_sign(&r, &g));
 
-        s = 1.;
-        c = 1.;
-        p = 0.;
+        s = 1.0;
+        c = 1.0;
+        p = 0.0;
 
         /*        inner loop */
 
@@ -477,7 +477,7 @@ L90:
 L110:
         if (m > lend)
         {
-            e[m - 1] = 0.;
+            e[m - 1] = 0.0;
         }
         p = d[l];
         if (m == l)
@@ -511,7 +511,7 @@ L110:
             }
             d[l - 1] = rt1;
             d[l] = rt2;
-            e[l - 1] = 0.;
+            e[l - 1] = 0.0;
             l += -2;
             if (l >= lend)
             {
@@ -532,9 +532,9 @@ L110:
         r = dlapy2_(&g, &d_one);
         g = d[m] - p + e[l - 1] / (g + d_sign(&r, &g));
 
-        s = 1.;
-        c = 1.;
-        p = 0.;
+        s = 1.0;
+        c = 1.0;
+        p = 0.0;
 
         /*        inner loop */
 

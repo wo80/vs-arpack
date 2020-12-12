@@ -195,7 +195,7 @@ int cneigh_(float *rnorm, int *n, complex *h, int *
     for (j = 1; j <= i__1; ++j)
     {
         temp = scnrm2_(n, &q[j * q_dim1 + 1], &c__1);
-        r__1 = 1.f / temp;
+        r__1 = 1.0f / temp;
         csscal_(n, &r__1, &q[j * q_dim1 + 1], &c__1);
     }
 

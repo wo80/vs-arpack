@@ -427,7 +427,7 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
     {
         strcpy(type, "REGULR");
     }
-    else if (mode == 3 && *sigmai == 0.f)
+    else if (mode == 3 && *sigmai == 0.0f)
     {
         strcpy(type, "SHIFTI");
     }
@@ -526,7 +526,7 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
     /* ---------------------------------- */
 
     rnorm = workl[ih + 2];
-    workl[ih + 2] = 0.f;
+    workl[ih + 2] = 0.0f;
 
 #ifndef NO_TRACE
     if (msglvl > 2)
@@ -791,14 +791,14 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
             i__1 = nconv;
             for (j = 1; j <= i__1; ++j)
             {
-                if (workl[iheigi + j - 1] == 0.f)
+                if (workl[iheigi + j - 1] == 0.0f)
                 {
                     /* -------------------- */
                     /* real eigenvalue case */
                     /* -------------------- */
 
                     temp = snrm2_(ncv, &workl[invsub + (j - 1) * ldq], &c__1);
-                    r__1 = 1.f / temp;
+                    r__1 = 1.0f / temp;
                     sscal_(ncv, &r__1, &workl[invsub + (j - 1) * ldq], &c__1);
                 }
                 else
@@ -816,9 +816,9 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
                         r__1 = snrm2_(ncv, &workl[invsub + (j - 1) * ldq], &c__1);
                         r__2 = snrm2_(ncv, &workl[invsub + j * ldq], &c__1);
                         temp = slapy2_(&r__1, &r__2);
-                        r__1 = 1.f / temp;
+                        r__1 = 1.0f / temp;
                         sscal_(ncv, &r__1, &workl[invsub + (j - 1) * ldq], &c__1);
-                        r__1 = 1.f / temp;
+                        r__1 = 1.0f / temp;
                         sscal_(ncv, &r__1, &workl[invsub + j * ldq], &c__1);
                         iconj = 1;
                     }
@@ -835,7 +835,7 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
             i__1 = nconv;
             for (j = 1; j <= i__1; ++j)
             {
-                if (workl[iheigi + j - 1] != 0.f)
+                if (workl[iheigi + j - 1] != 0.0f)
                 {
                     /* ----------------------------------------- */
                     /* Complex conjugate pair case. Note that    */
@@ -1032,14 +1032,14 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
         i__1 = nconv;
         for (j = 1; j <= i__1; ++j)
         {
-            if (workl[iheigi + j - 1] == 0.f && workl[iheigr + j - 1] != 0.f)
+            if (workl[iheigi + j - 1] == 0.0f && workl[iheigr + j - 1] != 0.0f)
             {
                 workev[j] = workl[invsub + (j - 1) * ldq + *ncv - 1] / workl[iheigr + j - 1];
             }
             else if (iconj == 0)
             {
                 temp = slapy2_(&workl[iheigr + j - 1], &workl[iheigi + j - 1]);
-                if (temp != 0.f)
+                if (temp != 0.0f)
                 {
                     workev[j] = (workl[invsub + (j - 1) * ldq + *ncv - 1] * workl[iheigr + j - 1] + workl[invsub + j * ldq + *ncv - 1] * workl[iheigi + j - 1]) / temp / temp;
                     workev[j + 1] = (workl[invsub + j * ldq + *ncv - 1] * workl[iheigr + j - 1] - workl[invsub + (j - 1) * ldq + *ncv - 1] * workl[iheigi + j - 1]) / temp / temp;

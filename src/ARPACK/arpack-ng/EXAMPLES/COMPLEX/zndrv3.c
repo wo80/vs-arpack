@@ -110,7 +110,7 @@ int zndrv3()
     }
     char* bmat = "G";
     char* which = "LM";
-    sigma.r = 0., sigma.i = 0.;
+    sigma.r = 0., sigma.i = 0.0;
 
     /* --------------------------------------------------- */
     /* The matrix M is chosen to be the symmetric tri-     */
@@ -125,24 +125,24 @@ int zndrv3()
     zomplex* du2 = (zomplex*)malloc(n * sizeof(zomplex));
 
     i__1 = n + 1;
-    z__2.r = (double) i__1, z__2.i = 0.;
+    z__2.r = (double) i__1, z__2.i = 0.0;
     z_div(&z__1, &c_b137, &z__2);
     h.r = z__1.r, h.i = z__1.i;
     i__1 = n - 1;
     for (j = 1; j <= i__1; ++j)
     {
         i__2 = j - 1;
-        z__1.r = h.r * 1. - h.i * 0., z__1.i = h.i * 1. + h.r * 0.;
+        z__1.r = h.r * 1. - h.i * 0., z__1.i = h.i * 1. + h.r * 0.0;
         dl[i__2].r = z__1.r, dl[i__2].i = z__1.i;
         i__2 = j - 1;
-        z__1.r = h.r * 4. - h.i * 0., z__1.i = h.r * 0. + h.i * 4.;
+        z__1.r = h.r * 4. - h.i * 0., z__1.i = h.r * 0. + h.i * 4.0;
         dd[i__2].r = z__1.r, dd[i__2].i = z__1.i;
         i__2 = j - 1;
-        z__1.r = h.r * 1. - h.i * 0., z__1.i = h.i * 1. + h.r * 0.;
+        z__1.r = h.r * 1. - h.i * 0., z__1.i = h.i * 1. + h.r * 0.0;
         du[i__2].r = z__1.r, du[i__2].i = z__1.i;
     }
     i__1 = n - 1;
-    z__1.r = h.r * 4. - h.i * 0., z__1.i = h.r * 0. + h.i * 4.;
+    z__1.r = h.r * 4. - h.i * 0., z__1.i = h.r * 0. + h.i * 4.0;
     dd[i__1].r = z__1.r, dd[i__1].i = z__1.i;
 
     zgttrf_(&n, dl, dd, du, du2, ipiv, &ierr);
@@ -167,7 +167,7 @@ int zndrv3()
 
     /* Computing 2nd power */
     int lworkl = ncv * ncv * 3 + ncv * 5;
-    double tol = 0.;
+    double tol = 0.0;
     int ido = 0;
     int info = 0;
 
@@ -433,7 +433,7 @@ int zndrv3_av_(const int n, zomplex *v, zomplex *w)
 
     /* Function Body */
     i__1 = n + 1;
-    z__2.r = (double) i__1, z__2.i = 0.;
+    z__2.r = (double) i__1, z__2.i = 0.0;
     z_div(&z__1, &c_b137, &z__2);
     h.r = z__1.r, h.i = z__1.i;
     z_div(&z__1, &c_b164_dx, &c_b3_dx);
@@ -500,8 +500,8 @@ int zndrv3_mv_(const int n, zomplex *v, zomplex *w)
     --v;
 
     /* Function Body */
-    z__2.r = v[1].r * 4. - v[1].i * 0., z__2.i = v[1].i * 4. + v[1].r * 0.;
-    z__3.r = v[2].r * 1. - v[2].i * 0., z__3.i = v[2].i * 1. + v[2].r * 0.;
+    z__2.r = v[1].r * 4. - v[1].i * 0., z__2.i = v[1].i * 4.0 + v[1].r * 0.0;
+    z__3.r = v[2].r * 1. - v[2].i * 0., z__3.i = v[2].i * 1. + v[2].r * 0.0;
     z__1.r = z__2.r + z__3.r, z__1.i = z__2.i + z__3.i;
     w[1].r = z__1.r, w[1].i = z__1.i;
     i__1 = n - 1;
@@ -509,25 +509,25 @@ int zndrv3_mv_(const int n, zomplex *v, zomplex *w)
     {
         i__2 = j;
         i__3 = j - 1;
-        z__3.r = v[i__3].r * 1. - v[i__3].i * 0., z__3.i = v[i__3].i * 1. + v[i__3].r * 0.;
+        z__3.r = v[i__3].r * 1. - v[i__3].i * 0., z__3.i = v[i__3].i * 1. + v[i__3].r * 0.0;
         i__4 = j;
-        z__4.r = v[i__4].r * 4. - v[i__4].i * 0., z__4.i = v[i__4].i * 4. + v[i__4].r * 0.;
+        z__4.r = v[i__4].r * 4. - v[i__4].i * 0., z__4.i = v[i__4].i * 4.0 + v[i__4].r * 0.0;
         z__2.r = z__3.r + z__4.r, z__2.i = z__3.i + z__4.i;
         i__5 = j + 1;
-        z__5.r = v[i__5].r * 1. - v[i__5].i * 0., z__5.i = v[i__5].i * 1. + v[i__5].r * 0.;
+        z__5.r = v[i__5].r * 1. - v[i__5].i * 0., z__5.i = v[i__5].i * 1. + v[i__5].r * 0.0;
         z__1.r = z__2.r + z__5.r, z__1.i = z__2.i + z__5.i;
         w[i__2].r = z__1.r, w[i__2].i = z__1.i;
     }
     i__1 = n;
     i__2 = n - 1;
-    z__2.r = v[i__2].r * 1. - v[i__2].i * 0., z__2.i = v[i__2].i * 1. + v[i__2].r * 0.;
+    z__2.r = v[i__2].r * 1. - v[i__2].i * 0., z__2.i = v[i__2].i * 1. + v[i__2].r * 0.0;
     i__3 = n;
-    z__3.r = v[i__3].r * 4. - v[i__3].i * 0., z__3.i = v[i__3].i * 4. + v[i__3].r * 0.;
+    z__3.r = v[i__3].r * 4. - v[i__3].i * 0., z__3.i = v[i__3].i * 4.0 + v[i__3].r * 0.0;
     z__1.r = z__2.r + z__3.r, z__1.i = z__2.i + z__3.i;
     w[i__1].r = z__1.r, w[i__1].i = z__1.i;
 
     i__1 = n + 1;
-    z__2.r = (double) i__1, z__2.i = 0.;
+    z__2.r = (double) i__1, z__2.i = 0.0;
     z_div(&z__1, &c_b137, &z__2);
     h.r = z__1.r, h.i = z__1.i;
     zscal_(&n, &h, &w[1], &c__1);

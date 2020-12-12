@@ -127,7 +127,7 @@ int dndrv1()
     /* --------------------------------------------------- */
 
     int lworkl = ncv * ncv * 3 + ncv * 6;
-    double tol = 0.;
+    double tol = 0.0;
     int ido = 0;
     int info = 0;
 

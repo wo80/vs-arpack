@@ -13,7 +13,7 @@
 int arscnd_(float *t)
 {
 
-    *t = 0.f;
+    *t = 0.0f;
 
 #ifndef NO_TIMER
     clock_t now = clock();

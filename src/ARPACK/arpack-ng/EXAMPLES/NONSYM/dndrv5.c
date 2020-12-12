@@ -114,8 +114,8 @@ int dndrv5()
     }
     char* bmat = "G";
     char* which = "LM";
-    sigmar = .4;
-    sigmai = .6;
+    sigmar = 0.4;
+    sigmai = 0.6;
 
     /* ------------------------------------------------- */
     /* Construct C = A - (SIGMAR,SIGMAI)*M in complex    */
@@ -133,15 +133,15 @@ int dndrv5()
     zomplex* cdu = (zomplex*)malloc(n * sizeof(zomplex));
     zomplex* cdu2 = (zomplex*)malloc(n * sizeof(zomplex));
 
-    d__1 = -2. - sigmar;
+    d__1 = -2.0 - sigmar;
     d__2 = -sigmai;
     z__1.r = d__1, z__1.i = d__2;
     c1.r = z__1.r, c1.i = z__1.i;
-    d__1 = 2. - sigmar * 4.;
-    d__2 = sigmai * -4.;
+    d__1 = 2. - sigmar * 4.0;
+    d__2 = sigmai * -4.0;
     z__1.r = d__1, z__1.i = d__2;
     c2.r = z__1.r, c2.i = z__1.i;
-    d__1 = 3. - sigmar;
+    d__1 = 3.0 - sigmar;
     d__2 = -sigmai;
     z__1.r = d__1, z__1.i = d__2;
     c3.r = z__1.r, c3.i = z__1.i;
@@ -180,7 +180,7 @@ int dndrv5()
     /* --------------------------------------------------- */
 
     int lworkl = ncv * ncv * 3 + ncv * 6;
-    double tol = 0.;
+    double tol = 0.0;
     int ido = 0;
     int info = 0;
 
@@ -243,7 +243,7 @@ L20:
         {
             i__2 = j - 1;
             i__3 = ipntr[1] + j - 2;
-            z__1.r = workd[i__3], z__1.i = 0.;
+            z__1.r = workd[i__3], z__1.i = 0.0;
             ctemp[i__2].r = z__1.r, ctemp[i__2].i = z__1.i;
 
         }
@@ -284,7 +284,7 @@ L20:
         {
             i__2 = j - 1;
             i__3 = ipntr[2] + j - 2;
-            z__1.r = workd[i__3], z__1.i = 0.;
+            z__1.r = workd[i__3], z__1.i = 0.0;
             ctemp[i__2].r = z__1.r, ctemp[i__2].i = z__1.i;
 
         }
@@ -611,13 +611,13 @@ int dndrv5_mv_(const int n, double *v, double *w)
     --v;
 
     /* Function Body */
-    w[1] = v[1] * 4. + v[2] * 1.;
+    w[1] = v[1] * 4.0 + v[2] * 1.0;
     i__1 = n - 1;
     for (j = 2; j <= i__1; ++j)
     {
-        w[j] = v[j - 1] * 1. + v[j] * 4. + v[j + 1] * 1.;
+        w[j] = v[j - 1] * 1. + v[j] * 4.0 + v[j + 1] * 1.0;
     }
-    w[n] = v[n - 1] * 1. + v[n] * 4.;
+    w[n] = v[n - 1] * 1. + v[n] * 4.0;
     return 0;
 } /* mv_ */
 
@@ -639,13 +639,13 @@ int dndrv5_av_(const int n, double *v, double *w)
     --v;
 
     /* Function Body */
-    w[1] = v[1] * 2. + v[2] * 3.;
+    w[1] = v[1] * 2. + v[2] * 3.0;
     i__1 = n - 1;
     for (j = 2; j <= i__1; ++j)
     {
-        w[j] = v[j - 1] * -2. + v[j] * 2. + v[j + 1] * 3.;
+        w[j] = v[j - 1] * -2. + v[j] * 2. + v[j + 1] * 3.0;
     }
-    w[n] = v[n - 1] * -2. + v[n] * 2.;
+    w[n] = v[n - 1] * -2. + v[n] * 2.0;
     return 0;
 } /* av_ */
 

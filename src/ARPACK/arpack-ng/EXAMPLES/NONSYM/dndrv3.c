@@ -121,10 +121,10 @@ int dndrv3()
     i__1 = n - 1;
     for (j = 1; j <= i__1; ++j)
     {
-        md[j - 1] = h * 4.;
-        me[j - 1] = h * 1.;
+        md[j - 1] = h * 4.0;
+        me[j - 1] = h * 1.0;
     }
-    md[n - 1] = h * 4.;
+    md[n - 1] = h * 4.0;
 
     dpttrf_(&n, md, me, &ierr);
     if (ierr != 0)
@@ -147,7 +147,7 @@ int dndrv3()
     /* --------------------------------------------------- */
 
     int lworkl = ncv * ncv * 3 + ncv * 6;
-    double tol = 0.;
+    double tol = 0.0;
     int ido = 0;
     int info = 0;
 
@@ -485,13 +485,13 @@ int dndrv3_mv_(const int n, double *v, double *w)
     --v;
 
     /* Function Body */
-    w[1] = v[1] * 4. + v[2] * 1.;
+    w[1] = v[1] * 4.0 + v[2] * 1.0;
     i__1 = n - 1;
     for (j = 2; j <= i__1; ++j)
     {
-        w[j] = v[j - 1] * 1. + v[j] * 4. + v[j + 1] * 1.;
+        w[j] = v[j - 1] * 1. + v[j] * 4.0 + v[j + 1] * 1.0;
     }
-    w[n] = v[n - 1] * 1. + v[n] * 4.;
+    w[n] = v[n - 1] * 1. + v[n] * 4.0;
 
     h = 1. / (double) (n + 1);
     dscal_(&n, &h, &w[1], &c__1);

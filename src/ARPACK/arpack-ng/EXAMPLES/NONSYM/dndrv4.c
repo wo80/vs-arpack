@@ -122,8 +122,8 @@ int dndrv4()
     }
     char* bmat = "G";
     char* which = "LM";
-    sigmar = 1.;
-    sigmai = 0.;
+    sigmar = 1.0;
+    sigmai = 0.0;
 
     /* ------------------------------------------------ */
     /* Construct C = A - SIGMA*M in real arithmetic,    */
@@ -145,7 +145,7 @@ int dndrv4()
 
     convct_1.rho = 10.;
     h = 1. / (double) (n + 1);
-    s = convct_1.rho / 2.;
+    s = convct_1.rho / 2.0;
 
     s1 = -1. / h - s - sigmar * h / 6.;
     s2 = 2. / h - sigmar * 4. * h / 6.;
@@ -181,7 +181,7 @@ int dndrv4()
     /* --------------------------------------------------- */
 
     int lworkl = ncv * ncv * 3 + ncv * 6;
-    double tol = 0.;
+    double tol = 0.0;
     int ido = 0;
     int info = 0;
 
@@ -509,11 +509,11 @@ int dndrv4_mv_(const int n, double *v, double *w)
     --v;
 
     /* Function Body */
-    w[1] = (v[1] * 4. + v[2] * 1.) / 6.;
+    w[1] = (v[1] * 4.0 + v[2] * 1.) / 6.;
     i__1 = n - 1;
     for (j = 2; j <= i__1; ++j)
     {
-        w[j] = (v[j - 1] * 1. + v[j] * 4. + v[j + 1] * 1.) / 6.;
+        w[j] = (v[j - 1] * 1. + v[j] * 4.0 + v[j + 1] * 1.) / 6.;
     }
     w[n] = (v[n - 1] * 1. + v[n] * 4.) / 6.;
 
@@ -547,7 +547,7 @@ int dndrv4_av_(const int n, double *v, double *w)
 
     /* Function Body */
     h = 1. / (double) (n + 1);
-    s = convct_1.rho / 2.;
+    s = convct_1.rho / 2.0;
     dd = 2. / h;
     dl = -1. / h - s;
     du = -1. / h + s;

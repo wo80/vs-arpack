@@ -103,7 +103,7 @@ int dsdrv2()
 
     char* bmat = "I";
     char* which = "LM";
-    sigma = 0.;
+    sigma = 0.0;
 
     /* ------------------------------------------------ */
     /* The work array WORKL is used in DSAUPD as        */
@@ -118,7 +118,7 @@ int dsdrv2()
     /* ------------------------------------------------ */
 
     int lworkl = ncv * (ncv + 8);
-    double tol = 0.;
+    double tol = 0.0;
     int ido = 0;
     int info = 0;
 
@@ -384,7 +384,7 @@ int dsdrv2_av_(const int n, double *v, double *w)
         w[j] = -v[j - 1] + v[j] * 2. - v[j + 1];
     }
     j = n;
-    w[j] = -v[j - 1] + v[j] * 2.;
+    w[j] = -v[j - 1] + v[j] * 2.0;
 
     /*     Scale the vector w by (1 / h^2). */
 

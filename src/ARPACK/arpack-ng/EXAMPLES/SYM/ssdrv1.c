@@ -120,7 +120,7 @@ int ssdrv1()
     /* ------------------------------------------------ */
 
     int lworkl = ncv * (ncv + 8);
-    float tol = 0.f;
+    float tol = 0.0f;
     int info = 0;
     int ido = 0;
 
@@ -374,8 +374,8 @@ int ssdrv1_av_(const int nx, float *v, float *w)
     /*     Scale the vector w by (1/h^2), where h is the mesh size */
 
     n2 = nx * nx;
-    h2 = 1.f / (float) ((nx + 1) * (nx + 1));
-    r__1 = 1.f / h2;
+    h2 = 1.0f / (float) ((nx + 1) * (nx + 1));
+    r__1 = 1.0f / h2;
     sscal_(&n2, &r__1, &w[1], &c__1);
     return 0;
 } /* av_ */
@@ -399,7 +399,7 @@ int ssdrv1_tv_(const int nx, float *x, float *y)
     --x;
 
     /* Function Body */
-    dd = 4.f;
+    dd = 4.0f;
     dl = -1.f;
     du = -1.f;
 

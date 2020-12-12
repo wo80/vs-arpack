@@ -120,7 +120,7 @@ int zndrv2()
     }
     char* bmat = "I";
     char* which = "LM";
-    sigma.r = 0., sigma.i = 0.;
+    sigma.r = 0., sigma.i = 0.0;
 
     /* -------------------------------------------------- */
     /* Construct C = A - SIGMA*I, factor C in complex     */
@@ -137,9 +137,9 @@ int zndrv2()
     zomplex* dl = (zomplex*)malloc(n * sizeof(zomplex));
     zomplex* du2 = (zomplex*)malloc(n * sizeof(zomplex));
 
-    convct_1.rho.r = 10., convct_1.rho.i = 0.;
+    convct_1.rho.r = 10., convct_1.rho.i = 0.0;
     i__1 = n + 1;
-    z__2.r = (double) i__1, z__2.i = 0.;
+    z__2.r = (double) i__1, z__2.i = 0.0;
     z_div(&z__1, &c_b137, &z__2);
     h.r = z__1.r, h.i = z__1.i;
     z__1.r = h.r * h.r - h.i * h.i, z__1.i = h.r * h.i + h.i * h.r;
@@ -196,7 +196,7 @@ int zndrv2()
 
     /* Computing 2nd power */
     int lworkl = ncv * ncv * 3 + ncv * 5;
-    double tol = 0.;
+    double tol = 0.0;
     int ido = 0;
     int info = 0;
 
@@ -440,7 +440,7 @@ int zndrv2_av_(const int n, zomplex *v, zomplex *w)
 
     /* Function Body */
     i__1 = n + 1;
-    z__2.r = (double) i__1, z__2.i = 0.;
+    z__2.r = (double) i__1, z__2.i = 0.0;
     z_div(&z__1, &c_b137, &z__2);
     h.r = z__1.r, h.i = z__1.i;
     z__1.r = h.r * h.r - h.i * h.i, z__1.i = h.r * h.i + h.i * h.r;

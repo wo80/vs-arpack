@@ -229,7 +229,7 @@ int dssimp()
     /* --------------------------------------------------- */
 
     int lworkl = ncv * (ncv + 8);
-    double tol = 0.;
+    double tol = 0.0;
     int info = 0;
     int ido = 0;
 
@@ -520,7 +520,7 @@ int dssimp_tv_(const int nx, double *x, double *y)
     --x;
 
     /* Function Body */
-    dd = 4.;
+    dd = 4.0;
     dl = -1.;
     du = -1.;
 

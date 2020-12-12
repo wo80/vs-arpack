@@ -459,7 +459,7 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int 
     i__1 = ih + 2;
     rnorm.r = workl[i__1].r, rnorm.i = workl[i__1].i;
     i__1 = ih + 2;
-    workl[i__1].r = 0., workl[i__1].i = 0.;
+    workl[i__1].r = 0., workl[i__1].i = 0.0;
 
 #ifndef NO_TRACE
     if (msglvl > 2)
@@ -482,7 +482,7 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int 
         for (j = 1; j <= i__1; ++j)
         {
             i__2 = bounds + j - 1;
-            workl[i__2].r = (double) j, workl[i__2].i = 0.;
+            workl[i__2].r = (double) j, workl[i__2].i = 0.0;
             select[j] = false;
 
         }

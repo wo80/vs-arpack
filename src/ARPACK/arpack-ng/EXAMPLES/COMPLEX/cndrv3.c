@@ -109,7 +109,7 @@ int cndrv3()
     }
     char* bmat = "G";
     char* which = "LM";
-    sigma.r = 0.f, sigma.i = 0.f;
+    sigma.r = 0.0f, sigma.i = 0.0f;
 
     /* --------------------------------------------------- */
     /* The matrix M is chosen to be the symmetric tri-     */
@@ -124,27 +124,27 @@ int cndrv3()
     complex* du2 = (complex*)malloc(n * sizeof(complex));
 
     i__1 = n + 1;
-    q__2.r = (float) i__1, q__2.i = 0.f;
+    q__2.r = (float) i__1, q__2.i = 0.0f;
     c_div(&q__1, &c_one, &q__2);
     h.r = q__1.r, h.i = q__1.i;
     i__1 = n - 1;
     for (j = 1; j <= i__1; ++j)
     {
         i__2 = j - 1;
-        q__1.r = h.r * 1.f - h.i * 0.f, q__1.i = h.i * 1.f + h.r *
+        q__1.r = h.r * 1.0f - h.i * 0.f, q__1.i = h.i * 1.0f + h.r *
                  0.f;
         dl[i__2].r = q__1.r, dl[i__2].i = q__1.i;
         i__2 = j - 1;
-        q__1.r = h.r * 4.f - h.i * 0.f, q__1.i = h.r * 0.f + h.i *
-                 4.f;
+        q__1.r = h.r * 4.0f - h.i * 0.f, q__1.i = h.r * 0.f + h.i *
+                 4.0f;
         dd[i__2].r = q__1.r, dd[i__2].i = q__1.i;
         i__2 = j - 1;
-        q__1.r = h.r * 1.f - h.i * 0.f, q__1.i = h.i * 1.f + h.r *
+        q__1.r = h.r * 1.0f - h.i * 0.f, q__1.i = h.i * 1.0f + h.r *
                  0.f;
         du[i__2].r = q__1.r, du[i__2].i = q__1.i;
     }
     i__1 = n - 1;
-    q__1.r = h.r * 4.f - h.i * 0.f, q__1.i = h.r * 0.f + h.i * 4.f;
+    q__1.r = h.r * 4.0f - h.i * 0.f, q__1.i = h.r * 0.f + h.i * 4.0f;
     dd[i__1].r = q__1.r, dd[i__1].i = q__1.i;
 
     cgttrf_(&n, dl, dd, du, du2, ipiv, &ierr);
@@ -169,7 +169,7 @@ int cndrv3()
 
     /* Computing 2nd power */
     int lworkl = ncv * ncv * 3 + ncv * 5;
-    float tol = 0.f;
+    float tol = 0.0f;
     int ido = 0;
     int info = 0;
 
@@ -435,7 +435,7 @@ int cndrv3_av_(const int n, complex *v, complex *w)
 
     /* Function Body */
     i__1 = n + 1;
-    q__2.r = (float) i__1, q__2.i = 0.f;
+    q__2.r = (float) i__1, q__2.i = 0.0f;
     c_div(&q__1, &c_one, &q__2);
     h.r = q__1.r, h.i = q__1.i;
     c_div(&q__1, &c_b164, &c_b3);
@@ -502,9 +502,9 @@ int cndrv3_mv_(const int n, complex *v, complex *w)
     --v;
 
     /* Function Body */
-    q__2.r = v[1].r * 4.f - v[1].i * 0.f, q__2.i = v[1].i * 4.f + v[1].r *
+    q__2.r = v[1].r * 4.0f - v[1].i * 0.f, q__2.i = v[1].i * 4.0f + v[1].r *
              0.f;
-    q__3.r = v[2].r * 1.f - v[2].i * 0.f, q__3.i = v[2].i * 1.f + v[2].r *
+    q__3.r = v[2].r * 1.0f - v[2].i * 0.f, q__3.i = v[2].i * 1.0f + v[2].r *
              0.f;
     q__1.r = q__2.r + q__3.r, q__1.i = q__2.i + q__3.i;
     w[1].r = q__1.r, w[1].i = q__1.i;
@@ -513,25 +513,25 @@ int cndrv3_mv_(const int n, complex *v, complex *w)
     {
         i__2 = j;
         i__3 = j - 1;
-        q__3.r = v[i__3].r * 1.f - v[i__3].i * 0.f, q__3.i = v[i__3].i * 1.f + v[i__3].r * 0.f;
+        q__3.r = v[i__3].r * 1.0f - v[i__3].i * 0.f, q__3.i = v[i__3].i * 1.0f + v[i__3].r * 0.f;
         i__4 = j;
-        q__4.r = v[i__4].r * 4.f - v[i__4].i * 0.f, q__4.i = v[i__4].i * 4.f + v[i__4].r * 0.f;
+        q__4.r = v[i__4].r * 4.0f - v[i__4].i * 0.f, q__4.i = v[i__4].i * 4.0f + v[i__4].r * 0.f;
         q__2.r = q__3.r + q__4.r, q__2.i = q__3.i + q__4.i;
         i__5 = j + 1;
-        q__5.r = v[i__5].r * 1.f - v[i__5].i * 0.f, q__5.i = v[i__5].i * 1.f + v[i__5].r * 0.f;
+        q__5.r = v[i__5].r * 1.0f - v[i__5].i * 0.f, q__5.i = v[i__5].i * 1.0f + v[i__5].r * 0.f;
         q__1.r = q__2.r + q__5.r, q__1.i = q__2.i + q__5.i;
         w[i__2].r = q__1.r, w[i__2].i = q__1.i;
     }
     i__1 = n;
     i__2 = n - 1;
-    q__2.r = v[i__2].r * 1.f - v[i__2].i * 0.f, q__2.i = v[i__2].i * 1.f + v[i__2].r * 0.f;
+    q__2.r = v[i__2].r * 1.0f - v[i__2].i * 0.f, q__2.i = v[i__2].i * 1.0f + v[i__2].r * 0.f;
     i__3 = n;
-    q__3.r = v[i__3].r * 4.f - v[i__3].i * 0.f, q__3.i = v[i__3].i * 4.f + v[i__3].r * 0.f;
+    q__3.r = v[i__3].r * 4.0f - v[i__3].i * 0.f, q__3.i = v[i__3].i * 4.0f + v[i__3].r * 0.f;
     q__1.r = q__2.r + q__3.r, q__1.i = q__2.i + q__3.i;
     w[i__1].r = q__1.r, w[i__1].i = q__1.i;
 
     i__1 = n + 1;
-    q__2.r = (float) i__1, q__2.i = 0.f;
+    q__2.r = (float) i__1, q__2.i = 0.0f;
     c_div(&q__1, &c_one, &q__2);
     h.r = q__1.r, h.i = q__1.i;
     cscal_(&n, &h, &w[1], &c__1);

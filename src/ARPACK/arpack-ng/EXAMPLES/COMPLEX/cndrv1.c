@@ -128,7 +128,7 @@ int cndrv1()
 
     /* Computing 2nd power */
     int lworkl = ncv * ncv * 3 + ncv * 5;
-    float tol = 0.f;
+    float tol = 0.0f;
     int ido = 0;
     int info = 0;
 
@@ -378,7 +378,7 @@ int cndrv1_av_(const int nx, complex *v, complex *w)
 
     /* Function Body */
     i__1 = (nx + 1) * (nx + 1);
-    q__2.r = (float) i__1, q__2.i = 0.f;
+    q__2.r = (float) i__1, q__2.i = 0.0f;
     c_div(&q__1, &c_one, &q__2);
     h2.r = q__1.r, h2.i = q__1.i;
 
@@ -434,7 +434,7 @@ int cndrv1_tv_(const int nx, complex *x, complex *y)
 
     /* Function Body */
     i__1 = nx + 1;
-    q__2.r = (float) i__1, q__2.i = 0.f;
+    q__2.r = (float) i__1, q__2.i = 0.0f;
     c_div(&q__1, &c_one, &q__2);
     h.r = q__1.r, h.i = q__1.i;
     q__1.r = h.r * h.r - h.i * h.i, q__1.i = h.r * h.i + h.i * h.r;
@@ -443,13 +443,13 @@ int cndrv1_tv_(const int nx, complex *x, complex *y)
     dd.r = q__1.r, dd.i = q__1.i;
     q__3.r = -1.f, q__3.i = -0.f;
     c_div(&q__2, &q__3, &h2);
-    q__5.r = 50.f, q__5.i = 0.f;
+    q__5.r = 50.0f, q__5.i = 0.0f;
     c_div(&q__4, &q__5, &h);
     q__1.r = q__2.r - q__4.r, q__1.i = q__2.i - q__4.i;
     dl.r = q__1.r, dl.i = q__1.i;
     q__3.r = -1.f, q__3.i = -0.f;
     c_div(&q__2, &q__3, &h2);
-    q__5.r = 50.f, q__5.i = 0.f;
+    q__5.r = 50.0f, q__5.i = 0.0f;
     c_div(&q__4, &q__5, &h);
     q__1.r = q__2.r + q__4.r, q__1.i = q__2.i + q__4.i;
     du.r = q__1.r, du.i = q__1.i;

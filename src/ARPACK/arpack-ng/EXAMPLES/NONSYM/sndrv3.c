@@ -116,14 +116,14 @@ int sndrv3()
     float* md = (float*)malloc(n * sizeof(float));
     float* me = (float*)malloc(n * sizeof(float));
 
-    h = 1.f / (float) (n + 1);
+    h = 1.0f / (float) (n + 1);
     i__1 = n - 1;
     for (j = 1; j <= i__1; ++j)
     {
-        md[j - 1] = h * 4.f;
-        me[j - 1] = h * 1.f;
+        md[j - 1] = h * 4.0f;
+        me[j - 1] = h * 1.0f;
     }
-    md[n - 1] = h * 4.f;
+    md[n - 1] = h * 4.0f;
 
     spttrf_(&n, md, me, &ierr);
     if (ierr != 0)
@@ -146,7 +146,7 @@ int sndrv3()
     /* --------------------------------------------------- */
 
     int lworkl = ncv * ncv * 3 + ncv * 6;
-    float tol = 0.f;
+    float tol = 0.0f;
     int ido = 0;
     int info = 0;
 
@@ -317,7 +317,7 @@ L10:
         /* tolerance)                */
         /* ------------------------- */
 
-        if (d[j + 24] == 0.f)
+        if (d[j + 24] == 0.0f)
         {
             /* ------------------ */
             /* Ritz value is real */
@@ -449,9 +449,9 @@ int sndrv3_av_(const int n, float *v, float *w)
     --v;
 
     /* Function Body */
-    h = 1.f / (float) (n + 1);
-    s = 5.f;
-    dd = 2.f / h;
+    h = 1.0f / (float) (n + 1);
+    s = 5.0f;
+    dd = 2.0f / h;
     dl = -1.f / h - s;
     du = -1.f / h + s;
 
@@ -484,15 +484,15 @@ int sndrv3_mv_(const int n, float *v, float *w)
     --v;
 
     /* Function Body */
-    w[1] = v[1] * 4.f + v[2] * 1.f;
+    w[1] = v[1] * 4.0f + v[2] * 1.0f;
     i__1 = n - 1;
     for (j = 2; j <= i__1; ++j)
     {
-        w[j] = v[j - 1] * 1.f + v[j] * 4.f + v[j + 1] * 1.f;
+        w[j] = v[j - 1] * 1.0f + v[j] * 4.0f + v[j + 1] * 1.0f;
     }
-    w[n] = v[n - 1] * 1.f + v[n] * 4.f;
+    w[n] = v[n - 1] * 1.0f + v[n] * 4.0f;
 
-    h = 1.f / (float) (n + 1);
+    h = 1.0f / (float) (n + 1);
     sscal_(&n, &h, &w[1], &c__1);
     return 0;
 } /* mv_ */

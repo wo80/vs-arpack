@@ -172,7 +172,7 @@ int sngets_(int *ishift, char *which, int *kev, int *np, float *ritzr,
     /* complex conjugate pairs together.                     */
     /* ----------------------------------------------------- */
 
-    if (ritzr[*np + 1] - ritzr[*np] == 0.f && ritzi[*np + 1] + ritzi[*np] ==
+    if (ritzr[*np + 1] - ritzr[*np] == 0.0f && ritzi[*np + 1] + ritzi[*np] ==
             0.f)
     {
         --(*np);

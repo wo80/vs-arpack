@@ -17,23 +17,23 @@ int dstatn_(void)
     timing_1.nitref = 0;
     timing_1.nrstrt = 0;
 
-    timing_1.tnaupd = 0.f;
-    timing_1.tnaup2 = 0.f;
-    timing_1.tnaitr = 0.f;
-    timing_1.tneigh = 0.f;
-    timing_1.tngets = 0.f;
-    timing_1.tnapps = 0.f;
-    timing_1.tnconv = 0.f;
-    timing_1.titref = 0.f;
-    timing_1.tgetv0 = 0.f;
-    timing_1.trvec = 0.f;
+    timing_1.tnaupd = 0.0f;
+    timing_1.tnaup2 = 0.0f;
+    timing_1.tnaitr = 0.0f;
+    timing_1.tneigh = 0.0f;
+    timing_1.tngets = 0.0f;
+    timing_1.tnapps = 0.0f;
+    timing_1.tnconv = 0.0f;
+    timing_1.titref = 0.0f;
+    timing_1.tgetv0 = 0.0f;
+    timing_1.trvec = 0.0f;
 
     /* -------------------------------------------------- */
     /* User time including reverse communication overhead */
     /* -------------------------------------------------- */
 
-    timing_1.tmvopx = 0.f;
-    timing_1.tmvbx = 0.f;
+    timing_1.tmvopx = 0.0f;
+    timing_1.tmvbx = 0.0f;
 
     return 0;
 } /* dstatn_ */

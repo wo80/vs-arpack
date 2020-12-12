@@ -534,7 +534,7 @@ int snaupd_(int *ido, char *bmat, int *n, char *which, int *nev, float *tol,
         {
             nb = 1;
         }
-        if (*tol <= 0.f)
+        if (*tol <= 0.0f)
         {
             *tol = slamch_("E");
         }
@@ -558,7 +558,7 @@ int snaupd_(int *ido, char *bmat, int *n, char *which, int *nev, float *tol,
         i__1 = i__2 * i__2 * 3 + *ncv * 6;
         for (j = 1; j <= i__1; ++j)
         {
-            workl[j] = 0.f;
+            workl[j] = 0.0f;
         }
 
         /* ----------------------------------------------------------- */

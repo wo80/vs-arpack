@@ -104,7 +104,7 @@ int ssdrv2()
 
     char* bmat = "I";
     char* which = "LM";
-    sigma = 0.f;
+    sigma = 0.0f;
 
     /* ------------------------------------------------ */
     /* The work array WORKL is used in SSAUPD as        */
@@ -119,7 +119,7 @@ int ssdrv2()
     /* ------------------------------------------------ */
 
     int lworkl = ncv * (ncv + 8);
-    float tol = 0.f;
+    float tol = 0.0f;
     int ido = 0;
     int info = 0;
 
@@ -157,10 +157,10 @@ int ssdrv2()
     /* is the 1-d Laplacian.                               */
     /* --------------------------------------------------- */
 
-    h2 = 1.f / (float) ((n + 1) * (n + 1));
+    h2 = 1.0f / (float) ((n + 1) * (n + 1));
     for (j = 1; j <= n; ++j)
     {
-        ad[j - 1] = 2.f / h2 - sigma;
+        ad[j - 1] = 2.0f / h2 - sigma;
         adl[j - 1] = -1.f / h2;
     }
     scopy_(&n, adl, &c__1, adu, &c__1);
@@ -378,19 +378,19 @@ int ssdrv2_av_(const int n, float *v, float *w)
     --v;
 
     /* Function Body */
-    w[1] = v[1] * 2.f - v[2];
+    w[1] = v[1] * 2.0f - v[2];
     i__1 = n - 1;
     for (j = 2; j <= i__1; ++j)
     {
-        w[j] = -v[j - 1] + v[j] * 2.f - v[j + 1];
+        w[j] = -v[j - 1] + v[j] * 2.0f - v[j + 1];
     }
     j = n;
-    w[j] = -v[j - 1] + v[j] * 2.f;
+    w[j] = -v[j - 1] + v[j] * 2.0f;
 
     /*     Scale the vector w by (1 / h^2). */
 
-    h2 = 1.f / (float) ((n + 1) * (n + 1));
-    r__1 = 1.f / h2;
+    h2 = 1.0f / (float) ((n + 1) * (n + 1));
+    r__1 = 1.0f / h2;
     sscal_(&n, &r__1, &w[1], &c__1);
     return 0;
 } /* av_ */

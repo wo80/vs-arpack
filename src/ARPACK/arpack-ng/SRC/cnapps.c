@@ -193,7 +193,7 @@ int cnapps_(int *n, int *kev, int *np, complex *
         /* --------------------------------------------- */
 
         unfl = slamch_("S");
-        q__1.r = 1.f / unfl, q__1.i = 0.f / unfl;
+        q__1.r = 1.0f / unfl, q__1.i = 0.0f / unfl;
         ovfl = q__1.r;
         slabad_(&unfl, &ovfl);
         ulp = slamch_("P");
@@ -269,7 +269,7 @@ L20:
             r__3 = h[i__4].r;
             r__4 = r_imag(&h[i + 1 + (i + 1) * h_dim1]);
             tst1 = dabs(r__1) + dabs(r__2) + dabs(r__3) + dabs(r__4);
-            if (tst1 == 0.f)
+            if (tst1 == 0.0f)
             {
                 i__3 = kplusp - jj + 1;
                 tst1 = clanhs_("1", &i__3, &h[h_offset], ldh, &workl[1]);
@@ -290,7 +290,7 @@ L20:
 
                 iend = i;
                 i__3 = i + 1 + i * h_dim1;
-                h[i__3].r = 0.f, h[i__3].i = 0.f;
+                h[i__3].r = 0.0f, h[i__3].i = 0.0f;
                 goto L40;
             }
 
@@ -338,7 +338,7 @@ L40:
                 i__3 = i + (i - 1) * h_dim1;
                 h[i__3].r = r.r, h[i__3].i = r.i;
                 i__3 = i + 1 + (i - 1) * h_dim1;
-                h[i__3].r = 0.f, h[i__3].i = 0.f;
+                h[i__3].r = 0.0f, h[i__3].i = 0.0f;
             }
 
             /* ------------------------------------------- */
@@ -468,7 +468,7 @@ L100:
     for (j = 1; j <= i__1; ++j)
     {
         i__2 = j + 1 + j * h_dim1;
-        if (h[i__2].r < 0.f || r_imag(&h[j + 1 + j * h_dim1]) != 0.f)
+        if (h[i__2].r < 0.f || r_imag(&h[j + 1 + j * h_dim1]) != 0.0f)
         {
             i__2 = j + 1 + j * h_dim1;
             i__3 = j + 1 + j * h_dim1;
@@ -491,7 +491,7 @@ L100:
             i__2 = j + 1 + j * h_dim1;
             i__3 = j + 1 + j * h_dim1;
             r__1 = h[i__3].r;
-            q__1.r = r__1, q__1.i = 0.f;
+            q__1.r = r__1, q__1.i = 0.0f;
             h[i__2].r = q__1.r, h[i__2].i = q__1.i;
         }
     }
@@ -515,7 +515,7 @@ L100:
         r__3 = h[i__3].r;
         r__4 = r_imag(&h[i + 1 + (i + 1) * h_dim1]);
         tst1 = dabs(r__1) + dabs(r__2) + dabs(r__3) + dabs(r__4);
-        if (tst1 == 0.f)
+        if (tst1 == 0.0f)
         {
             tst1 = clanhs_("1", kev, &h[h_offset], ldh, &workl[1]);
         }
@@ -525,7 +525,7 @@ L100:
         if (h[i__2].r <= dmax(r__1,smlnum))
         {
             i__3 = i + 1 + i * h_dim1;
-            h[i__3].r = 0.f, h[i__3].i = 0.f;
+            h[i__3].r = 0.0f, h[i__3].i = 0.0f;
         }
     }
 

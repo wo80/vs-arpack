@@ -526,7 +526,7 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
     /* ---------------------------------- */
 
     rnorm = workl[ih + 2];
-    workl[ih + 2] = 0.;
+    workl[ih + 2] = 0.0;
 
 #ifndef NO_TRACE
     if (msglvl > 2)

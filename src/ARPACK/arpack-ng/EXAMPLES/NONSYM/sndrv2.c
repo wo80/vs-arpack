@@ -119,8 +119,8 @@ int sndrv2()
     }
     char* bmat = "I";
     char* which = "LM";
-    sigmar = 1.f;
-    sigmai = 0.f;
+    sigmar = 1.0f;
+    sigmai = 0.0f;
 
     /* -------------------------------------------------- */
     /* Construct C = A - SIGMA*I in real arithmetic, and  */
@@ -138,12 +138,12 @@ int sndrv2()
     float* du2 = (float*)malloc(n * sizeof(float));
 
     convct_1.rho = 10.f;
-    h = 1.f / (float) (n + 1);
-    s = convct_1.rho * h / 2.f;
+    h = 1.0f / (float) (n + 1);
+    s = convct_1.rho * h / 2.0f;
 
     s1 = -1.f - s;
-    s2 = 2.f - sigmar;
-    s3 = s - 1.f;
+    s2 = 2.0f - sigmar;
+    s3 = s - 1.0f;
 
     i__1 = n - 1;
     for (j = 1; j <= i__1; ++j)
@@ -175,7 +175,7 @@ int sndrv2()
     /* --------------------------------------------------- */
 
     int lworkl = ncv * ncv * 3 + ncv * 6;
-    float tol = 0.f;
+    float tol = 0.0f;
     int ido = 0;
     int info = 0;
 
@@ -326,7 +326,7 @@ L20:
         /* tolerance)                */
         /* ------------------------- */
 
-        if (d[j + 24] == 0.f)
+        if (d[j + 24] == 0.0f)
         {
             /* ------------------ */
             /* Ritz value is real */
@@ -451,11 +451,11 @@ int sndrv2_av_(const int n, float *v, float *w)
     --v;
 
     /* Function Body */
-    h = 1.f / (float) (n + 1);
-    s = convct_1.rho * h / 2.f;
-    dd = 2.f;
+    h = 1.0f / (float) (n + 1);
+    s = convct_1.rho * h / 2.0f;
+    dd = 2.0f;
     dl = -1.f - s;
-    du = s - 1.f;
+    du = s - 1.0f;
 
     w[1] = dd * v[1] + du * v[2];
     i__1 = n - 1;

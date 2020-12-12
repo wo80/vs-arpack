@@ -109,7 +109,7 @@ int dsdrv4()
     }
     char* bmat = "G";
     char* which = "LM";
-    sigma = 0.;
+    sigma = 0.0;
 
     /* ------------------------------------------------ */
     /* The work array WORKL is used in DSAUPD as        */
@@ -124,7 +124,7 @@ int dsdrv4()
     /* ------------------------------------------------ */
 
     int lworkl = ncv * (ncv + 8);
-    double tol = 0.;
+    double tol = 0.0;
     int ido = 0;
     int info = 0;
 
@@ -432,14 +432,14 @@ int dsdrv4_mv_(const int n, double *v, double *w)
     --v;
 
     /* Function Body */
-    w[1] = v[1] * 4. + v[2];
+    w[1] = v[1] * 4.0 + v[2];
     i__1 = n - 1;
     for (j = 2; j <= i__1; ++j)
     {
-        w[j] = v[j - 1] + v[j] * 4. + v[j + 1];
+        w[j] = v[j - 1] + v[j] * 4.0 + v[j + 1];
     }
     j = n;
-    w[j] = v[j - 1] + v[j] * 4.;
+    w[j] = v[j - 1] + v[j] * 4.0;
 
     /*     Scale the vector w by h. */
 
@@ -476,7 +476,7 @@ int dsdrv4_av_(const int n, double *v, double *w)
         w[j] = -v[j - 1] + v[j] * 2. - v[j + 1];
     }
     j = n;
-    w[j] = -v[j - 1] + v[j] * 2.;
+    w[j] = -v[j - 1] + v[j] * 2.0;
 
     /*     Scale the vector w by (1/h) */
 

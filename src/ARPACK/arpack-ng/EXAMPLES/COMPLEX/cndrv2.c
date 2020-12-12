@@ -119,7 +119,7 @@ int cndrv2()
     }
     char* bmat = "I";
     char* which = "LM";
-    sigma.r = 0.f, sigma.i = 0.f;
+    sigma.r = 0.0f, sigma.i = 0.0f;
 
     /* -------------------------------------------------- */
     /* Construct C = A - SIGMA*I, factor C in complex     */
@@ -136,9 +136,9 @@ int cndrv2()
     complex* dl = (complex*)malloc(n * sizeof(complex));
     complex* du2 = (complex*)malloc(n * sizeof(complex));
 
-    convct_1.rho.r = 10.f, convct_1.rho.i = 0.f;
+    convct_1.rho.r = 10.f, convct_1.rho.i = 0.0f;
     i__1 = n + 1;
-    q__2.r = (float) i__1, q__2.i = 0.f;
+    q__2.r = (float) i__1, q__2.i = 0.0f;
     c_div(&q__1, &c_one, &q__2);
     h.r = q__1.r, h.i = q__1.i;
     q__1.r = h.r * h.r - h.i * h.i, q__1.i = h.r * h.i + h.i * h.r;
@@ -195,7 +195,7 @@ int cndrv2()
 
     /* Computing 2nd power */
     int lworkl = ncv * ncv * 3 + ncv * 5;
-    float tol = 0.f;
+    float tol = 0.0f;
     int ido = 0;
     int info = 0;
 
@@ -439,7 +439,7 @@ int cndrv2_av_(const int n, complex *v, complex *w)
 
     /* Function Body */
     i__1 = n + 1;
-    q__2.r = (float) i__1, q__2.i = 0.f;
+    q__2.r = (float) i__1, q__2.i = 0.0f;
     c_div(&q__1, &c_one, &q__2);
     h.r = q__1.r, h.i = q__1.i;
     q__1.r = h.r * h.r - h.i * h.i, q__1.i = h.r * h.i + h.i * h.r;

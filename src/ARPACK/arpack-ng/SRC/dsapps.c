@@ -249,7 +249,7 @@ L20:
                 }
 #endif
 
-                h[i + 1 + h_dim1] = 0.;
+                h[i + 1 + h_dim1] = 0.0;
                 iend = i;
                 goto L40;
             }
@@ -448,7 +448,7 @@ L90:
             }
 #endif
 
-            h[i + 1 + h_dim1] = 0.;
+            h[i + 1 + h_dim1] = 0.0;
         }
     }
 

@@ -410,10 +410,10 @@ L40:
         for (jj = 1; jj <= i__1; ++jj)
         {
             i__2 = jj;
-            resid[i__2].r = 0., resid[i__2].i = 0.;
+            resid[i__2].r = 0., resid[i__2].i = 0.0;
 
         }
-        *rnorm = 0.;
+        *rnorm = 0.0;
         *ierr = -1;
     }
 

@@ -500,7 +500,7 @@ int cnaupd_(int *ido, char *bmat, int *n, char *which, int *nev, float *tol,
         {
             nb = 1;
         }
-        if (*tol <= 0.f)
+        if (*tol <= 0.0f)
         {
             *tol = slamch_("E");
         }
@@ -529,7 +529,7 @@ int cnaupd_(int *ido, char *bmat, int *n, char *which, int *nev, float *tol,
         for (j = 1; j <= i__1; ++j)
         {
             i__2 = j;
-            workl[i__2].r = 0.f, workl[i__2].i = 0.f;
+            workl[i__2].r = 0.0f, workl[i__2].i = 0.0f;
         }
 
         /* ----------------------------------------------------------- */

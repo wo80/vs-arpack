@@ -389,7 +389,7 @@ L1000:
     /* attempted. NRSTRT is used by stat.h         */
     /* ------------------------------------------- */
 
-    betaj = 0.;
+    betaj = 0.0;
     ++timing_1.nrstrt;
     itry = 1;
 L20:
@@ -811,9 +811,9 @@ L90:
         i__1 = *n;
         for (jj = 1; jj <= i__1; ++jj)
         {
-            resid[jj] = 0.;
+            resid[jj] = 0.0;
         }
-        *rnorm = 0.;
+        *rnorm = 0.0;
     }
 
     /* -------------------------------------------- */
@@ -866,7 +866,7 @@ L100:
             if ((d__1 = h[i + 1 + i * h_dim1], abs(d__1)) <= max(d__2,
                     smlnum))
             {
-                h[i + 1 + i * h_dim1] = 0.;
+                h[i + 1 + i * h_dim1] = 0.0;
             }
         }
 

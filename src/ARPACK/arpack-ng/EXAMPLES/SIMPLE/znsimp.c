@@ -239,7 +239,7 @@ int znsimp()
     /* --------------------------------------------------- */
 
     int lworkl = ncv * ncv * 3 + ncv * 5;
-    double tol = 0.;
+    double tol = 0.0;
     int ido = 0;
     int info = 0;
 
@@ -502,7 +502,7 @@ int znsimp_av_(const int nx, zomplex *v, zomplex *w)
 
     /* Function Body */
     i__1 = (nx + 1) * (nx + 1);
-    z__2.r = (double) i__1, z__2.i = 0.;
+    z__2.r = (double) i__1, z__2.i = 0.0;
     z_div(&z__1, &c_b137, &z__2);
     h2.r = z__1.r, h2.i = z__1.i;
 
@@ -558,7 +558,7 @@ int znsimp_tv_(const int nx, zomplex *x, zomplex *y)
 
     /* Function Body */
     i__1 = nx + 1;
-    z__2.r = (double) i__1, z__2.i = 0.;
+    z__2.r = (double) i__1, z__2.i = 0.0;
     z_div(&z__1, &c_b137, &z__2);
     h.r = z__1.r, h.i = z__1.i;
     z__1.r = h.r * h.r - h.i * h.i, z__1.i = h.r * h.i + h.i * h.r;
@@ -567,13 +567,13 @@ int znsimp_tv_(const int nx, zomplex *x, zomplex *y)
     dd.r = z__1.r, dd.i = z__1.i;
     z__3.r = -1., z__3.i = -0.;
     z_div(&z__2, &z__3, &h2);
-    z__5.r = 50., z__5.i = 0.;
+    z__5.r = 50.0, z__5.i = 0.0;
     z_div(&z__4, &z__5, &h);
     z__1.r = z__2.r - z__4.r, z__1.i = z__2.i - z__4.i;
     dl.r = z__1.r, dl.i = z__1.i;
     z__3.r = -1., z__3.i = -0.;
     z_div(&z__2, &z__3, &h2);
-    z__5.r = 50., z__5.i = 0.;
+    z__5.r = 50.0, z__5.i = 0.0;
     z_div(&z__4, &z__5, &h);
     z__1.r = z__2.r + z__4.r, z__1.i = z__2.i + z__4.i;
     du.r = z__1.r, du.i = z__1.i;

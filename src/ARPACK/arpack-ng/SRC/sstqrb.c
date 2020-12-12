@@ -180,7 +180,7 @@ int sstqrb_(int *n, float *d, float *e, float *z, float *
     {
         if (icompz == 2)
         {
-            z[1] = 1.f;
+            z[1] = 1.0f;
         }
         return 0;
     }
@@ -192,8 +192,8 @@ int sstqrb_(int *n, float *d, float *e, float *z, float *
     r__1 = eps;
     eps2 = r__1 * r__1;
     safmin = slamch_("S");
-    safmax = 1.f / safmin;
-    ssfmax = sqrt(safmax) / 3.f;
+    safmax = 1.0f / safmin;
+    ssfmax = sqrt(safmax) / 3.0f;
     ssfmin = sqrt(safmin) / eps2;
 
     /*     compute the eigenvalues and eigenvectors of the tridiagonal */
@@ -209,10 +209,10 @@ int sstqrb_(int *n, float *d, float *e, float *z, float *
         i__1 = *n - 1;
         for (j = 1; j <= i__1; ++j)
         {
-            z[j] = 0.f;
+            z[j] = 0.0f;
 
         }
-        z[*n] = 1.f;
+        z[*n] = 1.0f;
     }
     /*     ************************************* */
 
@@ -233,7 +233,7 @@ L10:
     }
     if (l1 > 1)
     {
-        e[l1 - 1] = 0.f;
+        e[l1 - 1] = 0.0f;
     }
     if (l1 <= nm1)
     {
@@ -241,14 +241,14 @@ L10:
         for (m = l1; m <= i__1; ++m)
         {
             tst = (r__1 = e[m], dabs(r__1));
-            if (tst == 0.f)
+            if (tst == 0.0f)
             {
                 goto L30;
             }
             if (tst <= sqrt((r__1 = d[m], dabs(r__1))) * sqrt((r__2 = d[m
                     + 1], dabs(r__2))) * eps)
             {
-                e[m] = 0.f;
+                e[m] = 0.0f;
                 goto L30;
             }
 
@@ -272,7 +272,7 @@ L30:
     i__1 = lend - l + 1;
     anorm = slanst_("i", &i__1, &d[l], &e[l]);
     iscale = 0;
-    if (anorm == 0.f)
+    if (anorm == 0.0f)
     {
         goto L10;
     }
@@ -330,7 +330,7 @@ L40:
 L60:
         if (m < lend)
         {
-            e[m] = 0.f;
+            e[m] = 0.0f;
         }
         p = d[l];
         if (m == l)
@@ -364,7 +364,7 @@ L60:
             }
             d[l] = rt1;
             d[l + 1] = rt2;
-            e[l] = 0.f;
+            e[l] = 0.0f;
             l += 2;
             if (l <= lend)
             {
@@ -381,13 +381,13 @@ L60:
 
         /*        form shift. */
 
-        g = (d[l + 1] - p) / (e[l] * 2.f);
+        g = (d[l + 1] - p) / (e[l] * 2.0f);
         r = slapy2_(&g, &s_one);
         g = d[m] - p + e[l] / (g + r_sign(&r, &g));
 
-        s = 1.f;
-        c = 1.f;
-        p = 0.f;
+        s = 1.0f;
+        c = 1.0f;
+        p = 0.0f;
 
         /*        inner loop */
 
@@ -403,7 +403,7 @@ L60:
                 e[i + 1] = r;
             }
             g = d[i + 1] - p;
-            r = (d[i] - g) * s + c * 2.f * b;
+            r = (d[i] - g) * s + c * 2.0f * b;
             p = s * r;
             d[i + 1] = g + p;
             g = c * r - b;
@@ -478,7 +478,7 @@ L90:
 L110:
         if (m > lend)
         {
-            e[m - 1] = 0.f;
+            e[m - 1] = 0.0f;
         }
         p = d[l];
         if (m == l)
@@ -512,7 +512,7 @@ L110:
             }
             d[l - 1] = rt1;
             d[l] = rt2;
-            e[l - 1] = 0.f;
+            e[l - 1] = 0.0f;
             l += -2;
             if (l >= lend)
             {
@@ -529,13 +529,13 @@ L110:
 
         /*        form shift. */
 
-        g = (d[l - 1] - p) / (e[l - 1] * 2.f);
+        g = (d[l - 1] - p) / (e[l - 1] * 2.0f);
         r = slapy2_(&g, &s_one);
         g = d[m] - p + e[l - 1] / (g + r_sign(&r, &g));
 
-        s = 1.f;
-        c = 1.f;
-        p = 0.f;
+        s = 1.0f;
+        c = 1.0f;
+        p = 0.0f;
 
         /*        inner loop */
 
@@ -551,7 +551,7 @@ L110:
                 e[i - 1] = r;
             }
             g = d[i] - p;
-            r = (d[i + 1] - g) * s + c * 2.f * b;
+            r = (d[i + 1] - g) * s + c * 2.0f * b;
             p = s * r;
             d[i] = g + p;
             g = c * r - b;
@@ -625,7 +625,7 @@ L140:
     i__1 = *n - 1;
     for (i = 1; i <= i__1; ++i)
     {
-        if (e[i] != 0.f)
+        if (e[i] != 0.0f)
         {
             ++(*info);
         }

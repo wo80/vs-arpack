@@ -156,9 +156,9 @@ int sneigh_(float *rnorm, int *n, float *h, int *ldh,
     i__1 = *n - 1;
     for (j = 1; j <= i__1; ++j)
     {
-        bounds[j] = 0.f;
+        bounds[j] = 0.0f;
     }
-    bounds[*n] = 1.f;
+    bounds[*n] = 1.0f;
     slahqr_(&c_true, &c_true, n, &c__1, n, &workl[1], n, &ritzr[1], &ritzi[1],&c__1, &c__1, &bounds[1], &c__1, ierr);
     if (*ierr != 0)
     {
@@ -202,14 +202,14 @@ int sneigh_(float *rnorm, int *n, float *h, int *ldh,
     i__1 = *n;
     for (i = 1; i <= i__1; ++i)
     {
-        if ((r__1 = ritzi[i], dabs(r__1)) <= 0.f)
+        if ((r__1 = ritzi[i], dabs(r__1)) <= 0.0f)
         {
             /* -------------------- */
             /* Real eigenvalue case */
             /* -------------------- */
 
             temp = snrm2_(n, &q[i * q_dim1 + 1], &c__1);
-            r__1 = 1.f / temp;
+            r__1 = 1.0f / temp;
             sscal_(n, &r__1, &q[i * q_dim1 + 1], &c__1);
         }
         else
@@ -227,9 +227,9 @@ int sneigh_(float *rnorm, int *n, float *h, int *ldh,
                 r__1 = snrm2_(n, &q[i * q_dim1 + 1], &c__1);
                 r__2 = snrm2_(n, &q[(i + 1) * q_dim1 + 1], &c__1);
                 temp = slapy2_(&r__1, &r__2);
-                r__1 = 1.f / temp;
+                r__1 = 1.0f / temp;
                 sscal_(n, &r__1, &q[i * q_dim1 + 1], &c__1);
-                r__1 = 1.f / temp;
+                r__1 = 1.0f / temp;
                 sscal_(n, &r__1, &q[(i + 1) * q_dim1 + 1], &c__1);
                 iconj = 1;
             }
@@ -257,7 +257,7 @@ int sneigh_(float *rnorm, int *n, float *h, int *ldh,
     i__1 = *n;
     for (i = 1; i <= i__1; ++i)
     {
-        if ((r__1 = ritzi[i], dabs(r__1)) <= 0.f)
+        if ((r__1 = ritzi[i], dabs(r__1)) <= 0.0f)
         {
             /* -------------------- */
             /* Real eigenvalue case */

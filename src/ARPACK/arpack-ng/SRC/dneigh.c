@@ -156,9 +156,9 @@ int dneigh_(double *rnorm, int *n, double *h,
     i__1 = *n - 1;
     for (j = 1; j <= i__1; ++j)
     {
-        bounds[j] = 0.;
+        bounds[j] = 0.0;
     }
-    bounds[*n] = 1.;
+    bounds[*n] = 1.0;
     dlahqr_(&c_true, &c_true, n, &c__1, n, &workl[1], n, &ritzr[1], &ritzi[1],&c__1, &c__1, &bounds[1], &c__1, ierr);
     if (*ierr != 0)
     {

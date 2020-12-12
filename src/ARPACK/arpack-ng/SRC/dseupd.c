@@ -791,9 +791,9 @@ L30:
         i__1 = *ncv - 1;
         for (j = 1; j <= i__1; ++j)
         {
-            workl[ihb + j - 1] = 0.;
+            workl[ihb + j - 1] = 0.0;
         }
-        workl[ihb + *ncv - 1] = 1.;
+        workl[ihb + *ncv - 1] = 1.0;
         dorm2r_("L", "T", ncv, &c__1, &nconv, &workl[iq], &ldq, &workl[iw + *ncv], &workl[ihb], ncv, &temp, &ierr);
 
         /* --------------------------------------------------- */
@@ -854,7 +854,7 @@ L30:
             {
                 /* Computing 2nd power */
                 d__1 = workl[ihb + k - 1];
-                d__2 = workl[iw + k - 1] - 1.;
+                d__2 = workl[iw + k - 1] - 1.0;
                 workl[ihb + k - 1] = *sigma * abs(d__1) / (d__2 * d__2);
             }
 

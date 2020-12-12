@@ -270,7 +270,7 @@ int cnaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *nb,
         /* --------------------------------------- */
 
         unfl = slamch_("S");
-        q__1.r = 1.f / unfl, q__1.i = 0.f / unfl;
+        q__1.r = 1.0f / unfl, q__1.i = 0.0f / unfl;
         ovfl = q__1.r;
         slabad_(&unfl, &ovfl);
         ulp = slamch_("P");
@@ -392,7 +392,7 @@ L1000:
     /* attempted. NRSTRT is used by stat.h         */
     /* ------------------------------------------- */
 
-    betaj = 0.f;
+    betaj = 0.0f;
     ++timing_1.nrstrt;
     itry = 1;
 L20:
@@ -446,7 +446,7 @@ L40:
     ccopy_(n, &resid[1], &c__1, &v[j * v_dim1 + 1], &c__1);
     if (*rnorm >= unfl)
     {
-        temp1 = 1.f / *rnorm;
+        temp1 = 1.0f / *rnorm;
         csscal_(n, &temp1, &v[j * v_dim1 + 1], &c__1);
         csscal_(n, &temp1, &workd[ipj], &c__1);
     }
@@ -593,7 +593,7 @@ L60:
     if (j > 1)
     {
         i__1 = j + (j - 1) * h_dim1;
-        q__1.r = betaj, q__1.i = 0.f;
+        q__1.r = betaj, q__1.i = 0.0f;
         h[i__1].r = q__1.r, h[i__1].i = q__1.i;
     }
 
@@ -829,10 +829,10 @@ L90:
         for (jj = 1; jj <= i__1; ++jj)
         {
             i__2 = jj;
-            resid[i__2].r = 0.f, resid[i__2].i = 0.f;
+            resid[i__2].r = 0.0f, resid[i__2].i = 0.0f;
 
         }
-        *rnorm = 0.f;
+        *rnorm = 0.0f;
     }
 
     /* -------------------------------------------- */
@@ -880,7 +880,7 @@ L100:
             r__3 = h[i__3].r;
             r__4 = r_imag(&h[i + 1 + (i + 1) * h_dim1]);
             tst1 = slapy2_(&r__1, &r__2) + slapy2_(&r__3, &r__4);
-            if (tst1 == 0.f)
+            if (tst1 == 0.0f)
             {
                 i__2 = *k + *np;
                 tst1 = clanhs_("1", &i__2, &h[h_offset], ldh, &workd[*n + 1]);
@@ -893,7 +893,7 @@ L100:
             if (slapy2_(&r__1, &r__2) <= dmax(r__3,smlnum))
             {
                 i__3 = i + 1 + i * h_dim1;
-                h[i__3].r = 0.f, h[i__3].i = 0.f;
+                h[i__3].r = 0.0f, h[i__3].i = 0.0f;
             }
 
         }

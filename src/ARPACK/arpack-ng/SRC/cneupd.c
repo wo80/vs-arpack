@@ -462,7 +462,7 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
     i__1 = ih + 2;
     rnorm.r = workl[i__1].r, rnorm.i = workl[i__1].i;
     i__1 = ih + 2;
-    workl[i__1].r = 0.f, workl[i__1].i = 0.f;
+    workl[i__1].r = 0.0f, workl[i__1].i = 0.0f;
 
 #ifndef NO_TRACE
     if (msglvl > 2)
@@ -485,7 +485,7 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
         for (j = 1; j <= i__1; ++j)
         {
             i__2 = bounds + j - 1;
-            workl[i__2].r = (float) j, workl[i__2].i = 0.f;
+            workl[i__2].r = (float) j, workl[i__2].i = 0.0f;
             select[j] = false;
         }
 
@@ -728,7 +728,7 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
             for (j = 1; j <= i__1; ++j)
             {
                 rtemp = scnrm2_(ncv, &workl[invsub + (j - 1) * ldq], &c__1);
-                rtemp = 1.f / rtemp;
+                rtemp = 1.0f / rtemp;
                 csscal_(ncv, &rtemp, &workl[invsub + (j - 1) * ldq], &c__1);
 
                 /* ---------------------------------------- */
@@ -873,7 +873,7 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
         for (j = 1; j <= i__1; ++j)
         {
             i__2 = iheig + j - 1;
-            if (workl[i__2].r != 0.f || workl[i__2].i != 0.f)
+            if (workl[i__2].r != 0.0f || workl[i__2].i != 0.0f)
             {
                 i__2 = j;
                 c_div(&q__1, &workl[invsub + (j - 1) * ldq + *ncv - 1], &workl[iheig + j - 1]);

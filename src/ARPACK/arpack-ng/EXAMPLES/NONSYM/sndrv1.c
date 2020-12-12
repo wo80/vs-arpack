@@ -127,7 +127,7 @@ int sndrv1()
     /* --------------------------------------------------- */
 
     int lworkl = ncv * ncv * 3 + ncv * 6;
-    float tol = 0.f;
+    float tol = 0.0f;
     int ido = 0;
     int info = 0;
 
@@ -272,7 +272,7 @@ L10:
         /* tolerance)                */
         /* ------------------------- */
 
-        if (d[j + 29] == 0.f)
+        if (d[j + 29] == 0.0f)
         {
             /* ------------------ */
             /* Ritz value is real */
@@ -411,7 +411,7 @@ int sndrv1_av_(const int nx, float *v, float *w)
     --v;
 
     /* Function Body */
-    h2 = 1.f / (float) ((nx + 1) * (nx + 1));
+    h2 = 1.0f / (float) ((nx + 1) * (nx + 1));
 
     sndrv1_tv_(nx, &v[1], &w[1]);
     r__1 = -1.f / h2;
@@ -460,9 +460,9 @@ int sndrv1_tv_(const int nx, float *x, float *y)
     --x;
 
     /* Function Body */
-    h = 1.f / (float) (nx + 1);
+    h = 1.0f / (float) (nx + 1);
     h2 = h * h;
-    dd = 4.f / h2;
+    dd = 4.0f / h2;
     dl = -1.f / h2 - 0.f / h;
     du = -1.f / h2 + 0.f / h;
 

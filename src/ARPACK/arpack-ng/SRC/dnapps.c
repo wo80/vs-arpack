@@ -339,7 +339,7 @@ L20:
 #endif
 
                 iend = i;
-                h[i + 1 + i * h_dim1] = 0.;
+                h[i + 1 + i * h_dim1] = 0.0;
                 goto L40;
             }
         }
@@ -407,7 +407,7 @@ L40:
                         s = -s;
                     }
                     h[i + (i - 1) * h_dim1] = r;
-                    h[i + 1 + (i - 1) * h_dim1] = 0.;
+                    h[i + 1 + (i - 1) * h_dim1] = 0.0;
                 }
 
                 /* ------------------------------------------- */
@@ -480,7 +480,7 @@ L40:
             /* Compute 1st column of (H - shift*I)*(H - conj(shift)*I) */
             /* ------------------------------------------------------- */
 
-            s = sigmar * 2.f;
+            s = sigmar * 2.0f;
             t = dlapy2_(&sigmar, &sigmai);
             u[0] = (h11 * (h11 - s) + t * t) / h21 + h12;
             u[1] = h11 + h22 - s;
@@ -503,13 +503,13 @@ L40:
                 if (i > istart)
                 {
                     h[i + (i - 1) * h_dim1] = u[0];
-                    h[i + 1 + (i - 1) * h_dim1] = 0.;
+                    h[i + 1 + (i - 1) * h_dim1] = 0.0;
                     if (i < iend - 1)
                     {
-                        h[i + 2 + (i - 1) * h_dim1] = 0.;
+                        h[i + 2 + (i - 1) * h_dim1] = 0.0;
                     }
                 }
-                u[0] = 1.;
+                u[0] = 1.0;
 
                 /* ------------------------------------ */
                 /* Apply the reflector to the left of H */
@@ -618,7 +618,7 @@ L110:
         d__1 = ulp * tst1;
         if (h[i + 1 + i * h_dim1] <= max(d__1,smlnum))
         {
-            h[i + 1 + i * h_dim1] = 0.;
+            h[i + 1 + i * h_dim1] = 0.0;
         }
     }
 

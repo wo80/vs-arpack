@@ -268,7 +268,7 @@ int snaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *nb,
         /* --------------------------------------- */
 
         unfl = slamch_("S");
-        ovfl = 1.f / unfl;
+        ovfl = 1.0f / unfl;
         slabad_(&unfl, &ovfl);
         ulp = slamch_("P");
         smlnum = unfl * (*n / ulp);
@@ -389,7 +389,7 @@ L1000:
     /* attempted. NRSTRT is used by stat.h         */
     /* ------------------------------------------- */
 
-    betaj = 0.f;
+    betaj = 0.0f;
     ++timing_1.nrstrt;
     itry = 1;
 L20:
@@ -443,7 +443,7 @@ L40:
     scopy_(n, &resid[1], &c__1, &v[j * v_dim1 + 1], &c__1);
     if (*rnorm >= unfl)
     {
-        temp1 = 1.f / *rnorm;
+        temp1 = 1.0f / *rnorm;
         sscal_(n, &temp1, &v[j * v_dim1 + 1], &c__1);
         sscal_(n, &temp1, &workd[ipj], &c__1);
     }
@@ -811,10 +811,10 @@ L90:
         i__1 = *n;
         for (jj = 1; jj <= i__1; ++jj)
         {
-            resid[jj] = 0.f;
+            resid[jj] = 0.0f;
 
         }
-        *rnorm = 0.f;
+        *rnorm = 0.0f;
     }
 
     /* -------------------------------------------- */
@@ -857,7 +857,7 @@ L100:
 
             tst1 = (r__1 = h[i + i * h_dim1], dabs(r__1)) + (r__2 = h[
                         i + 1 + (i + 1) * h_dim1], dabs(r__2));
-            if (tst1 == 0.f)
+            if (tst1 == 0.0f)
             {
                 i__2 = *k + *np;
                 tst1 = slanhs_("1", &i__2, &h[h_offset], ldh, &workd[*n + 1]);
@@ -867,7 +867,7 @@ L100:
             if ((r__1 = h[i + 1 + i * h_dim1], dabs(r__1)) <= dmax(r__2,
                     smlnum))
             {
-                h[i + 1 + i * h_dim1] = 0.f;
+                h[i + 1 + i * h_dim1] = 0.0f;
             }
 
         }

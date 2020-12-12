@@ -436,7 +436,7 @@ L40:
     scopy_(n, &resid[1], &c__1, &v[j * v_dim1 + 1], &c__1);
     if (*rnorm >= safmin)
     {
-        temp1 = 1.f / *rnorm;
+        temp1 = 1.0f / *rnorm;
         sscal_(n, &temp1, &v[j * v_dim1 + 1], &c__1);
         sscal_(n, &temp1, &workd[ipj], &c__1);
     }
@@ -607,7 +607,7 @@ L65:
     h[j + (h_dim1 << 1)] = workd[irj + j - 1];
     if (j == 1 || rstart)
     {
-        h[j + h_dim1] = 0.f;
+        h[j + h_dim1] = 0.0f;
     }
     else
     {
@@ -728,7 +728,7 @@ L80:
 
     if (j == 1 || rstart)
     {
-        h[j + h_dim1] = 0.f;
+        h[j + h_dim1] = 0.0f;
     }
     h[j + (h_dim1 << 1)] += workd[irj + j - 1];
 
@@ -832,10 +832,10 @@ L90:
         i__1 = *n;
         for (jj = 1; jj <= i__1; ++jj)
         {
-            resid[jj] = 0.f;
+            resid[jj] = 0.0f;
 
         }
-        *rnorm = 0.f;
+        *rnorm = 0.0f;
     }
 
     /* -------------------------------------------- */

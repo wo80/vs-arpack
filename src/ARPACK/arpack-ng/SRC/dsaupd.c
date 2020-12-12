@@ -565,7 +565,7 @@ int dsaupd_(int *ido, char *bmat, int *n, char *which, int *nev, double *tol,
         i__1 = i__2 * i__2 + (*ncv << 3);
         for (j = 1; j <= i__1; ++j)
         {
-            workl[j] = 0.;
+            workl[j] = 0.0;
         }
 
         /* ----------------------------------------------------- */

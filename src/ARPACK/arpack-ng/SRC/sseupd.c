@@ -708,7 +708,7 @@ L30:
             i__1 = *ncv;
             for (k = 1; k <= i__1; ++k)
             {
-                workl[ihd + k - 1] = 1.f / workl[ihd + k - 1] + *sigma;
+                workl[ihd + k - 1] = 1.0f / workl[ihd + k - 1] + *sigma;
             }
         }
         else if (strcmp(type, "BUCKLE") == 0)
@@ -716,7 +716,7 @@ L30:
             i__1 = *ncv;
             for (k = 1; k <= i__1; ++k)
             {
-                workl[ihd + k - 1] = *sigma * workl[ihd + k - 1] / (workl[ihd + k - 1] - 1.f);
+                workl[ihd + k - 1] = *sigma * workl[ihd + k - 1] / (workl[ihd + k - 1] - 1.0f);
             }
         }
         else if (strcmp(type, "CAYLEY") == 0)
@@ -724,7 +724,7 @@ L30:
             i__1 = *ncv;
             for (k = 1; k <= i__1; ++k)
             {
-                workl[ihd + k - 1] = *sigma * (workl[ihd + k - 1] + 1.f) / (workl[ihd + k - 1] - 1.f);
+                workl[ihd + k - 1] = *sigma * (workl[ihd + k - 1] + 1.0f) / (workl[ihd + k - 1] - 1.0f);
             }
         }
 
@@ -794,10 +794,10 @@ L30:
         i__1 = *ncv - 1;
         for (j = 1; j <= i__1; ++j)
         {
-            workl[ihb + j - 1] = 0.f;
+            workl[ihb + j - 1] = 0.0f;
 
         }
-        workl[ihb + *ncv - 1] = 1.f;
+        workl[ihb + *ncv - 1] = 1.0f;
         sorm2r_("L", "T", ncv, &c__1, &nconv, &workl[iq], &ldq, &workl[iw + *ncv], &workl[ihb], ncv, &temp, &ierr);
 
         /* --------------------------------------------------- */
@@ -856,7 +856,7 @@ L30:
             for (k = 1; k <= i__1; ++k)
             {
                 /* Computing 2nd power */
-                r__2 = workl[iw + k - 1] - 1.f;
+                r__2 = workl[iw + k - 1] - 1.0f;
                 workl[ihb + k - 1] = *sigma * (r__1 = workl[ihb + k - 1], dabs(r__1)) / (r__2 * r__2);
             }
         }
@@ -865,7 +865,7 @@ L30:
             i__1 = *ncv;
             for (k = 1; k <= i__1; ++k)
             {
-                workl[ihb + k - 1] = (r__1 = workl[ihb + k - 1] / workl[iw + k - 1] * (workl[iw + k - 1] - 1.f), dabs(r__1));
+                workl[ihb + k - 1] = (r__1 = workl[ihb + k - 1] / workl[iw + k - 1] * (workl[iw + k - 1] - 1.0f), dabs(r__1));
             }
         }
     }
@@ -900,7 +900,7 @@ L30:
         i__1 = nconv - 1;
         for (k = 0; k <= i__1; ++k)
         {
-            workl[iw + k] = workl[iw + *ncv + k] / (workl[iw + k] - 1.f);
+            workl[iw + k] = workl[iw + *ncv + k] / (workl[iw + k] - 1.0f);
         }
     }
 

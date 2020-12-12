@@ -119,8 +119,8 @@ int sndrv6()
     }
     char* bmat = "G";
     char* which = "LM";
-    sigmar = .4f;
-    sigmai = .6f;
+    sigmar = 0.4f;
+    sigmai = 0.6f;
 
     /* -------------------------------------------------- */
     /* Construct C = A - (SIGMAR,SIGMAI)*M in complex     */
@@ -138,15 +138,15 @@ int sndrv6()
     complex* cdu = (complex*)malloc(n * sizeof(complex));
     complex* cdu2 = (complex*)malloc(n * sizeof(complex));
 
-    r__1 = -2.f - sigmar;
+    r__1 = -2.0f - sigmar;
     r__2 = -sigmai;
     q__1.r = r__1, q__1.i = r__2;
     c1.r = q__1.r, c1.i = q__1.i;
-    r__1 = 2.f - sigmar * 4.f;
-    r__2 = sigmai * -4.f;
+    r__1 = 2.0f - sigmar * 4.0f;
+    r__2 = sigmai * -4.0f;
     q__1.r = r__1, q__1.i = r__2;
     c2.r = q__1.r, c2.i = q__1.i;
-    r__1 = 3.f - sigmar;
+    r__1 = 3.0f - sigmar;
     r__2 = -sigmai;
     q__1.r = r__1, q__1.i = r__2;
     c3.r = q__1.r, c3.i = q__1.i;
@@ -185,7 +185,7 @@ int sndrv6()
     /* --------------------------------------------------- */
 
     int lworkl = ncv * ncv * 3 + ncv * 6;
-    float tol = 0.f;
+    float tol = 0.0f;
     int ido = 0;
     int info = 0;
 
@@ -247,7 +247,7 @@ L20:
         {
             i__2 = j - 1;
             i__3 = ipntr[1] + j - 2;
-            q__1.r = workd[i__3], q__1.i = 0.f;
+            q__1.r = workd[i__3], q__1.i = 0.0f;
             ctemp[i__2].r = q__1.r, ctemp[i__2].i = q__1.i;
 
         }
@@ -287,7 +287,7 @@ L20:
         {
             i__2 = j - 1;
             i__3 = ipntr[2] + j - 2;
-            q__1.r = workd[i__3], q__1.i = 0.f;
+            q__1.r = workd[i__3], q__1.i = 0.0f;
             ctemp[i__2].r = q__1.r, ctemp[i__2].i = q__1.i;
 
         }
@@ -401,7 +401,7 @@ L20:
         /* eigenvalues of the original problem.*/
         /* ----------------------------------- */
 
-        if (d[j + 24] == 0.f)
+        if (d[j + 24] == 0.0f)
         {
             /* -------------------------- */
             /* Eigenvalue is real.        */
@@ -486,7 +486,7 @@ L20:
     {
         int k = (j - 1) * n;
 
-        if (d[j + 24] == 0.f)
+        if (d[j + 24] == 0.0f)
         {
             /* ------------------ */
             /* Ritz value is real */
@@ -614,13 +614,13 @@ int sndrv6_mv_(const int n, float *v, float *w)
     --v;
 
     /* Function Body */
-    w[1] = v[1] * 4.f + v[2] * 1.f;
+    w[1] = v[1] * 4.0f + v[2] * 1.0f;
     i__1 = n - 1;
     for (j = 2; j <= i__1; ++j)
     {
-        w[j] = v[j - 1] * 1.f + v[j] * 4.f + v[j + 1] * 1.f;
+        w[j] = v[j - 1] * 1.0f + v[j] * 4.0f + v[j + 1] * 1.0f;
     }
-    w[n] = v[n - 1] * 1.f + v[n] * 4.f;
+    w[n] = v[n - 1] * 1.0f + v[n] * 4.0f;
     return 0;
 } /* mv_ */
 
@@ -642,13 +642,13 @@ int sndrv6_av_(const int n, float *v, float *w)
     --v;
 
     /* Function Body */
-    w[1] = v[1] * 2.f + v[2] * 3.f;
+    w[1] = v[1] * 2.0f + v[2] * 3.0f;
     i__1 = n - 1;
     for (j = 2; j <= i__1; ++j)
     {
-        w[j] = v[j - 1] * -2.f + v[j] * 2.f + v[j + 1] * 3.f;
+        w[j] = v[j - 1] * -2.0f + v[j] * 2.0f + v[j + 1] * 3.0f;
     }
-    w[n] = v[n - 1] * -2.f + v[n] * 2.f;
+    w[n] = v[n - 1] * -2.0f + v[n] * 2.0f;
     return 0;
 } /* av_ */
 

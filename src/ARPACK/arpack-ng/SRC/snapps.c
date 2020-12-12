@@ -199,7 +199,7 @@ int snapps_(int *n, int *kev, int *np, float *
         /* --------------------------------------------- */
 
         unfl = slamch_("S");
-        ovfl = 1.f / unfl;
+        ovfl = 1.0f / unfl;
         slabad_(&unfl, &ovfl);
         ulp = slamch_("P");
         smlnum = unfl * (*n / ulp);
@@ -318,7 +318,7 @@ L20:
             r__1 = h[i + i * h_dim1];
             r__2 = h[i + 1 + (i + 1) * h_dim1];
             tst1 = dabs(r__1) + dabs(r__2);
-            if (tst1 == 0.f)
+            if (tst1 == 0.0f)
             {
                 i__3 = kplusp - jj + 1;
                 tst1 = slanhs_("1", &i__3, &h[h_offset], ldh, &workl[1]);
@@ -338,7 +338,7 @@ L20:
 #endif
 
                 iend = i;
-                h[i + 1 + i * h_dim1] = 0.f;
+                h[i + 1 + i * h_dim1] = 0.0f;
                 goto L40;
             }
 
@@ -375,7 +375,7 @@ L40:
 
         h11 = h[istart + istart * h_dim1];
         h21 = h[istart + 1 + istart * h_dim1];
-        if (dabs(sigmai) <= 0.f)
+        if (dabs(sigmai) <= 0.0f)
         {
             /* ------------------------------------------- */
             /* Real-valued shift ==> apply single shift QR */
@@ -407,7 +407,7 @@ L40:
                         s = -s;
                     }
                     h[i + (i - 1) * h_dim1] = r;
-                    h[i + 1 + (i - 1) * h_dim1] = 0.f;
+                    h[i + 1 + (i - 1) * h_dim1] = 0.0f;
                 }
 
                 /* ------------------------------------------- */
@@ -480,7 +480,7 @@ L40:
             /* Compute 1st column of (H - shift*I)*(H - conj(shift)*I) */
             /* ------------------------------------------------------- */
 
-            s = sigmar * 2.f;
+            s = sigmar * 2.0f;
             t = slapy2_(&sigmar, &sigmai);
             u[0] = (h11 * (h11 - s) + t * t) / h21 + h12;
             u[1] = h11 + h22 - s;
@@ -503,13 +503,13 @@ L40:
                 if (i > istart)
                 {
                     h[i + (i - 1) * h_dim1] = u[0];
-                    h[i + 1 + (i - 1) * h_dim1] = 0.f;
+                    h[i + 1 + (i - 1) * h_dim1] = 0.0f;
                     if (i < iend - 1)
                     {
-                        h[i + 2 + (i - 1) * h_dim1] = 0.f;
+                        h[i + 2 + (i - 1) * h_dim1] = 0.0f;
                     }
                 }
-                u[0] = 1.f;
+                u[0] = 1.0f;
 
                 /* ------------------------------------ */
                 /* Apply the reflector to the left of H */
@@ -610,7 +610,7 @@ L110:
         r__1 = h[i + i * h_dim1];
         r__2 = h[i + 1 + (i + 1) * h_dim1];
         tst1 = dabs(r__1) + dabs(r__2);
-        if (tst1 == 0.f)
+        if (tst1 == 0.0f)
         {
             tst1 = slanhs_("1", kev, &h[h_offset], ldh, &workl[1]);
         }
@@ -618,7 +618,7 @@ L110:
         r__1 = ulp * tst1;
         if (h[i + 1 + i * h_dim1] <= dmax(r__1,smlnum))
         {
-            h[i + 1 + i * h_dim1] = 0.f;
+            h[i + 1 + i * h_dim1] = 0.0f;
         }
     }
 

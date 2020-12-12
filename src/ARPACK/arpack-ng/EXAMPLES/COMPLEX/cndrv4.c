@@ -122,7 +122,7 @@ int cndrv4()
     }
     char* bmat = "G";
     char* which = "LM";
-    sigma.r = 1.f, sigma.i = 0.f;
+    sigma.r = 1.0f, sigma.i = 0.0f;
 
     /* ------------------------------------------------ */
     /* Construct C = A - SIGMA*M in COMPLEX arithmetic. */
@@ -142,9 +142,9 @@ int cndrv4()
     complex* dl = (complex*)malloc(n * sizeof(complex));
     complex* du2 = (complex*)malloc(n * sizeof(complex));
 
-    convct_1.rho.r = 10.f, convct_1.rho.i = 0.f;
+    convct_1.rho.r = 10.f, convct_1.rho.i = 0.0f;
     i__1 = n + 1;
-    q__2.r = (float) i__1, q__2.i = 0.f;
+    q__2.r = (float) i__1, q__2.i = 0.0f;
     c_div(&q__1, &c_one, &q__2);
     h.r = q__1.r, h.i = q__1.i;
     c_div(&q__1, &convct_1.rho, &c_b3);
@@ -159,7 +159,7 @@ int cndrv4()
     q__1.r = q__2.r - q__5.r, q__1.i = q__2.i - q__5.i;
     s1.r = q__1.r, s1.i = q__1.i;
     c_div(&q__2, &c_b3, &h);
-    q__5.r = sigma.r * 4.f - sigma.i * 0.f, q__5.i = sigma.i * 4.f + sigma.r *
+    q__5.r = sigma.r * 4.0f - sigma.i * 0.f, q__5.i = sigma.i * 4.0f + sigma.r *
              0.f;
     q__4.r = q__5.r * h.r - q__5.i * h.i, q__4.i = q__5.r * h.i +
              q__5.i * h.r;
@@ -210,7 +210,7 @@ int cndrv4()
 
     /* Computing 2nd power */
     int lworkl = ncv * ncv * 3 + ncv * 5;
-    float tol = 0.f;
+    float tol = 0.0f;
     int ido = 0;
     int info = 0;
 
@@ -489,9 +489,9 @@ int cndrv4_mv_(const int n, complex *v, complex *w)
     --v;
 
     /* Function Body */
-    q__3.r = v[1].r * 4.f - v[1].i * 0.f, q__3.i = v[1].i * 4.f + v[1].r *
+    q__3.r = v[1].r * 4.0f - v[1].i * 0.f, q__3.i = v[1].i * 4.0f + v[1].r *
              0.f;
-    q__4.r = v[2].r * 1.f - v[2].i * 0.f, q__4.i = v[2].i * 1.f + v[2].r *
+    q__4.r = v[2].r * 1.0f - v[2].i * 0.f, q__4.i = v[2].i * 1.0f + v[2].r *
              0.f;
     q__2.r = q__3.r + q__4.r, q__2.i = q__3.i + q__4.i;
     c_div(&q__1, &q__2, &c_b5);
@@ -501,27 +501,27 @@ int cndrv4_mv_(const int n, complex *v, complex *w)
     {
         i__2 = j;
         i__3 = j - 1;
-        q__4.r = v[i__3].r * 1.f - v[i__3].i * 0.f, q__4.i = v[i__3].i * 1.f + v[i__3].r * 0.f;
+        q__4.r = v[i__3].r * 1.0f - v[i__3].i * 0.f, q__4.i = v[i__3].i * 1.0f + v[i__3].r * 0.f;
         i__4 = j;
-        q__5.r = v[i__4].r * 4.f - v[i__4].i * 0.f, q__5.i = v[i__4].i * 4.f + v[i__4].r * 0.f;
+        q__5.r = v[i__4].r * 4.0f - v[i__4].i * 0.f, q__5.i = v[i__4].i * 4.0f + v[i__4].r * 0.f;
         q__3.r = q__4.r + q__5.r, q__3.i = q__4.i + q__5.i;
         i__5 = j + 1;
-        q__6.r = v[i__5].r * 1.f - v[i__5].i * 0.f, q__6.i = v[i__5].i * 1.f + v[i__5].r * 0.f;
+        q__6.r = v[i__5].r * 1.0f - v[i__5].i * 0.f, q__6.i = v[i__5].i * 1.0f + v[i__5].r * 0.f;
         q__2.r = q__3.r + q__6.r, q__2.i = q__3.i + q__6.i;
         c_div(&q__1, &q__2, &c_b5);
         w[i__2].r = q__1.r, w[i__2].i = q__1.i;
     }
     i__1 = n;
     i__2 = n - 1;
-    q__3.r = v[i__2].r * 1.f - v[i__2].i * 0.f, q__3.i = v[i__2].i * 1.f + v[i__2].r * 0.f;
+    q__3.r = v[i__2].r * 1.0f - v[i__2].i * 0.f, q__3.i = v[i__2].i * 1.0f + v[i__2].r * 0.f;
     i__3 = n;
-    q__4.r = v[i__3].r * 4.f - v[i__3].i * 0.f, q__4.i = v[i__3].i * 4.f + v[i__3].r * 0.f;
+    q__4.r = v[i__3].r * 4.0f - v[i__3].i * 0.f, q__4.i = v[i__3].i * 4.0f + v[i__3].r * 0.f;
     q__2.r = q__3.r + q__4.r, q__2.i = q__3.i + q__4.i;
     c_div(&q__1, &q__2, &c_b5);
     w[i__1].r = q__1.r, w[i__1].i = q__1.i;
 
     i__1 = n + 1;
-    q__2.r = (float) i__1, q__2.i = 0.f;
+    q__2.r = (float) i__1, q__2.i = 0.0f;
     c_div(&q__1, &c_one, &q__2);
     h.r = q__1.r, h.i = q__1.i;
     cscal_(&n, &h, &w[1], &c__1);
@@ -549,7 +549,7 @@ int cndrv4_av_(const int n, complex *v, complex *w)
 
     /* Function Body */
     i__1 = n + 1;
-    q__2.r = (float) i__1, q__2.i = 0.f;
+    q__2.r = (float) i__1, q__2.i = 0.0f;
     c_div(&q__1, &c_one, &q__2);
     h.r = q__1.r, h.i = q__1.i;
     c_div(&q__1, &convct_1.rho, &c_b3);

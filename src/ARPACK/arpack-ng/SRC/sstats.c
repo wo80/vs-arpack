@@ -16,23 +16,23 @@ int sstats_(void)
     timing_1.nrorth = 0;
     timing_1.nitref = 0;
     timing_1.nrstrt = 0;
-    timing_1.tsaupd = 0.f;
-    timing_1.tsaup2 = 0.f;
-    timing_1.tsaitr = 0.f;
-    timing_1.tseigt = 0.f;
-    timing_1.tsgets = 0.f;
-    timing_1.tsapps = 0.f;
-    timing_1.tsconv = 0.f;
-    timing_1.titref = 0.f;
-    timing_1.tgetv0 = 0.f;
-    timing_1.trvec = 0.f;
+    timing_1.tsaupd = 0.0f;
+    timing_1.tsaup2 = 0.0f;
+    timing_1.tsaitr = 0.0f;
+    timing_1.tseigt = 0.0f;
+    timing_1.tsgets = 0.0f;
+    timing_1.tsapps = 0.0f;
+    timing_1.tsconv = 0.0f;
+    timing_1.titref = 0.0f;
+    timing_1.tgetv0 = 0.0f;
+    timing_1.trvec = 0.0f;
 
     /* -------------------------------------------------- */
     /* User time including reverse communication overhead */
     /* -------------------------------------------------- */
 
-    timing_1.tmvopx = 0.f;
-    timing_1.tmvbx = 0.f;
+    timing_1.tmvopx = 0.0f;
+    timing_1.tmvbx = 0.0f;
 
     return 0;
 } /* sstats_ */

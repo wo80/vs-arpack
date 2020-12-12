@@ -296,7 +296,7 @@ int cnaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
             goto L9000;
         }
 
-        if (rnorm == 0.f)
+        if (rnorm == 0.0f)
         {
             /* --------------------------------------- */
             /* The initial vector is zero. Error exit. */
@@ -525,7 +525,7 @@ L20:
     for (j = 1; j <= i__1; ++j)
     {
         i__2 = j;
-        if (bounds[i__2].r == 0.f && bounds[i__2].i == 0.f)
+        if (bounds[i__2].r == 0.0f && bounds[i__2].i == 0.0f)
         {
             --(*np);
             ++(*nev);
@@ -559,7 +559,7 @@ L20:
         /*  rnorm to cneupd if needed               */
         /* ---------------------------------------- */
         i__1 = h_dim1 + 3;
-        q__1.r = rnorm, q__1.i = 0.f;
+        q__1.r = rnorm, q__1.i = 0.0f;
         h[i__1].r = q__1.r, h[i__1].i = q__1.i;
 
         /* -------------------------------------------- */
