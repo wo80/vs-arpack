@@ -61,7 +61,7 @@
 int zsortc_(char *which, bool *apply, int *n, zomplex *x, zomplex *y)
 {
     /* System generated locals */
-    int i__1, i__2, i__3;
+    int i__1, k;
     double d__1, d__2;
 
     /* Builtin functions */
@@ -99,34 +99,25 @@ L20:
                 goto L30;
             }
 
-            i__2 = j;
-            d__1 = x[i__2].r;
+            d__1 = x[j].r;
             d__2 = d_imag(&x[j]);
             temp1 = dlapy2_(&d__1, &d__2);
-            i__2 = j + igap;
-            d__1 = x[i__2].r;
-            d__2 = d_imag(&x[j + igap]);
+            k = j + igap;
+            d__1 = x[k].r;
+            d__2 = d_imag(&x[k]);
             temp2 = dlapy2_(&d__1, &d__2);
 
             if (temp1 > temp2)
             {
-                i__2 = j;
-                temp.r = x[i__2].r, temp.i = x[i__2].i;
-                i__2 = j;
-                i__3 = j + igap;
-                x[i__2].r = x[i__3].r, x[i__2].i = x[i__3].i;
-                i__2 = j + igap;
-                x[i__2].r = temp.r, x[i__2].i = temp.i;
+                temp.r = x[j].r, temp.i = x[j].i;
+                x[j].r = x[k].r, x[j].i = x[k].i;
+                x[k].r = temp.r, x[k].i = temp.i;
 
                 if (*apply)
                 {
-                    i__2 = j;
-                    temp.r = y[i__2].r, temp.i = y[i__2].i;
-                    i__2 = j;
-                    i__3 = j + igap;
-                    y[i__2].r = y[i__3].r, y[i__2].i = y[i__3].i;
-                    i__2 = j + igap;
-                    y[i__2].r = temp.r, y[i__2].i = temp.i;
+                    temp.r = y[j].r, temp.i = y[j].i;
+                    y[j].r = y[k].r, y[j].i = y[k].i;
+                    y[k].r = temp.r, y[k].i = temp.i;
                 }
             }
             else
@@ -164,34 +155,25 @@ L50:
                 goto L60;
             }
 
-            i__2 = j;
-            d__1 = x[i__2].r;
+            d__1 = x[j].r;
             d__2 = d_imag(&x[j]);
             temp1 = dlapy2_(&d__1, &d__2);
-            i__2 = j + igap;
-            d__1 = x[i__2].r;
-            d__2 = d_imag(&x[j + igap]);
+            k = j + igap;
+            d__1 = x[k].r;
+            d__2 = d_imag(&x[k]);
             temp2 = dlapy2_(&d__1, &d__2);
 
             if (temp1 < temp2)
             {
-                i__2 = j;
-                temp.r = x[i__2].r, temp.i = x[i__2].i;
-                i__2 = j;
-                i__3 = j + igap;
-                x[i__2].r = x[i__3].r, x[i__2].i = x[i__3].i;
-                i__2 = j + igap;
-                x[i__2].r = temp.r, x[i__2].i = temp.i;
+                temp.r = x[j].r, temp.i = x[j].i;
+                x[j].r = x[k].r, x[j].i = x[k].i;
+                x[k].r = temp.r, x[k].i = temp.i;
 
                 if (*apply)
                 {
-                    i__2 = j;
-                    temp.r = y[i__2].r, temp.i = y[i__2].i;
-                    i__2 = j;
-                    i__3 = j + igap;
-                    y[i__2].r = y[i__3].r, y[i__2].i = y[i__3].i;
-                    i__2 = j + igap;
-                    y[i__2].r = temp.r, y[i__2].i = temp.i;
+                    temp.r = y[j].r, temp.i = y[j].i;
+                    y[j].r = y[k].r, y[j].i = y[k].i;
+                    y[k].r = temp.r, y[k].i = temp.i;
                 }
             }
             else
@@ -229,27 +211,18 @@ L80:
                 goto L90;
             }
 
-            i__2 = j;
-            i__3 = j + igap;
-            if (x[i__2].r > x[i__3].r)
+            k = j + igap;
+            if (x[j].r > x[k].r)
             {
-                i__2 = j;
-                temp.r = x[i__2].r, temp.i = x[i__2].i;
-                i__2 = j;
-                i__3 = j + igap;
-                x[i__2].r = x[i__3].r, x[i__2].i = x[i__3].i;
-                i__2 = j + igap;
-                x[i__2].r = temp.r, x[i__2].i = temp.i;
+                temp.r = x[j].r, temp.i = x[j].i;
+                x[j].r = x[k].r, x[j].i = x[k].i;
+                x[k].r = temp.r, x[k].i = temp.i;
 
                 if (*apply)
                 {
-                    i__2 = j;
-                    temp.r = y[i__2].r, temp.i = y[i__2].i;
-                    i__2 = j;
-                    i__3 = j + igap;
-                    y[i__2].r = y[i__3].r, y[i__2].i = y[i__3].i;
-                    i__2 = j + igap;
-                    y[i__2].r = temp.r, y[i__2].i = temp.i;
+                    temp.r = y[j].r, temp.i = y[j].i;
+                    y[j].r = y[k].r, y[j].i = y[k].i;
+                    y[k].r = temp.r, y[k].i = temp.i;
                 }
             }
             else
@@ -286,27 +259,18 @@ L110:
                 goto L120;
             }
 
-            i__2 = j;
-            i__3 = j + igap;
-            if (x[i__2].r < x[i__3].r)
+            k = j + igap;
+            if (x[j].r < x[k].r)
             {
-                i__2 = j;
-                temp.r = x[i__2].r, temp.i = x[i__2].i;
-                i__2 = j;
-                i__3 = j + igap;
-                x[i__2].r = x[i__3].r, x[i__2].i = x[i__3].i;
-                i__2 = j + igap;
-                x[i__2].r = temp.r, x[i__2].i = temp.i;
+                temp.r = x[j].r, temp.i = x[j].i;
+                x[j].r = x[k].r, x[j].i = x[k].i;
+                x[k].r = temp.r, x[k].i = temp.i;
 
                 if (*apply)
                 {
-                    i__2 = j;
-                    temp.r = y[i__2].r, temp.i = y[i__2].i;
-                    i__2 = j;
-                    i__3 = j + igap;
-                    y[i__2].r = y[i__3].r, y[i__2].i = y[i__3].i;
-                    i__2 = j + igap;
-                    y[i__2].r = temp.r, y[i__2].i = temp.i;
+                    temp.r = y[j].r, temp.i = y[j].i;
+                    y[j].r = y[k].r, y[j].i = y[k].i;
+                    y[k].r = temp.r, y[k].i = temp.i;
                 }
             }
             else
@@ -343,25 +307,18 @@ L140:
                 goto L150;
             }
 
-            if (d_imag(&x[j]) > d_imag(&x[j + igap]))
+            k = j + igap;
+            if (d_imag(&x[j]) > d_imag(&x[k]))
             {
-                i__2 = j;
-                temp.r = x[i__2].r, temp.i = x[i__2].i;
-                i__2 = j;
-                i__3 = j + igap;
-                x[i__2].r = x[i__3].r, x[i__2].i = x[i__3].i;
-                i__2 = j + igap;
-                x[i__2].r = temp.r, x[i__2].i = temp.i;
+                temp.r = x[j].r, temp.i = x[j].i;
+                x[j].r = x[k].r, x[j].i = x[k].i;
+                x[k].r = temp.r, x[k].i = temp.i;
 
                 if (*apply)
                 {
-                    i__2 = j;
-                    temp.r = y[i__2].r, temp.i = y[i__2].i;
-                    i__2 = j;
-                    i__3 = j + igap;
-                    y[i__2].r = y[i__3].r, y[i__2].i = y[i__3].i;
-                    i__2 = j + igap;
-                    y[i__2].r = temp.r, y[i__2].i = temp.i;
+                    temp.r = y[j].r, temp.i = y[j].i;
+                    y[j].r = y[k].r, y[j].i = y[k].i;
+                    y[k].r = temp.r, y[k].i = temp.i;
                 }
             }
             else
@@ -398,25 +355,18 @@ L170:
                 goto L180;
             }
 
-            if (d_imag(&x[j]) < d_imag(&x[j + igap]))
+            k = j + igap;
+            if (d_imag(&x[j]) < d_imag(&x[k]))
             {
-                i__2 = j;
-                temp.r = x[i__2].r, temp.i = x[i__2].i;
-                i__2 = j;
-                i__3 = j + igap;
-                x[i__2].r = x[i__3].r, x[i__2].i = x[i__3].i;
-                i__2 = j + igap;
-                x[i__2].r = temp.r, x[i__2].i = temp.i;
+                temp.r = x[j].r, temp.i = x[j].i;
+                x[j].r = x[k].r, x[j].i = x[k].i;
+                x[k].r = temp.r, x[k].i = temp.i;
 
                 if (*apply)
                 {
-                    i__2 = j;
-                    temp.r = y[i__2].r, temp.i = y[i__2].i;
-                    i__2 = j;
-                    i__3 = j + igap;
-                    y[i__2].r = y[i__3].r, y[i__2].i = y[i__3].i;
-                    i__2 = j + igap;
-                    y[i__2].r = temp.r, y[i__2].i = temp.i;
+                    temp.r = y[j].r, temp.i = y[j].i;
+                    y[j].r = y[k].r, y[j].i = y[k].i;
+                    y[k].r = temp.r, y[k].i = temp.i;
                 }
             }
             else

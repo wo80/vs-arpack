@@ -344,8 +344,9 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
     {
         ierr = -3;
     }
-    else if (strcmp(which, "LM") != 0 && strcmp(which, "SM") != 0 && strcmp(which, "LR") != 0
-             && strcmp(which, "SR") != 0 && strcmp(which, "LI") != 0 && strcmp(which, "SI") != 0)
+    else if (strcmp(which, "LM") != 0 && strcmp(which, "SM") != 0 &&
+             strcmp(which, "LR") != 0 && strcmp(which, "SR") != 0 &&
+             strcmp(which, "LI") != 0 && strcmp(which, "SI") != 0)
     {
         ierr = -5;
     }
@@ -361,8 +362,7 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
         {
             ierr = -7;
         }
-        else if (*howmny != 'A' && *
-                 howmny != 'P' && *howmny != 'S' && *rvec)
+        else if (*howmny != 'A' && *howmny != 'P' && *howmny != 'S' && *rvec)
         {
             ierr = -13;
         }
@@ -487,7 +487,6 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
             i__2 = bounds + j - 1;
             workl[i__2].r = (float) j, workl[i__2].i = 0.f;
             select[j] = false;
-
         }
 
         /* ----------------------------------- */
@@ -541,7 +540,6 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
                     reord = true;
                 }
             }
-
         }
 
         /* --------------------------------------------------------- */
@@ -820,7 +818,6 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
             c_div(&q__2, &workl[ihbds + k - 1], &temp);
             c_div(&q__1, &q__2, &temp);
             workl[i__2].r = q__1.r, workl[i__2].i = q__1.i;
-
         }
     }
 

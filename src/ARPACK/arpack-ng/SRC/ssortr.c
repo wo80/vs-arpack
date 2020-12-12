@@ -133,8 +133,7 @@ L50:
                 goto L60;
             }
 
-            if ((r__1 = x1[j], dabs(r__1)) < (r__2 = x1[j + igap], dabs(r__2))
-               )
+            if ((r__1 = x1[j], dabs(r__1)) < (r__2 = x1[j + igap], dabs(r__2)))
             {
                 temp = x1[j];
                 x1[j] = x1[j + igap];
@@ -222,8 +221,7 @@ L110:
                 goto L120;
             }
 
-            if ((r__1 = x1[j], dabs(r__1)) > (r__2 = x1[j + igap], dabs(r__2))
-               )
+            if ((r__1 = x1[j], dabs(r__1)) > (r__2 = x1[j + igap], dabs(r__2)))
             {
                 temp = x1[j];
                 x1[j] = x1[j + igap];

@@ -311,8 +311,7 @@ L140:
                 goto L150;
             }
 
-            if ((r__1 = ximag[j], dabs(r__1)) > (r__2 = ximag[j + igap], dabs(
-                    r__2)))
+            if ((r__1 = ximag[j], dabs(r__1)) > (r__2 = ximag[j + igap], dabs(r__2)))
             {
                 temp = xfloat[j];
                 xfloat[j] = xfloat[j + igap];
@@ -363,8 +362,7 @@ L170:
                 goto L180;
             }
 
-            if ((r__1 = ximag[j], dabs(r__1)) < (r__2 = ximag[j + igap], dabs(
-                    r__2)))
+            if ((r__1 = ximag[j], dabs(r__1)) < (r__2 = ximag[j + igap], dabs(r__2)))
             {
                 temp = xfloat[j];
                 xfloat[j] = xfloat[j + igap];
