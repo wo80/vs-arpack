@@ -48,8 +48,6 @@ int dndrv6()
     double d__1, d__2;
     zomplex z__1;
 
-    double d_imag(zomplex *);
-
     /* Local variables */
     double d[75]	/* was [25][3] */;
     int j;
@@ -260,7 +258,7 @@ L20:
         }
         for (j = 1; j <= n; ++j)
         {
-            workd[ipntr[1] + j - 2] = d_imag(&ctemp[j - 1]);
+            workd[ipntr[1] + j - 2] = ctemp[j - 1].i;
 
         }
 
@@ -299,7 +297,7 @@ L20:
         }
         for (j = 1; j <= n; ++j)
         {
-            workd[ipntr[1] + j - 2] = d_imag(&ctemp[j - 1]);
+            workd[ipntr[1] + j - 2] = ctemp[j - 1].i;
 
         }
 

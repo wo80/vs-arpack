@@ -82,8 +82,6 @@ int znsimp()
 
     /* Builtin functions */
 
-    double d_imag(zomplex *);
-
     /* Local variables */
     zomplex d[30];
     int j;
@@ -400,7 +398,7 @@ L10:
         zaxpy_(&n, &z__1, &v[k], &c__1, ax, &c__1);
         i__2 = j - 1;
         rd[j - 1] = d[i__2].r;
-        rd[j + 29] = d_imag(&d[j - 1]);
+        rd[j + 29] = d[i__2].i;
         rd[j + 59] = dznrm2_(&n, ax, &c__1);
         rd[j + 59] /= dlapy2_(&rd[j - 1], &rd[j + 29]);
 

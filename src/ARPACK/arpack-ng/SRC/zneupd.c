@@ -264,7 +264,6 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int 
     /* Builtin functions */
     double pow_dd(double *, double *);
 
-    double d_imag(zomplex *);
     void z_div(zomplex *, zomplex *, zomplex *);
 
     /* Local variables */
@@ -521,14 +520,14 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int 
             /* Computing MAX */
             i__2 = irz + *ncv - j;
             d__3 = workl[i__2].r;
-            d__4 = d_imag(&workl[irz + *ncv - j]);
+            d__4 = workl[i__2].i;
             d__1 = eps23, d__2 = dlapy2_(&d__3, &d__4);
             rtemp = max(d__1,d__2);
             i__2 = bounds + *ncv - j;
             jj = (int) workl[i__2].r;
             i__2 = ibd + jj - 1;
             d__1 = workl[i__2].r;
-            d__2 = d_imag(&workl[ibd + jj - 1]);
+            d__2 = workl[i__2].i;
             if (numcnv < nconv && dlapy2_(&d__1, &d__2) <= *tol * rtemp)
             {
                 select[jj] = true;

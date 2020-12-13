@@ -148,7 +148,6 @@ int znapps_(int *n, int *kev, int *np,
     zomplex z__1, z__2, z__3, z__4, z__5;
 
     /* Builtin functions */
-    double d_imag(zomplex *);
     void d_cnjg(zomplex *, zomplex *);
 
     /* Local variables */
@@ -265,9 +264,9 @@ L20:
             i__3 = i + i * h_dim1;
             i__4 = i + 1 + (i + 1) * h_dim1;
             d__1 = h[i__3].r;
-            d__2 = d_imag(&h[i + i * h_dim1]);
+            d__2 = h[i__3].i;
             d__3 = h[i__4].r;
-            d__4 = d_imag(&h[i + 1 + (i + 1) * h_dim1]);
+            d__4 = h[i__4].i;
             tst1 = abs(d__1) + abs(d__2) + abs(d__3) + abs(d__4);
             if (tst1 == 0.0)
             {
@@ -466,12 +465,12 @@ L100:
     for (j = 1; j <= i__1; ++j)
     {
         i__2 = j + 1 + j * h_dim1;
-        if (h[i__2].r < 0. || d_imag(&h[i__2]) != 0.0)
+        if (h[i__2].r < 0. || h[i__2].i != 0.0)
         {
             i__2 = j + 1 + j * h_dim1;
             i__3 = j + 1 + j * h_dim1;
             d__2 = h[i__3].r;
-            d__3 = d_imag(&h[i__3]);
+            d__3 = h[i__3].i;
             d__1 = dlapy2_(&d__2, &d__3);
             z__1.r = h[i__2].r / d__1, z__1.i = h[i__2].i / d__1;
             t.r = z__1.r, t.i = z__1.i;
@@ -509,9 +508,9 @@ L100:
         i__2 = i + i * h_dim1;
         i__3 = i + 1 + (i + 1) * h_dim1;
         d__1 = h[i__2].r;
-        d__2 = d_imag(&h[i__2]);
+        d__2 = h[i__2].i;
         d__3 = h[i__3].r;
-        d__4 = d_imag(&h[i__3]);
+        d__4 = h[i__3].i;
         tst1 = abs(d__1) + abs(d__2) + abs(d__3) + abs(d__4);
         if (tst1 == 0.0)
         {

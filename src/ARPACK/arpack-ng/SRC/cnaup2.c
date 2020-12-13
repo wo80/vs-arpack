@@ -179,7 +179,7 @@ int cnaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
     complex q__1;
 
     /* Builtin functions */
-    double pow_dd(double *, double *), r_imag(complex *);
+    double pow_dd(double *, double *);
 
     double sqrt(double);
 
@@ -484,12 +484,11 @@ L20:
         /* Computing MAX */
         i__2 = *np + i;
         r__3 = ritz[i__2].r;
-        r__4 = r_imag(&ritz[*np + i]);
+        r__4 = ritz[i__2].i;
         r__1 = eps23, r__2 = slapy2_(&r__3, &r__4);
         rtemp = dmax(r__1,r__2);
-        i__2 = *np + i;
         r__1 = bounds[i__2].r;
-        r__2 = r_imag(&bounds[*np + i]);
+        r__2 = bounds[i__2].i;
         if (slapy2_(&r__1, &r__2) <= *tol * rtemp)
         {
             ++nconv;
@@ -599,7 +598,7 @@ L20:
         {
             /* Computing MAX */
             r__3 = ritz[j].r;
-            r__4 = r_imag(&ritz[j]);
+            r__4 = ritz[j].i;
             r__1 = eps23, r__2 = slapy2_(&r__3, &r__4);
             rtemp = dmax(r__1,r__2);
             q__1.r = bounds[j].r / rtemp, q__1.i = bounds[j].i / rtemp;
@@ -625,7 +624,7 @@ L20:
         {
             /* Computing MAX */
             r__3 = ritz[j].r;
-            r__4 = r_imag(&ritz[j]);
+            r__4 = ritz[j].i;
             r__1 = eps23, r__2 = slapy2_(&r__3, &r__4);
             rtemp = dmax(r__1,r__2);
             q__1.r = rtemp * bounds[j].r, q__1.i = rtemp * bounds[j].i;
@@ -813,7 +812,7 @@ L100:
         cdotc_(&q__1, n, &resid[1], &c__1, &workd[1], &c__1);
         cmpnorm.r = q__1.r, cmpnorm.i = q__1.i;
         r__1 = cmpnorm.r;
-        r__2 = r_imag(&cmpnorm);
+        r__2 = cmpnorm.i;
         rnorm = sqrt(slapy2_(&r__1, &r__2));
     }
     else if (*bmat == 'I')

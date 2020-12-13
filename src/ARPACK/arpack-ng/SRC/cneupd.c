@@ -265,7 +265,6 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
     /* Builtin functions */
     double pow_dd(double *, double *);
 
-    double r_imag(complex *);
     void c_div(complex *, complex *, complex *);
 
     /* Local variables */
@@ -523,14 +522,14 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
             /* Computing MAX */
             i__2 = irz + *ncv - j;
             r__3 = workl[i__2].r;
-            r__4 = r_imag(&workl[irz + *ncv - j]);
+            r__4 = workl[i__2].i;
             r__1 = eps23, r__2 = slapy2_(&r__3, &r__4);
             rtemp = dmax(r__1,r__2);
             i__2 = bounds + *ncv - j;
             jj = workl[i__2].r;
             i__2 = ibd + jj - 1;
             r__1 = workl[i__2].r;
-            r__2 = r_imag(&workl[ibd + jj - 1]);
+            r__2 = workl[i__2].i;
             if (numcnv < nconv && slapy2_(&r__1, &r__2) <= *tol * rtemp)
             {
                 select[jj] = true;

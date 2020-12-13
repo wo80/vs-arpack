@@ -9,7 +9,7 @@ extern "C"
 
 	/* complex */
 
-	extern doublereal scnrm2_(integer *, complex *, integer *);
+	extern real scnrm2_(integer *, complex *, integer *);
 	extern int caxpy_(integer *, complex *, complex *, integer *, complex *, integer *);
 	extern int ccopy_(integer *, complex *, integer *, complex *, integer *);
 	extern int cgemv_(char *, integer *, integer *, complex *, complex *, integer *, complex *, integer *, complex *, complex *, integer *);
@@ -17,7 +17,7 @@ extern "C"
 	extern int cgeru_(integer *, integer *, complex *, complex *, integer *, complex *, integer *, complex *, integer *);
 	extern int clacpy_(char *, integer *, integer *, complex *, integer *, complex *, integer *);
 	extern int clahqr_(logical *, logical *, integer *, integer *, integer *, complex *, integer *, complex *, integer *, integer *, complex *, integer *, integer *);
-	extern doublereal clanhs_(char *, integer *, complex *, integer *, complex *);
+	extern real clanhs_(char *, integer *, complex *, integer *, complex *);
 	extern int clarnv_(integer *, integer *, integer *, complex *);
 	extern int clartg_(complex *, complex *, real *, complex *, complex *);
 	extern int clascl_(char *, integer *, integer *, real *, real *, integer *, integer *, complex *, integer *, integer *);
@@ -68,7 +68,7 @@ extern "C"
 
 	extern int saxpy_(integer *, real *, real *, integer *, real *, integer *);
 	extern int scopy_(integer *, real *, integer *, real *, integer *);
-	extern doublereal sdot_(integer *, real *, integer *, real *, integer *);
+	extern real sdot_(integer *, real *, integer *, real *, integer *);
 	extern int sgemv_(char *, integer *, integer *, real *, real *, integer *, real *, integer *, real *, real *, integer *);
 	extern int sgeqr2_(integer *, integer *, real *, integer *, real *, real *, integer *);
 	extern int sger_(integer *, integer *, real *, real *, integer *, real *, integer *, real *, integer *);
@@ -77,10 +77,10 @@ extern "C"
 	extern int slae2_(real *, real *, real *, real *, real *);
 	extern int slaev2_(real *, real *, real *, real *, real *, real *, real *);
 	extern int slahqr_(logical *, logical *, integer *, integer *, integer *, real *, integer *, real *, real *, integer *, integer *, real *, integer *, integer *);
-	extern doublereal slamch_(char *);
-	extern doublereal slanhs_(char *, integer *, real *, integer *, real *);
-	extern doublereal slanst_(char *, integer *, real *, real *);
-	extern doublereal slapy2_(real *, real *);
+	extern real slamch_(char *);
+	extern real slanhs_(char *, integer *, real *, integer *, real *);
+	extern real slanst_(char *, integer *, real *, real *);
+	extern real slapy2_(real *, real *);
 	extern int slarf_(char *, integer *, integer *, real *, integer *, real *, real *, integer *, real *);
 	extern int slarfg_(integer *, real *, real *, integer *, real *);
 	extern int slarnv_(integer *, integer *, integer *, real *);
@@ -89,7 +89,7 @@ extern "C"
 	extern int slaset_(char *, integer *, integer *, real *, real *, real *, integer *);
 	extern int slasr_(char *, char *, char *, integer *, integer *, real *, real *, real *, integer *);
 	extern int slasrt_(char *, integer *, real *, integer *);
-	extern doublereal snrm2_(integer *, real *, integer *);
+	extern real snrm2_(integer *, real *, integer *);
 	extern int sorm2r_(char *, char *, integer *, integer *, integer *, real *, integer *, real *, real *, integer *, real *, integer *);
 	extern int sscal_(integer *, real *, real *, integer *);
 	extern int ssteqr_(char *, integer *, real *, real *, real *, integer *, real *, integer *);

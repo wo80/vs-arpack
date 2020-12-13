@@ -178,7 +178,7 @@ int znaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
     zomplex z__1;
 
     /* Builtin functions */
-    double pow_dd(double *, double *), d_imag(zomplex *);
+    double pow_dd(double *, double *);
 
     double sqrt(double);
 
@@ -481,12 +481,11 @@ L20:
         /* Computing MAX */
         i__2 = *np + i;
         d__3 = ritz[i__2].r;
-        d__4 = d_imag(&ritz[*np + i]);
+        d__4 = ritz[i__2].i;
         d__1 = eps23, d__2 = dlapy2_(&d__3, &d__4);
         rtemp = max(d__1,d__2);
-        i__2 = *np + i;
         d__1 = bounds[i__2].r;
-        d__2 = d_imag(&bounds[*np + i]);
+        d__2 = bounds[i__2].i;
         if (dlapy2_(&d__1, &d__2) <= *tol * rtemp)
         {
             ++nconv;
@@ -596,7 +595,7 @@ L20:
         {
             /* Computing MAX */
             d__3 = ritz[j].r;
-            d__4 = d_imag(&ritz[j]);
+            d__4 = ritz[j].i;
             d__1 = eps23, d__2 = dlapy2_(&d__3, &d__4);
             rtemp = max(d__1,d__2);
             z__1.r = bounds[j].r / rtemp, z__1.i = bounds[j].i / rtemp;
@@ -622,7 +621,7 @@ L20:
         {
             /* Computing MAX */
             d__3 = ritz[j].r;
-            d__4 = d_imag(&ritz[j]);
+            d__4 = ritz[j].i;
             d__1 = eps23, d__2 = dlapy2_(&d__3, &d__4);
             rtemp = max(d__1,d__2);
             z__1.r = rtemp * bounds[j].r, z__1.i = rtemp * bounds[j].i;
@@ -810,7 +809,7 @@ L100:
         zdotc_(&z__1, n, &resid[1], &c__1, &workd[1], &c__1);
         cmpnorm.r = z__1.r, cmpnorm.i = z__1.i;
         d__1 = cmpnorm.r;
-        d__2 = d_imag(&cmpnorm);
+        d__2 = cmpnorm.i;
         rnorm = sqrt(dlapy2_(&d__1, &d__2));
     }
     else if (*bmat == 'I')

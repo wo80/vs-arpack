@@ -147,7 +147,6 @@ int cnapps_(int *n, int *kev, int *np, complex *
     complex q__1, q__2, q__3, q__4, q__5;
 
     /* Builtin functions */
-    double r_imag(complex *);
     void r_cnjg(complex *, complex *);
 
     /* Local variables */
@@ -264,9 +263,9 @@ L20:
             i__3 = i + i * h_dim1;
             i__4 = i + 1 + (i + 1) * h_dim1;
             r__1 = h[i__3].r;
-            r__2 = r_imag(&h[i__3]);
+            r__2 = h[i__3].i;
             r__3 = h[i__4].r;
-            r__4 = r_imag(&h[i__4]);
+            r__4 = h[i__4].i;
             tst1 = dabs(r__1) + dabs(r__2) + dabs(r__3) + dabs(r__4);
             if (tst1 == 0.0f)
             {
@@ -465,12 +464,12 @@ L100:
     for (j = 1; j <= i__1; ++j)
     {
         i__2 = j + 1 + j * h_dim1;
-        if (h[i__2].r < 0.0f || r_imag(&h[j + 1 + j * h_dim1]) != 0.0f)
+        if (h[i__2].r < 0.0f || h[i__2].i != 0.0f)
         {
             i__2 = j + 1 + j * h_dim1;
             i__3 = j + 1 + j * h_dim1;
             r__2 = h[i__3].r;
-            r__3 = r_imag(&h[i__3]);
+            r__3 = h[i__3].i;
             r__1 = slapy2_(&r__2, &r__3);
             q__1.r = h[i__2].r / r__1, q__1.i = h[i__2].i / r__1;
             t.r = q__1.r, t.i = q__1.i;
@@ -508,9 +507,9 @@ L100:
         i__2 = i + i * h_dim1;
         i__3 = i + 1 + (i + 1) * h_dim1;
         r__1 = h[i__2].r;
-        r__2 = r_imag(&h[i__2]);
+        r__2 = h[i__2].i;
         r__3 = h[i__3].r;
-        r__4 = r_imag(&h[i__3]);
+        r__4 = h[i__3].i;
         tst1 = dabs(r__1) + dabs(r__2) + dabs(r__3) + dabs(r__4);
         if (tst1 == 0.0f)
         {

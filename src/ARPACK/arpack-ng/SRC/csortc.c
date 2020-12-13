@@ -64,10 +64,6 @@ int csortc_(char *which, bool *apply, int *n, complex *x, complex *y)
     int i__1, k;
     float r__1, r__2;
 
-    /* Builtin functions */
-
-    double r_imag(complex *);
-
     /* Local variables */
     int i, j, igap;
     complex temp;
@@ -100,11 +96,11 @@ L20:
             }
 
             r__1 = x[j].r;
-            r__2 = r_imag(&x[j]);
+            r__2 = x[j].i;
             temp1 = slapy2_(&r__1, &r__2);
             k = j + igap;
             r__1 = x[k].r;
-            r__2 = r_imag(&x[k]);
+            r__2 = x[k].i;
             temp2 = slapy2_(&r__1, &r__2);
 
             if (temp1 > temp2)
@@ -156,11 +152,11 @@ L50:
             }
 
             r__1 = x[j].r;
-            r__2 = r_imag(&x[j]);
+            r__2 = x[j].i;
             temp1 = slapy2_(&r__1, &r__2);
             k = j + igap;
             r__1 = x[k].r;
-            r__2 = r_imag(&x[k]);
+            r__2 = x[k].i;
             temp2 = slapy2_(&r__1, &r__2);
 
             if (temp1 < temp2)
@@ -308,7 +304,7 @@ L140:
             }
 
             k = j + igap;
-            if (r_imag(&x[j]) > r_imag(&x[k]))
+            if (x[j].i > x[k].i)
             {
                 temp.r = x[j].r, temp.i = x[j].i;
                 x[j].r = x[k].r, x[j].i = x[k].i;
@@ -356,7 +352,7 @@ L170:
             }
 
             k = j + igap;
-            if (r_imag(&x[j]) < r_imag(&x[k]))
+            if (x[j].i < x[k].i)
             {
                 temp.r = x[j].r, temp.i = x[j].i;
                 x[j].r = x[k].r, x[j].i = x[k].i;

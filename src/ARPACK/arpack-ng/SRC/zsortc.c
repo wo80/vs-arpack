@@ -64,10 +64,6 @@ int zsortc_(char *which, bool *apply, int *n, zomplex *x, zomplex *y)
     int i__1, k;
     double d__1, d__2;
 
-    /* Builtin functions */
-
-    double d_imag(zomplex *);
-
     /* Local variables */
     int i, j, igap;
     zomplex temp;
@@ -100,11 +96,11 @@ L20:
             }
 
             d__1 = x[j].r;
-            d__2 = d_imag(&x[j]);
+            d__2 = x[j].i;
             temp1 = dlapy2_(&d__1, &d__2);
             k = j + igap;
             d__1 = x[k].r;
-            d__2 = d_imag(&x[k]);
+            d__2 = x[k].i;
             temp2 = dlapy2_(&d__1, &d__2);
 
             if (temp1 > temp2)
@@ -156,11 +152,11 @@ L50:
             }
 
             d__1 = x[j].r;
-            d__2 = d_imag(&x[j]);
+            d__2 = x[j].i;
             temp1 = dlapy2_(&d__1, &d__2);
             k = j + igap;
             d__1 = x[k].r;
-            d__2 = d_imag(&x[k]);
+            d__2 = x[k].i;
             temp2 = dlapy2_(&d__1, &d__2);
 
             if (temp1 < temp2)
@@ -308,7 +304,7 @@ L140:
             }
 
             k = j + igap;
-            if (d_imag(&x[j]) > d_imag(&x[k]))
+            if (x[j].i > x[k].i)
             {
                 temp.r = x[j].r, temp.i = x[j].i;
                 x[j].r = x[k].r, x[j].i = x[k].i;
@@ -356,7 +352,7 @@ L170:
             }
 
             k = j + igap;
-            if (d_imag(&x[j]) < d_imag(&x[k]))
+            if (x[j].i < x[k].i)
             {
                 temp.r = x[j].r, temp.i = x[j].i;
                 x[j].r = x[k].r, x[j].i = x[k].i;

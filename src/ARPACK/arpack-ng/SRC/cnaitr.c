@@ -220,7 +220,7 @@ int cnaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *nb,
     complex q__1;
 
     /* Builtin functions */
-    double r_imag(complex *), sqrt(double);
+    double sqrt(double);
 
     /* Local variables */
     int i;
@@ -559,7 +559,7 @@ L60:
         cdotc_(&q__1, n, &resid[1], &c__1, &workd[ipj], &c__1);
         cnorm.r = q__1.r, cnorm.i = q__1.i;
         r__1 = cnorm.r;
-        r__2 = r_imag(&cnorm);
+        r__2 = cnorm.i;
         wnorm = sqrt(slapy2_(&r__1, &r__2));
     }
     else if (*bmat == 'I')
@@ -648,7 +648,7 @@ L70:
         cdotc_(&q__1, n, &resid[1], &c__1, &workd[ipj], &c__1);
         cnorm.r = q__1.r, cnorm.i = q__1.i;
         r__1 = cnorm.r;
-        r__2 = r_imag(&cnorm);
+        r__2 = cnorm.i;
         *rnorm = sqrt(slapy2_(&r__1, &r__2));
     }
     else if (*bmat == 'I')
@@ -766,7 +766,7 @@ L90:
         cdotc_(&q__1, n, &resid[1], &c__1, &workd[ipj], &c__1);
         cnorm.r = q__1.r, cnorm.i = q__1.i;
         r__1 = cnorm.r;
-        r__2 = r_imag(&cnorm);
+        r__2 = cnorm.i;
         rnorm1 = sqrt(slapy2_(&r__1, &r__2));
     }
     else if (*bmat == 'I')
@@ -873,10 +873,10 @@ L100:
 
             i__2 = i + i * h_dim1;
             r__1 = h[i__2].r;
-            r__2 = r_imag(&h[i__2]);
+            r__2 = h[i__2].i;
             i__3 = i + 1 + (i + 1) * h_dim1;
             r__3 = h[i__3].r;
-            r__4 = r_imag(&h[i__3]);
+            r__4 = h[i__3].i;
             tst1 = slapy2_(&r__1, &r__2) + slapy2_(&r__3, &r__4);
             if (tst1 == 0.0f)
             {
@@ -885,7 +885,7 @@ L100:
             }
             i__2 = i + 1 + i * h_dim1;
             r__1 = h[i__2].r;
-            r__2 = r_imag(&h[i__2]);
+            r__2 = h[i__2].i;
             /* Computing MAX */
             r__3 = ulp * tst1;
             if (slapy2_(&r__1, &r__2) <= dmax(r__3,smlnum))

@@ -59,7 +59,6 @@ int cndrv4()
     complex q__1, q__2, q__3, q__4, q__5, q__6;
 
     void c_div(complex *, complex *, complex *);
-    double r_imag(complex *);
 
     /* Local variables */
     complex d[25], h;
@@ -402,7 +401,7 @@ L20:
         caxpy_(&n, &q__1, mx, &c__1, ax, &c__1);
         i__2 = j - 1;
         rd[j - 1] = d[i__2].r;
-        rd[j + 24] = r_imag(&d[j - 1]);
+        rd[j + 24] = d[i__2].i;
         rd[j + 49] = scnrm2_(&n, ax, &c__1);
         rd[j + 49] /= slapy2_(&rd[j - 1], &rd[j + 24]);
 

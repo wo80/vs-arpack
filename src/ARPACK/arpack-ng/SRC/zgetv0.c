@@ -127,7 +127,7 @@ int zgetv0_(int *ido, char *bmat, int *itry, bool *initv, int *n, int *j,
     zomplex z__1;
 
     /* Builtin functions */
-    double d_imag(zomplex *), sqrt(double);
+    double sqrt(double);
 
     /* Local variables */
     static float t0, t1, t2, t3;
@@ -289,7 +289,7 @@ L20:
         zdotc_(&z__1, n, &resid[1], &c__1, &workd[1], &c__1);
         cnorm.r = z__1.r, cnorm.i = z__1.i;
         d__1 = cnorm.r;
-        d__2 = d_imag(&cnorm);
+        d__2 = cnorm.i;
         rnorm0 = sqrt(dlapy2_(&d__1, &d__2));
     }
     else if (*bmat == 'I')
@@ -365,7 +365,7 @@ L40:
         zdotc_(&z__1, n, &resid[1], &c__1, &workd[1], &c__1);
         cnorm.r = z__1.r, cnorm.i = z__1.i;
         d__1 = cnorm.r;
-        d__2 = d_imag(&cnorm);
+        d__2 = cnorm.i;
         *rnorm = sqrt(dlapy2_(&d__1, &d__2));
     }
     else if (*bmat == 'I')

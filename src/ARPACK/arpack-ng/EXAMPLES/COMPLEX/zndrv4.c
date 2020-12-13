@@ -59,7 +59,6 @@ int zndrv4()
     zomplex z__1, z__2, z__3, z__4, z__5, z__6;
 
     void z_div(zomplex *, zomplex *, zomplex *);
-    double d_imag(zomplex *);
 
     /* Local variables */
     zomplex d[25], h;
@@ -403,7 +402,7 @@ L20:
         zaxpy_(&n, &z__1, mx, &c__1, ax, &c__1);
         i__2 = j - 1;
         rd[j - 1] = d[i__2].r;
-        rd[j + 24] = d_imag(&d[j - 1]);
+        rd[j + 24] = d[i__2].i;
         rd[j + 49] = dznrm2_(&n, ax, &c__1);
         rd[j + 49] /= dlapy2_(&rd[j - 1], &rd[j + 24]);
 

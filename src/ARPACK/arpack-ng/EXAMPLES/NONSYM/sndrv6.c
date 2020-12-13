@@ -48,8 +48,6 @@ int sndrv6()
     float r__1, r__2;
     complex q__1;
 
-    double r_imag(complex *);
-
     /* Local variables */
     float d[75]	/* was [25][3] */;
     int j;
@@ -262,7 +260,7 @@ L20:
         }
         for (j = 1; j <= n; ++j)
         {
-            workd[ipntr[1] + j - 2] = r_imag(&ctemp[j - 1]);
+            workd[ipntr[1] + j - 2] = ctemp[j - 1].i;
 
         }
 
@@ -301,7 +299,7 @@ L20:
         }
         for (j = 1; j <= n; ++j)
         {
-            workd[ipntr[1] + j - 2] = r_imag(&ctemp[j - 1]);
+            workd[ipntr[1] + j - 2] = ctemp[j - 1].i;
 
         }
 

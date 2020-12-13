@@ -220,7 +220,7 @@ int znaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *nb,
     zomplex z__1;
 
     /* Builtin functions */
-    double d_imag(zomplex *), sqrt(double);
+    double sqrt(double);
 
     /* Local variables */
     int i;
@@ -559,7 +559,7 @@ L60:
         zdotc_(&z__1, n, &resid[1], &c__1, &workd[ipj], &c__1);
         cnorm.r = z__1.r, cnorm.i = z__1.i;
         d__1 = cnorm.r;
-        d__2 = d_imag(&cnorm);
+        d__2 = cnorm.i;
         wnorm = sqrt(dlapy2_(&d__1, &d__2));
     }
     else if (*bmat == 'I')
@@ -648,7 +648,7 @@ L70:
         zdotc_(&z__1, n, &resid[1], &c__1, &workd[ipj], &c__1);
         cnorm.r = z__1.r, cnorm.i = z__1.i;
         d__1 = cnorm.r;
-        d__2 = d_imag(&cnorm);
+        d__2 = cnorm.i;
         *rnorm = sqrt(dlapy2_(&d__1, &d__2));
     }
     else if (*bmat == 'I')
@@ -766,7 +766,7 @@ L90:
         zdotc_(&z__1, n, &resid[1], &c__1, &workd[ipj], &c__1);
         cnorm.r = z__1.r, cnorm.i = z__1.i;
         d__1 = cnorm.r;
-        d__2 = d_imag(&cnorm);
+        d__2 = cnorm.i;
         rnorm1 = sqrt(dlapy2_(&d__1, &d__2));
     }
     else if (*bmat == 'I')
@@ -873,10 +873,10 @@ L100:
 
             i__2 = i + i * h_dim1;
             d__1 = h[i__2].r;
-            d__2 = d_imag(&h[i__2]);
+            d__2 = h[i__2].i;
             i__3 = i + 1 + (i + 1) * h_dim1;
             d__3 = h[i__3].r;
-            d__4 = d_imag(&h[i__3]);
+            d__4 = h[i__3].i;
             tst1 = dlapy2_(&d__1, &d__2) + dlapy2_(&d__3, &d__4);
             if (tst1 == 0.0)
             {
@@ -885,7 +885,7 @@ L100:
             }
             i__2 = i + 1 + i * h_dim1;
             d__1 = h[i__2].r;
-            d__2 = d_imag(&h[i__2]);
+            d__2 = h[i__2].i;
             /* Computing MAX */
             d__3 = ulp * tst1;
             if (dlapy2_(&d__1, &d__2) <= max(d__3,smlnum))

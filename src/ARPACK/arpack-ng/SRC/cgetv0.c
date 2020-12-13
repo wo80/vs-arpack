@@ -127,7 +127,7 @@ int cgetv0_(int *ido, char *bmat, int *itry, bool *initv, int *n, int *j,
     complex q__1;
 
     /* Builtin functions */
-    double r_imag(complex *), sqrt(double);
+    double sqrt(double);
 
     /* Local variables */
     static float t0, t1, t2, t3;
@@ -289,7 +289,7 @@ L20:
         cdotc_(&q__1, n, &resid[1], &c__1, &workd[1], &c__1);
         cnorm.r = q__1.r, cnorm.i = q__1.i;
         r__1 = cnorm.r;
-        r__2 = r_imag(&cnorm);
+        r__2 = cnorm.i;
         rnorm0 = sqrt(slapy2_(&r__1, &r__2));
     }
     else if (*bmat == 'I')
@@ -365,7 +365,7 @@ L40:
         cdotc_(&q__1, n, &resid[1], &c__1, &workd[1], &c__1);
         cnorm.r = q__1.r, cnorm.i = q__1.i;
         r__1 = cnorm.r;
-        r__2 = r_imag(&cnorm);
+        r__2 = cnorm.i;
         *rnorm = sqrt(slapy2_(&r__1, &r__2));
     }
     else if (*bmat == 'I')
