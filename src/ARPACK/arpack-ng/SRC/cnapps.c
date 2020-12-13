@@ -239,8 +239,7 @@ int cnapps_(int *n, int *kev, int *np, complex *
     i__1 = *np;
     for (jj = 1; jj <= i__1; ++jj)
     {
-        i__2 = jj;
-        sigma.r = shift[i__2].r, sigma.i = shift[i__2].i;
+        sigma.r = shift[jj].r, sigma.i = shift[jj].i;
 
 #ifndef NO_TRACE
         if (msglvl > 2)
@@ -265,9 +264,9 @@ L20:
             i__3 = i + i * h_dim1;
             i__4 = i + 1 + (i + 1) * h_dim1;
             r__1 = h[i__3].r;
-            r__2 = r_imag(&h[i + i * h_dim1]);
+            r__2 = r_imag(&h[i__3]);
             r__3 = h[i__4].r;
-            r__4 = r_imag(&h[i + 1 + (i + 1) * h_dim1]);
+            r__4 = r_imag(&h[i__4]);
             tst1 = dabs(r__1) + dabs(r__2) + dabs(r__3) + dabs(r__4);
             if (tst1 == 0.0f)
             {
@@ -284,16 +283,14 @@ L20:
                 {
                     ivout_(&c__1, &i, &debug_1.ndigit, "_napps: matrix splitting at row/column no.");
                     ivout_(&c__1, &jj, &debug_1.ndigit, "_napps: matrix splitting with shift number.");
-                    cvout_(&c__1, &h[i + 1 + i * h_dim1], &debug_1.ndigit, "_napps: off diagonal element.");
+                    cvout_(&c__1, &h[i__3], &debug_1.ndigit, "_napps: off diagonal element.");
                 }
 #endif
 
                 iend = i;
-                i__3 = i + 1 + i * h_dim1;
                 h[i__3].r = 0.0f, h[i__3].i = 0.0f;
                 goto L40;
             }
-
         }
         iend = kplusp;
 L40:
@@ -473,13 +470,13 @@ L100:
             i__2 = j + 1 + j * h_dim1;
             i__3 = j + 1 + j * h_dim1;
             r__2 = h[i__3].r;
-            r__3 = r_imag(&h[j + 1 + j * h_dim1]);
+            r__3 = r_imag(&h[i__3]);
             r__1 = slapy2_(&r__2, &r__3);
             q__1.r = h[i__2].r / r__1, q__1.i = h[i__2].i / r__1;
             t.r = q__1.r, t.i = q__1.i;
             i__2 = kplusp - j + 1;
             r_cnjg(&q__1, &t);
-            cscal_(&i__2, &q__1, &h[j + 1 + j * h_dim1], ldh);
+            cscal_(&i__2, &q__1, &h[i__3], ldh);
             /* Computing MIN */
             i__3 = j + 2;
             i__2 = min(i__3,kplusp);
@@ -511,9 +508,9 @@ L100:
         i__2 = i + i * h_dim1;
         i__3 = i + 1 + (i + 1) * h_dim1;
         r__1 = h[i__2].r;
-        r__2 = r_imag(&h[i + i * h_dim1]);
+        r__2 = r_imag(&h[i__2]);
         r__3 = h[i__3].r;
-        r__4 = r_imag(&h[i + 1 + (i + 1) * h_dim1]);
+        r__4 = r_imag(&h[i__3]);
         tst1 = dabs(r__1) + dabs(r__2) + dabs(r__3) + dabs(r__4);
         if (tst1 == 0.0f)
         {
@@ -524,8 +521,7 @@ L100:
         r__1 = ulp * tst1;
         if (h[i__2].r <= dmax(r__1,smlnum))
         {
-            i__3 = i + 1 + i * h_dim1;
-            h[i__3].r = 0.0f, h[i__3].i = 0.0f;
+            h[i__2].r = 0.0f, h[i__2].i = 0.0f;
         }
     }
 
@@ -584,14 +580,14 @@ L100:
     i__1 = *kev + 1 + *kev * h_dim1;
     if (h[i__1].r > 0.0f)
     {
-        caxpy_(n, &h[*kev + 1 + *kev * h_dim1], &v[(*kev + 1) * v_dim1 + 1],&c__1, &resid[1], &c__1);
+        caxpy_(n, &h[i__1], &v[(*kev + 1) * v_dim1 + 1],&c__1, &resid[1], &c__1);
     }
 
 #ifndef NO_TRACE
     if (msglvl > 1)
     {
         cvout_(&c__1, &q[kplusp + *kev * q_dim1], &debug_1.ndigit, "_napps: sigmak = (e_{kev+p}^T*Q)*e_{kev}");
-        cvout_(&c__1, &h[*kev + 1 + *kev * h_dim1], &debug_1.ndigit, "_napps: betak = e_{kev+1}^T*H*e_{kev}");
+        cvout_(&c__1, &h[i__1], &debug_1.ndigit, "_napps: betak = e_{kev+1}^T*H*e_{kev}");
         ivout_(&c__1, kev, &debug_1.ndigit, "_napps: Order of the final Hessenberg matrix ");
         if (msglvl > 2)
         {

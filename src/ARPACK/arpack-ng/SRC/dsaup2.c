@@ -401,9 +401,7 @@ L1000:
     {
         ivout_(&c__1, &iter, &debug_1.ndigit, "_saup2: **** Start of major iteration number ****");
     }
-#endif
 
-#ifndef NO_TRACE
     if (msglvl > 1)
     {
         ivout_(&c__1, nev, &debug_1.ndigit, "_saup2: The length of the current Lanczos factorization");
@@ -518,8 +516,7 @@ L20:
     /* ------------------------------------------------------- */
 
     nptemp = *np;
-    i__1 = nptemp;
-    for (j = 1; j <= i__1; ++j)
+    for (j = 1; j <= nptemp; ++j)
     {
         if (bounds[j] == 0.0)
         {
@@ -560,9 +557,6 @@ L20:
                 /* Computing MAX */
                 i__2 = kplusp - nevd2 + 1, i__3 = kplusp - *np + 1;
                 dswap_(&i__1, &ritz[nevm2 + 1], &c__1, &ritz[max(i__2,i__3)], &c__1);
-                i__1 = min(nevd2,*np);
-                /* Computing MAX */
-                i__2 = kplusp - nevd2 + 1, i__3 = kplusp - *np + 1;
                 dswap_(&i__1, &bounds[nevm2 + 1], &c__1, &bounds[max(i__2,i__3)], &c__1);
             }
         }
@@ -631,7 +625,6 @@ L20:
             d__2 = eps23, d__3 = (d__1 = ritz[j], abs(d__1));
             temp = max(d__2,d__3);
             bounds[j] *= temp;
-
         }
 
         /* ------------------------------------------------ */
@@ -651,7 +644,6 @@ L20:
 
             strcpy(wprime, "LA");
             dsortr_(wprime, &c_true, &nconv, &ritz[1], &bounds[1]);
-
         }
         else
         {
@@ -662,7 +654,6 @@ L20:
             /* ritz.                                        */
             /* -------------------------------------------- */
             dsortr_(which, &c_true, &nconv, &ritz[1], &bounds[1]);
-
         }
 
         /* ---------------------------------------- */

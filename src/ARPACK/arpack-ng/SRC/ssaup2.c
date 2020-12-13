@@ -275,10 +275,10 @@ int ssaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
         nconv = 0;
         iter = 0;
 
-        /* ------------------------------------------ */
+        /* ------------------------------------------- */
         /* Set flags for computing the first NEV steps */
-        /* of the Lanczos factorization.              */
-        /* ------------------------------------------ */
+        /* of the Lanczos factorization.               */
+        /* ------------------------------------------- */
 
         getv0 = true;
         update = false;
@@ -403,9 +403,7 @@ L1000:
     {
         ivout_(&c__1, &iter, &debug_1.ndigit, "_saup2: **** Start of major iteration number ****");
     }
-#endif
 
-#ifndef NO_TRACE
     if (msglvl > 1)
     {
         ivout_(&c__1, nev, &debug_1.ndigit, "_saup2: The length of the current Lanczos factorization");
@@ -520,8 +518,7 @@ L20:
     /* ------------------------------------------------------- */
 
     nptemp = *np;
-    i__1 = nptemp;
-    for (j = 1; j <= i__1; ++j)
+    for (j = 1; j <= nptemp; ++j)
     {
         if (bounds[j] == 0.0f)
         {
@@ -557,13 +554,11 @@ L20:
             nevm2 = nev0 - nevd2;
             if (*nev > 1)
             {
+                /* TODO: compare with dsaup2 (update *np = kplusp - nev0) */
                 i__1 = min(nevd2,*np);
                 /* Computing MAX */
                 i__2 = kplusp - nevd2 + 1, i__3 = kplusp - *np + 1;
                 sswap_(&i__1, &ritz[nevm2 + 1], &c__1, &ritz[max(i__2,i__3)], &c__1);
-                i__1 = min(nevd2,*np);
-                /* Computing MAX */
-                i__2 = kplusp - nevd2 + 1, i__3 = kplusp - *np + 1;
                 sswap_(&i__1, &bounds[nevm2 + 1], &c__1, &bounds[max(i__2,i__3)], &c__1);
             }
         }
@@ -603,8 +598,7 @@ L20:
         /* by 1 / max(eps23,magnitude of the Ritz value).   */
         /* ------------------------------------------------ */
 
-        i__1 = nev0;
-        for (j = 1; j <= i__1; ++j)
+        for (j = 1; j <= nev0; ++j)
         {
             /* Computing MAX */
             r__2 = eps23, r__3 = (r__1 = ritz[j], dabs(r__1));
@@ -627,8 +621,7 @@ L20:
         /* value.                                       */
         /* -------------------------------------------- */
 
-        i__1 = nev0;
-        for (j = 1; j <= i__1; ++j)
+        for (j = 1; j <= nev0; ++j)
         {
             /* Computing MAX */
             r__2 = eps23, r__3 = (r__1 = ritz[j], dabs(r__1));

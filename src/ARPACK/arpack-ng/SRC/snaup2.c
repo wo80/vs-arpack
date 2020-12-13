@@ -458,14 +458,10 @@ L20:
     /* -------------------------------------------------- */
 
     /* Computing 2nd power */
-    i__1 = kplusp;
-    scopy_(&kplusp, &ritzr[1], &c__1, &workl[i__1 * i__1 + 1], &c__1);
-    /* Computing 2nd power */
-    i__1 = kplusp;
-    scopy_(&kplusp, &ritzi[1], &c__1, &workl[i__1 * i__1 + kplusp + 1], &c__1);
-    /* Computing 2nd power */
-    i__1 = kplusp;
-    scopy_(&kplusp, &bounds[1], &c__1, &workl[i__1 * i__1 + (kplusp << 1) + 1], &c__1);
+    i__1 = kplusp * kplusp;
+    scopy_(&kplusp, &ritzr[1], &c__1, &workl[i__1 + 1], &c__1);
+    scopy_(&kplusp, &ritzi[1], &c__1, &workl[i__1 + kplusp + 1], &c__1);
+    scopy_(&kplusp, &bounds[1], &c__1, &workl[i__1 + (kplusp << 1) + 1], &c__1);
 
     /* ------------------------------------------------- */
     /* Select the wanted Ritz values and their bounds    */
@@ -521,8 +517,7 @@ L20:
     /* ------------------------------------------------------- */
 
     nptemp = *np;
-    i__1 = nptemp;
-    for (j = 1; j <= i__1; ++j)
+    for (j = 1; j <= nptemp; ++j)
     {
         if (bounds[j] == 0.0f)
         {
@@ -538,14 +533,10 @@ L20:
         if (msglvl > 4)
         {
             /* Computing 2nd power */
-            i__1 = kplusp;
-            svout_(&kplusp, &workl[i__1 * i__1 + 1], &debug_1.ndigit, "_naup2: Real part of the eig computed by _neigh:");
-            /* Computing 2nd power */
-            i__1 = kplusp;
-            svout_(&kplusp, &workl[i__1 * i__1 + kplusp + 1],&debug_1.ndigit, "_naup2: Imag part of the eig computed by _neigh:");
-            /* Computing 2nd power */
-            i__1 = kplusp;
-            svout_(&kplusp, &workl[i__1 * i__1 + (kplusp << 1) + 1], &debug_1.ndigit, "_naup2: Ritz eistmates computed by _neigh:");
+            i__1 = kplusp * kplusp;
+            svout_(&kplusp, &workl[i__1 + 1], &debug_1.ndigit, "_naup2: Real part of the eig computed by _neigh:");
+            svout_(&kplusp, &workl[i__1 + kplusp + 1],&debug_1.ndigit, "_naup2: Imag part of the eig computed by _neigh:");
+            svout_(&kplusp, &workl[i__1 + (kplusp << 1) + 1], &debug_1.ndigit, "_naup2: Ritz eistmates computed by _neigh:");
         }
 #endif
 
@@ -637,8 +628,7 @@ L20:
         /* by 1 / max(eps23,magnitude of the Ritz value).   */
         /* ------------------------------------------------ */
 
-        i__1 = numcnv;
-        for (j = 1; j <= i__1; ++j)
+        for (j = 1; j <= numcnv; ++j)
         {
             /* Computing MAX */
             r__1 = eps23, r__2 = slapy2_(&ritzr[j], &ritzi[j]);
@@ -661,14 +651,12 @@ L20:
         /* value.                                       */
         /* -------------------------------------------- */
 
-        i__1 = numcnv;
-        for (j = 1; j <= i__1; ++j)
+        for (j = 1; j <= numcnv; ++j)
         {
             /* Computing MAX */
             r__1 = eps23, r__2 = slapy2_(&ritzr[j], &ritzi[j]);
             temp = dmax(r__1,r__2);
             bounds[j] *= temp;
-
         }
 
         /* ---------------------------------------------- */

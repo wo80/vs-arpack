@@ -240,8 +240,7 @@ int znapps_(int *n, int *kev, int *np,
     i__1 = *np;
     for (jj = 1; jj <= i__1; ++jj)
     {
-        i__2 = jj;
-        sigma.r = shift[i__2].r, sigma.i = shift[i__2].i;
+        sigma.r = shift[jj].r, sigma.i = shift[jj].i;
 
 #ifndef NO_TRACE
         if (msglvl > 2)
@@ -285,12 +284,11 @@ L20:
                 {
                     ivout_(&c__1, &i, &debug_1.ndigit, "_napps: matrix splitting at row/column no.");
                     ivout_(&c__1, &jj, &debug_1.ndigit, "_napps: matrix splitting with shift number.");
-                    zvout_(&c__1, &h[i + 1 + i * h_dim1], &debug_1.ndigit, "_napps: off diagonal element.");
+                    zvout_(&c__1, &h[i__3], &debug_1.ndigit, "_napps: off diagonal element.");
                 }
 #endif
 
                 iend = i;
-                i__3 = i + 1 + i * h_dim1;
                 h[i__3].r = 0.0, h[i__3].i = 0.0;
                 goto L40;
             }
@@ -468,18 +466,18 @@ L100:
     for (j = 1; j <= i__1; ++j)
     {
         i__2 = j + 1 + j * h_dim1;
-        if (h[i__2].r < 0. || d_imag(&h[j + 1 + j * h_dim1]) != 0.0)
+        if (h[i__2].r < 0. || d_imag(&h[i__2]) != 0.0)
         {
             i__2 = j + 1 + j * h_dim1;
             i__3 = j + 1 + j * h_dim1;
             d__2 = h[i__3].r;
-            d__3 = d_imag(&h[j + 1 + j * h_dim1]);
+            d__3 = d_imag(&h[i__3]);
             d__1 = dlapy2_(&d__2, &d__3);
             z__1.r = h[i__2].r / d__1, z__1.i = h[i__2].i / d__1;
             t.r = z__1.r, t.i = z__1.i;
             i__2 = kplusp - j + 1;
             d_cnjg(&z__1, &t);
-            zscal_(&i__2, &z__1, &h[j + 1 + j * h_dim1], ldh);
+            zscal_(&i__2, &z__1, &h[i__3], ldh);
             /* Computing MIN */
             i__3 = j + 2;
             i__2 = min(i__3,kplusp);
@@ -511,9 +509,9 @@ L100:
         i__2 = i + i * h_dim1;
         i__3 = i + 1 + (i + 1) * h_dim1;
         d__1 = h[i__2].r;
-        d__2 = d_imag(&h[i + i * h_dim1]);
+        d__2 = d_imag(&h[i__2]);
         d__3 = h[i__3].r;
-        d__4 = d_imag(&h[i + 1 + (i + 1) * h_dim1]);
+        d__4 = d_imag(&h[i__3]);
         tst1 = abs(d__1) + abs(d__2) + abs(d__3) + abs(d__4);
         if (tst1 == 0.0)
         {
@@ -524,8 +522,7 @@ L100:
         d__1 = ulp * tst1;
         if (h[i__2].r <= max(d__1,smlnum))
         {
-            i__3 = i + 1 + i * h_dim1;
-            h[i__3].r = 0.0, h[i__3].i = 0.0;
+            h[i__2].r = 0.0, h[i__2].i = 0.0;
         }
     }
 
@@ -584,14 +581,14 @@ L100:
     i__1 = *kev + 1 + *kev * h_dim1;
     if (h[i__1].r > 0.0)
     {
-        zaxpy_(n, &h[*kev + 1 + *kev * h_dim1], &v[(*kev + 1) * v_dim1 + 1],&c__1, &resid[1], &c__1);
+        zaxpy_(n, &h[i__1], &v[(*kev + 1) * v_dim1 + 1],&c__1, &resid[1], &c__1);
     }
 
 #ifndef NO_TRACE
     if (msglvl > 1)
     {
         zvout_(&c__1, &q[kplusp + *kev * q_dim1], &debug_1.ndigit, "_napps: sigmak = (e_{kev+p}^T*Q)*e_{kev}");
-        zvout_(&c__1, &h[*kev + 1 + *kev * h_dim1], &debug_1.ndigit, "_napps: betak = e_{kev+1}^T*H*e_{kev}");
+        zvout_(&c__1, &h[i__1], &debug_1.ndigit, "_napps: betak = e_{kev+1}^T*H*e_{kev}");
         ivout_(&c__1, kev, &debug_1.ndigit, "_napps: Order of the final Hessenberg matrix ");
         if (msglvl > 2)
         {

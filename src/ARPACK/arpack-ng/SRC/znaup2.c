@@ -450,11 +450,9 @@ L20:
     /* ------------------------------------------------ */
 
     /* Computing 2nd power */
-    i__1 = kplusp;
-    zcopy_(&kplusp, &ritz[1], &c__1, &workl[i__1 * i__1 + 1], &c__1);
-    /* Computing 2nd power */
-    i__1 = kplusp;
-    zcopy_(&kplusp, &bounds[1], &c__1, &workl[i__1 * i__1 + kplusp + 1], &c__1);
+    i__1 = kplusp * kplusp;
+    zcopy_(&kplusp, &ritz[1], &c__1, &workl[i__1 + 1], &c__1);
+    zcopy_(&kplusp, &bounds[1], &c__1, &workl[i__1 + kplusp + 1], &c__1);
 
     /* ------------------------------------------------- */
     /* Select the wanted Ritz values and their bounds    */
@@ -518,11 +516,9 @@ L20:
     /* ------------------------------------------------------- */
 
     nptemp = *np;
-    i__1 = nptemp;
-    for (j = 1; j <= i__1; ++j)
+    for (j = 1; j <= nptemp; ++j)
     {
-        i__2 = j;
-        if (bounds[i__2].r == 0.0 && bounds[i__2].i == 0.0)
+        if (bounds[j].r == 0.0 && bounds[j].i == 0.0)
         {
             --(*np);
             ++(*nev);
@@ -536,11 +532,9 @@ L20:
         if (msglvl > 4)
         {
             /* Computing 2nd power */
-            i__1 = kplusp;
-            zvout_(&kplusp, &workl[i__1 * i__1 + 1], &debug_1.ndigit, "_naup2: Eigenvalues computed by _neigh:");
-            /* Computing 2nd power */
-            i__1 = kplusp;
-            zvout_(&kplusp, &workl[i__1 * i__1 + kplusp + 1],&debug_1.ndigit, "_naup2: Ritz estimates computed by _neigh:");
+            i__1 = kplusp * kplusp;
+            zvout_(&kplusp, &workl[i__1 + 1], &debug_1.ndigit, "_naup2: Eigenvalues computed by _neigh:");
+            zvout_(&kplusp, &workl[i__1 + kplusp + 1],&debug_1.ndigit, "_naup2: Ritz estimates computed by _neigh:");
         }
 #endif
 
@@ -598,20 +592,15 @@ L20:
         /* by 1 / max(eps23, magnitude of the Ritz value).  */
         /* ------------------------------------------------ */
 
-        i__1 = nev0;
-        for (j = 1; j <= i__1; ++j)
+        for (j = 1; j <= nev0; ++j)
         {
             /* Computing MAX */
-            i__2 = j;
-            d__3 = ritz[i__2].r;
+            d__3 = ritz[j].r;
             d__4 = d_imag(&ritz[j]);
             d__1 = eps23, d__2 = dlapy2_(&d__3, &d__4);
             rtemp = max(d__1,d__2);
-            i__2 = j;
-            i__3 = j;
-            z__1.r = bounds[i__3].r / rtemp, z__1.i = bounds[i__3].i / rtemp;
-            bounds[i__2].r = z__1.r, bounds[i__2].i = z__1.i;
-
+            z__1.r = bounds[j].r / rtemp, z__1.i = bounds[j].i / rtemp;
+            bounds[j].r = z__1.r, bounds[j].i = z__1.i;
         }
 
         /* ------------------------------------------------- */
@@ -629,19 +618,15 @@ L20:
         /* value.                                       */
         /* -------------------------------------------- */
 
-        i__1 = nev0;
-        for (j = 1; j <= i__1; ++j)
+        for (j = 1; j <= nev0; ++j)
         {
             /* Computing MAX */
-            i__2 = j;
-            d__3 = ritz[i__2].r;
+            d__3 = ritz[j].r;
             d__4 = d_imag(&ritz[j]);
             d__1 = eps23, d__2 = dlapy2_(&d__3, &d__4);
             rtemp = max(d__1,d__2);
-            i__2 = j;
-            i__3 = j;
-            z__1.r = rtemp * bounds[i__3].r, z__1.i = rtemp * bounds[i__3].i;
-            bounds[i__2].r = z__1.r, bounds[i__2].i = z__1.i;
+            z__1.r = rtemp * bounds[j].r, z__1.i = rtemp * bounds[j].i;
+            bounds[j].r = z__1.r, bounds[j].i = z__1.i;
         }
 
         /* --------------------------------------------- */

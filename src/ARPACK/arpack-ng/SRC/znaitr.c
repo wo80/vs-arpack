@@ -828,9 +828,7 @@ L90:
         i__1 = *n;
         for (jj = 1; jj <= i__1; ++jj)
         {
-            i__2 = jj;
-            resid[i__2].r = 0.0, resid[i__2].i = 0.0;
-
+            resid[jj].r = 0.0, resid[jj].i = 0.0;
         }
         *rnorm = 0.0;
     }
@@ -875,10 +873,10 @@ L100:
 
             i__2 = i + i * h_dim1;
             d__1 = h[i__2].r;
-            d__2 = d_imag(&h[i + i * h_dim1]);
+            d__2 = d_imag(&h[i__2]);
             i__3 = i + 1 + (i + 1) * h_dim1;
             d__3 = h[i__3].r;
-            d__4 = d_imag(&h[i + 1 + (i + 1) * h_dim1]);
+            d__4 = d_imag(&h[i__3]);
             tst1 = dlapy2_(&d__1, &d__2) + dlapy2_(&d__3, &d__4);
             if (tst1 == 0.0)
             {
@@ -887,23 +885,20 @@ L100:
             }
             i__2 = i + 1 + i * h_dim1;
             d__1 = h[i__2].r;
-            d__2 = d_imag(&h[i + 1 + i * h_dim1]);
+            d__2 = d_imag(&h[i__2]);
             /* Computing MAX */
             d__3 = ulp * tst1;
             if (dlapy2_(&d__1, &d__2) <= max(d__3,smlnum))
             {
-                i__3 = i + 1 + i * h_dim1;
-                h[i__3].r = 0.0, h[i__3].i = 0.0;
+                h[i__2].r = 0.0, h[i__2].i = 0.0;
             }
-
         }
 
 #ifndef NO_TRACE
         if (msglvl > 2)
         {
             i__1 = *k + *np;
-            i__2 = *k + *np;
-            zmout_(&i__1, &i__2, &h[h_offset], ldh, &debug_1.ndigit, "_naitr: Final upper Hessenberg matrix H of order K+NP");
+            zmout_(&i__1, &i__1, &h[h_offset], ldh, &debug_1.ndigit, "_naitr: Final upper Hessenberg matrix H of order K+NP");
         }
 #endif
 
