@@ -131,20 +131,20 @@ int cndrv3()
     for (j = 1; j <= i__1; ++j)
     {
         i__2 = j - 1;
-        q__1.r = h.r * 1.0f - h.i * 0.f, q__1.i = h.i * 1.0f + h.r *
-                 0.f;
+        q__1.r = h.r * 1.0f - h.i * 0.0f, q__1.i = h.i * 1.0f + h.r *
+                 0.0f;
         dl[i__2].r = q__1.r, dl[i__2].i = q__1.i;
         i__2 = j - 1;
-        q__1.r = h.r * 4.0f - h.i * 0.f, q__1.i = h.r * 0.f + h.i *
+        q__1.r = h.r * 4.0f - h.i * 0.0f, q__1.i = h.r * 0.0f + h.i *
                  4.0f;
         dd[i__2].r = q__1.r, dd[i__2].i = q__1.i;
         i__2 = j - 1;
-        q__1.r = h.r * 1.0f - h.i * 0.f, q__1.i = h.i * 1.0f + h.r *
-                 0.f;
+        q__1.r = h.r * 1.0f - h.i * 0.0f, q__1.i = h.i * 1.0f + h.r *
+                 0.0f;
         du[i__2].r = q__1.r, du[i__2].i = q__1.i;
     }
     i__1 = n - 1;
-    q__1.r = h.r * 4.0f - h.i * 0.f, q__1.i = h.r * 0.f + h.i * 4.0f;
+    q__1.r = h.r * 4.0f - h.i * 0.0f, q__1.i = h.r * 0.0f + h.i * 4.0f;
     dd[i__1].r = q__1.r, dd[i__1].i = q__1.i;
 
     cgttrf_(&n, dl, dd, du, du2, ipiv, &ierr);
@@ -442,11 +442,11 @@ int cndrv3_av_(const int n, complex *v, complex *w)
     s.r = q__1.r, s.i = q__1.i;
     c_div(&q__1, &c_two, &h);
     dd.r = q__1.r, dd.i = q__1.i;
-    q__3.r = -1.f, q__3.i = -0.f;
+    q__3.r = -1.f, q__3.i = -0.0f;
     c_div(&q__2, &q__3, &h);
     q__1.r = q__2.r - s.r, q__1.i = q__2.i - s.i;
     dl.r = q__1.r, dl.i = q__1.i;
-    q__3.r = -1.f, q__3.i = -0.f;
+    q__3.r = -1.f, q__3.i = -0.0f;
     c_div(&q__2, &q__3, &h);
     q__1.r = q__2.r + s.r, q__1.i = q__2.i + s.i;
     du.r = q__1.r, du.i = q__1.i;
@@ -502,10 +502,10 @@ int cndrv3_mv_(const int n, complex *v, complex *w)
     --v;
 
     /* Function Body */
-    q__2.r = v[1].r * 4.0f - v[1].i * 0.f, q__2.i = v[1].i * 4.0f + v[1].r *
-             0.f;
-    q__3.r = v[2].r * 1.0f - v[2].i * 0.f, q__3.i = v[2].i * 1.0f + v[2].r *
-             0.f;
+    q__2.r = v[1].r * 4.0f - v[1].i * 0.0f, q__2.i = v[1].i * 4.0f + v[1].r *
+             0.0f;
+    q__3.r = v[2].r * 1.0f - v[2].i * 0.0f, q__3.i = v[2].i * 1.0f + v[2].r *
+             0.0f;
     q__1.r = q__2.r + q__3.r, q__1.i = q__2.i + q__3.i;
     w[1].r = q__1.r, w[1].i = q__1.i;
     i__1 = n - 1;
@@ -513,20 +513,20 @@ int cndrv3_mv_(const int n, complex *v, complex *w)
     {
         i__2 = j;
         i__3 = j - 1;
-        q__3.r = v[i__3].r * 1.0f - v[i__3].i * 0.f, q__3.i = v[i__3].i * 1.0f + v[i__3].r * 0.f;
+        q__3.r = v[i__3].r * 1.0f - v[i__3].i * 0.0f, q__3.i = v[i__3].i * 1.0f + v[i__3].r * 0.0f;
         i__4 = j;
-        q__4.r = v[i__4].r * 4.0f - v[i__4].i * 0.f, q__4.i = v[i__4].i * 4.0f + v[i__4].r * 0.f;
+        q__4.r = v[i__4].r * 4.0f - v[i__4].i * 0.0f, q__4.i = v[i__4].i * 4.0f + v[i__4].r * 0.0f;
         q__2.r = q__3.r + q__4.r, q__2.i = q__3.i + q__4.i;
         i__5 = j + 1;
-        q__5.r = v[i__5].r * 1.0f - v[i__5].i * 0.f, q__5.i = v[i__5].i * 1.0f + v[i__5].r * 0.f;
+        q__5.r = v[i__5].r * 1.0f - v[i__5].i * 0.0f, q__5.i = v[i__5].i * 1.0f + v[i__5].r * 0.0f;
         q__1.r = q__2.r + q__5.r, q__1.i = q__2.i + q__5.i;
         w[i__2].r = q__1.r, w[i__2].i = q__1.i;
     }
     i__1 = n;
     i__2 = n - 1;
-    q__2.r = v[i__2].r * 1.0f - v[i__2].i * 0.f, q__2.i = v[i__2].i * 1.0f + v[i__2].r * 0.f;
+    q__2.r = v[i__2].r * 1.0f - v[i__2].i * 0.0f, q__2.i = v[i__2].i * 1.0f + v[i__2].r * 0.0f;
     i__3 = n;
-    q__3.r = v[i__3].r * 4.0f - v[i__3].i * 0.f, q__3.i = v[i__3].i * 4.0f + v[i__3].r * 0.f;
+    q__3.r = v[i__3].r * 4.0f - v[i__3].i * 0.0f, q__3.i = v[i__3].i * 4.0f + v[i__3].r * 0.0f;
     q__1.r = q__2.r + q__3.r, q__1.i = q__2.i + q__3.i;
     w[i__1].r = q__1.r, w[i__1].i = q__1.i;
 

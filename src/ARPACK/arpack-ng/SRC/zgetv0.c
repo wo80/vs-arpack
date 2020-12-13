@@ -325,7 +325,7 @@ L30:
     i__1 = *j - 1;
     zgemv_("C", n, &i__1, &z_one, &v[v_offset], ldv, &workd[1], &c__1, &z_zero, &workd[*n + 1], &c__1);
     i__1 = *j - 1;
-    z__1.r = -1., z__1.i = -0.;
+    z__1.r = -1., z__1.i = -0.0;
     zgemv_("N", n, &i__1, &z__1, &v[v_offset], ldv, &workd[*n + 1], &c__1, &z_one, &resid[1], &c__1);
 
     /* -------------------------------------------------------- */
@@ -385,7 +385,7 @@ L40:
     }
 #endif
 
-    if (*rnorm > rnorm0 * .717f)
+    if (*rnorm > rnorm0 * 0.717)
     {
         goto L50;
     }
@@ -410,7 +410,7 @@ L40:
         for (jj = 1; jj <= i__1; ++jj)
         {
             i__2 = jj;
-            resid[i__2].r = 0., resid[i__2].i = 0.0;
+            resid[i__2].r = 0.0, resid[i__2].i = 0.0;
 
         }
         *rnorm = 0.0;

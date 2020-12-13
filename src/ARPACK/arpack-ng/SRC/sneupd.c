@@ -395,8 +395,9 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
     {
         ierr = -3;
     }
-    else if (strcmp(which, "LM") != 0 && strcmp(which, "SM") != 0 && strcmp(which, "LR") != 0
-             && strcmp(which, "SR") != 0 && strcmp(which, "LI") != 0 && strcmp(which, "SI") != 0)
+    else if (strcmp(which, "LM") != 0 && strcmp(which, "SM") != 0 &&
+             strcmp(which, "LR") != 0 && strcmp(which, "SR") != 0 &&
+             strcmp(which, "LI") != 0 && strcmp(which, "SI") != 0)
     {
         ierr = -5;
     }
@@ -412,8 +413,7 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
         {
             ierr = -7;
         }
-        else if (*howmny != 'A' && *
-                 howmny != 'P' && *howmny != 'S' && *rvec)
+        else if (*howmny != 'A' && *howmny != 'P' && *howmny != 'S' && *rvec)
         {
             ierr = -13;
         }
@@ -743,7 +743,7 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
             /* matrix consisting of plus or minus ones           */
             /* ------------------------------------------------- */
 
-            if (workl[invsub + (j - 1) * ldq + j - 1] < 0.f)
+            if (workl[invsub + (j - 1) * ldq + j - 1] < 0.0f)
             {
                 sscal_(&nconv, &s_m1, &workl[iuptri + j - 1], &ldq);
                 sscal_(&nconv, &s_m1, &workl[iuptri + (j - 1) * ldq], &c__1);

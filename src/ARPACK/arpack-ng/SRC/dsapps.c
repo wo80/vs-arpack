@@ -333,7 +333,7 @@ L40:
                 /* H, remain non negative.                   */
                 /* ----------------------------------------- */
 
-                if (r < 0.)
+                if (r < 0.0)
                 {
                     r = -r;
                     c = -c;
@@ -388,7 +388,7 @@ L40:
         /* similarity on transformation H           */
         /* ---------------------------------------- */
 
-        if (h[iend + h_dim1] < 0.)
+        if (h[iend + h_dim1] < 0.0)
         {
             h[iend + h_dim1] = -h[iend + h_dim1];
             dscal_(&kplusp, &d_m1, &q[iend * q_dim1 + 1], &c__1);
@@ -410,7 +410,7 @@ L40:
         i__2 = kplusp - 1;
         for (i = itop; i <= i__2; ++i)
         {
-            if (h[i + 1 + h_dim1] > 0.)
+            if (h[i + 1 + h_dim1] > 0.0)
             {
                 goto L90;
             }
@@ -458,7 +458,7 @@ L90:
     /* This is not necessary if h(kev+1,1) = 0.        */
     /* ----------------------------------------------- */
 
-    if (h[*kev + 1 + h_dim1] > 0.)
+    if (h[*kev + 1 + h_dim1] > 0.0)
     {
         dgemv_("N", n, &kplusp, &d_one, &v[v_offset], ldv, &q[(*kev + 1) * q_dim1 + 1], &c__1, &d_zero, &workd[*n + 1], &c__1);
     }
@@ -493,7 +493,7 @@ L90:
     /* appropriate place if h(kev+1,1) .ne. zero. */
     /* ------------------------------------------ */
 
-    if (h[*kev + 1 + h_dim1] > 0.)
+    if (h[*kev + 1 + h_dim1] > 0.0)
     {
         dcopy_(n, &workd[*n + 1], &c__1, &v[(*kev + 1) * v_dim1 + 1], &c__1);
     }
@@ -507,7 +507,7 @@ L90:
     /* ----------------------------------- */
 
     dscal_(n, &q[kplusp + *kev * q_dim1], &resid[1], &c__1);
-    if (h[*kev + 1 + h_dim1] > 0.)
+    if (h[*kev + 1 + h_dim1] > 0.0)
     {
         daxpy_(n, &h[*kev + 1 + h_dim1], &v[(*kev + 1) * v_dim1 + 1], &c__1,&resid[1], &c__1);
     }

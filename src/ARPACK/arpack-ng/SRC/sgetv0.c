@@ -381,7 +381,7 @@ L40:
     }
 #endif
 
-    if (*rnorm > rnorm0 * .717f)
+    if (*rnorm > rnorm0 * 0.717f)
     {
         goto L50;
     }

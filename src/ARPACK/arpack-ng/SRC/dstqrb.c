@@ -240,7 +240,7 @@ L10:
         for (m = l1; m <= i__1; ++m)
         {
             tst = (d__1 = e[m], abs(d__1));
-            if (tst == 0.)
+            if (tst == 0.0)
             {
                 goto L30;
             }
@@ -271,7 +271,7 @@ L30:
     i__1 = lend - l + 1;
     anorm = dlanst_("i", &i__1, &d[l], &e[l]);
     iscale = 0;
-    if (anorm == 0.)
+    if (anorm == 0.0)
     {
         goto L10;
     }
@@ -624,7 +624,7 @@ L140:
     i__1 = *n - 1;
     for (i = 1; i <= i__1; ++i)
     {
-        if (e[i] != 0.)
+        if (e[i] != 0.0)
         {
             ++(*info);
         }

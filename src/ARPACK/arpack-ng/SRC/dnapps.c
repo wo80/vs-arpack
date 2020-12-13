@@ -273,7 +273,7 @@ int dnapps_(int *n, int *kev, int *np,
             cconj = false;
             goto L110;
         }
-        else if (jj < *np && abs(sigmai) > 0.)
+        else if (jj < *np && abs(sigmai) > 0.0)
         {
             /* ---------------------------------- */
             /* Start of a complex conjugate pair. */
@@ -281,7 +281,7 @@ int dnapps_(int *n, int *kev, int *np,
 
             cconj = true;
         }
-        else if (jj == *np && abs(sigmai) > 0.)
+        else if (jj == *np && abs(sigmai) > 0.0)
         {
             /* -------------------------------------------- */
             /* The last shift has a nonzero imaginary part. */
@@ -319,7 +319,7 @@ L20:
             d__1 = h[i + i * h_dim1];
             d__2 = h[i + 1 + (i + 1) * h_dim1];
             tst1 = abs(d__1) + abs(d__2);
-            if (tst1 == 0.)
+            if (tst1 == 0.0)
             {
                 i__3 = kplusp - jj + 1;
                 tst1 = dlanhs_("1", &i__3, &h[h_offset], ldh, &workl[1]);
@@ -368,14 +368,14 @@ L40:
         /* complex conjugate pair of shifts on a 2 by 2 matrix. */
         /* ---------------------------------------------------- */
 
-        if (istart + 1 == iend && abs(sigmai) > 0.)
+        if (istart + 1 == iend && abs(sigmai) > 0.0)
         {
             goto L100;
         }
 
         h11 = h[istart + istart * h_dim1];
         h21 = h[istart + 1 + istart * h_dim1];
-        if (abs(sigmai) <= 0.)
+        if (abs(sigmai) <= 0.0)
         {
             /* ------------------------------------------- */
             /* Real-valued shift ==> apply single shift QR */
@@ -400,7 +400,7 @@ L40:
                     /* H, remain non negative.                   */
                     /* ----------------------------------------- */
 
-                    if (r < 0.)
+                    if (r < 0.0)
                     {
                         r = -r;
                         c = -c;
@@ -583,7 +583,7 @@ L110:
     i__1 = *kev;
     for (j = 1; j <= i__1; ++j)
     {
-        if (h[j + 1 + j * h_dim1] < 0.)
+        if (h[j + 1 + j * h_dim1] < 0.0)
         {
             i__2 = kplusp - j + 1;
             dscal_(&i__2, &d_m1, &h[j + 1 + j * h_dim1], ldh);
@@ -610,7 +610,7 @@ L110:
         d__1 = h[i + i * h_dim1];
         d__2 = h[i + 1 + (i + 1) * h_dim1];
         tst1 = abs(d__1) + abs(d__2);
-        if (tst1 == 0.)
+        if (tst1 == 0.0)
         {
             tst1 = dlanhs_("1", kev, &h[h_offset], ldh, &workl[1]);
         }
@@ -630,7 +630,7 @@ L110:
     /* of H would be zero as in exact arithmetic.      */
     /* ----------------------------------------------- */
 
-    if (h[*kev + 1 + *kev * h_dim1] > 0.)
+    if (h[*kev + 1 + *kev * h_dim1] > 0.0)
     {
         dgemv_("N", n, &kplusp, &d_one, &v[v_offset], ldv, &q[(*kev + 1) * q_dim1 + 1], &c__1, &d_zero, &workd[*n + 1], &c__1);
     }
@@ -662,7 +662,7 @@ L110:
     /* Copy the (kev+1)-st column of (V*Q) in the appropriate place */
     /* ------------------------------------------------------------ */
 
-    if (h[*kev + 1 + *kev * h_dim1] > 0.)
+    if (h[*kev + 1 + *kev * h_dim1] > 0.0)
     {
         dcopy_(n, &workd[*n + 1], &c__1, &v[(*kev + 1) * v_dim1 + 1], &c__1);
     }
@@ -676,7 +676,7 @@ L110:
     /* ----------------------------------- */
 
     dscal_(n, &q[kplusp + *kev * q_dim1], &resid[1], &c__1);
-    if (h[*kev + 1 + *kev * h_dim1] > 0.)
+    if (h[*kev + 1 + *kev * h_dim1] > 0.0)
     {
         daxpy_(n, &h[*kev + 1 + *kev * h_dim1], &v[(*kev + 1) * v_dim1 + 1],&c__1, &resid[1], &c__1);
     }

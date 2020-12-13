@@ -137,11 +137,11 @@ int dndrv2()
     double* du = (double*)malloc(n * sizeof(double));
     double* du2 = (double*)malloc(n * sizeof(double));
 
-    convct_1.rho = 10.;
+    convct_1.rho = 10.0;
     h = 1.0 / (double) (n + 1);
     s = convct_1.rho * h / 2.0;
 
-    s1 = -1. - s;
+    s1 = -1.0 - s;
     s2 = 2. - sigmar;
     s3 = s - 1.0;
 
@@ -326,7 +326,7 @@ L20:
         /* tolerance)                */
         /* ------------------------- */
 
-        if (d[j + 24] == 0.)
+        if (d[j + 24] == 0.0)
         {
             /* ------------------ */
             /* Ritz value is real */
@@ -454,7 +454,7 @@ int dndrv2_av_(const int n, double *v, double *w)
     h = 1.0 / (double) (n + 1);
     s = convct_1.rho * h / 2.0;
     dd = 2.0;
-    dl = -1. - s;
+    dl = -1.0 - s;
     du = s - 1.0;
 
     w[1] = dd * v[1] + du * v[2];

@@ -331,7 +331,7 @@ L10:
     /* The routine SSEUPD now called to do this  */
     /* post processing (Other modes may require  */
     /* more complicated post processing than     */
-    /* mode1.)                                   */
+    /* mode1.0)                                   */
     /*                                           */
     /* ----------------------------------------- */
 

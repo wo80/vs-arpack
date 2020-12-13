@@ -459,7 +459,7 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int 
     i__1 = ih + 2;
     rnorm.r = workl[i__1].r, rnorm.i = workl[i__1].i;
     i__1 = ih + 2;
-    workl[i__1].r = 0., workl[i__1].i = 0.0;
+    workl[i__1].r = 0.0, workl[i__1].i = 0.0;
 
 #ifndef NO_TRACE
     if (msglvl > 2)
@@ -679,11 +679,11 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int 
             /* ------------------------------------------------- */
 
             i__2 = invsub + (j - 1) * ldq + j - 1;
-            if (workl[i__2].r < 0.)
+            if (workl[i__2].r < 0.0)
             {
-                z__1.r = -1., z__1.i = -0.;
+                z__1.r = -1., z__1.i = -0.0;
                 zscal_(&nconv, &z__1, &workl[iuptri + j - 1], &ldq);
-                z__1.r = -1., z__1.i = -0.;
+                z__1.r = -1., z__1.i = -0.0;
                 zscal_(&nconv, &z__1, &workl[iuptri + (j - 1) * ldq], &c__1);
             }
         }
@@ -873,7 +873,7 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int 
         for (j = 1; j <= i__1; ++j)
         {
             i__2 = iheig + j - 1;
-            if (workl[i__2].r != 0. || workl[i__2].i != 0.)
+            if (workl[i__2].r != 0. || workl[i__2].i != 0.0)
             {
                 i__2 = j;
                 z_div(&z__1, &workl[invsub + (j - 1) * ldq + *ncv - 1], &workl[iheig + j - 1]);

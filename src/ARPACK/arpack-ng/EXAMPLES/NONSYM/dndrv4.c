@@ -143,7 +143,7 @@ int dndrv4()
     double* du = (double*)malloc(n * sizeof(double));
     double* du2 = (double*)malloc(n * sizeof(double));
 
-    convct_1.rho = 10.;
+    convct_1.rho = 10.0;
     h = 1.0 / (double) (n + 1);
     s = convct_1.rho / 2.0;
 
@@ -380,7 +380,7 @@ L20:
         /* tolerance)                */
         /* ------------------------- */
 
-        if (d[j + 24] == 0.)
+        if (d[j + 24] == 0.0)
         {
             /* ------------------ */
             /* Ritz value is real */
@@ -509,11 +509,11 @@ int dndrv4_mv_(const int n, double *v, double *w)
     --v;
 
     /* Function Body */
-    w[1] = (v[1] * 4.0 + v[2] * 1.) / 6.;
+    w[1] = (v[1] * 4.0 + v[2] * 1.0) / 6.;
     i__1 = n - 1;
     for (j = 2; j <= i__1; ++j)
     {
-        w[j] = (v[j - 1] * 1. + v[j] * 4.0 + v[j + 1] * 1.) / 6.;
+        w[j] = (v[j - 1] * 1. + v[j] * 4.0 + v[j + 1] * 1.0) / 6.;
     }
     w[n] = (v[n - 1] * 1. + v[n] * 4.) / 6.;
 

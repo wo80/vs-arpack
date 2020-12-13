@@ -111,7 +111,7 @@ int ssdrv6()
     }
     char* bmat = "G";
     char* which = "LM";
-    sigma = 150.f;
+    sigma = 150.0f;
 
     /* ------------------------------------------------ */
     /* The work array WORKL is used in SSAUPD as        */

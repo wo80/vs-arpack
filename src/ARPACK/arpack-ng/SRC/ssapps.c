@@ -331,7 +331,7 @@ L40:
                 /* H, remain non negative.                   */
                 /* ----------------------------------------- */
 
-                if (r < 0.f)
+                if (r < 0.0f)
                 {
                     r = -r;
                     c = -c;
@@ -384,7 +384,7 @@ L40:
         /* similarity on transformation H           */
         /* ---------------------------------------- */
 
-        if (h[iend + h_dim1] < 0.f)
+        if (h[iend + h_dim1] < 0.0f)
         {
             h[iend + h_dim1] = -h[iend + h_dim1];
             sscal_(&kplusp, &s_m1, &q[iend * q_dim1 + 1], &c__1);
@@ -406,7 +406,7 @@ L40:
         i__2 = kplusp - 1;
         for (i = itop; i <= i__2; ++i)
         {
-            if (h[i + 1 + h_dim1] > 0.f)
+            if (h[i + 1 + h_dim1] > 0.0f)
             {
                 goto L90;
             }
@@ -452,7 +452,7 @@ L90:
     /* This is not necessary if h(kev+1,1) = 0.        */
     /* ----------------------------------------------- */
 
-    if (h[*kev + 1 + h_dim1] > 0.f)
+    if (h[*kev + 1 + h_dim1] > 0.0f)
     {
         sgemv_("N", n, &kplusp, &s_one, &v[v_offset], ldv, &q[(*kev + 1) * q_dim1 + 1], &c__1, &s_zero, &workd[*n + 1], &c__1);
     }
@@ -483,7 +483,7 @@ L90:
     /* appropriate place if h(kev+1,1) .ne. zero. */
     /* ------------------------------------------ */
 
-    if (h[*kev + 1 + h_dim1] > 0.f)
+    if (h[*kev + 1 + h_dim1] > 0.0f)
     {
         scopy_(n, &workd[*n + 1], &c__1, &v[(*kev + 1) * v_dim1 + 1], &c__1);
     }
@@ -497,7 +497,7 @@ L90:
     /* ----------------------------------- */
 
     sscal_(n, &q[kplusp + *kev * q_dim1], &resid[1], &c__1);
-    if (h[*kev + 1 + h_dim1] > 0.f)
+    if (h[*kev + 1 + h_dim1] > 0.0f)
     {
         saxpy_(n, &h[*kev + 1 + h_dim1], &v[(*kev + 1) * v_dim1 + 1], &c__1,&resid[1], &c__1);
     }

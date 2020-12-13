@@ -342,7 +342,7 @@ L10:
     /* The routine ZNEUPD  now called to do this  */
     /* post processing (Other modes may require  */
     /* more complicated post processing than     */
-    /* mode1.)                                   */
+    /* mode1.0)                                   */
     /*                                           */
     /* ----------------------------------------- */
 
@@ -507,7 +507,7 @@ int znsimp_av_(const int nx, zomplex *v, zomplex *w)
     h2.r = z__1.r, h2.i = z__1.i;
 
     znsimp_tv_(nx, &v[1], &w[1]);
-    z__2.r = -1., z__2.i = -0.;
+    z__2.r = -1., z__2.i = -0.0;
     z_div(&z__1, &z__2, &h2);
     zaxpy_(&nx, &z__1, &v[nx + 1], &c__1, &w[1], &c__1);
 
@@ -516,17 +516,17 @@ int znsimp_av_(const int nx, zomplex *v, zomplex *w)
     {
         lo = (j - 1) * nx;
         znsimp_tv_(nx, &v[lo + 1], &w[lo + 1]);
-        z__2.r = -1., z__2.i = -0.;
+        z__2.r = -1., z__2.i = -0.0;
         z_div(&z__1, &z__2, &h2);
         zaxpy_(&nx, &z__1, &v[lo - nx + 1], &c__1, &w[lo + 1], &c__1);
-        z__2.r = -1., z__2.i = -0.;
+        z__2.r = -1., z__2.i = -0.0;
         z_div(&z__1, &z__2, &h2);
         zaxpy_(&nx, &z__1, &v[lo + nx + 1], &c__1, &w[lo + 1], &c__1);
     }
 
     lo = (nx - 1) * nx;
     znsimp_tv_(nx, &v[lo + 1], &w[lo + 1]);
-    z__2.r = -1., z__2.i = -0.;
+    z__2.r = -1., z__2.i = -0.0;
     z_div(&z__1, &z__2, &h2);
     zaxpy_(&nx, &z__1, &v[lo - nx + 1], &c__1, &w[lo + 1], &c__1);
 
@@ -565,13 +565,13 @@ int znsimp_tv_(const int nx, zomplex *x, zomplex *y)
     h2.r = z__1.r, h2.i = z__1.i;
     z_div(&z__1, &z_four, &h2);
     dd.r = z__1.r, dd.i = z__1.i;
-    z__3.r = -1., z__3.i = -0.;
+    z__3.r = -1., z__3.i = -0.0;
     z_div(&z__2, &z__3, &h2);
     z__5.r = 50.0, z__5.i = 0.0;
     z_div(&z__4, &z__5, &h);
     z__1.r = z__2.r - z__4.r, z__1.i = z__2.i - z__4.i;
     dl.r = z__1.r, dl.i = z__1.i;
-    z__3.r = -1., z__3.i = -0.;
+    z__3.r = -1., z__3.i = -0.0;
     z_div(&z__2, &z__3, &h2);
     z__5.r = 50.0, z__5.i = 0.0;
     z_div(&z__4, &z__5, &h);

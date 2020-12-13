@@ -383,7 +383,7 @@ int cndrv1_av_(const int nx, complex *v, complex *w)
     h2.r = q__1.r, h2.i = q__1.i;
 
     cndrv1_tv_(nx, &v[1], &w[1]);
-    q__2.r = -1.f, q__2.i = -0.f;
+    q__2.r = -1.f, q__2.i = -0.0f;
     c_div(&q__1, &q__2, &h2);
     caxpy_(&nx, &q__1, &v[nx + 1], &c__1, &w[1], &c__1);
 
@@ -392,17 +392,17 @@ int cndrv1_av_(const int nx, complex *v, complex *w)
     {
         lo = (j - 1) * nx;
         cndrv1_tv_(nx, &v[lo + 1], &w[lo + 1]);
-        q__2.r = -1.f, q__2.i = -0.f;
+        q__2.r = -1.f, q__2.i = -0.0f;
         c_div(&q__1, &q__2, &h2);
         caxpy_(&nx, &q__1, &v[lo - nx + 1], &c__1, &w[lo + 1], &c__1);
-        q__2.r = -1.f, q__2.i = -0.f;
+        q__2.r = -1.f, q__2.i = -0.0f;
         c_div(&q__1, &q__2, &h2);
         caxpy_(&nx, &q__1, &v[lo + nx + 1], &c__1, &w[lo + 1], &c__1);
     }
 
     lo = (nx - 1) * nx;
     cndrv1_tv_(nx, &v[lo + 1], &w[lo + 1]);
-    q__2.r = -1.f, q__2.i = -0.f;
+    q__2.r = -1.f, q__2.i = -0.0f;
     c_div(&q__1, &q__2, &h2);
     caxpy_(&nx, &q__1, &v[lo - nx + 1], &c__1, &w[lo + 1], &c__1);
 
@@ -441,13 +441,13 @@ int cndrv1_tv_(const int nx, complex *x, complex *y)
     h2.r = q__1.r, h2.i = q__1.i;
     c_div(&q__1, &c_four, &h2);
     dd.r = q__1.r, dd.i = q__1.i;
-    q__3.r = -1.f, q__3.i = -0.f;
+    q__3.r = -1.f, q__3.i = -0.0f;
     c_div(&q__2, &q__3, &h2);
     q__5.r = 50.0f, q__5.i = 0.0f;
     c_div(&q__4, &q__5, &h);
     q__1.r = q__2.r - q__4.r, q__1.i = q__2.i - q__4.i;
     dl.r = q__1.r, dl.i = q__1.i;
-    q__3.r = -1.f, q__3.i = -0.f;
+    q__3.r = -1.f, q__3.i = -0.0f;
     c_div(&q__2, &q__3, &h2);
     q__5.r = 50.0f, q__5.i = 0.0f;
     c_div(&q__4, &q__5, &h);

@@ -468,7 +468,7 @@ L100:
     for (j = 1; j <= i__1; ++j)
     {
         i__2 = j + 1 + j * h_dim1;
-        if (h[i__2].r < 0.f || r_imag(&h[j + 1 + j * h_dim1]) != 0.0f)
+        if (h[i__2].r < 0.0f || r_imag(&h[j + 1 + j * h_dim1]) != 0.0f)
         {
             i__2 = j + 1 + j * h_dim1;
             i__3 = j + 1 + j * h_dim1;
@@ -538,7 +538,7 @@ L100:
     /* ----------------------------------------------- */
 
     i__1 = *kev + 1 + *kev * h_dim1;
-    if (h[i__1].r > 0.f)
+    if (h[i__1].r > 0.0f)
     {
         cgemv_("N", n, &kplusp, &c_one, &v[v_offset], ldv, &q[(*kev + 1) * q_dim1 + 1], &c__1, &c_zero, &workd[*n + 1], &c__1);
     }
@@ -567,7 +567,7 @@ L100:
     /* ------------------------------------------------------------ */
 
     i__1 = *kev + 1 + *kev * h_dim1;
-    if (h[i__1].r > 0.f)
+    if (h[i__1].r > 0.0f)
     {
         ccopy_(n, &workd[*n + 1], &c__1, &v[(*kev + 1) * v_dim1 + 1], &c__1);
     }
@@ -582,7 +582,7 @@ L100:
 
     cscal_(n, &q[kplusp + *kev * q_dim1], &resid[1], &c__1);
     i__1 = *kev + 1 + *kev * h_dim1;
-    if (h[i__1].r > 0.f)
+    if (h[i__1].r > 0.0f)
     {
         caxpy_(n, &h[*kev + 1 + *kev * h_dim1], &v[(*kev + 1) * v_dim1 + 1],&c__1, &resid[1], &c__1);
     }

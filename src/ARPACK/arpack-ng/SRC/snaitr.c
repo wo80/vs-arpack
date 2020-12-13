@@ -365,7 +365,7 @@ L1000:
     /* ------------------------------------------------- */
 
     betaj = *rnorm;
-    if (*rnorm > 0.f)
+    if (*rnorm > 0.0f)
     {
         goto L40;
     }
@@ -662,7 +662,7 @@ L70:
     /* than or equal to 0.717.                                   */
     /* --------------------------------------------------------- */
 
-    if (*rnorm > wnorm * .717f)
+    if (*rnorm > wnorm * 0.717f)
     {
         goto L100;
     }
@@ -775,7 +775,7 @@ L90:
     /* step of re-orthogonalization.           */
     /* --------------------------------------- */
 
-    if (rnorm1 > *rnorm * .717f)
+    if (rnorm1 > *rnorm * 0.717f)
     {
         /* ------------------------------------- */
         /* No need for further refinement.       */

@@ -330,7 +330,7 @@ L10:
     /* The routine DSEUPD now called to do this  */
     /* post processing (Other modes may require  */
     /* more complicated post processing than     */
-    /* mode1.)                                   */
+    /* mode1.0)                                   */
     /*                                           */
     /* ----------------------------------------- */
 

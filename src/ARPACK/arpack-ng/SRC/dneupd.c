@@ -395,8 +395,9 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
     {
         ierr = -3;
     }
-    else if (strcmp(which, "LM") != 0 && strcmp(which, "SM") != 0 && strcmp(which, "LR") != 0
-             && strcmp(which, "SR") != 0 && strcmp(which, "LI") != 0 && strcmp(which, "SI") != 0)
+    else if (strcmp(which, "LM") != 0 && strcmp(which, "SM") != 0 &&
+             strcmp(which, "LR") != 0 && strcmp(which, "SR") != 0 &&
+             strcmp(which, "LI") != 0 && strcmp(which, "SI") != 0)
     {
         ierr = -5;
     }
@@ -412,8 +413,7 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
         {
             ierr = -7;
         }
-        else if (*howmny != 'A' && *
-                 howmny != 'P' && *howmny != 'S' && *rvec)
+        else if (*howmny != 'A' && *howmny != 'P' && *howmny != 'S' && *rvec)
         {
             ierr = -13;
         }
@@ -427,7 +427,7 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
     {
         strcpy(type, "REGULR");
     }
-    else if (mode == 3 && *sigmai == 0.)
+    else if (mode == 3 && *sigmai == 0.0)
     {
         strcpy(type, "SHIFTI");
     }
@@ -743,7 +743,7 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
             /* matrix consisting of plus or minus ones           */
             /* ------------------------------------------------- */
 
-            if (workl[invsub + (j - 1) * ldq + j - 1] < 0.)
+            if (workl[invsub + (j - 1) * ldq + j - 1] < 0.0)
             {
                 dscal_(&nconv, &d_m1, &workl[iuptri + j - 1], &ldq);
                 dscal_(&nconv, &d_m1, &workl[iuptri + (j - 1) * ldq], &c__1);
@@ -791,7 +791,7 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
             i__1 = nconv;
             for (j = 1; j <= i__1; ++j)
             {
-                if (workl[iheigi + j - 1] == 0.)
+                if (workl[iheigi + j - 1] == 0.0)
                 {
                     /* -------------------- */
                     /* real eigenvalue case */
@@ -836,7 +836,7 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
             i__1 = nconv;
             for (j = 1; j <= i__1; ++j)
             {
-                if (workl[iheigi + j - 1] != 0.)
+                if (workl[iheigi + j - 1] != 0.0)
                 {
                     /* ----------------------------------------- */
                     /* Complex conjugate pair case. Note that    */
@@ -1037,14 +1037,14 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
         i__1 = nconv;
         for (j = 1; j <= i__1; ++j)
         {
-            if (workl[iheigi + j - 1] == 0. && workl[iheigr + j - 1] != 0.)
+            if (workl[iheigi + j - 1] == 0.0 && workl[iheigr + j - 1] != 0.0)
             {
                 workev[j] = workl[invsub + (j - 1) * ldq + *ncv - 1] / workl[iheigr + j - 1];
             }
             else if (iconj == 0)
             {
                 temp = dlapy2_(&workl[iheigr + j - 1], &workl[iheigi + j - 1]);
-                if (temp != 0.)
+                if (temp != 0.0)
                 {
                     workev[j] = (workl[invsub + (j - 1) * ldq + *ncv - 1] * workl[iheigr + j - 1] + workl[invsub + j * ldq + * ncv - 1] * workl[iheigi + j - 1]) / temp / temp;
                     workev[j + 1] = (workl[invsub + j * ldq + *ncv - 1] * workl[iheigr + j - 1] - workl[invsub + (j - 1) * ldq + *ncv - 1] * workl[iheigi + j - 1]) / temp / temp;

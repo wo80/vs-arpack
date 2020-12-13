@@ -500,7 +500,7 @@ int znaupd_(int *ido, char *bmat, int *n, char *which, int *nev, double *tol,
         {
             nb = 1;
         }
-        if (*tol <= 0.)
+        if (*tol <= 0.0)
         {
             *tol = dlamch_("E");
         }
@@ -529,7 +529,7 @@ int znaupd_(int *ido, char *bmat, int *n, char *which, int *nev, double *tol,
         for (j = 1; j <= i__1; ++j)
         {
             i__2 = j;
-            workl[i__2].r = 0., workl[i__2].i = 0.0;
+            workl[i__2].r = 0.0, workl[i__2].i = 0.0;
         }
 
         /* ----------------------------------------------------------- */

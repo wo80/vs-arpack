@@ -368,7 +368,7 @@ L1000:
     /* ------------------------------------------------- */
 
     betaj = *rnorm;
-    if (*rnorm > 0.f)
+    if (*rnorm > 0.0f)
     {
         goto L40;
     }
@@ -587,7 +587,7 @@ L60:
     /* RESID contains OP*v_{j}. See STEP 3. */
     /* ------------------------------------ */
 
-    q__1.r = -1.f, q__1.i = -0.f;
+    q__1.r = -1.f, q__1.i = -0.0f;
     cgemv_("N", n, &j, &q__1, &v[v_offset], ldv, &h[j * h_dim1 + 1], &c__1, &c_one, &resid[1], &c__1);
 
     if (j > 1)
@@ -674,7 +674,7 @@ L70:
     /* than or equal to 0.717.                                   */
     /* --------------------------------------------------------- */
 
-    if (*rnorm > wnorm * .717f)
+    if (*rnorm > wnorm * 0.717f)
     {
         goto L100;
     }
@@ -715,7 +715,7 @@ L80:
     /* + v(:,1:J)*WORKD(IRJ:IRJ+J-1)*e'_j.         */
     /* ------------------------------------------- */
 
-    q__1.r = -1.f, q__1.i = -0.f;
+    q__1.r = -1.f, q__1.i = -0.0f;
     cgemv_("N", n, &j, &q__1, &v[v_offset], ldv, &workd[irj], &c__1, &c_one, &resid[1], &c__1);
     caxpy_(&j, &c_one, &workd[irj], &c__1, &h[j * h_dim1 + 1], &c__1);
 
@@ -792,7 +792,7 @@ L90:
     /* step of re-orthogonalization.           */
     /* --------------------------------------- */
 
-    if (rnorm1 > *rnorm * .717f)
+    if (rnorm1 > *rnorm * 0.717f)
     {
         /* ------------------------------------- */
         /* No need for further refinement.       */

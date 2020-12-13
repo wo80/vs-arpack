@@ -279,7 +279,7 @@ int ssvd()
     /* Specification of Algorithm Mode:                  */
     /*                                                   */
     /* This program uses the exact shift strategy        */
-    /* (indicated by setting IPARAM(1) = 1.)             */
+    /* (indicated by setting IPARAM(1) = 1.0)             */
     /* IPARAM(3) specifies the maximum number of Arnoldi */
     /* iterations allowed.  Mode 1 of SSAUPD is used     */
     /* (IPARAM(7) = 1). All these options can be changed */

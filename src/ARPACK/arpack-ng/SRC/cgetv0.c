@@ -325,7 +325,7 @@ L30:
     i__1 = *j - 1;
     cgemv_("C", n, &i__1, &c_one, &v[v_offset], ldv, &workd[1], &c__1, &c_zero, &workd[*n + 1], &c__1);
     i__1 = *j - 1;
-    q__1.r = -1.f, q__1.i = -0.f;
+    q__1.r = -1.f, q__1.i = -0.0f;
     cgemv_("N", n, &i__1, &q__1, &v[v_offset], ldv, &workd[*n + 1], &c__1, &c_one, &resid[1], &c__1);
 
     /* -------------------------------------------------------- */
@@ -385,7 +385,7 @@ L40:
     }
 #endif
 
-    if (*rnorm > rnorm0 * .717f)
+    if (*rnorm > rnorm0 * 0.717f)
     {
         goto L50;
     }

@@ -359,7 +359,7 @@ L1000:
     /* a j-step Arnoldi factorization is present.              */
     /* ------------------------------------------------------- */
 
-    if (*rnorm > 0.)
+    if (*rnorm > 0.0)
     {
         goto L40;
     }
@@ -685,7 +685,7 @@ L70:
     /* to enforce ||v(:,1:j)^T * r_{j}|| .le. eps * || r_{j} ||  */
     /* --------------------------------------------------------- */
 
-    if (*rnorm > wnorm * .717f)
+    if (*rnorm > wnorm * 0.717)
     {
         goto L100;
     }
@@ -802,7 +802,7 @@ L90:
     /* step of re-orthogonalization.           */
     /* --------------------------------------- */
 
-    if (rnorm1 > *rnorm * .717f)
+    if (rnorm1 > *rnorm * 0.717)
     {
         /* ------------------------------ */
         /* No need for further refinement */
@@ -860,7 +860,7 @@ L100:
     /* and scale v(:,j) by -1.                                  */
     /* -------------------------------------------------------- */
 
-    if (h[j + h_dim1] < 0.)
+    if (h[j + h_dim1] < 0.0)
     {
         h[j + h_dim1] = -h[j + h_dim1];
         if (j < *k + *np)

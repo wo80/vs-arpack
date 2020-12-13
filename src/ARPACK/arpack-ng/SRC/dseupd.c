@@ -713,7 +713,7 @@ L30:
             i__1 = *ncv;
             for (k = 1; k <= i__1; ++k)
             {
-                workl[ihd + k - 1] = *sigma * workl[ihd + k - 1] / (workl[ihd + k - 1] - 1.);
+                workl[ihd + k - 1] = *sigma * workl[ihd + k - 1] / (workl[ihd + k - 1] - 1.0);
             }
         }
         else if (strcmp(type, "CAYLEY") == 0)
@@ -721,7 +721,7 @@ L30:
             i__1 = *ncv;
             for (k = 1; k <= i__1; ++k)
             {
-                workl[ihd + k - 1] = *sigma * (workl[ihd + k - 1] + 1.) / (workl[ihd + k - 1] - 1.);
+                workl[ihd + k - 1] = *sigma * (workl[ihd + k - 1] + 1.0) / (workl[ihd + k - 1] - 1.0);
             }
         }
 
@@ -864,7 +864,7 @@ L30:
             i__1 = *ncv;
             for (k = 1; k <= i__1; ++k)
             {
-                d__1 = workl[ihb + k - 1] / workl[iw + k - 1] * (workl[iw + k - 1] - 1.);
+                d__1 = workl[ihb + k - 1] / workl[iw + k - 1] * (workl[iw + k - 1] - 1.0);
                 workl[ihb + k - 1] = abs(d__1);
             }
 
@@ -902,7 +902,7 @@ L30:
         i__1 = nconv - 1;
         for (k = 0; k <= i__1; ++k)
         {
-            workl[iw + k] = workl[iw + *ncv + k] / (workl[iw + k] - 1.);
+            workl[iw + k] = workl[iw + *ncv + k] / (workl[iw + k] - 1.0);
         }
     }
 

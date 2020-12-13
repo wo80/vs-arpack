@@ -136,7 +136,7 @@ int cndrv2()
     complex* dl = (complex*)malloc(n * sizeof(complex));
     complex* du2 = (complex*)malloc(n * sizeof(complex));
 
-    convct_1.rho.r = 10.f, convct_1.rho.i = 0.0f;
+    convct_1.rho.r = 10.0f, convct_1.rho.i = 0.0f;
     i__1 = n + 1;
     q__2.r = (float) i__1, q__2.i = 0.0f;
     c_div(&q__1, &c_one, &q__2);
@@ -146,7 +146,7 @@ int cndrv2()
     c_div(&q__1, &convct_1.rho, &c_two);
     s.r = q__1.r, s.i = q__1.i;
 
-    q__3.r = -1.f, q__3.i = -0.f;
+    q__3.r = -1.f, q__3.i = -0.0f;
     c_div(&q__2, &q__3, &h2);
     c_div(&q__4, &s, &h);
     q__1.r = q__2.r - q__4.r, q__1.i = q__2.i - q__4.i;
@@ -154,7 +154,7 @@ int cndrv2()
     c_div(&q__2, &c_two, &h2);
     q__1.r = q__2.r - sigma.r, q__1.i = q__2.i - sigma.i;
     s2.r = q__1.r, s2.i = q__1.i;
-    q__3.r = -1.f, q__3.i = -0.f;
+    q__3.r = -1.f, q__3.i = -0.0f;
     c_div(&q__2, &q__3, &h2);
     c_div(&q__4, &s, &h);
     q__1.r = q__2.r + q__4.r, q__1.i = q__2.i + q__4.i;
@@ -448,12 +448,12 @@ int cndrv2_av_(const int n, complex *v, complex *w)
     s.r = q__1.r, s.i = q__1.i;
     c_div(&q__1, &c_two, &h2);
     dd.r = q__1.r, dd.i = q__1.i;
-    q__3.r = -1.f, q__3.i = -0.f;
+    q__3.r = -1.f, q__3.i = -0.0f;
     c_div(&q__2, &q__3, &h2);
     c_div(&q__4, &s, &h);
     q__1.r = q__2.r - q__4.r, q__1.i = q__2.i - q__4.i;
     dl.r = q__1.r, dl.i = q__1.i;
-    q__3.r = -1.f, q__3.i = -0.f;
+    q__3.r = -1.f, q__3.i = -0.0f;
     c_div(&q__2, &q__3, &h2);
     c_div(&q__4, &s, &h);
     q__1.r = q__2.r + q__4.r, q__1.i = q__2.i + q__4.i;

@@ -143,7 +143,7 @@ int sndrv4()
     float* dl = (float*)malloc(n * sizeof(float));
     float* du2 = (float*)malloc(n * sizeof(float));
 
-    convct_1.rho = 10.f;
+    convct_1.rho = 10.0f;
     h = 1.0f / (float) (n + 1);
     s = convct_1.rho / 2.0f;
 

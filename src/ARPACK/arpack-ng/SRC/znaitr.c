@@ -368,7 +368,7 @@ L1000:
     /* ------------------------------------------------- */
 
     betaj = *rnorm;
-    if (*rnorm > 0.)
+    if (*rnorm > 0.0)
     {
         goto L40;
     }
@@ -587,7 +587,7 @@ L60:
     /* RESID contains OP*v_{j}. See STEP 3. */
     /* ------------------------------------ */
 
-    z__1.r = -1., z__1.i = -0.;
+    z__1.r = -1., z__1.i = -0.0;
     zgemv_("N", n, &j, &z__1, &v[v_offset], ldv, &h[j * h_dim1 + 1], &c__1, &z_one, &resid[1], &c__1);
 
     if (j > 1)
@@ -674,7 +674,7 @@ L70:
     /* than or equal to 0.717.                                   */
     /* --------------------------------------------------------- */
 
-    if (*rnorm > wnorm * .717f)
+    if (*rnorm > wnorm * 0.717)
     {
         goto L100;
     }
@@ -715,7 +715,7 @@ L80:
     /* + v(:,1:J)*WORKD(IRJ:IRJ+J-1)*e'_j.         */
     /* ------------------------------------------- */
 
-    z__1.r = -1., z__1.i = -0.;
+    z__1.r = -1., z__1.i = -0.0;
     zgemv_("N", n, &j, &z__1, &v[v_offset], ldv, &workd[irj], &c__1, &z_one, &resid[1], &c__1);
     zaxpy_(&j, &z_one, &workd[irj], &c__1, &h[j * h_dim1 + 1], &c__1);
 
@@ -792,7 +792,7 @@ L90:
     /* step of re-orthogonalization.           */
     /* --------------------------------------- */
 
-    if (rnorm1 > *rnorm * .717f)
+    if (rnorm1 > *rnorm * 0.717)
     {
         /* ------------------------------------- */
         /* No need for further refinement.       */
@@ -829,7 +829,7 @@ L90:
         for (jj = 1; jj <= i__1; ++jj)
         {
             i__2 = jj;
-            resid[i__2].r = 0., resid[i__2].i = 0.0;
+            resid[i__2].r = 0.0, resid[i__2].i = 0.0;
 
         }
         *rnorm = 0.0;
@@ -880,7 +880,7 @@ L100:
             d__3 = h[i__3].r;
             d__4 = d_imag(&h[i + 1 + (i + 1) * h_dim1]);
             tst1 = dlapy2_(&d__1, &d__2) + dlapy2_(&d__3, &d__4);
-            if (tst1 == 0.)
+            if (tst1 == 0.0)
             {
                 i__2 = *k + *np;
                 tst1 = zlanhs_("1", &i__2, &h[h_offset], ldh, &workd[*n + 1]);
@@ -893,7 +893,7 @@ L100:
             if (dlapy2_(&d__1, &d__2) <= max(d__3,smlnum))
             {
                 i__3 = i + 1 + i * h_dim1;
-                h[i__3].r = 0., h[i__3].i = 0.0;
+                h[i__3].r = 0.0, h[i__3].i = 0.0;
             }
 
         }

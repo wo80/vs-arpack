@@ -270,7 +270,7 @@ L20:
             d__3 = h[i__4].r;
             d__4 = d_imag(&h[i + 1 + (i + 1) * h_dim1]);
             tst1 = abs(d__1) + abs(d__2) + abs(d__3) + abs(d__4);
-            if (tst1 == 0.)
+            if (tst1 == 0.0)
             {
                 i__3 = kplusp - jj + 1;
                 tst1 = zlanhs_("1", &i__3, &h[h_offset], ldh, &workl[1]);
@@ -291,7 +291,7 @@ L20:
 
                 iend = i;
                 i__3 = i + 1 + i * h_dim1;
-                h[i__3].r = 0., h[i__3].i = 0.0;
+                h[i__3].r = 0.0, h[i__3].i = 0.0;
                 goto L40;
             }
         }
@@ -338,7 +338,7 @@ L40:
                 i__3 = i + (i - 1) * h_dim1;
                 h[i__3].r = r.r, h[i__3].i = r.i;
                 i__3 = i + 1 + (i - 1) * h_dim1;
-                h[i__3].r = 0., h[i__3].i = 0.0;
+                h[i__3].r = 0.0, h[i__3].i = 0.0;
             }
 
             /* ------------------------------------------- */
@@ -468,7 +468,7 @@ L100:
     for (j = 1; j <= i__1; ++j)
     {
         i__2 = j + 1 + j * h_dim1;
-        if (h[i__2].r < 0. || d_imag(&h[j + 1 + j * h_dim1]) != 0.)
+        if (h[i__2].r < 0. || d_imag(&h[j + 1 + j * h_dim1]) != 0.0)
         {
             i__2 = j + 1 + j * h_dim1;
             i__3 = j + 1 + j * h_dim1;
@@ -515,7 +515,7 @@ L100:
         d__3 = h[i__3].r;
         d__4 = d_imag(&h[i + 1 + (i + 1) * h_dim1]);
         tst1 = abs(d__1) + abs(d__2) + abs(d__3) + abs(d__4);
-        if (tst1 == 0.)
+        if (tst1 == 0.0)
         {
             tst1 = zlanhs_("1", kev, &h[h_offset], ldh, &workl[1]);
         }
@@ -525,7 +525,7 @@ L100:
         if (h[i__2].r <= max(d__1,smlnum))
         {
             i__3 = i + 1 + i * h_dim1;
-            h[i__3].r = 0., h[i__3].i = 0.0;
+            h[i__3].r = 0.0, h[i__3].i = 0.0;
         }
     }
 
@@ -538,7 +538,7 @@ L100:
     /* ----------------------------------------------- */
 
     i__1 = *kev + 1 + *kev * h_dim1;
-    if (h[i__1].r > 0.)
+    if (h[i__1].r > 0.0)
     {
         zgemv_("N", n, &kplusp, &z_one, &v[v_offset], ldv, &q[(*kev + 1) * q_dim1 + 1], &c__1, &z_zero, &workd[*n + 1], &c__1);
     }
@@ -567,7 +567,7 @@ L100:
     /* ------------------------------------------------------------ */
 
     i__1 = *kev + 1 + *kev * h_dim1;
-    if (h[i__1].r > 0.)
+    if (h[i__1].r > 0.0)
     {
         zcopy_(n, &workd[*n + 1], &c__1, &v[(*kev + 1) * v_dim1 + 1], &c__1);
     }
@@ -582,7 +582,7 @@ L100:
 
     zscal_(n, &q[kplusp + *kev * q_dim1], &resid[1], &c__1);
     i__1 = *kev + 1 + *kev * h_dim1;
-    if (h[i__1].r > 0.)
+    if (h[i__1].r > 0.0)
     {
         zaxpy_(n, &h[*kev + 1 + *kev * h_dim1], &v[(*kev + 1) * v_dim1 + 1],&c__1, &resid[1], &c__1);
     }

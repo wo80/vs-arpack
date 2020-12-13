@@ -110,7 +110,7 @@ int dsdrv6()
     }
     char* bmat = "G";
     char* which = "LM";
-    sigma = 150.;
+    sigma = 150.0;
 
     /* ------------------------------------------------ */
     /* The work array WORKL is used in DSAUPD as        */

@@ -534,7 +534,7 @@ int dnaupd_(int *ido, char *bmat, int *n, char *which, int *nev, double *tol,
         {
             nb = 1;
         }
-        if (*tol <= 0.)
+        if (*tol <= 0.0)
         {
             *tol = dlamch_("E");
         }

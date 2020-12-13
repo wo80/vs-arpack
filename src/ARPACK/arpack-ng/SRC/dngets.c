@@ -172,8 +172,7 @@ int dngets_(int *ishift, char *which, int *kev, int *np, double *ritzr,
     /* complex conjugate pairs together.                     */
     /* ----------------------------------------------------- */
 
-    if (ritzr[*np + 1] - ritzr[*np] == 0. && ritzi[*np + 1] + ritzi[*np] ==
-            0.)
+    if (ritzr[*np + 1] - ritzr[*np] == 0.0 && ritzi[*np + 1] + ritzi[*np] == 0.0)
     {
         --(*np);
         ++(*kev);

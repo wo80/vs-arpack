@@ -278,7 +278,7 @@ int dsvd()
     /* Specification of Algorithm Mode:                  */
     /*                                                   */
     /* This program uses the exact shift strategy        */
-    /* (indicated by setting IPARAM(1) = 1.)             */
+    /* (indicated by setting IPARAM(1) = 1.0)             */
     /* IPARAM(3) specifies the maximum number of Arnoldi */
     /* iterations allowed.  Mode 1 of DSAUPD is used     */
     /* (IPARAM(7) = 1). All these options can be changed */
@@ -549,14 +549,14 @@ int dsvd_av_(const int m, const int n, double *x, double *w)
         for (i = 1; i <= i__2; ++i)
         {
             s += h;
-            w[i] += k * s * (t - 1.) * x[j];
+            w[i] += k * s * (t - 1.0) * x[j];
 
         }
         i__2 = m;
         for (i = j + 1; i <= i__2; ++i)
         {
             s += h;
-            w[i] += k * t * (s - 1.) * x[j];
+            w[i] += k * t * (s - 1.0) * x[j];
 
         }
     }
@@ -601,14 +601,14 @@ int dsvd_atv_(const int m, const int n, double *w, double *y)
         for (i = 1; i <= i__2; ++i)
         {
             s += h;
-            y[j] += k * s * (t - 1.) * w[i];
+            y[j] += k * s * (t - 1.0) * w[i];
 
         }
         i__2 = m;
         for (i = j + 1; i <= i__2; ++i)
         {
             s += h;
-            y[j] += k * t * (s - 1.) * w[i];
+            y[j] += k * t * (s - 1.0) * w[i];
 
         }
     }

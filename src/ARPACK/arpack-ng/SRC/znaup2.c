@@ -293,7 +293,7 @@ int znaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
             goto L9000;
         }
 
-        if (rnorm == 0.)
+        if (rnorm == 0.0)
         {
             /* --------------------------------------- */
             /* The initial vector is zero. Error exit. */
@@ -522,7 +522,7 @@ L20:
     for (j = 1; j <= i__1; ++j)
     {
         i__2 = j;
-        if (bounds[i__2].r == 0. && bounds[i__2].i == 0.)
+        if (bounds[i__2].r == 0.0 && bounds[i__2].i == 0.0)
         {
             --(*np);
             ++(*nev);

@@ -365,7 +365,7 @@ L1000:
     /* ------------------------------------------------- */
 
     betaj = *rnorm;
-    if (*rnorm > 0.)
+    if (*rnorm > 0.0)
     {
         goto L40;
     }
@@ -662,7 +662,7 @@ L70:
     /* than or equal to 0.717.                                   */
     /* --------------------------------------------------------- */
 
-    if (*rnorm > wnorm * .717f)
+    if (*rnorm > wnorm * 0.717)
     {
         goto L100;
     }
@@ -775,7 +775,7 @@ L90:
     /* step of re-orthogonalization.           */
     /* --------------------------------------- */
 
-    if (rnorm1 > *rnorm * .717f)
+    if (rnorm1 > *rnorm * 0.717)
     {
         /* ------------------------------------- */
         /* No need for further refinement.       */
@@ -856,7 +856,7 @@ L100:
 
             tst1 = (d__1 = h[i + i * h_dim1], abs(d__1)) + (d__2 = h[
                         i + 1 + (i + 1) * h_dim1], abs(d__2));
-            if (tst1 == 0.)
+            if (tst1 == 0.0)
             {
                 i__2 = *k + *np;
                 tst1 = dlanhs_("1", &i__2, &h[h_offset], ldh, &workd[*n + 1]);

@@ -202,7 +202,7 @@ int dneigh_(double *rnorm, int *n, double *h,
     i__1 = *n;
     for (i = 1; i <= i__1; ++i)
     {
-        if ((d__1 = ritzi[i], abs(d__1)) <= 0.)
+        if ((d__1 = ritzi[i], abs(d__1)) <= 0.0)
         {
             /* -------------------- */
             /* Real eigenvalue case */
@@ -257,7 +257,7 @@ int dneigh_(double *rnorm, int *n, double *h,
     i__1 = *n;
     for (i = 1; i <= i__1; ++i)
     {
-        if ((d__1 = ritzi[i], abs(d__1)) <= 0.)
+        if ((d__1 = ritzi[i], abs(d__1)) <= 0.0)
         {
             /* -------------------- */
             /* Real eigenvalue case */

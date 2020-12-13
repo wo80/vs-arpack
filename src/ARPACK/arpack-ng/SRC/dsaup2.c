@@ -313,7 +313,7 @@ int dsaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
             goto L9000;
         }
 
-        if (rnorm == 0.)
+        if (rnorm == 0.0)
         {
             /* --------------------------------------- */
             /* The initial vector is zero. Error exit. */
@@ -521,7 +521,7 @@ L20:
     i__1 = nptemp;
     for (j = 1; j <= i__1; ++j)
     {
-        if (bounds[j] == 0.)
+        if (bounds[j] == 0.0)
         {
             --(*np);
             ++(*nev);

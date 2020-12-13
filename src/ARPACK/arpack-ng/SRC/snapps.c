@@ -272,7 +272,7 @@ int snapps_(int *n, int *kev, int *np, float *
             cconj = false;
             goto L110;
         }
-        else if (jj < *np && dabs(sigmai) > 0.f)
+        else if (jj < *np && dabs(sigmai) > 0.0f)
         {
             /* ---------------------------------- */
             /* Start of a complex conjugate pair. */
@@ -280,7 +280,7 @@ int snapps_(int *n, int *kev, int *np, float *
 
             cconj = true;
         }
-        else if (jj == *np && dabs(sigmai) > 0.f)
+        else if (jj == *np && dabs(sigmai) > 0.0f)
         {
             /* -------------------------------------------- */
             /* The last shift has a nonzero imaginary part. */
@@ -368,7 +368,7 @@ L40:
         /* complex conjugate pair of shifts on a 2 by 2 matrix. */
         /* ---------------------------------------------------- */
 
-        if (istart + 1 == iend && dabs(sigmai) > 0.f)
+        if (istart + 1 == iend && dabs(sigmai) > 0.0f)
         {
             goto L100;
         }
@@ -400,7 +400,7 @@ L40:
                     /* H, remain non negative.                   */
                     /* ----------------------------------------- */
 
-                    if (r < 0.f)
+                    if (r < 0.0f)
                     {
                         r = -r;
                         c = -c;
@@ -583,7 +583,7 @@ L110:
     i__1 = *kev;
     for (j = 1; j <= i__1; ++j)
     {
-        if (h[j + 1 + j * h_dim1] < 0.f)
+        if (h[j + 1 + j * h_dim1] < 0.0f)
         {
             i__2 = kplusp - j + 1;
             sscal_(&i__2, &s_m1, &h[j + 1 + j * h_dim1], ldh);
@@ -630,7 +630,7 @@ L110:
     /* of H would be zero as in exact arithmetic.      */
     /* ----------------------------------------------- */
 
-    if (h[*kev + 1 + *kev * h_dim1] > 0.f)
+    if (h[*kev + 1 + *kev * h_dim1] > 0.0f)
     {
         sgemv_("N", n, &kplusp, &s_one, &v[v_offset], ldv, &q[(*kev + 1) * q_dim1 + 1], &c__1, &s_zero, &workd[*n + 1], &c__1);
     }
@@ -658,7 +658,7 @@ L110:
     /* Copy the (kev+1)-st column of (V*Q) in the appropriate place */
     /* ------------------------------------------------------------ */
 
-    if (h[*kev + 1 + *kev * h_dim1] > 0.f)
+    if (h[*kev + 1 + *kev * h_dim1] > 0.0f)
     {
         scopy_(n, &workd[*n + 1], &c__1, &v[(*kev + 1) * v_dim1 + 1], &c__1);
     }
@@ -672,7 +672,7 @@ L110:
     /* ----------------------------------- */
 
     sscal_(n, &q[kplusp + *kev * q_dim1], &resid[1], &c__1);
-    if (h[*kev + 1 + *kev * h_dim1] > 0.f)
+    if (h[*kev + 1 + *kev * h_dim1] > 0.0f)
     {
         saxpy_(n, &h[*kev + 1 + *kev * h_dim1], &v[(*kev + 1) * v_dim1 + 1],&c__1, &resid[1], &c__1);
     }

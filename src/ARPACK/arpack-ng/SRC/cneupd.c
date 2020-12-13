@@ -679,11 +679,11 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
             /* ------------------------------------------------- */
 
             i__2 = invsub + (j - 1) * ldq + j - 1;
-            if (workl[i__2].r < 0.f)
+            if (workl[i__2].r < 0.0f)
             {
-                q__1.r = -1.f, q__1.i = -0.f;
+                q__1.r = -1.f, q__1.i = -0.0f;
                 cscal_(&nconv, &q__1, &workl[iuptri + j - 1], &ldq);
-                q__1.r = -1.f, q__1.i = -0.f;
+                q__1.r = -1.f, q__1.i = -0.0f;
                 cscal_(&nconv, &q__1, &workl[iuptri + (j - 1) * ldq], &c__1);
             }
         }
