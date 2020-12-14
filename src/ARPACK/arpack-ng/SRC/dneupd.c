@@ -1,5 +1,6 @@
 /* arpack-ng\SRC\dneupd.f -- translated by f2c (version 20100827). */
 
+#include <math.h>
 #include "arpack.h"
 
 /**
@@ -315,8 +316,6 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
     double d__1, d__2;
 
     /* Builtin functions */
-    double pow_dd(double *, double *);
-
     /* Local variables */
     int j, k, ih, jj, np;
     double vl[1]	/* was [1][1] */;
@@ -371,7 +370,7 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
     /* ------------------------------- */
 
     eps23 = dlamch_("E");
-    eps23 = pow_dd(&eps23, &d_23);
+    eps23 = pow(eps23, d_23);
 
     /* ------------ */
     /* Quick return */

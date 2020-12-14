@@ -1,5 +1,6 @@
 /* arpack-ng\SRC\dsaup2.f -- translated by f2c (version 20100827). */
 
+#include <math.h>
 #include "arpack.h"
 
 /**
@@ -187,8 +188,6 @@ int dsaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
     double d__1, d__2, d__3;
 
     /* Builtin functions */
-    double pow_dd(double *, double *);
-
     double sqrt(double);
 
     /* Local variables */
@@ -250,7 +249,7 @@ int dsaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
         /* ------------------------------- */
 
         eps23 = dlamch_("E");
-        eps23 = pow_dd(&eps23, &d_23);
+        eps23 = pow(eps23, d_23);
 
         /* ----------------------------------- */
         /* nev0 and np0 are integer variables  */

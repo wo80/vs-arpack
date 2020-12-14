@@ -1,5 +1,6 @@
 /* arpack-ng\SRC\sneupd.f -- translated by f2c (version 20100827). */
 
+#include <math.h>
 #include "arpack.h"
 
 /**
@@ -316,8 +317,6 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
     double d__1;
 
     /* Builtin functions */
-    double pow_dd(double *, double *);
-
     /* Local variables */
     int j, k, ih, jj, np;
     float vl[1]	/* was [1][1] */;
@@ -370,8 +369,7 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
     /* ------------------------------- */
 
     eps23 = slamch_("E");
-    d__1 = (double) eps23;
-    eps23 = pow_dd(&d__1, &d_23);
+    eps23 = pow((double)eps23, d_23);
 
     /* ------------ */
     /* Quick return */

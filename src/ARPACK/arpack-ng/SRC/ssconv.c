@@ -1,5 +1,6 @@
 /* arpack-ng\SRC\ssconv.f -- translated by f2c (version 20100827). */
 
+#include <math.h>
 #include "arpack.h"
 
 /**
@@ -65,8 +66,6 @@ int ssconv_(int *n, float *ritz, float *bounds, float *tol,
     double d__1;
 
     /* Builtin functions */
-    double pow_dd(double *, double *);
-
     /* Local variables */
     int i;
     static float t0, t1;
@@ -82,8 +81,7 @@ int ssconv_(int *n, float *ritz, float *bounds, float *tol,
 #endif
 
     eps23 = slamch_("E");
-    d__1 = (double) eps23;
-    eps23 = pow_dd(&d__1, &d_23);
+    eps23 = pow((double)eps23, d_23);
 
     *nconv = 0;
     i__1 = *n;

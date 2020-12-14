@@ -1,5 +1,6 @@
 /* arpack-ng\SRC\cneupd.f -- translated by f2c (version 20100827). */
 
+#include <math.h>
 #include "arpack.h"
 
 /**
@@ -263,8 +264,6 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
     complex q__1, q__2;
 
     /* Builtin functions */
-    double pow_dd(double *, double *);
-
     void c_div(complex *, complex *, complex *);
 
     /* Local variables */
@@ -317,8 +316,7 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
     /* ------------------------------- */
 
     eps23 = slamch_("E");
-    d__1 = (double) eps23;
-    eps23 = pow_dd(&d__1, &d_23);
+    eps23 = pow((double)eps23, d_23);
 
     /* ----------------------------- */
     /* Quick return                  */

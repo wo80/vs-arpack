@@ -1,5 +1,6 @@
 /* arpack-ng\SRC\dnconv.f -- translated by f2c (version 20100827). */
 
+#include <math.h>
 #include "arpack.h"
 
 /**
@@ -70,8 +71,6 @@ int dnconv_(int *n, double *ritzr, double *ritzi,
     double d__1, d__2;
 
     /* Builtin functions */
-    double pow_dd(double *, double *);
-
     /* Local variables */
     int i;
     static float t0, t1;
@@ -105,7 +104,7 @@ int dnconv_(int *n, double *ritzr, double *ritzi,
     /* ------------------------------- */
 
     eps23 = dlamch_("E");
-    eps23 = pow_dd(&eps23, &d_23);
+    eps23 = pow(eps23, d_23);
 
     *nconv = 0;
     i__1 = *n;

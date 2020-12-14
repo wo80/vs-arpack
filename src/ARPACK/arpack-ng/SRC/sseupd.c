@@ -1,5 +1,6 @@
 /* arpack-ng\SRC\sseupd.f -- translated by f2c (version 20100827). */
 
+#include <math.h>
 #include "arpack.h"
 
 /**
@@ -230,8 +231,6 @@ int sseupd_(bool *rvec, char *howmny, bool *select, float *d, float *z, int *ldz
 
     /* Builtin functions */
 
-    double pow_dd(double *, double *);
-
     /* Local variables */
     int j, k, ih, jj, iq, np, iw, ibd, ihb, ihd, ldh, ldq, irz, mode;
     float eps23;
@@ -435,8 +434,7 @@ int sseupd_(bool *rvec, char *howmny, bool *select, float *d, float *z, int *ldz
     /* ------------------------------- */
 
     eps23 = slamch_("E");
-    d__1 = (double) eps23;
-    eps23 = pow_dd(&d__1, &d_23);
+    eps23 = pow((double)eps23, d_23);
 
     /* ------------------------------------- */
     /* RNORM is B-norm of the RESID(1:N).    */

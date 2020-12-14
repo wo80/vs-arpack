@@ -1,5 +1,6 @@
 /* arpack-ng\SRC\snaup2.f -- translated by f2c (version 20100827). */
 
+#include <math.h>
 #include "arpack.h"
 
 /**
@@ -184,8 +185,6 @@ int snaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
     double d__1;
 
     /* Builtin functions */
-    double pow_dd(double *, double *);
-
     double sqrt(double);
 
     /* Local variables */
@@ -243,8 +242,7 @@ int snaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
         /* ----------------------------------- */
 
         eps23 = slamch_("E");
-        d__1 = (double) eps23;
-        eps23 = pow_dd(&d__1, &d_23);
+        eps23 = pow((double)eps23, d_23);
 
         nev0 = *nev;
         np0 = *np;

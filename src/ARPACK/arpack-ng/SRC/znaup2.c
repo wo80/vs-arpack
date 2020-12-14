@@ -1,5 +1,6 @@
 /* arpack-ng\SRC\znaup2.f -- translated by f2c (version 20100827). */
 
+#include <math.h>
 #include "arpack.h"
 
 /**
@@ -178,8 +179,6 @@ int znaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
     zomplex z__1;
 
     /* Builtin functions */
-    double pow_dd(double *, double *);
-
     double sqrt(double);
 
     /* Local variables */
@@ -251,7 +250,7 @@ int znaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
         /* ------------------------------- */
 
         eps23 = dlamch_("E");
-        eps23 = pow_dd(&eps23, &d_23);
+        eps23 = pow(eps23, d_23);
 
         /* ------------------------------------- */
         /* Set flags for computing the first NEV */
