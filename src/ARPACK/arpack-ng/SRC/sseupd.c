@@ -227,7 +227,6 @@ int sseupd_(bool *rvec, char *howmny, bool *select, float *d, float *z, int *ldz
     /* System generated locals */
     int v_dim1, v_offset, z_dim1, z_offset, i__1;
     float r__1, r__2, r__3;
-    double d__1;
 
     /* Builtin functions */
 
@@ -475,7 +474,6 @@ int sseupd_(bool *rvec, char *howmny, bool *select, float *d, float *z, int *ldz
         {
             workl[bounds + j - 1] = (float) j;
             select[j] = false;
-
         }
 
         /* ----------------------------------- */
@@ -628,7 +626,6 @@ L20:
                 scopy_(ncv, &workl[iw], &c__1, &workl[iq + *ncv * (rghtptr - 1)], &c__1);
                 ++leftptr;
                 --rghtptr;
-
             }
 
             if (leftptr < rghtptr)
@@ -793,7 +790,6 @@ L30:
         for (j = 1; j <= i__1; ++j)
         {
             workl[ihb + j - 1] = 0.0f;
-
         }
         workl[ihb + *ncv - 1] = 1.0f;
         sorm2r_("L", "T", ncv, &c__1, &nconv, &workl[iq], &ldq, &workl[iw + *ncv], &workl[ihb], ncv, &temp, &ierr);
@@ -804,17 +800,14 @@ L30:
         /* the Ritz vector purification step below             */
         /* --------------------------------------------------- */
 
-        i__1 = nconv;
-        for (j = 1; j <= i__1; ++j)
+        for (j = 1; j <= nconv; ++j)
         {
             workl[iw + *ncv + j - 1] = workl[ihb + j - 1];
-
         }
     }
     else if (*rvec && *howmny == 'S')
     {
         /*     Not yet implemented. See remark 2 above. */
-
     }
 
     if (strcmp(type, "REGULR") == 0 && *rvec)
@@ -823,7 +816,6 @@ L30:
         for (j = 1; j <= i__1; ++j)
         {
             workl[ihb + j - 1] = rnorm * (r__1 = workl[ihb + j - 1], dabs(r__1));
-
         }
     }
     else if (strcmp(type, "REGULR") != 0 && *rvec)
@@ -868,7 +860,8 @@ L30:
         }
     }
 
-    if (strcmp(type, "REGULR") != 0 && msglvl > 1)
+#ifndef NO_TRACE
+    if (msglvl > 1 && strcmp(type, "REGULR") != 0)
     {
         svout_(&nconv, &d[1], &debug_1.ndigit, "_seupd: Untransformed converged Ritz values");
         svout_(&nconv, &workl[ihb], &debug_1.ndigit, "_seupd: Ritz estimates of the untransformed Ritz values");
@@ -878,6 +871,7 @@ L30:
         svout_(&nconv, &d[1], &debug_1.ndigit, "_seupd: Converged Ritz values");
         svout_(&nconv, &workl[ihb], &debug_1.ndigit, "_seupd: Associated Ritz estimates");
     }
+#endif
 
     /* ----------------------------------------------- */
     /* Ritz vector purification step. Formally perform */

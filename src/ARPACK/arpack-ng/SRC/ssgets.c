@@ -137,7 +137,6 @@ int ssgets_(int *ishift, char *which, int *kev, int *np, float *ritz,
         {
             i__1 = min(kevd2,*np);
             sswap_(&i__1, &ritz[1], &c__1, &ritz[max(kevd2,*np) + 1], &c__1);
-            i__1 = min(kevd2,*np);
             sswap_(&i__1, &bounds[1], &c__1, &bounds[max(kevd2,*np) + 1], &c__1);
         }
     }
@@ -177,11 +176,10 @@ int ssgets_(int *ishift, char *which, int *kev, int *np, float *ritz,
 #ifndef NO_TRACE
     if (msglvl > 0)
     {
+        i__1 = *kev + *np;
         ivout_(&c__1, kev, &debug_1.ndigit, "_sgets: KEV is");
         ivout_(&c__1, np, &debug_1.ndigit, "_sgets: NP is");
-        i__1 = *kev + *np;
         svout_(&i__1, &ritz[1], &debug_1.ndigit, "_sgets: Eigenvalues of current H matrix");
-        i__1 = *kev + *np;
         svout_(&i__1, &bounds[1], &debug_1.ndigit, "_sgets: Associated Ritz estimates");
     }
 #endif

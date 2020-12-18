@@ -314,7 +314,6 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
     /* System generated locals */
     int v_dim1, v_offset, z_dim1, z_offset, i__1;
     float r__1, r__2;
-    double d__1;
 
     /* Builtin functions */
     /* Local variables */
@@ -337,8 +336,7 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
     int ritzi;
     int ritzr;
     int nconv2;
-    int iheigi, iheigr, bounds, invsub, iuptri, msglvl, outncv, ishift,
-            numcnv;
+    int iheigi, iheigr, bounds, invsub, iuptri, msglvl, outncv, ishift, numcnv;
 
 
     /* Parameter adjustments */
@@ -549,7 +547,6 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
         {
             workl[bounds + j - 1] = (float) j;
             select[j] = false;
-
         }
 
         /* ----------------------------------- */
@@ -598,7 +595,6 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
                     reord = true;
                 }
             }
-
         }
 
         /* --------------------------------------------------------- */
@@ -683,7 +679,6 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
                 }
             }
 #endif
-
         }
 
         /* ------------------------------------- */
@@ -729,8 +724,7 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
         sorm2r_("R", "N", n, ncv, &nconv, &workl[invsub], &ldq, &workev[1], &v[v_offset], ldv, &workd[*n + 1], &ierr);
         slacpy_("A", n, &nconv, &v[v_offset], ldv, &z[z_offset], ldz);
 
-        i__1 = nconv;
-        for (j = 1; j <= i__1; ++j)
+        for (j = 1; j <= nconv; ++j)
         {
             /* ------------------------------------------------- */
             /* Perform both a column and row scaling if the      */
@@ -746,7 +740,6 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
                 sscal_(&nconv, &s_m1, &workl[iuptri + j - 1], &ldq);
                 sscal_(&nconv, &s_m1, &workl[iuptri + (j - 1) * ldq], &c__1);
             }
-
         }
 
         if (*howmny == 'A')
@@ -786,8 +779,7 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
             /* ---------------------------------------------- */
 
             iconj = 0;
-            i__1 = nconv;
-            for (j = 1; j <= i__1; ++j)
+            for (j = 1; j <= nconv; ++j)
             {
                 if (workl[iheigi + j - 1] == 0.0f)
                 {
@@ -830,8 +822,7 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
             sgemv_("T", ncv, &nconv, &s_one, &workl[invsub], &ldq, &workl[ihbds], &c__1, &s_zero, &workev[1], &c__1);
 
             iconj = 0;
-            i__1 = nconv;
-            for (j = 1; j <= i__1; ++j)
+            for (j = 1; j <= nconv; ++j)
             {
                 if (workl[iheigi + j - 1] != 0.0f)
                 {
@@ -889,9 +880,7 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
             /* -------------------------------------------- */
 
             sorm2r_("R", "N", n, ncv, &nconv, &workl[invsub], &ldq, &workev[1], &z[z_offset], ldz, &workd[*n + 1], &ierr);
-
             strmm_("R", "U", "N", "N", n, &nconv, &s_one, &workl[invsub], &ldq, &z[z_offset], ldz);
-
         }
     }
     else
@@ -941,9 +930,7 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
             {
                 temp = slapy2_(&workl[iheigr + k - 1], &workl[iheigi + k - 1]);
                 workl[ihbds + k - 1] = (r__1 = workl[ihbds + k - 1], dabs(r__1)) / temp / temp;
-
             }
-
         }
         else if (strcmp(type, "REALPT") == 0)
         {
@@ -982,30 +969,28 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
 
             scopy_(&nconv, &workl[iheigr], &c__1, &dr[1], &c__1);
             scopy_(&nconv, &workl[iheigi], &c__1, &di[1], &c__1);
-
         }
-        else if (strcmp(type, "REALPT") == 0 ||
-                 strcmp(type, "IMAGPT") == 0)
+        else if (strcmp(type, "REALPT") == 0 || strcmp(type, "IMAGPT") == 0)
         {
             scopy_(&nconv, &workl[iheigr], &c__1, &dr[1], &c__1);
             scopy_(&nconv, &workl[iheigi], &c__1, &di[1], &c__1);
-
         }
     }
 
-    if (strcmp(type, "SHIFTI") == 0 && msglvl > 1)
+#ifndef NO_TRACE
+    if (msglvl > 1 && strcmp(type, "SHIFTI") == 0)
     {
         svout_(&nconv, &dr[1], &debug_1.ndigit, "_neupd: Untransformed float part of the Ritz valuess.");
         svout_(&nconv, &di[1], &debug_1.ndigit, "_neupd: Untransformed imag part of the Ritz valuess.");
         svout_(&nconv, &workl[ihbds], &debug_1.ndigit, "_neupd: Ritz estimates of untransformed Ritz values.");
     }
-    else if (strcmp(type, "REGULR") == 0 && msglvl >
-             1)
+    else if (msglvl > 1 && strcmp(type, "REGULR") == 0)
     {
         svout_(&nconv, &dr[1], &debug_1.ndigit, "_neupd: Real parts of converged Ritz values.");
         svout_(&nconv, &di[1], &debug_1.ndigit, "_neupd: Imag parts of converged Ritz values.");
         svout_(&nconv, &workl[ihbds], &debug_1.ndigit, "_neupd: Associated Ritz estimates.");
     }
+#endif
 
     /* ----------------------------------------------- */
     /* Eigenvector Purification step. Formally perform */
@@ -1027,8 +1012,7 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
         /* ---------------------------------------------- */
 
         iconj = 0;
-        i__1 = nconv;
-        for (j = 1; j <= i__1; ++j)
+        for (j = 1; j <= nconv; ++j)
         {
             if (workl[iheigi + j - 1] == 0.0f && workl[iheigr + j - 1] != 0.0f)
             {

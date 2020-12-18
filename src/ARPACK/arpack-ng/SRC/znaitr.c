@@ -749,20 +749,16 @@ L90:
     /* Back from reverse communication if ORTH2 = .true. */
     /* ------------------------------------------------- */
 
-#ifndef NO_TIMER
-    if (*bmat == 'G')
-    {
-        arscnd_(&t3);
-        timing_1.tmvbx += t3 - t2;
-    }
-#endif
-
     /* --------------------------------------------------- */
     /* Compute the B-norm of the corrected residual r_{j}. */
     /* --------------------------------------------------- */
 
     if (*bmat == 'G')
     {
+#ifndef NO_TIMER
+        arscnd_(&t3);
+        timing_1.tmvbx += t3 - t2;
+#endif
         zdotc_(&z__1, n, &resid[1], &c__1, &workd[ipj], &c__1);
         cnorm.r = z__1.r, cnorm.i = z__1.i;
         d__1 = cnorm.r;

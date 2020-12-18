@@ -456,7 +456,6 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int 
 
     i__1 = ih + 2;
     rnorm.r = workl[i__1].r, rnorm.i = workl[i__1].i;
-    i__1 = ih + 2;
     workl[i__1].r = 0.0, workl[i__1].i = 0.0;
 
 #ifndef NO_TRACE
@@ -482,7 +481,6 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int 
             i__2 = bounds + j - 1;
             workl[i__2].r = (double) j, workl[i__2].i = 0.0;
             select[j] = false;
-
         }
 
         /* ----------------------------------- */
@@ -536,7 +534,6 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int 
                     reord = true;
                 }
             }
-
         }
 
         /* --------------------------------------------------------- */
@@ -619,7 +616,6 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int 
                 }
             }
 #endif
-
         }
 
         /* ------------------------------------------- */
@@ -664,8 +660,7 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int 
         zunm2r_("R", "N", n, ncv, &nconv, &workl[invsub], &ldq, &workev[1], &v[v_offset], ldv, &workd[*n + 1], &ierr);
         zlacpy_("A", n, &nconv, &v[v_offset], ldv, &z[z_offset], ldz);
 
-        i__1 = nconv;
-        for (j = 1; j <= i__1; ++j)
+        for (j = 1; j <= nconv; ++j)
         {
             /* ------------------------------------------------- */
             /* Perform both a column and row scaling if the      */
@@ -722,8 +717,7 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int 
             /* magnitude 1.                                   */
             /* ---------------------------------------------- */
 
-            i__1 = nconv;
-            for (j = 1; j <= i__1; ++j)
+            for (j = 1; j <= nconv; ++j)
             {
                 rtemp = dznrm2_(ncv, &workl[invsub + (j - 1) * ldq], &c__1);
                 rtemp = 1.0 / rtemp;
@@ -829,17 +823,16 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int 
 
     if (strcmp(type, "SHIFTI") == 0)
     {
-        i__1 = nconv;
-        for (k = 1; k <= i__1; ++k)
+        for (k = 1; k <= nconv; ++k)
         {
-            i__2 = k;
             z_div(&z__2, &z_one, &workl[iheig + k - 1]);
             z__1.r = z__2.r + sigma->r, z__1.i = z__2.i + sigma->i;
-            d[i__2].r = z__1.r, d[i__2].i = z__1.i;
+            d[k].r = z__1.r, d[k].i = z__1.i;
         }
     }
 
-    if (strcmp(type, "REGULR") != 0 && msglvl > 1)
+#ifndef NO_TRACE
+    if (msglvl > 1 && strcmp(type, "REGULR") != 0)
     {
         zvout_(&nconv, &d[1], &debug_1.ndigit, "_neupd: Untransformed Ritz values.");
         zvout_(&nconv, &workl[ihbds], &debug_1.ndigit, "_neupd: Ritz estimates of the untransformed Ritz values.");
@@ -849,6 +842,7 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int 
         zvout_(&nconv, &d[1], &debug_1.ndigit, "_neupd: Converged Ritz values.");
         zvout_(&nconv, &workl[ihbds], &debug_1.ndigit, "_neupd: Associated Ritz estimates.");
     }
+#endif
 
     /* ----------------------------------------------- */
     /* Eigenvector Purification step. Formally perform */
@@ -867,15 +861,13 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int 
         /* where H s = s theta.                           */
         /* ---------------------------------------------- */
 
-        i__1 = nconv;
-        for (j = 1; j <= i__1; ++j)
+        for (j = 1; j <= nconv; ++j)
         {
             i__2 = iheig + j - 1;
             if (workl[i__2].r != 0. || workl[i__2].i != 0.0)
             {
-                i__2 = j;
-                z_div(&z__1, &workl[invsub + (j - 1) * ldq + *ncv - 1], &workl[iheig + j - 1]);
-                workev[i__2].r = z__1.r, workev[i__2].i = z__1.i;
+                z_div(&z__1, &workl[invsub + (j - 1) * ldq + *ncv - 1], &workl[i__2]);
+                workev[j].r = z__1.r, workev[j].i = z__1.i;
             }
         }
         /* ------------------------------------- */

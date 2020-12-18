@@ -173,10 +173,8 @@ int cnaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
             int *info)
 {
     /* System generated locals */
-    int h_dim1, h_offset, q_dim1, q_offset, v_dim1, v_offset, i__1, i__2,
-            i__3;
+    int h_dim1, h_offset, q_dim1, q_offset, v_dim1, v_offset, i__1, i__2;
     float r__1, r__2, r__3, r__4;
-    double d__1;
     complex q__1;
 
     /* Builtin functions */
@@ -676,8 +674,8 @@ L20:
 
         nevbef = *nev;
         /* Computing MIN */
-        i__1 = nconv, i__2 = *np / 2;
-        *nev += min(i__1,i__2);
+        i__1 = *np / 2;
+        *nev += min(nconv,i__1);
         if (*nev == 1 && kplusp >= 6)
         {
             *nev = kplusp / 2;
@@ -797,16 +795,12 @@ L100:
     /* WORKD(1:N) := B*RESID            */
     /* -------------------------------- */
 
-#ifndef NO_TIMER
     if (*bmat == 'G')
     {
+#ifndef NO_TIMER
         arscnd_(&t3);
         timing_1.tmvbx += t3 - t2;
-    }
 #endif
-
-    if (*bmat == 'G')
-    {
         cdotc_(&q__1, n, &resid[1], &c__1, &workd[1], &c__1);
         cmpnorm.r = q__1.r, cmpnorm.i = q__1.i;
         r__1 = cmpnorm.r;

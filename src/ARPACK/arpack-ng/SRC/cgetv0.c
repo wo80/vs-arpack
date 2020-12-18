@@ -122,7 +122,7 @@ int cgetv0_(int *ido, char *bmat, int *itry, bool *initv, int *n, int *j,
     static bool inits = true;
 
     /* System generated locals */
-    int v_dim1, v_offset, i__1, i__2;
+    int v_dim1, v_offset, i__1;
     float r__1, r__2;
     complex q__1;
 
@@ -275,17 +275,13 @@ int cgetv0_(int *ido, char *bmat, int *itry, bool *initv, int *n, int *j,
 
 L20:
 
-#ifndef NO_TIMER
-    if (*bmat == 'G')
-    {
-        arscnd_(&t3);
-        timing_1.tmvbx += t3 - t2;
-    }
-#endif
-
     first = false;
     if (*bmat == 'G')
     {
+#ifndef NO_TIMER
+        arscnd_(&t3);
+        timing_1.tmvbx += t3 - t2;
+#endif
         cdotc_(&q__1, n, &resid[1], &c__1, &workd[1], &c__1);
         cnorm.r = q__1.r, cnorm.i = q__1.i;
         r__1 = cnorm.r;
@@ -324,7 +320,6 @@ L30:
 
     i__1 = *j - 1;
     cgemv_("C", n, &i__1, &c_one, &v[v_offset], ldv, &workd[1], &c__1, &c_zero, &workd[*n + 1], &c__1);
-    i__1 = *j - 1;
     q__1.r = -1.f, q__1.i = -0.0f;
     cgemv_("N", n, &i__1, &q__1, &v[v_offset], ldv, &workd[*n + 1], &c__1, &c_one, &resid[1], &c__1);
 
@@ -409,9 +404,7 @@ L40:
         i__1 = *n;
         for (jj = 1; jj <= i__1; ++jj)
         {
-            i__2 = jj;
-            resid[i__2].r = 0.0f, resid[i__2].i = 0.0f;
-
+            resid[jj].r = 0.0f, resid[jj].i = 0.0f;
         }
         *rnorm = 0.0f;
         *ierr = -1;

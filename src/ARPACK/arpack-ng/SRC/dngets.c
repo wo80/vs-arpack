@@ -111,8 +111,6 @@ int dngets_(int *ishift, char *which, int *kev, int *np, double *ritzr,
     --bounds;
     --ritzi;
     --ritzr;
-    --shiftr;
-    --shifti;
 
     /* Function Body */
 #ifndef NO_TIMER
@@ -131,38 +129,33 @@ int dngets_(int *ishift, char *which, int *kev, int *np, double *ritzr,
     /* complex conjugate pairs together                   */
     /* -------------------------------------------------- */
 
+    i__1 = *kev + *np;
+
     if (strcmp(which, "LM") == 0)
     {
-        i__1 = *kev + *np;
         dsortc_("LR", &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1]);
     }
     else if (strcmp(which, "SM") == 0)
     {
-        i__1 = *kev + *np;
         dsortc_("SR", &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1]);
     }
     else if (strcmp(which, "LR") == 0)
     {
-        i__1 = *kev + *np;
         dsortc_("LM", &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1]);
     }
     else if (strcmp(which, "SR") == 0)
     {
-        i__1 = *kev + *np;
         dsortc_("SM", &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1]);
     }
     else if (strcmp(which, "LI") == 0)
     {
-        i__1 = *kev + *np;
         dsortc_("LM", &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1]);
     }
     else if (strcmp(which, "SI") == 0)
     {
-        i__1 = *kev + *np;
         dsortc_("SM", &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1]);
     }
 
-    i__1 = *kev + *np;
     dsortc_(which, &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1]);
 
     /* ----------------------------------------------------- */
@@ -200,13 +193,11 @@ int dngets_(int *ishift, char *which, int *kev, int *np, double *ritzr,
 #ifndef NO_TRACE
     if (msglvl > 0)
     {
+        i__1 = *kev + *np;
         ivout_(&c__1, kev, &debug_1.ndigit, "_ngets: KEV is");
         ivout_(&c__1, np, &debug_1.ndigit, "_ngets: NP is");
-        i__1 = *kev + *np;
         dvout_(&i__1, &ritzr[1], &debug_1.ndigit, "_ngets: Eigenvalues of current H matrix -- float part");
-        i__1 = *kev + *np;
         dvout_(&i__1, &ritzi[1], &debug_1.ndigit, "_ngets: Eigenvalues of current H matrix -- imag part");
-        i__1 = *kev + *np;
         dvout_(&i__1, &bounds[1], &debug_1.ndigit, "_ngets: Ritz estimates of the current KEV+NP Ritz values");
     }
 #endif

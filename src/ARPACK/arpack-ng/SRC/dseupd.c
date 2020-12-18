@@ -474,7 +474,6 @@ int dseupd_(bool *rvec, char *howmny, bool *select, double *d, double *z, int *l
         {
             workl[bounds + j - 1] = (double) j;
             select[j] = false;
-
         }
 
         /* ----------------------------------- */
@@ -801,8 +800,7 @@ L30:
         /* the Ritz vector purification step below             */
         /* --------------------------------------------------- */
 
-        i__1 = nconv;
-        for (j = 1; j <= i__1; ++j)
+        for (j = 1; j <= nconv; ++j)
         {
             workl[iw + *ncv + j - 1] = workl[ihb + j - 1];
         }
@@ -810,7 +808,6 @@ L30:
     else if (*rvec && *howmny == 'S')
     {
         /*     Not yet implemented. See remark 2 above. */
-
     }
 
     if (strcmp(type, "REGULR") == 0 && *rvec)
@@ -856,7 +853,6 @@ L30:
                 d__2 = workl[iw + k - 1] - 1.0;
                 workl[ihb + k - 1] = *sigma * abs(d__1) / (d__2 * d__2);
             }
-
         }
         else if (strcmp(type, "CAYLEY") == 0)
         {
@@ -866,11 +862,11 @@ L30:
                 d__1 = workl[ihb + k - 1] / workl[iw + k - 1] * (workl[iw + k - 1] - 1.0);
                 workl[ihb + k - 1] = abs(d__1);
             }
-
         }
     }
 
-    if (strcmp(type, "REGULR") != 0 && msglvl > 1)
+#ifndef NO_TRACE
+    if (msglvl > 1 && strcmp(type, "REGULR") != 0)
     {
         dvout_(&nconv, &d[1], &debug_1.ndigit, "_seupd: Untransformed converged Ritz values");
         dvout_(&nconv, &workl[ihb], &debug_1.ndigit, "_seupd: Ritz estimates of the untransformed Ritz values");
@@ -880,6 +876,7 @@ L30:
         dvout_(&nconv, &d[1], &debug_1.ndigit, "_seupd: Converged Ritz values");
         dvout_(&nconv, &workl[ihb], &debug_1.ndigit, "_seupd: Associated Ritz estimates");
     }
+#endif
 
     /* ----------------------------------------------- */
     /* Ritz vector purification step. Formally perform */
@@ -887,8 +884,7 @@ L30:
     /* for MODE = 3,4,5. See reference 7               */
     /* ----------------------------------------------- */
 
-    if (*rvec && (strcmp(type, "SHIFTI") == 0 || strcmp(
-                      type, "CAYLEY") == 0))
+    if (*rvec && (strcmp(type, "SHIFTI") == 0 || strcmp(type, "CAYLEY") == 0))
     {
         i__1 = nconv - 1;
         for (k = 0; k <= i__1; ++k)

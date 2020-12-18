@@ -550,7 +550,6 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
         {
             workl[bounds + j - 1] = (double) j;
             select[j] = false;
-
         }
 
         /* ----------------------------------- */
@@ -599,7 +598,6 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
                     reord = true;
                 }
             }
-
         }
 
         /* --------------------------------------------------------- */
@@ -684,7 +682,6 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
                 }
             }
 #endif
-
         }
 
         /* ------------------------------------- */
@@ -730,8 +727,7 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
         dorm2r_("R", "N", n, ncv, &nconv, &workl[invsub], &ldq, &workev[1], &v[v_offset], ldv, &workd[*n + 1], &ierr);
         dlacpy_("A", n, &nconv, &v[v_offset], ldv, &z[z_offset], ldz);
 
-        i__1 = nconv;
-        for (j = 1; j <= i__1; ++j)
+        for (j = 1; j <= nconv; ++j)
         {
             /* ------------------------------------------------- */
             /* Perform both a column and row scaling if the      */
@@ -747,7 +743,6 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
                 dscal_(&nconv, &d_m1, &workl[iuptri + j - 1], &ldq);
                 dscal_(&nconv, &d_m1, &workl[iuptri + (j - 1) * ldq], &c__1);
             }
-
         }
 
         if (*howmny == 'A')
@@ -825,15 +820,13 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
                     {
                         iconj = 0;
                     }
-
                 }
             }
 
             dgemv_("T", ncv, &nconv, &d_one, &workl[invsub], &ldq, &workl[ihbds], &c__1, &d_zero, &workev[1], &c__1);
 
             iconj = 0;
-            i__1 = nconv;
-            for (j = 1; j <= i__1; ++j)
+            for (j = 1; j <= nconv; ++j)
             {
                 if (workl[iheigi + j - 1] != 0.0)
                 {
@@ -891,9 +884,7 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
             /* -------------------------------------------- */
 
             dorm2r_("R", "N", n, ncv, &nconv, &workl[invsub], &ldq, &workev[1], &z[z_offset], ldz, &workd[*n + 1], &ierr);
-
             dtrmm_("R", "U", "N", "N", n, &nconv, &d_one, &workl[invsub], &ldq, &z[z_offset], ldz);
-
         }
     }
     else
@@ -944,9 +935,7 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
                 temp = dlapy2_(&workl[iheigr + k - 1], &workl[iheigi + k - 1]);
                 d__1 = workl[ihbds + k - 1];
                 workl[ihbds + k - 1] = abs(d__1) / temp / temp;
-
             }
-
         }
         else if (strcmp(type, "REALPT") == 0)
         {
@@ -954,7 +943,6 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
             for (k = 1; k <= i__1; ++k)
             {
             }
-
         }
         else if (strcmp(type, "IMAGPT") == 0)
         {
@@ -962,7 +950,6 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
             for (k = 1; k <= i__1; ++k)
             {
             }
-
         }
 
         /* --------------------------------------------------------- */
@@ -983,7 +970,6 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
                 temp = dlapy2_(&workl[iheigr + k - 1], &workl[iheigi + k - 1]);
                 workl[iheigr + k - 1] = workl[iheigr + k - 1] / temp / temp + *sigmar;
                 workl[iheigi + k - 1] = -workl[iheigi + k - 1] / temp / temp + *sigmai;
-
             }
 
             dcopy_(&nconv, &workl[iheigr], &c__1, &dr[1], &c__1);
@@ -995,23 +981,23 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
         {
             dcopy_(&nconv, &workl[iheigr], &c__1, &dr[1], &c__1);
             dcopy_(&nconv, &workl[iheigi], &c__1, &di[1], &c__1);
-
         }
     }
 
-    if (strcmp(type, "SHIFTI") == 0 && msglvl > 1)
+#ifndef NO_TRACE
+    if (msglvl > 1 && strcmp(type, "SHIFTI") == 0)
     {
         dvout_(&nconv, &dr[1], &debug_1.ndigit, "_neupd: Untransformed float part of the Ritz valuess.");
         dvout_(&nconv, &di[1], &debug_1.ndigit, "_neupd: Untransformed imag part of the Ritz valuess.");
         dvout_(&nconv, &workl[ihbds], &debug_1.ndigit, "_neupd: Ritz estimates of untransformed Ritz values.");
     }
-    else if (strcmp(type, "REGULR") == 0 && msglvl >
-             1)
+    else if (msglvl > 1 && strcmp(type, "REGULR") == 0)
     {
         dvout_(&nconv, &dr[1], &debug_1.ndigit, "_neupd: Real parts of converged Ritz values.");
         dvout_(&nconv, &di[1], &debug_1.ndigit, "_neupd: Imag parts of converged Ritz values.");
         dvout_(&nconv, &workl[ihbds], &debug_1.ndigit, "_neupd: Associated Ritz estimates.");
     }
+#endif
 
     /* ----------------------------------------------- */
     /* Eigenvector Purification step. Formally perform */
@@ -1033,8 +1019,7 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
         /* ---------------------------------------------- */
 
         iconj = 0;
-        i__1 = nconv;
-        for (j = 1; j <= i__1; ++j)
+        for (j = 1; j <= nconv; ++j)
         {
             if (workl[iheigi + j - 1] == 0.0 && workl[iheigr + j - 1] != 0.0)
             {

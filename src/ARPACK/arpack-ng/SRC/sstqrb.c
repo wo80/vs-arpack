@@ -237,21 +237,21 @@ L10:
     }
     if (l1 <= nm1)
     {
-        i__1 = nm1;
-        for (m = l1; m <= i__1; ++m)
+        for (m = l1; m <= nm1; ++m)
         {
-            tst = (r__1 = e[m], dabs(r__1));
+            r__1 = e[m];
+            tst = dabs(r__1);
             if (tst == 0.0f)
             {
                 goto L30;
             }
-            if (tst <= sqrt((r__1 = d[m], dabs(r__1))) * sqrt((r__2 = d[m
-                    + 1], dabs(r__2))) * eps)
+            r__1 = d[m];
+            r__2 = d[m + 1];
+            if (tst <= sqrt(dabs(r__1)) * sqrt(dabs(r__2)) * eps)
             {
                 e[m] = 0.0f;
                 goto L30;
             }
-
         }
     }
     m = *n;
@@ -311,14 +311,15 @@ L40:
         if (l != lend)
         {
             lendm1 = lend - 1;
-            i__1 = lendm1;
-            for (m = l; m <= i__1; ++m)
+            for (m = l; m <= lendm1; ++m)
             {
                 /* Computing 2nd power */
-                r__2 = (r__1 = e[m], dabs(r__1));
+                r__1 = e[m];
+                r__2 = dabs(r__1);
                 tst = r__2 * r__2;
-                if (tst <= eps2 * (r__1 = d[m], dabs(r__1)) * (r__2 = d[m
-                        + 1], dabs(r__2)) + safmin)
+                r__1 = d[m];
+                r__2 = d[m + 1];
+                if (tst <= eps2 * dabs(r__1) * dabs(r__2) + safmin)
                 {
                     goto L60;
                 }
@@ -392,8 +393,7 @@ L60:
         /*        inner loop */
 
         mm1 = m - 1;
-        i__1 = l;
-        for (i = mm1; i >= i__1; --i)
+        for (i = mm1; i >= l; --i)
         {
             f = s * e[i];
             b = c * e[i];
@@ -415,7 +415,6 @@ L60:
                 work[i] = c;
                 work[*n - 1 + i] = -s;
             }
-
         }
 
         /*        if eigenvectors are desired, then apply saved rotations. */
@@ -458,11 +457,11 @@ L90:
         if (l != lend)
         {
             lendp1 = lend + 1;
-            i__1 = lendp1;
-            for (m = l; m >= i__1; --m)
+            for (m = l; m >= lendp1; --m)
             {
                 /* Computing 2nd power */
-                r__2 = (r__1 = e[m - 1], dabs(r__1));
+                r__1 = e[m - 1];
+                r__2 = dabs(r__1);
                 tst = r__2 * r__2;
                 r__1 = d[m];
                 r__2 = d[m - 1];
@@ -540,8 +539,7 @@ L110:
         /*        inner loop */
 
         lm1 = l - 1;
-        i__1 = lm1;
-        for (i = m; i <= i__1; ++i)
+        for (i = m; i <= lm1; ++i)
         {
             f = s * e[i];
             b = c * e[i];
@@ -563,7 +561,6 @@ L110:
                 work[i] = c;
                 work[*n - 1 + i] = s;
             }
-
         }
 
         /*        if eigenvectors are desired, then apply saved rotations. */
@@ -672,7 +669,6 @@ L160:
                 z[i] = p;
                 /*           ************************************* */
             }
-
         }
     }
 

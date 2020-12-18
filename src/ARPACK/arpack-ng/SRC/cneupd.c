@@ -260,7 +260,6 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
     /* System generated locals */
     int v_dim1, v_offset, z_dim1, z_offset, i__1, i__2;
     float r__1, r__2, r__3, r__4;
-    double d__1;
     complex q__1, q__2;
 
     /* Builtin functions */
@@ -458,7 +457,6 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
 
     i__1 = ih + 2;
     rnorm.r = workl[i__1].r, rnorm.i = workl[i__1].i;
-    i__1 = ih + 2;
     workl[i__1].r = 0.0f, workl[i__1].i = 0.0f;
 
 #ifndef NO_TRACE
@@ -663,8 +661,7 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
         cunm2r_("R", "N", n, ncv, &nconv, &workl[invsub], &ldq, &workev[1], &v[v_offset], ldv, &workd[*n + 1], &ierr);
         clacpy_("A", n, &nconv, &v[v_offset], ldv, &z[z_offset], ldz);
 
-        i__1 = nconv;
-        for (j = 1; j <= i__1; ++j)
+        for (j = 1; j <= nconv; ++j)
         {
             /* ------------------------------------------------- */
             /* Perform both a column and row scaling if the      */
@@ -721,8 +718,7 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
             /* magnitude 1.                                   */
             /* ---------------------------------------------- */
 
-            i__1 = nconv;
-            for (j = 1; j <= i__1; ++j)
+            for (j = 1; j <= nconv; ++j)
             {
                 rtemp = scnrm2_(ncv, &workl[invsub + (j - 1) * ldq], &c__1);
                 rtemp = 1.0f / rtemp;
@@ -737,9 +733,8 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
                 /* inner product can be set to j.           */
                 /* ---------------------------------------- */
 
-                i__2 = j;
                 cdotc_(&q__1, &j, &workl[ihbds], &c__1, &workl[invsub + (j - 1) * ldq], &c__1);
-                workev[i__2].r = q__1.r, workev[i__2].i = q__1.i;
+                workev[j].r = q__1.r, workev[j].i = q__1.i;
             }
 
 #ifndef NO_TRACE
@@ -828,17 +823,16 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
 
     if (strcmp(type, "SHIFTI") == 0)
     {
-        i__1 = nconv;
-        for (k = 1; k <= i__1; ++k)
+        for (k = 1; k <= nconv; ++k)
         {
-            i__2 = k;
             c_div(&q__2, &c_one, &workl[iheig + k - 1]);
             q__1.r = q__2.r + sigma->r, q__1.i = q__2.i + sigma->i;
-            d[i__2].r = q__1.r, d[i__2].i = q__1.i;
+            d[k].r = q__1.r, d[k].i = q__1.i;
         }
     }
 
-    if (strcmp(type, "REGULR") != 0 && msglvl > 1)
+#ifndef NO_TRACE
+    if (msglvl > 1 && strcmp(type, "REGULR") != 0)
     {
         cvout_(&nconv, &d[1], &debug_1.ndigit, "_neupd: Untransformed Ritz values.");
         cvout_(&nconv, &workl[ihbds], &debug_1.ndigit, "_neupd: Ritz estimates of the untransformed Ritz values.");
@@ -848,6 +842,7 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
         cvout_(&nconv, &d[1], &debug_1.ndigit, "_neupd: Converged Ritz values.");
         cvout_(&nconv, &workl[ihbds], &debug_1.ndigit, "_neupd: Associated Ritz estimates.");
     }
+#endif
 
     /* ----------------------------------------------- */
     /* Eigenvector Purification step. Formally perform */
@@ -866,15 +861,13 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
         /* where H s = s theta.                           */
         /* ---------------------------------------------- */
 
-        i__1 = nconv;
-        for (j = 1; j <= i__1; ++j)
+        for (j = 1; j <= nconv; ++j)
         {
             i__2 = iheig + j - 1;
             if (workl[i__2].r != 0.0f || workl[i__2].i != 0.0f)
             {
-                i__2 = j;
-                c_div(&q__1, &workl[invsub + (j - 1) * ldq + *ncv - 1], &workl[iheig + j - 1]);
-                workev[i__2].r = q__1.r, workev[i__2].i = q__1.i;
+                c_div(&q__1, &workl[invsub + (j - 1) * ldq + *ncv - 1], &workl[i__2]);
+                workev[j].r = q__1.r, workev[j].i = q__1.i;
             }
         }
 

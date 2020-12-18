@@ -182,7 +182,6 @@ int snaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
     /* System generated locals */
     int h_dim1, h_offset, q_dim1, q_offset, v_dim1, v_offset, i__1, i__2;
     float r__1, r__2;
-    double d__1;
 
     /* Builtin functions */
     double sqrt(double);
@@ -850,16 +849,12 @@ L100:
     /* WORKD(1:N) := B*RESID            */
     /* -------------------------------- */
 
-#ifndef NO_TIMER
     if (*bmat == 'G')
     {
+#ifndef NO_TIMER
         arscnd_(&t3);
         timing_1.tmvbx += t3 - t2;
-    }
 #endif
-
-    if (*bmat == 'G')
-    {
         rnorm = sdot_(n, &resid[1], &c__1, &workd[1], &c__1);
         rnorm = sqrt((dabs(rnorm)));
     }

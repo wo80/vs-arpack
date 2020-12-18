@@ -278,17 +278,13 @@ int dgetv0_(int *ido, char *bmat, int *itry, bool *initv, int *n, int *j,
 
 L20:
 
-#ifndef NO_TIMER
-    if (*bmat == 'G')
-    {
-        arscnd_(&t3);
-        timing_1.tmvbx += t3 - t2;
-    }
-#endif
-
     first = false;
     if (*bmat == 'G')
     {
+#ifndef NO_TIMER
+        arscnd_(&t3);
+        timing_1.tmvbx += t3 - t2;
+#endif
         rnorm0 = ddot_(n, &resid[1], &c__1, &workd[1], &c__1);
         rnorm0 = sqrt((abs(rnorm0)));
     }
@@ -324,7 +320,6 @@ L30:
 
     i__1 = *j - 1;
     dgemv_("T", n, &i__1, &d_one, &v[v_offset], ldv, &workd[1], &c__1, &d_zero,&workd[*n + 1], &c__1);
-    i__1 = *j - 1;
     dgemv_("N", n, &i__1, &d_m1, &v[v_offset], ldv, &workd[*n + 1], &c__1, &d_one, &resid[1], &c__1);
 
     /* -------------------------------------------------------- */
@@ -351,16 +346,12 @@ L30:
 
 L40:
 
-#ifndef NO_TIMER
     if (*bmat == 'G')
     {
+#ifndef NO_TIMER
         arscnd_(&t3);
         timing_1.tmvbx += t3 - t2;
-    }
 #endif
-
-    if (*bmat == 'G')
-    {
         *rnorm = ddot_(n, &resid[1], &c__1, &workd[1], &c__1);
         *rnorm = sqrt((abs(*rnorm)));
     }
@@ -406,7 +397,6 @@ L40:
         for (jj = 1; jj <= i__1; ++jj)
         {
             resid[jj] = 0.0;
-
         }
         *rnorm = 0.0;
         *ierr = -1;

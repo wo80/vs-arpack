@@ -69,7 +69,6 @@ int snconv_(int *n, float *ritzr, float *ritzi, float *
     /* System generated locals */
     int i__1;
     float r__1, r__2;
-    double d__1;
 
     /* Builtin functions */
     /* Local variables */

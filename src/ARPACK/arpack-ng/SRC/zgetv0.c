@@ -122,7 +122,7 @@ int zgetv0_(int *ido, char *bmat, int *itry, bool *initv, int *n, int *j,
     static bool inits = true;
 
     /* System generated locals */
-    int v_dim1, v_offset, i__1, i__2;
+    int v_dim1, v_offset, i__1;
     double d__1, d__2;
     zomplex z__1;
 
@@ -324,7 +324,6 @@ L30:
 
     i__1 = *j - 1;
     zgemv_("C", n, &i__1, &z_one, &v[v_offset], ldv, &workd[1], &c__1, &z_zero, &workd[*n + 1], &c__1);
-    i__1 = *j - 1;
     z__1.r = -1., z__1.i = -0.0;
     zgemv_("N", n, &i__1, &z__1, &v[v_offset], ldv, &workd[*n + 1], &c__1, &z_one, &resid[1], &c__1);
 
@@ -352,16 +351,12 @@ L30:
 
 L40:
 
-#ifndef NO_TIMER
     if (*bmat == 'G')
     {
+#ifndef NO_TIMER
         arscnd_(&t3);
         timing_1.tmvbx += t3 - t2;
-    }
 #endif
-
-    if (*bmat == 'G')
-    {
         zdotc_(&z__1, n, &resid[1], &c__1, &workd[1], &c__1);
         cnorm.r = z__1.r, cnorm.i = z__1.i;
         d__1 = cnorm.r;
@@ -409,9 +404,7 @@ L40:
         i__1 = *n;
         for (jj = 1; jj <= i__1; ++jj)
         {
-            i__2 = jj;
-            resid[i__2].r = 0.0, resid[i__2].i = 0.0;
-
+            resid[jj].r = 0.0, resid[jj].i = 0.0;
         }
         *rnorm = 0.0;
         *ierr = -1;

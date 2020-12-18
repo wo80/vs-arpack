@@ -528,8 +528,7 @@ int cnaupd_(int *ido, char *bmat, int *n, char *which, int *nev, float *tol,
         i__1 = i__2 * i__2 * 3 + *ncv * 5;
         for (j = 1; j <= i__1; ++j)
         {
-            i__2 = j;
-            workl[i__2].r = 0.0f, workl[i__2].i = 0.0f;
+            workl[j].r = 0.0f, workl[j].i = 0.0f;
         }
 
         /* ----------------------------------------------------------- */

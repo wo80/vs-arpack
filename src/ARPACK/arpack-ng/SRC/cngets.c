@@ -137,9 +137,7 @@ int cngets_(int *ishift, char *which, int *kev, int *np, complex *ritz, complex 
     {
         ivout_(&c__1, kev, &debug_1.ndigit, "_ngets: KEV is");
         ivout_(&c__1, np, &debug_1.ndigit, "_ngets: NP is");
-        i__1 = *kev + *np;
         cvout_(&i__1, &ritz[1], &debug_1.ndigit, "_ngets: Eigenvalues of current H matrix ");
-        i__1 = *kev + *np;
         cvout_(&i__1, &bounds[1], &debug_1.ndigit, "_ngets: Ritz estimates of the current KEV+NP Ritz values");
     }
 #endif

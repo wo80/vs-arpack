@@ -536,14 +536,6 @@ L60:
     /* if step4 = .true.                */
     /* -------------------------------- */
 
-#ifndef NO_TIMER
-    if (*bmat == 'G')
-    {
-        arscnd_(&t3);
-        timing_1.tmvbx += t3 - t2;
-    }
-#endif
-
     step4 = false;
 
     /* ----------------------------------- */
@@ -553,6 +545,10 @@ L60:
 
     if (*bmat == 'G')
     {
+#ifndef NO_TIMER
+        arscnd_(&t3);
+        timing_1.tmvbx += t3 - t2;
+#endif
         wnorm = ddot_(n, &resid[1], &c__1, &workd[ipj], &c__1);
         wnorm = sqrt((abs(wnorm)));
     }
@@ -620,14 +616,6 @@ L70:
     /* WORKD(IPJ:IPJ+N-1) := B*r_{j}.                    */
     /* ------------------------------------------------- */
 
-#ifndef NO_TIMER
-    if (*bmat == 'G')
-    {
-        arscnd_(&t3);
-        timing_1.tmvbx += t3 - t2;
-    }
-#endif
-
     orth1 = false;
 
     /* ---------------------------- */
@@ -636,6 +624,10 @@ L70:
 
     if (*bmat == 'G')
     {
+#ifndef NO_TIMER
+        arscnd_(&t3);
+        timing_1.tmvbx += t3 - t2;
+#endif
         *rnorm = ddot_(n, &resid[1], &c__1, &workd[ipj], &c__1);
         *rnorm = sqrt((abs(*rnorm)));
     }
@@ -735,20 +727,16 @@ L90:
     /* Back from reverse communication if ORTH2 = .true. */
     /* ------------------------------------------------- */
 
-#ifndef NO_TIMER
-    if (*bmat == 'G')
-    {
-        arscnd_(&t3);
-        timing_1.tmvbx += t3 - t2;
-    }
-#endif
-
     /* --------------------------------------------------- */
     /* Compute the B-norm of the corrected residual r_{j}. */
     /* --------------------------------------------------- */
 
     if (*bmat == 'G')
     {
+#ifndef NO_TIMER
+        arscnd_(&t3);
+        timing_1.tmvbx += t3 - t2;
+#endif
         rnorm1 = ddot_(n, &resid[1], &c__1, &workd[ipj], &c__1);
         rnorm1 = sqrt((abs(rnorm1)));
     }

@@ -173,8 +173,7 @@ int znaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
             int *info)
 {
     /* System generated locals */
-    int h_dim1, h_offset, q_dim1, q_offset, v_dim1, v_offset, i__1, i__2,
-            i__3;
+    int h_dim1, h_offset, q_dim1, q_offset, v_dim1, v_offset, i__1, i__2;
     double d__1, d__2, d__3, d__4;
     zomplex z__1;
 
@@ -795,16 +794,12 @@ L100:
     /* WORKD(1:N) := B*RESID            */
     /* -------------------------------- */
 
-#ifndef NO_TIMER
     if (*bmat == 'G')
     {
+#ifndef NO_TIMER
         arscnd_(&t3);
         timing_1.tmvbx += t3 - t2;
-    }
 #endif
-
-    if (*bmat == 'G')
-    {
         zdotc_(&z__1, n, &resid[1], &c__1, &workd[1], &c__1);
         cmpnorm.r = z__1.r, cmpnorm.i = z__1.i;
         d__1 = cmpnorm.r;
