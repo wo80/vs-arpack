@@ -1,5 +1,6 @@
-/* D:\Projekte\ARPACK\arpack-ng\SRC\dneupd.f -- translated by f2c (version 20100827). */
+/* arpack-ng\SRC\dneupd.f -- translated by f2c (version 20100827). */
 
+#include <math.h>
 #include "arpack.h"
 
 /**
@@ -304,64 +305,47 @@
  *
  * \EndLib
  */
-
-/* Subroutine */ int dneupd_(logical *rvec, char *howmny, logical *select, 
-	doublereal *dr, doublereal *di, doublereal *z__, integer *ldz, 
-	doublereal *sigmar, doublereal *sigmai, doublereal *workev, char *
-	bmat, integer *n, char *which, integer *nev, doublereal *tol, 
-	doublereal *resid, integer *ncv, doublereal *v, integer *ldv, integer 
-	*iparam, integer *ipntr, doublereal *workd, doublereal *workl, 
-	integer *lworkl, integer *info)
+int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, double *z,
+            int *ldz, double *sigmar, double *sigmai, double *workev, char *bmat, int *n,
+            char *which, int *nev, double *tol, double *resid, int *ncv, double *v,
+            int *ldv, int *iparam, int *ipntr, double *workd, double *workl,
+            int *lworkl, int *info)
 {
     /* System generated locals */
-    integer v_dim1, v_offset, z_dim1, z_offset, i__1;
-    doublereal d__1, d__2;
+    int v_dim1, v_offset, z_dim1, z_offset, i__1;
+    double d__1, d__2;
 
     /* Builtin functions */
-    double pow_dd(doublereal *, doublereal *);
-    integer s_cmp(char *, char *, ftnlen, ftnlen);
-    /* Subroutine */ int s_copy(char *, char *, ftnlen, ftnlen);
-
     /* Local variables */
-    integer j, k, ih, jj, np;
-    doublereal vl[1]	/* was [1][1] */;
-    integer ibd, ldh, ldq, iri;
-    doublereal sep;
-    integer irr, wri, wrr;
-    integer mode;
-    doublereal eps23;
-    integer ierr;
-    doublereal temp;
-    integer iwev;
-    char type__[6];
-    doublereal temp1;
-    integer ihbds, iconj;
-    doublereal conds;
-    logical reord;
-    integer nconv;
-    integer iwork[1];
-    doublereal rnorm;
-    integer ritzi;
-    integer ritzr;
-    integer nconv2;
-    integer iheigi, iheigr, bounds, invsub, iuptri, msglvl, outncv, ishift, 
-	    numcnv;
+    int j, k, ih, jj, np;
+    double vl[1]	/* was [1][1] */;
+    int ibd, ldh, ldq, iri;
+    double sep;
+    int irr, wri, wrr;
+    int mode;
+    double eps23;
+    int ierr;
+    double temp;
+    int iwev;
+    char type[7];
+    double temp1;
+    int ihbds, iconj;
+    double conds;
+    bool reord;
+    int nconv;
+    int iwork[1];
+    double rnorm;
+    int ritzi;
+    int ritzr;
+    int nconv2;
+    int iheigi, iheigr, bounds, invsub, iuptri, msglvl, outncv, ishift,
+            numcnv;
 
-
-
-
-/*     %-----------------------% */
-/*     | Executable Statements | */
-/*     %-----------------------% */
-
-/*     %------------------------% */
-/*     | Set default parameters | */
-/*     %------------------------% */
 
     /* Parameter adjustments */
     z_dim1 = *ldz;
     z_offset = 1 + z_dim1;
-    z__ -= z_offset;
+    z -= z_offset;
     --workd;
     --resid;
     --di;
@@ -381,99 +365,124 @@
     nconv = iparam[5];
     *info = 0;
 
-/*     %---------------------------------% */
-/*     | Get machine dependent constant. | */
-/*     %---------------------------------% */
+    /* ------------------------------- */
+    /* Get machine dependent constant. */
+    /* ------------------------------- */
 
-    eps23 = dlamch_("Epsilon-Machine");
-    eps23 = pow_dd(&eps23, &d_23);
+    eps23 = dlamch_("E");
+    eps23 = pow(eps23, d_23);
 
-/*     %--------------% */
-/*     | Quick return | */
-/*     %--------------% */
+    /* ------------ */
+    /* Quick return */
+    /* ------------ */
 
     ierr = 0;
 
-    if (nconv <= 0) {
-	ierr = -14;
-    } else if (*n <= 0) {
-	ierr = -1;
-    } else if (*nev <= 0) {
-	ierr = -2;
-    } else if (*ncv <= *nev + 1 || *ncv > *n) {
-	ierr = -3;
-    } else if (s_cmp(which, "LM", (ftnlen)2, (ftnlen)2) != 0 && s_cmp(which, 
-	    "SM", (ftnlen)2, (ftnlen)2) != 0 && s_cmp(which, "LR", (ftnlen)2, 
-	    (ftnlen)2) != 0 && s_cmp(which, "SR", (ftnlen)2, (ftnlen)2) != 0 
-	    && s_cmp(which, "LI", (ftnlen)2, (ftnlen)2) != 0 && s_cmp(which, 
-	    "SI", (ftnlen)2, (ftnlen)2) != 0) {
-	ierr = -5;
-    } else if (*(unsigned char *)bmat != 'I' && *(unsigned char *)bmat != 'G')
-	     {
-	ierr = -6;
-    } else /* if(complicated condition) */ {
-/* Computing 2nd power */
-	i__1 = *ncv;
-	if (*lworkl < i__1 * i__1 * 3 + *ncv * 6) {
-	    ierr = -7;
-	} else if (*(unsigned char *)howmny != 'A' && *(unsigned char *)
-		howmny != 'P' && *(unsigned char *)howmny != 'S' && *rvec) {
-	    ierr = -13;
-	} else if (*(unsigned char *)howmny == 'S') {
-	    ierr = -12;
-	}
+    if (nconv <= 0)
+    {
+        ierr = -14;
+    }
+    else if (*n <= 0)
+    {
+        ierr = -1;
+    }
+    else if (*nev <= 0)
+    {
+        ierr = -2;
+    }
+    else if (*ncv <= *nev + 1 || *ncv > *n)
+    {
+        ierr = -3;
+    }
+    else if (strcmp(which, "LM") != 0 && strcmp(which, "SM") != 0 &&
+             strcmp(which, "LR") != 0 && strcmp(which, "SR") != 0 &&
+             strcmp(which, "LI") != 0 && strcmp(which, "SI") != 0)
+    {
+        ierr = -5;
+    }
+    else if (*bmat != 'I' && *bmat != 'G')
+    {
+        ierr = -6;
+    }
+    else /* if(complicated condition) */
+    {
+        /* Computing 2nd power */
+        i__1 = *ncv;
+        if (*lworkl < i__1 * i__1 * 3 + *ncv * 6)
+        {
+            ierr = -7;
+        }
+        else if (*howmny != 'A' && *howmny != 'P' && *howmny != 'S' && *rvec)
+        {
+            ierr = -13;
+        }
+        else if (*howmny == 'S')
+        {
+            ierr = -12;
+        }
     }
 
-    if (mode == 1 || mode == 2) {
-	s_copy(type__, "REGULR", (ftnlen)6, (ftnlen)6);
-    } else if (mode == 3 && *sigmai == 0.) {
-	s_copy(type__, "SHIFTI", (ftnlen)6, (ftnlen)6);
-    } else if (mode == 3) {
-	s_copy(type__, "REALPT", (ftnlen)6, (ftnlen)6);
-    } else if (mode == 4) {
-	s_copy(type__, "IMAGPT", (ftnlen)6, (ftnlen)6);
-    } else {
-	ierr = -10;
+    if (mode == 1 || mode == 2)
+    {
+        strcpy(type, "REGULR");
     }
-    if (mode == 1 && *(unsigned char *)bmat == 'G') {
-	ierr = -11;
+    else if (mode == 3 && *sigmai == 0.0)
+    {
+        strcpy(type, "SHIFTI");
+    }
+    else if (mode == 3)
+    {
+        strcpy(type, "REALPT");
+    }
+    else if (mode == 4)
+    {
+        strcpy(type, "IMAGPT");
+    }
+    else
+    {
+        ierr = -10;
+    }
+    if (mode == 1 && *bmat == 'G')
+    {
+        ierr = -11;
     }
 
-/*     %------------% */
-/*     | Error Exit | */
-/*     %------------% */
+    /* ---------- */
+    /* Error Exit */
+    /* ---------- */
 
-    if (ierr != 0) {
-	*info = ierr;
-	goto L9000;
+    if (ierr != 0)
+    {
+        *info = ierr;
+        goto L9000;
     }
 
-/*     %--------------------------------------------------------% */
-/*     | Pointer into WORKL for address of H, RITZ, BOUNDS, Q   | */
-/*     | etc... and the remaining workspace.                    | */
-/*     | Also update pointer to be used on output.              | */
-/*     | Memory is laid out as follows:                         | */
-/*     | workl(1:ncv*ncv) := generated Hessenberg matrix        | */
-/*     | workl(ncv*ncv+1:ncv*ncv+2*ncv) := real and imaginary   | */
-/*     |                                   parts of ritz values | */
-/*     | workl(ncv*ncv+2*ncv+1:ncv*ncv+3*ncv) := error bounds   | */
-/*     %--------------------------------------------------------% */
+    /* ------------------------------------------------------ */
+    /* Pointer into WORKL for address of H, RITZ, BOUNDS, Q   */
+    /* etc... and the remaining workspace.                    */
+    /* Also update pointer to be used on output.              */
+    /* Memory is laid out as follows:                         */
+    /* workl(1:ncv*ncv) := generated Hessenberg matrix        */
+    /* workl(ncv*ncv+1:ncv*ncv+2*ncv) := real and imaginary   */
+    /*                                   parts of ritz values */
+    /* workl(ncv*ncv+2*ncv+1:ncv*ncv+3*ncv) := error bounds   */
+    /* ------------------------------------------------------ */
 
-/*     %-----------------------------------------------------------% */
-/*     | The following is used and set by DNEUPD .                  | */
-/*     | workl(ncv*ncv+3*ncv+1:ncv*ncv+4*ncv) := The untransformed | */
-/*     |                             real part of the Ritz values. | */
-/*     | workl(ncv*ncv+4*ncv+1:ncv*ncv+5*ncv) := The untransformed | */
-/*     |                        imaginary part of the Ritz values. | */
-/*     | workl(ncv*ncv+5*ncv+1:ncv*ncv+6*ncv) := The untransformed | */
-/*     |                           error bounds of the Ritz values | */
-/*     | workl(ncv*ncv+6*ncv+1:2*ncv*ncv+6*ncv) := Holds the upper | */
-/*     |                             quasi-triangular matrix for H | */
-/*     | workl(2*ncv*ncv+6*ncv+1: 3*ncv*ncv+6*ncv) := Holds the    | */
-/*     |       associated matrix representation of the invariant   | */
-/*     |       subspace for H.                                     | */
-/*     | GRAND total of NCV * ( 3 * NCV + 6 ) locations.           | */
-/*     %-----------------------------------------------------------% */
+    /* --------------------------------------------------------- */
+    /* The following is used and set by DNEUPD .                 */
+    /* workl(ncv*ncv+3*ncv+1:ncv*ncv+4*ncv) := The untransformed */
+    /*                             real part of the Ritz values. */
+    /* workl(ncv*ncv+4*ncv+1:ncv*ncv+5*ncv) := The untransformed */
+    /*                        imaginary part of the Ritz values. */
+    /* workl(ncv*ncv+5*ncv+1:ncv*ncv+6*ncv) := The untransformed */
+    /*                           error bounds of the Ritz values */
+    /* workl(ncv*ncv+6*ncv+1:2*ncv*ncv+6*ncv) := Holds the upper */
+    /*                             quasi-triangular matrix for H */
+    /* workl(2*ncv*ncv+6*ncv+1: 3*ncv*ncv+6*ncv) := Holds the    */
+    /*       associated matrix representation of the invariant   */
+    /*       subspace for H.                                     */
+    /* GRAND total of NCV * ( 3 * NCV + 6 ) locations.           */
+    /* --------------------------------------------------------- */
 
     ih = ipntr[5];
     ritzr = ipntr[6];
@@ -495,588 +504,559 @@
     wri = *ncv + 1;
     iwev = wri + *ncv;
 
-/*     %-----------------------------------------% */
-/*     | irr points to the REAL part of the Ritz | */
-/*     |     values computed by _neigh before    | */
-/*     |     exiting _naup2.                     | */
-/*     | iri points to the IMAGINARY part of the | */
-/*     |     Ritz values computed by _neigh      | */
-/*     |     before exiting _naup2.              | */
-/*     | ibd points to the Ritz estimates        | */
-/*     |     computed by _neigh before exiting   | */
-/*     |     _naup2.                             | */
-/*     %-----------------------------------------% */
+    /* --------------------------------------- */
+    /* irr points to the REAL part of the Ritz */
+    /*     values computed by _neigh before    */
+    /*     exiting _naup2.                     */
+    /* iri points to the IMAGINARY part of the */
+    /*     Ritz values computed by _neigh      */
+    /*     before exiting _naup2.              */
+    /* ibd points to the Ritz estimates        */
+    /*     computed by _neigh before exiting   */
+    /*     _naup2.                             */
+    /* --------------------------------------- */
 
     irr = ipntr[14] + *ncv * *ncv;
     iri = irr + *ncv;
     ibd = iri + *ncv;
 
-/*     %------------------------------------% */
-/*     | RNORM is B-norm of the RESID(1:N). | */
-/*     %------------------------------------% */
+    /* ---------------------------------- */
+    /* RNORM is B-norm of the RESID(1:N). */
+    /* ---------------------------------- */
 
     rnorm = workl[ih + 2];
-    workl[ih + 2] = 0.;
+    workl[ih + 2] = 0.0;
 
-    if (msglvl > 2) {
-	dvout_(&debug_1.logfil, ncv, &workl[irr], &debug_1.ndigit, "_neupd: "
-		"Real part of Ritz values passed in from _NAUPD.", (ftnlen)55);
-	dvout_(&debug_1.logfil, ncv, &workl[iri], &debug_1.ndigit, "_neupd: "
-		"Imag part of Ritz values passed in from _NAUPD.", (ftnlen)55);
-	dvout_(&debug_1.logfil, ncv, &workl[ibd], &debug_1.ndigit, "_neupd: "
-		"Ritz estimates passed in from _NAUPD.", (ftnlen)45);
+#ifndef NO_TRACE
+    if (msglvl > 2)
+    {
+        dvout_(ncv, &workl[irr], &debug_1.ndigit, "_neupd: Real part of Ritz values passed in from _NAUPD.");
+        dvout_(ncv, &workl[iri], &debug_1.ndigit, "_neupd: Imag part of Ritz values passed in from _NAUPD.");
+        dvout_(ncv, &workl[ibd], &debug_1.ndigit, "_neupd: Ritz estimates passed in from _NAUPD.");
+    }
+#endif
+
+    if (*rvec)
+    {
+        reord = false;
+
+        /* ------------------------------------------------- */
+        /* Use the temporary bounds array to store indices   */
+        /* These will be used to mark the select array later */
+        /* ------------------------------------------------- */
+
+        i__1 = *ncv;
+        for (j = 1; j <= i__1; ++j)
+        {
+            workl[bounds + j - 1] = (double) j;
+            select[j] = false;
+        }
+
+        /* ----------------------------------- */
+        /* Select the wanted Ritz values.      */
+        /* Sort the Ritz values so that the    */
+        /* wanted ones appear at the tailing   */
+        /* NEV positions of workl(irr) and     */
+        /* workl(iri).  Move the corresponding */
+        /* error estimates in workl(bound)     */
+        /* accordingly.                        */
+        /* ----------------------------------- */
+
+        np = *ncv - *nev;
+        ishift = 0;
+        dngets_(&ishift, which, nev, &np, &workl[irr], &workl[iri], &workl[bounds], &workl[1], &workl[np + 1]);
+
+#ifndef NO_TRACE
+        if (msglvl > 2)
+        {
+            dvout_(ncv, &workl[irr], &debug_1.ndigit, "_neupd: Real part of Ritz values after calling _NGETS.");
+            dvout_(ncv, &workl[iri], &debug_1.ndigit, "_neupd: Imag part of Ritz values after calling _NGETS.");
+            dvout_(ncv, &workl[bounds], &debug_1.ndigit, "_neupd: Ritz value indices after calling _NGETS.");
+        }
+#endif
+
+        /* --------------------------------------------------- */
+        /* Record indices of the converged wanted Ritz values  */
+        /* Mark the select array for possible reordering       */
+        /* --------------------------------------------------- */
+
+        numcnv = 0;
+        i__1 = *ncv;
+        for (j = 1; j <= i__1; ++j)
+        {
+            /* Computing MAX */
+            d__1 = eps23, d__2 = dlapy2_(&workl[irr + *ncv - j], &workl[iri +
+                                         *ncv - j]);
+            temp1 = max(d__1,d__2);
+            jj = (int) workl[bounds + *ncv - j];
+            if (numcnv < nconv && workl[ibd + jj - 1] <= *tol * temp1)
+            {
+                select[jj] = true;
+                ++numcnv;
+                if (jj > nconv)
+                {
+                    reord = true;
+                }
+            }
+        }
+
+        /* --------------------------------------------------------- */
+        /* Check the count (numcnv) of converged Ritz values with    */
+        /* the number (nconv) reported by dnaupd.  If these two      */
+        /* are different then there has probably been an error       */
+        /* caused by incorrect passing of the dnaupd data.           */
+        /* --------------------------------------------------------- */
+
+#ifndef NO_TRACE
+        if (msglvl > 2)
+        {
+            ivout_(&c__1, &numcnv, &debug_1.ndigit, "_neupd: Number of specified eigenvalues");
+            ivout_(&c__1, &nconv, &debug_1.ndigit, "_neupd: Number of \"converged\" eigenvalues");
+        }
+#endif
+
+        if (numcnv != nconv)
+        {
+            *info = -15;
+            goto L9000;
+        }
+
+        /* ---------------------------------------------------------- */
+        /* Call LAPACK routine dlahqr  to compute the real Schur form */
+        /* of the upper Hessenberg matrix returned by DNAUPD .        */
+        /* Make a copy of the upper Hessenberg matrix.                */
+        /* Initialize the Schur vector matrix Q to the identity.      */
+        /* ---------------------------------------------------------- */
+
+        i__1 = ldh * *ncv;
+        dcopy_(&i__1, &workl[ih], &c__1, &workl[iuptri], &c__1);
+        dlaset_("A", ncv, ncv, &d_zero, &d_one, &workl[invsub], &ldq);
+        dlahqr_(&c_true, &c_true, ncv, &c__1, ncv, &workl[iuptri], &ldh, &workl[iheigr], &workl[iheigi], &c__1, ncv, &workl[invsub], &ldq, &ierr);
+        dcopy_(ncv, &workl[invsub + *ncv - 1], &ldq, &workl[ihbds], &c__1);
+
+        if (ierr != 0)
+        {
+            *info = -8;
+            goto L9000;
+        }
+
+#ifndef NO_TRACE
+        if (msglvl > 1)
+        {
+            dvout_(ncv, &workl[iheigr], &debug_1.ndigit, "_neupd: Real part of the eigenvalues of H");
+            dvout_(ncv, &workl[iheigi], &debug_1.ndigit, "_neupd: Imaginary part of the Eigenvalues of H");
+            dvout_(ncv, &workl[ihbds], &debug_1.ndigit, "_neupd: Last row of the Schur vector matrix");
+            if (msglvl > 3)
+            {
+                dmout_(ncv, ncv, &workl[iuptri], &ldh, &debug_1.ndigit, "_neupd: The upper quasi-triangular matrix ");
+            }
+        }
+#endif
+
+        if (reord)
+        {
+            /* --------------------------------------------------- */
+            /* Reorder the computed upper quasi-triangular matrix. */
+            /* --------------------------------------------------- */
+
+            dtrsen_("N", "V", &select[1], ncv, &workl[iuptri], &ldh, &workl[invsub], &ldq, &workl[iheigr], &workl[iheigi], &nconv2, &conds, &sep, &workl[ihbds], ncv, iwork, &c__1, &ierr);
+
+            if (nconv2 < nconv)
+            {
+                nconv = nconv2;
+            }
+            if (ierr == 1)
+            {
+                *info = 1;
+                goto L9000;
+            }
+
+#ifndef NO_TRACE
+            if (msglvl > 2)
+            {
+                dvout_(ncv, &workl[iheigr], &debug_1.ndigit, "_neupd: Real part of the eigenvalues of H--reordered");
+                dvout_(ncv, &workl[iheigi], &debug_1.ndigit, "_neupd: Imag part of the eigenvalues of H--reordered");
+                if (msglvl > 3)
+                {
+                    dmout_(ncv, ncv, &workl[iuptri], &ldq, &debug_1.ndigit, "_neupd: Quasi-triangular matrix after re-ordering");
+                }
+            }
+#endif
+        }
+
+        /* ------------------------------------- */
+        /* Copy the last row of the Schur vector */
+        /* into workl(ihbds).  This will be used */
+        /* to compute the Ritz estimates of      */
+        /* converged Ritz values.                */
+        /* ------------------------------------- */
+
+        dcopy_(ncv, &workl[invsub + *ncv - 1], &ldq, &workl[ihbds], &c__1);
+
+        /* -------------------------------------------------- */
+        /* Place the computed eigenvalues of H into DR and DI */
+        /* if a spectral transformation was not used.         */
+        /* -------------------------------------------------- */
+
+        if (strcmp(type, "REGULR") == 0)
+        {
+            dcopy_(&nconv, &workl[iheigr], &c__1, &dr[1], &c__1);
+            dcopy_(&nconv, &workl[iheigi], &c__1, &di[1], &c__1);
+        }
+
+        /* -------------------------------------------------------- */
+        /* Compute the QR factorization of the matrix representing  */
+        /* the wanted invariant subspace located in the first NCONV */
+        /* columns of workl(invsub,ldq).                            */
+        /* -------------------------------------------------------- */
+
+        dgeqr2_(ncv, &nconv, &workl[invsub], &ldq, &workev[1], &workev[*ncv + 1], &ierr);
+
+        /* ------------------------------------------------------- */
+        /* * Postmultiply V by Q using dorm2r .                    */
+        /* * Copy the first NCONV columns of VQ into Z.            */
+        /* * Postmultiply Z by R.                                  */
+        /* The N by NCONV matrix Z is now a matrix representation  */
+        /* of the approximate invariant subspace associated with   */
+        /* the Ritz values in workl(iheigr) and workl(iheigi)      */
+        /* The first NCONV columns of V are now approximate Schur  */
+        /* vectors associated with the real upper quasi-triangular */
+        /* matrix of order NCONV in workl(iuptri)                  */
+        /* ------------------------------------------------------- */
+
+        dorm2r_("R", "N", n, ncv, &nconv, &workl[invsub], &ldq, &workev[1], &v[v_offset], ldv, &workd[*n + 1], &ierr);
+        dlacpy_("A", n, &nconv, &v[v_offset], ldv, &z[z_offset], ldz);
+
+        for (j = 1; j <= nconv; ++j)
+        {
+            /* ------------------------------------------------- */
+            /* Perform both a column and row scaling if the      */
+            /* diagonal element of workl(invsub,ldq) is negative */
+            /* I'm lazy and don't take advantage of the upper    */
+            /* quasi-triangular form of workl(iuptri,ldq)        */
+            /* Note that since Q is orthogonal, R is a diagonal  */
+            /* matrix consisting of plus or minus ones           */
+            /* ------------------------------------------------- */
+
+            if (workl[invsub + (j - 1) * ldq + j - 1] < 0.0)
+            {
+                dscal_(&nconv, &d_m1, &workl[iuptri + j - 1], &ldq);
+                dscal_(&nconv, &d_m1, &workl[iuptri + (j - 1) * ldq], &c__1);
+            }
+        }
+
+        if (*howmny == 'A')
+        {
+            /* ------------------------------------------ */
+            /* Compute the NCONV wanted eigenvectors of T */
+            /* located in workl(iuptri,ldq).              */
+            /* ------------------------------------------ */
+
+            i__1 = *ncv;
+            for (j = 1; j <= i__1; ++j)
+            {
+                if (j <= nconv)
+                {
+                    select[j] = true;
+                }
+                else
+                {
+                    select[j] = false;
+                }
+            }
+
+            dtrevc_("R", "S", &select[1], ncv, &workl[iuptri], &ldq, vl, &c__1, &workl[invsub], &ldq, ncv, &outncv, &workev[1],&ierr);
+
+            if (ierr != 0)
+            {
+                *info = -9;
+                goto L9000;
+            }
+
+            /* ---------------------------------------------- */
+            /* Scale the returning eigenvectors so that their */
+            /* Euclidean norms are all one. LAPACK subroutine */
+            /* dtrevc  returns each eigenvector normalized so */
+            /* that the element of largest magnitude has      */
+            /* magnitude 1;                                   */
+            /* ---------------------------------------------- */
+
+            iconj = 0;
+            i__1 = nconv;
+            for (j = 1; j <= i__1; ++j)
+            {
+                if (workl[iheigi + j - 1] == 0.0)
+                {
+                    /* -------------------- */
+                    /* real eigenvalue case */
+                    /* -------------------- */
+
+                    temp = dnrm2_(ncv, &workl[invsub + (j - 1) * ldq], &c__1);
+                    d__1 = 1.0 / temp;
+                    dscal_(ncv, &d__1, &workl[invsub + (j - 1) * ldq], &c__1);
+                }
+                else
+                {
+                    /* ----------------------------------------- */
+                    /* Complex conjugate pair case. Note that    */
+                    /* since the real and imaginary part of      */
+                    /* the eigenvector are stored in consecutive */
+                    /* columns, we further normalize by the      */
+                    /* square root of two.                       */
+                    /* ----------------------------------------- */
+
+                    if (iconj == 0)
+                    {
+                        d__1 = dnrm2_(ncv, &workl[invsub + (j - 1) * ldq], &c__1);
+                        d__2 = dnrm2_(ncv, &workl[invsub + j * ldq], &c__1);
+                        temp = dlapy2_(&d__1, &d__2);
+                        d__1 = 1.0 / temp;
+                        dscal_(ncv, &d__1, &workl[invsub + (j - 1) * ldq], &c__1);
+                        d__1 = 1.0 / temp;
+                        dscal_(ncv, &d__1, &workl[invsub + j * ldq], &c__1);
+                        iconj = 1;
+                    }
+                    else
+                    {
+                        iconj = 0;
+                    }
+                }
+            }
+
+            dgemv_("T", ncv, &nconv, &d_one, &workl[invsub], &ldq, &workl[ihbds], &c__1, &d_zero, &workev[1], &c__1);
+
+            iconj = 0;
+            for (j = 1; j <= nconv; ++j)
+            {
+                if (workl[iheigi + j - 1] != 0.0)
+                {
+                    /* ----------------------------------------- */
+                    /* Complex conjugate pair case. Note that    */
+                    /* since the real and imaginary part of      */
+                    /* the eigenvector are stored in consecutive */
+                    /* ----------------------------------------- */
+
+                    if (iconj == 0)
+                    {
+                        workev[j] = dlapy2_(&workev[j], &workev[j + 1]);
+                        workev[j + 1] = workev[j];
+                        iconj = 1;
+                    }
+                    else
+                    {
+                        iconj = 0;
+                    }
+                }
+            }
+
+#ifndef NO_TRACE
+            if (msglvl > 2)
+            {
+                dcopy_(ncv, &workl[invsub + *ncv - 1], &ldq, &workl[ihbds], &c__1);
+                dvout_(ncv, &workl[ihbds], &debug_1.ndigit, "_neupd: Last row of the eigenvector matrix for T");
+                if (msglvl > 3)
+                {
+                    dmout_(ncv, ncv, &workl[invsub], &ldq, &debug_1.ndigit, "_neupd: The eigenvector matrix for T");
+                }
+            }
+#endif
+
+            /* ------------------------------------- */
+            /* Copy Ritz estimates into workl(ihbds) */
+            /* ------------------------------------- */
+
+            dcopy_(&nconv, &workev[1], &c__1, &workl[ihbds], &c__1);
+
+            /* ------------------------------------------------------- */
+            /* Compute the QR factorization of the eigenvector matrix  */
+            /* associated with leading portion of T in the first NCONV */
+            /* columns of workl(invsub,ldq).                           */
+            /* ------------------------------------------------------- */
+
+            dgeqr2_(ncv, &nconv, &workl[invsub], &ldq, &workev[1], &workev[*ncv + 1], &ierr);
+
+            /* -------------------------------------------- */
+            /* * Postmultiply Z by Q.                       */
+            /* * Postmultiply Z by R.                       */
+            /* The N by NCONV matrix Z is now contains the  */
+            /* Ritz vectors associated with the Ritz values */
+            /* in workl(iheigr) and workl(iheigi).          */
+            /* -------------------------------------------- */
+
+            dorm2r_("R", "N", n, ncv, &nconv, &workl[invsub], &ldq, &workev[1], &z[z_offset], ldz, &workd[*n + 1], &ierr);
+            dtrmm_("R", "U", "N", "N", n, &nconv, &d_one, &workl[invsub], &ldq, &z[z_offset], ldz);
+        }
+    }
+    else
+    {
+        /* ----------------------------------------------------- */
+        /* An approximate invariant subspace is not needed.      */
+        /* Place the Ritz values computed DNAUPD  into DR and DI */
+        /* ----------------------------------------------------- */
+
+        dcopy_(&nconv, &workl[ritzr], &c__1, &dr[1], &c__1);
+        dcopy_(&nconv, &workl[ritzi], &c__1, &di[1], &c__1);
+        dcopy_(&nconv, &workl[ritzr], &c__1, &workl[iheigr], &c__1);
+        dcopy_(&nconv, &workl[ritzi], &c__1, &workl[iheigi], &c__1);
+        dcopy_(&nconv, &workl[bounds], &c__1, &workl[ihbds], &c__1);
     }
 
-    if (*rvec) {
-
-	reord = FALSE_;
-
-/*        %---------------------------------------------------% */
-/*        | Use the temporary bounds array to store indices   | */
-/*        | These will be used to mark the select array later | */
-/*        %---------------------------------------------------% */
-
-	i__1 = *ncv;
-	for (j = 1; j <= i__1; ++j) {
-	    workl[bounds + j - 1] = (doublereal) j;
-	    select[j] = FALSE_;
-/* L10: */
-	}
-
-/*        %-------------------------------------% */
-/*        | Select the wanted Ritz values.      | */
-/*        | Sort the Ritz values so that the    | */
-/*        | wanted ones appear at the tailing   | */
-/*        | NEV positions of workl(irr) and     | */
-/*        | workl(iri).  Move the corresponding | */
-/*        | error estimates in workl(bound)     | */
-/*        | accordingly.                        | */
-/*        %-------------------------------------% */
-
-	np = *ncv - *nev;
-	ishift = 0;
-	dngets_(&ishift, which, nev, &np, &workl[irr], &workl[iri], &workl[
-		bounds], &workl[1], &workl[np + 1]);
-
-	if (msglvl > 2) {
-	    dvout_(&debug_1.logfil, ncv, &workl[irr], &debug_1.ndigit, "_neu"
-		    "pd: Real part of Ritz values after calling _NGETS.", (
-		    ftnlen)54);
-	    dvout_(&debug_1.logfil, ncv, &workl[iri], &debug_1.ndigit, "_neu"
-		    "pd: Imag part of Ritz values after calling _NGETS.", (
-		    ftnlen)54);
-	    dvout_(&debug_1.logfil, ncv, &workl[bounds], &debug_1.ndigit, 
-		    "_neupd: Ritz value indices after calling _NGETS.", (
-		    ftnlen)48);
-	}
-
-/*        %-----------------------------------------------------% */
-/*        | Record indices of the converged wanted Ritz values  | */
-/*        | Mark the select array for possible reordering       | */
-/*        %-----------------------------------------------------% */
-
-	numcnv = 0;
-	i__1 = *ncv;
-	for (j = 1; j <= i__1; ++j) {
-/* Computing MAX */
-	    d__1 = eps23, d__2 = dlapy2_(&workl[irr + *ncv - j], &workl[iri + 
-		    *ncv - j]);
-	    temp1 = max(d__1,d__2);
-	    jj = (integer) workl[bounds + *ncv - j];
-	    if (numcnv < nconv && workl[ibd + jj - 1] <= *tol * temp1) {
-		select[jj] = TRUE_;
-		++numcnv;
-		if (jj > nconv) {
-		    reord = TRUE_;
-		}
-	    }
-/* L11: */
-	}
-
-/*        %-----------------------------------------------------------% */
-/*        | Check the count (numcnv) of converged Ritz values with    | */
-/*        | the number (nconv) reported by dnaupd.  If these two      | */
-/*        | are different then there has probably been an error       | */
-/*        | caused by incorrect passing of the dnaupd data.           | */
-/*        %-----------------------------------------------------------% */
-
-	if (msglvl > 2) {
-	    ivout_(&debug_1.logfil, &c__1, &numcnv, &debug_1.ndigit, "_neupd"
-		    ": Number of specified eigenvalues", (ftnlen)39);
-	    ivout_(&debug_1.logfil, &c__1, &nconv, &debug_1.ndigit, "_neupd:"
-		    " Number of \"converged\" eigenvalues", (ftnlen)41);
-	}
-
-	if (numcnv != nconv) {
-	    *info = -15;
-	    goto L9000;
-	}
-
-/*        %-----------------------------------------------------------% */
-/*        | Call LAPACK routine dlahqr  to compute the real Schur form | */
-/*        | of the upper Hessenberg matrix returned by DNAUPD .        | */
-/*        | Make a copy of the upper Hessenberg matrix.               | */
-/*        | Initialize the Schur vector matrix Q to the identity.     | */
-/*        %-----------------------------------------------------------% */
-
-	i__1 = ldh * *ncv;
-	dcopy_(&i__1, &workl[ih], &c__1, &workl[iuptri], &c__1);
-	dlaset_("All", ncv, ncv, &d_zero, &d_one, &workl[invsub], &ldq);
-	dlahqr_(&c_true, &c_true, ncv, &c__1, ncv, &workl[iuptri], &ldh, &
-		workl[iheigr], &workl[iheigi], &c__1, ncv, &workl[invsub], &
-		ldq, &ierr);
-	dcopy_(ncv, &workl[invsub + *ncv - 1], &ldq, &workl[ihbds], &c__1);
-
-	if (ierr != 0) {
-	    *info = -8;
-	    goto L9000;
-	}
-
-	if (msglvl > 1) {
-	    dvout_(&debug_1.logfil, ncv, &workl[iheigr], &debug_1.ndigit, 
-		    "_neupd: Real part of the eigenvalues of H", (ftnlen)41);
-	    dvout_(&debug_1.logfil, ncv, &workl[iheigi], &debug_1.ndigit, 
-		    "_neupd: Imaginary part of the Eigenvalues of H", (ftnlen)
-		    46);
-	    dvout_(&debug_1.logfil, ncv, &workl[ihbds], &debug_1.ndigit, 
-		    "_neupd: Last row of the Schur vector matrix", (ftnlen)43)
-		    ;
-	    if (msglvl > 3) {
-		dmout_(&debug_1.logfil, ncv, ncv, &workl[iuptri], &ldh, &
-			debug_1.ndigit, "_neupd: The upper quasi-triangular "
-			"matrix ", (ftnlen)42);
-	    }
-	}
-
-	if (reord) {
-
-/*           %-----------------------------------------------------% */
-/*           | Reorder the computed upper quasi-triangular matrix. | */
-/*           %-----------------------------------------------------% */
-
-	    dtrsen_("None", "V", &select[1], ncv, &workl[iuptri], &ldh, &
-		    workl[invsub], &ldq, &workl[iheigr], &workl[iheigi], &
-		    nconv2, &conds, &sep, &workl[ihbds], ncv, iwork, &c__1, &
-		    ierr);
-
-	    if (nconv2 < nconv) {
-		nconv = nconv2;
-	    }
-	    if (ierr == 1) {
-		*info = 1;
-		goto L9000;
-	    }
-
-	    if (msglvl > 2) {
-		dvout_(&debug_1.logfil, ncv, &workl[iheigr], &debug_1.ndigit, 
-			"_neupd: Real part of the eigenvalues of H--reordered"
-			, (ftnlen)52);
-		dvout_(&debug_1.logfil, ncv, &workl[iheigi], &debug_1.ndigit, 
-			"_neupd: Imag part of the eigenvalues of H--reordered"
-			, (ftnlen)52);
-		if (msglvl > 3) {
-		    dmout_(&debug_1.logfil, ncv, ncv, &workl[iuptri], &ldq, &
-			    debug_1.ndigit, "_neupd: Quasi-triangular matrix"
-			    " after re-ordering", (ftnlen)49);
-		}
-	    }
-
-	}
-
-/*        %---------------------------------------% */
-/*        | Copy the last row of the Schur vector | */
-/*        | into workl(ihbds).  This will be used | */
-/*        | to compute the Ritz estimates of      | */
-/*        | converged Ritz values.                | */
-/*        %---------------------------------------% */
-
-	dcopy_(ncv, &workl[invsub + *ncv - 1], &ldq, &workl[ihbds], &c__1);
-
-/*        %----------------------------------------------------% */
-/*        | Place the computed eigenvalues of H into DR and DI | */
-/*        | if a spectral transformation was not used.         | */
-/*        %----------------------------------------------------% */
-
-	if (s_cmp(type__, "REGULR", (ftnlen)6, (ftnlen)6) == 0) {
-	    dcopy_(&nconv, &workl[iheigr], &c__1, &dr[1], &c__1);
-	    dcopy_(&nconv, &workl[iheigi], &c__1, &di[1], &c__1);
-	}
-
-/*        %----------------------------------------------------------% */
-/*        | Compute the QR factorization of the matrix representing  | */
-/*        | the wanted invariant subspace located in the first NCONV | */
-/*        | columns of workl(invsub,ldq).                            | */
-/*        %----------------------------------------------------------% */
-
-	dgeqr2_(ncv, &nconv, &workl[invsub], &ldq, &workev[1], &workev[*ncv + 
-		1], &ierr);
-
-/*        %---------------------------------------------------------% */
-/*        | * Postmultiply V by Q using dorm2r .                     | */
-/*        | * Copy the first NCONV columns of VQ into Z.            | */
-/*        | * Postmultiply Z by R.                                  | */
-/*        | The N by NCONV matrix Z is now a matrix representation  | */
-/*        | of the approximate invariant subspace associated with   | */
-/*        | the Ritz values in workl(iheigr) and workl(iheigi)      | */
-/*        | The first NCONV columns of V are now approximate Schur  | */
-/*        | vectors associated with the real upper quasi-triangular | */
-/*        | matrix of order NCONV in workl(iuptri)                  | */
-/*        %---------------------------------------------------------% */
-
-	dorm2r_("Right", "Notranspose", n, ncv, &nconv, &workl[invsub], &ldq, 
-		&workev[1], &v[v_offset], ldv, &workd[*n + 1], &ierr);
-	dlacpy_("All", n, &nconv, &v[v_offset], ldv, &z__[z_offset], ldz);
-
-	i__1 = nconv;
-	for (j = 1; j <= i__1; ++j) {
-
-/*           %---------------------------------------------------% */
-/*           | Perform both a column and row scaling if the      | */
-/*           | diagonal element of workl(invsub,ldq) is negative | */
-/*           | I'm lazy and don't take advantage of the upper    | */
-/*           | quasi-triangular form of workl(iuptri,ldq)        | */
-/*           | Note that since Q is orthogonal, R is a diagonal  | */
-/*           | matrix consisting of plus or minus ones           | */
-/*           %---------------------------------------------------% */
-
-	    if (workl[invsub + (j - 1) * ldq + j - 1] < 0.) {
-		dscal_(&nconv, &d_m1, &workl[iuptri + j - 1], &ldq);
-		dscal_(&nconv, &d_m1, &workl[iuptri + (j - 1) * ldq], &c__1);
-	    }
-
-/* L20: */
-	}
-
-	if (*(unsigned char *)howmny == 'A') {
-
-/*           %--------------------------------------------% */
-/*           | Compute the NCONV wanted eigenvectors of T | */
-/*           | located in workl(iuptri,ldq).              | */
-/*           %--------------------------------------------% */
-
-	    i__1 = *ncv;
-	    for (j = 1; j <= i__1; ++j) {
-		if (j <= nconv) {
-		    select[j] = TRUE_;
-		} else {
-		    select[j] = FALSE_;
-		}
-/* L30: */
-	    }
-
-	    dtrevc_("Right", "Select", &select[1], ncv, &workl[iuptri], &ldq, 
-		    vl, &c__1, &workl[invsub], &ldq, ncv, &outncv, &workev[1],
-		     &ierr);
-
-	    if (ierr != 0) {
-		*info = -9;
-		goto L9000;
-	    }
-
-/*           %------------------------------------------------% */
-/*           | Scale the returning eigenvectors so that their | */
-/*           | Euclidean norms are all one. LAPACK subroutine | */
-/*           | dtrevc  returns each eigenvector normalized so  | */
-/*           | that the element of largest magnitude has      | */
-/*           | magnitude 1;                                   | */
-/*           %------------------------------------------------% */
-
-	    iconj = 0;
-	    i__1 = nconv;
-	    for (j = 1; j <= i__1; ++j) {
-
-		if (workl[iheigi + j - 1] == 0.) {
-
-/*                 %----------------------% */
-/*                 | real eigenvalue case | */
-/*                 %----------------------% */
-
-		    temp = dnrm2_(ncv, &workl[invsub + (j - 1) * ldq], &c__1);
-		    d__1 = 1. / temp;
-		    dscal_(ncv, &d__1, &workl[invsub + (j - 1) * ldq], &c__1);
-
-		} else {
-
-/*                 %-------------------------------------------% */
-/*                 | Complex conjugate pair case. Note that    | */
-/*                 | since the real and imaginary part of      | */
-/*                 | the eigenvector are stored in consecutive | */
-/*                 | columns, we further normalize by the      | */
-/*                 | square root of two.                       | */
-/*                 %-------------------------------------------% */
-
-		    if (iconj == 0) {
-			d__1 = dnrm2_(ncv, &workl[invsub + (j - 1) * ldq], &
-				c__1);
-			d__2 = dnrm2_(ncv, &workl[invsub + j * ldq], &c__1);
-			temp = dlapy2_(&d__1, &d__2);
-			d__1 = 1. / temp;
-			dscal_(ncv, &d__1, &workl[invsub + (j - 1) * ldq], &
-				c__1);
-			d__1 = 1. / temp;
-			dscal_(ncv, &d__1, &workl[invsub + j * ldq], &c__1);
-			iconj = 1;
-		    } else {
-			iconj = 0;
-		    }
-
-		}
-
-/* L40: */
-	    }
-
-	    dgemv_("T", ncv, &nconv, &d_one, &workl[invsub], &ldq, &workl[
-		    ihbds], &c__1, &d_zero, &workev[1], &c__1);
-
-	    iconj = 0;
-	    i__1 = nconv;
-	    for (j = 1; j <= i__1; ++j) {
-		if (workl[iheigi + j - 1] != 0.) {
-
-/*                 %-------------------------------------------% */
-/*                 | Complex conjugate pair case. Note that    | */
-/*                 | since the real and imaginary part of      | */
-/*                 | the eigenvector are stored in consecutive | */
-/*                 %-------------------------------------------% */
-
-		    if (iconj == 0) {
-			workev[j] = dlapy2_(&workev[j], &workev[j + 1]);
-			workev[j + 1] = workev[j];
-			iconj = 1;
-		    } else {
-			iconj = 0;
-		    }
-		}
-/* L45: */
-	    }
-
-	    if (msglvl > 2) {
-		dcopy_(ncv, &workl[invsub + *ncv - 1], &ldq, &workl[ihbds], &
-			c__1);
-		dvout_(&debug_1.logfil, ncv, &workl[ihbds], &debug_1.ndigit, 
-			"_neupd: Last row of the eigenvector matrix for T", (
-			ftnlen)48);
-		if (msglvl > 3) {
-		    dmout_(&debug_1.logfil, ncv, ncv, &workl[invsub], &ldq, &
-			    debug_1.ndigit, "_neupd: The eigenvector matrix "
-			    "for T", (ftnlen)36);
-		}
-	    }
-
-/*           %---------------------------------------% */
-/*           | Copy Ritz estimates into workl(ihbds) | */
-/*           %---------------------------------------% */
-
-	    dcopy_(&nconv, &workev[1], &c__1, &workl[ihbds], &c__1);
-
-/*           %---------------------------------------------------------% */
-/*           | Compute the QR factorization of the eigenvector matrix  | */
-/*           | associated with leading portion of T in the first NCONV | */
-/*           | columns of workl(invsub,ldq).                           | */
-/*           %---------------------------------------------------------% */
-
-	    dgeqr2_(ncv, &nconv, &workl[invsub], &ldq, &workev[1], &workev[*
-		    ncv + 1], &ierr);
-
-/*           %----------------------------------------------% */
-/*           | * Postmultiply Z by Q.                       | */
-/*           | * Postmultiply Z by R.                       | */
-/*           | The N by NCONV matrix Z is now contains the  | */
-/*           | Ritz vectors associated with the Ritz values | */
-/*           | in workl(iheigr) and workl(iheigi).          | */
-/*           %----------------------------------------------% */
-
-	    dorm2r_("Right", "Notranspose", n, ncv, &nconv, &workl[invsub], &
-		    ldq, &workev[1], &z__[z_offset], ldz, &workd[*n + 1], &
-		    ierr, (ftnlen)5, (ftnlen)11);
-
-	    dtrmm_("Right", "Upper", "No transpose", "Non-unit", n, &nconv, &
-		    d_one, &workl[invsub], &ldq, &z__[z_offset], ldz, (ftnlen)
-		    5, (ftnlen)5, (ftnlen)12, (ftnlen)8);
-
-	}
-
-    } else {
-
-/*        %------------------------------------------------------% */
-/*        | An approximate invariant subspace is not needed.     | */
-/*        | Place the Ritz values computed DNAUPD  into DR and DI | */
-/*        %------------------------------------------------------% */
-
-	dcopy_(&nconv, &workl[ritzr], &c__1, &dr[1], &c__1);
-	dcopy_(&nconv, &workl[ritzi], &c__1, &di[1], &c__1);
-	dcopy_(&nconv, &workl[ritzr], &c__1, &workl[iheigr], &c__1);
-	dcopy_(&nconv, &workl[ritzi], &c__1, &workl[iheigi], &c__1);
-	dcopy_(&nconv, &workl[bounds], &c__1, &workl[ihbds], &c__1);
+    /* ---------------------------------------------- */
+    /* Transform the Ritz values and possibly vectors */
+    /* and corresponding error bounds of OP to those  */
+    /* of A*x = lambda*B*x.                           */
+    /* ---------------------------------------------- */
+
+    if (strcmp(type, "REGULR") == 0)
+    {
+        if (*rvec)
+        {
+            dscal_(ncv, &rnorm, &workl[ihbds], &c__1);
+        }
+    }
+    else
+    {
+        /* ------------------------------------- */
+        /*   A spectral transformation was used. */
+        /* * Determine the Ritz estimates of the */
+        /*   Ritz values in the original system. */
+        /* ------------------------------------- */
+
+        if (strcmp(type, "SHIFTI") == 0)
+        {
+            if (*rvec)
+            {
+                dscal_(ncv, &rnorm, &workl[ihbds], &c__1);
+            }
+
+            i__1 = *ncv;
+            for (k = 1; k <= i__1; ++k)
+            {
+                temp = dlapy2_(&workl[iheigr + k - 1], &workl[iheigi + k - 1]);
+                d__1 = workl[ihbds + k - 1];
+                workl[ihbds + k - 1] = abs(d__1) / temp / temp;
+            }
+        }
+        else if (strcmp(type, "REALPT") == 0)
+        {
+            i__1 = *ncv;
+            for (k = 1; k <= i__1; ++k)
+            {
+            }
+        }
+        else if (strcmp(type, "IMAGPT") == 0)
+        {
+            i__1 = *ncv;
+            for (k = 1; k <= i__1; ++k)
+            {
+            }
+        }
+
+        /* --------------------------------------------------------- */
+        /* *  Transform the Ritz values back to the original system. */
+        /*    For TYPE = 'SHIFTI' the transformation is              */
+        /*             lambda = 1/theta + sigma                      */
+        /*    For TYPE = 'REALPT' or 'IMAGPT' the user must from     */
+        /*    Rayleigh quotients or a projection. See remark 3 above.*/
+        /* NOTES:                                                    */
+        /* *The Ritz vectors are not affected by the transformation. */
+        /* --------------------------------------------------------- */
+
+        if (strcmp(type, "SHIFTI") == 0)
+        {
+            i__1 = *ncv;
+            for (k = 1; k <= i__1; ++k)
+            {
+                temp = dlapy2_(&workl[iheigr + k - 1], &workl[iheigi + k - 1]);
+                workl[iheigr + k - 1] = workl[iheigr + k - 1] / temp / temp + *sigmar;
+                workl[iheigi + k - 1] = -workl[iheigi + k - 1] / temp / temp + *sigmai;
+            }
+
+            dcopy_(&nconv, &workl[iheigr], &c__1, &dr[1], &c__1);
+            dcopy_(&nconv, &workl[iheigi], &c__1, &di[1], &c__1);
+
+        }
+        else if (strcmp(type, "REALPT") == 0 ||
+                 strcmp(type, "IMAGPT") == 0)
+        {
+            dcopy_(&nconv, &workl[iheigr], &c__1, &dr[1], &c__1);
+            dcopy_(&nconv, &workl[iheigi], &c__1, &di[1], &c__1);
+        }
     }
 
-/*     %------------------------------------------------% */
-/*     | Transform the Ritz values and possibly vectors | */
-/*     | and corresponding error bounds of OP to those  | */
-/*     | of A*x = lambda*B*x.                           | */
-/*     %------------------------------------------------% */
-
-    if (s_cmp(type__, "REGULR", (ftnlen)6, (ftnlen)6) == 0) {
-
-	if (*rvec) {
-	    dscal_(ncv, &rnorm, &workl[ihbds], &c__1);
-	}
-
-    } else {
-
-/*        %---------------------------------------% */
-/*        |   A spectral transformation was used. | */
-/*        | * Determine the Ritz estimates of the | */
-/*        |   Ritz values in the original system. | */
-/*        %---------------------------------------% */
-
-	if (s_cmp(type__, "SHIFTI", (ftnlen)6, (ftnlen)6) == 0) {
-
-	    if (*rvec) {
-		dscal_(ncv, &rnorm, &workl[ihbds], &c__1);
-	    }
-
-	    i__1 = *ncv;
-	    for (k = 1; k <= i__1; ++k) {
-		temp = dlapy2_(&workl[iheigr + k - 1], &workl[iheigi + k - 1])
-			;
-		workl[ihbds + k - 1] = (d__1 = workl[ihbds + k - 1], abs(d__1)
-			) / temp / temp;
-/* L50: */
-	    }
-
-	} else if (s_cmp(type__, "REALPT", (ftnlen)6, (ftnlen)6) == 0) {
-
-	    i__1 = *ncv;
-	    for (k = 1; k <= i__1; ++k) {
-/* L60: */
-	    }
-
-	} else if (s_cmp(type__, "IMAGPT", (ftnlen)6, (ftnlen)6) == 0) {
-
-	    i__1 = *ncv;
-	    for (k = 1; k <= i__1; ++k) {
-/* L70: */
-	    }
-
-	}
-
-/*        %-----------------------------------------------------------% */
-/*        | *  Transform the Ritz values back to the original system. | */
-/*        |    For TYPE = 'SHIFTI' the transformation is              | */
-/*        |             lambda = 1/theta + sigma                      | */
-/*        |    For TYPE = 'REALPT' or 'IMAGPT' the user must from     | */
-/*        |    Rayleigh quotients or a projection. See remark 3 above.| */
-/*        | NOTES:                                                    | */
-/*        | *The Ritz vectors are not affected by the transformation. | */
-/*        %-----------------------------------------------------------% */
-
-	if (s_cmp(type__, "SHIFTI", (ftnlen)6, (ftnlen)6) == 0) {
-
-	    i__1 = *ncv;
-	    for (k = 1; k <= i__1; ++k) {
-		temp = dlapy2_(&workl[iheigr + k - 1], &workl[iheigi + k - 1])
-			;
-		workl[iheigr + k - 1] = workl[iheigr + k - 1] / temp / temp + 
-			*sigmar;
-		workl[iheigi + k - 1] = -workl[iheigi + k - 1] / temp / temp 
-			+ *sigmai;
-/* L80: */
-	    }
-
-	    dcopy_(&nconv, &workl[iheigr], &c__1, &dr[1], &c__1);
-	    dcopy_(&nconv, &workl[iheigi], &c__1, &di[1], &c__1);
-
-	} else if (s_cmp(type__, "REALPT", (ftnlen)6, (ftnlen)6) == 0 || 
-		s_cmp(type__, "IMAGPT", (ftnlen)6, (ftnlen)6) == 0) {
-
-	    dcopy_(&nconv, &workl[iheigr], &c__1, &dr[1], &c__1);
-	    dcopy_(&nconv, &workl[iheigi], &c__1, &di[1], &c__1);
-
-	}
-
+#ifndef NO_TRACE
+    if (msglvl > 1 && strcmp(type, "SHIFTI") == 0)
+    {
+        dvout_(&nconv, &dr[1], &debug_1.ndigit, "_neupd: Untransformed float part of the Ritz valuess.");
+        dvout_(&nconv, &di[1], &debug_1.ndigit, "_neupd: Untransformed imag part of the Ritz valuess.");
+        dvout_(&nconv, &workl[ihbds], &debug_1.ndigit, "_neupd: Ritz estimates of untransformed Ritz values.");
     }
-
-    if (s_cmp(type__, "SHIFTI", (ftnlen)6, (ftnlen)6) == 0 && msglvl > 1) {
-	dvout_(&debug_1.logfil, &nconv, &dr[1], &debug_1.ndigit, "_neupd: Un"
-		"transformed real part of the Ritz valuess.", (ftnlen)52);
-	dvout_(&debug_1.logfil, &nconv, &di[1], &debug_1.ndigit, "_neupd: Un"
-		"transformed imag part of the Ritz valuess.", (ftnlen)52);
-	dvout_(&debug_1.logfil, &nconv, &workl[ihbds], &debug_1.ndigit, "_ne"
-		"upd: Ritz estimates of untransformed Ritz values.", (ftnlen)
-		52);
-    } else if (s_cmp(type__, "REGULR", (ftnlen)6, (ftnlen)6) == 0 && msglvl > 
-	    1) {
-	dvout_(&debug_1.logfil, &nconv, &dr[1], &debug_1.ndigit, "_neupd: Re"
-		"al parts of converged Ritz values.", (ftnlen)44);
-	dvout_(&debug_1.logfil, &nconv, &di[1], &debug_1.ndigit, "_neupd: Im"
-		"ag parts of converged Ritz values.", (ftnlen)44);
-	dvout_(&debug_1.logfil, &nconv, &workl[ihbds], &debug_1.ndigit, "_ne"
-		"upd: Associated Ritz estimates.", (ftnlen)34);
+    else if (msglvl > 1 && strcmp(type, "REGULR") == 0)
+    {
+        dvout_(&nconv, &dr[1], &debug_1.ndigit, "_neupd: Real parts of converged Ritz values.");
+        dvout_(&nconv, &di[1], &debug_1.ndigit, "_neupd: Imag parts of converged Ritz values.");
+        dvout_(&nconv, &workl[ihbds], &debug_1.ndigit, "_neupd: Associated Ritz estimates.");
     }
+#endif
 
-/*     %-------------------------------------------------% */
-/*     | Eigenvector Purification step. Formally perform | */
-/*     | one of inverse subspace iteration. Only used    | */
-/*     | for MODE = 2.                                   | */
-/*     %-------------------------------------------------% */
+    /* ----------------------------------------------- */
+    /* Eigenvector Purification step. Formally perform */
+    /* one of inverse subspace iteration. Only used    */
+    /* for MODE = 2.                                   */
+    /* ----------------------------------------------- */
 
-    if (*rvec && *(unsigned char *)howmny == 'A' && s_cmp(type__, "SHIFTI", (
-	    ftnlen)6, (ftnlen)6) == 0) {
+    if (*rvec && *howmny == 'A' && strcmp(type, "SHIFTI") == 0)
+    {
+        /* ---------------------------------------------- */
+        /* Purify the computed Ritz vectors by adding a   */
+        /* little bit of the residual vector:             */
+        /*                      T                         */
+        /*          resid(:)*( e    s ) / theta           */
+        /*                      NCV                       */
+        /* where H s = s theta. Remember that when theta  */
+        /* has nonzero imaginary part, the corresponding  */
+        /* Ritz vector is stored across two columns of Z. */
+        /* ---------------------------------------------- */
 
-/*        %------------------------------------------------% */
-/*        | Purify the computed Ritz vectors by adding a   | */
-/*        | little bit of the residual vector:             | */
-/*        |                      T                         | */
-/*        |          resid(:)*( e    s ) / theta           | */
-/*        |                      NCV                       | */
-/*        | where H s = s theta. Remember that when theta  | */
-/*        | has nonzero imaginary part, the corresponding  | */
-/*        | Ritz vector is stored across two columns of Z. | */
-/*        %------------------------------------------------% */
+        iconj = 0;
+        for (j = 1; j <= nconv; ++j)
+        {
+            if (workl[iheigi + j - 1] == 0.0 && workl[iheigr + j - 1] != 0.0)
+            {
+                workev[j] = workl[invsub + (j - 1) * ldq + *ncv - 1] / workl[iheigr + j - 1];
+            }
+            else if (iconj == 0)
+            {
+                temp = dlapy2_(&workl[iheigr + j - 1], &workl[iheigi + j - 1]);
+                if (temp != 0.0)
+                {
+                    workev[j] = (workl[invsub + (j - 1) * ldq + *ncv - 1] * workl[iheigr + j - 1] + workl[invsub + j * ldq + * ncv - 1] * workl[iheigi + j - 1]) / temp / temp;
+                    workev[j + 1] = (workl[invsub + j * ldq + *ncv - 1] * workl[iheigr + j - 1] - workl[invsub + (j - 1) * ldq + *ncv - 1] * workl[iheigi + j - 1]) / temp / temp;
+                }
+                iconj = 1;
+            }
+            else
+            {
+                iconj = 0;
+            }
 
-	iconj = 0;
-	i__1 = nconv;
-	for (j = 1; j <= i__1; ++j) {
-	    if (workl[iheigi + j - 1] == 0. && workl[iheigr + j - 1] != 0.) {
-		workev[j] = workl[invsub + (j - 1) * ldq + *ncv - 1] / workl[
-			iheigr + j - 1];
-	    } else if (iconj == 0) {
-		temp = dlapy2_(&workl[iheigr + j - 1], &workl[iheigi + j - 1])
-			;
-		if (temp != 0.) {
-		    workev[j] = (workl[invsub + (j - 1) * ldq + *ncv - 1] * 
-			    workl[iheigr + j - 1] + workl[invsub + j * ldq + *
-			    ncv - 1] * workl[iheigi + j - 1]) / temp / temp;
-		    workev[j + 1] = (workl[invsub + j * ldq + *ncv - 1] * 
-			    workl[iheigr + j - 1] - workl[invsub + (j - 1) * 
-			    ldq + *ncv - 1] * workl[iheigi + j - 1]) / temp / 
-			    temp;
-		}
-		iconj = 1;
-	    } else {
-		iconj = 0;
-	    }
-/* L110: */
-	}
+        }
 
-/*        %---------------------------------------% */
-/*        | Perform a rank one update to Z and    | */
-/*        | purify all the Ritz vectors together. | */
-/*        %---------------------------------------% */
+        /* ------------------------------------- */
+        /* Perform a rank one update to Z and    */
+        /* purify all the Ritz vectors together. */
+        /* ------------------------------------- */
 
-	dger_(n, &nconv, &d_one, &resid[1], &c__1, &workev[1], &c__1, &z__[
-		z_offset], ldz);
-
+        dger_(n, &nconv, &d_one, &resid[1], &c__1, &workev[1], &c__1, &z[z_offset], ldz);
     }
 
 L9000:
 
     return 0;
 
-/*     %---------------% */
-/*     | End of DNEUPD  | */
-/*     %---------------% */
+    /* ------------- */
+    /* End of DNEUPD */
+    /* ------------- */
 
 } /* dneupd_ */
 

@@ -1,4 +1,4 @@
-/* D:\Projekte\ARPACK\arpack-ng\SRC\sngets.f -- translated by f2c (version 20100827). */
+/* arpack-ng\SRC\sngets.f -- translated by f2c (version 20100827). */
 
 #include "arpack.h"
 
@@ -61,7 +61,6 @@
  *
  *  SHIFTR, SHIFTI  *** USE deprecated as of version 2.1. ***
  *
- *
  * \EndDoc
  *
  * \BeginLib
@@ -92,130 +91,122 @@
  *
  * \EndLib
  */
-
-
-/* Subroutine */ int sngets_(integer *ishift, char *which, integer *kev, 
-	integer *np, real *ritzr, real *ritzi, real *bounds, real *shiftr, 
-	real *shifti)
+int sngets_(int *ishift, char *which, int *kev, int *np, float *ritzr,
+            float *ritzi, float *bounds, float *shiftr, float *shifti)
 {
     /* System generated locals */
-    integer i__1;
-
-    /* Builtin functions */
-    integer s_cmp(char *, char *, ftnlen, ftnlen);
+    int i__1;
 
     /* Local variables */
-    static real t0, t1;
-    integer msglvl;
+    static float t0, t1;
+    int msglvl;
 
 
-
-
-/*     %-----------------------% */
-/*     | Executable Statements | */
-/*     %-----------------------% */
-
-/*     %-------------------------------% */
-/*     | Initialize timing statistics  | */
-/*     | & message level for debugging | */
-/*     %-------------------------------% */
+    /* ----------------------------- */
+    /* Initialize timing statistics  */
+    /* & message level for debugging */
+    /* ----------------------------- */
 
     /* Parameter adjustments */
     --bounds;
     --ritzi;
     --ritzr;
-    --shiftr;
-    --shifti;
 
     /* Function Body */
+#ifndef NO_TIMER
     arscnd_(&t0);
+#endif
+
     msglvl = debug_1.mngets;
 
-/*     %----------------------------------------------------% */
-/*     | LM, SM, LR, SR, LI, SI case.                       | */
-/*     | Sort the eigenvalues of H into the desired order   | */
-/*     | and apply the resulting order to BOUNDS.           | */
-/*     | The eigenvalues are sorted so that the wanted part | */
-/*     | are always in the last KEV locations.              | */
-/*     | We first do a pre-processing sort in order to keep | */
-/*     | complex conjugate pairs together                   | */
-/*     %----------------------------------------------------% */
-
-    if (s_cmp(which, "LM", (ftnlen)2, (ftnlen)2) == 0) {
-	i__1 = *kev + *np;
-	ssortc_("LR", &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1]);
-    } else if (s_cmp(which, "SM", (ftnlen)2, (ftnlen)2) == 0) {
-	i__1 = *kev + *np;
-	ssortc_("SR", &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1]);
-    } else if (s_cmp(which, "LR", (ftnlen)2, (ftnlen)2) == 0) {
-	i__1 = *kev + *np;
-	ssortc_("LM", &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1]);
-    } else if (s_cmp(which, "SR", (ftnlen)2, (ftnlen)2) == 0) {
-	i__1 = *kev + *np;
-	ssortc_("SM", &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1]);
-    } else if (s_cmp(which, "LI", (ftnlen)2, (ftnlen)2) == 0) {
-	i__1 = *kev + *np;
-	ssortc_("LM", &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1]);
-    } else if (s_cmp(which, "SI", (ftnlen)2, (ftnlen)2) == 0) {
-	i__1 = *kev + *np;
-	ssortc_("SM", &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1]);
-    }
+    /* -------------------------------------------------- */
+    /* LM, SM, LR, SR, LI, SI case.                       */
+    /* Sort the eigenvalues of H into the desired order   */
+    /* and apply the resulting order to BOUNDS.           */
+    /* The eigenvalues are sorted so that the wanted part */
+    /* are always in the last KEV locations.              */
+    /* We first do a pre-processing sort in order to keep */
+    /* complex conjugate pairs together                   */
+    /* -------------------------------------------------- */
 
     i__1 = *kev + *np;
+
+    if (strcmp(which, "LM") == 0)
+    {
+        ssortc_("LR", &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1]);
+    }
+    else if (strcmp(which, "SM") == 0)
+    {
+        ssortc_("SR", &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1]);
+    }
+    else if (strcmp(which, "LR") == 0)
+    {
+        ssortc_("LM", &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1]);
+    }
+    else if (strcmp(which, "SR") == 0)
+    {
+        ssortc_("SM", &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1]);
+    }
+    else if (strcmp(which, "LI") == 0)
+    {
+        ssortc_("LM", &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1]);
+    }
+    else if (strcmp(which, "SI") == 0)
+    {
+        ssortc_("SM", &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1]);
+    }
+
     ssortc_(which, &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1]);
 
-/*     %-------------------------------------------------------% */
-/*     | Increase KEV by one if the ( ritzr(np),ritzi(np) )    | */
-/*     | = ( ritzr(np+1),-ritzi(np+1) ) and ritz(np) .ne. zero | */
-/*     | Accordingly decrease NP by one. In other words keep   | */
-/*     | complex conjugate pairs together.                     | */
-/*     %-------------------------------------------------------% */
+    /* ----------------------------------------------------- */
+    /* Increase KEV by one if the ( ritzr(np),ritzi(np) )    */
+    /* = ( ritzr(np+1),-ritzi(np+1) ) and ritz(np) .ne. zero */
+    /* Accordingly decrease NP by one. In other words keep   */
+    /* complex conjugate pairs together.                     */
+    /* ----------------------------------------------------- */
 
-    if (ritzr[*np + 1] - ritzr[*np] == 0.f && ritzi[*np + 1] + ritzi[*np] == 
-	    0.f) {
-	--(*np);
-	++(*kev);
+    if (ritzr[*np + 1] - ritzr[*np] == 0.0f && ritzi[*np + 1] + ritzi[*np] == 0.0f)
+    {
+        --(*np);
+        ++(*kev);
     }
 
-    if (*ishift == 1) {
+    if (*ishift == 1)
+    {
+        /* ----------------------------------------------------- */
+        /* Sort the unwanted Ritz values used as shifts so that  */
+        /* the ones with largest Ritz estimates are first        */
+        /* This will tend to minimize the effects of the         */
+        /* forward instability of the iteration when they shifts */
+        /* are applied in subroutine snapps.                     */
+        /* Be careful and use 'SR' since we want to sort BOUNDS! */
+        /* ----------------------------------------------------- */
 
-/*        %-------------------------------------------------------% */
-/*        | Sort the unwanted Ritz values used as shifts so that  | */
-/*        | the ones with largest Ritz estimates are first        | */
-/*        | This will tend to minimize the effects of the         | */
-/*        | forward instability of the iteration when they shifts | */
-/*        | are applied in subroutine snapps.                     | */
-/*        | Be careful and use 'SR' since we want to sort BOUNDS! | */
-/*        %-------------------------------------------------------% */
-
-	ssortc_("SR", &c_true, np, &bounds[1], &ritzr[1], &ritzi[1]);
+        ssortc_("SR", &c_true, np, &bounds[1], &ritzr[1], &ritzi[1]);
     }
 
+#ifndef NO_TIMER
     arscnd_(&t1);
     timing_1.tngets += t1 - t0;
+#endif
 
-    if (msglvl > 0) {
-	ivout_(&debug_1.logfil, &c__1, kev, &debug_1.ndigit, "_ngets: KEV is",
-		 (ftnlen)14);
-	ivout_(&debug_1.logfil, &c__1, np, &debug_1.ndigit, "_ngets: NP is", (
-		ftnlen)13);
-	i__1 = *kev + *np;
-	svout_(&debug_1.logfil, &i__1, &ritzr[1], &debug_1.ndigit, "_ngets: "
-		"Eigenvalues of current H matrix -- real part", (ftnlen)52);
-	i__1 = *kev + *np;
-	svout_(&debug_1.logfil, &i__1, &ritzi[1], &debug_1.ndigit, "_ngets: "
-		"Eigenvalues of current H matrix -- imag part", (ftnlen)52);
-	i__1 = *kev + *np;
-	svout_(&debug_1.logfil, &i__1, &bounds[1], &debug_1.ndigit, "_ngets:"
-		" Ritz estimates of the current KEV+NP Ritz values", (ftnlen)
-		56);
+#ifndef NO_TRACE
+    if (msglvl > 0)
+    {
+        i__1 = *kev + *np;
+        ivout_(&c__1, kev, &debug_1.ndigit, "_ngets: KEV is");
+        ivout_(&c__1, np, &debug_1.ndigit, "_ngets: NP is");
+        svout_(&i__1, &ritzr[1], &debug_1.ndigit, "_ngets: Eigenvalues of current H matrix -- float part");
+        svout_(&i__1, &ritzi[1], &debug_1.ndigit, "_ngets: Eigenvalues of current H matrix -- imag part");
+        svout_(&i__1, &bounds[1], &debug_1.ndigit, "_ngets: Ritz estimates of the current KEV+NP Ritz values");
     }
+#endif
 
     return 0;
 
-/*     %---------------% */
-/*     | End of sngets | */
-/*     %---------------% */
+    /* ------------- */
+    /* End of sngets */
+    /* ------------- */
 
 } /* sngets_ */
 

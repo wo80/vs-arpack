@@ -1,4 +1,4 @@
-/* D:\Projekte\ARPACK\arpack-ng\SRC\cngets.f -- translated by f2c (version 20100827). */
+/* arpack-ng\SRC\cngets.f -- translated by f2c (version 20100827). */
 
 #include "arpack.h"
 
@@ -54,8 +54,6 @@
  *  BOUNDS  Complex array of length KEV+NP.  (INPUT/OUTPUT)
  *          Error bounds corresponding to the ordering in RITZ.
  *
- *
- *
  * \EndDoc
  *
  * \BeginLib
@@ -86,78 +84,69 @@
  *
  * \EndLib
  */
-
-
-/* Subroutine */ int cngets_(integer *ishift, char *which, integer *kev, 
-	integer *np, complex *ritz, complex *bounds)
+int cngets_(int *ishift, char *which, int *kev, int *np, complex *ritz, complex *bounds)
 {
     /* System generated locals */
-    integer i__1;
+    int i__1;
 
     /* Local variables */
-    static real t0, t1;
-    integer msglvl;
+    static float t0, t1;
+    int msglvl;
 
 
-
-
-/*     %-----------------------% */
-/*     | Executable Statements | */
-/*     %-----------------------% */
-
-/*     %-------------------------------% */
-/*     | Initialize timing statistics  | */
-/*     | & message level for debugging | */
-/*     %-------------------------------% */
+    /* ----------------------------- */
+    /* Initialize timing statistics  */
+    /* & message level for debugging */
+    /* ----------------------------- */
 
     /* Parameter adjustments */
     --bounds;
     --ritz;
 
     /* Function Body */
+#ifndef NO_TIMER
     arscnd_(&t0);
+#endif
+
     msglvl = debug_1.mcgets;
 
     i__1 = *kev + *np;
     csortc_(which, &c_true, &i__1, &ritz[1], &bounds[1]);
 
-    if (*ishift == 1) {
+    if (*ishift == 1)
+    {
+        /* ----------------------------------------------------- */
+        /* Sort the unwanted Ritz values used as shifts so that  */
+        /* the ones with largest Ritz estimates are first        */
+        /* This will tend to minimize the effects of the         */
+        /* forward instability of the iteration when the shifts  */
+        /* are applied in subroutine cnapps.                     */
+        /* Be careful and use 'SM' since we want to sort BOUNDS! */
+        /* ----------------------------------------------------- */
 
-/*        %-------------------------------------------------------% */
-/*        | Sort the unwanted Ritz values used as shifts so that  | */
-/*        | the ones with largest Ritz estimates are first        | */
-/*        | This will tend to minimize the effects of the         | */
-/*        | forward instability of the iteration when the shifts  | */
-/*        | are applied in subroutine cnapps.                     | */
-/*        | Be careful and use 'SM' since we want to sort BOUNDS! | */
-/*        %-------------------------------------------------------% */
-
-	csortc_("SM", &c_true, np, &bounds[1], &ritz[1]);
-
+        csortc_("SM", &c_true, np, &bounds[1], &ritz[1]);
     }
 
+#ifndef NO_TIMER
     arscnd_(&t1);
     timing_1.tcgets += t1 - t0;
+#endif
 
-    if (msglvl > 0) {
-	ivout_(&debug_1.logfil, &c__1, kev, &debug_1.ndigit, "_ngets: KEV is",
-		 (ftnlen)14);
-	ivout_(&debug_1.logfil, &c__1, np, &debug_1.ndigit, "_ngets: NP is", (
-		ftnlen)13);
-	i__1 = *kev + *np;
-	cvout_(&debug_1.logfil, &i__1, &ritz[1], &debug_1.ndigit, "_ngets: E"
-		"igenvalues of current H matrix ", (ftnlen)40);
-	i__1 = *kev + *np;
-	cvout_(&debug_1.logfil, &i__1, &bounds[1], &debug_1.ndigit, "_ngets:"
-		" Ritz estimates of the current KEV+NP Ritz values", (ftnlen)
-		56);
+#ifndef NO_TRACE
+    if (msglvl > 0)
+    {
+        ivout_(&c__1, kev, &debug_1.ndigit, "_ngets: KEV is");
+        ivout_(&c__1, np, &debug_1.ndigit, "_ngets: NP is");
+        cvout_(&i__1, &ritz[1], &debug_1.ndigit, "_ngets: Eigenvalues of current H matrix ");
+        cvout_(&i__1, &bounds[1], &debug_1.ndigit, "_ngets: Ritz estimates of the current KEV+NP Ritz values");
     }
+#endif
 
     return 0;
 
-/*     %---------------% */
-/*     | End of cngets | */
-/*     %---------------% */
+    /* ------------- */
+    /* End of cngets */
+    /* ------------- */
 
 } /* cngets_ */
 

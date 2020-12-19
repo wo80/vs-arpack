@@ -1,4 +1,4 @@
-/* D:\Projekte\ARPACK\arpack-ng\SRC\ssapps.f -- translated by f2c (version 20100827). */
+/* arpack-ng\SRC\ssapps.f -- translated by f2c (version 20100827). */
 
 #include "arpack.h"
 
@@ -128,39 +128,29 @@
  *
  * \EndLib
  */
-
-
-/* Subroutine */ int ssapps_(integer *n, integer *kev, integer *np, real *
-	shift, real *v, integer *ldv, real *h__, integer *ldh, real *resid, 
-	real *q, integer *ldq, real *workd)
+int ssapps_(int *n, int *kev, int *np, float *
+            shift, float *v, int *ldv, float *h, int *ldh, float *resid,
+            float *q, int *ldq, float *workd)
 {
     /* Initialized data */
 
-    static logical first = TRUE_;
+    static bool first = true;
 
     /* System generated locals */
-    integer h_dim1, h_offset, q_dim1, q_offset, v_dim1, v_offset, i__1, i__2, 
-	    i__3, i__4;
-    real r__1, r__2;
+    int h_dim1, h_offset, q_dim1, q_offset, v_dim1, v_offset, i__1, i__2,
+            i__3, i__4;
+    float r__1, r__2;
 
     /* Local variables */
-    real c__, f, g;
-    integer i__, j;
-    real r__, s, a1, a2, a3, a4;
-    static real t0, t1;
-    integer jj;
-    real big;
-    integer iend, itop;
-    static real epsmch;
-    integer istart, kplusp, msglvl;
-
-
-
-
-
-/*     %----------------% */
-/*     | Data statements | */
-/*     %----------------% */
+    float c, f, g;
+    int i, j;
+    float r, s, a1, a2, a3, a4;
+    static float t0, t1;
+    int jj;
+    float big;
+    int iend, itop;
+    static float epsmch;
+    int istart, kplusp, msglvl;
 
     /* Parameter adjustments */
     --workd;
@@ -171,383 +161,372 @@
     v -= v_offset;
     h_dim1 = *ldh;
     h_offset = 1 + h_dim1;
-    h__ -= h_offset;
+    h -= h_offset;
     q_dim1 = *ldq;
     q_offset = 1 + q_dim1;
     q -= q_offset;
 
     /* Function Body */
 
-/*     %-----------------------% */
-/*     | Executable Statements | */
-/*     %-----------------------% */
-
-    if (first) {
-	epsmch = slamch_("Epsilon-Machine");
-	first = FALSE_;
+    if (first)
+    {
+        epsmch = slamch_("E");
+        first = false;
     }
     itop = 1;
 
-/*     %-------------------------------% */
-/*     | Initialize timing statistics  | */
-/*     | & message level for debugging | */
-/*     %-------------------------------% */
+    /* ----------------------------- */
+    /* Initialize timing statistics  */
+    /* & message level for debugging */
+    /* ----------------------------- */
 
+#ifndef NO_TIMER
     arscnd_(&t0);
+#endif
+
     msglvl = debug_1.msapps;
 
     kplusp = *kev + *np;
 
-/*     %----------------------------------------------% */
-/*     | Initialize Q to the identity matrix of order | */
-/*     | kplusp used to accumulate the rotations.     | */
-/*     %----------------------------------------------% */
+    /* -------------------------------------------- */
+    /* Initialize Q to the identity matrix of order */
+    /* kplusp used to accumulate the rotations.     */
+    /* -------------------------------------------- */
 
-    slaset_("All", &kplusp, &kplusp, &s_zero, &s_one, &q[q_offset], ldq);
+    slaset_("A", &kplusp, &kplusp, &s_zero, &s_one, &q[q_offset], ldq);
 
-/*     %----------------------------------------------% */
-/*     | Quick return if there are no shifts to apply | */
-/*     %----------------------------------------------% */
+    /* -------------------------------------------- */
+    /* Quick return if there are no shifts to apply */
+    /* -------------------------------------------- */
 
-    if (*np == 0) {
-	goto L9000;
+    if (*np == 0)
+    {
+        goto L9000;
     }
 
-/*     %----------------------------------------------------------% */
-/*     | Apply the np shifts implicitly. Apply each shift to the  | */
-/*     | whole matrix and not just to the submatrix from which it | */
-/*     | comes.                                                   | */
-/*     %----------------------------------------------------------% */
+    /* -------------------------------------------------------- */
+    /* Apply the np shifts implicitly. Apply each shift to the  */
+    /* whole matrix and not just to the submatrix from which it */
+    /* comes.                                                   */
+    /* -------------------------------------------------------- */
 
     i__1 = *np;
-    for (jj = 1; jj <= i__1; ++jj) {
+    for (jj = 1; jj <= i__1; ++jj)
+    {
+        istart = itop;
 
-	istart = itop;
-
-/*        %----------------------------------------------------------% */
-/*        | Check for splitting and deflation. Currently we consider | */
-/*        | an off-diagonal element h(i+1,1) negligible if           | */
-/*        |         h(i+1,1) .le. epsmch*( |h(i,2)| + |h(i+1,2)| )   | */
-/*        | for i=1:KEV+NP-1.                                        | */
-/*        | If above condition tests true then we set h(i+1,1) = 0.  | */
-/*        | Note that h(1:KEV+NP,1) are assumed to be non negative.  | */
-/*        %----------------------------------------------------------% */
+        /* -------------------------------------------------------- */
+        /* Check for splitting and deflation. Currently we consider */
+        /* an off-diagonal element h(i+1,1) negligible if           */
+        /*         h(i+1,1) .le. epsmch*( |h(i,2)| + |h(i+1,2)| )   */
+        /* for i=1:KEV+NP-1.                                        */
+        /* If above condition tests true then we set h(i+1,1) = 0.  */
+        /* Note that h(1:KEV+NP,1) are assumed to be non negative.  */
+        /* -------------------------------------------------------- */
 
 L20:
 
-/*        %------------------------------------------------% */
-/*        | The following loop exits early if we encounter | */
-/*        | a negligible off diagonal element.             | */
-/*        %------------------------------------------------% */
+        /* ---------------------------------------------- */
+        /* The following loop exits early if we encounter */
+        /* a negligible off diagonal element.             */
+        /* ---------------------------------------------- */
 
-	i__2 = kplusp - 1;
-	for (i__ = istart; i__ <= i__2; ++i__) {
-	    big = (r__1 = h__[i__ + (h_dim1 << 1)], dabs(r__1)) + (r__2 = h__[
-		    i__ + 1 + (h_dim1 << 1)], dabs(r__2));
-	    if (h__[i__ + 1 + h_dim1] <= epsmch * big) {
-		if (msglvl > 0) {
-		    ivout_(&debug_1.logfil, &c__1, &i__, &debug_1.ndigit, 
-			    "_sapps: deflation at row/column no.", (ftnlen)35)
-			    ;
-		    ivout_(&debug_1.logfil, &c__1, &jj, &debug_1.ndigit, 
-			    "_sapps: occurred before shift number.", (ftnlen)
-			    37);
-		    svout_(&debug_1.logfil, &c__1, &h__[i__ + 1 + h_dim1], &
-			    debug_1.ndigit, "_sapps: the corresponding off d"
-			    "iagonal element", (ftnlen)46);
-		}
-		h__[i__ + 1 + h_dim1] = 0.f;
-		iend = i__;
-		goto L40;
-	    }
-/* L30: */
-	}
-	iend = kplusp;
+        i__2 = kplusp - 1;
+        for (i = istart; i <= i__2; ++i)
+        {
+            big = (r__1 = h[i + (h_dim1 << 1)], dabs(r__1)) + (r__2 = h[
+                        i + 1 + (h_dim1 << 1)], dabs(r__2));
+            if (h[i + 1 + h_dim1] <= epsmch * big)
+            {
+#ifndef NO_TRACE
+                if (msglvl > 0)
+                {
+                    ivout_(&c__1, &i, &debug_1.ndigit, "_sapps: deflation at row/column no.");
+                    ivout_(&c__1, &jj, &debug_1.ndigit, "_sapps: occurred before shift number.");
+                    svout_(&c__1, &h[i + 1 + h_dim1], &debug_1.ndigit, "_sapps: the corresponding off diagonal element");
+                }
+#endif
+
+                h[i + 1 + h_dim1] = 0.0f;
+                iend = i;
+                goto L40;
+            }
+
+        }
+        iend = kplusp;
 L40:
 
-	if (istart < iend) {
+        if (istart < iend)
+        {
+            /* ------------------------------------------------------ */
+            /* Construct the plane rotation G'(istart,istart+1,theta) */
+            /* that attempts to drive h(istart+1,1) to zero.          */
+            /* ------------------------------------------------------ */
 
-/*           %--------------------------------------------------------% */
-/*           | Construct the plane rotation G'(istart,istart+1,theta) | */
-/*           | that attempts to drive h(istart+1,1) to zero.          | */
-/*           %--------------------------------------------------------% */
+            f = h[istart + (h_dim1 << 1)] - shift[jj];
+            g = h[istart + 1 + h_dim1];
+            slartg_(&f, &g, &c, &s, &r);
 
-	    f = h__[istart + (h_dim1 << 1)] - shift[jj];
-	    g = h__[istart + 1 + h_dim1];
-	    slartg_(&f, &g, &c__, &s, &r__);
+            /* ----------------------------------------------------- */
+            /* Apply rotation to the left and right of H;            */
+            /* H <- G' * H * G,  where G = G(istart,istart+1,theta). */
+            /* This will create a "bulge".                           */
+            /* ----------------------------------------------------- */
 
-/*            %-------------------------------------------------------% */
-/*            | Apply rotation to the left and right of H;            | */
-/*            | H <- G' * H * G,  where G = G(istart,istart+1,theta). | */
-/*            | This will create a "bulge".                           | */
-/*            %-------------------------------------------------------% */
+            a1 = c * h[istart + (h_dim1 << 1)] + s * h[istart + 1 + h_dim1];
+            a2 = c * h[istart + 1 + h_dim1] + s * h[istart + 1 + (h_dim1 << 1)];
+            a4 = c * h[istart + 1 + (h_dim1 << 1)] - s * h[istart + 1 + h_dim1];
+            a3 = c * h[istart + 1 + h_dim1] - s * h[istart + (h_dim1 << 1)];
 
-	    a1 = c__ * h__[istart + (h_dim1 << 1)] + s * h__[istart + 1 + 
-		    h_dim1];
-	    a2 = c__ * h__[istart + 1 + h_dim1] + s * h__[istart + 1 + (
-		    h_dim1 << 1)];
-	    a4 = c__ * h__[istart + 1 + (h_dim1 << 1)] - s * h__[istart + 1 + 
-		    h_dim1];
-	    a3 = c__ * h__[istart + 1 + h_dim1] - s * h__[istart + (h_dim1 << 
-		    1)];
-	    h__[istart + (h_dim1 << 1)] = c__ * a1 + s * a2;
-	    h__[istart + 1 + (h_dim1 << 1)] = c__ * a4 - s * a3;
-	    h__[istart + 1 + h_dim1] = c__ * a3 + s * a4;
+            h[istart + (h_dim1 << 1)] = c * a1 + s * a2;
+            h[istart + 1 + (h_dim1 << 1)] = c * a4 - s * a3;
+            h[istart + 1 + h_dim1] = c * a3 + s * a4;
 
-/*            %----------------------------------------------------% */
-/*            | Accumulate the rotation in the matrix Q;  Q <- Q*G | */
-/*            %----------------------------------------------------% */
+            /* -------------------------------------------------- */
+            /* Accumulate the rotation in the matrix Q;  Q <- Q*G */
+            /* -------------------------------------------------- */
 
-/* Computing MIN */
-	    i__3 = istart + jj;
-	    i__2 = min(i__3,kplusp);
-	    for (j = 1; j <= i__2; ++j) {
-		a1 = c__ * q[j + istart * q_dim1] + s * q[j + (istart + 1) * 
-			q_dim1];
-		q[j + (istart + 1) * q_dim1] = -s * q[j + istart * q_dim1] + 
-			c__ * q[j + (istart + 1) * q_dim1];
-		q[j + istart * q_dim1] = a1;
-/* L60: */
-	    }
+            /* Computing MIN */
+            i__3 = istart + jj;
+            i__2 = min(i__3,kplusp);
+            for (j = 1; j <= i__2; ++j)
+            {
+                a1 = c * q[j + istart * q_dim1] + s * q[j + (istart + 1) * q_dim1];
+                q[j + (istart + 1) * q_dim1] = -s * q[j + istart * q_dim1] + c * q[j + (istart + 1) * q_dim1];
+                q[j + istart * q_dim1] = a1;
+            }
 
+            /* -------------------------------------------- */
+            /* The following loop chases the bulge created. */
+            /* Note that the previous rotation may also be  */
+            /* done within the following loop. But it is    */
+            /* kept separate to make the distinction among  */
+            /* the bulge chasing sweeps and the first plane */
+            /* rotation designed to drive h(istart+1,1) to  */
+            /* zero.                                        */
+            /* -------------------------------------------- */
 
-/*            %----------------------------------------------% */
-/*            | The following loop chases the bulge created. | */
-/*            | Note that the previous rotation may also be  | */
-/*            | done within the following loop. But it is    | */
-/*            | kept separate to make the distinction among  | */
-/*            | the bulge chasing sweeps and the first plane | */
-/*            | rotation designed to drive h(istart+1,1) to  | */
-/*            | zero.                                        | */
-/*            %----------------------------------------------% */
+            i__2 = iend - 1;
+            for (i = istart + 1; i <= i__2; ++i)
+            {
+                /* -------------------------------------------- */
+                /* Construct the plane rotation G'(i,i+1,theta) */
+                /* that zeros the i-th bulge that was created   */
+                /* by G(i-1,i,theta). g represents the bulge.   */
+                /* -------------------------------------------- */
 
-	    i__2 = iend - 1;
-	    for (i__ = istart + 1; i__ <= i__2; ++i__) {
+                f = h[i + h_dim1];
+                g = s * h[i + 1 + h_dim1];
 
-/*               %----------------------------------------------% */
-/*               | Construct the plane rotation G'(i,i+1,theta) | */
-/*               | that zeros the i-th bulge that was created   | */
-/*               | by G(i-1,i,theta). g represents the bulge.   | */
-/*               %----------------------------------------------% */
+                /* -------------------------------- */
+                /* Final update with G(i-1,i,theta) */
+                /* -------------------------------- */
 
-		f = h__[i__ + h_dim1];
-		g = s * h__[i__ + 1 + h_dim1];
+                h[i + 1 + h_dim1] = c * h[i + 1 + h_dim1];
+                slartg_(&f, &g, &c, &s, &r);
 
-/*               %----------------------------------% */
-/*               | Final update with G(i-1,i,theta) | */
-/*               %----------------------------------% */
+                /* ----------------------------------------- */
+                /* The following ensures that h(1:iend-1,1), */
+                /* the first iend-2 off diagonal of elements */
+                /* H, remain non negative.                   */
+                /* ----------------------------------------- */
 
-		h__[i__ + 1 + h_dim1] = c__ * h__[i__ + 1 + h_dim1];
-		slartg_(&f, &g, &c__, &s, &r__);
+                if (r < 0.0f)
+                {
+                    r = -r;
+                    c = -c;
+                    s = -s;
+                }
 
-/*               %-------------------------------------------% */
-/*               | The following ensures that h(1:iend-1,1), | */
-/*               | the first iend-2 off diagonal of elements | */
-/*               | H, remain non negative.                   | */
-/*               %-------------------------------------------% */
+                /* ------------------------------------------ */
+                /* Apply rotation to the left and right of H; */
+                /* H <- G * H * G',  where G = G(i,i+1,theta) */
+                /* ------------------------------------------ */
 
-		if (r__ < 0.f) {
-		    r__ = -r__;
-		    c__ = -c__;
-		    s = -s;
-		}
+                h[i + h_dim1] = r;
 
-/*               %--------------------------------------------% */
-/*               | Apply rotation to the left and right of H; | */
-/*               | H <- G * H * G',  where G = G(i,i+1,theta) | */
-/*               %--------------------------------------------% */
+                a1 = c * h[i + (h_dim1 << 1)] + s * h[i + 1 + h_dim1];
+                a2 = c * h[i + 1 + h_dim1] + s * h[i + 1 + (h_dim1 << 1)];
+                a3 = c * h[i + 1 + h_dim1] - s * h[i + (h_dim1 << 1)];
+                a4 = c * h[i + 1 + (h_dim1 << 1)] - s * h[i + 1 + h_dim1];
 
-		h__[i__ + h_dim1] = r__;
+                h[i + (h_dim1 << 1)] = c * a1 + s * a2;
+                h[i + 1 + (h_dim1 << 1)] = c * a4 - s * a3;
+                h[i + 1 + h_dim1] = c * a3 + s * a4;
 
-		a1 = c__ * h__[i__ + (h_dim1 << 1)] + s * h__[i__ + 1 + 
-			h_dim1];
-		a2 = c__ * h__[i__ + 1 + h_dim1] + s * h__[i__ + 1 + (h_dim1 
-			<< 1)];
-		a3 = c__ * h__[i__ + 1 + h_dim1] - s * h__[i__ + (h_dim1 << 1)
-			];
-		a4 = c__ * h__[i__ + 1 + (h_dim1 << 1)] - s * h__[i__ + 1 + 
-			h_dim1];
+                /* -------------------------------------------------- */
+                /* Accumulate the rotation in the matrix Q;  Q <- Q*G */
+                /* -------------------------------------------------- */
 
-		h__[i__ + (h_dim1 << 1)] = c__ * a1 + s * a2;
-		h__[i__ + 1 + (h_dim1 << 1)] = c__ * a4 - s * a3;
-		h__[i__ + 1 + h_dim1] = c__ * a3 + s * a4;
+                /* Computing MIN */
+                i__4 = i + jj;
+                i__3 = min(i__4,kplusp);
+                for (j = 1; j <= i__3; ++j)
+                {
+                    a1 = c * q[j + i * q_dim1] + s * q[j + (i + 1) * q_dim1];
+                    q[j + (i + 1) * q_dim1] = -s * q[j + i * q_dim1] + c * q[j + (i + 1) * q_dim1];
+                    q[j + i * q_dim1] = a1;
+                }
+            }
+        }
 
-/*               %----------------------------------------------------% */
-/*               | Accumulate the rotation in the matrix Q;  Q <- Q*G | */
-/*               %----------------------------------------------------% */
+        /* ------------------------ */
+        /* Update the block pointer */
+        /* ------------------------ */
 
-/* Computing MIN */
-		i__4 = i__ + jj;
-		i__3 = min(i__4,kplusp);
-		for (j = 1; j <= i__3; ++j) {
-		    a1 = c__ * q[j + i__ * q_dim1] + s * q[j + (i__ + 1) * 
-			    q_dim1];
-		    q[j + (i__ + 1) * q_dim1] = -s * q[j + i__ * q_dim1] + 
-			    c__ * q[j + (i__ + 1) * q_dim1];
-		    q[j + i__ * q_dim1] = a1;
-/* L50: */
-		}
+        istart = iend + 1;
 
-/* L70: */
-	    }
+        /* ---------------------------------------- */
+        /* Make sure that h(iend,1) is non-negative */
+        /* If not then set h(iend,1) <-- -h(iend,1) */
+        /* and negate the last column of Q.         */
+        /* We have effectively carried out a        */
+        /* similarity on transformation H           */
+        /* ---------------------------------------- */
 
-	}
+        if (h[iend + h_dim1] < 0.0f)
+        {
+            h[iend + h_dim1] = -h[iend + h_dim1];
+            sscal_(&kplusp, &s_m1, &q[iend * q_dim1 + 1], &c__1);
+        }
 
-/*        %--------------------------% */
-/*        | Update the block pointer | */
-/*        %--------------------------% */
+        /* ------------------------------------------------------ */
+        /* Apply the same shift to the next block if there is any */
+        /* ------------------------------------------------------ */
 
-	istart = iend + 1;
+        if (iend < kplusp)
+        {
+            goto L20;
+        }
 
-/*        %------------------------------------------% */
-/*        | Make sure that h(iend,1) is non-negative | */
-/*        | If not then set h(iend,1) <-- -h(iend,1) | */
-/*        | and negate the last column of Q.         | */
-/*        | We have effectively carried out a        | */
-/*        | similarity on transformation H           | */
-/*        %------------------------------------------% */
+        /* --------------------------------------------------- */
+        /* Check if we can increase the the start of the block */
+        /* --------------------------------------------------- */
 
-	if (h__[iend + h_dim1] < 0.f) {
-	    h__[iend + h_dim1] = -h__[iend + h_dim1];
-	    sscal_(&kplusp, &s_m1, &q[iend * q_dim1 + 1], &c__1);
-	}
+        i__2 = kplusp - 1;
+        for (i = itop; i <= i__2; ++i)
+        {
+            if (h[i + 1 + h_dim1] > 0.0f)
+            {
+                goto L90;
+            }
+            ++itop;
+        }
 
-/*        %--------------------------------------------------------% */
-/*        | Apply the same shift to the next block if there is any | */
-/*        %--------------------------------------------------------% */
-
-	if (iend < kplusp) {
-	    goto L20;
-	}
-
-/*        %-----------------------------------------------------% */
-/*        | Check if we can increase the the start of the block | */
-/*        %-----------------------------------------------------% */
-
-	i__2 = kplusp - 1;
-	for (i__ = itop; i__ <= i__2; ++i__) {
-	    if (h__[i__ + 1 + h_dim1] > 0.f) {
-		goto L90;
-	    }
-	    ++itop;
-/* L80: */
-	}
-
-/*        %-----------------------------------% */
-/*        | Finished applying the jj-th shift | */
-/*        %-----------------------------------% */
+        /* --------------------------------- */
+        /* Finished applying the jj-th shift */
+        /* --------------------------------- */
 
 L90:
-	;
+        ;
     }
 
-/*     %------------------------------------------% */
-/*     | All shifts have been applied. Check for  | */
-/*     | more possible deflation that might occur | */
-/*     | after the last shift is applied.         | */
-/*     %------------------------------------------% */
+    /* ---------------------------------------- */
+    /* All shifts have been applied. Check for  */
+    /* more possible deflation that might occur */
+    /* after the last shift is applied.         */
+    /* ---------------------------------------- */
 
     i__1 = kplusp - 1;
-    for (i__ = itop; i__ <= i__1; ++i__) {
-	big = (r__1 = h__[i__ + (h_dim1 << 1)], dabs(r__1)) + (r__2 = h__[i__ 
-		+ 1 + (h_dim1 << 1)], dabs(r__2));
-	if (h__[i__ + 1 + h_dim1] <= epsmch * big) {
-	    if (msglvl > 0) {
-		ivout_(&debug_1.logfil, &c__1, &i__, &debug_1.ndigit, "_sapp"
-			"s: deflation at row/column no.", (ftnlen)35);
-		svout_(&debug_1.logfil, &c__1, &h__[i__ + 1 + h_dim1], &
-			debug_1.ndigit, "_sapps: the corresponding off diago"
-			"nal element", (ftnlen)46);
-	    }
-	    h__[i__ + 1 + h_dim1] = 0.f;
-	}
-/* L100: */
+    for (i = itop; i <= i__1; ++i)
+    {
+        big = (r__1 = h[i + (h_dim1 << 1)], dabs(r__1)) + (r__2 = h[i
+                + 1 + (h_dim1 << 1)], dabs(r__2));
+        if (h[i + 1 + h_dim1] <= epsmch * big)
+        {
+#ifndef NO_TRACE
+            if (msglvl > 0)
+            {
+                ivout_(&c__1, &i, &debug_1.ndigit, "_sapps: deflation at row/column no.");
+                svout_(&c__1, &h[i + 1 + h_dim1], &debug_1.ndigit, "_sapps: the corresponding off diagonal element");
+            }
+#endif
+
+            h[i + 1 + h_dim1] = 0.0f;
+        }
     }
 
-/*     %-------------------------------------------------% */
-/*     | Compute the (kev+1)-st column of (V*Q) and      | */
-/*     | temporarily store the result in WORKD(N+1:2*N). | */
-/*     | This is not necessary if h(kev+1,1) = 0.         | */
-/*     %-------------------------------------------------% */
+    /* ----------------------------------------------- */
+    /* Compute the (kev+1)-st column of (V*Q) and      */
+    /* temporarily store the result in WORKD(N+1:2*N). */
+    /* This is not necessary if h(kev+1,1) = 0.        */
+    /* ----------------------------------------------- */
 
-    if (h__[*kev + 1 + h_dim1] > 0.f) {
-	sgemv_("N", n, &kplusp, &s_one, &v[v_offset], ldv, &q[(*kev + 1) * 
-		q_dim1 + 1], &c__1, &s_zero, &workd[*n + 1], &c__1);
+    if (h[*kev + 1 + h_dim1] > 0.0f)
+    {
+        sgemv_("N", n, &kplusp, &s_one, &v[v_offset], ldv, &q[(*kev + 1) * q_dim1 + 1], &c__1, &s_zero, &workd[*n + 1], &c__1);
     }
 
-/*     %-------------------------------------------------------% */
-/*     | Compute column 1 to kev of (V*Q) in backward order    | */
-/*     | taking advantage that Q is an upper triangular matrix | */
-/*     | with lower bandwidth np.                              | */
-/*     | Place results in v(:,kplusp-kev:kplusp) temporarily.  | */
-/*     %-------------------------------------------------------% */
+    /* ----------------------------------------------------- */
+    /* Compute column 1 to kev of (V*Q) in backward order    */
+    /* taking advantage that Q is an upper triangular matrix */
+    /* with lower bandwidth np.                              */
+    /* Place results in v(:,kplusp-kev:kplusp) temporarily.  */
+    /* ----------------------------------------------------- */
 
     i__1 = *kev;
-    for (i__ = 1; i__ <= i__1; ++i__) {
-	i__2 = kplusp - i__ + 1;
-	sgemv_("N", n, &i__2, &s_one, &v[v_offset], ldv, &q[(*kev - i__ + 1) * 
-		q_dim1 + 1], &c__1, &s_zero, &workd[1], &c__1);
-	scopy_(n, &workd[1], &c__1, &v[(kplusp - i__ + 1) * v_dim1 + 1], &
-		c__1);
-/* L130: */
+    for (i = 1; i <= i__1; ++i)
+    {
+        i__2 = kplusp - i + 1;
+        sgemv_("N", n, &i__2, &s_one, &v[v_offset], ldv, &q[(*kev - i + 1) * q_dim1 + 1], &c__1, &s_zero, &workd[1], &c__1);
+        scopy_(n, &workd[1], &c__1, &v[(kplusp - i + 1) * v_dim1 + 1], &c__1);
     }
 
-/*     %-------------------------------------------------% */
-/*     |  Move v(:,kplusp-kev+1:kplusp) into v(:,1:kev). | */
-/*     %-------------------------------------------------% */
+    /* ----------------------------------------------- */
+    /*  Move v(:,kplusp-kev+1:kplusp) into v(:,1:kev). */
+    /* ----------------------------------------------- */
 
-    slacpy_("All", n, kev, &v[(*np + 1) * v_dim1 + 1], ldv, &v[v_offset], ldv);
+    slacpy_("A", n, kev, &v[(*np + 1) * v_dim1 + 1], ldv, &v[v_offset], ldv);
 
-/*     %--------------------------------------------% */
-/*     | Copy the (kev+1)-st column of (V*Q) in the | */
-/*     | appropriate place if h(kev+1,1) .ne. zero. | */
-/*     %--------------------------------------------% */
+    /* ------------------------------------------ */
+    /* Copy the (kev+1)-st column of (V*Q) in the */
+    /* appropriate place if h(kev+1,1) .ne. zero. */
+    /* ------------------------------------------ */
 
-    if (h__[*kev + 1 + h_dim1] > 0.f) {
-	scopy_(n, &workd[*n + 1], &c__1, &v[(*kev + 1) * v_dim1 + 1], &c__1);
+    if (h[*kev + 1 + h_dim1] > 0.0f)
+    {
+        scopy_(n, &workd[*n + 1], &c__1, &v[(*kev + 1) * v_dim1 + 1], &c__1);
     }
 
-/*     %-------------------------------------% */
-/*     | Update the residual vector:         | */
-/*     |    r <- sigmak*r + betak*v(:,kev+1) | */
-/*     | where                               | */
-/*     |    sigmak = (e_{kev+p}'*Q)*e_{kev}  | */
-/*     |    betak = e_{kev+1}'*H*e_{kev}     | */
-/*     %-------------------------------------% */
+    /* ----------------------------------- */
+    /* Update the residual vector:         */
+    /*    r <- sigmak*r + betak*v(:,kev+1) */
+    /* where                               */
+    /*    sigmak = (e_{kev+p}'*Q)*e_{kev}  */
+    /*    betak = e_{kev+1}'*H*e_{kev}     */
+    /* ----------------------------------- */
 
     sscal_(n, &q[kplusp + *kev * q_dim1], &resid[1], &c__1);
-    if (h__[*kev + 1 + h_dim1] > 0.f) {
-	saxpy_(n, &h__[*kev + 1 + h_dim1], &v[(*kev + 1) * v_dim1 + 1], &c__1,
-		 &resid[1], &c__1);
+    if (h[*kev + 1 + h_dim1] > 0.0f)
+    {
+        saxpy_(n, &h[*kev + 1 + h_dim1], &v[(*kev + 1) * v_dim1 + 1], &c__1,&resid[1], &c__1);
     }
 
-    if (msglvl > 1) {
-	svout_(&debug_1.logfil, &c__1, &q[kplusp + *kev * q_dim1], &
-		debug_1.ndigit, "_sapps: sigmak of the updated residual vect"
-		"or", (ftnlen)45);
-	svout_(&debug_1.logfil, &c__1, &h__[*kev + 1 + h_dim1], &
-		debug_1.ndigit, "_sapps: betak of the updated residual vector"
-		, (ftnlen)44);
-	svout_(&debug_1.logfil, kev, &h__[(h_dim1 << 1) + 1], &debug_1.ndigit,
-		 "_sapps: updated main diagonal of H for next iteration", (
-		ftnlen)53);
-	if (*kev > 1) {
-	    i__1 = *kev - 1;
-	    svout_(&debug_1.logfil, &i__1, &h__[h_dim1 + 2], &debug_1.ndigit, 
-		    "_sapps: updated sub diagonal of H for next iteration", (
-		    ftnlen)52);
-	}
+#ifndef NO_TRACE
+    if (msglvl > 1)
+    {
+        svout_(&c__1, &q[kplusp + *kev * q_dim1], &debug_1.ndigit, "_sapps: sigmak of the updated residual vector");
+        svout_(&c__1, &h[*kev + 1 + h_dim1], &debug_1.ndigit, "_sapps: betak of the updated residual vector");
+        svout_(kev, &h[(h_dim1 << 1) + 1], &debug_1.ndigit,"_sapps: updated main diagonal of H for next iteration");
+        if (*kev > 1)
+        {
+            i__1 = *kev - 1;
+            svout_(&i__1, &h[h_dim1 + 2], &debug_1.ndigit, "_sapps: updated sub diagonal of H for next iteration");
+        }
     }
+#endif
 
+#ifndef NO_TIMER
     arscnd_(&t1);
     timing_1.tsapps += t1 - t0;
+#endif
 
 L9000:
     return 0;
 
-/*     %---------------% */
-/*     | End of ssapps | */
-/*     %---------------% */
+    /* ------------- */
+    /* End of ssapps */
+    /* ------------- */
 
 } /* ssapps_ */
 

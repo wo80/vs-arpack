@@ -1,4 +1,4 @@
-/* D:\Projekte\ARPACK\arpack-ng\SRC\zsortc.f -- translated by f2c (version 20100827). */
+/* arpack-ng\SRC\zsortc.f -- translated by f2c (version 20100827). */
 
 #include "arpack.h"
 /**
@@ -58,360 +58,332 @@
  *
  * \EndLib
  */
-
-
-/* Subroutine */ int zsortc_(char *which, logical *apply, integer *n, 
-	doublecomplex *x, doublecomplex *y)
+int zsortc_(char *which, bool *apply, int *n, zomplex *x, zomplex *y)
 {
     /* System generated locals */
-    integer i__1, i__2, i__3;
-    doublereal d__1, d__2;
-
-    /* Builtin functions */
-    integer s_cmp(char *, char *, ftnlen, ftnlen);
-    double d_imag(doublecomplex *);
+    int i__1, k;
+    double d__1, d__2;
 
     /* Local variables */
-    integer i__, j, igap;
-    doublecomplex temp;
-    doublereal temp1, temp2;
+    int i, j, igap;
+    zomplex temp;
+    double temp1, temp2;
 
-
-/*     %------------------% */
-/*     | Scalar Arguments | */
-/*     %------------------% */
-
-
-/*     %--------------------% */
-/*     | Intrinsic Functions | */
-/*     %--------------------% */
-
-/*     %-----------------------% */
-/*     | Executable Statements | */
-/*     %-----------------------% */
 
     igap = *n / 2;
 
-    if (s_cmp(which, "LM", (ftnlen)2, (ftnlen)2) == 0) {
-
-/*        %--------------------------------------------% */
-/*        | Sort X into increasing order of magnitude. | */
-/*        %--------------------------------------------% */
+    if (strcmp(which, "LM") == 0)
+    {
+        /* ------------------------------------------ */
+        /* Sort X into increasing order of magnitude. */
+        /* ------------------------------------------ */
 
 L10:
-	if (igap == 0) {
-	    goto L9000;
-	}
+        if (igap == 0)
+        {
+            goto L9000;
+        }
 
-	i__1 = *n - 1;
-	for (i__ = igap; i__ <= i__1; ++i__) {
-	    j = i__ - igap;
+        i__1 = *n - 1;
+        for (i = igap; i <= i__1; ++i)
+        {
+            j = i - igap;
 L20:
 
-	    if (j < 0) {
-		goto L30;
-	    }
+            if (j < 0)
+            {
+                goto L30;
+            }
 
-	    i__2 = j;
-	    d__1 = x[i__2].r;
-	    d__2 = d_imag(&x[j]);
-	    temp1 = dlapy2_(&d__1, &d__2);
-	    i__2 = j + igap;
-	    d__1 = x[i__2].r;
-	    d__2 = d_imag(&x[j + igap]);
-	    temp2 = dlapy2_(&d__1, &d__2);
+            d__1 = x[j].r;
+            d__2 = x[j].i;
+            temp1 = dlapy2_(&d__1, &d__2);
+            k = j + igap;
+            d__1 = x[k].r;
+            d__2 = x[k].i;
+            temp2 = dlapy2_(&d__1, &d__2);
 
-	    if (temp1 > temp2) {
-		i__2 = j;
-		temp.r = x[i__2].r, temp.i = x[i__2].i;
-		i__2 = j;
-		i__3 = j + igap;
-		x[i__2].r = x[i__3].r, x[i__2].i = x[i__3].i;
-		i__2 = j + igap;
-		x[i__2].r = temp.r, x[i__2].i = temp.i;
+            if (temp1 > temp2)
+            {
+                temp.r = x[j].r, temp.i = x[j].i;
+                x[j].r = x[k].r, x[j].i = x[k].i;
+                x[k].r = temp.r, x[k].i = temp.i;
 
-		if (*apply) {
-		    i__2 = j;
-		    temp.r = y[i__2].r, temp.i = y[i__2].i;
-		    i__2 = j;
-		    i__3 = j + igap;
-		    y[i__2].r = y[i__3].r, y[i__2].i = y[i__3].i;
-		    i__2 = j + igap;
-		    y[i__2].r = temp.r, y[i__2].i = temp.i;
-		}
-	    } else {
-		goto L30;
-	    }
-	    j -= igap;
-	    goto L20;
+                if (*apply)
+                {
+                    temp.r = y[j].r, temp.i = y[j].i;
+                    y[j].r = y[k].r, y[j].i = y[k].i;
+                    y[k].r = temp.r, y[k].i = temp.i;
+                }
+            }
+            else
+            {
+                goto L30;
+            }
+            j -= igap;
+            goto L20;
 L30:
-	    ;
-	}
-	igap /= 2;
-	goto L10;
-
-    } else if (s_cmp(which, "SM", (ftnlen)2, (ftnlen)2) == 0) {
-
-/*        %--------------------------------------------% */
-/*        | Sort X into decreasing order of magnitude. | */
-/*        %--------------------------------------------% */
+            ;
+        }
+        igap /= 2;
+        goto L10;
+    }
+    else if (strcmp(which, "SM") == 0)
+    {
+        /* ------------------------------------------ */
+        /* Sort X into decreasing order of magnitude. */
+        /* ------------------------------------------ */
 
 L40:
-	if (igap == 0) {
-	    goto L9000;
-	}
+        if (igap == 0)
+        {
+            goto L9000;
+        }
 
-	i__1 = *n - 1;
-	for (i__ = igap; i__ <= i__1; ++i__) {
-	    j = i__ - igap;
+        i__1 = *n - 1;
+        for (i = igap; i <= i__1; ++i)
+        {
+            j = i - igap;
 L50:
 
-	    if (j < 0) {
-		goto L60;
-	    }
+            if (j < 0)
+            {
+                goto L60;
+            }
 
-	    i__2 = j;
-	    d__1 = x[i__2].r;
-	    d__2 = d_imag(&x[j]);
-	    temp1 = dlapy2_(&d__1, &d__2);
-	    i__2 = j + igap;
-	    d__1 = x[i__2].r;
-	    d__2 = d_imag(&x[j + igap]);
-	    temp2 = dlapy2_(&d__1, &d__2);
+            d__1 = x[j].r;
+            d__2 = x[j].i;
+            temp1 = dlapy2_(&d__1, &d__2);
+            k = j + igap;
+            d__1 = x[k].r;
+            d__2 = x[k].i;
+            temp2 = dlapy2_(&d__1, &d__2);
 
-	    if (temp1 < temp2) {
-		i__2 = j;
-		temp.r = x[i__2].r, temp.i = x[i__2].i;
-		i__2 = j;
-		i__3 = j + igap;
-		x[i__2].r = x[i__3].r, x[i__2].i = x[i__3].i;
-		i__2 = j + igap;
-		x[i__2].r = temp.r, x[i__2].i = temp.i;
+            if (temp1 < temp2)
+            {
+                temp.r = x[j].r, temp.i = x[j].i;
+                x[j].r = x[k].r, x[j].i = x[k].i;
+                x[k].r = temp.r, x[k].i = temp.i;
 
-		if (*apply) {
-		    i__2 = j;
-		    temp.r = y[i__2].r, temp.i = y[i__2].i;
-		    i__2 = j;
-		    i__3 = j + igap;
-		    y[i__2].r = y[i__3].r, y[i__2].i = y[i__3].i;
-		    i__2 = j + igap;
-		    y[i__2].r = temp.r, y[i__2].i = temp.i;
-		}
-	    } else {
-		goto L60;
-	    }
-	    j -= igap;
-	    goto L50;
+                if (*apply)
+                {
+                    temp.r = y[j].r, temp.i = y[j].i;
+                    y[j].r = y[k].r, y[j].i = y[k].i;
+                    y[k].r = temp.r, y[k].i = temp.i;
+                }
+            }
+            else
+            {
+                goto L60;
+            }
+            j -= igap;
+            goto L50;
 L60:
-	    ;
-	}
-	igap /= 2;
-	goto L40;
-
-    } else if (s_cmp(which, "LR", (ftnlen)2, (ftnlen)2) == 0) {
-
-/*        %------------------------------------------------% */
-/*        | Sort XREAL into increasing order of algebraic. | */
-/*        %------------------------------------------------% */
+            ;
+        }
+        igap /= 2;
+        goto L40;
+    }
+    else if (strcmp(which, "LR") == 0)
+    {
+        /* ---------------------------------------------- */
+        /* Sort XREAL into increasing order of algebraic. */
+        /* ---------------------------------------------- */
 
 L70:
-	if (igap == 0) {
-	    goto L9000;
-	}
+        if (igap == 0)
+        {
+            goto L9000;
+        }
 
-	i__1 = *n - 1;
-	for (i__ = igap; i__ <= i__1; ++i__) {
-	    j = i__ - igap;
+        i__1 = *n - 1;
+        for (i = igap; i <= i__1; ++i)
+        {
+            j = i - igap;
 L80:
 
-	    if (j < 0) {
-		goto L90;
-	    }
+            if (j < 0)
+            {
+                goto L90;
+            }
 
-	    i__2 = j;
-	    i__3 = j + igap;
-	    if (x[i__2].r > x[i__3].r) {
-		i__2 = j;
-		temp.r = x[i__2].r, temp.i = x[i__2].i;
-		i__2 = j;
-		i__3 = j + igap;
-		x[i__2].r = x[i__3].r, x[i__2].i = x[i__3].i;
-		i__2 = j + igap;
-		x[i__2].r = temp.r, x[i__2].i = temp.i;
+            k = j + igap;
+            if (x[j].r > x[k].r)
+            {
+                temp.r = x[j].r, temp.i = x[j].i;
+                x[j].r = x[k].r, x[j].i = x[k].i;
+                x[k].r = temp.r, x[k].i = temp.i;
 
-		if (*apply) {
-		    i__2 = j;
-		    temp.r = y[i__2].r, temp.i = y[i__2].i;
-		    i__2 = j;
-		    i__3 = j + igap;
-		    y[i__2].r = y[i__3].r, y[i__2].i = y[i__3].i;
-		    i__2 = j + igap;
-		    y[i__2].r = temp.r, y[i__2].i = temp.i;
-		}
-	    } else {
-		goto L90;
-	    }
-	    j -= igap;
-	    goto L80;
+                if (*apply)
+                {
+                    temp.r = y[j].r, temp.i = y[j].i;
+                    y[j].r = y[k].r, y[j].i = y[k].i;
+                    y[k].r = temp.r, y[k].i = temp.i;
+                }
+            }
+            else
+            {
+                goto L90;
+            }
+            j -= igap;
+            goto L80;
 L90:
-	    ;
-	}
-	igap /= 2;
-	goto L70;
-
-    } else if (s_cmp(which, "SR", (ftnlen)2, (ftnlen)2) == 0) {
-
-/*        %------------------------------------------------% */
-/*        | Sort XREAL into decreasing order of algebraic. | */
-/*        %------------------------------------------------% */
+            ;
+        }
+        igap /= 2;
+        goto L70;
+    }
+    else if (strcmp(which, "SR") == 0)
+    {
+        /* ---------------------------------------------- */
+        /* Sort XREAL into decreasing order of algebraic. */
+        /* ---------------------------------------------- */
 
 L100:
-	if (igap == 0) {
-	    goto L9000;
-	}
-	i__1 = *n - 1;
-	for (i__ = igap; i__ <= i__1; ++i__) {
-	    j = i__ - igap;
+        if (igap == 0)
+        {
+            goto L9000;
+        }
+        i__1 = *n - 1;
+        for (i = igap; i <= i__1; ++i)
+        {
+            j = i - igap;
 L110:
 
-	    if (j < 0) {
-		goto L120;
-	    }
+            if (j < 0)
+            {
+                goto L120;
+            }
 
-	    i__2 = j;
-	    i__3 = j + igap;
-	    if (x[i__2].r < x[i__3].r) {
-		i__2 = j;
-		temp.r = x[i__2].r, temp.i = x[i__2].i;
-		i__2 = j;
-		i__3 = j + igap;
-		x[i__2].r = x[i__3].r, x[i__2].i = x[i__3].i;
-		i__2 = j + igap;
-		x[i__2].r = temp.r, x[i__2].i = temp.i;
+            k = j + igap;
+            if (x[j].r < x[k].r)
+            {
+                temp.r = x[j].r, temp.i = x[j].i;
+                x[j].r = x[k].r, x[j].i = x[k].i;
+                x[k].r = temp.r, x[k].i = temp.i;
 
-		if (*apply) {
-		    i__2 = j;
-		    temp.r = y[i__2].r, temp.i = y[i__2].i;
-		    i__2 = j;
-		    i__3 = j + igap;
-		    y[i__2].r = y[i__3].r, y[i__2].i = y[i__3].i;
-		    i__2 = j + igap;
-		    y[i__2].r = temp.r, y[i__2].i = temp.i;
-		}
-	    } else {
-		goto L120;
-	    }
-	    j -= igap;
-	    goto L110;
+                if (*apply)
+                {
+                    temp.r = y[j].r, temp.i = y[j].i;
+                    y[j].r = y[k].r, y[j].i = y[k].i;
+                    y[k].r = temp.r, y[k].i = temp.i;
+                }
+            }
+            else
+            {
+                goto L120;
+            }
+            j -= igap;
+            goto L110;
 L120:
-	    ;
-	}
-	igap /= 2;
-	goto L100;
-
-    } else if (s_cmp(which, "LI", (ftnlen)2, (ftnlen)2) == 0) {
-
-/*        %--------------------------------------------% */
-/*        | Sort XIMAG into increasing algebraic order | */
-/*        %--------------------------------------------% */
+            ;
+        }
+        igap /= 2;
+        goto L100;
+    }
+    else if (strcmp(which, "LI") == 0)
+    {
+        /* ------------------------------------------ */
+        /* Sort XIMAG into increasing algebraic order */
+        /* ------------------------------------------ */
 
 L130:
-	if (igap == 0) {
-	    goto L9000;
-	}
-	i__1 = *n - 1;
-	for (i__ = igap; i__ <= i__1; ++i__) {
-	    j = i__ - igap;
+        if (igap == 0)
+        {
+            goto L9000;
+        }
+        i__1 = *n - 1;
+        for (i = igap; i <= i__1; ++i)
+        {
+            j = i - igap;
 L140:
 
-	    if (j < 0) {
-		goto L150;
-	    }
+            if (j < 0)
+            {
+                goto L150;
+            }
 
-	    if (d_imag(&x[j]) > d_imag(&x[j + igap])) {
-		i__2 = j;
-		temp.r = x[i__2].r, temp.i = x[i__2].i;
-		i__2 = j;
-		i__3 = j + igap;
-		x[i__2].r = x[i__3].r, x[i__2].i = x[i__3].i;
-		i__2 = j + igap;
-		x[i__2].r = temp.r, x[i__2].i = temp.i;
+            k = j + igap;
+            if (x[j].i > x[k].i)
+            {
+                temp.r = x[j].r, temp.i = x[j].i;
+                x[j].r = x[k].r, x[j].i = x[k].i;
+                x[k].r = temp.r, x[k].i = temp.i;
 
-		if (*apply) {
-		    i__2 = j;
-		    temp.r = y[i__2].r, temp.i = y[i__2].i;
-		    i__2 = j;
-		    i__3 = j + igap;
-		    y[i__2].r = y[i__3].r, y[i__2].i = y[i__3].i;
-		    i__2 = j + igap;
-		    y[i__2].r = temp.r, y[i__2].i = temp.i;
-		}
-	    } else {
-		goto L150;
-	    }
-	    j -= igap;
-	    goto L140;
+                if (*apply)
+                {
+                    temp.r = y[j].r, temp.i = y[j].i;
+                    y[j].r = y[k].r, y[j].i = y[k].i;
+                    y[k].r = temp.r, y[k].i = temp.i;
+                }
+            }
+            else
+            {
+                goto L150;
+            }
+            j -= igap;
+            goto L140;
 L150:
-	    ;
-	}
-	igap /= 2;
-	goto L130;
-
-    } else if (s_cmp(which, "SI", (ftnlen)2, (ftnlen)2) == 0) {
-
-/*        %---------------------------------------------% */
-/*        | Sort XIMAG into decreasing algebraic order  | */
-/*        %---------------------------------------------% */
+            ;
+        }
+        igap /= 2;
+        goto L130;
+    }
+    else if (strcmp(which, "SI") == 0)
+    {
+        /* ------------------------------------------- */
+        /* Sort XIMAG into decreasing algebraic order  */
+        /* ------------------------------------------- */
 
 L160:
-	if (igap == 0) {
-	    goto L9000;
-	}
-	i__1 = *n - 1;
-	for (i__ = igap; i__ <= i__1; ++i__) {
-	    j = i__ - igap;
+        if (igap == 0)
+        {
+            goto L9000;
+        }
+        i__1 = *n - 1;
+        for (i = igap; i <= i__1; ++i)
+        {
+            j = i - igap;
 L170:
 
-	    if (j < 0) {
-		goto L180;
-	    }
+            if (j < 0)
+            {
+                goto L180;
+            }
 
-	    if (d_imag(&x[j]) < d_imag(&x[j + igap])) {
-		i__2 = j;
-		temp.r = x[i__2].r, temp.i = x[i__2].i;
-		i__2 = j;
-		i__3 = j + igap;
-		x[i__2].r = x[i__3].r, x[i__2].i = x[i__3].i;
-		i__2 = j + igap;
-		x[i__2].r = temp.r, x[i__2].i = temp.i;
+            k = j + igap;
+            if (x[j].i < x[k].i)
+            {
+                temp.r = x[j].r, temp.i = x[j].i;
+                x[j].r = x[k].r, x[j].i = x[k].i;
+                x[k].r = temp.r, x[k].i = temp.i;
 
-		if (*apply) {
-		    i__2 = j;
-		    temp.r = y[i__2].r, temp.i = y[i__2].i;
-		    i__2 = j;
-		    i__3 = j + igap;
-		    y[i__2].r = y[i__3].r, y[i__2].i = y[i__3].i;
-		    i__2 = j + igap;
-		    y[i__2].r = temp.r, y[i__2].i = temp.i;
-		}
-	    } else {
-		goto L180;
-	    }
-	    j -= igap;
-	    goto L170;
+                if (*apply)
+                {
+                    temp.r = y[j].r, temp.i = y[j].i;
+                    y[j].r = y[k].r, y[j].i = y[k].i;
+                    y[k].r = temp.r, y[k].i = temp.i;
+                }
+            }
+            else
+            {
+                goto L180;
+            }
+            j -= igap;
+            goto L170;
 L180:
-	    ;
-	}
-	igap /= 2;
-	goto L160;
+            ;
+        }
+        igap /= 2;
+        goto L160;
     }
 
 L9000:
     return 0;
 
-/*     %---------------% */
-/*     | End of zsortc | */
-/*     %---------------% */
+    /* ------------- */
+    /* End of zsortc */
+    /* ------------- */
 
 } /* zsortc_ */
 

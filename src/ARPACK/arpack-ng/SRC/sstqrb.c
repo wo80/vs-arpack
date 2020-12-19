@@ -1,4 +1,4 @@
-/* D:\Projekte\ARPACK\arpack-ng\SRC\sstqrb.f -- translated by f2c (version 20100827). */
+/* arpack-ng\SRC\sstqrb.f -- translated by f2c (version 20100827). */
 
 #include "arpack.h"
 
@@ -105,165 +105,154 @@
  *
  * \EndLib
  */
-
-
-/* Subroutine */ int sstqrb_(integer *n, real *d__, real *e, real *z__, real *
-	work, integer *info)
+int sstqrb_(int *n, float *d, float *e, float *z, float *
+            work, int *info)
 {
     /* System generated locals */
-    integer i__1, i__2;
-    real r__1, r__2;
+    int i__1, i__2;
+    float r__1, r__2;
 
     /* Builtin functions */
-    double sqrt(doublereal), r_sign(real *, real *);
+    double sqrt(double), r_sign(float *, float *);
 
     /* Local variables */
-    real b, c__, f, g;
-    integer i__, j, k, l, m;
-    real p, r__, s;
-    integer l1, ii, mm, lm1, mm1, nm1;
-    real rt1, rt2, eps;
-    integer lsv;
-    real tst, eps2;
-    integer lend, jtot;
-    real anorm;
-    integer lendm1, lendp1;
-    integer iscale;
-    real safmin, safmax;
-    integer lendsv;
-    real ssfmin;
-    integer nmaxit, icompz;
-    real ssfmax;
-
-
-/*     %------------------% */
-/*     | Scalar Arguments | */
-/*     %------------------% */
-
-
-/*     .. parameters .. */
-/*     .. */
-/*     .. local scalars .. */
-/*     .. */
-/*     .. external functions .. */
-/*     .. */
-/*     .. external subroutines .. */
-/*     .. */
-/*     .. intrinsic functions .. */
-/*     .. */
-/*     .. executable statements .. */
-
-/*     test the input parameters. */
+    float b, c, f, g;
+    int i, j, k, l, m;
+    float p, r, s;
+    int l1, ii, mm, lm1, mm1, nm1;
+    float rt1, rt2, eps;
+    int lsv;
+    float tst, eps2;
+    int lend, jtot;
+    float anorm;
+    int lendm1, lendp1;
+    int iscale;
+    float safmin, safmax;
+    int lendsv;
+    float ssfmin;
+    int nmaxit, icompz;
+    float ssfmax;
 
     /* Parameter adjustments */
     --work;
-    --z__;
+    --z;
     --e;
-    --d__;
+    --d;
 
     /* Function Body */
     *info = 0;
 
-/* $$$      IF( LSAME( COMPZ, 'N' ) ) THEN */
-/* $$$         ICOMPZ = 0 */
-/* $$$      ELSE IF( LSAME( COMPZ, 'V' ) ) THEN */
-/* $$$         ICOMPZ = 1 */
-/* $$$      ELSE IF( LSAME( COMPZ, 'I' ) ) THEN */
-/* $$$         ICOMPZ = 2 */
-/* $$$      ELSE */
-/* $$$         ICOMPZ = -1 */
-/* $$$      END IF */
-/* $$$      IF( ICOMPZ.LT.0 ) THEN */
-/* $$$         INFO = -1 */
-/* $$$      ELSE IF( N.LT.0 ) THEN */
-/* $$$         INFO = -2 */
-/* $$$      ELSE IF( ( LDZ.LT.1 ) .OR. ( ICOMPZ.GT.0 .AND. LDZ.LT.MAX( 1, */
-/* $$$     $         N ) ) ) THEN */
-/* $$$         INFO = -6 */
-/* $$$      END IF */
-/* $$$      IF( INFO.NE.0 ) THEN */
-/* $$$         CALL XERBLA( 'SSTEQR', -INFO ) */
-/* $$$         RETURN */
-/* $$$      END IF */
+    /* $$$      IF( LSAME( COMPZ, 'N' ) ) THEN */
+    /* $$$         ICOMPZ = 0 */
+    /* $$$      ELSE IF( LSAME( COMPZ, 'V' ) ) THEN */
+    /* $$$         ICOMPZ = 1 */
+    /* $$$      ELSE IF( LSAME( COMPZ, 'I' ) ) THEN */
+    /* $$$         ICOMPZ = 2 */
+    /* $$$      ELSE */
+    /* $$$         ICOMPZ = -1 */
+    /* $$$      END IF */
+    /* $$$      IF( ICOMPZ.LT.0 ) THEN */
+    /* $$$         INFO = -1 */
+    /* $$$      ELSE IF( N.LT.0 ) THEN */
+    /* $$$         INFO = -2 */
+    /* $$$      ELSE IF( ( LDZ.LT.1 ) .OR. ( ICOMPZ.GT.0 .AND. LDZ.LT.MAX( 1, */
+    /* $$$     $         N ) ) ) THEN */
+    /* $$$         INFO = -6 */
+    /* $$$      END IF */
+    /* $$$      IF( INFO.NE.0 ) THEN */
+    /* $$$         CALL XERBLA( 'SSTEQR', -INFO ) */
+    /* $$$         RETURN */
+    /* $$$      END IF */
 
-/*    *** New starting with version 2.5 *** */
+    /*    *** New starting with version 2.5 *** */
 
     icompz = 2;
-/*    ************************************* */
+    /*    ************************************* */
 
-/*     quick return if possible */
+    /*     quick return if possible */
 
-    if (*n == 0) {
-	return 0;
+    if (*n == 0)
+    {
+        return 0;
     }
 
-    if (*n == 1) {
-	if (icompz == 2) {
-	    z__[1] = 1.f;
-	}
-	return 0;
+    if (*n == 1)
+    {
+        if (icompz == 2)
+        {
+            z[1] = 1.0f;
+        }
+        return 0;
     }
 
-/*     determine the unit roundoff and over/underflow thresholds. */
+    /*     determine the unit roundoff and over/underflow thresholds. */
 
-    eps = slamch_("e");
-/* Computing 2nd power */
+    eps = slamch_("E");
+    /* Computing 2nd power */
     r__1 = eps;
     eps2 = r__1 * r__1;
-    safmin = slamch_("s");
-    safmax = 1.f / safmin;
-    ssfmax = sqrt(safmax) / 3.f;
+    safmin = slamch_("S");
+    safmax = 1.0f / safmin;
+    ssfmax = sqrt(safmax) / 3.0f;
     ssfmin = sqrt(safmin) / eps2;
 
-/*     compute the eigenvalues and eigenvectors of the tridiagonal */
-/*     matrix. */
+    /*     compute the eigenvalues and eigenvectors of the tridiagonal */
+    /*     matrix. */
 
-/* $$      if( icompz.eq.2 ) */
-/* $$$     $   call slaset( 'full', n, n, zero, one, z, ldz ) */
+    /* $$      if( icompz.eq.2 ) */
+    /* $$$     $   call slaset( 'full', n, n, zero, one, z, ldz ) */
 
-/*     *** New starting with version 2.5 *** */
+    /*     *** New starting with version 2.5 *** */
 
-    if (icompz == 2) {
-	i__1 = *n - 1;
-	for (j = 1; j <= i__1; ++j) {
-	    z__[j] = 0.f;
-/* L5: */
-	}
-	z__[*n] = 1.f;
+    if (icompz == 2)
+    {
+        i__1 = *n - 1;
+        for (j = 1; j <= i__1; ++j)
+        {
+            z[j] = 0.0f;
+
+        }
+        z[*n] = 1.0f;
     }
-/*     ************************************* */
+    /*     ************************************* */
 
     nmaxit = *n * 30;
     jtot = 0;
 
-/*     determine where the matrix splits and choose ql or qr iteration */
-/*     for each block, according to whether top or bottom diagonal */
-/*     element is smaller. */
+    /*     determine where the matrix splits and choose ql or qr iteration */
+    /*     for each block, according to whether top or bottom diagonal */
+    /*     element is smaller. */
 
     l1 = 1;
     nm1 = *n - 1;
 
 L10:
-    if (l1 > *n) {
-	goto L160;
+    if (l1 > *n)
+    {
+        goto L160;
     }
-    if (l1 > 1) {
-	e[l1 - 1] = 0.f;
+    if (l1 > 1)
+    {
+        e[l1 - 1] = 0.0f;
     }
-    if (l1 <= nm1) {
-	i__1 = nm1;
-	for (m = l1; m <= i__1; ++m) {
-	    tst = (r__1 = e[m], dabs(r__1));
-	    if (tst == 0.f) {
-		goto L30;
-	    }
-	    if (tst <= sqrt((r__1 = d__[m], dabs(r__1))) * sqrt((r__2 = d__[m 
-		    + 1], dabs(r__2))) * eps) {
-		e[m] = 0.f;
-		goto L30;
-	    }
-/* L20: */
-	}
+    if (l1 <= nm1)
+    {
+        for (m = l1; m <= nm1; ++m)
+        {
+            r__1 = e[m];
+            tst = dabs(r__1);
+            if (tst == 0.0f)
+            {
+                goto L30;
+            }
+            r__1 = d[m];
+            r__2 = d[m + 1];
+            if (tst <= sqrt(dabs(r__1)) * sqrt(dabs(r__2)) * eps)
+            {
+                e[m] = 0.0f;
+                goto L30;
+            }
+        }
     }
     m = *n;
 
@@ -273,387 +262,422 @@ L30:
     lend = m;
     lendsv = lend;
     l1 = m + 1;
-    if (lend == l) {
-	goto L10;
+    if (lend == l)
+    {
+        goto L10;
     }
 
-/*     scale submatrix in rows and columns l to lend */
+    /*     scale submatrix in rows and columns l to lend */
 
     i__1 = lend - l + 1;
-    anorm = slanst_("i", &i__1, &d__[l], &e[l], (ftnlen)1);
+    anorm = slanst_("i", &i__1, &d[l], &e[l]);
     iscale = 0;
-    if (anorm == 0.f) {
-	goto L10;
+    if (anorm == 0.0f)
+    {
+        goto L10;
     }
-    if (anorm > ssfmax) {
-	iscale = 1;
-	i__1 = lend - l + 1;
-	slascl_("g", &c__0, &c__0, &anorm, &ssfmax, &i__1, &c__1, &d__[l], n, info);
-	i__1 = lend - l;
-	slascl_("g", &c__0, &c__0, &anorm, &ssfmax, &i__1, &c__1, &e[l], n, info);
-    } else if (anorm < ssfmin) {
-	iscale = 2;
-	i__1 = lend - l + 1;
-	slascl_("g", &c__0, &c__0, &anorm, &ssfmin, &i__1, &c__1, &d__[l], n, info);
-	i__1 = lend - l;
-	slascl_("g", &c__0, &c__0, &anorm, &ssfmin, &i__1, &c__1, &e[l], n, info);
+    if (anorm > ssfmax)
+    {
+        iscale = 1;
+        i__1 = lend - l + 1;
+        slascl_("G", &c__0, &c__0, &anorm, &ssfmax, &i__1, &c__1, &d[l], n, info);
+        i__1 = lend - l;
+        slascl_("G", &c__0, &c__0, &anorm, &ssfmax, &i__1, &c__1, &e[l], n, info);
     }
-
-/*     choose between ql and qr iteration */
-
-    if ((r__1 = d__[lend], dabs(r__1)) < (r__2 = d__[l], dabs(r__2))) {
-	lend = lsv;
-	l = lendsv;
+    else if (anorm < ssfmin)
+    {
+        iscale = 2;
+        i__1 = lend - l + 1;
+        slascl_("G", &c__0, &c__0, &anorm, &ssfmin, &i__1, &c__1, &d[l], n, info);
+        i__1 = lend - l;
+        slascl_("G", &c__0, &c__0, &anorm, &ssfmin, &i__1, &c__1, &e[l], n, info);
     }
 
-    if (lend > l) {
+    /*     choose between ql and qr iteration */
 
-/*        ql iteration */
+    if ((r__1 = d[lend], dabs(r__1)) < (r__2 = d[l], dabs(r__2)))
+    {
+        lend = lsv;
+        l = lendsv;
+    }
 
-/*        look for small subdiagonal element. */
+    if (lend > l)
+    {
+        /*        ql iteration */
+
+        /*        look for small subdiagonal element. */
 
 L40:
-	if (l != lend) {
-	    lendm1 = lend - 1;
-	    i__1 = lendm1;
-	    for (m = l; m <= i__1; ++m) {
-/* Computing 2nd power */
-		r__2 = (r__1 = e[m], dabs(r__1));
-		tst = r__2 * r__2;
-		if (tst <= eps2 * (r__1 = d__[m], dabs(r__1)) * (r__2 = d__[m 
-			+ 1], dabs(r__2)) + safmin) {
-		    goto L60;
-		}
-/* L50: */
-	    }
-	}
+        if (l != lend)
+        {
+            lendm1 = lend - 1;
+            for (m = l; m <= lendm1; ++m)
+            {
+                /* Computing 2nd power */
+                r__1 = e[m];
+                r__2 = dabs(r__1);
+                tst = r__2 * r__2;
+                r__1 = d[m];
+                r__2 = d[m + 1];
+                if (tst <= eps2 * dabs(r__1) * dabs(r__2) + safmin)
+                {
+                    goto L60;
+                }
+            }
+        }
 
-	m = lend;
+        m = lend;
 
 L60:
-	if (m < lend) {
-	    e[m] = 0.f;
-	}
-	p = d__[l];
-	if (m == l) {
-	    goto L80;
-	}
+        if (m < lend)
+        {
+            e[m] = 0.0f;
+        }
+        p = d[l];
+        if (m == l)
+        {
+            goto L80;
+        }
 
-/*        if remaining matrix is 2-by-2, use slae2 or slaev2 */
-/*        to compute its eigensystem. */
+        /*        if remaining matrix is 2-by-2, use slae2 or slaev2 */
+        /*        to compute its eigensystem. */
 
-	if (m == l + 1) {
-	    if (icompz > 0) {
-		slaev2_(&d__[l], &e[l], &d__[l + 1], &rt1, &rt2, &c__, &s);
-		work[l] = c__;
-		work[*n - 1 + l] = s;
-/* $$$               call slasr( 'r', 'v', 'b', n, 2, work( l ), */
-/* $$$     $                     work( n-1+l ), z( 1, l ), ldz ) */
+        if (m == l + 1)
+        {
+            if (icompz > 0)
+            {
+                slaev2_(&d[l], &e[l], &d[l + 1], &rt1, &rt2, &c, &s);
+                work[l] = c;
+                work[*n - 1 + l] = s;
+                /* $$$               call slasr( 'r', 'v', 'b', n, 2, work( l ), */
+                /* $$$     $                     work( n-1+l ), z( 1, l ), ldz ) */
 
-/*              *** New starting with version 2.5 *** */
+                /*              *** New starting with version 2.5 *** */
 
-		tst = z__[l + 1];
-		z__[l + 1] = c__ * tst - s * z__[l];
-		z__[l] = s * tst + c__ * z__[l];
-/*              ************************************* */
-	    } else {
-		slae2_(&d__[l], &e[l], &d__[l + 1], &rt1, &rt2);
-	    }
-	    d__[l] = rt1;
-	    d__[l + 1] = rt2;
-	    e[l] = 0.f;
-	    l += 2;
-	    if (l <= lend) {
-		goto L40;
-	    }
-	    goto L140;
-	}
+                tst = z[l + 1];
+                z[l + 1] = c * tst - s * z[l];
+                z[l] = s * tst + c * z[l];
+                /*              ************************************* */
+            }
+            else
+            {
+                slae2_(&d[l], &e[l], &d[l + 1], &rt1, &rt2);
+            }
+            d[l] = rt1;
+            d[l + 1] = rt2;
+            e[l] = 0.0f;
+            l += 2;
+            if (l <= lend)
+            {
+                goto L40;
+            }
+            goto L140;
+        }
 
-	if (jtot == nmaxit) {
-	    goto L140;
-	}
-	++jtot;
+        if (jtot == nmaxit)
+        {
+            goto L140;
+        }
+        ++jtot;
 
-/*        form shift. */
+        /*        form shift. */
 
-	g = (d__[l + 1] - p) / (e[l] * 2.f);
-	r__ = slapy2_(&g, &s_one);
-	g = d__[m] - p + e[l] / (g + r_sign(&r__, &g));
+        g = (d[l + 1] - p) / (e[l] * 2.0f);
+        r = slapy2_(&g, &s_one);
+        g = d[m] - p + e[l] / (g + r_sign(&r, &g));
 
-	s = 1.f;
-	c__ = 1.f;
-	p = 0.f;
+        s = 1.0f;
+        c = 1.0f;
+        p = 0.0f;
 
-/*        inner loop */
+        /*        inner loop */
 
-	mm1 = m - 1;
-	i__1 = l;
-	for (i__ = mm1; i__ >= i__1; --i__) {
-	    f = s * e[i__];
-	    b = c__ * e[i__];
-	    slartg_(&g, &f, &c__, &s, &r__);
-	    if (i__ != m - 1) {
-		e[i__ + 1] = r__;
-	    }
-	    g = d__[i__ + 1] - p;
-	    r__ = (d__[i__] - g) * s + c__ * 2.f * b;
-	    p = s * r__;
-	    d__[i__ + 1] = g + p;
-	    g = c__ * r__ - b;
+        mm1 = m - 1;
+        for (i = mm1; i >= l; --i)
+        {
+            f = s * e[i];
+            b = c * e[i];
+            slartg_(&g, &f, &c, &s, &r);
+            if (i != m - 1)
+            {
+                e[i + 1] = r;
+            }
+            g = d[i + 1] - p;
+            r = (d[i] - g) * s + c * 2.0f * b;
+            p = s * r;
+            d[i + 1] = g + p;
+            g = c * r - b;
 
-/*           if eigenvectors are desired, then save rotations. */
+            /*           if eigenvectors are desired, then save rotations. */
 
-	    if (icompz > 0) {
-		work[i__] = c__;
-		work[*n - 1 + i__] = -s;
-	    }
+            if (icompz > 0)
+            {
+                work[i] = c;
+                work[*n - 1 + i] = -s;
+            }
+        }
 
-/* L70: */
-	}
+        /*        if eigenvectors are desired, then apply saved rotations. */
 
-/*        if eigenvectors are desired, then apply saved rotations. */
+        if (icompz > 0)
+        {
+            mm = m - l + 1;
+            /* $$$            call slasr( 'r', 'v', 'b', n, mm, work( l ), work( n-1+l ), */
+            /* $$$     $                  z( 1, l ), ldz ) */
 
-	if (icompz > 0) {
-	    mm = m - l + 1;
-/* $$$            call slasr( 'r', 'v', 'b', n, mm, work( l ), work( n-1+l ), */
-/* $$$     $                  z( 1, l ), ldz ) */
+            /*             *** New starting with version 2.5 *** */
 
-/*             *** New starting with version 2.5 *** */
+            slasr_("r", "v", "b", &c__1, &mm, &work[l], &work[*n - 1 + l], &z[l], &c__1);
+            /*             ************************************* */
+        }
 
-	    slasr_("r", "v", "b", &c__1, &mm, &work[l], &work[*n - 1 + l], &
-		    z__[l], &c__1);
-/*             ************************************* */
-	}
+        d[l] -= p;
+        e[l] = g;
+        goto L40;
 
-	d__[l] -= p;
-	e[l] = g;
-	goto L40;
-
-/*        eigenvalue found. */
+        /*        eigenvalue found. */
 
 L80:
-	d__[l] = p;
+        d[l] = p;
 
-	++l;
-	if (l <= lend) {
-	    goto L40;
-	}
-	goto L140;
+        ++l;
+        if (l <= lend)
+        {
+            goto L40;
+        }
+        goto L140;
+    }
+    else
+    {
+        /*        qr iteration */
 
-    } else {
-
-/*        qr iteration */
-
-/*        look for small superdiagonal element. */
+        /*        look for small superdiagonal element. */
 
 L90:
-	if (l != lend) {
-	    lendp1 = lend + 1;
-	    i__1 = lendp1;
-	    for (m = l; m >= i__1; --m) {
-/* Computing 2nd power */
-		r__2 = (r__1 = e[m - 1], dabs(r__1));
-		tst = r__2 * r__2;
-		if (tst <= eps2 * (r__1 = d__[m], dabs(r__1)) * (r__2 = d__[m 
-			- 1], dabs(r__2)) + safmin) {
-		    goto L110;
-		}
-/* L100: */
-	    }
-	}
+        if (l != lend)
+        {
+            lendp1 = lend + 1;
+            for (m = l; m >= lendp1; --m)
+            {
+                /* Computing 2nd power */
+                r__1 = e[m - 1];
+                r__2 = dabs(r__1);
+                tst = r__2 * r__2;
+                r__1 = d[m];
+                r__2 = d[m - 1];
+                if (tst <= eps2 * dabs(r__1) * dabs(r__2) + safmin)
+                {
+                    goto L110;
+                }
+            }
+        }
 
-	m = lend;
+        m = lend;
 
 L110:
-	if (m > lend) {
-	    e[m - 1] = 0.f;
-	}
-	p = d__[l];
-	if (m == l) {
-	    goto L130;
-	}
+        if (m > lend)
+        {
+            e[m - 1] = 0.0f;
+        }
+        p = d[l];
+        if (m == l)
+        {
+            goto L130;
+        }
 
-/*        if remaining matrix is 2-by-2, use slae2 or slaev2 */
-/*        to compute its eigensystem. */
+        /*        if remaining matrix is 2-by-2, use slae2 or slaev2 */
+        /*        to compute its eigensystem. */
 
-	if (m == l - 1) {
-	    if (icompz > 0) {
-		slaev2_(&d__[l - 1], &e[l - 1], &d__[l], &rt1, &rt2, &c__, &s)
-			;
-/* $$$               work( m ) = c */
-/* $$$               work( n-1+m ) = s */
-/* $$$               call slasr( 'r', 'v', 'f', n, 2, work( m ), */
-/* $$$     $                     work( n-1+m ), z( 1, l-1 ), ldz ) */
+        if (m == l - 1)
+        {
+            if (icompz > 0)
+            {
+                slaev2_(&d[l - 1], &e[l - 1], &d[l], &rt1, &rt2, &c, &s);
+                /* $$$               work( m ) = c */
+                /* $$$               work( n-1+m ) = s */
+                /* $$$               call slasr( 'r', 'v', 'f', n, 2, work( m ), */
+                /* $$$     $                     work( n-1+m ), z( 1, l-1 ), ldz ) */
 
-/*               *** New starting with version 2.5 *** */
+                /*               *** New starting with version 2.5 *** */
 
-		tst = z__[l];
-		z__[l] = c__ * tst - s * z__[l - 1];
-		z__[l - 1] = s * tst + c__ * z__[l - 1];
-/*               ************************************* */
-	    } else {
-		slae2_(&d__[l - 1], &e[l - 1], &d__[l], &rt1, &rt2);
-	    }
-	    d__[l - 1] = rt1;
-	    d__[l] = rt2;
-	    e[l - 1] = 0.f;
-	    l += -2;
-	    if (l >= lend) {
-		goto L90;
-	    }
-	    goto L140;
-	}
+                tst = z[l];
+                z[l] = c * tst - s * z[l - 1];
+                z[l - 1] = s * tst + c * z[l - 1];
+                /*               ************************************* */
+            }
+            else
+            {
+                slae2_(&d[l - 1], &e[l - 1], &d[l], &rt1, &rt2);
+            }
+            d[l - 1] = rt1;
+            d[l] = rt2;
+            e[l - 1] = 0.0f;
+            l += -2;
+            if (l >= lend)
+            {
+                goto L90;
+            }
+            goto L140;
+        }
 
-	if (jtot == nmaxit) {
-	    goto L140;
-	}
-	++jtot;
+        if (jtot == nmaxit)
+        {
+            goto L140;
+        }
+        ++jtot;
 
-/*        form shift. */
+        /*        form shift. */
 
-	g = (d__[l - 1] - p) / (e[l - 1] * 2.f);
-	r__ = slapy2_(&g, &s_one);
-	g = d__[m] - p + e[l - 1] / (g + r_sign(&r__, &g));
+        g = (d[l - 1] - p) / (e[l - 1] * 2.0f);
+        r = slapy2_(&g, &s_one);
+        g = d[m] - p + e[l - 1] / (g + r_sign(&r, &g));
 
-	s = 1.f;
-	c__ = 1.f;
-	p = 0.f;
+        s = 1.0f;
+        c = 1.0f;
+        p = 0.0f;
 
-/*        inner loop */
+        /*        inner loop */
 
-	lm1 = l - 1;
-	i__1 = lm1;
-	for (i__ = m; i__ <= i__1; ++i__) {
-	    f = s * e[i__];
-	    b = c__ * e[i__];
-	    slartg_(&g, &f, &c__, &s, &r__);
-	    if (i__ != m) {
-		e[i__ - 1] = r__;
-	    }
-	    g = d__[i__] - p;
-	    r__ = (d__[i__ + 1] - g) * s + c__ * 2.f * b;
-	    p = s * r__;
-	    d__[i__] = g + p;
-	    g = c__ * r__ - b;
+        lm1 = l - 1;
+        for (i = m; i <= lm1; ++i)
+        {
+            f = s * e[i];
+            b = c * e[i];
+            slartg_(&g, &f, &c, &s, &r);
+            if (i != m)
+            {
+                e[i - 1] = r;
+            }
+            g = d[i] - p;
+            r = (d[i + 1] - g) * s + c * 2.0f * b;
+            p = s * r;
+            d[i] = g + p;
+            g = c * r - b;
 
-/*           if eigenvectors are desired, then save rotations. */
+            /*           if eigenvectors are desired, then save rotations. */
 
-	    if (icompz > 0) {
-		work[i__] = c__;
-		work[*n - 1 + i__] = s;
-	    }
+            if (icompz > 0)
+            {
+                work[i] = c;
+                work[*n - 1 + i] = s;
+            }
+        }
 
-/* L120: */
-	}
+        /*        if eigenvectors are desired, then apply saved rotations. */
 
-/*        if eigenvectors are desired, then apply saved rotations. */
+        if (icompz > 0)
+        {
+            mm = l - m + 1;
+            /* $$$            call slasr( 'r', 'v', 'f', n, mm, work( m ), work( n-1+m ), */
+            /* $$$     $                  z( 1, m ), ldz ) */
 
-	if (icompz > 0) {
-	    mm = l - m + 1;
-/* $$$            call slasr( 'r', 'v', 'f', n, mm, work( m ), work( n-1+m ), */
-/* $$$     $                  z( 1, m ), ldz ) */
+            /*           *** New starting with version 2.5 *** */
 
-/*           *** New starting with version 2.5 *** */
+            slasr_("r", "v", "f", &c__1, &mm, &work[m], &work[*n - 1 + m], &z[m], &c__1);
+            /*           ************************************* */
+        }
 
-	    slasr_("r", "v", "f", &c__1, &mm, &work[m], &work[*n - 1 + m], &
-		    z__[m], &c__1);
-/*           ************************************* */
-	}
+        d[l] -= p;
+        e[lm1] = g;
+        goto L90;
 
-	d__[l] -= p;
-	e[lm1] = g;
-	goto L90;
-
-/*        eigenvalue found. */
+        /*        eigenvalue found. */
 
 L130:
-	d__[l] = p;
+        d[l] = p;
 
-	--l;
-	if (l >= lend) {
-	    goto L90;
-	}
-	goto L140;
-
+        --l;
+        if (l >= lend)
+        {
+            goto L90;
+        }
+        goto L140;
     }
 
-/*     undo scaling if necessary */
+    /*     undo scaling if necessary */
 
 L140:
-    if (iscale == 1) {
-	i__1 = lendsv - lsv + 1;
-	slascl_("g", &c__0, &c__0, &ssfmax, &anorm, &i__1, &c__1, &d__[lsv], n, info);
-	i__1 = lendsv - lsv;
-	slascl_("g", &c__0, &c__0, &ssfmax, &anorm, &i__1, &c__1, &e[lsv], n, info);
-    } else if (iscale == 2) {
-	i__1 = lendsv - lsv + 1;
-	slascl_("g", &c__0, &c__0, &ssfmin, &anorm, &i__1, &c__1, &d__[lsv], n, info);
-	i__1 = lendsv - lsv;
-	slascl_("g", &c__0, &c__0, &ssfmin, &anorm, &i__1, &c__1, &e[lsv], n, info);
+    if (iscale == 1)
+    {
+        i__1 = lendsv - lsv + 1;
+        slascl_("G", &c__0, &c__0, &ssfmax, &anorm, &i__1, &c__1, &d[lsv], n, info);
+        i__1 = lendsv - lsv;
+        slascl_("G", &c__0, &c__0, &ssfmax, &anorm, &i__1, &c__1, &e[lsv], n, info);
+    }
+    else if (iscale == 2)
+    {
+        i__1 = lendsv - lsv + 1;
+        slascl_("G", &c__0, &c__0, &ssfmin, &anorm, &i__1, &c__1, &d[lsv], n, info);
+        i__1 = lendsv - lsv;
+        slascl_("G", &c__0, &c__0, &ssfmin, &anorm, &i__1, &c__1, &e[lsv], n, info);
     }
 
-/*     check for no convergence to an eigenvalue after a total */
-/*     of n*maxit iterations. */
+    /*     check for no convergence to an eigenvalue after a total */
+    /*     of n*maxit iterations. */
 
-    if (jtot < nmaxit) {
-	goto L10;
+    if (jtot < nmaxit)
+    {
+        goto L10;
     }
     i__1 = *n - 1;
-    for (i__ = 1; i__ <= i__1; ++i__) {
-	if (e[i__] != 0.f) {
-	    ++(*info);
-	}
-/* L150: */
+    for (i = 1; i <= i__1; ++i)
+    {
+        if (e[i] != 0.0f)
+        {
+            ++(*info);
+        }
     }
     goto L190;
 
-/*     order eigenvalues and eigenvectors. */
+    /*     order eigenvalues and eigenvectors. */
 
 L160:
-    if (icompz == 0) {
+    if (icompz == 0)
+    {
+        /*        use quick sort */
 
-/*        use quick sort */
+        slasrt_("i", n, &d[1], info);
+    }
+    else
+    {
+        /*        use selection sort to minimize swaps of eigenvectors */
 
-	slasrt_("i", n, &d__[1], info);
+        i__1 = *n;
+        for (ii = 2; ii <= i__1; ++ii)
+        {
+            i = ii - 1;
+            k = i;
+            p = d[i];
+            i__2 = *n;
+            for (j = ii; j <= i__2; ++j)
+            {
+                if (d[j] < p)
+                {
+                    k = j;
+                    p = d[j];
+                }
+            }
+            if (k != i)
+            {
+                d[k] = d[i];
+                d[i] = p;
+                /* $$$               call sswap( n, z( 1, i ), 1, z( 1, k ), 1 ) */
+                /*           *** New starting with version 2.5 *** */
 
-    } else {
-
-/*        use selection sort to minimize swaps of eigenvectors */
-
-	i__1 = *n;
-	for (ii = 2; ii <= i__1; ++ii) {
-	    i__ = ii - 1;
-	    k = i__;
-	    p = d__[i__];
-	    i__2 = *n;
-	    for (j = ii; j <= i__2; ++j) {
-		if (d__[j] < p) {
-		    k = j;
-		    p = d__[j];
-		}
-/* L170: */
-	    }
-	    if (k != i__) {
-		d__[k] = d__[i__];
-		d__[i__] = p;
-/* $$$               call sswap( n, z( 1, i ), 1, z( 1, k ), 1 ) */
-/*           *** New starting with version 2.5 *** */
-
-		p = z__[k];
-		z__[k] = z__[i__];
-		z__[i__] = p;
-/*           ************************************* */
-	    }
-/* L180: */
-	}
+                p = z[k];
+                z[k] = z[i];
+                z[i] = p;
+                /*           ************************************* */
+            }
+        }
     }
 
 L190:
     return 0;
 
-/*     %---------------% */
-/*     | End of sstqrb | */
-/*     %---------------% */
+    /* ------------- */
+    /* End of sstqrb */
+    /* ------------- */
 
 } /* sstqrb_ */
 

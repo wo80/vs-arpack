@@ -1,4 +1,4 @@
-/* D:\Projekte\ARPACK\arpack-ng\SRC\dseigt.f -- translated by f2c (version 20100827). */
+/* arpack-ng\SRC\dseigt.f -- translated by f2c (version 20100827). */
 
 #include "arpack.h"
 
@@ -84,32 +84,24 @@
  *
  * \EndLib
  */
-
-
-/* Subroutine */ int dseigt_(doublereal *rnorm, integer *n, doublereal *h__, 
-	integer *ldh, doublereal *eig, doublereal *bounds, doublereal *workl, 
-	integer *ierr)
+int dseigt_(double *rnorm, int *n, double *h,
+            int *ldh, double *eig, double *bounds, double *workl,
+            int *ierr)
 {
     /* System generated locals */
-    integer h_dim1, h_offset, i__1;
-    doublereal d__1;
+    int h_dim1, h_offset, i__1;
+    double d__1;
 
     /* Local variables */
-    integer k;
-    static real t0, t1;
-    integer msglvl;
+    int k;
+    static float t0, t1;
+    int msglvl;
 
 
-
-
-/*     %-----------------------% */
-/*     | Executable Statements | */
-/*     %-----------------------% */
-
-/*     %-------------------------------% */
-/*     | Initialize timing statistics  | */
-/*     | & message level for debugging | */
-/*     %-------------------------------% */
+    /* ----------------------------- */
+    /* Initialize timing statistics  */
+    /* & message level for debugging */
+    /* ----------------------------- */
 
     /* Parameter adjustments */
     --workl;
@@ -117,54 +109,64 @@
     --eig;
     h_dim1 = *ldh;
     h_offset = 1 + h_dim1;
-    h__ -= h_offset;
+    h -= h_offset;
 
     /* Function Body */
+#ifndef NO_TIMER
     arscnd_(&t0);
+#endif
+
     msglvl = debug_1.mseigt;
 
-    if (msglvl > 0) {
-	dvout_(&debug_1.logfil, n, &h__[(h_dim1 << 1) + 1], &debug_1.ndigit, 
-		"_seigt: main diagonal of matrix H", (ftnlen)33);
-	if (*n > 1) {
-	    i__1 = *n - 1;
-	    dvout_(&debug_1.logfil, &i__1, &h__[h_dim1 + 2], &debug_1.ndigit, 
-		    "_seigt: sub diagonal of matrix H", (ftnlen)32);
-	}
+#ifndef NO_TRACE
+    if (msglvl > 0)
+    {
+        dvout_(n, &h[(h_dim1 << 1) + 1], &debug_1.ndigit, "_seigt: main diagonal of matrix H");
+        if (*n > 1)
+        {
+            i__1 = *n - 1;
+            dvout_(&i__1, &h[h_dim1 + 2], &debug_1.ndigit, "_seigt: sub diagonal of matrix H");
+        }
     }
+#endif
 
-    dcopy_(n, &h__[(h_dim1 << 1) + 1], &c__1, &eig[1], &c__1);
+    dcopy_(n, &h[(h_dim1 << 1) + 1], &c__1, &eig[1], &c__1);
     i__1 = *n - 1;
-    dcopy_(&i__1, &h__[h_dim1 + 2], &c__1, &workl[1], &c__1);
+    dcopy_(&i__1, &h[h_dim1 + 2], &c__1, &workl[1], &c__1);
     dstqrb_(n, &eig[1], &workl[1], &bounds[1], &workl[*n + 1], ierr);
-    if (*ierr != 0) {
-	goto L9000;
+    if (*ierr != 0)
+    {
+        goto L9000;
     }
-    if (msglvl > 1) {
-	dvout_(&debug_1.logfil, n, &bounds[1], &debug_1.ndigit, "_seigt: las"
-		"t row of the eigenvector matrix for H", (ftnlen)48);
+#ifndef NO_TRACE
+    if (msglvl > 1)
+    {
+        dvout_(n, &bounds[1], &debug_1.ndigit, "_seigt: last row of the eigenvector matrix for H");
     }
+#endif
 
-/*     %-----------------------------------------------% */
-/*     | Finally determine the error bounds associated | */
-/*     | with the n Ritz values of H.                  | */
-/*     %-----------------------------------------------% */
+    /* --------------------------------------------- */
+    /* Finally determine the error bounds associated */
+    /* with the n Ritz values of H.                  */
+    /* --------------------------------------------- */
 
     i__1 = *n;
-    for (k = 1; k <= i__1; ++k) {
-	bounds[k] = *rnorm * (d__1 = bounds[k], abs(d__1));
-/* L30: */
+    for (k = 1; k <= i__1; ++k)
+    {
+        bounds[k] = *rnorm * (d__1 = bounds[k], abs(d__1));
     }
 
+#ifndef NO_TIMER
     arscnd_(&t1);
     timing_1.tseigt += t1 - t0;
+#endif
 
 L9000:
     return 0;
 
-/*     %---------------% */
-/*     | End of dseigt | */
-/*     %---------------% */
+    /* ------------- */
+    /* End of dseigt */
+    /* ------------- */
 
 } /* dseigt_ */
 

@@ -1,5 +1,6 @@
-/* D:\Projekte\ARPACK\arpack-ng\SRC\snconv.f -- translated by f2c (version 20100827). */
+/* arpack-ng\SRC\snconv.f -- translated by f2c (version 20100827). */
 
+#include <math.h>
 #include "arpack.h"
 
 /**
@@ -62,50 +63,31 @@
  *
  * \EndLib
  */
-
-
-/* Subroutine */ int snconv_(integer *n, real *ritzr, real *ritzi, real *
-	bounds, real *tol, integer *nconv)
+int snconv_(int *n, float *ritzr, float *ritzi, float *
+            bounds, float *tol, int *nconv)
 {
     /* System generated locals */
-    integer i__1;
-    real r__1, r__2;
-    doublereal d__1;
+    int i__1;
+    float r__1, r__2;
 
     /* Builtin functions */
-    double pow_dd(doublereal *, doublereal *);
-
     /* Local variables */
-    integer i__;
-    static real t0, t1;
-    real eps23, temp;
+    int i;
+    static float t0, t1;
+    float eps23, temp;
 
 
-
-
-/*     %-----------------% */
-/*     | Array Arguments | */
-/*     %-----------------% */
-
-/*     %--------------------% */
-/*     | External Functions | */
-/*     %--------------------% */
-
-/*     %-----------------------% */
-/*     | Executable Statements | */
-/*     %-----------------------% */
-
-/*     %-------------------------------------------------------------% */
-/*     | Convergence test: unlike in the symmetric code, I am not    | */
-/*     | using things like refined error bounds and gap condition    | */
-/*     | because I don't know the exact equivalent concept.          | */
-/*     |                                                             | */
-/*     | Instead the i-th Ritz value is considered "converged" when: | */
-/*     |                                                             | */
-/*     |     bounds(i) .le. ( TOL * | ritz | )                       | */
-/*     |                                                             | */
-/*     | for some appropriate choice of norm.                        | */
-/*     %-------------------------------------------------------------% */
+    /* ----------------------------------------------------------- */
+    /* Convergence test: unlike in the symmetric code, I am not    */
+    /* using things like refined error bounds and gap condition    */
+    /* because I don't know the exact equivalent concept.          */
+    /*                                                             */
+    /* Instead the i-th Ritz value is considered "converged" when: */
+    /*                                                             */
+    /*     bounds(i) .le. ( TOL * | ritz | )                       */
+    /*                                                             */
+    /* for some appropriate choice of norm.                        */
+    /* ----------------------------------------------------------- */
 
     /* Parameter adjustments */
     --bounds;
@@ -113,36 +95,40 @@
     --ritzr;
 
     /* Function Body */
+#ifndef NO_TIMER
     arscnd_(&t0);
+#endif
 
-/*     %---------------------------------% */
-/*     | Get machine dependent constant. | */
-/*     %---------------------------------% */
+    /* ------------------------------- */
+    /* Get machine dependent constant. */
+    /* ------------------------------- */
 
-    eps23 = slamch_("Epsilon-Machine");
-    d__1 = (doublereal) eps23;
-    eps23 = pow_dd(&d__1, &d_23);
+    eps23 = slamch_("E");
+    eps23 = pow((double)eps23, d_23);
 
     *nconv = 0;
     i__1 = *n;
-    for (i__ = 1; i__ <= i__1; ++i__) {
-/* Computing MAX */
-	r__1 = eps23, r__2 = slapy2_(&ritzr[i__], &ritzi[i__]);
-	temp = dmax(r__1,r__2);
-	if (bounds[i__] <= *tol * temp) {
-	    ++(*nconv);
-	}
-/* L20: */
+    for (i = 1; i <= i__1; ++i)
+    {
+        /* Computing MAX */
+        r__1 = eps23, r__2 = slapy2_(&ritzr[i], &ritzi[i]);
+        temp = dmax(r__1,r__2);
+        if (bounds[i] <= *tol * temp)
+        {
+            ++(*nconv);
+        }
     }
 
+#ifndef NO_TIMER
     arscnd_(&t1);
     timing_1.tnconv += t1 - t0;
+#endif
 
     return 0;
 
-/*     %---------------% */
-/*     | End of snconv | */
-/*     %---------------% */
+    /* ------------- */
+    /* End of snconv */
+    /* ------------- */
 
 } /* snconv_ */
 

@@ -1,4 +1,4 @@
-/* D:\Projekte\ARPACK\arpack-ng\SRC\cneigh.f -- translated by f2c (version 20100827). */
+/* arpack-ng\SRC\cneigh.f -- translated by f2c (version 20100827). */
 
 #include "arpack.h"
 
@@ -81,7 +81,6 @@
  *     csscal  Level 1 BLAS that scales a complex vector by a real number.
  *     scnrm2  Level 1 BLAS that computes the norm of a vector.
  *
- *
  * \Author
  *     Danny Sorensen               Phuong Vu
  *     Richard Lehoucq              CRPC / Rice University
@@ -98,35 +97,27 @@
  *
  * \EndLib
  */
-
-
-/* Subroutine */ int cneigh_(real *rnorm, integer *n, complex *h__, integer *
-	ldh, complex *ritz, complex *bounds, complex *q, integer *ldq, 
-	complex *workl, real *rwork, integer *ierr)
+int cneigh_(float *rnorm, int *n, complex *h, int *
+            ldh, complex *ritz, complex *bounds, complex *q, int *ldq,
+            complex *workl, float *rwork, int *ierr)
 {
     /* System generated locals */
-    integer h_dim1, h_offset, q_dim1, q_offset, i__1;
-    real r__1;
+    int h_dim1, h_offset, q_dim1, q_offset, i__1;
+    float r__1;
 
     /* Local variables */
-    integer j;
-    static real t0, t1;
+    int j;
+    static float t0, t1;
     complex vl[1];
-    real temp;
-    logical select[1];
-    integer msglvl;
+    float temp;
+    bool select[1];
+    int msglvl;
 
 
-
-
-/*     %-----------------------% */
-/*     | Executable Statements | */
-/*     %-----------------------% */
-
-/*     %-------------------------------% */
-/*     | Initialize timing statistics  | */
-/*     | & message level for debugging | */
-/*     %-------------------------------% */
+    /* ----------------------------- */
+    /* Initialize timing statistics  */
+    /* & message level for debugging */
+    /* ----------------------------- */
 
     /* Parameter adjustments */
     --rwork;
@@ -135,101 +126,113 @@
     --ritz;
     h_dim1 = *ldh;
     h_offset = 1 + h_dim1;
-    h__ -= h_offset;
+    h -= h_offset;
     q_dim1 = *ldq;
     q_offset = 1 + q_dim1;
     q -= q_offset;
 
     /* Function Body */
+#ifndef NO_TIMER
     arscnd_(&t0);
+#endif
+
     msglvl = debug_1.mceigh;
 
-    if (msglvl > 2) {
-	cmout_(&debug_1.logfil, n, n, &h__[h_offset], ldh, &debug_1.ndigit, 
-		"_neigh: Entering upper Hessenberg matrix H ", (ftnlen)43);
+#ifndef NO_TRACE
+    if (msglvl > 2)
+    {
+        cmout_(n, n, &h[h_offset], ldh, &debug_1.ndigit, "_neigh: Entering upper Hessenberg matrix H ");
     }
+#endif
 
-/*     %----------------------------------------------------------% */
-/*     | 1. Compute the eigenvalues, the last components of the   | */
-/*     |    corresponding Schur vectors and the full Schur form T | */
-/*     |    of the current upper Hessenberg matrix H.             | */
-/*     |    clahqr returns the full Schur form of H               | */
-/*     |    in WORKL(1:N**2), and the Schur vectors in q.         | */
-/*     %----------------------------------------------------------% */
+    /* -------------------------------------------------------- */
+    /* 1. Compute the eigenvalues, the last components of the   */
+    /*    corresponding Schur vectors and the full Schur form T */
+    /*    of the current upper Hessenberg matrix H.             */
+    /*    clahqr returns the full Schur form of H               */
+    /*    in WORKL(1:N**2), and the Schur vectors in q.         */
+    /* -------------------------------------------------------- */
 
-    clacpy_("All", n, n, &h__[h_offset], ldh, &workl[1], n);
-    claset_("All", n, n, &c_zero, &c_one, &q[q_offset], ldq);
-    clahqr_(&c_true, &c_true, n, &c__1, n, &workl[1], ldh, &ritz[1], &c__1, n,
-	     &q[q_offset], ldq, ierr);
-    if (*ierr != 0) {
-	goto L9000;
+    clacpy_("A", n, n, &h[h_offset], ldh, &workl[1], n);
+    claset_("A", n, n, &c_zero, &c_one, &q[q_offset], ldq);
+    clahqr_(&c_true, &c_true, n, &c__1, n, &workl[1], ldh, &ritz[1], &c__1, n,&q[q_offset], ldq, ierr);
+    if (*ierr != 0)
+    {
+        goto L9000;
     }
 
     ccopy_(n, &q[*n - 1 + q_dim1], ldq, &bounds[1], &c__1);
-    if (msglvl > 1) {
-	cvout_(&debug_1.logfil, n, &bounds[1], &debug_1.ndigit, "_neigh: las"
-		"t row of the Schur matrix for H", (ftnlen)42);
+#ifndef NO_TRACE
+    if (msglvl > 1)
+    {
+        cvout_(n, &bounds[1], &debug_1.ndigit, "_neigh: last row of the Schur matrix for H");
+    }
+#endif
+
+    /* -------------------------------------------------------- */
+    /* 2. Compute the eigenvectors of the full Schur form T and */
+    /*    apply the Schur vectors to get the corresponding      */
+    /*    eigenvectors.                                         */
+    /* -------------------------------------------------------- */
+
+    ctrevc_("R", "B", select, n, &workl[1], n, vl, n, &q[q_offset], ldq, n, n, &workl[*n * *n + 1], &rwork[1], ierr);
+
+    if (*ierr != 0)
+    {
+        goto L9000;
     }
 
-/*     %----------------------------------------------------------% */
-/*     | 2. Compute the eigenvectors of the full Schur form T and | */
-/*     |    apply the Schur vectors to get the corresponding      | */
-/*     |    eigenvectors.                                         | */
-/*     %----------------------------------------------------------% */
-
-    ctrevc_("Right", "Back", select, n, &workl[1], n, vl, n, &q[q_offset], 
-	    ldq, n, n, &workl[*n * *n + 1], &rwork[1], ierr);
-
-    if (*ierr != 0) {
-	goto L9000;
-    }
-
-/*     %------------------------------------------------% */
-/*     | Scale the returning eigenvectors so that their | */
-/*     | Euclidean norms are all one. LAPACK subroutine | */
-/*     | ctrevc returns each eigenvector normalized so  | */
-/*     | that the element of largest magnitude has      | */
-/*     | magnitude 1; here the magnitude of a complex   | */
-/*     | number (x,y) is taken to be |x| + |y|.         | */
-/*     %------------------------------------------------% */
+    /* ---------------------------------------------- */
+    /* Scale the returning eigenvectors so that their */
+    /* Euclidean norms are all one. LAPACK subroutine */
+    /* ctrevc returns each eigenvector normalized so  */
+    /* that the element of largest magnitude has      */
+    /* magnitude 1; here the magnitude of a complex   */
+    /* number (x,y) is taken to be |x| + |y|.         */
+    /* ---------------------------------------------- */
 
     i__1 = *n;
-    for (j = 1; j <= i__1; ++j) {
-	temp = scnrm2_(n, &q[j * q_dim1 + 1], &c__1);
-	r__1 = 1.f / temp;
-	csscal_(n, &r__1, &q[j * q_dim1 + 1], &c__1);
-/* L10: */
+    for (j = 1; j <= i__1; ++j)
+    {
+        temp = scnrm2_(n, &q[j * q_dim1 + 1], &c__1);
+        r__1 = 1.0f / temp;
+        csscal_(n, &r__1, &q[j * q_dim1 + 1], &c__1);
     }
 
-    if (msglvl > 1) {
-	ccopy_(n, &q[*n + q_dim1], ldq, &workl[1], &c__1);
-	cvout_(&debug_1.logfil, n, &workl[1], &debug_1.ndigit, "_neigh: Last"
-		" row of the eigenvector matrix for H", (ftnlen)48);
+#ifndef NO_TRACE
+    if (msglvl > 1)
+    {
+        ccopy_(n, &q[*n + q_dim1], ldq, &workl[1], &c__1);
+        cvout_(n, &workl[1], &debug_1.ndigit, "_neigh: Last row of the eigenvector matrix for H");
     }
+#endif
 
-/*     %----------------------------% */
-/*     | Compute the Ritz estimates | */
-/*     %----------------------------% */
+    /* -------------------------- */
+    /* Compute the Ritz estimates */
+    /* -------------------------- */
 
     ccopy_(n, &q[*n + q_dim1], n, &bounds[1], &c__1);
     csscal_(n, rnorm, &bounds[1], &c__1);
 
-    if (msglvl > 2) {
-	cvout_(&debug_1.logfil, n, &ritz[1], &debug_1.ndigit, "_neigh: The e"
-		"igenvalues of H", (ftnlen)28);
-	cvout_(&debug_1.logfil, n, &bounds[1], &debug_1.ndigit, "_neigh: Rit"
-		"z estimates for the eigenvalues of H", (ftnlen)47);
+#ifndef NO_TRACE
+    if (msglvl > 2)
+    {
+        cvout_(n, &ritz[1], &debug_1.ndigit, "_neigh: The eigenvalues of H");
+        cvout_(n, &bounds[1], &debug_1.ndigit, "_neigh: Ritz estimates for the eigenvalues of H");
     }
+#endif
 
+#ifndef NO_TIMER
     arscnd_(&t1);
     timing_1.tceigh += t1 - t0;
+#endif
 
 L9000:
     return 0;
 
-/*     %---------------% */
-/*     | End of cneigh | */
-/*     %---------------% */
+    /* ------------- */
+    /* End of cneigh */
+    /* ------------- */
 
 } /* cneigh_ */
 

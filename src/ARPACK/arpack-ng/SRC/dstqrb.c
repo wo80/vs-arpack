@@ -1,4 +1,4 @@
-/* D:\Projekte\ARPACK\arpack-ng\SRC\dstqrb.f -- translated by f2c (version 20100827). */
+/* arpack-ng\SRC\dstqrb.f -- translated by f2c (version 20100827). */
 
 #include "arpack.h"
 
@@ -105,164 +105,153 @@
  *
  * \EndLib
  */
-
-
-/* Subroutine */ int dstqrb_(integer *n, doublereal *d__, doublereal *e, 
-	doublereal *z__, doublereal *work, integer *info)
+int dstqrb_(int *n, double *d, double *e,
+            double *z, double *work, int *info)
 {
     /* System generated locals */
-    integer i__1, i__2;
-    doublereal d__1, d__2;
+    int i__1, i__2;
+    double d__1, d__2;
 
     /* Builtin functions */
-    double sqrt(doublereal), d_sign(doublereal *, doublereal *);
+    double sqrt(double), d_sign(double *, double *);
 
     /* Local variables */
-    doublereal b, c__, f, g;
-    integer i__, j, k, l, m;
-    doublereal p, r__, s;
-    integer l1, ii, mm, lm1, mm1, nm1;
-    doublereal rt1, rt2, eps;
-    integer lsv;
-    doublereal tst, eps2;
-    integer lend, jtot;
-    doublereal anorm;
-    integer lendm1, lendp1;
-    integer iscale;
-    doublereal safmin;
-    doublereal safmax;
-    integer lendsv, nmaxit, icompz;
-    doublereal ssfmax, ssfmin;
-
-
-/*     %------------------% */
-/*     | Scalar Arguments | */
-/*     %------------------% */
-
-
-/*     .. parameters .. */
-/*     .. */
-/*     .. local scalars .. */
-/*     .. */
-/*     .. external functions .. */
-/*     .. */
-/*     .. external subroutines .. */
-/*     .. */
-/*     .. intrinsic functions .. */
-/*     .. */
-/*     .. executable statements .. */
-
-/*     test the input parameters. */
+    double b, c, f, g;
+    int i, j, k, l, m;
+    double p, r, s;
+    int l1, ii, mm, lm1, mm1, nm1;
+    double rt1, rt2, eps;
+    int lsv;
+    double tst, eps2;
+    int lend, jtot;
+    double anorm;
+    int lendm1, lendp1;
+    int iscale;
+    double safmin;
+    double safmax;
+    int lendsv, nmaxit, icompz;
+    double ssfmax, ssfmin;
 
     /* Parameter adjustments */
     --work;
-    --z__;
+    --z;
     --e;
-    --d__;
+    --d;
 
     /* Function Body */
     *info = 0;
 
-/* $$$      IF( LSAME( COMPZ, 'N' ) ) THEN */
-/* $$$         ICOMPZ = 0 */
-/* $$$      ELSE IF( LSAME( COMPZ, 'V' ) ) THEN */
-/* $$$         ICOMPZ = 1 */
-/* $$$      ELSE IF( LSAME( COMPZ, 'I' ) ) THEN */
-/* $$$         ICOMPZ = 2 */
-/* $$$      ELSE */
-/* $$$         ICOMPZ = -1 */
-/* $$$      END IF */
-/* $$$      IF( ICOMPZ.LT.0 ) THEN */
-/* $$$         INFO = -1 */
-/* $$$      ELSE IF( N.LT.0 ) THEN */
-/* $$$         INFO = -2 */
-/* $$$      ELSE IF( ( LDZ.LT.1 ) .OR. ( ICOMPZ.GT.0 .AND. LDZ.LT.MAX( 1, */
-/* $$$     $         N ) ) ) THEN */
-/* $$$         INFO = -6 */
-/* $$$      END IF */
-/* $$$      IF( INFO.NE.0 ) THEN */
-/* $$$         CALL XERBLA( 'SSTEQR', -INFO ) */
-/* $$$         RETURN */
-/* $$$      END IF */
+    /* $$$      IF( LSAME( COMPZ, 'N' ) ) THEN */
+    /* $$$         ICOMPZ = 0 */
+    /* $$$      ELSE IF( LSAME( COMPZ, 'V' ) ) THEN */
+    /* $$$         ICOMPZ = 1 */
+    /* $$$      ELSE IF( LSAME( COMPZ, 'I' ) ) THEN */
+    /* $$$         ICOMPZ = 2 */
+    /* $$$      ELSE */
+    /* $$$         ICOMPZ = -1 */
+    /* $$$      END IF */
+    /* $$$      IF( ICOMPZ.LT.0 ) THEN */
+    /* $$$         INFO = -1 */
+    /* $$$      ELSE IF( N.LT.0 ) THEN */
+    /* $$$         INFO = -2 */
+    /* $$$      ELSE IF( ( LDZ.LT.1 ) .OR. ( ICOMPZ.GT.0 .AND. LDZ.LT.MAX( 1, */
+    /* $$$     $         N ) ) ) THEN */
+    /* $$$         INFO = -6 */
+    /* $$$      END IF */
+    /* $$$      IF( INFO.NE.0 ) THEN */
+    /* $$$         CALL XERBLA( 'SSTEQR', -INFO ) */
+    /* $$$         RETURN */
+    /* $$$      END IF */
 
-/*    *** New starting with version 2.5 *** */
+    /*    *** New starting with version 2.5 *** */
 
     icompz = 2;
-/*    ************************************* */
+    /*    ************************************* */
 
-/*     quick return if possible */
+    /*     quick return if possible */
 
-    if (*n == 0) {
-	return 0;
+    if (*n == 0)
+    {
+        return 0;
     }
 
-    if (*n == 1) {
-	if (icompz == 2) {
-	    z__[1] = 1.;
-	}
-	return 0;
+    if (*n == 1)
+    {
+        if (icompz == 2)
+        {
+            z[1] = 1.0;
+        }
+        return 0;
     }
 
-/*     determine the unit roundoff and over/underflow thresholds. */
+    /*     determine the unit roundoff and over/underflow thresholds. */
 
-    eps = dlamch_("e");
-/* Computing 2nd power */
+    eps = dlamch_("E");
+    /* Computing 2nd power */
     d__1 = eps;
     eps2 = d__1 * d__1;
-    safmin = dlamch_("s");
-    safmax = 1. / safmin;
-    ssfmax = sqrt(safmax) / 3.;
+    safmin = dlamch_("S");
+    safmax = 1.0 / safmin;
+    ssfmax = sqrt(safmax) / 3.0;
     ssfmin = sqrt(safmin) / eps2;
 
-/*     compute the eigenvalues and eigenvectors of the tridiagonal */
-/*     matrix. */
+    /*     compute the eigenvalues and eigenvectors of the tridiagonal */
+    /*     matrix. */
 
-/* $$      if( icompz.eq.2 ) */
-/* $$$     $   call dlaset( 'full', n, n, zero, one, z, ldz ) */
+    /* $$      if( icompz.eq.2 ) */
+    /* $$$     $   call dlaset( 'full', n, n, zero, one, z, ldz ) */
 
-/*     *** New starting with version 2.5 *** */
+    /*     *** New starting with version 2.5 *** */
 
-    if (icompz == 2) {
-	i__1 = *n - 1;
-	for (j = 1; j <= i__1; ++j) {
-	    z__[j] = 0.;
-/* L5: */
-	}
-	z__[*n] = 1.;
+    if (icompz == 2)
+    {
+        i__1 = *n - 1;
+        for (j = 1; j <= i__1; ++j)
+        {
+            z[j] = 0.0;
+
+        }
+        z[*n] = 1.0;
     }
-/*     ************************************* */
+    /*     ************************************* */
 
     nmaxit = *n * 30;
     jtot = 0;
 
-/*     determine where the matrix splits and choose ql or qr iteration */
-/*     for each block, according to whether top or bottom diagonal */
-/*     element is smaller. */
+    /*     determine where the matrix splits and choose ql or qr iteration */
+    /*     for each block, according to whether top or bottom diagonal */
+    /*     element is smaller. */
 
     l1 = 1;
     nm1 = *n - 1;
 
 L10:
-    if (l1 > *n) {
-	goto L160;
+    if (l1 > *n)
+    {
+        goto L160;
     }
-    if (l1 > 1) {
-	e[l1 - 1] = 0.;
+    if (l1 > 1)
+    {
+        e[l1 - 1] = 0.0;
     }
-    if (l1 <= nm1) {
-	i__1 = nm1;
-	for (m = l1; m <= i__1; ++m) {
-	    tst = (d__1 = e[m], abs(d__1));
-	    if (tst == 0.) {
-		goto L30;
-	    }
-	    if (tst <= sqrt((d__1 = d__[m], abs(d__1))) * sqrt((d__2 = d__[m 
-		    + 1], abs(d__2))) * eps) {
-		e[m] = 0.;
-		goto L30;
-	    }
-/* L20: */
-	}
+    if (l1 <= nm1)
+    {
+        for (m = l1; m <= nm1; ++m)
+        {
+            d__1 = e[m];
+            tst = abs(d__1);
+            if (tst == 0.0)
+            {
+                goto L30;
+            }
+            d__1 = d[m];
+            d__2 = d[m + 1];
+            if (tst <= sqrt(abs(d__1)) * sqrt(abs(d__2)) * eps)
+            {
+                e[m] = 0.0;
+                goto L30;
+            }
+        }
     }
     m = *n;
 
@@ -272,387 +261,422 @@ L30:
     lend = m;
     lendsv = lend;
     l1 = m + 1;
-    if (lend == l) {
-	goto L10;
+    if (lend == l)
+    {
+        goto L10;
     }
 
-/*     scale submatrix in rows and columns l to lend */
+    /*     scale submatrix in rows and columns l to lend */
 
     i__1 = lend - l + 1;
-    anorm = dlanst_("i", &i__1, &d__[l], &e[l], (ftnlen)1);
+    anorm = dlanst_("i", &i__1, &d[l], &e[l]);
     iscale = 0;
-    if (anorm == 0.) {
-	goto L10;
+    if (anorm == 0.0)
+    {
+        goto L10;
     }
-    if (anorm > ssfmax) {
-	iscale = 1;
-	i__1 = lend - l + 1;
-	dlascl_("g", &c__0, &c__0, &anorm, &ssfmax, &i__1, &c__1, &d__[l], n, info);
-	i__1 = lend - l;
-	dlascl_("g", &c__0, &c__0, &anorm, &ssfmax, &i__1, &c__1, &e[l], n, info);
-    } else if (anorm < ssfmin) {
-	iscale = 2;
-	i__1 = lend - l + 1;
-	dlascl_("g", &c__0, &c__0, &anorm, &ssfmin, &i__1, &c__1, &d__[l], n, info);
-	i__1 = lend - l;
-	dlascl_("g", &c__0, &c__0, &anorm, &ssfmin, &i__1, &c__1, &e[l], n, info);
+    if (anorm > ssfmax)
+    {
+        iscale = 1;
+        i__1 = lend - l + 1;
+        dlascl_("G", &c__0, &c__0, &anorm, &ssfmax, &i__1, &c__1, &d[l], n, info);
+        i__1 = lend - l;
+        dlascl_("G", &c__0, &c__0, &anorm, &ssfmax, &i__1, &c__1, &e[l], n, info);
     }
-
-/*     choose between ql and qr iteration */
-
-    if ((d__1 = d__[lend], abs(d__1)) < (d__2 = d__[l], abs(d__2))) {
-	lend = lsv;
-	l = lendsv;
+    else if (anorm < ssfmin)
+    {
+        iscale = 2;
+        i__1 = lend - l + 1;
+        dlascl_("G", &c__0, &c__0, &anorm, &ssfmin, &i__1, &c__1, &d[l], n, info);
+        i__1 = lend - l;
+        dlascl_("G", &c__0, &c__0, &anorm, &ssfmin, &i__1, &c__1, &e[l], n, info);
     }
 
-    if (lend > l) {
+    /*     choose between ql and qr iteration */
 
-/*        ql iteration */
+    if ((d__1 = d[lend], abs(d__1)) < (d__2 = d[l], abs(d__2)))
+    {
+        lend = lsv;
+        l = lendsv;
+    }
 
-/*        look for small subdiagonal element. */
+    if (lend > l)
+    {
+        /*        ql iteration */
+
+        /*        look for small subdiagonal element. */
 
 L40:
-	if (l != lend) {
-	    lendm1 = lend - 1;
-	    i__1 = lendm1;
-	    for (m = l; m <= i__1; ++m) {
-/* Computing 2nd power */
-		d__2 = (d__1 = e[m], abs(d__1));
-		tst = d__2 * d__2;
-		if (tst <= eps2 * (d__1 = d__[m], abs(d__1)) * (d__2 = d__[m 
-			+ 1], abs(d__2)) + safmin) {
-		    goto L60;
-		}
-/* L50: */
-	    }
-	}
+        if (l != lend)
+        {
+            lendm1 = lend - 1;
+            for (m = l; m <= lendm1; ++m)
+            {
+                /* Computing 2nd power */
+                d__1 = e[m];
+                d__2 = abs(d__1);
+                tst = d__2 * d__2;
+                d__1 = d[m];
+                d__2 = d[m + 1];
+                if (tst <= eps2 * abs(d__1) * abs(d__2) + safmin)
+                {
+                    goto L60;
+                }
+            }
+        }
 
-	m = lend;
+        m = lend;
 
 L60:
-	if (m < lend) {
-	    e[m] = 0.;
-	}
-	p = d__[l];
-	if (m == l) {
-	    goto L80;
-	}
+        if (m < lend)
+        {
+            e[m] = 0.0;
+        }
+        p = d[l];
+        if (m == l)
+        {
+            goto L80;
+        }
 
-/*        if remaining matrix is 2-by-2, use dlae2 or dlaev2 */
-/*        to compute its eigensystem. */
+        /*        if remaining matrix is 2-by-2, use dlae2 or dlaev2 */
+        /*        to compute its eigensystem. */
 
-	if (m == l + 1) {
-	    if (icompz > 0) {
-		dlaev2_(&d__[l], &e[l], &d__[l + 1], &rt1, &rt2, &c__, &s);
-		work[l] = c__;
-		work[*n - 1 + l] = s;
-/* $$$               call dlasr( 'r', 'v', 'b', n, 2, work( l ), */
-/* $$$     $                     work( n-1+l ), z( 1, l ), ldz ) */
+        if (m == l + 1)
+        {
+            if (icompz > 0)
+            {
+                dlaev2_(&d[l], &e[l], &d[l + 1], &rt1, &rt2, &c, &s);
+                work[l] = c;
+                work[*n - 1 + l] = s;
+                /* $$$               call dlasr( 'r', 'v', 'b', n, 2, work( l ), */
+                /* $$$     $                     work( n-1+l ), z( 1, l ), ldz ) */
 
-/*              *** New starting with version 2.5 *** */
+                /*              *** New starting with version 2.5 *** */
 
-		tst = z__[l + 1];
-		z__[l + 1] = c__ * tst - s * z__[l];
-		z__[l] = s * tst + c__ * z__[l];
-/*              ************************************* */
-	    } else {
-		dlae2_(&d__[l], &e[l], &d__[l + 1], &rt1, &rt2);
-	    }
-	    d__[l] = rt1;
-	    d__[l + 1] = rt2;
-	    e[l] = 0.;
-	    l += 2;
-	    if (l <= lend) {
-		goto L40;
-	    }
-	    goto L140;
-	}
+                tst = z[l + 1];
+                z[l + 1] = c * tst - s * z[l];
+                z[l] = s * tst + c * z[l];
+                /*              ************************************* */
+            }
+            else
+            {
+                dlae2_(&d[l], &e[l], &d[l + 1], &rt1, &rt2);
+            }
+            d[l] = rt1;
+            d[l + 1] = rt2;
+            e[l] = 0.0;
+            l += 2;
+            if (l <= lend)
+            {
+                goto L40;
+            }
+            goto L140;
+        }
 
-	if (jtot == nmaxit) {
-	    goto L140;
-	}
-	++jtot;
+        if (jtot == nmaxit)
+        {
+            goto L140;
+        }
+        ++jtot;
 
-/*        form shift. */
+        /*        form shift. */
 
-	g = (d__[l + 1] - p) / (e[l] * 2.);
-	r__ = dlapy2_(&g, &d_one);
-	g = d__[m] - p + e[l] / (g + d_sign(&r__, &g));
+        g = (d[l + 1] - p) / (e[l] * 2.);
+        r = dlapy2_(&g, &d_one);
+        g = d[m] - p + e[l] / (g + d_sign(&r, &g));
 
-	s = 1.;
-	c__ = 1.;
-	p = 0.;
+        s = 1.0;
+        c = 1.0;
+        p = 0.0;
 
-/*        inner loop */
+        /*        inner loop */
 
-	mm1 = m - 1;
-	i__1 = l;
-	for (i__ = mm1; i__ >= i__1; --i__) {
-	    f = s * e[i__];
-	    b = c__ * e[i__];
-	    dlartg_(&g, &f, &c__, &s, &r__);
-	    if (i__ != m - 1) {
-		e[i__ + 1] = r__;
-	    }
-	    g = d__[i__ + 1] - p;
-	    r__ = (d__[i__] - g) * s + c__ * 2. * b;
-	    p = s * r__;
-	    d__[i__ + 1] = g + p;
-	    g = c__ * r__ - b;
+        mm1 = m - 1;
+        for (i = mm1; i >= l; --i)
+        {
+            f = s * e[i];
+            b = c * e[i];
+            dlartg_(&g, &f, &c, &s, &r);
+            if (i != m - 1)
+            {
+                e[i + 1] = r;
+            }
+            g = d[i + 1] - p;
+            r = (d[i] - g) * s + c * 2. * b;
+            p = s * r;
+            d[i + 1] = g + p;
+            g = c * r - b;
 
-/*           if eigenvectors are desired, then save rotations. */
+            /*           if eigenvectors are desired, then save rotations. */
 
-	    if (icompz > 0) {
-		work[i__] = c__;
-		work[*n - 1 + i__] = -s;
-	    }
+            if (icompz > 0)
+            {
+                work[i] = c;
+                work[*n - 1 + i] = -s;
+            }
+        }
 
-/* L70: */
-	}
+        /*        if eigenvectors are desired, then apply saved rotations. */
 
-/*        if eigenvectors are desired, then apply saved rotations. */
+        if (icompz > 0)
+        {
+            mm = m - l + 1;
+            /* $$$            call dlasr( 'r', 'v', 'b', n, mm, work( l ), work( n-1+l ), */
+            /* $$$     $                  z( 1, l ), ldz ) */
 
-	if (icompz > 0) {
-	    mm = m - l + 1;
-/* $$$            call dlasr( 'r', 'v', 'b', n, mm, work( l ), work( n-1+l ), */
-/* $$$     $                  z( 1, l ), ldz ) */
+            /*             *** New starting with version 2.5 *** */
 
-/*             *** New starting with version 2.5 *** */
+            dlasr_("r", "v", "b", &c__1, &mm, &work[l], &work[*n - 1 + l], &z[l], &c__1);
+            /*             ************************************* */
+        }
 
-	    dlasr_("r", "v", "b", &c__1, &mm, &work[l], &work[*n - 1 + l], &
-		    z__[l], &c__1);
-/*             ************************************* */
-	}
+        d[l] -= p;
+        e[l] = g;
+        goto L40;
 
-	d__[l] -= p;
-	e[l] = g;
-	goto L40;
-
-/*        eigenvalue found. */
+        /*        eigenvalue found. */
 
 L80:
-	d__[l] = p;
+        d[l] = p;
 
-	++l;
-	if (l <= lend) {
-	    goto L40;
-	}
-	goto L140;
+        ++l;
+        if (l <= lend)
+        {
+            goto L40;
+        }
+        goto L140;
+    }
+    else
+    {
+        /*        qr iteration */
 
-    } else {
-
-/*        qr iteration */
-
-/*        look for small superdiagonal element. */
+        /*        look for small superdiagonal element. */
 
 L90:
-	if (l != lend) {
-	    lendp1 = lend + 1;
-	    i__1 = lendp1;
-	    for (m = l; m >= i__1; --m) {
-/* Computing 2nd power */
-		d__2 = (d__1 = e[m - 1], abs(d__1));
-		tst = d__2 * d__2;
-		if (tst <= eps2 * (d__1 = d__[m], abs(d__1)) * (d__2 = d__[m 
-			- 1], abs(d__2)) + safmin) {
-		    goto L110;
-		}
-/* L100: */
-	    }
-	}
+        if (l != lend)
+        {
+            lendp1 = lend + 1;
+            for (m = l; m >= lendp1; --m)
+            {
+                /* Computing 2nd power */
+                d__1 = e[m - 1];
+                d__2 = abs(d__1);
+                tst = d__2 * d__2;
+                d__1 = d[m];
+                d__2 = d[m - 1];
+                if (tst <= eps2 * abs(d__1) * abs(d__2) + safmin)
+                {
+                    goto L110;
+                }
+            }
+        }
 
-	m = lend;
+        m = lend;
 
 L110:
-	if (m > lend) {
-	    e[m - 1] = 0.;
-	}
-	p = d__[l];
-	if (m == l) {
-	    goto L130;
-	}
+        if (m > lend)
+        {
+            e[m - 1] = 0.0;
+        }
+        p = d[l];
+        if (m == l)
+        {
+            goto L130;
+        }
 
-/*        if remaining matrix is 2-by-2, use dlae2 or dlaev2 */
-/*        to compute its eigensystem. */
+        /*        if remaining matrix is 2-by-2, use dlae2 or dlaev2 */
+        /*        to compute its eigensystem. */
 
-	if (m == l - 1) {
-	    if (icompz > 0) {
-		dlaev2_(&d__[l - 1], &e[l - 1], &d__[l], &rt1, &rt2, &c__, &s)
-			;
-/* $$$               work( m ) = c */
-/* $$$               work( n-1+m ) = s */
-/* $$$               call dlasr( 'r', 'v', 'f', n, 2, work( m ), */
-/* $$$     $                     work( n-1+m ), z( 1, l-1 ), ldz ) */
+        if (m == l - 1)
+        {
+            if (icompz > 0)
+            {
+                dlaev2_(&d[l - 1], &e[l - 1], &d[l], &rt1, &rt2, &c, &s);
+                /* $$$               work( m ) = c */
+                /* $$$               work( n-1+m ) = s */
+                /* $$$               call dlasr( 'r', 'v', 'f', n, 2, work( m ), */
+                /* $$$     $                     work( n-1+m ), z( 1, l-1 ), ldz ) */
 
-/*               *** New starting with version 2.5 *** */
+                /*               *** New starting with version 2.5 *** */
 
-		tst = z__[l];
-		z__[l] = c__ * tst - s * z__[l - 1];
-		z__[l - 1] = s * tst + c__ * z__[l - 1];
-/*               ************************************* */
-	    } else {
-		dlae2_(&d__[l - 1], &e[l - 1], &d__[l], &rt1, &rt2);
-	    }
-	    d__[l - 1] = rt1;
-	    d__[l] = rt2;
-	    e[l - 1] = 0.;
-	    l += -2;
-	    if (l >= lend) {
-		goto L90;
-	    }
-	    goto L140;
-	}
+                tst = z[l];
+                z[l] = c * tst - s * z[l - 1];
+                z[l - 1] = s * tst + c * z[l - 1];
+                /*               ************************************* */
+            }
+            else
+            {
+                dlae2_(&d[l - 1], &e[l - 1], &d[l], &rt1, &rt2);
+            }
+            d[l - 1] = rt1;
+            d[l] = rt2;
+            e[l - 1] = 0.0;
+            l += -2;
+            if (l >= lend)
+            {
+                goto L90;
+            }
+            goto L140;
+        }
 
-	if (jtot == nmaxit) {
-	    goto L140;
-	}
-	++jtot;
+        if (jtot == nmaxit)
+        {
+            goto L140;
+        }
+        ++jtot;
 
-/*        form shift. */
+        /*        form shift. */
 
-	g = (d__[l - 1] - p) / (e[l - 1] * 2.);
-	r__ = dlapy2_(&g, &d_one);
-	g = d__[m] - p + e[l - 1] / (g + d_sign(&r__, &g));
+        g = (d[l - 1] - p) / (e[l - 1] * 2.);
+        r = dlapy2_(&g, &d_one);
+        g = d[m] - p + e[l - 1] / (g + d_sign(&r, &g));
 
-	s = 1.;
-	c__ = 1.;
-	p = 0.;
+        s = 1.0;
+        c = 1.0;
+        p = 0.0;
 
-/*        inner loop */
+        /*        inner loop */
 
-	lm1 = l - 1;
-	i__1 = lm1;
-	for (i__ = m; i__ <= i__1; ++i__) {
-	    f = s * e[i__];
-	    b = c__ * e[i__];
-	    dlartg_(&g, &f, &c__, &s, &r__);
-	    if (i__ != m) {
-		e[i__ - 1] = r__;
-	    }
-	    g = d__[i__] - p;
-	    r__ = (d__[i__ + 1] - g) * s + c__ * 2. * b;
-	    p = s * r__;
-	    d__[i__] = g + p;
-	    g = c__ * r__ - b;
+        lm1 = l - 1;
+        for (i = m; i <= lm1; ++i)
+        {
+            f = s * e[i];
+            b = c * e[i];
+            dlartg_(&g, &f, &c, &s, &r);
+            if (i != m)
+            {
+                e[i - 1] = r;
+            }
+            g = d[i] - p;
+            r = (d[i + 1] - g) * s + c * 2. * b;
+            p = s * r;
+            d[i] = g + p;
+            g = c * r - b;
 
-/*           if eigenvectors are desired, then save rotations. */
+            /*           if eigenvectors are desired, then save rotations. */
 
-	    if (icompz > 0) {
-		work[i__] = c__;
-		work[*n - 1 + i__] = s;
-	    }
+            if (icompz > 0)
+            {
+                work[i] = c;
+                work[*n - 1 + i] = s;
+            }
+        }
 
-/* L120: */
-	}
+        /*        if eigenvectors are desired, then apply saved rotations. */
 
-/*        if eigenvectors are desired, then apply saved rotations. */
+        if (icompz > 0)
+        {
+            mm = l - m + 1;
+            /* $$$            call dlasr( 'r', 'v', 'f', n, mm, work( m ), work( n-1+m ), */
+            /* $$$     $                  z( 1, m ), ldz ) */
 
-	if (icompz > 0) {
-	    mm = l - m + 1;
-/* $$$            call dlasr( 'r', 'v', 'f', n, mm, work( m ), work( n-1+m ), */
-/* $$$     $                  z( 1, m ), ldz ) */
+            /*           *** New starting with version 2.5 *** */
 
-/*           *** New starting with version 2.5 *** */
+            dlasr_("r", "v", "f", &c__1, &mm, &work[m], &work[*n - 1 + m], &z[m], &c__1);
+            /*           ************************************* */
+        }
 
-	    dlasr_("r", "v", "f", &c__1, &mm, &work[m], &work[*n - 1 + m], &
-		    z__[m], &c__1);
-/*           ************************************* */
-	}
+        d[l] -= p;
+        e[lm1] = g;
+        goto L90;
 
-	d__[l] -= p;
-	e[lm1] = g;
-	goto L90;
-
-/*        eigenvalue found. */
+        /*        eigenvalue found. */
 
 L130:
-	d__[l] = p;
+        d[l] = p;
 
-	--l;
-	if (l >= lend) {
-	    goto L90;
-	}
-	goto L140;
-
+        --l;
+        if (l >= lend)
+        {
+            goto L90;
+        }
+        goto L140;
     }
 
-/*     undo scaling if necessary */
+    /*     undo scaling if necessary */
 
 L140:
-    if (iscale == 1) {
-	i__1 = lendsv - lsv + 1;
-	dlascl_("g", &c__0, &c__0, &ssfmax, &anorm, &i__1, &c__1, &d__[lsv], n, info);
-	i__1 = lendsv - lsv;
-	dlascl_("g", &c__0, &c__0, &ssfmax, &anorm, &i__1, &c__1, &e[lsv], n, info);
-    } else if (iscale == 2) {
-	i__1 = lendsv - lsv + 1;
-	dlascl_("g", &c__0, &c__0, &ssfmin, &anorm, &i__1, &c__1, &d__[lsv], n, info);
-	i__1 = lendsv - lsv;
-	dlascl_("g", &c__0, &c__0, &ssfmin, &anorm, &i__1, &c__1, &e[lsv], n, info);
+    if (iscale == 1)
+    {
+        i__1 = lendsv - lsv + 1;
+        dlascl_("G", &c__0, &c__0, &ssfmax, &anorm, &i__1, &c__1, &d[lsv], n, info);
+        i__1 = lendsv - lsv;
+        dlascl_("G", &c__0, &c__0, &ssfmax, &anorm, &i__1, &c__1, &e[lsv], n, info);
+    }
+    else if (iscale == 2)
+    {
+        i__1 = lendsv - lsv + 1;
+        dlascl_("G", &c__0, &c__0, &ssfmin, &anorm, &i__1, &c__1, &d[lsv], n, info);
+        i__1 = lendsv - lsv;
+        dlascl_("G", &c__0, &c__0, &ssfmin, &anorm, &i__1, &c__1, &e[lsv], n, info);
     }
 
-/*     check for no convergence to an eigenvalue after a total */
-/*     of n*maxit iterations. */
+    /*     check for no convergence to an eigenvalue after a total */
+    /*     of n*maxit iterations. */
 
-    if (jtot < nmaxit) {
-	goto L10;
+    if (jtot < nmaxit)
+    {
+        goto L10;
     }
     i__1 = *n - 1;
-    for (i__ = 1; i__ <= i__1; ++i__) {
-	if (e[i__] != 0.) {
-	    ++(*info);
-	}
-/* L150: */
+    for (i = 1; i <= i__1; ++i)
+    {
+        if (e[i] != 0.0)
+        {
+            ++(*info);
+        }
     }
     goto L190;
 
-/*     order eigenvalues and eigenvectors. */
+    /*     order eigenvalues and eigenvectors. */
 
 L160:
-    if (icompz == 0) {
+    if (icompz == 0)
+    {
+        /*        use quick sort */
 
-/*        use quick sort */
+        dlasrt_("i", n, &d[1], info);
+    }
+    else
+    {
+        /*        use selection sort to minimize swaps of eigenvectors */
 
-	dlasrt_("i", n, &d__[1], info);
+        i__1 = *n;
+        for (ii = 2; ii <= i__1; ++ii)
+        {
+            i = ii - 1;
+            k = i;
+            p = d[i];
+            i__2 = *n;
+            for (j = ii; j <= i__2; ++j)
+            {
+                if (d[j] < p)
+                {
+                    k = j;
+                    p = d[j];
+                }
+            }
+            if (k != i)
+            {
+                d[k] = d[i];
+                d[i] = p;
+                /* $$$               call dswap( n, z( 1, i ), 1, z( 1, k ), 1 ) */
+                /*           *** New starting with version 2.5 *** */
 
-    } else {
-
-/*        use selection sort to minimize swaps of eigenvectors */
-
-	i__1 = *n;
-	for (ii = 2; ii <= i__1; ++ii) {
-	    i__ = ii - 1;
-	    k = i__;
-	    p = d__[i__];
-	    i__2 = *n;
-	    for (j = ii; j <= i__2; ++j) {
-		if (d__[j] < p) {
-		    k = j;
-		    p = d__[j];
-		}
-/* L170: */
-	    }
-	    if (k != i__) {
-		d__[k] = d__[i__];
-		d__[i__] = p;
-/* $$$               call dswap( n, z( 1, i ), 1, z( 1, k ), 1 ) */
-/*           *** New starting with version 2.5 *** */
-
-		p = z__[k];
-		z__[k] = z__[i__];
-		z__[i__] = p;
-/*           ************************************* */
-	    }
-/* L180: */
-	}
+                p = z[k];
+                z[k] = z[i];
+                z[i] = p;
+                /*           ************************************* */
+            }
+        }
     }
 
 L190:
     return 0;
 
-/*     %---------------% */
-/*     | End of dstqrb | */
-/*     %---------------% */
+    /* ------------- */
+    /* End of dstqrb */
+    /* ------------- */
 
 } /* dstqrb_ */
 

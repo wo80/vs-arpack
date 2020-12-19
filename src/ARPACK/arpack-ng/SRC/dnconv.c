@@ -1,5 +1,6 @@
-/* D:\Projekte\ARPACK\arpack-ng\SRC\dnconv.f -- translated by f2c (version 20100827). */
+/* arpack-ng\SRC\dnconv.f -- translated by f2c (version 20100827). */
 
+#include <math.h>
 #include "arpack.h"
 
 /**
@@ -62,49 +63,31 @@
  *
  * \EndLib
  */
-
-
-/* Subroutine */ int dnconv_(integer *n, doublereal *ritzr, doublereal *ritzi,
-	 doublereal *bounds, doublereal *tol, integer *nconv)
+int dnconv_(int *n, double *ritzr, double *ritzi,
+            double *bounds, double *tol, int *nconv)
 {
     /* System generated locals */
-    integer i__1;
-    doublereal d__1, d__2;
+    int i__1;
+    double d__1, d__2;
 
     /* Builtin functions */
-    double pow_dd(doublereal *, doublereal *);
-
     /* Local variables */
-    integer i__;
-    static real t0, t1;
-    doublereal eps23, temp;
+    int i;
+    static float t0, t1;
+    double eps23, temp;
 
 
-
-
-/*     %-----------------% */
-/*     | Array Arguments | */
-/*     %-----------------% */
-
-/*     %--------------------% */
-/*     | External Functions | */
-/*     %--------------------% */
-
-/*     %-----------------------% */
-/*     | Executable Statements | */
-/*     %-----------------------% */
-
-/*     %-------------------------------------------------------------% */
-/*     | Convergence test: unlike in the symmetric code, I am not    | */
-/*     | using things like refined error bounds and gap condition    | */
-/*     | because I don't know the exact equivalent concept.          | */
-/*     |                                                             | */
-/*     | Instead the i-th Ritz value is considered "converged" when: | */
-/*     |                                                             | */
-/*     |     bounds(i) .le. ( TOL * | ritz | )                       | */
-/*     |                                                             | */
-/*     | for some appropriate choice of norm.                        | */
-/*     %-------------------------------------------------------------% */
+    /* ----------------------------------------------------------- */
+    /* Convergence test: unlike in the symmetric code, I am not    */
+    /* using things like refined error bounds and gap condition    */
+    /* because I don't know the exact equivalent concept.          */
+    /*                                                             */
+    /* Instead the i-th Ritz value is considered "converged" when: */
+    /*                                                             */
+    /*     bounds(i) .le. ( TOL * | ritz | )                       */
+    /*                                                             */
+    /* for some appropriate choice of norm.                        */
+    /* ----------------------------------------------------------- */
 
     /* Parameter adjustments */
     --bounds;
@@ -112,35 +95,40 @@
     --ritzr;
 
     /* Function Body */
+#ifndef NO_TIMER
     arscnd_(&t0);
+#endif
 
-/*     %---------------------------------% */
-/*     | Get machine dependent constant. | */
-/*     %---------------------------------% */
+    /* ------------------------------- */
+    /* Get machine dependent constant. */
+    /* ------------------------------- */
 
-    eps23 = dlamch_("Epsilon-Machine");
-    eps23 = pow_dd(&eps23, &d_23);
+    eps23 = dlamch_("E");
+    eps23 = pow(eps23, d_23);
 
     *nconv = 0;
     i__1 = *n;
-    for (i__ = 1; i__ <= i__1; ++i__) {
-/* Computing MAX */
-	d__1 = eps23, d__2 = dlapy2_(&ritzr[i__], &ritzi[i__]);
-	temp = max(d__1,d__2);
-	if (bounds[i__] <= *tol * temp) {
-	    ++(*nconv);
-	}
-/* L20: */
+    for (i = 1; i <= i__1; ++i)
+    {
+        /* Computing MAX */
+        d__1 = eps23, d__2 = dlapy2_(&ritzr[i], &ritzi[i]);
+        temp = max(d__1,d__2);
+        if (bounds[i] <= *tol * temp)
+        {
+            ++(*nconv);
+        }
     }
 
+#ifndef NO_TIMER
     arscnd_(&t1);
     timing_1.tnconv += t1 - t0;
+#endif
 
     return 0;
 
-/*     %---------------% */
-/*     | End of dnconv | */
-/*     %---------------% */
+    /* ------------- */
+    /* End of dnconv */
+    /* ------------- */
 
 } /* dnconv_ */
 

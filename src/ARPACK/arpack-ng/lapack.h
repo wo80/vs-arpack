@@ -9,6 +9,7 @@ extern "C"
 
 	/* complex */
 
+	extern doublereal scnrm2_(integer *, complex *, integer *);
 	extern int caxpy_(integer *, complex *, complex *, integer *, complex *, integer *);
 	extern int ccopy_(integer *, complex *, integer *, complex *, integer *);
 	extern int cgemv_(char *, integer *, integer *, complex *, complex *, integer *, complex *, integer *, complex *, complex *, integer *);
@@ -62,12 +63,10 @@ extern "C"
 	extern int dtrevc_(char *, char *, logical *, integer *, doublereal *, integer *, doublereal *, integer *, doublereal *, integer *, integer *, integer *, doublereal *, integer *);
 	extern int dtrmm_(char *, char *, char *, char *, integer *, integer *, doublereal *, doublereal *, integer *, doublereal *, integer *);
 	extern int dtrsen_(char *, char *, logical *, integer *, doublereal *, integer *, doublereal *, integer *, doublereal *, doublereal *, integer *, doublereal *, doublereal *, doublereal *, integer *, integer *, integer *, integer *);
-	extern doublereal dznrm2_(integer *, doublecomplex *, integer *);
 
 	/* single */
 
 	extern int saxpy_(integer *, real *, real *, integer *, real *, integer *);
-	extern doublereal scnrm2_(integer *, complex *, integer *);
 	extern int scopy_(integer *, real *, integer *, real *, integer *);
 	extern doublereal sdot_(integer *, real *, integer *, real *, integer *);
 	extern int sgemv_(char *, integer *, integer *, real *, real *, integer *, real *, integer *, real *, real *, integer *);
@@ -101,6 +100,7 @@ extern "C"
 
 	/* doublecomplex */
 
+	extern doublereal dznrm2_(integer *, doublecomplex *, integer *);
 	extern int zaxpy_(integer *, doublecomplex *, doublecomplex *, integer *, doublecomplex *, integer *);
 	extern int zcopy_(integer *, doublecomplex *, integer *, doublecomplex *, integer *);
 	extern /* Double Complex */ VOID zdotc_(doublecomplex *, integer *, doublecomplex *, integer *, doublecomplex *, integer *);

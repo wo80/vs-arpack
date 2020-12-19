@@ -1,5 +1,6 @@
-/* D:\Projekte\ARPACK\arpack-ng\SRC\dsconv.f -- translated by f2c (version 20100827). */
+/* arpack-ng\SRC\dsconv.f -- translated by f2c (version 20100827). */
 
+#include <math.h>
 #include "arpack.h"
 
 /**
@@ -56,71 +57,59 @@
  *
  * \EndLib
  */
-
-
-/* Subroutine */ int dsconv_(integer *n, doublereal *ritz, doublereal *bounds,
-	 doublereal *tol, integer *nconv)
+int dsconv_(int *n, double *ritz, double *bounds,
+            double *tol, int *nconv)
 {
     /* System generated locals */
-    integer i__1;
-    doublereal d__1, d__2, d__3;
+    int i__1;
+    double d__1, d__2, d__3;
 
     /* Builtin functions */
-    double pow_dd(doublereal *, doublereal *);
-
     /* Local variables */
-    integer i__;
-    static real t0, t1;
-    doublereal eps23, temp;
-
-
-
-
-/*     %-------------------% */
-/*     | External routines | */
-/*     %-------------------% */
-
-/*     %-----------------------% */
-/*     | Executable Statements | */
-/*     %-----------------------% */
+    int i;
+    static float t0, t1;
+    double eps23, temp;
 
     /* Parameter adjustments */
     --bounds;
     --ritz;
 
     /* Function Body */
+#ifndef NO_TIMER
     arscnd_(&t0);
+#endif
 
-    eps23 = dlamch_("Epsilon-Machine");
-    eps23 = pow_dd(&eps23, &d_23);
+    eps23 = dlamch_("E");
+    eps23 = pow(eps23, d_23);
 
     *nconv = 0;
     i__1 = *n;
-    for (i__ = 1; i__ <= i__1; ++i__) {
+    for (i = 1; i <= i__1; ++i)
+    {
+        /* --------------------------------------------------- */
+        /* The i-th Ritz value is considered "converged"       */
+        /* when: bounds(i) .le. TOL*max(eps23, abs(ritz(i)))   */
+        /* --------------------------------------------------- */
 
-/*        %-----------------------------------------------------% */
-/*        | The i-th Ritz value is considered "converged"       | */
-/*        | when: bounds(i) .le. TOL*max(eps23, abs(ritz(i)))   | */
-/*        %-----------------------------------------------------% */
-
-/* Computing MAX */
-	d__2 = eps23, d__3 = (d__1 = ritz[i__], abs(d__1));
-	temp = max(d__2,d__3);
-	if (bounds[i__] <= *tol * temp) {
-	    ++(*nconv);
-	}
-
-/* L10: */
+        /* Computing MAX */
+        d__2 = eps23, d__3 = (d__1 = ritz[i], abs(d__1));
+        temp = max(d__2,d__3);
+        if (bounds[i] <= *tol * temp)
+        {
+            ++(*nconv);
+        }
     }
 
+#ifndef NO_TIMER
     arscnd_(&t1);
     timing_1.tsconv += t1 - t0;
+#endif
 
     return 0;
 
-/*     %---------------% */
-/*     | End of dsconv | */
-/*     %---------------% */
+    /* ------------- */
+    /* End of dsconv */
+    /* ------------- */
 
 } /* dsconv_ */
 

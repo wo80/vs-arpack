@@ -1,4 +1,4 @@
-/* D:\Projekte\ARPACK\arpack-ng\SRC\snaupd.f -- translated by f2c (version 20100827). */
+/* arpack-ng\SRC\snaupd.f -- translated by f2c (version 20100827). */
 
 #include "arpack.h"
 
@@ -407,68 +407,22 @@
  *
  * \EndLib
  */
-
-
-/* Subroutine */ int snaupd_(integer *ido, char *bmat, integer *n, char *
-	which, integer *nev, real *tol, real *resid, integer *ncv, real *v, 
-	integer *ldv, integer *iparam, integer *ipntr, real *workd, real *
-	workl, integer *lworkl, integer *info)
+int snaupd_(int *ido, char *bmat, int *n, char *which, int *nev, float *tol,
+            float *resid, int *ncv, float *v, int *ldv, int *iparam, int *ipntr,
+            float *workd, float *workl, int *lworkl, int *info)
 {
-    /* Format strings */
-    static char fmt_1000[] = "(//,5x,\002==================================="
-	    "==========\002,/5x,\002= Nonsymmetric implicit Arnoldi update co"
-	    "de =\002,/5x,\002= Version Number: \002,\002 2.4\002,21x,\002 "
-	    "=\002,/5x,\002= Version Date:   \002,\002 07/31/96\002,16x,\002 ="
-	    "\002,/5x,\002=============================================\002,/"
-	    "5x,\002= Summary of timing statistics              =\002,/5x,"
-	    "\002=============================================\002,//)";
-    static char fmt_1100[] = "(5x,\002Total number update iterations        "
-	    "     = \002,i5,/5x,\002Total number of OP*x operations          "
-	    "  = \002,i5,/5x,\002Total number of B*x operations             = "
-	    "\002,i5,/5x,\002Total number of reorthogonalization steps  = "
-	    "\002,i5,/5x,\002Total number of iterative refinement steps = "
-	    "\002,i5,/5x,\002Total number of restart steps              = "
-	    "\002,i5,/5x,\002Total time in user OP*x operation          = "
-	    "\002,f12.6,/5x,\002Total time in user B*x operation           ="
-	    " \002,f12.6,/5x,\002Total time in Arnoldi update routine       = "
-	    "\002,f12.6,/5x,\002Total time in naup2 routine                ="
-	    " \002,f12.6,/5x,\002Total time in basic Arnoldi iteration loop = "
-	    "\002,f12.6,/5x,\002Total time in reorthogonalization phase    ="
-	    " \002,f12.6,/5x,\002Total time in (re)start vector generation  = "
-	    "\002,f12.6,/5x,\002Total time in Hessenberg eig. subproblem   ="
-	    " \002,f12.6,/5x,\002Total time in getting the shifts           = "
-	    "\002,f12.6,/5x,\002Total time in applying the shifts          ="
-	    " \002,f12.6,/5x,\002Total time in convergence testing          = "
-	    "\002,f12.6,/5x,\002Total time in computing final Ritz vectors ="
-	    " \002,f12.6/)";
 
     /* System generated locals */
-    integer v_dim1, v_offset, i__1, i__2;
-
-    /* Builtin functions */
-    integer s_cmp(char *, char *, ftnlen, ftnlen), s_wsfe(cilist *), e_wsfe(
-	    void), do_fio(integer *, char *, ftnlen);
+    int v_dim1, v_offset, i__1, i__2;
 
     /* Local variables */
-    integer j;
-    static real t0, t1;
-    static integer nb, ih, iq, np, iw, ldh, ldq, nev0, mode;
-    integer ierr;
-    static integer iupd, next, ritzi;
-    static integer ritzr;
-    static integer bounds, ishift, msglvl, mxiter;
-
-    /* Fortran I/O blocks */
-    static cilist io___22 = { 0, 6, 0, fmt_1000, 0 };
-    static cilist io___23 = { 0, 6, 0, fmt_1100, 0 };
-
-
-
-
-
-/*     %-----------------------% */
-/*     | Executable Statements | */
-/*     %-----------------------% */
+    int j;
+    static float t0, t1;
+    static int nb, ih, iq, np, iw, ldh, ldq, nev0, mode;
+    int ierr;
+    static int iupd, next, ritzi;
+    static int ritzr;
+    static int bounds, ishift, msglvl, mxiter;
 
     /* Parameter adjustments */
     --workd;
@@ -481,166 +435,187 @@
     --workl;
 
     /* Function Body */
-    if (*ido == 0) {
+    if (*ido == 0)
+    {
+        /* ----------------------------- */
+        /* Initialize timing statistics  */
+        /* & message level for debugging */
+        /* ----------------------------- */
 
-/*        %-------------------------------% */
-/*        | Initialize timing statistics  | */
-/*        | & message level for debugging | */
-/*        %-------------------------------% */
+        sstatn_();
+#ifndef NO_TIMER
+        arscnd_(&t0);
+#endif
 
-	sstatn_();
-	arscnd_(&t0);
-	msglvl = debug_1.mnaupd;
+        msglvl = debug_1.mnaupd;
 
-/*        %----------------% */
-/*        | Error checking | */
-/*        %----------------% */
+        /* -------------- */
+        /* Error checking */
+        /* -------------- */
 
-	ierr = 0;
-	ishift = iparam[1];
-/*         levec  = iparam(2) */
-	mxiter = iparam[3];
-/*         nb     = iparam(4) */
-	nb = 1;
+        ierr = 0;
+        ishift = iparam[1];
+        /*         levec  = iparam(2) */
+        mxiter = iparam[3];
+        /*         nb     = iparam(4) */
+        nb = 1;
 
-/*        %--------------------------------------------% */
-/*        | Revision 2 performs only implicit restart. | */
-/*        %--------------------------------------------% */
+        /* ------------------------------------------ */
+        /* Revision 2 performs only implicit restart. */
+        /* ------------------------------------------ */
 
-	iupd = 1;
-	mode = iparam[7];
+        iupd = 1;
+        mode = iparam[7];
 
-	if (*n <= 0) {
-	    ierr = -1;
-	} else if (*nev <= 0) {
-	    ierr = -2;
-	} else if (*ncv <= *nev + 1 || *ncv > *n) {
-	    ierr = -3;
-	} else if (mxiter <= 0) {
-	    ierr = -4;
-	} else if (s_cmp(which, "LM", (ftnlen)2, (ftnlen)2) != 0 && s_cmp(
-		which, "SM", (ftnlen)2, (ftnlen)2) != 0 && s_cmp(which, "LR", 
-		(ftnlen)2, (ftnlen)2) != 0 && s_cmp(which, "SR", (ftnlen)2, (
-		ftnlen)2) != 0 && s_cmp(which, "LI", (ftnlen)2, (ftnlen)2) != 
-		0 && s_cmp(which, "SI", (ftnlen)2, (ftnlen)2) != 0) {
-	    ierr = -5;
-	} else if (*(unsigned char *)bmat != 'I' && *(unsigned char *)bmat != 
-		'G') {
-	    ierr = -6;
-	} else /* if(complicated condition) */ {
-/* Computing 2nd power */
-	    i__1 = *ncv;
-	    if (*lworkl < i__1 * i__1 * 3 + *ncv * 6) {
-		ierr = -7;
-	    } else if (mode < 1 || mode > 4) {
-		ierr = -10;
-	    } else if (mode == 1 && *(unsigned char *)bmat == 'G') {
-		ierr = -11;
-	    } else if (ishift < 0 || ishift > 1) {
-		ierr = -12;
-	    }
-	}
+        if (*n <= 0)
+        {
+            ierr = -1;
+        }
+        else if (*nev <= 0)
+        {
+            ierr = -2;
+        }
+        else if (*ncv <= *nev + 1 || *ncv > *n)
+        {
+            ierr = -3;
+        }
+        else if (mxiter <= 0)
+        {
+            ierr = -4;
+        }
+        else if (strcmp(which, "LM") != 0 && strcmp(which, "SM") != 0 &&
+                 strcmp(which, "LR") != 0 && strcmp(which, "SR") != 0 &&
+                 strcmp(which, "LI") != 0 && strcmp(which, "SI") != 0)
+        {
+            ierr = -5;
+        }
+        else if (*bmat != 'I' && *bmat != 'G')
+        {
+            ierr = -6;
+        }
+        else /* if(complicated condition) */
+        {
+            /* Computing 2nd power */
+            i__1 = *ncv;
+            if (*lworkl < i__1 * i__1 * 3 + *ncv * 6)
+            {
+                ierr = -7;
+            }
+            else if (mode < 1 || mode > 4)
+            {
+                ierr = -10;
+            }
+            else if (mode == 1 && *bmat == 'G')
+            {
+                ierr = -11;
+            }
+            else if (ishift < 0 || ishift > 1)
+            {
+                ierr = -12;
+            }
+        }
 
-/*        %------------% */
-/*        | Error Exit | */
-/*        %------------% */
+        /* ---------- */
+        /* Error Exit */
+        /* ---------- */
 
-	if (ierr != 0) {
-	    *info = ierr;
-	    *ido = 99;
-	    goto L9000;
-	}
+        if (ierr != 0)
+        {
+            *info = ierr;
+            *ido = 99;
+            goto L9000;
+        }
 
-/*        %------------------------% */
-/*        | Set default parameters | */
-/*        %------------------------% */
+        /* ---------------------- */
+        /* Set default parameters */
+        /* ---------------------- */
 
-	if (nb <= 0) {
-	    nb = 1;
-	}
-	if (*tol <= 0.f) {
-	    *tol = slamch_("EpsMach");
-	}
+        if (nb <= 0)
+        {
+            nb = 1;
+        }
+        if (*tol <= 0.0f)
+        {
+            *tol = slamch_("E");
+        }
 
-/*        %----------------------------------------------% */
-/*        | NP is the number of additional steps to      | */
-/*        | extend the length NEV Lanczos factorization. | */
-/*        | NEV0 is the local variable designating the   | */
-/*        | size of the invariant subspace desired.      | */
-/*        %----------------------------------------------% */
+        /* -------------------------------------------- */
+        /* NP is the number of additional steps to      */
+        /* extend the length NEV Lanczos factorization. */
+        /* NEV0 is the local variable designating the   */
+        /* size of the invariant subspace desired.      */
+        /* -------------------------------------------- */
 
-	np = *ncv - *nev;
-	nev0 = *nev;
+        np = *ncv - *nev;
+        nev0 = *nev;
 
-/*        %-----------------------------% */
-/*        | Zero out internal workspace | */
-/*        %-----------------------------% */
+        /* --------------------------- */
+        /* Zero out internal workspace */
+        /* --------------------------- */
 
-/* Computing 2nd power */
-	i__2 = *ncv;
-	i__1 = i__2 * i__2 * 3 + *ncv * 6;
-	for (j = 1; j <= i__1; ++j) {
-	    workl[j] = 0.f;
-/* L10: */
-	}
+        /* Computing 2nd power */
+        i__2 = *ncv;
+        i__1 = i__2 * i__2 * 3 + *ncv * 6;
+        for (j = 1; j <= i__1; ++j)
+        {
+            workl[j] = 0.0f;
+        }
 
-/*        %-------------------------------------------------------------% */
-/*        | Pointer into WORKL for address of H, RITZ, BOUNDS, Q        | */
-/*        | etc... and the remaining workspace.                         | */
-/*        | Also update pointer to be used on output.                   | */
-/*        | Memory is laid out as follows:                              | */
-/*        | workl(1:ncv*ncv) := generated Hessenberg matrix             | */
-/*        | workl(ncv*ncv+1:ncv*ncv+2*ncv) := real and imaginary        | */
-/*        |                                   parts of ritz values      | */
-/*        | workl(ncv*ncv+2*ncv+1:ncv*ncv+3*ncv) := error bounds        | */
-/*        | workl(ncv*ncv+3*ncv+1:2*ncv*ncv+3*ncv) := rotation matrix Q | */
-/*        | workl(2*ncv*ncv+3*ncv+1:3*ncv*ncv+6*ncv) := workspace       | */
-/*        | The final workspace is needed by subroutine sneigh called   | */
-/*        | by snaup2. Subroutine sneigh calls LAPACK routines for      | */
-/*        | calculating eigenvalues and the last row of the eigenvector | */
-/*        | matrix.                                                     | */
-/*        %-------------------------------------------------------------% */
+        /* ----------------------------------------------------------- */
+        /* Pointer into WORKL for address of H, RITZ, BOUNDS, Q        */
+        /* etc... and the remaining workspace.                         */
+        /* Also update pointer to be used on output.                   */
+        /* Memory is laid out as follows:                              */
+        /* workl(1:ncv*ncv) := generated Hessenberg matrix             */
+        /* workl(ncv*ncv+1:ncv*ncv+2*ncv) := real and imaginary        */
+        /*                                   parts of ritz values      */
+        /* workl(ncv*ncv+2*ncv+1:ncv*ncv+3*ncv) := error bounds        */
+        /* workl(ncv*ncv+3*ncv+1:2*ncv*ncv+3*ncv) := rotation matrix Q */
+        /* workl(2*ncv*ncv+3*ncv+1:3*ncv*ncv+6*ncv) := workspace       */
+        /* The final workspace is needed by subroutine sneigh called   */
+        /* by snaup2. Subroutine sneigh calls LAPACK routines for      */
+        /* calculating eigenvalues and the last row of the eigenvector */
+        /* matrix.                                                     */
+        /* ----------------------------------------------------------- */
 
-	ldh = *ncv;
-	ldq = *ncv;
-	ih = 1;
-	ritzr = ih + ldh * *ncv;
-	ritzi = ritzr + *ncv;
-	bounds = ritzi + *ncv;
-	iq = bounds + *ncv;
-	iw = iq + ldq * *ncv;
-/* Computing 2nd power */
-	i__1 = *ncv;
-	next = iw + i__1 * i__1 + *ncv * 3;
+        ldh = *ncv;
+        ldq = *ncv;
+        ih = 1;
+        ritzr = ih + ldh * *ncv;
+        ritzi = ritzr + *ncv;
+        bounds = ritzi + *ncv;
+        iq = bounds + *ncv;
+        iw = iq + ldq * *ncv;
+        /* Computing 2nd power */
+        i__1 = *ncv;
+        next = iw + i__1 * i__1 + *ncv * 3;
 
-	ipntr[4] = next;
-	ipntr[5] = ih;
-	ipntr[6] = ritzr;
-	ipntr[7] = ritzi;
-	ipntr[8] = bounds;
-	ipntr[14] = iw;
-
+        ipntr[4] = next;
+        ipntr[5] = ih;
+        ipntr[6] = ritzr;
+        ipntr[7] = ritzi;
+        ipntr[8] = bounds;
+        ipntr[14] = iw;
     }
 
-/*     %-------------------------------------------------------% */
-/*     | Carry out the Implicitly restarted Arnoldi Iteration. | */
-/*     %-------------------------------------------------------% */
+    /* ----------------------------------------------------- */
+    /* Carry out the Implicitly restarted Arnoldi Iteration. */
+    /* ----------------------------------------------------- */
 
-    snaup2_(ido, bmat, n, which, &nev0, &np, tol, &resid[1], &mode, &iupd, &
-	    ishift, &mxiter, &v[v_offset], ldv, &workl[ih], &ldh, &workl[
-	    ritzr], &workl[ritzi], &workl[bounds], &workl[iq], &ldq, &workl[
-	    iw], &ipntr[1], &workd[1], info);
+    snaup2_(ido, bmat, n, which, &nev0, &np, tol, &resid[1], &mode, &iupd, &ishift, &mxiter, &v[v_offset], ldv, &workl[ih], &ldh, &workl[ritzr], &workl[ritzi], &workl[bounds], &workl[iq], &ldq, &workl[iw], &ipntr[1], &workd[1], info);
 
-/*     %--------------------------------------------------% */
-/*     | ido .ne. 99 implies use of reverse communication | */
-/*     | to compute operations involving OP or shifts.    | */
-/*     %--------------------------------------------------% */
+    /* ------------------------------------------------ */
+    /* ido .ne. 99 implies use of reverse communication */
+    /* to compute operations involving OP or shifts.    */
+    /* ------------------------------------------------ */
 
-    if (*ido == 3) {
-	iparam[8] = np;
+    if (*ido == 3)
+    {
+        iparam[8] = np;
     }
-    if (*ido != 99) {
-	goto L9000;
+    if (*ido != 99)
+    {
+        goto L9000;
     }
 
     iparam[3] = mxiter;
@@ -649,71 +624,73 @@
     iparam[10] = timing_1.nbx;
     iparam[11] = timing_1.nrorth;
 
-/*     %------------------------------------% */
-/*     | Exit if there was an informational | */
-/*     | error within snaup2.               | */
-/*     %------------------------------------% */
+    /* ---------------------------------- */
+    /* Exit if there was an informational */
+    /* error within snaup2.               */
+    /* ---------------------------------- */
 
-    if (*info < 0) {
-	goto L9000;
+    if (*info < 0)
+    {
+        goto L9000;
     }
-    if (*info == 2) {
-	*info = 3;
-    }
-
-    if (msglvl > 0) {
-	ivout_(&debug_1.logfil, &c__1, &mxiter, &debug_1.ndigit, "_naupd: Nu"
-		"mber of update iterations taken", (ftnlen)41);
-	ivout_(&debug_1.logfil, &c__1, &np, &debug_1.ndigit, "_naupd: Number"
-		" of wanted \"converged\" Ritz values", (ftnlen)48);
-	svout_(&debug_1.logfil, &np, &workl[ritzr], &debug_1.ndigit, "_naupd"
-		": Real part of the final Ritz values", (ftnlen)42);
-	svout_(&debug_1.logfil, &np, &workl[ritzi], &debug_1.ndigit, "_naupd"
-		": Imaginary part of the final Ritz values", (ftnlen)47);
-	svout_(&debug_1.logfil, &np, &workl[bounds], &debug_1.ndigit, "_naup"
-		"d: Associated Ritz estimates", (ftnlen)33);
+    if (*info == 2)
+    {
+        *info = 3;
     }
 
+#ifndef NO_TIMER
     arscnd_(&t1);
     timing_1.tnaupd = t1 - t0;
+#endif
 
-    if (msglvl > 0) {
-
-/*        %--------------------------------------------------------% */
-/*        | Version Number & Version Date are defined in version.h | */
-/*        %--------------------------------------------------------% */
-
-	s_wsfe(&io___22);
-	e_wsfe();
-	s_wsfe(&io___23);
-	do_fio(&c__1, (char *)&mxiter, (ftnlen)sizeof(integer));
-	do_fio(&c__1, (char *)&timing_1.nopx, (ftnlen)sizeof(integer));
-	do_fio(&c__1, (char *)&timing_1.nbx, (ftnlen)sizeof(integer));
-	do_fio(&c__1, (char *)&timing_1.nrorth, (ftnlen)sizeof(integer));
-	do_fio(&c__1, (char *)&timing_1.nitref, (ftnlen)sizeof(integer));
-	do_fio(&c__1, (char *)&timing_1.nrstrt, (ftnlen)sizeof(integer));
-	do_fio(&c__1, (char *)&timing_1.tmvopx, (ftnlen)sizeof(real));
-	do_fio(&c__1, (char *)&timing_1.tmvbx, (ftnlen)sizeof(real));
-	do_fio(&c__1, (char *)&timing_1.tnaupd, (ftnlen)sizeof(real));
-	do_fio(&c__1, (char *)&timing_1.tnaup2, (ftnlen)sizeof(real));
-	do_fio(&c__1, (char *)&timing_1.tnaitr, (ftnlen)sizeof(real));
-	do_fio(&c__1, (char *)&timing_1.titref, (ftnlen)sizeof(real));
-	do_fio(&c__1, (char *)&timing_1.tgetv0, (ftnlen)sizeof(real));
-	do_fio(&c__1, (char *)&timing_1.tneigh, (ftnlen)sizeof(real));
-	do_fio(&c__1, (char *)&timing_1.tngets, (ftnlen)sizeof(real));
-	do_fio(&c__1, (char *)&timing_1.tnapps, (ftnlen)sizeof(real));
-	do_fio(&c__1, (char *)&timing_1.tnconv, (ftnlen)sizeof(real));
-	do_fio(&c__1, (char *)&timing_1.trvec, (ftnlen)sizeof(real));
-	e_wsfe();
+#ifndef NO_TRACE
+    if (msglvl > 1)
+    {
+        ivout_(&c__1, &mxiter, &debug_1.ndigit, "_naupd: Number of update iterations taken");
+        ivout_(&c__1, &np, &debug_1.ndigit, "_naupd: Number of wanted \"converged\" Ritz values");
+        svout_(&np, &workl[ritzr], &debug_1.ndigit, "_naupd: Real part of the final Ritz values");
+        svout_(&np, &workl[ritzi], &debug_1.ndigit, "_naupd: Imaginary part of the final Ritz values");
+        svout_(&np, &workl[bounds], &debug_1.ndigit, "_naupd: Associated Ritz estimates");
     }
+
+    if (msglvl > 0)
+    {
+        printf("\n ============================================= ");
+        printf("\n = Nonsymmetric implicit Arnoldi update code = ");
+        printf("\n = Version Number:     %s                 = ", ARPACK_VERSION);
+        printf("\n = Version Date:       %s            = ", ARPACK_DATE);
+        printf("\n ============================================= ");
+        printf("\n = Summary of timing statistics              = ");
+        printf("\n ============================================= ");
+
+        printf("\n Total number update iterations             =  %5d", mxiter);
+        printf("\n Total number of OP*x operations            =  %5d", timing_1.nopx);
+        printf("\n Total number of B*x operations             =  %5d", timing_1.nbx);
+        printf("\n Total number of reorthogonalization steps  =  %5d", timing_1.nrorth);
+        printf("\n Total number of iterative refinement steps =  %5d", timing_1.nitref);
+        printf("\n Total number of restart steps              =  %5d", timing_1.nrstrt);
+        printf("\n Total time in user OP*x operation          =  %12f", timing_1.tmvopx);
+        printf("\n Total time in user B*x operation           =  %12f", timing_1.tmvbx);
+        printf("\n Total time in Arnoldi update routine       =  %12f", timing_1.tnaupd);
+        printf("\n Total time in naup2 routine                =  %12f", timing_1.tnaup2);
+        printf("\n Total time in basic Arnoldi iteration loop =  %12f", timing_1.tnaitr);
+        printf("\n Total time in reorthogonalization phase    =  %12f", timing_1.titref);
+        printf("\n Total time in (re)start vector generation  =  %12f", timing_1.tgetv0);
+        printf("\n Total time in Hessenberg eig. subproblem   =  %12f", timing_1.tneigh);
+        printf("\n Total time in getting the shifts           =  %12f", timing_1.tngets);
+        printf("\n Total time in applying the shifts          =  %12f", timing_1.tnapps);
+        printf("\n Total time in convergence testing          =  %12f", timing_1.tnconv);
+        printf("\n Total time in computing final Ritz vectors =  %12f", timing_1.trvec);
+    }
+#endif
 
 L9000:
 
     return 0;
 
-/*     %---------------% */
-/*     | End of snaupd | */
-/*     %---------------% */
+    /* ------------- */
+    /* End of snaupd */
+    /* ------------- */
 
 } /* snaupd_ */
 

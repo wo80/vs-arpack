@@ -1,36 +1,25 @@
-/* D:\Projekte\ARPACK\arpack-ng\UTIL\second.f -- translated by f2c (version 20100827). */
+/* arpack-ng\UTIL\second.f -- translated by f2c (version 20100827). */
+
+#ifndef NO_TIMER
+#include <time.h>
+#include <stdlib.h>
+#endif
 
 #include "arpack.h"
 
-/* Subroutine */ int arscnd_(real *t)
+/**
+ *  Returns the user time for a process in arscnds.
+ */
+int arscnd_(float *t)
 {
 
+    *t = 0.0f;
 
-/*  -- LAPACK auxiliary routine (preliminary version) -- */
-/*     Univ. of Tennessee, Univ. of California Berkeley, NAG Ltd., */
-/*     Courant Institute, Argonne National Lab, and Rice University */
-/*     July 26, 1991 */
+#ifndef NO_TIMER
+    clock_t now = clock();
+    *t = (float)now / CLOCKS_PER_SEC;
+#endif
 
-/*  Purpose */
-/*  ======= */
-
-/*  SECOND returns the user time for a process in arscnds. */
-/*  This version gets the time from the system function ETIME. */
-
-/*     .. Local Scalars .. */
-/*     .. */
-/*     .. Local Arrays .. */
-/*     .. */
-/*     .. External Functions .. */
-/*     .. */
-/*     .. Executable Statements .. */
-
-/*      T1 = ETIME( TARRAY ) */
-/*      T  = TARRAY( 1 ) */
-    *t = 0.f;
     return 0;
-
-/*     End of ARSCND */
-
 } /* arscnd_ */
 

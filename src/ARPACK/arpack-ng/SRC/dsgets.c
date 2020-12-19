@@ -1,4 +1,4 @@
-/* D:\Projekte\ARPACK\arpack-ng\SRC\dsgets.f -- translated by f2c (version 20100827). */
+/* arpack-ng\SRC\dsgets.f -- translated by f2c (version 20100827). */
 
 #include "arpack.h"
 
@@ -90,33 +90,22 @@
  *
  * \EndLib
  */
-
-
-/* Subroutine */ int dsgets_(integer *ishift, char *which, integer *kev, 
-	integer *np, doublereal *ritz, doublereal *bounds, doublereal *shifts)
+int dsgets_(int *ishift, char *which, int *kev, int *np, double *ritz,
+            double *bounds, double *shifts)
 {
     /* System generated locals */
-    integer i__1;
-
-    /* Builtin functions */
-    integer s_cmp(char *, char *, ftnlen, ftnlen);
+    int i__1;
 
     /* Local variables */
-    static real t0, t1;
-    integer kevd2;
-    integer msglvl;
+    static float t0, t1;
+    int kevd2;
+    int msglvl;
 
 
-
-
-/*     %-----------------------% */
-/*     | Executable Statements | */
-/*     %-----------------------% */
-
-/*     %-------------------------------% */
-/*     | Initialize timing statistics  | */
-/*     | & message level for debugging | */
-/*     %-------------------------------% */
+    /* ----------------------------- */
+    /* Initialize timing statistics  */
+    /* & message level for debugging */
+    /* ----------------------------- */
 
     /* Parameter adjustments */
     --shifts;
@@ -124,80 +113,82 @@
     --ritz;
 
     /* Function Body */
+#ifndef NO_TIMER
     arscnd_(&t0);
+#endif
+
     msglvl = debug_1.msgets;
 
-    if (s_cmp(which, "BE", (ftnlen)2, (ftnlen)2) == 0) {
+    if (strcmp(which, "BE") == 0)
+    {
+        /* --------------------------------------------------- */
+        /* Both ends of the spectrum are requested.            */
+        /* Sort the eigenvalues into algebraically increasing  */
+        /* order first then swap high end of the spectrum next */
+        /* to low end in appropriate locations.                */
+        /* NOTE: when np < floor(kev/2) be careful not to swap */
+        /* overlapping locations.                              */
+        /* --------------------------------------------------- */
 
-/*        %-----------------------------------------------------% */
-/*        | Both ends of the spectrum are requested.            | */
-/*        | Sort the eigenvalues into algebraically increasing  | */
-/*        | order first then swap high end of the spectrum next | */
-/*        | to low end in appropriate locations.                | */
-/*        | NOTE: when np < floor(kev/2) be careful not to swap | */
-/*        | overlapping locations.                              | */
-/*        %-----------------------------------------------------% */
+        i__1 = *kev + *np;
+        dsortr_("LA", &c_true, &i__1, &ritz[1], &bounds[1]);
+        kevd2 = *kev / 2;
+        if (*kev > 1)
+        {
+            i__1 = min(kevd2,*np);
+            dswap_(&i__1, &ritz[1], &c__1, &ritz[max(kevd2,*np) + 1], &c__1);
+            dswap_(&i__1, &bounds[1], &c__1, &bounds[max(kevd2,*np) + 1], &c__1);
+        }
+    }
+    else
+    {
+        /* -------------------------------------------------- */
+        /* LM, SM, LA, SA case.                               */
+        /* Sort the eigenvalues of H into the desired order   */
+        /* and apply the resulting order to BOUNDS.           */
+        /* The eigenvalues are sorted so that the wanted part */
+        /* are always in the last KEV locations.              */
+        /* -------------------------------------------------- */
 
-	i__1 = *kev + *np;
-	dsortr_("LA", &c_true, &i__1, &ritz[1], &bounds[1]);
-	kevd2 = *kev / 2;
-	if (*kev > 1) {
-	    i__1 = min(kevd2,*np);
-	    dswap_(&i__1, &ritz[1], &c__1, &ritz[max(kevd2,*np) + 1], &c__1);
-	    i__1 = min(kevd2,*np);
-	    dswap_(&i__1, &bounds[1], &c__1, &bounds[max(kevd2,*np) + 1], &
-		    c__1);
-	}
-
-    } else {
-
-/*        %----------------------------------------------------% */
-/*        | LM, SM, LA, SA case.                               | */
-/*        | Sort the eigenvalues of H into the desired order   | */
-/*        | and apply the resulting order to BOUNDS.           | */
-/*        | The eigenvalues are sorted so that the wanted part | */
-/*        | are always in the last KEV locations.               | */
-/*        %----------------------------------------------------% */
-
-	i__1 = *kev + *np;
-	dsortr_(which, &c_true, &i__1, &ritz[1], &bounds[1]);
+        i__1 = *kev + *np;
+        dsortr_(which, &c_true, &i__1, &ritz[1], &bounds[1]);
     }
 
-    if (*ishift == 1 && *np > 0) {
+    if (*ishift == 1 && *np > 0)
+    {
+        /* ----------------------------------------------------- */
+        /* Sort the unwanted Ritz values used as shifts so that  */
+        /* the ones with largest Ritz estimates are first.       */
+        /* This will tend to minimize the effects of the         */
+        /* forward instability of the iteration when the shifts  */
+        /* are applied in subroutine dsapps.                     */
+        /* ----------------------------------------------------- */
 
-/*        %-------------------------------------------------------% */
-/*        | Sort the unwanted Ritz values used as shifts so that  | */
-/*        | the ones with largest Ritz estimates are first.       | */
-/*        | This will tend to minimize the effects of the         | */
-/*        | forward instability of the iteration when the shifts  | */
-/*        | are applied in subroutine dsapps.                     | */
-/*        %-------------------------------------------------------% */
-
-	dsortr_("SM", &c_true, np, &bounds[1], &ritz[1]);
-	dcopy_(np, &ritz[1], &c__1, &shifts[1], &c__1);
+        dsortr_("SM", &c_true, np, &bounds[1], &ritz[1]);
+        dcopy_(np, &ritz[1], &c__1, &shifts[1], &c__1);
     }
 
+#ifndef NO_TIMER
     arscnd_(&t1);
     timing_1.tsgets += t1 - t0;
+#endif
 
-    if (msglvl > 0) {
-	ivout_(&debug_1.logfil, &c__1, kev, &debug_1.ndigit, "_sgets: KEV is",
-		 (ftnlen)14);
-	ivout_(&debug_1.logfil, &c__1, np, &debug_1.ndigit, "_sgets: NP is", (
-		ftnlen)13);
-	i__1 = *kev + *np;
-	dvout_(&debug_1.logfil, &i__1, &ritz[1], &debug_1.ndigit, "_sgets: E"
-		"igenvalues of current H matrix", (ftnlen)39);
-	i__1 = *kev + *np;
-	dvout_(&debug_1.logfil, &i__1, &bounds[1], &debug_1.ndigit, "_sgets:"
-		" Associated Ritz estimates", (ftnlen)33);
+#ifndef NO_TRACE
+    if (msglvl > 0)
+    {
+        i__1 = *kev + *np;
+        ivout_(&c__1, kev, &debug_1.ndigit, "_sgets: KEV is");
+        ivout_(&c__1, np, &debug_1.ndigit, "_sgets: NP is");
+        dvout_(&i__1, &ritz[1], &debug_1.ndigit, "_sgets: Eigenvalues of current H matrix");
+        dvout_(&i__1, &bounds[1], &debug_1.ndigit, "_sgets: Associated Ritz estimates");
     }
+#endif
 
     return 0;
 
-/*     %---------------% */
-/*     | End of dsgets | */
-/*     %---------------% */
+    /* ------------- */
+    /* End of dsgets */
+    /* ------------- */
 
 } /* dsgets_ */
 

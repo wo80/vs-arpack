@@ -88,6 +88,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)..\libs\include;$(SolutionDir)ARPACK\arpack-ng</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NO_TIMER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -97,6 +98,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)..\libs\include;$(SolutionDir)ARPACK\arpack-ng</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NO_TIMER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -108,6 +110,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)..\libs\include;$(SolutionDir)ARPACK\arpack-ng</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NO_TIMER;NO_TRACE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -123,6 +126,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)..\libs\include;$(SolutionDir)ARPACK\arpack-ng</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NO_TIMER;NO_TRACE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -200,10 +204,6 @@
     <ClCompile Include="..\..\..\ARPACK\arpack-ng\UTIL\cvout.c" />
     <ClCompile Include="..\..\..\ARPACK\arpack-ng\UTIL\dmout.c" />
     <ClCompile Include="..\..\..\ARPACK\arpack-ng\UTIL\dvout.c" />
-    <ClCompile Include="..\..\..\ARPACK\arpack-ng\UTIL\icnteq.c" />
-    <ClCompile Include="..\..\..\ARPACK\arpack-ng\UTIL\icopy.c" />
-    <ClCompile Include="..\..\..\ARPACK\arpack-ng\UTIL\iset.c" />
-    <ClCompile Include="..\..\..\ARPACK\arpack-ng\UTIL\iswap.c" />
     <ClCompile Include="..\..\..\ARPACK\arpack-ng\UTIL\ivout.c" />
     <ClCompile Include="..\..\..\ARPACK\arpack-ng\UTIL\second.c" />
     <ClCompile Include="..\..\..\ARPACK\arpack-ng\UTIL\smout.c" />
@@ -214,8 +214,8 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\ARPACK\arpack-ng\arpack.h" />
     <ClInclude Include="..\..\..\ARPACK\arpack-ng\arpack_internal.h" />
-    <ClInclude Include="..\..\..\ARPACK\arpack-ng\common_blocks.h" />
-    <ClInclude Include="..\..\..\ARPACK\arpack-ng\constants.h" />
+    <ClInclude Include="..\..\..\ARPACK\arpack-ng\arpack_types.h" />
+    <ClInclude Include="..\..\..\ARPACK\arpack-ng\arpack_constants.h" />
     <ClInclude Include="..\..\..\ARPACK\arpack-ng\lapack.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

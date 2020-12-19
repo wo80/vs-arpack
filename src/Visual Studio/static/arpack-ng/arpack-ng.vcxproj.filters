@@ -33,18 +33,6 @@
     <ClCompile Include="..\..\..\ARPACK\arpack-ng\UTIL\dvout.c">
       <Filter>Source Files\UTIL</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\ARPACK\arpack-ng\UTIL\icnteq.c">
-      <Filter>Source Files\UTIL</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\ARPACK\arpack-ng\UTIL\icopy.c">
-      <Filter>Source Files\UTIL</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\ARPACK\arpack-ng\UTIL\iset.c">
-      <Filter>Source Files\UTIL</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\ARPACK\arpack-ng\UTIL\iswap.c">
-      <Filter>Source Files\UTIL</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\ARPACK\arpack-ng\UTIL\ivout.c">
       <Filter>Source Files\UTIL</Filter>
     </ClCompile>
@@ -266,16 +254,16 @@
     <ClInclude Include="..\..\..\ARPACK\arpack-ng\arpack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\ARPACK\arpack-ng\common_blocks.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\ARPACK\arpack-ng\constants.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\ARPACK\arpack-ng\arpack_internal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\ARPACK\arpack-ng\lapack.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\ARPACK\arpack-ng\arpack_types.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\ARPACK\arpack-ng\arpack_constants.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
