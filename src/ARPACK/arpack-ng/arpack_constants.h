@@ -1,12 +1,6 @@
 #pragma once
 
-/*
- * NOTE:
- *
- * Putting the constants in a header means that each translation unit (c file)
- * including the header will get its own set of constants.
- * 
- */
+/* Constants */
 
 static const logical c_true = TRUE_;
 static const logical c_false = FALSE_;
@@ -32,7 +26,7 @@ static const doublereal d_23 = 0.66666666666666663;
 static const doublecomplex z_one = { 1.0, 0.0 };
 static const doublecomplex z_zero = { 0.0, 0.0 };
 
-/* used in examples */
+/* Constants used in examples */
 
 static const integer c__5 = 5;
 static const integer c__6 = 6;

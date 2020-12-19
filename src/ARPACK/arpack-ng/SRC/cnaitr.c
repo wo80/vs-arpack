@@ -216,7 +216,7 @@ int cnaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *nb,
 
     /* System generated locals */
     int h_dim1, h_offset, v_dim1, v_offset, i__1, i__2, i__3;
-    float r__1, r__2, r__3, r__4;
+    float r__1;
     complex q__1;
 
     /* Builtin functions */
@@ -558,9 +558,7 @@ L60:
     {
         cdotc_(&q__1, n, &resid[1], &c__1, &workd[ipj], &c__1);
         cnorm.r = q__1.r, cnorm.i = q__1.i;
-        r__1 = cnorm.r;
-        r__2 = cnorm.i;
-        wnorm = sqrt(slapy2_(&r__1, &r__2));
+        wnorm = sqrt(slapy2_(&cnorm.r, &cnorm.i));
     }
     else if (*bmat == 'I')
     {
@@ -647,9 +645,7 @@ L70:
     {
         cdotc_(&q__1, n, &resid[1], &c__1, &workd[ipj], &c__1);
         cnorm.r = q__1.r, cnorm.i = q__1.i;
-        r__1 = cnorm.r;
-        r__2 = cnorm.i;
-        *rnorm = sqrt(slapy2_(&r__1, &r__2));
+        *rnorm = sqrt(slapy2_(&cnorm.r, &cnorm.i));
     }
     else if (*bmat == 'I')
     {
@@ -761,9 +757,7 @@ L90:
 #endif
         cdotc_(&q__1, n, &resid[1], &c__1, &workd[ipj], &c__1);
         cnorm.r = q__1.r, cnorm.i = q__1.i;
-        r__1 = cnorm.r;
-        r__2 = cnorm.i;
-        rnorm1 = sqrt(slapy2_(&r__1, &r__2));
+        rnorm1 = sqrt(slapy2_(&cnorm.r, &cnorm.i));
     }
     else if (*bmat == 'I')
     {
@@ -868,23 +862,17 @@ L100:
             /* ------------------------------------------ */
 
             i__2 = i + i * h_dim1;
-            r__1 = h[i__2].r;
-            r__2 = h[i__2].i;
             i__3 = i + 1 + (i + 1) * h_dim1;
-            r__3 = h[i__3].r;
-            r__4 = h[i__3].i;
-            tst1 = slapy2_(&r__1, &r__2) + slapy2_(&r__3, &r__4);
+            tst1 = slapy2_(&h[i__2].r, &h[i__2].i) + slapy2_(&h[i__3].r, &h[i__3].i);
             if (tst1 == 0.0f)
             {
                 i__2 = *k + *np;
                 tst1 = clanhs_("1", &i__2, &h[h_offset], ldh, &workd[*n + 1]);
             }
             i__2 = i + 1 + i * h_dim1;
-            r__1 = h[i__2].r;
-            r__2 = h[i__2].i;
             /* Computing MAX */
-            r__3 = ulp * tst1;
-            if (slapy2_(&r__1, &r__2) <= dmax(r__3,smlnum))
+            r__1 = ulp * tst1;
+            if (slapy2_(&h[i__2].r, &h[i__2].i) <= dmax(r__1,smlnum))
             {
                 h[i__2].r = 0.0f, h[i__2].i = 0.0f;
             }

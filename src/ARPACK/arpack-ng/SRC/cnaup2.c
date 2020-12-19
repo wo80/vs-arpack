@@ -479,13 +479,9 @@ L20:
     {
         /* Computing MAX */
         i__2 = *np + i;
-        r__3 = ritz[i__2].r;
-        r__4 = ritz[i__2].i;
-        r__1 = eps23, r__2 = slapy2_(&r__3, &r__4);
+        r__1 = eps23, r__2 = slapy2_(&ritz[i__2].r, &ritz[i__2].i);
         rtemp = dmax(r__1,r__2);
-        r__1 = bounds[i__2].r;
-        r__2 = bounds[i__2].i;
-        if (slapy2_(&r__1, &r__2) <= *tol * rtemp)
+        if (slapy2_(&bounds[i__2].r, &bounds[i__2].i) <= *tol * rtemp)
         {
             ++nconv;
         }
@@ -593,9 +589,7 @@ L20:
         for (j = 1; j <= nev0; ++j)
         {
             /* Computing MAX */
-            r__3 = ritz[j].r;
-            r__4 = ritz[j].i;
-            r__1 = eps23, r__2 = slapy2_(&r__3, &r__4);
+            r__1 = eps23, r__2 = slapy2_(&ritz[j].r, &ritz[j].i);
             rtemp = dmax(r__1,r__2);
             q__1.r = bounds[j].r / rtemp, q__1.i = bounds[j].i / rtemp;
             bounds[j].r = q__1.r, bounds[j].i = q__1.i;
@@ -619,9 +613,7 @@ L20:
         for (j = 1; j <= nev0; ++j)
         {
             /* Computing MAX */
-            r__3 = ritz[j].r;
-            r__4 = ritz[j].i;
-            r__1 = eps23, r__2 = slapy2_(&r__3, &r__4);
+            r__1 = eps23, r__2 = slapy2_(&ritz[j].r, &ritz[j].i);
             rtemp = dmax(r__1,r__2);
             q__1.r = rtemp * bounds[j].r, q__1.i = rtemp * bounds[j].i;
             bounds[j].r = q__1.r, bounds[j].i = q__1.i;

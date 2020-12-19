@@ -216,7 +216,7 @@ int znaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *nb,
 
     /* System generated locals */
     int h_dim1, h_offset, v_dim1, v_offset, i__1, i__2, i__3;
-    double d__1, d__2, d__3, d__4;
+    double d__1;
     zomplex z__1;
 
     /* Builtin functions */
@@ -558,9 +558,7 @@ L60:
     {
         zdotc_(&z__1, n, &resid[1], &c__1, &workd[ipj], &c__1);
         cnorm.r = z__1.r, cnorm.i = z__1.i;
-        d__1 = cnorm.r;
-        d__2 = cnorm.i;
-        wnorm = sqrt(dlapy2_(&d__1, &d__2));
+        wnorm = sqrt(dlapy2_(&cnorm.r, &cnorm.i));
     }
     else if (*bmat == 'I')
     {
@@ -647,9 +645,7 @@ L70:
     {
         zdotc_(&z__1, n, &resid[1], &c__1, &workd[ipj], &c__1);
         cnorm.r = z__1.r, cnorm.i = z__1.i;
-        d__1 = cnorm.r;
-        d__2 = cnorm.i;
-        *rnorm = sqrt(dlapy2_(&d__1, &d__2));
+        *rnorm = sqrt(dlapy2_(&cnorm.r, &cnorm.i));
     }
     else if (*bmat == 'I')
     {
@@ -761,9 +757,7 @@ L90:
 #endif
         zdotc_(&z__1, n, &resid[1], &c__1, &workd[ipj], &c__1);
         cnorm.r = z__1.r, cnorm.i = z__1.i;
-        d__1 = cnorm.r;
-        d__2 = cnorm.i;
-        rnorm1 = sqrt(dlapy2_(&d__1, &d__2));
+        rnorm1 = sqrt(dlapy2_(&cnorm.r, &cnorm.i));
     }
     else if (*bmat == 'I')
     {
@@ -868,23 +862,17 @@ L100:
             /* ------------------------------------------ */
 
             i__2 = i + i * h_dim1;
-            d__1 = h[i__2].r;
-            d__2 = h[i__2].i;
             i__3 = i + 1 + (i + 1) * h_dim1;
-            d__3 = h[i__3].r;
-            d__4 = h[i__3].i;
-            tst1 = dlapy2_(&d__1, &d__2) + dlapy2_(&d__3, &d__4);
+            tst1 = dlapy2_(&h[i__2].r, &h[i__2].i) + dlapy2_(&h[i__3].r, &h[i__3].i);
             if (tst1 == 0.0)
             {
                 i__2 = *k + *np;
                 tst1 = zlanhs_("1", &i__2, &h[h_offset], ldh, &workd[*n + 1]);
             }
             i__2 = i + 1 + i * h_dim1;
-            d__1 = h[i__2].r;
-            d__2 = h[i__2].i;
             /* Computing MAX */
-            d__3 = ulp * tst1;
-            if (dlapy2_(&d__1, &d__2) <= max(d__3,smlnum))
+            d__1 = ulp * tst1;
+            if (dlapy2_(&h[i__2].r, &h[i__2].i) <= max(d__1,smlnum))
             {
                 h[i__2].r = 0.0, h[i__2].i = 0.0;
             }

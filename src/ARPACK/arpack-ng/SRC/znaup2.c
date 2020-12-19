@@ -478,9 +478,7 @@ L20:
     {
         /* Computing MAX */
         i__2 = *np + i;
-        d__3 = ritz[i__2].r;
-        d__4 = ritz[i__2].i;
-        d__1 = eps23, d__2 = dlapy2_(&d__3, &d__4);
+        d__1 = eps23, d__2 = dlapy2_(&ritz[i__2].r, &ritz[i__2].i);
         rtemp = max(d__1,d__2);
         d__1 = bounds[i__2].r;
         d__2 = bounds[i__2].i;
@@ -592,9 +590,7 @@ L20:
         for (j = 1; j <= nev0; ++j)
         {
             /* Computing MAX */
-            d__3 = ritz[j].r;
-            d__4 = ritz[j].i;
-            d__1 = eps23, d__2 = dlapy2_(&d__3, &d__4);
+            d__1 = eps23, d__2 = dlapy2_(&ritz[j].r, &ritz[j].i);
             rtemp = max(d__1,d__2);
             z__1.r = bounds[j].r / rtemp, z__1.i = bounds[j].i / rtemp;
             bounds[j].r = z__1.r, bounds[j].i = z__1.i;
@@ -618,9 +614,7 @@ L20:
         for (j = 1; j <= nev0; ++j)
         {
             /* Computing MAX */
-            d__3 = ritz[j].r;
-            d__4 = ritz[j].i;
-            d__1 = eps23, d__2 = dlapy2_(&d__3, &d__4);
+            d__1 = eps23, d__2 = dlapy2_(&ritz[j].r, &ritz[j].i);
             rtemp = max(d__1,d__2);
             z__1.r = rtemp * bounds[j].r, z__1.i = rtemp * bounds[j].i;
             bounds[j].r = z__1.r, bounds[j].i = z__1.i;
