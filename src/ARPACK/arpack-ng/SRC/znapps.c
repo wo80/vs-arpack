@@ -342,26 +342,23 @@ L40:
             /* Apply rotation to the left of H;  H <- G'*H */
             /* ------------------------------------------- */
 
-            i__3 = kplusp;
-            for (j = i; j <= i__3; ++j)
+            for (j = i; j <= kplusp; ++j)
             {
+                /* t        =  c*h(i,j) + s*h(i+1,j)        */
+                /* h(i+1,j) = -conjg(s)*h(i,j) + c*h(i+1,j) */
+                /* h(i,j)   = t                             */
+
                 i__4 = i + j * h_dim1;
-                z__2.r = c * h[i__4].r, z__2.i = c * h[i__4].i;
                 i__5 = i + 1 + j * h_dim1;
-                z__3.r = s.r * h[i__5].r - s.i * h[i__5].i, z__3.i = s.r * h[i__5].i + s.i * h[i__5].r;
-                z__1.r = z__2.r + z__3.r, z__1.i = z__2.i + z__3.i;
-                t.r = z__1.r, t.i = z__1.i;
-                i__4 = i + 1 + j * h_dim1;
-                d_cnjg(&z__4, &s);
-                z__3.r = -z__4.r, z__3.i = -z__4.i;
-                i__5 = i + j * h_dim1;
-                z__2.r = z__3.r * h[i__5].r - z__3.i * h[i__5].i, z__2.i = z__3.r * h[i__5].i + z__3.i * h[i__5].r;
-                i__6 = i + 1 + j * h_dim1;
-                z__5.r = c * h[i__6].r, z__5.i = c * h[i__6].i;
-                z__1.r = z__2.r + z__5.r, z__1.i = z__2.i + z__5.i;
-                h[i__4].r = z__1.r, h[i__4].i = z__1.i;
-                i__4 = i + j * h_dim1;
-                h[i__4].r = t.r, h[i__4].i = t.i;
+
+                t.r = c * h[i__4].r + (s.r * h[i__5].r - s.i * h[i__5].i);
+                t.i = c * h[i__4].i + (s.r * h[i__5].i + s.i * h[i__5].r);
+
+                h[i__5].r = -(s.r * h[i__4].r + s.i * h[i__4].i) + c * h[i__5].r;
+                h[i__5].i = -(s.r * h[i__4].i - s.i * h[i__4].r) + c * h[i__5].i;
+
+                h[i__4].r = t.r;
+                h[i__4].i = t.i;
             }
 
             /* ------------------------------------------- */
@@ -373,23 +370,21 @@ L40:
             i__3 = min(i__4,iend);
             for (j = 1; j <= i__3; ++j)
             {
+                /* t        =  c*h(j,i) + conjg(s)*h(j,i+1) */
+                /* h(j,i+1) = -s*h(j,i) + c*h(j,i+1)        */
+                /* h(j,i)   = t                             */
+
                 i__4 = j + i * h_dim1;
-                z__2.r = c * h[i__4].r, z__2.i = c * h[i__4].i;
-                d_cnjg(&z__4, &s);
                 i__5 = j + (i + 1) * h_dim1;
-                z__3.r = z__4.r * h[i__5].r - z__4.i * h[i__5].i, z__3.i = z__4.r * h[i__5].i + z__4.i * h[i__5].r;
-                z__1.r = z__2.r + z__3.r, z__1.i = z__2.i + z__3.i;
-                t.r = z__1.r, t.i = z__1.i;
-                i__4 = j + (i + 1) * h_dim1;
-                z__3.r = -s.r, z__3.i = -s.i;
-                i__5 = j + i * h_dim1;
-                z__2.r = z__3.r * h[i__5].r - z__3.i * h[i__5].i, z__2.i = z__3.r * h[i__5].i + z__3.i * h[i__5].r;
-                i__6 = j + (i + 1) * h_dim1;
-                z__4.r = c * h[i__6].r, z__4.i = c * h[i__6].i;
-                z__1.r = z__2.r + z__4.r, z__1.i = z__2.i + z__4.i;
-                h[i__4].r = z__1.r, h[i__4].i = z__1.i;
-                i__4 = j + i * h_dim1;
-                h[i__4].r = t.r, h[i__4].i = t.i;
+
+                t.r = c * h[i__4].r + (s.r * h[i__5].r + s.i * h[i__5].i);
+                t.i = c * h[i__4].i + (s.r * h[i__5].i - s.i * h[i__5].r);
+
+                h[i__5].r = -(s.r * h[i__4].r - s.i * h[i__4].i) + c * h[i__5].r;
+                h[i__5].i = -(s.r * h[i__4].i + s.i * h[i__4].r) + c * h[i__5].i;
+
+                h[i__4].r = t.r;
+                h[i__4].i = t.i;
             }
 
             /* --------------------------------------------------- */
@@ -401,23 +396,21 @@ L40:
             i__3 = min(i__4,kplusp);
             for (j = 1; j <= i__3; ++j)
             {
+                /* t        =   c*q(j,i) + conjg(s)*q(j,i+1) */
+                /* q(j,i+1) = - s*q(j,i) + c*q(j,i+1)        */
+                /* q(j,i)   = t                              */
+
                 i__4 = j + i * q_dim1;
-                z__2.r = c * q[i__4].r, z__2.i = c * q[i__4].i;
-                d_cnjg(&z__4, &s);
                 i__5 = j + (i + 1) * q_dim1;
-                z__3.r = z__4.r * q[i__5].r - z__4.i * q[i__5].i, z__3.i = z__4.r * q[i__5].i + z__4.i * q[i__5].r;
-                z__1.r = z__2.r + z__3.r, z__1.i = z__2.i + z__3.i;
-                t.r = z__1.r, t.i = z__1.i;
-                i__4 = j + (i + 1) * q_dim1;
-                z__3.r = -s.r, z__3.i = -s.i;
-                i__5 = j + i * q_dim1;
-                z__2.r = z__3.r * q[i__5].r - z__3.i * q[i__5].i, z__2.i = z__3.r * q[i__5].i + z__3.i * q[i__5].r;
-                i__6 = j + (i + 1) * q_dim1;
-                z__4.r = c * q[i__6].r, z__4.i = c * q[i__6].i;
-                z__1.r = z__2.r + z__4.r, z__1.i = z__2.i + z__4.i;
-                q[i__4].r = z__1.r, q[i__4].i = z__1.i;
-                i__4 = j + i * q_dim1;
-                q[i__4].r = t.r, q[i__4].i = t.i;
+
+                t.r = c * q[i__4].r + (s.r * q[i__5].r + s.i * q[i__5].i);
+                t.i = c * q[i__4].i + (s.r * q[i__5].i - s.i * q[i__5].r);
+
+                q[i__5].r = -(s.r * q[i__4].r - s.i * q[i__4].i) + c * q[i__5].r;
+                q[i__5].i = -(s.r * q[i__4].i + s.i * q[i__4].r) + c * q[i__5].i;
+
+                q[i__4].r = t.r;
+                q[i__4].i = t.i;
             }
 
             /* ------------------------- */
@@ -467,12 +460,14 @@ L100:
         i__2 = j + 1 + j * h_dim1;
         if (h[i__2].r < 0. || h[i__2].i != 0.0)
         {
+            /* t = h(j+1,j) / dlapy2(dble(h(j+1,j)),dimag(h(j+1,j))) */
             i__2 = j + 1 + j * h_dim1;
-            i__3 = j + 1 + j * h_dim1;
-            d__1 = dlapy2_(&h[i__3].r, &h[i__3].i);
-            z__1.r = h[i__2].r / d__1, z__1.i = h[i__2].i / d__1;
-            t.r = z__1.r, t.i = z__1.i;
+            d__1 = dlapy2_(&h[i__2].r, &h[i__2].i);
+            t.r = h[i__2].r / d__1;
+            t.i = h[i__2].i / d__1;
+
             i__2 = kplusp - j + 1;
+            i__3 = j + 1 + j * h_dim1;
             d_cnjg(&z__1, &t);
             zscal_(&i__2, &z__1, &h[i__3], ldh);
             /* Computing MIN */
@@ -483,11 +478,10 @@ L100:
             i__3 = j + *np + 1;
             i__2 = min(i__3,kplusp);
             zscal_(&i__2, &t, &q[(j + 1) * q_dim1 + 1], &c__1);
+
+            /* h(j+1,j) = dcmplx( dble( h(j+1,j) ), rzero ) */
             i__2 = j + 1 + j * h_dim1;
-            i__3 = j + 1 + j * h_dim1;
-            d__1 = h[i__3].r;
-            z__1.r = d__1, z__1.i = 0.0;
-            h[i__2].r = z__1.r, h[i__2].i = z__1.i;
+            h[i__2].i = 0.0;
         }
     }
 
