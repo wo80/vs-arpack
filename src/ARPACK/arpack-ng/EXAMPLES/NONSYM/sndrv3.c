@@ -49,24 +49,20 @@ int sndrv3()
     float r__1;
 
     /* Local variables */
-    float d[75]	/* was [25][3] */, h;
+    float d[75]; /* (3 * MAXNCV) */
+    float workev[75];
+
+    float h;
+    float sigmar, sigmai;
+
     int j;
+    int ierr, nconv;
+    int ishfts, maxitr, mode;
 
-
-
-    int mode;
-    bool rvec;
-    int ierr;
-
-    int nconv;
-    bool first;
     int ipntr[14];
     int iparam[11];
-    float sigmai;
     bool select[25];
-    float sigmar;
-    int ishfts, maxitr;
-    float workev[75];
+    bool first, rvec;
 
     /* Define maximum dimensions for all arrays. */
 

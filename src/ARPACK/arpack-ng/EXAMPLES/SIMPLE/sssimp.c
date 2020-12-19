@@ -72,26 +72,21 @@
 int sssimp()
 {
     /* System generated locals */
-    int i__1;
     float r__1;
 
     /* Local variables */
-    float d[50]	/* was [25][2] */;
-    int j;
+    float d[50] /* (2 * MAXNCV) */;
 
-
-
-
-    bool rvec;
-    int ierr, mode1;
     float sigma;
 
-    int nconv;
+    int j;
+    int ierr, nconv;
+    int ishfts, maxitr, mode;
+
     int ipntr[11];
     int iparam[11];
     bool select[25];
-    int ishfts, maxitr;
-
+    bool rvec;
 
     /* ---------------------------------------------------- */
     /* Storage Declarations:                                */
@@ -254,13 +249,11 @@ int sssimp()
 
     ishfts = 1;
     maxitr = 300;
-    mode1 = 1;
+    mode = 1;
 
     iparam[0] = ishfts;
-
     iparam[2] = maxitr;
-
-    iparam[6] = mode1;
+    iparam[6] = mode;
 
     /* ---------------------------------------------- */
     /* M A I N   L O O P (Reverse communication loop) */
@@ -331,7 +324,7 @@ L10:
     /* The routine SSEUPD now called to do this  */
     /* post processing (Other modes may require  */
     /* more complicated post processing than     */
-    /* mode1.0)                                   */
+    /* mode.0)                                   */
     /*                                           */
     /* ----------------------------------------- */
 

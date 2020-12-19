@@ -50,24 +50,20 @@ int zndrv1()
     zomplex z__1;
 
     /* Local variables */
+    zomplex workev[90];
     zomplex d[30];
-    int j;
-    double rd[90]	/* was [30][3] */;
+    double rd[90] /* (3 * MAXNCV) */;
+    double rwork[30];
 
-    int mode;
-    bool rvec;
-    int ierr;
     zomplex sigma;
 
-    int nconv;
+    int j;
+    int ierr, nconv;
+    int ishfts, maxitr, mode;
     int ipntr[14];
-    double rwork[30];
     int iparam[11];
     bool select[30];
-    int ishfts;
-    int maxitr;
-
-    zomplex workev[90];
+    bool rvec;
 
     /* Define maximum dimensions for all arrays. */
 

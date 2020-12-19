@@ -58,24 +58,22 @@ int cndrv2()
     void c_div(complex *, complex *, complex *);
 
     /* Local variables */
-    complex d[25], h;
-    int j;
-    complex s, h2, s1, s2, s3;
-    float rd[75]	/* was [25][3] */;
+    complex d[25];
+    complex workev[50];
+    float rd[75] /* (3 * MAXNCV) */;
+    float rwork[256];
 
-    int mode;
-    bool rvec;
-    int ierr, ipiv[256];
+    complex h, s, h2, s1, s2, s3;
     complex sigma;
 
-    int nconv;
+    int j;
+    int ierr, nconv;
+    int ishfts, maxitr, mode;
+    int ipiv[256];
     int ipntr[14];
-    float rwork[256];
     int iparam[11];
     bool select[25];
-    int ishfts, maxitr;
-
-    complex workev[50];
+    bool rvec;
 
     /* Define maximum dimensions for all arrays. */
 

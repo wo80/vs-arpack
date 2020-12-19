@@ -58,25 +58,22 @@ int zndrv2()
     void z_div(zomplex *, zomplex *, zomplex *);
 
     /* Local variables */
-    zomplex d[25], h;
-    int j;
-    zomplex s, h2, s1, s2, s3;
-    double rd[75]	/* was [25][3] */;
+    zomplex d[25];
+    zomplex workev[50];
+    double rd[75] /* (3 * MAXNCV) */;
+    double rwork[256];
 
-    int mode;
-    bool rvec;
-    int ierr, ipiv[256];
+    zomplex h, s, h2, s1, s2, s3;
     zomplex sigma;
 
-    int nconv;
+    int j;
+    int ierr, nconv;
+    int ishfts, maxitr, mode;
+    int ipiv[256];
     int ipntr[14];
-    double rwork[256];
     int iparam[11];
     bool select[25];
-    int ishfts;
-    int maxitr;
-
-    zomplex workev[50];
+    bool rvec;
 
     /* Define maximum dimensions for all arrays. */
 

@@ -47,25 +47,20 @@
 int dsdrv3()
 {
     /* System generated locals */
-    int i__1;
     double d__1;
 
     /* Local variables */
-    double d[50]	/* was [25][2] */, h;
+    double d[50] /* (2 * MAXNCV) */;
+    double r1, r2, h, sigma;
+
     int j;
-    double r1, r2;
-
-    int mode;
-    bool rvec;
-    int ierr, ipiv[256];
-    double sigma;
-
-    int nconv;
+    int ierr, nconv;
+    int ishfts, maxitr, mode;
+    int ipiv[256];
     int ipntr[11];
     int iparam[11];
     bool select[25];
-    int ishfts, maxitr;
-
+    bool rvec;
 
     /* Define maximum dimensions for all arrays. */
 

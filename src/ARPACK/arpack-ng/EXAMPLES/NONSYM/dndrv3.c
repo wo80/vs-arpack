@@ -49,25 +49,20 @@ int dndrv3()
     double d__1;
 
     /* Local variables */
-    double d[75]	/* was [25][3] */, h;
+    double d[75]; /* (3 * MAXNCV) */
+    double workev[75];
+
+    double h;
+    double sigmar, sigmai;
+
     int j;
+    int ierr, nconv;
+    int ishfts, maxitr, mode;
 
-
-
-    int mode;
-    bool rvec;
-    int ierr;
-
-    int nconv;
-    bool first;
     int ipntr[14];
     int iparam[11];
-    double sigmai;
     bool select[25];
-    double sigmar;
-    int ishfts;
-    int maxitr;
-    double workev[75];
+    bool first, rvec;
 
     /* Define maximum dimensions for all arrays. */
 

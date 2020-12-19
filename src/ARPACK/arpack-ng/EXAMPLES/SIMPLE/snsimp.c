@@ -79,29 +79,22 @@
 int snsimp()
 {
     /* System generated locals */
-    int i__1;
     float r__1;
 
     /* Local variables */
-    float d[90]	/* was [30][3] */;
+    float d[90] /* (3 * MAXNCV) */;
+    float workev[90];
+
+    float sigmar, sigmai;
+
     int j;
+    int ierr, nconv;
+    int ishfts, maxitr, mode;
 
-
-
-
-    bool rvec;
-    int ierr, mode1;
-
-    int nconv;
-    bool first;
     int ipntr[14];
     int iparam[11];
-    float sigmai;
     bool select[30];
-    float sigmar;
-    int ishfts, maxitr;
-
-    float workev[90];
+    bool first, rvec;
 
     /* ---------------------------------------------------- */
     /* Storage Declarations:                                */
@@ -264,13 +257,11 @@ int snsimp()
 
     ishfts = 1;
     maxitr = 300;
-    mode1 = 1;
+    mode = 1;
 
     iparam[0] = ishfts;
-
     iparam[2] = maxitr;
-
-    iparam[6] = mode1;
+    iparam[6] = mode;
 
     /* ----------------------------------------- */
     /* M A I N   L O O P (Reverse communication) */
@@ -341,7 +332,7 @@ L10:
     /* The routine SNEUPD now called to do this  */
     /* post processing (Other modes may require  */
     /* more complicated post processing than     */
-    /* mode1,)                                   */
+    /* mode,)                                   */
     /*                                           */
     /* ----------------------------------------- */
 

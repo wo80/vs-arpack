@@ -49,32 +49,24 @@ int sndrv6()
     complex q__1;
 
     /* Local variables */
-    float d[75]	/* was [25][3] */;
-    int j;
+    float d[75]; /* (3 * MAXNCV) */
+    float workev[75];
+
+    float denr, deni;
+    float numr, numi;
+    float sigmar, sigmai;
+
     complex c1, c2, c3;
 
+    int j;
+    int ierr, nconv;
+    int ishfts, maxitr, mode;
 
-    float deni;
-
-    int mode;
-    float denr;
-
-    bool rvec;
-    int ierr, ipiv[256];
-    float numi;
-    float numr;
-
-    complex ctemp[256];
-    int nconv;
-    bool first;
+    int ipiv[256];
     int ipntr[14];
     int iparam[11];
-    float sigmai;
     bool select[25];
-    float sigmar;
-    int ishfts, maxitr;
-
-    float workev[75];
+    bool first, rvec;
 
     /* Define maximum dimensions for all arrays. */
 
@@ -135,6 +127,7 @@ int sndrv6()
     complex* cdl = (complex*)malloc(n * sizeof(complex));
     complex* cdu = (complex*)malloc(n * sizeof(complex));
     complex* cdu2 = (complex*)malloc(n * sizeof(complex));
+    complex* ctemp = (complex*)malloc(n * sizeof(complex));
 
     r__1 = -2.0f - sigmar;
     r__2 = -sigmai;
@@ -154,12 +147,9 @@ int sndrv6()
     {
         i__2 = j - 1;
         cdl[i__2].r = c1.r, cdl[i__2].i = c1.i;
-        i__2 = j - 1;
         cdd[i__2].r = c2.r, cdd[i__2].i = c2.i;
-        i__2 = j - 1;
         cdu[i__2].r = c3.r, cdu[i__2].i = c3.i;
     }
-    i__1 = n - 1;
     cdd[i__1].r = c2.r, cdd[i__1].i = c2.i;
 
     cgttrf_(&n, cdl, cdd, cdu, cdu2, ipiv, &ierr);
@@ -576,6 +566,7 @@ EXIT:
     free(cdl);
     free(cdu);
     free(cdu2);
+    free(ctemp);
 
     free(ax);
     free(mx);

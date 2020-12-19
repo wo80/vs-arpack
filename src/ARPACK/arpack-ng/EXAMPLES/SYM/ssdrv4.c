@@ -48,26 +48,20 @@
 int ssdrv4()
 {
     /* System generated locals */
-    int i__1;
     float r__1;
 
     /* Local variables */
-    float d[50]	/* was [25][2] */, h;
+    float d[50] /* (2 * MAXNCV) */;
+    float r1, r2, h, sigma;
+
     int j;
-    float r1, r2;
-
-    int mode;
-    bool rvec;
-    int ierr, ipiv[256];
-    float sigma;
-
-    int nconv;
+    int ierr, nconv;
+    int ishfts, maxitr, mode;
+    int ipiv[256];
     int ipntr[11];
     int iparam[11];
     bool select[25];
-    int ishfts;
-    int maxitr;
-
+    bool rvec;
 
     /* Define maximum dimensions for all arrays. */
 

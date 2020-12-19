@@ -94,7 +94,6 @@
 int dsvd()
 {
     /* System generated locals */
-    int i__1;
     double d__1;
 
     /* Builtin functions */
@@ -102,21 +101,17 @@ int dsvd()
     double sqrt(double);
 
     /* Local variables */
+    double s[50] /* (2 * MAXNCV) */;
+    double sigma, temp;
+
     int j;
+    int ierr, nconv;
+    int ishfts, maxitr, mode;
 
-    double s[50]	/* was [25][2] */;
-
-    bool rvec;
-    int ierr;
-    double temp;
-    int mode1;
-    double sigma;
-
-    int nconv;
     int ipntr[11];
     int iparam[11];
     bool select[25];
-    int ishfts, maxitr;
+    bool rvec;
 
     /* ---------------------------------------------------- */
     /* Storage Declarations:                                */
@@ -288,13 +283,11 @@ int dsvd()
 
     ishfts = 1;
     maxitr = n;
-    mode1 = 1;
+    mode = 1;
 
     iparam[0] = ishfts;
-
     iparam[2] = maxitr;
-
-    iparam[6] = mode1;
+    iparam[6] = mode;
 
     /* ---------------------------------------------- */
     /* M A I N   L O O P (Reverse communication loop) */
@@ -309,7 +302,7 @@ L10:
     /* has been exceeded.                          */
     /* ------------------------------------------- */
 
-    dsaupd_(&ido, bmat, &n, which, &nev, &tol, resid, &ncv, v, &n /* was &c__250 */, iparam, ipntr, workd, workl, &lworkl, &info);
+    dsaupd_(&ido, bmat, &n, which, &nev, &tol, resid, &ncv, v, &n, iparam, ipntr, workd, workl, &lworkl, &info);
 
     if (ido == -1 || ido == 1)
     {
@@ -370,7 +363,7 @@ L10:
 
     rvec = true;
 
-    dseupd_(&rvec, "A", select, s, v, &n /* was &c__250 */, &sigma, bmat, &n, which, &nev, &tol, resid, &ncv, v, &n /* was &c__250 */, iparam, ipntr, workd, workl, &lworkl, &ierr);
+    dseupd_(&rvec, "A", select, s, v, &n, &sigma, bmat, &n, which, &nev, &tol, resid, &ncv, v, &n, iparam, ipntr, workd, workl, &lworkl, &ierr);
 
     /* --------------------------------------------- */
     /* Singular values are returned in the first     */
@@ -516,9 +509,6 @@ EXIT:
 
 int dsvd_av_(const int m, const int n, double *x, double *w)
 {
-    /* System generated locals */
-    int i__1, i__2;
-
     /* Local variables */
     double h;
     int i, j;
@@ -533,31 +523,25 @@ int dsvd_av_(const int m, const int n, double *x, double *w)
     /* Function Body */
     h = 1.0 / (double) (m + 1);
     k = 1.0 / (double) (n + 1);
-    i__1 = m;
-    for (i = 1; i <= i__1; ++i)
+    for (i = 1; i <= m; ++i)
     {
         w[i] = 0.0;
     }
     t = 0.0;
 
-    i__1 = n;
-    for (j = 1; j <= i__1; ++j)
+    for (j = 1; j <= n; ++j)
     {
         t += k;
         s = 0.0;
-        i__2 = j;
-        for (i = 1; i <= i__2; ++i)
+        for (i = 1; i <= j; ++i)
         {
             s += h;
             w[i] += k * s * (t - 1.0) * x[j];
-
         }
-        i__2 = m;
-        for (i = j + 1; i <= i__2; ++i)
+        for (i = j + 1; i <= m; ++i)
         {
             s += h;
             w[i] += k * t * (s - 1.0) * x[j];
-
         }
     }
 
@@ -568,9 +552,6 @@ int dsvd_av_(const int m, const int n, double *x, double *w)
 
 int dsvd_atv_(const int m, const int n, double *w, double *y)
 {
-    /* System generated locals */
-    int i__1, i__2;
-
     /* Local variables */
     double h;
     int i, j;
@@ -585,31 +566,25 @@ int dsvd_atv_(const int m, const int n, double *w, double *y)
     /* Function Body */
     h = 1.0 / (double) (m + 1);
     k = 1.0 / (double) (n + 1);
-    i__1 = n;
-    for (i = 1; i <= i__1; ++i)
+    for (i = 1; i <= n; ++i)
     {
         y[i] = 0.0;
     }
     t = 0.0;
 
-    i__1 = n;
-    for (j = 1; j <= i__1; ++j)
+    for (j = 1; j <= n; ++j)
     {
         t += k;
         s = 0.0;
-        i__2 = j;
-        for (i = 1; i <= i__2; ++i)
+        for (i = 1; i <= j; ++i)
         {
             s += h;
             y[j] += k * s * (t - 1.0) * w[i];
-
         }
-        i__2 = m;
-        for (i = j + 1; i <= i__2; ++i)
+        for (i = j + 1; i <= m; ++i)
         {
             s += h;
             y[j] += k * t * (s - 1.0) * w[i];
-
         }
     }
 

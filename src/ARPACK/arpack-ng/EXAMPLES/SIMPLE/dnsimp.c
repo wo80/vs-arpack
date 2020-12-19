@@ -79,28 +79,22 @@
 int dnsimp()
 {
     /* System generated locals */
-    int i__1;
     double d__1;
 
     /* Local variables */
-    double d[90]	/* was [30][3] */;
+    double d[90] /* (3 * MAXNCV) */;
+    double workev[90];
+
+    double sigmar, sigmai;
+
     int j;
+    int ierr, nconv;
+    int ishfts, maxitr, mode;
 
-
-
-
-    bool rvec;
-    int ierr, mode1;
-
-    int nconv;
-    bool first;
     int ipntr[14];
     int iparam[11];
-    double sigmai;
     bool select[30];
-    double sigmar;
-    int ishfts, maxitr;
-    double workev[90];
+    bool first, rvec;
 
     /* ---------------------------------------------------- */
     /* Storage Declarations:                                */
@@ -263,13 +257,11 @@ int dnsimp()
 
     ishfts = 1;
     maxitr = 300;
-    mode1 = 1;
+    mode = 1;
 
     iparam[0] = ishfts;
-
     iparam[2] = maxitr;
-
-    iparam[6] = mode1;
+    iparam[6] = mode;
 
     /* ----------------------------------------- */
     /* M A I N   L O O P (Reverse communication) */
@@ -340,7 +332,7 @@ L10:
     /* The routine DNEUPD now called to do this  */
     /* post processing (Other modes may require  */
     /* more complicated post processing than     */
-    /* mode1,)                                   */
+    /* mode,)                                   */
     /*                                           */
     /* ----------------------------------------- */
 

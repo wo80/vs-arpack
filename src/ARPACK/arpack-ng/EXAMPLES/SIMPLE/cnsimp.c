@@ -78,24 +78,22 @@ int cnsimp()
     complex q__1;
 
     /* Local variables */
+    float rd[90] /* (3 * MAXNCV) */;
+    float rwork[30];
+
     complex d[30];
-    int j;
-    float rd[90]	/* was [30][3] */;
+    complex workev[60];
 
-
-
-
-    bool rvec;
-    int ierr, mode1;
     complex sigma;
 
-    int nconv;
+    int j;
+    int ierr, nconv;
+    int ishfts, maxitr, mode;
+
     int ipntr[14];
-    float rwork[30];
     int iparam[11];
     bool select[30];
-    int ishfts, maxitr;
-    complex workev[60];
+    bool rvec;
 
     /* ---------------------------------------------------- */
     /* Storage Declarations:                                */
@@ -258,13 +256,11 @@ int cnsimp()
 
     ishfts = 1;
     maxitr = 300;
-    mode1 = 1;
+    mode = 1;
 
     iparam[0] = ishfts;
-
     iparam[2] = maxitr;
-
-    iparam[6] = mode1;
+    iparam[6] = mode;
 
     /* ---------------------------------------------- */
     /* M A I N   L O O P (Reverse Communication Loop) */
@@ -337,7 +333,7 @@ L10:
     /* The routine CNEUPD now called to do this  */
     /* post processing (Other modes may require  */
     /* more complicated post processing than     */
-    /* mode1.0)                                   */
+    /* mode.0)                                   */
     /*                                           */
     /* ----------------------------------------- */
 

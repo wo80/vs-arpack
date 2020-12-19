@@ -49,30 +49,24 @@ int dndrv6()
     zomplex z__1;
 
     /* Local variables */
-    double d[75]	/* was [25][3] */;
-    int j;
+    double d[75]; /* (3 * MAXNCV) */
+    double workev[75];
+
+    double denr, deni;
+    double numr, numi;
+    double sigmar, sigmai;
+
     zomplex c1, c2, c3;
 
+    int j;
+    int ierr, nconv;
+    int ishfts, maxitr, mode;
 
-    double deni;
-
-    int mode;
-    double denr;
-
-    bool rvec;
-    int ierr, ipiv[256];
-    double numi, numr;
-
-    zomplex ctemp[256];
-    int nconv;
-    bool first;
+    int ipiv[256];
     int ipntr[14];
     int iparam[11];
-    double sigmai;
     bool select[25];
-    double sigmar;
-    int ishfts, maxitr;
-    double workev[75];
+    bool first, rvec;
 
     /* Define maximum dimensions for all arrays. */
 
@@ -133,6 +127,7 @@ int dndrv6()
     zomplex* cdl = (zomplex*)malloc(n * sizeof(zomplex));
     zomplex* cdu = (zomplex*)malloc(n * sizeof(zomplex));
     zomplex* cdu2 = (zomplex*)malloc(n * sizeof(zomplex));
+    zomplex* ctemp = (zomplex*)malloc(n * sizeof(zomplex));
 
     d__1 = -2.0 - sigmar;
     d__2 = -sigmai;
@@ -152,12 +147,9 @@ int dndrv6()
     {
         i__2 = j - 1;
         cdl[i__2].r = c1.r, cdl[i__2].i = c1.i;
-        i__2 = j - 1;
         cdd[i__2].r = c2.r, cdd[i__2].i = c2.i;
-        i__2 = j - 1;
         cdu[i__2].r = c3.r, cdu[i__2].i = c3.i;
     }
-    i__1 = n - 1;
     cdd[i__1].r = c2.r, cdd[i__1].i = c2.i;
 
     zgttrf_(&n, cdl, cdd, cdu, cdu2, ipiv, &ierr);
@@ -574,6 +566,7 @@ EXIT:
     free(cdl);
     free(cdu);
     free(cdu2);
+    free(ctemp);
 
     free(ax);
     free(mx);

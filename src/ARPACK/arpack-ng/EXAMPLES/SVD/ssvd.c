@@ -94,7 +94,6 @@
 int ssvd()
 {
     /* System generated locals */
-    int i__1;
     float r__1;
 
     /* Builtin functions */
@@ -102,22 +101,17 @@ int ssvd()
     double sqrt(double);
 
     /* Local variables */
+    float s[50] /* (2 * MAXNCV) */;
+    float sigma, temp;
+
     int j;
+    int ierr, nconv;
+    int ishfts, maxitr, mode;
 
-    float s[50]	/* was [25][2] */;
-
-    bool rvec;
-    int ierr;
-    float temp;
-    int mode1;
-    float sigma;
-
-    int nconv;
     int ipntr[11];
     int iparam[11];
     bool select[25];
-    int ishfts, maxitr;
-
+    bool rvec;
 
     /* ---------------------------------------------------- */
     /* Storage Declarations:                                */
@@ -289,13 +283,11 @@ int ssvd()
 
     ishfts = 1;
     maxitr = n;
-    mode1 = 1;
+    mode = 1;
 
     iparam[0] = ishfts;
-
     iparam[2] = maxitr;
-
-    iparam[6] = mode1;
+    iparam[6] = mode;
 
     /* ---------------------------------------------- */
     /* M A I N   L O O P (Reverse communication loop) */
@@ -310,7 +302,7 @@ L10:
     /* has been exceeded.                          */
     /* ------------------------------------------- */
 
-    ssaupd_(&ido, bmat, &n, which, &nev, &tol, resid, &ncv, v, &n /* was &c__250 */, iparam, ipntr, workd, workl, &lworkl, &info);
+    ssaupd_(&ido, bmat, &n, which, &nev, &tol, resid, &ncv, v, &n, iparam, ipntr, workd, workl, &lworkl, &info);
 
     if (ido == -1 || ido == 1)
     {
@@ -371,7 +363,7 @@ L10:
 
     rvec = true;
 
-    sseupd_(&rvec, "A", select, s, v, &n /* was &c__250 */, &sigma, bmat, &n, which, &nev, &tol, resid, &ncv, v, &n /* was &c__250 */, iparam, ipntr, workd, workl, &lworkl, &ierr);
+    sseupd_(&rvec, "A", select, s, v, &n, &sigma, bmat, &n, which, &nev, &tol, resid, &ncv, v, &n, iparam, ipntr, workd, workl, &lworkl, &ierr);
 
     /* --------------------------------------------- */
     /* Singular values are returned in the first     */
@@ -517,9 +509,6 @@ EXIT:
 
 int ssvd_av_(const int m, const int n, float *x, float *w)
 {
-    /* System generated locals */
-    int i__1, i__2;
-
     /* Local variables */
     float h;
     int i, j;
@@ -534,31 +523,25 @@ int ssvd_av_(const int m, const int n, float *x, float *w)
     /* Function Body */
     h = 1.0f / (float) (m + 1);
     k = 1.0f / (float) (n + 1);
-    i__1 = m;
-    for (i = 1; i <= i__1; ++i)
+    for (i = 1; i <= m; ++i)
     {
         w[i] = 0.0f;
     }
     t = 0.0f;
 
-    i__1 = n;
-    for (j = 1; j <= i__1; ++j)
+    for (j = 1; j <= n; ++j)
     {
         t += k;
         s = 0.0f;
-        i__2 = j;
-        for (i = 1; i <= i__2; ++i)
+        for (i = 1; i <= j; ++i)
         {
             s += h;
             w[i] += k * s * (t - 1.0f) * x[j];
-
         }
-        i__2 = m;
-        for (i = j + 1; i <= i__2; ++i)
+        for (i = j + 1; i <= m; ++i)
         {
             s += h;
             w[i] += k * t * (s - 1.0f) * x[j];
-
         }
     }
 
@@ -569,9 +552,6 @@ int ssvd_av_(const int m, const int n, float *x, float *w)
 
 int ssvd_atv_(const int m, const int n, float *w, float *y)
 {
-    /* System generated locals */
-    int i__1, i__2;
-
     /* Local variables */
     float h;
     int i, j;
@@ -586,31 +566,25 @@ int ssvd_atv_(const int m, const int n, float *w, float *y)
     /* Function Body */
     h = 1.0f / (float) (m + 1);
     k = 1.0f / (float) (n + 1);
-    i__1 = n;
-    for (i = 1; i <= i__1; ++i)
+    for (i = 1; i <= n; ++i)
     {
         y[i] = 0.0f;
     }
     t = 0.0f;
 
-    i__1 = n;
-    for (j = 1; j <= i__1; ++j)
+    for (j = 1; j <= n; ++j)
     {
         t += k;
         s = 0.0f;
-        i__2 = j;
-        for (i = 1; i <= i__2; ++i)
+        for (i = 1; i <= j; ++i)
         {
             s += h;
             y[j] += k * s * (t - 1.0f) * w[i];
-
         }
-        i__2 = m;
-        for (i = j + 1; i <= i__2; ++i)
+        for (i = j + 1; i <= m; ++i)
         {
             s += h;
             y[j] += k * t * (s - 1.0f) * w[i];
-
         }
     }
 

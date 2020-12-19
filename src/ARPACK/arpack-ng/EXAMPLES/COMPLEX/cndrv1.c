@@ -50,22 +50,20 @@ int cndrv1()
     complex q__1;
 
     /* Local variables */
+    complex workev[90];
     complex d[30];
-    int j;
-    float rd[90]	/* was [30][3] */;
+    float rd[90] /* (3 * MAXNCV) */;
+    float rwork[30];
 
-    int mode;
-    bool rvec;
-    int ierr;
     complex sigma;
 
-    int nconv;
+    int j;
+    int ierr, nconv;
+    int ishfts, maxitr, mode;
     int ipntr[14];
-    float rwork[30];
     int iparam[11];
     bool select[30];
-    int ishfts, maxitr;
-    complex workev[90];
+    bool rvec;
 
     /* Define maximum dimensions for all arrays. */
 
