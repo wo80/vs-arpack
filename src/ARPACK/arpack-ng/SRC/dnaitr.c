@@ -215,7 +215,7 @@ int dnaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *nb,
     static bool first = true;
 
     /* System generated locals */
-    int h_dim1, h_offset, v_dim1, v_offset, i__1, i__2;
+    int h_dim, h_offset, v_dim, v_offset, i__1, i__2;
     double d__1, d__2;
 
     /* Builtin functions */
@@ -247,11 +247,11 @@ int dnaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *nb,
     /* Parameter adjustments */
     --workd;
     --resid;
-    v_dim1 = *ldv;
-    v_offset = 1 + v_dim1;
+    v_dim = *ldv;
+    v_offset = 1 + v_dim;
     v -= v_offset;
-    h_dim1 = *ldh;
-    h_offset = 1 + h_dim1;
+    h_dim = *ldh;
+    h_offset = 1 + h_dim;
     h -= h_offset;
     --ipntr;
 
@@ -440,11 +440,11 @@ L40:
     /* machine bound.                                          */
     /* ------------------------------------------------------- */
 
-    dcopy_(n, &resid[1], &c__1, &v[j * v_dim1 + 1], &c__1);
+    dcopy_(n, &resid[1], &c__1, &v[j * v_dim + 1], &c__1);
     if (*rnorm >= unfl)
     {
         temp1 = 1.0 / *rnorm;
-        dscal_(n, &temp1, &v[j * v_dim1 + 1], &c__1);
+        dscal_(n, &temp1, &v[j * v_dim + 1], &c__1);
         dscal_(n, &temp1, &workd[ipj], &c__1);
     }
     else
@@ -454,7 +454,7 @@ L40:
         /* use LAPACK routine SLASCL               */
         /* --------------------------------------- */
 
-        dlascl_("G", &i, &i, rnorm, &d_one, n, &c__1, &v[j * v_dim1 + 1], n, &infol);
+        dlascl_("G", &i, &i, rnorm, &d_one, n, &c__1, &v[j * v_dim + 1], n, &infol);
         dlascl_("G", &i, &i, rnorm, &d_one, n, &c__1, &workd[ipj], n, &infol);
     }
 
@@ -469,7 +469,7 @@ L40:
     arscnd_(&t2);
 #endif
 
-    dcopy_(n, &v[j * v_dim1 + 1], &c__1, &workd[ivj], &c__1);
+    dcopy_(n, &v[j * v_dim + 1], &c__1, &workd[ivj], &c__1);
     ipntr[1] = ivj;
     ipntr[2] = irj;
     ipntr[3] = ipj;
@@ -570,18 +570,18 @@ L60:
     /* WORKD(IPJ:IPJ+N-1) contains B*OP*v_{j}.  */
     /* ---------------------------------------- */
 
-    dgemv_("T", n, &j, &d_one, &v[v_offset], ldv, &workd[ipj], &c__1, &d_zero, &h[j * h_dim1 + 1], &c__1);
+    dgemv_("T", n, &j, &d_one, &v[v_offset], ldv, &workd[ipj], &c__1, &d_zero, &h[j * h_dim + 1], &c__1);
 
     /* ------------------------------------ */
     /* Orthogonalize r_{j} against V_{j}.   */
     /* RESID contains OP*v_{j}. See STEP 3. */
     /* ------------------------------------ */
 
-    dgemv_("N", n, &j, &d_m1, &v[v_offset], ldv, &h[j * h_dim1 + 1], &c__1,&d_one, &resid[1], &c__1);
+    dgemv_("N", n, &j, &d_m1, &v[v_offset], ldv, &h[j * h_dim + 1], &c__1,&d_one, &resid[1], &c__1);
 
     if (j > 1)
     {
-        h[j + (j - 1) * h_dim1] = betaj;
+        h[j + (j - 1) * h_dim] = betaj;
     }
 
 #ifndef NO_TIMER
@@ -676,7 +676,7 @@ L80:
         xtemp[0] = wnorm;
         xtemp[1] = *rnorm;
         dvout_(&c__2, xtemp, &debug_1.ndigit, "_naitr: re-orthonalization; wnorm and rnorm are");
-        dvout_(&j, &h[j * h_dim1 + 1], &debug_1.ndigit, "_naitr: j-th column of H");
+        dvout_(&j, &h[j * h_dim + 1], &debug_1.ndigit, "_naitr: j-th column of H");
     }
 #endif
 
@@ -695,7 +695,7 @@ L80:
     /* ------------------------------------------- */
 
     dgemv_("N", n, &j, &d_m1, &v[v_offset], ldv, &workd[irj], &c__1, &d_one, &resid[1], &c__1);
-    daxpy_(&j, &d_one, &workd[irj], &c__1, &h[j * h_dim1 + 1], &c__1);
+    daxpy_(&j, &d_one, &workd[irj], &c__1, &h[j * h_dim + 1], &c__1);
 
     orth2 = true;
 #ifndef NO_TIMER
@@ -842,8 +842,8 @@ L100:
             /* REFERENCE: LAPACK subroutine dlahqr        */
             /* ------------------------------------------ */
 
-            tst1 = (d__1 = h[i + i * h_dim1], abs(d__1)) + (d__2 = h[
-                        i + 1 + (i + 1) * h_dim1], abs(d__2));
+            tst1 = (d__1 = h[i + i * h_dim], abs(d__1)) + (d__2 = h[
+                        i + 1 + (i + 1) * h_dim], abs(d__2));
             if (tst1 == 0.0)
             {
                 i__2 = *k + *np;
@@ -851,10 +851,10 @@ L100:
             }
             /* Computing MAX */
             d__2 = ulp * tst1;
-            if ((d__1 = h[i + 1 + i * h_dim1], abs(d__1)) <= max(d__2,
+            if ((d__1 = h[i + 1 + i * h_dim], abs(d__1)) <= max(d__2,
                     smlnum))
             {
-                h[i + 1 + i * h_dim1] = 0.0;
+                h[i + 1 + i * h_dim] = 0.0;
             }
         }
 

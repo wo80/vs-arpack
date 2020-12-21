@@ -69,7 +69,7 @@ int ssesrt_(char *which, bool *apply, int *n, float *x,int *na, float *a,
             int *lda)
 {
     /* System generated locals */
-    int a_dim1, a_offset, i__1;
+    int a_dim, a_offset, i__1;
     float r__1, r__2;
 
     /* Local variables */
@@ -77,8 +77,8 @@ int ssesrt_(char *which, bool *apply, int *n, float *x,int *na, float *a,
     float temp;
 
     /* Parameter adjustments */
-    a_dim1 = *lda;
-    a_offset = 1 + a_dim1 * 0;
+    a_dim = *lda;
+    a_offset = 1 + a_dim * 0;
     a -= a_offset;
 
     /* Function Body */
@@ -111,7 +111,7 @@ L20:
                 x[j + igap] = temp;
                 if (*apply)
                 {
-                    sswap_(na, &a[j * a_dim1 + 1], &c__1, &a[(j + igap) * a_dim1 + 1], &c__1);
+                    sswap_(na, &a[j * a_dim + 1], &c__1, &a[(j + igap) * a_dim + 1], &c__1);
                 }
             }
             else
@@ -153,7 +153,7 @@ L50:
                 x[j + igap] = temp;
                 if (*apply)
                 {
-                    sswap_(na, &a[j * a_dim1 + 1], &c__1, &a[(j + igap) * a_dim1 + 1], &c__1);
+                    sswap_(na, &a[j * a_dim + 1], &c__1, &a[(j + igap) * a_dim + 1], &c__1);
                 }
             }
             else
@@ -195,7 +195,7 @@ L80:
                 x[j + igap] = temp;
                 if (*apply)
                 {
-                    sswap_(na, &a[j * a_dim1 + 1], &c__1, &a[(j + igap) * a_dim1 + 1], &c__1);
+                    sswap_(na, &a[j * a_dim + 1], &c__1, &a[(j + igap) * a_dim + 1], &c__1);
                 }
             }
             else
@@ -237,7 +237,7 @@ L110:
                 x[j + igap] = temp;
                 if (*apply)
                 {
-                    sswap_(na, &a[j * a_dim1 + 1], &c__1, &a[(j + igap) * a_dim1 + 1], &c__1);
+                    sswap_(na, &a[j * a_dim + 1], &c__1, &a[(j + igap) * a_dim + 1], &c__1);
                 }
             }
             else

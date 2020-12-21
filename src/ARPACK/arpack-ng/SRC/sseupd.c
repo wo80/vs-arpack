@@ -225,7 +225,7 @@ int sseupd_(bool *rvec, char *howmny, bool *select, float *d, float *z, int *ldz
             float *workd, float *workl, int *lworkl, int *info)
 {
     /* System generated locals */
-    int v_dim1, v_offset, z_dim1, z_offset, i__1;
+    int v_offset, z_offset, i__1;
     float r__1, r__2, r__3;
 
     /* Builtin functions */
@@ -250,13 +250,11 @@ int sseupd_(bool *rvec, char *howmny, bool *select, float *d, float *z, int *ldz
     /* Parameter adjustments */
     --workd;
     --resid;
-    z_dim1 = *ldz;
-    z_offset = 1 + z_dim1;
+    z_offset = 1 + *ldz;
     z -= z_offset;
     --d;
     --select;
-    v_dim1 = *ldv;
-    v_offset = 1 + v_dim1;
+    v_offset = 1 + *ldv;
     v -= v_offset;
     --iparam;
     --ipntr;

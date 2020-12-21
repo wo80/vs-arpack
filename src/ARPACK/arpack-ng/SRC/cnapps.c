@@ -141,7 +141,7 @@ int cnapps_(int *n, int *kev, int *np, complex *
     static bool first = true;
 
     /* System generated locals */
-    int h_dim1, h_offset, v_dim1, v_offset, q_dim1, q_offset, i__1, i__2,
+    int h_dim, h_offset, v_dim, v_offset, q_dim, q_offset, i__1, i__2,
             i__3, i__4, i__5, i__6;
     float r__1, r__2, r__3, r__4;
     complex q__1, q__2, q__3, q__4, q__5;
@@ -170,14 +170,14 @@ int cnapps_(int *n, int *kev, int *np, complex *
     --resid;
     --workl;
     --shift;
-    v_dim1 = *ldv;
-    v_offset = 1 + v_dim1;
+    v_dim = *ldv;
+    v_offset = 1 + v_dim;
     v -= v_offset;
-    h_dim1 = *ldh;
-    h_offset = 1 + h_dim1;
+    h_dim = *ldh;
+    h_offset = 1 + h_dim;
     h -= h_offset;
-    q_dim1 = *ldq;
-    q_offset = 1 + q_dim1;
+    q_dim = *ldq;
+    q_offset = 1 + q_dim;
     q -= q_offset;
 
     /* Function Body */
@@ -260,8 +260,8 @@ L20:
             /* REFERENCE: LAPACK subroutine clahqr    */
             /* -------------------------------------- */
 
-            i__3 = i + i * h_dim1;
-            i__4 = i + 1 + (i + 1) * h_dim1;
+            i__3 = i + i * h_dim;
+            i__4 = i + 1 + (i + 1) * h_dim;
             r__1 = h[i__3].r;
             r__2 = h[i__3].i;
             r__3 = h[i__4].r;
@@ -272,7 +272,7 @@ L20:
                 i__3 = kplusp - jj + 1;
                 tst1 = clanhs_("1", &i__3, &h[h_offset], ldh, &workl[1]);
             }
-            i__3 = i + 1 + i * h_dim1;
+            i__3 = i + 1 + i * h_dim;
             /* Computing MAX */
             r__2 = ulp * tst1;
             if ((r__1 = h[i__3].r, dabs(r__1)) <= dmax(r__2,smlnum))
@@ -313,9 +313,9 @@ L40:
             goto L100;
         }
 
-        i__2 = istart + istart * h_dim1;
+        i__2 = istart + istart * h_dim;
         h11.r = h[i__2].r, h11.i = h[i__2].i;
-        i__2 = istart + 1 + istart * h_dim1;
+        i__2 = istart + 1 + istart * h_dim;
         h21.r = h[i__2].r, h21.i = h[i__2].i;
         q__1.r = h11.r - sigma.r, q__1.i = h11.i - sigma.i;
         f.r = q__1.r, f.i = q__1.i;
@@ -331,9 +331,9 @@ L40:
             clartg_(&f, &g, &c, &s, &r);
             if (i > istart)
             {
-                i__3 = i + (i - 1) * h_dim1;
+                i__3 = i + (i - 1) * h_dim;
                 h[i__3].r = r.r, h[i__3].i = r.i;
-                i__3 = i + 1 + (i - 1) * h_dim1;
+                i__3 = i + 1 + (i - 1) * h_dim;
                 h[i__3].r = 0.0f, h[i__3].i = 0.0f;
             }
 
@@ -347,8 +347,8 @@ L40:
                 /* h(i+1,j) = -conjg(s)*h(i,j) + c*h(i+1,j) */
                 /* h(i,j)   = t                             */
 
-                i__4 = i + j * h_dim1;
-                i__5 = i + 1 + j * h_dim1;
+                i__4 = i + j * h_dim;
+                i__5 = i + 1 + j * h_dim;
 
                 t.r = c * h[i__4].r + (s.r * h[i__5].r - s.i * h[i__5].i);
                 t.i = c * h[i__4].i + (s.r * h[i__5].i + s.i * h[i__5].r);
@@ -373,8 +373,8 @@ L40:
                 /* h(j,i+1) = -s*h(j,i) + c*h(j,i+1)        */
                 /* h(j,i)   = t                             */
 
-                i__4 = j + i * h_dim1;
-                i__5 = j + (i + 1) * h_dim1;
+                i__4 = j + i * h_dim;
+                i__5 = j + (i + 1) * h_dim;
 
                 t.r = c * h[i__4].r + (s.r * h[i__5].r + s.i * h[i__5].i);
                 t.i = c * h[i__4].i + (s.r * h[i__5].i - s.i * h[i__5].r);
@@ -399,8 +399,8 @@ L40:
                 /* q(j,i+1) = - s*q(j,i) + c*q(j,i+1)        */
                 /* q(j,i)   = t                              */
 
-                i__4 = j + i * q_dim1;
-                i__5 = j + (i + 1) * q_dim1;
+                i__4 = j + i * q_dim;
+                i__5 = j + (i + 1) * q_dim;
 
                 t.r = c * q[i__4].r + (s.r * q[i__5].r + s.i * q[i__5].i);
                 t.i = c * q[i__4].i + (s.r * q[i__5].i - s.i * q[i__5].r);
@@ -418,9 +418,9 @@ L40:
 
             if (i < iend - 1)
             {
-                i__3 = i + 1 + i * h_dim1;
+                i__3 = i + 1 + i * h_dim;
                 f.r = h[i__3].r, f.i = h[i__3].i;
-                i__3 = i + 2 + i * h_dim1;
+                i__3 = i + 2 + i * h_dim;
                 g.r = h[i__3].r, g.i = h[i__3].i;
             }
         }
@@ -456,30 +456,30 @@ L100:
     i__1 = *kev;
     for (j = 1; j <= i__1; ++j)
     {
-        i__2 = j + 1 + j * h_dim1;
+        i__2 = j + 1 + j * h_dim;
         if (h[i__2].r < 0.0f || h[i__2].i != 0.0f)
         {
             /* t = h(j+1,j) / slapy2(real(h(j+1,j)),aimag(h(j+1,j))) */
-            i__2 = j + 1 + j * h_dim1;
+            i__2 = j + 1 + j * h_dim;
             r__1 = slapy2_(&h[i__2].r, &h[i__2].i);
             t.r = h[i__2].r / r__1;
             t.i = h[i__2].i / r__1;
 
             i__2 = kplusp - j + 1;
-            i__3 = j + 1 + j * h_dim1;
+            i__3 = j + 1 + j * h_dim;
             r_cnjg(&q__1, &t);
             cscal_(&i__2, &q__1, &h[i__3], ldh);
             /* Computing MIN */
             i__3 = j + 2;
             i__2 = min(i__3,kplusp);
-            cscal_(&i__2, &t, &h[(j + 1) * h_dim1 + 1], &c__1);
+            cscal_(&i__2, &t, &h[(j + 1) * h_dim + 1], &c__1);
             /* Computing MIN */
             i__3 = j + *np + 1;
             i__2 = min(i__3,kplusp);
-            cscal_(&i__2, &t, &q[(j + 1) * q_dim1 + 1], &c__1);
+            cscal_(&i__2, &t, &q[(j + 1) * q_dim + 1], &c__1);
 
             /* h(j+1,j) = cmplx( real( h(j+1,j) ), rzero ) */
-            i__2 = j + 1 + j * h_dim1;
+            i__2 = j + 1 + j * h_dim;
             h[i__2].i = 0.0f;
         }
     }
@@ -496,8 +496,8 @@ L100:
         /* we take advantage of this.                 */
         /* ------------------------------------------ */
 
-        i__2 = i + i * h_dim1;
-        i__3 = i + 1 + (i + 1) * h_dim1;
+        i__2 = i + i * h_dim;
+        i__3 = i + 1 + (i + 1) * h_dim;
         r__1 = h[i__2].r;
         r__2 = h[i__2].i;
         r__3 = h[i__3].r;
@@ -507,7 +507,7 @@ L100:
         {
             tst1 = clanhs_("1", kev, &h[h_offset], ldh, &workl[1]);
         }
-        i__2 = i + 1 + i * h_dim1;
+        i__2 = i + 1 + i * h_dim;
         /* Computing MAX */
         r__1 = ulp * tst1;
         if (h[i__2].r <= dmax(r__1,smlnum))
@@ -524,10 +524,10 @@ L100:
     /* of H would be zero as in exact arithmetic.      */
     /* ----------------------------------------------- */
 
-    i__1 = *kev + 1 + *kev * h_dim1;
+    i__1 = *kev + 1 + *kev * h_dim;
     if (h[i__1].r > 0.0f)
     {
-        cgemv_("N", n, &kplusp, &c_one, &v[v_offset], ldv, &q[(*kev + 1) * q_dim1 + 1], &c__1, &c_zero, &workd[*n + 1], &c__1);
+        cgemv_("N", n, &kplusp, &c_one, &v[v_offset], ldv, &q[(*kev + 1) * q_dim + 1], &c__1, &c_zero, &workd[*n + 1], &c__1);
     }
 
     /* -------------------------------------------------------- */
@@ -539,24 +539,24 @@ L100:
     for (i = 1; i <= i__1; ++i)
     {
         i__2 = kplusp - i + 1;
-        cgemv_("N", n, &i__2, &c_one, &v[v_offset], ldv, &q[(*kev - i + 1) * q_dim1 + 1], &c__1, &c_zero, &workd[1], &c__1);
-        ccopy_(n, &workd[1], &c__1, &v[(kplusp - i + 1) * v_dim1 + 1], &c__1);
+        cgemv_("N", n, &i__2, &c_one, &v[v_offset], ldv, &q[(*kev - i + 1) * q_dim + 1], &c__1, &c_zero, &workd[1], &c__1);
+        ccopy_(n, &workd[1], &c__1, &v[(kplusp - i + 1) * v_dim + 1], &c__1);
     }
 
     /* ----------------------------------------------- */
     /*  Move v(:,kplusp-kev+1:kplusp) into v(:,1:kev). */
     /* ----------------------------------------------- */
 
-    clacpy_("A", n, kev, &v[(kplusp - *kev + 1) * v_dim1 + 1], ldv, &v[v_offset], ldv);
+    clacpy_("A", n, kev, &v[(kplusp - *kev + 1) * v_dim + 1], ldv, &v[v_offset], ldv);
 
     /* ------------------------------------------------------------ */
     /* Copy the (kev+1)-st column of (V*Q) in the appropriate place */
     /* ------------------------------------------------------------ */
 
-    i__1 = *kev + 1 + *kev * h_dim1;
+    i__1 = *kev + 1 + *kev * h_dim;
     if (h[i__1].r > 0.0f)
     {
-        ccopy_(n, &workd[*n + 1], &c__1, &v[(*kev + 1) * v_dim1 + 1], &c__1);
+        ccopy_(n, &workd[*n + 1], &c__1, &v[(*kev + 1) * v_dim + 1], &c__1);
     }
 
     /* ----------------------------------- */
@@ -567,17 +567,17 @@ L100:
     /*    betak = e_{kev+1}'*H*e_{kev}     */
     /* ----------------------------------- */
 
-    cscal_(n, &q[kplusp + *kev * q_dim1], &resid[1], &c__1);
-    i__1 = *kev + 1 + *kev * h_dim1;
+    cscal_(n, &q[kplusp + *kev * q_dim], &resid[1], &c__1);
+    i__1 = *kev + 1 + *kev * h_dim;
     if (h[i__1].r > 0.0f)
     {
-        caxpy_(n, &h[i__1], &v[(*kev + 1) * v_dim1 + 1],&c__1, &resid[1], &c__1);
+        caxpy_(n, &h[i__1], &v[(*kev + 1) * v_dim + 1],&c__1, &resid[1], &c__1);
     }
 
 #ifndef NO_TRACE
     if (msglvl > 1)
     {
-        cvout_(&c__1, &q[kplusp + *kev * q_dim1], &debug_1.ndigit, "_napps: sigmak = (e_{kev+p}^T*Q)*e_{kev}");
+        cvout_(&c__1, &q[kplusp + *kev * q_dim], &debug_1.ndigit, "_napps: sigmak = (e_{kev+p}^T*Q)*e_{kev}");
         cvout_(&c__1, &h[i__1], &debug_1.ndigit, "_napps: betak = e_{kev+1}^T*H*e_{kev}");
         ivout_(&c__1, kev, &debug_1.ndigit, "_napps: Order of the final Hessenberg matrix ");
         if (msglvl > 2)

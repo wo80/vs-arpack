@@ -101,7 +101,7 @@ int dneigh_(double *rnorm, int *n, double *h,
             bounds, double *q, int *ldq, double *workl, int *ierr)
 {
     /* System generated locals */
-    int h_dim1, h_offset, q_dim1, q_offset, i__1;
+    int h_offset, q_dim, q_offset, i__1;
     double d__1, d__2;
 
     /* Local variables */
@@ -123,11 +123,10 @@ int dneigh_(double *rnorm, int *n, double *h,
     --bounds;
     --ritzi;
     --ritzr;
-    h_dim1 = *ldh;
-    h_offset = 1 + h_dim1;
+    h_offset = 1 + *ldh;
     h -= h_offset;
-    q_dim1 = *ldq;
-    q_offset = 1 + q_dim1;
+    q_dim = *ldq;
+    q_offset = 1 + q_dim;
     q -= q_offset;
 
     /* Function Body */
@@ -208,9 +207,9 @@ int dneigh_(double *rnorm, int *n, double *h,
             /* Real eigenvalue case */
             /* -------------------- */
 
-            temp = dnrm2_(n, &q[i * q_dim1 + 1], &c__1);
+            temp = dnrm2_(n, &q[i * q_dim + 1], &c__1);
             d__1 = 1.0 / temp;
-            dscal_(n, &d__1, &q[i * q_dim1 + 1], &c__1);
+            dscal_(n, &d__1, &q[i * q_dim + 1], &c__1);
         }
         else
         {
@@ -224,13 +223,13 @@ int dneigh_(double *rnorm, int *n, double *h,
 
             if (iconj == 0)
             {
-                d__1 = dnrm2_(n, &q[i * q_dim1 + 1], &c__1);
-                d__2 = dnrm2_(n, &q[(i + 1) * q_dim1 + 1], &c__1);
+                d__1 = dnrm2_(n, &q[i * q_dim + 1], &c__1);
+                d__2 = dnrm2_(n, &q[(i + 1) * q_dim + 1], &c__1);
                 temp = dlapy2_(&d__1, &d__2);
                 d__1 = 1.0 / temp;
-                dscal_(n, &d__1, &q[i * q_dim1 + 1], &c__1);
+                dscal_(n, &d__1, &q[i * q_dim + 1], &c__1);
                 d__1 = 1.0 / temp;
-                dscal_(n, &d__1, &q[(i + 1) * q_dim1 + 1], &c__1);
+                dscal_(n, &d__1, &q[(i + 1) * q_dim + 1], &c__1);
                 iconj = 1;
             }
             else

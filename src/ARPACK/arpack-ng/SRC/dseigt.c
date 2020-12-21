@@ -89,7 +89,7 @@ int dseigt_(double *rnorm, int *n, double *h,
             int *ierr)
 {
     /* System generated locals */
-    int h_dim1, h_offset, i__1;
+    int h_dim, h_offset, i__1;
     double d__1;
 
     /* Local variables */
@@ -107,8 +107,8 @@ int dseigt_(double *rnorm, int *n, double *h,
     --workl;
     --bounds;
     --eig;
-    h_dim1 = *ldh;
-    h_offset = 1 + h_dim1;
+    h_dim = *ldh;
+    h_offset = 1 + h_dim;
     h -= h_offset;
 
     /* Function Body */
@@ -121,18 +121,18 @@ int dseigt_(double *rnorm, int *n, double *h,
 #ifndef NO_TRACE
     if (msglvl > 0)
     {
-        dvout_(n, &h[(h_dim1 << 1) + 1], &debug_1.ndigit, "_seigt: main diagonal of matrix H");
+        dvout_(n, &h[(h_dim << 1) + 1], &debug_1.ndigit, "_seigt: main diagonal of matrix H");
         if (*n > 1)
         {
             i__1 = *n - 1;
-            dvout_(&i__1, &h[h_dim1 + 2], &debug_1.ndigit, "_seigt: sub diagonal of matrix H");
+            dvout_(&i__1, &h[h_dim + 2], &debug_1.ndigit, "_seigt: sub diagonal of matrix H");
         }
     }
 #endif
 
-    dcopy_(n, &h[(h_dim1 << 1) + 1], &c__1, &eig[1], &c__1);
+    dcopy_(n, &h[(h_dim << 1) + 1], &c__1, &eig[1], &c__1);
     i__1 = *n - 1;
-    dcopy_(&i__1, &h[h_dim1 + 2], &c__1, &workl[1], &c__1);
+    dcopy_(&i__1, &h[h_dim + 2], &c__1, &workl[1], &c__1);
     dstqrb_(n, &eig[1], &workl[1], &bounds[1], &workl[*n + 1], ierr);
     if (*ierr != 0)
     {

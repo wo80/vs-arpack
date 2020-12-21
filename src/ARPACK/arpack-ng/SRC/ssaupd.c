@@ -413,7 +413,7 @@ int ssaupd_(int *ido, char *bmat, int *n, char *which, int *nev, float *tol,
 {
 
     /* System generated locals */
-    int v_dim1, v_offset, i__1, i__2;
+    int v_offset, i__1, i__2;
 
     /* Local variables */
     int j;
@@ -425,8 +425,7 @@ int ssaupd_(int *ido, char *bmat, int *n, char *which, int *nev, float *tol,
     /* Parameter adjustments */
     --workd;
     --resid;
-    v_dim1 = *ldv;
-    v_offset = 1 + v_dim1;
+    v_offset = 1 + *ldv;
     v -= v_offset;
     --iparam;
     --ipntr;

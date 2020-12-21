@@ -210,7 +210,7 @@ int ssaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *mode,
     static bool first = true;
 
     /* System generated locals */
-    int h_dim1, h_offset, v_dim1, v_offset, i__1;
+    int h_dim, h_offset, v_dim, v_offset, i__1;
 
     /* Builtin functions */
     double sqrt(double);
@@ -236,11 +236,11 @@ int ssaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *mode,
     /* Parameter adjustments */
     --workd;
     --resid;
-    v_dim1 = *ldv;
-    v_offset = 1 + v_dim1;
+    v_dim = *ldv;
+    v_offset = 1 + v_dim;
     v -= v_offset;
-    h_dim1 = *ldh;
-    h_offset = 1 + h_dim1;
+    h_dim = *ldh;
+    h_offset = 1 + h_dim;
     h -= h_offset;
     --ipntr;
 
@@ -433,11 +433,11 @@ L40:
     /* machine bound.                                          */
     /* ------------------------------------------------------- */
 
-    scopy_(n, &resid[1], &c__1, &v[j * v_dim1 + 1], &c__1);
+    scopy_(n, &resid[1], &c__1, &v[j * v_dim + 1], &c__1);
     if (*rnorm >= safmin)
     {
         temp1 = 1.0f / *rnorm;
-        sscal_(n, &temp1, &v[j * v_dim1 + 1], &c__1);
+        sscal_(n, &temp1, &v[j * v_dim + 1], &c__1);
         sscal_(n, &temp1, &workd[ipj], &c__1);
     }
     else
@@ -447,7 +447,7 @@ L40:
         /* use LAPACK routine SLASCL               */
         /* --------------------------------------- */
 
-        slascl_("G", &i, &i, rnorm, &s_one, n, &c__1, &v[j * v_dim1 + 1], n, &infol);
+        slascl_("G", &i, &i, rnorm, &s_one, n, &c__1, &v[j * v_dim + 1], n, &infol);
         slascl_("G", &i, &i, rnorm, &s_one, n, &c__1, &workd[ipj], n, &infol);
     }
 
@@ -462,7 +462,7 @@ L40:
     arscnd_(&t2);
 #endif
 
-    scopy_(n, &v[j * v_dim1 + 1], &c__1, &workd[ivj], &c__1);
+    scopy_(n, &v[j * v_dim + 1], &c__1, &workd[ivj], &c__1);
     ipntr[1] = ivj;
     ipntr[2] = irj;
     ipntr[3] = ipj;
@@ -604,14 +604,14 @@ L65:
     /* Extend H to have j rows and columns. */
     /* ------------------------------------ */
 
-    h[j + (h_dim1 << 1)] = workd[irj + j - 1];
+    h[j + (h_dim << 1)] = workd[irj + j - 1];
     if (j == 1 || rstart)
     {
-        h[j + h_dim1] = 0.0f;
+        h[j + h_dim] = 0.0f;
     }
     else
     {
-        h[j + h_dim1] = *rnorm;
+        h[j + h_dim] = *rnorm;
     }
 #ifndef NO_TIMER
     arscnd_(&t4);
@@ -724,9 +724,9 @@ L80:
 
     if (j == 1 || rstart)
     {
-        h[j + h_dim1] = 0.0f;
+        h[j + h_dim] = 0.0f;
     }
-    h[j + (h_dim1 << 1)] += workd[irj + j - 1];
+    h[j + (h_dim << 1)] += workd[irj + j - 1];
 
     orth2 = true;
 #ifndef NO_TIMER
@@ -852,12 +852,12 @@ L100:
     /* and scale v(:,j) by -1.                                  */
     /* -------------------------------------------------------- */
 
-    if (h[j + h_dim1] < 0.0f)
+    if (h[j + h_dim] < 0.0f)
     {
-        h[j + h_dim1] = -h[j + h_dim1];
+        h[j + h_dim] = -h[j + h_dim];
         if (j < *k + *np)
         {
-            sscal_(n, &s_m1, &v[(j + 1) * v_dim1 + 1], &c__1);
+            sscal_(n, &s_m1, &v[(j + 1) * v_dim + 1], &c__1);
         }
         else
         {
@@ -883,11 +883,11 @@ L100:
         if (msglvl > 1)
         {
             i__1 = *k + *np;
-            svout_(&i__1, &h[(h_dim1 << 1) + 1], &debug_1.ndigit, "_saitr: main diagonal of matrix H of step K+NP.");
+            svout_(&i__1, &h[(h_dim << 1) + 1], &debug_1.ndigit, "_saitr: main diagonal of matrix H of step K+NP.");
             if (*k + *np > 1)
             {
                 i__1 = *k + *np - 1;
-                svout_(&i__1, &h[h_dim1 + 2], &debug_1.ndigit, "_saitr: sub diagonal of matrix H of step K+NP.");
+                svout_(&i__1, &h[h_dim + 2], &debug_1.ndigit, "_saitr: sub diagonal of matrix H of step K+NP.");
             }
         }
 #endif

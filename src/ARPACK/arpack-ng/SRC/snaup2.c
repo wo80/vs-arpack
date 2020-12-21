@@ -180,7 +180,7 @@ int snaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
             int *info)
 {
     /* System generated locals */
-    int h_dim1, h_offset, q_dim1, q_offset, v_dim1, v_offset, i__1, i__2;
+    int h_dim, h_offset, q_offset, v_offset, i__1, i__2;
     float r__1, r__2;
 
     /* Builtin functions */
@@ -215,14 +215,12 @@ int snaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
     --bounds;
     --ritzi;
     --ritzr;
-    v_dim1 = *ldv;
-    v_offset = 1 + v_dim1;
+    v_offset = 1 + *ldv;
     v -= v_offset;
-    h_dim1 = *ldh;
-    h_offset = 1 + h_dim1;
+    h_dim = *ldh;
+    h_offset = 1 + h_dim;
     h -= h_offset;
-    q_dim1 = *ldq;
-    q_offset = 1 + q_dim1;
+    q_offset = 1 + *ldq;
     q -= q_offset;
     --ipntr;
 
@@ -548,7 +546,7 @@ L20:
         /*  Use h( 3,1 ) as storage to communicate  */
         /*  rnorm to _neupd if needed               */
         /* ---------------------------------------- */
-        h[h_dim1 + 3] = rnorm;
+        h[h_dim + 3] = rnorm;
 
         /* -------------------------------------------- */
         /* To be consistent with sngets, we first do a  */

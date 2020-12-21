@@ -122,7 +122,7 @@ int cgetv0_(int *ido, char *bmat, int *itry, bool *initv, int *n, int *j,
     static bool inits = true;
 
     /* System generated locals */
-    int v_dim1, v_offset, i__1;
+    int v_offset, i__1;
     float r__1, r__2;
     complex q__1;
 
@@ -144,8 +144,7 @@ int cgetv0_(int *ido, char *bmat, int *itry, bool *initv, int *n, int *j,
     /* Parameter adjustments */
     --workd;
     --resid;
-    v_dim1 = *ldv;
-    v_offset = 1 + v_dim1;
+    v_offset = 1 + *ldv;
     v -= v_offset;
     --ipntr;
 

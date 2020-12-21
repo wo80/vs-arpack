@@ -101,7 +101,7 @@ int sneigh_(float *rnorm, int *n, float *h, int *ldh,
             workl, int *ierr)
 {
     /* System generated locals */
-    int h_dim1, h_offset, q_dim1, q_offset, i__1;
+    int h_offset, q_dim, q_offset, i__1;
     float r__1, r__2;
 
     /* Local variables */
@@ -123,11 +123,10 @@ int sneigh_(float *rnorm, int *n, float *h, int *ldh,
     --bounds;
     --ritzi;
     --ritzr;
-    h_dim1 = *ldh;
-    h_offset = 1 + h_dim1;
+    h_offset = 1 + *ldh;
     h -= h_offset;
-    q_dim1 = *ldq;
-    q_offset = 1 + q_dim1;
+    q_dim = *ldq;
+    q_offset = 1 + q_dim;
     q -= q_offset;
 
     /* Function Body */
@@ -208,9 +207,9 @@ int sneigh_(float *rnorm, int *n, float *h, int *ldh,
             /* Real eigenvalue case */
             /* -------------------- */
 
-            temp = snrm2_(n, &q[i * q_dim1 + 1], &c__1);
+            temp = snrm2_(n, &q[i * q_dim + 1], &c__1);
             r__1 = 1.0f / temp;
-            sscal_(n, &r__1, &q[i * q_dim1 + 1], &c__1);
+            sscal_(n, &r__1, &q[i * q_dim + 1], &c__1);
         }
         else
         {
@@ -224,13 +223,13 @@ int sneigh_(float *rnorm, int *n, float *h, int *ldh,
 
             if (iconj == 0)
             {
-                r__1 = snrm2_(n, &q[i * q_dim1 + 1], &c__1);
-                r__2 = snrm2_(n, &q[(i + 1) * q_dim1 + 1], &c__1);
+                r__1 = snrm2_(n, &q[i * q_dim + 1], &c__1);
+                r__2 = snrm2_(n, &q[(i + 1) * q_dim + 1], &c__1);
                 temp = slapy2_(&r__1, &r__2);
                 r__1 = 1.0f / temp;
-                sscal_(n, &r__1, &q[i * q_dim1 + 1], &c__1);
+                sscal_(n, &r__1, &q[i * q_dim + 1], &c__1);
                 r__1 = 1.0f / temp;
-                sscal_(n, &r__1, &q[(i + 1) * q_dim1 + 1], &c__1);
+                sscal_(n, &r__1, &q[(i + 1) * q_dim + 1], &c__1);
                 iconj = 1;
             }
             else

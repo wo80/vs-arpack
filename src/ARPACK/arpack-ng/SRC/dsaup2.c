@@ -183,7 +183,7 @@ int dsaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
             double *q, int *ldq, double *workl, int *ipntr, double *workd, int *info)
 {
     /* System generated locals */
-    int h_dim1, h_offset, q_dim1, q_offset, v_dim1, v_offset, i__1, i__2,
+    int h_dim, h_offset, q_offset, v_offset, i__1, i__2,
             i__3;
     double d__1, d__2, d__3;
 
@@ -219,14 +219,12 @@ int dsaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
     --workl;
     --bounds;
     --ritz;
-    v_dim1 = *ldv;
-    v_offset = 1 + v_dim1;
+    v_offset = 1 + *ldv;
     v -= v_offset;
-    h_dim1 = *ldh;
-    h_offset = 1 + h_dim1;
+    h_dim = *ldh;
+    h_offset = 1 + h_dim;
     h -= h_offset;
-    q_dim1 = *ldq;
-    q_offset = 1 + q_dim1;
+    q_offset = 1 + *ldq;
     q -= q_offset;
     --ipntr;
 
@@ -660,7 +658,7 @@ L20:
         /*  rnorm to _seupd if needed               */
         /* ---------------------------------------- */
 
-        h[h_dim1 + 1] = rnorm;
+        h[h_dim + 1] = rnorm;
 
 #ifndef NO_TRACE
         if (msglvl > 1)
@@ -852,9 +850,9 @@ L100:
     if (msglvl > 2)
     {
         dvout_(&c__1, &rnorm, &debug_1.ndigit, "_saup2: B-norm of residual for NEV factorization");
-        dvout_(nev, &h[(h_dim1 << 1) + 1], &debug_1.ndigit,"_saup2: main diagonal of compressed H matrix");
+        dvout_(nev, &h[(h_dim << 1) + 1], &debug_1.ndigit,"_saup2: main diagonal of compressed H matrix");
         i__1 = *nev - 1;
-        dvout_(&i__1, &h[h_dim1 + 2], &debug_1.ndigit, "_saup2: subdiagonal of compressed H matrix");
+        dvout_(&i__1, &h[h_dim + 2], &debug_1.ndigit, "_saup2: subdiagonal of compressed H matrix");
     }
 #endif
 

@@ -258,7 +258,7 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int 
             int *info)
 {
     /* System generated locals */
-    int v_dim1, v_offset, z_dim1, z_offset, i__1, i__2;
+    int v_offset, z_offset, i__1, i__2;
     double d__1, d__2, d__3, d__4;
     zomplex z__1, z__2;
 
@@ -289,15 +289,13 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int 
     /* Parameter adjustments */
     --workd;
     --resid;
-    z_dim1 = *ldz;
-    z_offset = 1 + z_dim1;
+    z_offset = 1 + *ldz;
     z -= z_offset;
     --d;
     --rwork;
     --workev;
     --select;
-    v_dim1 = *ldv;
-    v_offset = 1 + v_dim1;
+    v_offset = 1 + *ldv;
     v -= v_offset;
     --iparam;
     --ipntr;

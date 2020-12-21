@@ -312,7 +312,7 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
             int *info)
 {
     /* System generated locals */
-    int v_dim1, v_offset, z_dim1, z_offset, i__1;
+    int v_offset, z_offset, i__1;
     float r__1, r__2;
 
     /* Builtin functions */
@@ -340,8 +340,7 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
 
 
     /* Parameter adjustments */
-    z_dim1 = *ldz;
-    z_offset = 1 + z_dim1;
+    z_offset = 1 + *ldz;
     z -= z_offset;
     --workd;
     --resid;
@@ -349,8 +348,7 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
     --dr;
     --workev;
     --select;
-    v_dim1 = *ldv;
-    v_offset = 1 + v_dim1;
+    v_offset = 1 + *ldv;
     v -= v_offset;
     --iparam;
     --ipntr;

@@ -103,7 +103,7 @@ int zneigh_(double *rnorm, int *n, zomplex *
             rwork, int *ierr)
 {
     /* System generated locals */
-    int h_dim1, h_offset, q_dim1, q_offset, i__1;
+    int h_offset, q_dim, q_offset, i__1;
     double d__1;
 
     /* Local variables */
@@ -125,11 +125,10 @@ int zneigh_(double *rnorm, int *n, zomplex *
     --workl;
     --bounds;
     --ritz;
-    h_dim1 = *ldh;
-    h_offset = 1 + h_dim1;
+    h_offset = 1 + *ldh;
     h -= h_offset;
-    q_dim1 = *ldq;
-    q_offset = 1 + q_dim1;
+    q_dim = *ldq;
+    q_offset = 1 + q_dim;
     q -= q_offset;
 
     /* Function Body */
@@ -162,7 +161,7 @@ int zneigh_(double *rnorm, int *n, zomplex *
         goto L9000;
     }
 
-    zcopy_(n, &q[*n - 1 + q_dim1], ldq, &bounds[1], &c__1);
+    zcopy_(n, &q[*n - 1 + q_dim], ldq, &bounds[1], &c__1);
 #ifndef NO_TRACE
     if (msglvl > 1)
     {
@@ -195,15 +194,15 @@ int zneigh_(double *rnorm, int *n, zomplex *
     i__1 = *n;
     for (j = 1; j <= i__1; ++j)
     {
-        temp = dznrm2_(n, &q[j * q_dim1 + 1], &c__1);
+        temp = dznrm2_(n, &q[j * q_dim + 1], &c__1);
         d__1 = 1.0 / temp;
-        zdscal_(n, &d__1, &q[j * q_dim1 + 1], &c__1);
+        zdscal_(n, &d__1, &q[j * q_dim + 1], &c__1);
     }
 
 #ifndef NO_TRACE
     if (msglvl > 1)
     {
-        zcopy_(n, &q[*n + q_dim1], ldq, &workl[1], &c__1);
+        zcopy_(n, &q[*n + q_dim], ldq, &workl[1], &c__1);
         zvout_(n, &workl[1], &debug_1.ndigit, "_neigh: Last row of the eigenvector matrix for H");
     }
 #endif
@@ -212,7 +211,7 @@ int zneigh_(double *rnorm, int *n, zomplex *
     /* Compute the Ritz estimates */
     /* -------------------------- */
 
-    zcopy_(n, &q[*n + q_dim1], n, &bounds[1], &c__1);
+    zcopy_(n, &q[*n + q_dim], n, &bounds[1], &c__1);
     zdscal_(n, rnorm, &bounds[1], &c__1);
 
 #ifndef NO_TRACE

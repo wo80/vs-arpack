@@ -312,7 +312,7 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
             int *lworkl, int *info)
 {
     /* System generated locals */
-    int v_dim1, v_offset, z_dim1, z_offset, i__1;
+    int v_offset, z_offset, i__1;
     double d__1, d__2;
 
     /* Builtin functions */
@@ -343,8 +343,7 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
 
 
     /* Parameter adjustments */
-    z_dim1 = *ldz;
-    z_offset = 1 + z_dim1;
+    z_offset = 1 + *ldz;
     z -= z_offset;
     --workd;
     --resid;
@@ -352,8 +351,7 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
     --dr;
     --workev;
     --select;
-    v_dim1 = *ldv;
-    v_offset = 1 + v_dim1;
+    v_offset = 1 + *ldv;
     v -= v_offset;
     --iparam;
     --ipntr;

@@ -173,7 +173,7 @@ int znaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
             int *info)
 {
     /* System generated locals */
-    int h_dim1, h_offset, q_dim1, q_offset, v_dim1, v_offset, i__1, i__2;
+    int h_dim, h_offset, q_offset, v_offset, i__1, i__2;
     double d__1, d__2, d__3, d__4;
     zomplex z__1;
 
@@ -207,14 +207,12 @@ int znaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
     --workl;
     --bounds;
     --ritz;
-    v_dim1 = *ldv;
-    v_offset = 1 + v_dim1;
+    v_offset = 1 + *ldv;
     v -= v_offset;
-    h_dim1 = *ldh;
-    h_offset = 1 + h_dim1;
+    h_dim = *ldh;
+    h_offset = 1 + h_dim;
     h -= h_offset;
-    q_dim1 = *ldq;
-    q_offset = 1 + q_dim1;
+    q_offset = 1 + *ldq;
     q -= q_offset;
     --ipntr;
 
@@ -544,7 +542,7 @@ L20:
         /*  Use h( 3,1 ) as storage to communicate  */
         /*  rnorm to zneupd  if needed              */
         /* ---------------------------------------- */
-        i__1 = h_dim1 + 3;
+        i__1 = h_dim + 3;
         z__1.r = rnorm, z__1.i = 0.0;
         h[i__1].r = z__1.r, h[i__1].i = z__1.i;
 

@@ -23,7 +23,7 @@ int zmout_(int *m, int *n, zomplex *a, int *lda, int *idigit, char *ifmt)
     zomplex d__1;
 
     /* System generated locals */
-    int a_dim1, a_offset, i__1, i__3;
+    int a_dim, a_offset, i__1, i__3;
 
     /* Local variables */
     int i, j, k1, k2, lll;
@@ -33,8 +33,8 @@ int zmout_(int *m, int *n, zomplex *a, int *lda, int *idigit, char *ifmt)
     int rows = *m;
 
     /* Parameter adjustments */
-    a_dim1 = *lda;
-    a_offset = 1 + a_dim1;
+    a_dim = *lda;
+    a_offset = 1 + a_dim;
     a -= a_offset;
 
     /* Function Body */
@@ -87,7 +87,7 @@ int zmout_(int *m, int *n, zomplex *a, int *lda, int *idigit, char *ifmt)
                 printf("\n  Row %4d:  ", i);
                 for (j = k1; j <= k2; ++j)
                 {
-                    d__1 = a[i + j * a_dim1];
+                    d__1 = a[i + j * a_dim];
                     printf("(  %10.3e   %10.3e)  ", d__1.r, d__1.i);
                 }
             }
@@ -110,7 +110,7 @@ int zmout_(int *m, int *n, zomplex *a, int *lda, int *idigit, char *ifmt)
                 printf("\n  Row %4d:  ", i);
                 for (j = k1; j <= k2; ++j)
                 {
-                    d__1 = a[i + j * a_dim1];
+                    d__1 = a[i + j * a_dim];
                     printf("(  %12.5e   %12.5e)  ", d__1.r, d__1.i);
                 }
             }
@@ -133,7 +133,7 @@ int zmout_(int *m, int *n, zomplex *a, int *lda, int *idigit, char *ifmt)
                 printf("\n  Row %4d:  ", i);
                 for (j = k1; j <= k2; ++j)
                 {
-                    d__1 = a[i + j * a_dim1];
+                    d__1 = a[i + j * a_dim];
                     printf("(  %14.7e   %14.7e)  ", d__1.r, d__1.i);
                 }
             }
@@ -146,7 +146,7 @@ int zmout_(int *m, int *n, zomplex *a, int *lda, int *idigit, char *ifmt)
             printf("                               Col %4d                  ", i);
             for (i = 1; i <= rows; ++i)
             {
-                d__1 = a[i + k1 * a_dim1];
+                d__1 = a[i + k1 * a_dim];
                 printf("\n  Row %4d:  (  %20.13e   %20.13e)", i, d__1.r, d__1.i);
             }
         }

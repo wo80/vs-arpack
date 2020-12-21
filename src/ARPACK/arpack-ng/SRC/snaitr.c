@@ -215,7 +215,7 @@ int snaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *nb,
     static bool first = true;
 
     /* System generated locals */
-    int h_dim1, h_offset, v_dim1, v_offset, i__1, i__2;
+    int h_dim, h_offset, v_dim, v_offset, i__1, i__2;
     float r__1, r__2;
 
     /* Builtin functions */
@@ -247,11 +247,11 @@ int snaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *nb,
     /* Parameter adjustments */
     --workd;
     --resid;
-    v_dim1 = *ldv;
-    v_offset = 1 + v_dim1;
+    v_dim = *ldv;
+    v_offset = 1 + v_dim;
     v -= v_offset;
-    h_dim1 = *ldh;
-    h_offset = 1 + h_dim1;
+    h_dim = *ldh;
+    h_offset = 1 + h_dim;
     h -= h_offset;
     --ipntr;
 
@@ -440,11 +440,11 @@ L40:
     /* machine bound.                                          */
     /* ------------------------------------------------------- */
 
-    scopy_(n, &resid[1], &c__1, &v[j * v_dim1 + 1], &c__1);
+    scopy_(n, &resid[1], &c__1, &v[j * v_dim + 1], &c__1);
     if (*rnorm >= unfl)
     {
         temp1 = 1.0f / *rnorm;
-        sscal_(n, &temp1, &v[j * v_dim1 + 1], &c__1);
+        sscal_(n, &temp1, &v[j * v_dim + 1], &c__1);
         sscal_(n, &temp1, &workd[ipj], &c__1);
     }
     else
@@ -454,7 +454,7 @@ L40:
         /* use LAPACK routine SLASCL               */
         /* --------------------------------------- */
 
-        slascl_("G", &i, &i, rnorm, &s_one, n, &c__1, &v[j * v_dim1 + 1], n, &infol);
+        slascl_("G", &i, &i, rnorm, &s_one, n, &c__1, &v[j * v_dim + 1], n, &infol);
         slascl_("G", &i, &i, rnorm, &s_one, n, &c__1, &workd[ipj], n, &infol);
     }
 
@@ -469,7 +469,7 @@ L40:
     arscnd_(&t2);
 #endif
 
-    scopy_(n, &v[j * v_dim1 + 1], &c__1, &workd[ivj], &c__1);
+    scopy_(n, &v[j * v_dim + 1], &c__1, &workd[ivj], &c__1);
     ipntr[1] = ivj;
     ipntr[2] = irj;
     ipntr[3] = ipj;
@@ -570,18 +570,18 @@ L60:
     /* WORKD(IPJ:IPJ+N-1) contains B*OP*v_{j}.  */
     /* ---------------------------------------- */
 
-    sgemv_("T", n, &j, &s_one, &v[v_offset], ldv, &workd[ipj], &c__1, &s_zero, &h[j * h_dim1 + 1], &c__1);
+    sgemv_("T", n, &j, &s_one, &v[v_offset], ldv, &workd[ipj], &c__1, &s_zero, &h[j * h_dim + 1], &c__1);
 
     /* ------------------------------------ */
     /* Orthogonalize r_{j} against V_{j}.   */
     /* RESID contains OP*v_{j}. See STEP 3. */
     /* ------------------------------------ */
 
-    sgemv_("N", n, &j, &s_m1, &v[v_offset], ldv, &h[j * h_dim1 + 1], &c__1,&s_one, &resid[1], &c__1);
+    sgemv_("N", n, &j, &s_m1, &v[v_offset], ldv, &h[j * h_dim + 1], &c__1,&s_one, &resid[1], &c__1);
 
     if (j > 1)
     {
-        h[j + (j - 1) * h_dim1] = betaj;
+        h[j + (j - 1) * h_dim] = betaj;
     }
 
 #ifndef NO_TIMER
@@ -676,7 +676,7 @@ L80:
         xtemp[0] = wnorm;
         xtemp[1] = *rnorm;
         svout_(&c__2, xtemp, &debug_1.ndigit, "_naitr: re-orthonalization; wnorm and rnorm are");
-        svout_(&j, &h[j * h_dim1 + 1], &debug_1.ndigit, "_naitr: j-th column of H");
+        svout_(&j, &h[j * h_dim + 1], &debug_1.ndigit, "_naitr: j-th column of H");
     }
 #endif
 
@@ -695,7 +695,7 @@ L80:
     /* ------------------------------------------- */
 
     sgemv_("N", n, &j, &s_m1, &v[v_offset], ldv, &workd[irj], &c__1, &s_one, &resid[1], &c__1);
-    saxpy_(&j, &s_one, &workd[irj], &c__1, &h[j * h_dim1 + 1], &c__1);
+    saxpy_(&j, &s_one, &workd[irj], &c__1, &h[j * h_dim + 1], &c__1);
 
     orth2 = true;
 #ifndef NO_TIMER
@@ -843,8 +843,8 @@ L100:
             /* REFERENCE: LAPACK subroutine slahqr        */
             /* ------------------------------------------ */
 
-            tst1 = (r__1 = h[i + i * h_dim1], dabs(r__1)) + (r__2 = h[
-                        i + 1 + (i + 1) * h_dim1], dabs(r__2));
+            tst1 = (r__1 = h[i + i * h_dim], dabs(r__1)) + (r__2 = h[
+                        i + 1 + (i + 1) * h_dim], dabs(r__2));
             if (tst1 == 0.0f)
             {
                 i__2 = *k + *np;
@@ -852,10 +852,10 @@ L100:
             }
             /* Computing MAX */
             r__2 = ulp * tst1;
-            if ((r__1 = h[i + 1 + i * h_dim1], dabs(r__1)) <= dmax(r__2,
+            if ((r__1 = h[i + 1 + i * h_dim], dabs(r__1)) <= dmax(r__2,
                     smlnum))
             {
-                h[i + 1 + i * h_dim1] = 0.0f;
+                h[i + 1 + i * h_dim] = 0.0f;
             }
 
         }

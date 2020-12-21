@@ -102,7 +102,7 @@ int cneigh_(float *rnorm, int *n, complex *h, int *
             complex *workl, float *rwork, int *ierr)
 {
     /* System generated locals */
-    int h_dim1, h_offset, q_dim1, q_offset, i__1;
+    int h_offset, q_dim, q_offset, i__1;
     float r__1;
 
     /* Local variables */
@@ -124,11 +124,10 @@ int cneigh_(float *rnorm, int *n, complex *h, int *
     --workl;
     --bounds;
     --ritz;
-    h_dim1 = *ldh;
-    h_offset = 1 + h_dim1;
+    h_offset = 1 + *ldh;
     h -= h_offset;
-    q_dim1 = *ldq;
-    q_offset = 1 + q_dim1;
+    q_dim = *ldq;
+    q_offset = 1 + q_dim;
     q -= q_offset;
 
     /* Function Body */
@@ -161,7 +160,7 @@ int cneigh_(float *rnorm, int *n, complex *h, int *
         goto L9000;
     }
 
-    ccopy_(n, &q[*n - 1 + q_dim1], ldq, &bounds[1], &c__1);
+    ccopy_(n, &q[*n - 1 + q_dim], ldq, &bounds[1], &c__1);
 #ifndef NO_TRACE
     if (msglvl > 1)
     {
@@ -194,15 +193,15 @@ int cneigh_(float *rnorm, int *n, complex *h, int *
     i__1 = *n;
     for (j = 1; j <= i__1; ++j)
     {
-        temp = scnrm2_(n, &q[j * q_dim1 + 1], &c__1);
+        temp = scnrm2_(n, &q[j * q_dim + 1], &c__1);
         r__1 = 1.0f / temp;
-        csscal_(n, &r__1, &q[j * q_dim1 + 1], &c__1);
+        csscal_(n, &r__1, &q[j * q_dim + 1], &c__1);
     }
 
 #ifndef NO_TRACE
     if (msglvl > 1)
     {
-        ccopy_(n, &q[*n + q_dim1], ldq, &workl[1], &c__1);
+        ccopy_(n, &q[*n + q_dim], ldq, &workl[1], &c__1);
         cvout_(n, &workl[1], &debug_1.ndigit, "_neigh: Last row of the eigenvector matrix for H");
     }
 #endif
@@ -211,7 +210,7 @@ int cneigh_(float *rnorm, int *n, complex *h, int *
     /* Compute the Ritz estimates */
     /* -------------------------- */
 
-    ccopy_(n, &q[*n + q_dim1], n, &bounds[1], &c__1);
+    ccopy_(n, &q[*n + q_dim], n, &bounds[1], &c__1);
     csscal_(n, rnorm, &bounds[1], &c__1);
 
 #ifndef NO_TRACE

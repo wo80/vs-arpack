@@ -173,7 +173,7 @@ int cnaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
             int *info)
 {
     /* System generated locals */
-    int h_dim1, h_offset, q_dim1, q_offset, v_dim1, v_offset, i__1, i__2;
+    int h_dim, h_offset, q_offset, v_offset, i__1, i__2;
     float r__1, r__2, r__3, r__4;
     complex q__1;
 
@@ -208,14 +208,12 @@ int cnaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
     --workl;
     --bounds;
     --ritz;
-    v_dim1 = *ldv;
-    v_offset = 1 + v_dim1;
+    v_offset = 1 + *ldv;
     v -= v_offset;
-    h_dim1 = *ldh;
-    h_offset = 1 + h_dim1;
+    h_dim = *ldh;
+    h_offset = 1 + h_dim;
     h -= h_offset;
-    q_dim1 = *ldq;
-    q_offset = 1 + q_dim1;
+    q_offset = 1 + *ldq;
     q -= q_offset;
     --ipntr;
 
@@ -543,7 +541,7 @@ L20:
         /*  Use h( 3,1 ) as storage to communicate  */
         /*  rnorm to cneupd if needed               */
         /* ---------------------------------------- */
-        i__1 = h_dim1 + 3;
+        i__1 = h_dim + 3;
         q__1.r = rnorm, q__1.i = 0.0f;
         h[i__1].r = q__1.r, h[i__1].i = q__1.i;
 
