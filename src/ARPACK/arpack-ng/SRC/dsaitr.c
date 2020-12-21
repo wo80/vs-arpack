@@ -220,7 +220,6 @@ int dsaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *mode,
     static int j;
     static float t0, t1, t2, t3, t4, t5;
     int jj;
-    static int ipj, irj, ivj;
     static int ierr, iter, itry;
     double temp1;
     static bool orth1, orth2, step3, step4;
@@ -232,6 +231,9 @@ int dsaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *mode,
     static bool rstart;
     static int msglvl;
 
+    int ipj = 1;
+    int irj = ipj + *n;
+    int ivj = irj + *n;
 
     /* Parameter adjustments */
     --workd;
@@ -294,9 +296,6 @@ int dsaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *mode,
         /* when using WORKD.                        */
         /* ---------------------------------------- */
 
-        ipj = 1;
-        irj = ipj + *n;
-        ivj = irj + *n;
     }
 
     /* ----------------------------------------------- */

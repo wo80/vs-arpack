@@ -227,7 +227,6 @@ int cnaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *nb,
     static int j;
     static float t0, t1, t2, t3, t4, t5;
     int jj;
-    static int ipj, irj, ivj;
     static float ulp;
     float tst1;
     static int ierr, iter;
@@ -245,6 +244,9 @@ int cnaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *nb,
     static int msglvl;
     static float smlnum;
 
+    int ipj = 1;
+    int irj = ipj + *n;
+    int ivj = irj + *n;
 
     /* Parameter adjustments */
     --workd;
@@ -302,9 +304,6 @@ int cnaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *nb,
         orth1 = false;
         orth2 = false;
         j = *k + 1;
-        ipj = 1;
-        irj = ipj + *n;
-        ivj = irj + *n;
     }
 
     /* ----------------------------------------------- */

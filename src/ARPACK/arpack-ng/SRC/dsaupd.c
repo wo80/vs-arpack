@@ -416,11 +416,19 @@ int dsaupd_(int *ido, char *bmat, int *n, char *which, int *nev, double *tol,
     int v_offset, i__1, i__2;
 
     /* Local variables */
-    int j;
+    int j, ierr;
     static float t0, t1;
-    static int nb, ih, iq, np, iw, ldh, ldq, nev0, mode, ierr, iupd, next,
-           ritz;
-    static int bounds, ishift, msglvl, mxiter;
+    static int mode, np, nev0;
+    static int ishift, mxiter;
+    int iupd = 1; /* not used */
+
+    int ldh = *ncv;
+    int ldq = *ncv;
+    int ih = 1;
+    int ritz = ih + (ldh << 1);
+    int bounds = ritz + *ncv;
+    int iq = bounds + *ncv;
+    int iw = iq + *ncv * *ncv;
 
     /* Parameter adjustments */
     --workd;
@@ -444,19 +452,15 @@ int dsaupd_(int *ido, char *bmat, int *n, char *which, int *nev, double *tol,
         arscnd_(&t0);
 #endif
 
-        msglvl = debug_1.msaupd;
-
         ierr = 0;
         ishift = iparam[1];
         mxiter = iparam[3];
         /*         nb     = iparam(4) */
-        nb = 1;
 
         /* ------------------------------------------ */
         /* Revision 2 performs only implicit restart. */
         /* ------------------------------------------ */
 
-        iupd = 1;
         mode = iparam[7];
 
         /* -------------- */
@@ -536,10 +540,6 @@ int dsaupd_(int *ido, char *bmat, int *n, char *which, int *nev, double *tol,
         /* Set default parameters */
         /* ---------------------- */
 
-        if (nb <= 0)
-        {
-            nb = 1;
-        }
         if (*tol <= 0.0)
         {
             *tol = dlamch_("E");
@@ -579,18 +579,9 @@ int dsaupd_(int *ido, char *bmat, int *n, char *which, int *nev, double *tol,
         /* workl(4*ncv+ncv*ncv+1:7*ncv+ncv*ncv) := workspace     */
         /* ----------------------------------------------------- */
 
-        ldh = *ncv;
-        ldq = *ncv;
-        ih = 1;
-        ritz = ih + (ldh << 1);
-        bounds = ritz + *ncv;
-        iq = bounds + *ncv;
-        /* Computing 2nd power */
-        i__1 = *ncv;
-        iw = iq + i__1 * i__1;
-        next = iw + *ncv * 3;
 
-        ipntr[4] = next;
+        /* Computing 2nd power */
+        ipntr[4] = iw + *ncv * 3;
         ipntr[5] = ih;
         ipntr[6] = ritz;
         ipntr[7] = bounds;
@@ -643,6 +634,8 @@ int dsaupd_(int *ido, char *bmat, int *n, char *which, int *nev, double *tol,
 #endif
 
 #ifndef NO_TRACE
+    int msglvl = debug_1.msaupd;
+
     if (msglvl > 1)
     {
         ivout_(&c__1, &mxiter, &debug_1.ndigit, "_saupd: number of update iterations taken");
@@ -667,6 +660,7 @@ int dsaupd_(int *ido, char *bmat, int *n, char *which, int *nev, double *tol,
         printf("\n Total number of reorthogonalization steps  =  %5d", timing_1.nrorth);
         printf("\n Total number of iterative refinement steps =  %5d", timing_1.nitref);
         printf("\n Total number of restart steps              =  %5d", timing_1.nrstrt);
+#ifndef NO_TIMER
         printf("\n Total time in user OP*x operation          =  %12f", timing_1.tmvopx);
         printf("\n Total time in user B*x operation           =  %12f", timing_1.tmvbx);
         printf("\n Total time in Arnoldi update routine       =  %12f", timing_1.tsaupd);
@@ -678,6 +672,7 @@ int dsaupd_(int *ido, char *bmat, int *n, char *which, int *nev, double *tol,
         printf("\n Total time in getting the shifts           =  %12f", timing_1.tsgets);
         printf("\n Total time in applying the shifts          =  %12f", timing_1.tsapps);
         printf("\n Total time in convergence testing          =  %12f", timing_1.tsconv);
+#endif
     }
 #endif
 

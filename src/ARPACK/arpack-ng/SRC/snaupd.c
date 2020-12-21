@@ -416,13 +416,20 @@ int snaupd_(int *ido, char *bmat, int *n, char *which, int *nev, float *tol,
     int v_offset, i__1, i__2;
 
     /* Local variables */
-    int j;
+    int j, ierr;
     static float t0, t1;
-    static int nb, ih, iq, np, iw, ldh, ldq, nev0, mode;
-    int ierr;
-    static int iupd, next, ritzi;
-    static int ritzr;
-    static int bounds, ishift, msglvl, mxiter;
+    static int mode, np, nev0;
+    static int ishift, mxiter;
+    int iupd = 1; /* not used */
+
+    int ldh = *ncv;
+    int ldq = *ncv;
+    int ih = 1;
+    int ritzr = ih + ldh * *ncv;
+    int ritzi = ritzr + *ncv;
+    int bounds = ritzi + *ncv;
+    int iq = bounds + *ncv;
+    int iw = iq + ldq * *ncv;
 
     /* Parameter adjustments */
     --workd;
@@ -446,8 +453,6 @@ int snaupd_(int *ido, char *bmat, int *n, char *which, int *nev, float *tol,
         arscnd_(&t0);
 #endif
 
-        msglvl = debug_1.mnaupd;
-
         /* -------------- */
         /* Error checking */
         /* -------------- */
@@ -457,13 +462,11 @@ int snaupd_(int *ido, char *bmat, int *n, char *which, int *nev, float *tol,
         /*         levec  = iparam(2) */
         mxiter = iparam[3];
         /*         nb     = iparam(4) */
-        nb = 1;
 
         /* ------------------------------------------ */
         /* Revision 2 performs only implicit restart. */
         /* ------------------------------------------ */
 
-        iupd = 1;
         mode = iparam[7];
 
         if (*n <= 0)
@@ -529,10 +532,6 @@ int snaupd_(int *ido, char *bmat, int *n, char *which, int *nev, float *tol,
         /* Set default parameters */
         /* ---------------------- */
 
-        if (nb <= 0)
-        {
-            nb = 1;
-        }
         if (*tol <= 0.0f)
         {
             *tol = slamch_("E");
@@ -577,19 +576,10 @@ int snaupd_(int *ido, char *bmat, int *n, char *which, int *nev, float *tol,
         /* matrix.                                                     */
         /* ----------------------------------------------------------- */
 
-        ldh = *ncv;
-        ldq = *ncv;
-        ih = 1;
-        ritzr = ih + ldh * *ncv;
-        ritzi = ritzr + *ncv;
-        bounds = ritzi + *ncv;
-        iq = bounds + *ncv;
-        iw = iq + ldq * *ncv;
+
         /* Computing 2nd power */
         i__1 = *ncv;
-        next = iw + i__1 * i__1 + *ncv * 3;
-
-        ipntr[4] = next;
+        ipntr[4] = iw + i__1 * i__1 + i__1 * 3;
         ipntr[5] = ih;
         ipntr[6] = ritzr;
         ipntr[7] = ritzi;
@@ -643,6 +633,8 @@ int snaupd_(int *ido, char *bmat, int *n, char *which, int *nev, float *tol,
 #endif
 
 #ifndef NO_TRACE
+    int msglvl = debug_1.mnaupd;
+
     if (msglvl > 1)
     {
         ivout_(&c__1, &mxiter, &debug_1.ndigit, "_naupd: Number of update iterations taken");
@@ -668,6 +660,7 @@ int snaupd_(int *ido, char *bmat, int *n, char *which, int *nev, float *tol,
         printf("\n Total number of reorthogonalization steps  =  %5d", timing_1.nrorth);
         printf("\n Total number of iterative refinement steps =  %5d", timing_1.nitref);
         printf("\n Total number of restart steps              =  %5d", timing_1.nrstrt);
+#ifndef NO_TIMER
         printf("\n Total time in user OP*x operation          =  %12f", timing_1.tmvopx);
         printf("\n Total time in user B*x operation           =  %12f", timing_1.tmvbx);
         printf("\n Total time in Arnoldi update routine       =  %12f", timing_1.tnaupd);
@@ -680,6 +673,7 @@ int snaupd_(int *ido, char *bmat, int *n, char *which, int *nev, float *tol,
         printf("\n Total time in applying the shifts          =  %12f", timing_1.tnapps);
         printf("\n Total time in convergence testing          =  %12f", timing_1.tnconv);
         printf("\n Total time in computing final Ritz vectors =  %12f", timing_1.trvec);
+#endif
     }
 #endif
 
