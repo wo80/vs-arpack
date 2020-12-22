@@ -383,7 +383,7 @@ int znaupd_(int *ido, char *bmat, int *n, char *which, int *nev, double *tol,
 {
 
     /* System generated locals */
-    int v_offset, i__1, i__2;
+    int i__1, i__2;
 
     /* Local variables */
     int j, ierr;
@@ -394,21 +394,10 @@ int znaupd_(int *ido, char *bmat, int *n, char *which, int *nev, double *tol,
 
     int ldh = *ncv;
     int ldq = *ncv;
-    int ih = 1;
-    int ritz = ih + ldh * *ncv;
+    int ritz = ldh * *ncv;
     int bounds = ritz + *ncv;
     int iq = bounds + *ncv;
     int iw = iq + ldq * *ncv;
-
-    /* Parameter adjustments */
-    --workd;
-    --resid;
-    --rwork;
-    v_offset = 1 + *ldv;
-    v -= v_offset;
-    --iparam;
-    --ipntr;
-    --workl;
 
     /* Function Body */
     if (*ido == 0)
@@ -428,16 +417,16 @@ int znaupd_(int *ido, char *bmat, int *n, char *which, int *nev, double *tol,
         /* -------------- */
 
         ierr = 0;
-        ishift = iparam[1];
-        /*         levec  = iparam(2) */
-        mxiter = iparam[3];
-        /*         nb     = iparam(4) */
+        ishift = iparam[0];
+        /* levec  = iparam(2) */
+        mxiter = iparam[2];
+        /* nb     = iparam(4) */
 
         /* ------------------------------------------ */
         /* Revision 2 performs only implicit restart. */
         /* ------------------------------------------ */
 
-        mode = iparam[7];
+        mode = iparam[6];
 
         if (*n <= 0)
         {
@@ -524,7 +513,7 @@ int znaupd_(int *ido, char *bmat, int *n, char *which, int *nev, double *tol,
         /* Computing 2nd power */
         i__2 = *ncv;
         i__1 = i__2 * i__2 * 3 + *ncv * 5;
-        for (j = 1; j <= i__1; ++j)
+        for (j = 0; j < i__1; ++j)
         {
             workl[j].r = 0.0, workl[j].i = 0.0;
         }
@@ -548,19 +537,20 @@ int znaupd_(int *ido, char *bmat, int *n, char *which, int *nev, double *tol,
 
         /* Computing 2nd power */
         i__1 = *ncv;
-        ipntr[4] = iw + i__1 * i__1 + i__1 * 3;
-        ipntr[5] = ih;
-        ipntr[6] = ritz;
-        ipntr[7] = iq;
-        ipntr[8] = bounds;
-        ipntr[14] = iw;
+        /* TODO: subtract 1 !!! */
+        ipntr[3] = 1 + iw + i__1 * i__1 + i__1 * 3;
+        ipntr[4] = 1;
+        ipntr[5] = 1 + ritz;
+        ipntr[6] = 1 + iq;
+        ipntr[7] = 1 + bounds;
+        ipntr[13] = 1 + iw;
     }
 
     /* ----------------------------------------------------- */
     /* Carry out the Implicitly restarted Arnoldi Iteration. */
     /* ----------------------------------------------------- */
 
-    znaup2_(ido, bmat, n, which, &nev0, &np, tol, &resid[1], &mode, &iupd, &ishift, &mxiter, &v[v_offset], ldv, &workl[ih], &ldh, &workl[ritz], &workl[bounds], &workl[iq], &ldq, &workl[iw], &ipntr[1], &workd[1], &rwork[1], info);
+    znaup2_(ido, bmat, n, which, &nev0, &np, tol, resid, &mode, &iupd, &ishift, &mxiter, v, ldv, workl, &ldh, &workl[ritz], &workl[bounds], &workl[iq], &ldq, &workl[iw], ipntr, workd, rwork, info);
 
     /* ------------------------------------------------ */
     /* ido .ne. 99 implies use of reverse communication */
@@ -569,18 +559,18 @@ int znaupd_(int *ido, char *bmat, int *n, char *which, int *nev, double *tol,
 
     if (*ido == 3)
     {
-        iparam[8] = np;
+        iparam[7] = np;
     }
     if (*ido != 99)
     {
         goto L9000;
     }
 
-    iparam[3] = mxiter;
-    iparam[5] = np;
-    iparam[9] = timing_1.nopx;
-    iparam[10] = timing_1.nbx;
-    iparam[11] = timing_1.nrorth;
+    iparam[2] = mxiter;
+    iparam[4] = np;
+    iparam[8] = timing_1.nopx;
+    iparam[9] = timing_1.nbx;
+    iparam[10] = timing_1.nrorth;
 
     /* ---------------------------------- */
     /* Exit if there was an informational */

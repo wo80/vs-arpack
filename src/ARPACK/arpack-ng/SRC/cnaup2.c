@@ -173,7 +173,7 @@ int cnaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
             int *info)
 {
     /* System generated locals */
-    int h_dim, h_offset, q_offset, v_offset, i__1, i__2;
+    int i__1, i__2;
     float r__1, r__2, r__3, r__4;
     complex q__1;
 
@@ -188,8 +188,7 @@ int cnaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
     static float eps23;
     int ierr;
     static int iter;
-    static bool getv0;
-    static bool cnorm;
+    static bool getv0, cnorm;
     static int nconv;
     float rtemp;
     static bool initv;
@@ -200,22 +199,6 @@ int cnaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
     int nptemp;
     char wprime[3];
     complex cmpnorm;
-
-    /* Parameter adjustments */
-    --workd;
-    --resid;
-    --rwork;
-    --workl;
-    --bounds;
-    --ritz;
-    v_offset = 1 + *ldv;
-    v -= v_offset;
-    h_dim = *ldh;
-    h_offset = 1 + h_dim;
-    h -= h_offset;
-    q_offset = 1 + *ldq;
-    q -= q_offset;
-    --ipntr;
 
     /* Function Body */
     if (*ido == 0)
@@ -283,7 +266,7 @@ int cnaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
 
     if (getv0)
     {
-        cgetv0_(ido, bmat, &c__1, &initv, n, &c__1, &v[v_offset], ldv, &resid[1], &rnorm, &ipntr[1], &workd[1], info);
+        cgetv0_(ido, bmat, &c__1, &initv, n, &c__1, v, ldv, resid, &rnorm, ipntr, workd, info);
 
         if (*ido != 99)
         {
@@ -336,7 +319,7 @@ int cnaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
     /* Compute the first NEV steps of the Arnoldi factorization */
     /* -------------------------------------------------------- */
 
-    cnaitr_(ido, bmat, n, &c__0, nev, mode, &resid[1], &rnorm, &v[v_offset], ldv, &h[h_offset], ldh, &ipntr[1], &workd[1], info);
+    cnaitr_(ido, bmat, n, &c__0, nev, mode, resid, &rnorm, v, ldv, h, ldh, ipntr, workd, info);
 
     if (*ido != 99)
     {
@@ -394,7 +377,7 @@ L1000:
 L20:
     update = true;
 
-    cnaitr_(ido, bmat, n, nev, np, mode, &resid[1], &rnorm, &v[v_offset], ldv,&h[h_offset], ldh, &ipntr[1], &workd[1], info);
+    cnaitr_(ido, bmat, n, nev, np, mode, resid, &rnorm, v, ldv,h, ldh, ipntr, workd, info);
 
     if (*ido != 99)
     {
@@ -422,7 +405,7 @@ L20:
     /* of the current upper Hessenberg matrix.                */
     /* ------------------------------------------------------ */
 
-    cneigh_(&rnorm, &kplusp, &h[h_offset], ldh, &ritz[1], &bounds[1], &q[q_offset], ldq, &workl[1], &rwork[1], &ierr);
+    cneigh_(&rnorm, &kplusp, h, ldh, ritz, bounds, q, ldq, workl, rwork, &ierr);
 
     if (ierr != 0)
     {
@@ -448,8 +431,8 @@ L20:
 
     /* Computing 2nd power */
     i__1 = kplusp * kplusp;
-    ccopy_(&kplusp, &ritz[1], &c__1, &workl[i__1 + 1], &c__1);
-    ccopy_(&kplusp, &bounds[1], &c__1, &workl[i__1 + kplusp + 1], &c__1);
+    ccopy_(&kplusp, ritz, &c__1, &workl[i__1], &c__1);
+    ccopy_(&kplusp, bounds, &c__1, &workl[i__1 + kplusp], &c__1);
 
     /* ------------------------------------------------- */
     /* Select the wanted Ritz values and their bounds    */
@@ -459,7 +442,7 @@ L20:
     /* BOUNDS respectively.                              */
     /* ------------------------------------------------- */
 
-    cngets_(ishift, which, nev, np, &ritz[1], &bounds[1]);
+    cngets_(ishift, which, nev, np, ritz, bounds);
 
     /* ---------------------------------------------------------- */
     /* Convergence test: currently we use the following criteria. */
@@ -473,7 +456,7 @@ L20:
     nconv = 0;
 
     i__1 = *nev;
-    for (i = 1; i <= i__1; ++i)
+    for (i = 0; i < i__1; ++i)
     {
         /* Computing MAX */
         i__2 = *np + i;
@@ -492,8 +475,8 @@ L20:
         kp[1] = *np;
         kp[2] = nconv;
         ivout_(&c__3, kp, &debug_1.ndigit, "_naup2: NEV, NP, NCONV are");
-        cvout_(&kplusp, &ritz[1], &debug_1.ndigit, "_naup2: The eigenvalues of H");
-        cvout_(&kplusp, &bounds[1], &debug_1.ndigit, "_naup2: Ritz estimates of the current NCV Ritz values");
+        cvout_(&kplusp, ritz, &debug_1.ndigit, "_naup2: The eigenvalues of H");
+        cvout_(&kplusp, bounds, &debug_1.ndigit, "_naup2: Ritz estimates of the current NCV Ritz values");
     }
 #endif
 
@@ -508,7 +491,7 @@ L20:
     /* ------------------------------------------------------- */
 
     nptemp = *np;
-    for (j = 1; j <= nptemp; ++j)
+    for (j = 0; j < nptemp; ++j)
     {
         if (bounds[j].r == 0.0f && bounds[j].i == 0.0f)
         {
@@ -525,8 +508,8 @@ L20:
         {
             /* Computing 2nd power */
             i__1 = kplusp * kplusp;
-            cvout_(&kplusp, &workl[i__1 + 1], &debug_1.ndigit, "_naup2: Eigenvalues computed by _neigh:");
-            cvout_(&kplusp, &workl[i__1 + kplusp + 1],&debug_1.ndigit, "_naup2: Ritz estimates computed by _neigh:");
+            cvout_(&kplusp, &workl[i__1], &debug_1.ndigit, "_naup2: Eigenvalues computed by _neigh:");
+            cvout_(&kplusp, &workl[i__1 + kplusp],&debug_1.ndigit, "_naup2: Ritz estimates computed by _neigh:");
         }
 #endif
 
@@ -541,9 +524,8 @@ L20:
         /*  Use h( 3,1 ) as storage to communicate  */
         /*  rnorm to cneupd if needed               */
         /* ---------------------------------------- */
-        i__1 = h_dim + 3;
-        q__1.r = rnorm, q__1.i = 0.0f;
-        h[i__1].r = q__1.r, h[i__1].i = q__1.i;
+        h[2].r = rnorm;
+        h[2].i = 0.0f;
 
         /* -------------------------------------------- */
         /* Sort Ritz values so that converged Ritz      */
@@ -577,20 +559,20 @@ L20:
             strcpy(wprime, "LI");
         }
 
-        csortc_(wprime, &c_true, &kplusp, &ritz[1], &bounds[1]);
+        csortc_(wprime, &c_true, &kplusp, ritz, bounds);
 
         /* ------------------------------------------------ */
         /* Scale the Ritz estimate of each Ritz value       */
         /* by 1 / max(eps23, magnitude of the Ritz value).  */
         /* ------------------------------------------------ */
 
-        for (j = 1; j <= nev0; ++j)
+        for (j = 0; j < nev0; ++j)
         {
             /* Computing MAX */
             r__1 = eps23, r__2 = slapy2_(&ritz[j].r, &ritz[j].i);
             rtemp = dmax(r__1,r__2);
-            q__1.r = bounds[j].r / rtemp, q__1.i = bounds[j].i / rtemp;
-            bounds[j].r = q__1.r, bounds[j].i = q__1.i;
+            bounds[j].r = bounds[j].r / rtemp;
+            bounds[j].i = bounds[j].i / rtemp;
         }
 
         /* ------------------------------------------------- */
@@ -601,20 +583,20 @@ L20:
         /* ------------------------------------------------- */
 
         strcpy(wprime, "LM");
-        csortc_(wprime, &c_true, &nev0, &bounds[1], &ritz[1]);
+        csortc_(wprime, &c_true, &nev0, bounds, ritz);
 
         /* -------------------------------------------- */
         /* Scale the Ritz estimate back to its original */
         /* value.                                       */
         /* -------------------------------------------- */
 
-        for (j = 1; j <= nev0; ++j)
+        for (j = 0; j < nev0; ++j)
         {
             /* Computing MAX */
             r__1 = eps23, r__2 = slapy2_(&ritz[j].r, &ritz[j].i);
             rtemp = dmax(r__1,r__2);
-            q__1.r = rtemp * bounds[j].r, q__1.i = rtemp * bounds[j].i;
-            bounds[j].r = q__1.r, bounds[j].i = q__1.i;
+            bounds[j].r = rtemp * bounds[j].r;
+            bounds[j].i = rtemp * bounds[j].i;
         }
 
         /* --------------------------------------------- */
@@ -623,13 +605,13 @@ L20:
         /* ritz and bound.                               */
         /* --------------------------------------------- */
 
-        csortc_(which, &c_true, &nconv, &ritz[1], &bounds[1]);
+        csortc_(which, &c_true, &nconv, ritz, bounds);
 
 #ifndef NO_TRACE
         if (msglvl > 1)
         {
-            cvout_(&kplusp, &ritz[1], &debug_1.ndigit, "_naup2: Sorted eigenvalues");
-            cvout_(&kplusp, &bounds[1], &debug_1.ndigit, "_naup2: Sorted ritz estimates.");
+            cvout_(&kplusp, ritz, &debug_1.ndigit, "_naup2: Sorted eigenvalues");
+            cvout_(&kplusp, bounds, &debug_1.ndigit, "_naup2: Sorted ritz estimates.");
         }
 #endif
 
@@ -683,7 +665,7 @@ L20:
 
         if (nevbef < *nev)
         {
-            cngets_(ishift, which, nev, np, &ritz[1], &bounds[1]);
+            cngets_(ishift, which, nev, np, ritz, bounds);
         }
     }
 
@@ -696,8 +678,8 @@ L20:
             kp[0] = *nev;
             kp[1] = *np;
             ivout_(&c__2, kp, &debug_1.ndigit, "_naup2: NEV and NP are");
-            cvout_(nev, &ritz[*np + 1], &debug_1.ndigit, "_naup2: \"wanted\" Ritz values ");
-            cvout_(nev, &bounds[*np + 1], &debug_1.ndigit, "_naup2: Ritz estimates of the \"wanted\" values ");
+            cvout_(nev, &ritz[*np], &debug_1.ndigit, "_naup2: \"wanted\" Ritz values ");
+            cvout_(nev, &bounds[*np], &debug_1.ndigit, "_naup2: Ritz estimates of the \"wanted\" values ");
         }
     }
 #endif
@@ -724,17 +706,17 @@ L50:
         /* for non-exact shift case.        */
         /* -------------------------------- */
 
-        ccopy_(np, &workl[1], &c__1, &ritz[1], &c__1);
+        ccopy_(np, workl, &c__1, ritz, &c__1);
     }
 
 #ifndef NO_TRACE
     if (msglvl > 2)
     {
         ivout_(&c__1, np, &debug_1.ndigit, "_naup2: The number of shifts to apply ");
-        cvout_(np, &ritz[1], &debug_1.ndigit, "_naup2: values of the shifts");
+        cvout_(np, ritz, &debug_1.ndigit, "_naup2: values of the shifts");
         if (*ishift == 1)
         {
-            cvout_(np, &bounds[1], &debug_1.ndigit, "_naup2: Ritz estimates of the shifts");
+            cvout_(np, bounds, &debug_1.ndigit, "_naup2: Ritz estimates of the shifts");
         }
     }
 #endif
@@ -746,7 +728,7 @@ L50:
     /* The first 2*N locations of WORKD are used as workspace. */
     /* ------------------------------------------------------- */
 
-    cnapps_(n, nev, np, &ritz[1], &v[v_offset], ldv, &h[h_offset], ldh, &resid[1], &q[q_offset], ldq, &workl[1], &workd[1]);
+    cnapps_(n, nev, np, ritz, v, ldv, h, ldh, resid, q, ldq, workl, workd);
 
     /* ------------------------------------------- */
     /* Compute the B-norm of the updated residual. */
@@ -762,9 +744,10 @@ L50:
     if (*bmat == 'G')
     {
         ++timing_1.nbx;
-        ccopy_(n, &resid[1], &c__1, &workd[*n + 1], &c__1);
-        ipntr[1] = *n + 1;
-        ipntr[2] = 1;
+        ccopy_(n, resid, &c__1, &workd[*n], &c__1);
+        /* TODO: subtract 1 */
+        ipntr[0] = *n + 1;
+        ipntr[1] = 1;
         *ido = 2;
 
         /* -------------------------------- */
@@ -775,7 +758,7 @@ L50:
     }
     else if (*bmat == 'I')
     {
-        ccopy_(n, &resid[1], &c__1, &workd[1], &c__1);
+        ccopy_(n, resid, &c__1, workd, &c__1);
     }
 
 L100:
@@ -791,15 +774,12 @@ L100:
         arscnd_(&t3);
         timing_1.tmvbx += t3 - t2;
 #endif
-        cdotc_(&q__1, n, &resid[1], &c__1, &workd[1], &c__1);
-        cmpnorm.r = q__1.r, cmpnorm.i = q__1.i;
-        r__1 = cmpnorm.r;
-        r__2 = cmpnorm.i;
-        rnorm = sqrt(slapy2_(&r__1, &r__2));
+        cdotc_(&cmpnorm, n, resid, &c__1, workd, &c__1);
+        rnorm = sqrt(slapy2_(&cmpnorm.r, &cmpnorm.i));
     }
     else if (*bmat == 'I')
     {
-        rnorm = scnrm2_(n, &resid[1], &c__1);
+        rnorm = scnrm2_(n, resid, &c__1);
     }
     cnorm = false;
 
@@ -807,7 +787,7 @@ L100:
     if (msglvl > 2)
     {
         svout_(&c__1, &rnorm, &debug_1.ndigit, "_naup2: B-norm of residual for compressed factorization");
-        cmout_(nev, nev, &h[h_offset], ldh, &debug_1.ndigit, "_naup2: Compressed upper Hessenberg matrix H");
+        cmout_(nev, nev, h, ldh, &debug_1.ndigit, "_naup2: Compressed upper Hessenberg matrix H");
     }
 #endif
 
