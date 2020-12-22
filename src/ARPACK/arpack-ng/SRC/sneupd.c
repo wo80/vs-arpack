@@ -312,7 +312,7 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
             int *info)
 {
     /* System generated locals */
-    int v_offset, z_offset, i__1;
+    int i__1;
     float r__1, r__2;
 
     /* Builtin functions */
@@ -341,10 +341,6 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
 
 
     /* Parameter adjustments */
-    z_offset = 1 + *ldz;
-    z -= z_offset;
-    v_offset = 1 + *ldv;
-    v -= v_offset;
     --select;
     --workl;
 
@@ -713,8 +709,8 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
         /* matrix of order NCONV in workl(iuptri)                  */
         /* ------------------------------------------------------- */
 
-        sorm2r_("R", "N", n, ncv, &nconv, &workl[invsub], &ldq, workev, &v[v_offset], ldv, &workd[*n], &ierr);
-        slacpy_("A", n, &nconv, &v[v_offset], ldv, &z[z_offset], ldz);
+        sorm2r_("R", "N", n, ncv, &nconv, &workl[invsub], &ldq, workev, v, ldv, &workd[*n], &ierr);
+        slacpy_("A", n, &nconv, v, ldv, z, ldz);
 
         for (j = 1; j <= nconv; ++j)
         {
@@ -871,8 +867,8 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
             /* in workl(iheigr) and workl(iheigi).          */
             /* -------------------------------------------- */
 
-            sorm2r_("R", "N", n, ncv, &nconv, &workl[invsub], &ldq, workev, &z[z_offset], ldz, &workd[*n], &ierr);
-            strmm_("R", "U", "N", "N", n, &nconv, &s_one, &workl[invsub], &ldq, &z[z_offset], ldz);
+            sorm2r_("R", "N", n, ncv, &nconv, &workl[invsub], &ldq, workev, z, ldz, &workd[*n], &ierr);
+            strmm_("R", "U", "N", "N", n, &nconv, &s_one, &workl[invsub], &ldq, z, ldz);
         }
     }
     else
@@ -1033,7 +1029,7 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
         /* purify all the Ritz vectors together. */
         /* ------------------------------------- */
 
-        sger_(n, &nconv, &s_one, resid, &c__1, workev, &c__1, &z[z_offset], ldz);
+        sger_(n, &nconv, &s_one, resid, &c__1, workev, &c__1, z, ldz);
     }
 
 L9000:

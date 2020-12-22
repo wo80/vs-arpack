@@ -312,7 +312,7 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
             int *lworkl, int *info)
 {
     /* System generated locals */
-    int v_offset, z_offset, i__1;
+    int i__1;
     double d__1, d__2;
 
     /* Builtin functions */
@@ -341,10 +341,6 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
 
 
     /* Parameter adjustments */
-    z_offset = 1 + *ldz;
-    z -= z_offset;
-    v_offset = 1 + *ldv;
-    v -= v_offset;
     --select;
     --workl;
 
@@ -713,8 +709,8 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
         /* matrix of order NCONV in workl(iuptri)                  */
         /* ------------------------------------------------------- */
 
-        dorm2r_("R", "N", n, ncv, &nconv, &workl[invsub], &ldq, workev, &v[v_offset], ldv, &workd[*n], &ierr);
-        dlacpy_("A", n, &nconv, &v[v_offset], ldv, &z[z_offset], ldz);
+        dorm2r_("R", "N", n, ncv, &nconv, &workl[invsub], &ldq, workev, v, ldv, &workd[*n], &ierr);
+        dlacpy_("A", n, &nconv, v, ldv, z, ldz);
 
         for (j = 1; j <= nconv; ++j)
         {
@@ -871,8 +867,8 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
             /* in workl(iheigr) and workl(iheigi).          */
             /* -------------------------------------------- */
 
-            dorm2r_("R", "N", n, ncv, &nconv, &workl[invsub], &ldq, workev, &z[z_offset], ldz, &workd[*n], &ierr);
-            dtrmm_("R", "U", "N", "N", n, &nconv, &d_one, &workl[invsub], &ldq, &z[z_offset], ldz);
+            dorm2r_("R", "N", n, ncv, &nconv, &workl[invsub], &ldq, workev, z, ldz, &workd[*n], &ierr);
+            dtrmm_("R", "U", "N", "N", n, &nconv, &d_one, &workl[invsub], &ldq, z, ldz);
         }
     }
     else
@@ -1034,7 +1030,7 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
         /* purify all the Ritz vectors together. */
         /* ------------------------------------- */
 
-        dger_(n, &nconv, &d_one, resid, &c__1, workev, &c__1, &z[z_offset], ldz);
+        dger_(n, &nconv, &d_one, resid, &c__1, workev, &c__1, z, ldz);
     }
 
 L9000:

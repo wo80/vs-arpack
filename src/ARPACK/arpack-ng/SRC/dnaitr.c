@@ -248,14 +248,12 @@ int dnaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *nb,
 
     /* Parameter adjustments */
     --workd;
-    --resid;
     v_dim = *ldv;
     v_offset = 1 + v_dim;
     v -= v_offset;
     h_dim = *ldh;
     h_offset = 1 + h_dim;
     h -= h_offset;
-    --ipntr;
 
     /* Function Body */
 
@@ -401,7 +399,7 @@ L30:
     /* RSTART = .true. flow returns here.   */
     /* ------------------------------------ */
 
-    dgetv0_(ido, bmat, &itry, &c_false, n, &j, &v[v_offset], ldv, &resid[1], rnorm, &ipntr[1], &workd[1], &ierr);
+    dgetv0_(ido, bmat, &itry, &c_false, n, &j, &v[v_offset], ldv, resid, rnorm, ipntr, &workd[1], &ierr);
     if (*ido != 99)
     {
         goto L9000;
@@ -439,7 +437,7 @@ L40:
     /* machine bound.                                          */
     /* ------------------------------------------------------- */
 
-    dcopy_(n, &resid[1], &c__1, &v[j * v_dim + 1], &c__1);
+    dcopy_(n, resid, &c__1, &v[j * v_dim + 1], &c__1);
     if (*rnorm >= unfl)
     {
         temp1 = 1.0 / *rnorm;
@@ -469,9 +467,9 @@ L40:
 #endif
 
     dcopy_(n, &v[j * v_dim + 1], &c__1, &workd[ivj], &c__1);
-    ipntr[1] = ivj;
-    ipntr[2] = irj;
-    ipntr[3] = ipj;
+    ipntr[0] = ivj;
+    ipntr[1] = irj;
+    ipntr[2] = ipj;
     *ido = 1;
 
     /* --------------------------------- */
@@ -498,7 +496,7 @@ L50:
     /* Put another copy of OP*v_{j} into RESID. */
     /* ---------------------------------------- */
 
-    dcopy_(n, &workd[irj], &c__1, &resid[1], &c__1);
+    dcopy_(n, &workd[irj], &c__1, resid, &c__1);
 
     /* ------------------------------------- */
     /* STEP 4:  Finish extending the Arnoldi */
@@ -513,8 +511,8 @@ L50:
     {
         ++timing_1.nbx;
         step4 = true;
-        ipntr[1] = irj;
-        ipntr[2] = ipj;
+        ipntr[0] = irj;
+        ipntr[1] = ipj;
         *ido = 2;
 
         /* ----------------------------------- */
@@ -525,7 +523,7 @@ L50:
     }
     else if (*bmat == 'I')
     {
-        dcopy_(n, &resid[1], &c__1, &workd[ipj], &c__1);
+        dcopy_(n, resid, &c__1, &workd[ipj], &c__1);
     }
 L60:
 
@@ -548,12 +546,12 @@ L60:
         arscnd_(&t3);
         timing_1.tmvbx += t3 - t2;
 #endif
-        wnorm = ddot_(n, &resid[1], &c__1, &workd[ipj], &c__1);
+        wnorm = ddot_(n, resid, &c__1, &workd[ipj], &c__1);
         wnorm = sqrt((abs(wnorm)));
     }
     else if (*bmat == 'I')
     {
-        wnorm = dnrm2_(n, &resid[1], &c__1);
+        wnorm = dnrm2_(n, resid, &c__1);
     }
 
     /* --------------------------------------- */
@@ -576,7 +574,7 @@ L60:
     /* RESID contains OP*v_{j}. See STEP 3. */
     /* ------------------------------------ */
 
-    dgemv_("N", n, &j, &d_m1, &v[v_offset], ldv, &h[j * h_dim + 1], &c__1,&d_one, &resid[1], &c__1);
+    dgemv_("N", n, &j, &d_m1, &v[v_offset], ldv, &h[j * h_dim + 1], &c__1,&d_one, resid, &c__1);
 
     if (j > 1)
     {
@@ -593,9 +591,9 @@ L60:
     if (*bmat == 'G')
     {
         ++timing_1.nbx;
-        dcopy_(n, &resid[1], &c__1, &workd[irj], &c__1);
-        ipntr[1] = irj;
-        ipntr[2] = ipj;
+        dcopy_(n, resid, &c__1, &workd[irj], &c__1);
+        ipntr[0] = irj;
+        ipntr[1] = ipj;
         *ido = 2;
 
         /* -------------------------------- */
@@ -606,7 +604,7 @@ L60:
     }
     else if (*bmat == 'I')
     {
-        dcopy_(n, &resid[1], &c__1, &workd[ipj], &c__1);
+        dcopy_(n, resid, &c__1, &workd[ipj], &c__1);
     }
 L70:
 
@@ -627,12 +625,12 @@ L70:
         arscnd_(&t3);
         timing_1.tmvbx += t3 - t2;
 #endif
-        *rnorm = ddot_(n, &resid[1], &c__1, &workd[ipj], &c__1);
+        *rnorm = ddot_(n, resid, &c__1, &workd[ipj], &c__1);
         *rnorm = sqrt((abs(*rnorm)));
     }
     else if (*bmat == 'I')
     {
-        *rnorm = dnrm2_(n, &resid[1], &c__1);
+        *rnorm = dnrm2_(n, resid, &c__1);
     }
 
     /* --------------------------------------------------------- */
@@ -693,7 +691,7 @@ L80:
     /* + v(:,1:J)*WORKD(IRJ:IRJ+J-1)*e'_j.         */
     /* ------------------------------------------- */
 
-    dgemv_("N", n, &j, &d_m1, &v[v_offset], ldv, &workd[irj], &c__1, &d_one, &resid[1], &c__1);
+    dgemv_("N", n, &j, &d_m1, &v[v_offset], ldv, &workd[irj], &c__1, &d_one, resid, &c__1);
     daxpy_(&j, &d_one, &workd[irj], &c__1, &h[j * h_dim + 1], &c__1);
 
     orth2 = true;
@@ -704,9 +702,9 @@ L80:
     if (*bmat == 'G')
     {
         ++timing_1.nbx;
-        dcopy_(n, &resid[1], &c__1, &workd[irj], &c__1);
-        ipntr[1] = irj;
-        ipntr[2] = ipj;
+        dcopy_(n, resid, &c__1, &workd[irj], &c__1);
+        ipntr[0] = irj;
+        ipntr[1] = ipj;
         *ido = 2;
 
         /* --------------------------------- */
@@ -718,7 +716,7 @@ L80:
     }
     else if (*bmat == 'I')
     {
-        dcopy_(n, &resid[1], &c__1, &workd[ipj], &c__1);
+        dcopy_(n, resid, &c__1, &workd[ipj], &c__1);
     }
 L90:
 
@@ -736,12 +734,12 @@ L90:
         arscnd_(&t3);
         timing_1.tmvbx += t3 - t2;
 #endif
-        rnorm1 = ddot_(n, &resid[1], &c__1, &workd[ipj], &c__1);
+        rnorm1 = ddot_(n, resid, &c__1, &workd[ipj], &c__1);
         rnorm1 = sqrt((abs(rnorm1)));
     }
     else if (*bmat == 'I')
     {
-        rnorm1 = dnrm2_(n, &resid[1], &c__1);
+        rnorm1 = dnrm2_(n, resid, &c__1);
     }
 
 #ifndef NO_TRACE
@@ -796,7 +794,7 @@ L90:
         /* ----------------------------------------------- */
 
         i__1 = *n;
-        for (jj = 1; jj <= i__1; ++jj)
+        for (jj = 0; jj < i__1; ++jj)
         {
             resid[jj] = 0.0;
         }
@@ -840,18 +838,18 @@ L100:
             /* Use a standard test as in the QR algorithm */
             /* REFERENCE: LAPACK subroutine dlahqr        */
             /* ------------------------------------------ */
-
-            tst1 = (d__1 = h[i + i * h_dim], abs(d__1)) + (d__2 = h[
-                        i + 1 + (i + 1) * h_dim], abs(d__2));
+            d__1 = h[i + i * h_dim];
+            d__2 = h[i + 1 + (i + 1) * h_dim];
+            tst1 = abs(d__1) + abs(d__2);
             if (tst1 == 0.0)
             {
                 i__2 = *k + *np;
                 tst1 = dlanhs_("1", &i__2, &h[h_offset], ldh, &workd[*n + 1]);
             }
             /* Computing MAX */
+            d__1 = h[i + 1 + i * h_dim];
             d__2 = ulp * tst1;
-            if ((d__1 = h[i + 1 + i * h_dim], abs(d__1)) <= max(d__2,
-                    smlnum))
+            if (abs(d__1) <= max(d__2,smlnum))
             {
                 h[i + 1 + i * h_dim] = 0.0;
             }

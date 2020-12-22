@@ -258,7 +258,7 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
             int *info)
 {
     /* System generated locals */
-    int v_offset, z_offset, i__1, i__2;
+    int i__1, i__2;
     float r__1, r__2, r__3, r__4;
     complex q__1, q__2;
 
@@ -288,10 +288,6 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
 
 
     /* Parameter adjustments */
-    z_offset = 1 + *ldz;
-    z -= z_offset;
-    v_offset = 1 + *ldv;
-    v -= v_offset;
     --select;
     --workl;
 
@@ -645,8 +641,8 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
         /* NCONV in workl(iuptri).                                */
         /* ------------------------------------------------------ */
 
-        cunm2r_("R", "N", n, ncv, &nconv, &workl[invsub], &ldq, workev, &v[v_offset], ldv, &workd[*n], &ierr);
-        clacpy_("A", n, &nconv, &v[v_offset], ldv, &z[z_offset], ldz);
+        cunm2r_("R", "N", n, ncv, &nconv, &workl[invsub], &ldq, workev, v, ldv, &workd[*n], &ierr);
+        clacpy_("A", n, &nconv, v, ldv, z, ldz);
 
         for (j = 1; j <= nconv; ++j)
         {
@@ -748,7 +744,7 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
             /* Form Z*Q.                                    */
             /* -------------------------------------------- */
 
-            ctrmm_("R", "U", "N", "N", n, &nconv, &c_one, &workl[invsub], &ldq, &z[z_offset], ldz);
+            ctrmm_("R", "U", "N", "N", n, &nconv, &c_one, &workl[invsub], &ldq, z, ldz);
         }
     }
     else
@@ -864,7 +860,7 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
         /* purify all the Ritz vectors together. */
         /* ------------------------------------- */
 
-        cgeru_(n, &nconv, &c_one, resid, &c__1, workev, &c__1, &z[z_offset], ldz);
+        cgeru_(n, &nconv, &c_one, resid, &c__1, workev, &c__1, z, ldz);
     }
 
 L9000:

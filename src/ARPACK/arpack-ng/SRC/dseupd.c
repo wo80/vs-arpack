@@ -225,7 +225,7 @@ int dseupd_(bool *rvec, char *howmny, bool *select, double *d, double *z, int *l
             double *workd, double *workl, int *lworkl, int *info)
 {
     /* System generated locals */
-    int v_offset, z_offset, i__1;
+    int i__1;
     double d__1, d__2, d__3;
 
     /* Builtin functions */
@@ -249,10 +249,6 @@ int dseupd_(bool *rvec, char *howmny, bool *select, double *d, double *z, int *l
 
 
     /* Parameter adjustments */
-    z_offset = 1 + *ldz;
-    z -= z_offset;
-    v_offset = 1 + *ldv;
-    v -= v_offset;
     --select;
     --workl;
 
@@ -770,8 +766,8 @@ L30:
         /* the Ritz values in workl(ihd).                         */
         /* ------------------------------------------------------ */
 
-        dorm2r_("R", "N", n, ncv, &nconv, &workl[iq], &ldq, &workl[iw + *ncv], &v[v_offset], ldv, &workd[*n], &ierr);
-        dlacpy_("A", n, &nconv, &v[v_offset], ldv, &z[z_offset], ldz);
+        dorm2r_("R", "N", n, ncv, &nconv, &workl[iq], &ldq, &workl[iw + *ncv], v, ldv, &workd[*n], &ierr);
+        dlacpy_("A", n, &nconv, v, ldv, z, ldz);
 
         /* --------------------------------------------------- */
         /* In order to compute the Ritz estimates for the Ritz */
@@ -896,7 +892,7 @@ L30:
 
     if (*rvec && strcmp(type, "REGULR") != 0)
     {
-        dger_(n, &nconv, &d_one, resid, &c__1, &workl[iw], &c__1, &z[z_offset], ldz);
+        dger_(n, &nconv, &d_one, resid, &c__1, &workl[iw], &c__1, z, ldz);
     }
 
 L9000:

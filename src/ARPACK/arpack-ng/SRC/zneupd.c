@@ -258,7 +258,7 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int 
             int *info)
 {
     /* System generated locals */
-    int v_offset, z_offset, i__1, i__2;
+    int i__1, i__2;
     double d__1, d__2, d__3, d__4;
     zomplex z__1, z__2;
 
@@ -287,10 +287,6 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int 
 
 
     /* Parameter adjustments */
-    z_offset = 1 + *ldz;
-    z -= z_offset;
-    v_offset = 1 + *ldv;
-    v -= v_offset;
     --select;
     --workl;
 
@@ -644,8 +640,8 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int 
         /* NCONV in workl(iuptri).                                */
         /* ------------------------------------------------------ */
 
-        zunm2r_("R", "N", n, ncv, &nconv, &workl[invsub], &ldq, workev, &v[v_offset], ldv, &workd[*n], &ierr);
-        zlacpy_("A", n, &nconv, &v[v_offset], ldv, &z[z_offset], ldz);
+        zunm2r_("R", "N", n, ncv, &nconv, &workl[invsub], &ldq, workev, v, ldv, &workd[*n], &ierr);
+        zlacpy_("A", n, &nconv, v, ldv, z, ldz);
 
         for (j = 1; j <= nconv; ++j)
         {
@@ -747,7 +743,7 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int 
             /* Form Z*Q.                                    */
             /* -------------------------------------------- */
 
-            ztrmm_("R", "U", "N", "N", n, &nconv, &z_one, &workl[invsub], &ldq, &z[z_offset], ldz);
+            ztrmm_("R", "U", "N", "N", n, &nconv, &z_one, &workl[invsub], &ldq, z, ldz);
         }
     }
     else
@@ -862,7 +858,7 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int 
         /* purify all the Ritz vectors together. */
         /* ------------------------------------- */
 
-        zgeru_(n, &nconv, &z_one, resid, &c__1, workev, &c__1, &z[z_offset], ldz);
+        zgeru_(n, &nconv, &z_one, resid, &c__1, workev, &c__1, z, ldz);
     }
 
 L9000:
