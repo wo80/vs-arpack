@@ -154,9 +154,6 @@ int dsapps_(int *n, int *kev, int *np,
     int istart, kplusp, msglvl;
 
     /* Parameter adjustments */
-    --workd;
-    --resid;
-    --shift;
     v_dim = *ldv;
     v_offset = 1 + v_dim;
     v -= v_offset;
@@ -265,7 +262,8 @@ L40:
             /* that attempts to drive h(istart+1,1) to zero.          */
             /* ------------------------------------------------------ */
 
-            f = h[istart + (h_dim << 1)] - shift[jj];
+            /* TODO: fix jj - 1 */
+            f = h[istart + (h_dim << 1)] - shift[jj - 1];
             g = h[istart + 1 + h_dim];
             dlartg_(&f, &g, &c, &s, &r);
 
@@ -460,7 +458,7 @@ L90:
 
     if (h[*kev + 1 + h_dim] > 0.0)
     {
-        dgemv_("N", n, &kplusp, &d_one, &v[v_offset], ldv, &q[(*kev + 1) * q_dim + 1], &c__1, &d_zero, &workd[*n + 1], &c__1);
+        dgemv_("N", n, &kplusp, &d_one, &v[v_offset], ldv, &q[(*kev + 1) * q_dim + 1], &c__1, &d_zero, &workd[*n], &c__1);
     }
 
     /* ----------------------------------------------------- */
@@ -474,8 +472,8 @@ L90:
     for (i = 1; i <= i__1; ++i)
     {
         i__2 = kplusp - i + 1;
-        dgemv_("N", n, &i__2, &d_one, &v[v_offset], ldv, &q[(*kev - i + 1) * q_dim + 1], &c__1, &d_zero, &workd[1], &c__1);
-        dcopy_(n, &workd[1], &c__1, &v[(kplusp - i + 1) * v_dim + 1], &c__1);
+        dgemv_("N", n, &i__2, &d_one, &v[v_offset], ldv, &q[(*kev - i + 1) * q_dim + 1], &c__1, &d_zero, workd, &c__1);
+        dcopy_(n, workd, &c__1, &v[(kplusp - i + 1) * v_dim + 1], &c__1);
     }
 
     /* ----------------------------------------------- */
@@ -495,7 +493,7 @@ L90:
 
     if (h[*kev + 1 + h_dim] > 0.0)
     {
-        dcopy_(n, &workd[*n + 1], &c__1, &v[(*kev + 1) * v_dim + 1], &c__1);
+        dcopy_(n, &workd[*n], &c__1, &v[(*kev + 1) * v_dim + 1], &c__1);
     }
 
     /* ----------------------------------- */
@@ -506,10 +504,10 @@ L90:
     /*    betak = e_{kev+1}'*H*e_{kev}     */
     /* ----------------------------------- */
 
-    dscal_(n, &q[kplusp + *kev * q_dim], &resid[1], &c__1);
+    dscal_(n, &q[kplusp + *kev * q_dim], resid, &c__1);
     if (h[*kev + 1 + h_dim] > 0.0)
     {
-        daxpy_(n, &h[*kev + 1 + h_dim], &v[(*kev + 1) * v_dim + 1], &c__1,&resid[1], &c__1);
+        daxpy_(n, &h[*kev + 1 + h_dim], &v[(*kev + 1) * v_dim + 1], &c__1,resid, &c__1);
     }
 
 #ifndef NO_TRACE

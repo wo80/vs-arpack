@@ -248,22 +248,17 @@ int sseupd_(bool *rvec, char *howmny, bool *select, float *d, float *z, int *ldz
 
 
     /* Parameter adjustments */
-    --workd;
-    --resid;
     z_offset = 1 + *ldz;
     z -= z_offset;
-    --d;
-    --select;
     v_offset = 1 + *ldv;
     v -= v_offset;
-    --iparam;
-    --ipntr;
+    --select;
     --workl;
 
     /* Function Body */
     msglvl = debug_1.mseupd;
-    mode = iparam[7];
-    nconv = iparam[5];
+    mode = iparam[6];
+    nconv = iparam[4];
     *info = 0;
 
     /* ------------ */
@@ -400,9 +395,9 @@ int sseupd_(bool *rvec, char *howmny, bool *select, float *d, float *z, int *ldz
     /* GRAND total of NCV*(NCV+8) locations.                 */
     /* ----------------------------------------------------- */
 
-    ih = ipntr[5];
-    ritz = ipntr[6];
-    bounds = ipntr[7];
+    ih = ipntr[4];
+    ritz = ipntr[5];
+    bounds = ipntr[6];
     ldh = *ncv;
     ldq = *ncv;
     ihd = bounds + ldh;
@@ -410,10 +405,10 @@ int sseupd_(bool *rvec, char *howmny, bool *select, float *d, float *z, int *ldz
     iq = ihb + ldh;
     iw = iq + ldh * *ncv;
     next = iw + (*ncv << 1);
-    ipntr[4] = next;
-    ipntr[8] = ihd;
-    ipntr[9] = ihb;
-    ipntr[10] = iq;
+    ipntr[3] = next;
+    ipntr[7] = ihd;
+    ipntr[8] = ihb;
+    ipntr[9] = iq;
 
     /* -------------------------------------- */
     /* irz points to the Ritz values computed */
@@ -423,7 +418,7 @@ int sseupd_(bool *rvec, char *howmny, bool *select, float *d, float *z, int *ldz
     /*     _saup2.                            */
     /* -------------------------------------- */
 
-    irz = ipntr[11] + *ncv;
+    irz = ipntr[10] + *ncv;
     ibd = irz + *ncv;
 
     /* ------------------------------- */
@@ -447,7 +442,7 @@ int sseupd_(bool *rvec, char *howmny, bool *select, float *d, float *z, int *ldz
     }
     else if (*bmat == 'G')
     {
-        bnorm2 = snrm2_(n, &workd[1], &c__1);
+        bnorm2 = snrm2_(n, workd, &c__1);
     }
 
 #ifndef NO_TRACE
@@ -644,7 +639,7 @@ L30:
         /* Load the converged Ritz values into D. */
         /* -------------------------------------- */
 
-        scopy_(&nconv, &workl[ihd], &c__1, &d[1], &c__1);
+        scopy_(&nconv, &workl[ihd], &c__1, d, &c__1);
     }
     else
     {
@@ -652,7 +647,7 @@ L30:
         /* Ritz vectors not required. Load Ritz values into D. */
         /* --------------------------------------------------- */
 
-        scopy_(&nconv, &workl[ritz], &c__1, &d[1], &c__1);
+        scopy_(&nconv, &workl[ritz], &c__1, d, &c__1);
         scopy_(ncv, &workl[ritz], &c__1, &workl[ihd], &c__1);
     }
 
@@ -671,7 +666,7 @@ L30:
 
         if (*rvec)
         {
-            ssesrt_("LA", rvec, &nconv, &d[1], ncv, &workl[iq], &ldq);
+            ssesrt_("LA", rvec, &nconv, d, ncv, &workl[iq], &ldq);
         }
         else
         {
@@ -736,18 +731,18 @@ L30:
         /*  Ritz vector purification.                                  */
         /* ----------------------------------------------------------- */
 
-        scopy_(&nconv, &workl[ihd], &c__1, &d[1], &c__1);
+        scopy_(&nconv, &workl[ihd], &c__1, d, &c__1);
         ssortr_("LA", &c_true, &nconv, &workl[ihd], &workl[iw]);
         if (*rvec)
         {
-            ssesrt_("LA", rvec, &nconv, &d[1], ncv, &workl[iq], &ldq);
+            ssesrt_("LA", rvec, &nconv, d, ncv, &workl[iq], &ldq);
         }
         else
         {
             scopy_(ncv, &workl[bounds], &c__1, &workl[ihb], &c__1);
             r__1 = bnorm2 / rnorm;
             sscal_(ncv, &r__1, &workl[ihb], &c__1);
-            ssortr_("LA", &c_true, &nconv, &d[1], &workl[ihb]);
+            ssortr_("LA", &c_true, &nconv, d, &workl[ihb]);
         }
     }
 
@@ -775,7 +770,7 @@ L30:
         /* the Ritz values in workl(ihd).                         */
         /* ------------------------------------------------------ */
 
-        sorm2r_("R", "N", n, ncv, &nconv, &workl[iq], &ldq, &workl[iw + *ncv], &v[v_offset], ldv, &workd[*n + 1], &ierr);
+        sorm2r_("R", "N", n, ncv, &nconv, &workl[iq], &ldq, &workl[iw + *ncv], &v[v_offset], ldv, &workd[*n], &ierr);
         slacpy_("A", n, &nconv, &v[v_offset], ldv, &z[z_offset], ldz);
 
         /* --------------------------------------------------- */
@@ -861,12 +856,12 @@ L30:
 #ifndef NO_TRACE
     if (msglvl > 1 && strcmp(type, "REGULR") != 0)
     {
-        svout_(&nconv, &d[1], &debug_1.ndigit, "_seupd: Untransformed converged Ritz values");
+        svout_(&nconv, d, &debug_1.ndigit, "_seupd: Untransformed converged Ritz values");
         svout_(&nconv, &workl[ihb], &debug_1.ndigit, "_seupd: Ritz estimates of the untransformed Ritz values");
     }
     else if (msglvl > 1)
     {
-        svout_(&nconv, &d[1], &debug_1.ndigit, "_seupd: Converged Ritz values");
+        svout_(&nconv, d, &debug_1.ndigit, "_seupd: Converged Ritz values");
         svout_(&nconv, &workl[ihb], &debug_1.ndigit, "_seupd: Associated Ritz estimates");
     }
 #endif
@@ -896,7 +891,7 @@ L30:
 
     if (strcmp(type, "REGULR") != 0)
     {
-        sger_(n, &nconv, &s_one, &resid[1], &c__1, &workl[iw], &c__1, &z[z_offset], ldz);
+        sger_(n, &nconv, &s_one, resid, &c__1, &workl[iw], &c__1, &z[z_offset], ldz);
     }
 
 L9000:

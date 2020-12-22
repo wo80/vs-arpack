@@ -287,24 +287,17 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int 
 
 
     /* Parameter adjustments */
-    --workd;
-    --resid;
     z_offset = 1 + *ldz;
     z -= z_offset;
-    --d;
-    --rwork;
-    --workev;
-    --select;
     v_offset = 1 + *ldv;
     v -= v_offset;
-    --iparam;
-    --ipntr;
+    --select;
     --workl;
 
     /* Function Body */
     msglvl = debug_1.mceupd;
-    mode = iparam[7];
-    nconv = iparam[5];
+    mode = iparam[6];
+    nconv = iparam[4];
     *info = 0;
 
     /* ------------------------------- */
@@ -420,20 +413,20 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int 
     /* GRAND total of NCV * ( 3 * NCV + 4 ) locations.           */
     /* --------------------------------------------------------- */
 
-    ih = ipntr[5];
-    ritz = ipntr[6];
-    iq = ipntr[7];
-    bounds = ipntr[8];
+    ih = ipntr[4];
+    ritz = ipntr[5];
+    iq = ipntr[6];
+    bounds = ipntr[7];
     ldh = *ncv;
     ldq = *ncv;
     iheig = bounds + ldh;
     ihbds = iheig + ldh;
     iuptri = ihbds + ldh;
     invsub = iuptri + ldh * *ncv;
-    ipntr[9] = iheig;
-    ipntr[11] = ihbds;
-    ipntr[12] = iuptri;
-    ipntr[13] = invsub;
+    ipntr[8] = iheig;
+    ipntr[10] = ihbds;
+    ipntr[11] = iuptri;
+    ipntr[12] = invsub;
     wr = 1;
     iwev = wr + *ncv;
 
@@ -445,7 +438,7 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int 
     /*     _naup2.                             */
     /* --------------------------------------- */
 
-    irz = ipntr[14] + *ncv * *ncv;
+    irz = ipntr[13] + *ncv * *ncv;
     ibd = irz + *ncv;
 
     /* ---------------------------------- */
@@ -588,7 +581,7 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int 
             /* Reorder the computed upper triangular matrix. */
             /* --------------------------------------------- */
 
-            ztrsen_("N", "V", &select[1], ncv, &workl[iuptri], &ldh, &workl[invsub], &ldq, &workl[iheig], &nconv2, &conds, &sep,&workev[1], ncv, &ierr);
+            ztrsen_("N", "V", &select[1], ncv, &workl[iuptri], &ldh, &workl[invsub], &ldq, &workl[iheig], &nconv2, &conds, &sep,workev, ncv, &ierr);
 
             if (nconv2 < nconv)
             {
@@ -628,7 +621,7 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int 
 
         if (strcmp(type, "REGULR") == 0)
         {
-            zcopy_(&nconv, &workl[iheig], &c__1, &d[1], &c__1);
+            zcopy_(&nconv, &workl[iheig], &c__1, d, &c__1);
         }
 
         /* -------------------------------------------------------- */
@@ -637,7 +630,7 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int 
         /* columns of workl(invsub,ldq).                            */
         /* -------------------------------------------------------- */
 
-        zgeqr2_(ncv, &nconv, &workl[invsub], &ldq, &workev[1], &workev[*ncv + 1], &ierr);
+        zgeqr2_(ncv, &nconv, &workl[invsub], &ldq, workev, &workev[*ncv], &ierr);
 
         /* ------------------------------------------------------ */
         /* * Postmultiply V by Q using zunm2r.                    */
@@ -651,7 +644,7 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int 
         /* NCONV in workl(iuptri).                                */
         /* ------------------------------------------------------ */
 
-        zunm2r_("R", "N", n, ncv, &nconv, &workl[invsub], &ldq, &workev[1], &v[v_offset], ldv, &workd[*n + 1], &ierr);
+        zunm2r_("R", "N", n, ncv, &nconv, &workl[invsub], &ldq, workev, &v[v_offset], ldv, &workd[*n], &ierr);
         zlacpy_("A", n, &nconv, &v[v_offset], ldv, &z[z_offset], ldz);
 
         for (j = 1; j <= nconv; ++j)
@@ -668,9 +661,9 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int 
             i__2 = invsub + (j - 1) * ldq + j - 1;
             if (workl[i__2].r < 0.0)
             {
-                z__1.r = -1., z__1.i = -0.0;
+                z__1.r = -1.0, z__1.i = -0.0;
                 zscal_(&nconv, &z__1, &workl[iuptri + j - 1], &ldq);
-                z__1.r = -1., z__1.i = -0.0;
+                z__1.r = -1.0, z__1.i = -0.0;
                 zscal_(&nconv, &z__1, &workl[iuptri + (j - 1) * ldq], &c__1);
             }
         }
@@ -695,7 +688,7 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int 
                 }
             }
 
-            ztrevc_("R", "S", &select[1], ncv, &workl[iuptri], &ldq, vl, &c__1, &workl[invsub], &ldq, ncv, &outncv, &workev[1],&rwork[1], &ierr);
+            ztrevc_("R", "S", &select[1], ncv, &workl[iuptri], &ldq, vl, &c__1, &workl[invsub], &ldq, ncv, &outncv, workev,rwork, &ierr);
 
             if (ierr != 0)
             {
@@ -711,11 +704,11 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int 
             /* magnitude 1.                                   */
             /* ---------------------------------------------- */
 
-            for (j = 1; j <= nconv; ++j)
+            for (j = 0; j < nconv; ++j)
             {
-                rtemp = dznrm2_(ncv, &workl[invsub + (j - 1) * ldq], &c__1);
+                rtemp = dznrm2_(ncv, &workl[invsub + j * ldq], &c__1);
                 rtemp = 1.0 / rtemp;
-                zdscal_(ncv, &rtemp, &workl[invsub + (j - 1) * ldq], &c__1);
+                zdscal_(ncv, &rtemp, &workl[invsub + j * ldq], &c__1);
 
                 /* ---------------------------------------- */
                 /* Ritz estimates can be obtained by taking */
@@ -726,9 +719,9 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int 
                 /* inner product can be set to j.           */
                 /* ---------------------------------------- */
 
-                i__2 = j;
-                zdotc_(&z__1, &j, &workl[ihbds], &c__1, &workl[invsub + (j - 1) * ldq], &c__1);
-                workev[i__2].r = z__1.r, workev[i__2].i = z__1.i;
+                i__2 = j + 1;
+                zdotc_(&z__1, &i__2, &workl[ihbds], &c__1, &workl[invsub + j * ldq], &c__1);
+                workev[j].r = z__1.r, workev[j].i = z__1.i;
             }
 
 #ifndef NO_TRACE
@@ -747,7 +740,7 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int 
             /* Copy Ritz estimates into workl(ihbds) */
             /* ------------------------------------- */
 
-            zcopy_(&nconv, &workev[1], &c__1, &workl[ihbds], &c__1);
+            zcopy_(&nconv, workev, &c__1, &workl[ihbds], &c__1);
 
             /* -------------------------------------------- */
             /* The eigenvector matrix Q of T is triangular. */
@@ -764,7 +757,7 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int 
         /* Place the Ritz values computed ZNAUPD into D.    */
         /* ------------------------------------------------ */
 
-        zcopy_(&nconv, &workl[ritz], &c__1, &d[1], &c__1);
+        zcopy_(&nconv, &workl[ritz], &c__1, d, &c__1);
         zcopy_(&nconv, &workl[ritz], &c__1, &workl[iheig], &c__1);
         zcopy_(&nconv, &workl[bounds], &c__1, &workl[ihbds], &c__1);
     }
@@ -796,12 +789,12 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int 
         }
 
         i__1 = *ncv;
-        for (k = 1; k <= i__1; ++k)
+        for (k = 0; k < i__1; ++k)
         {
-            i__2 = iheig + k - 1;
+            i__2 = iheig + k;
             temp.r = workl[i__2].r, temp.i = workl[i__2].i;
-            i__2 = ihbds + k - 1;
-            z_div(&z__2, &workl[ihbds + k - 1], &temp);
+            i__2 = ihbds + k;
+            z_div(&z__2, &workl[ihbds + k], &temp);
             z_div(&z__1, &z__2, &temp);
             workl[i__2].r = z__1.r, workl[i__2].i = z__1.i;
         }
@@ -817,23 +810,23 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int 
 
     if (strcmp(type, "SHIFTI") == 0)
     {
-        for (k = 1; k <= nconv; ++k)
+        for (k = 0; k < nconv; ++k)
         {
-            z_div(&z__2, &z_one, &workl[iheig + k - 1]);
-            z__1.r = z__2.r + sigma->r, z__1.i = z__2.i + sigma->i;
-            d[k].r = z__1.r, d[k].i = z__1.i;
+            z_div(&z__2, &z_one, &workl[iheig + k]);
+            d[k].r = z__2.r + sigma->r;
+            d[k].i = z__2.i + sigma->i;
         }
     }
 
 #ifndef NO_TRACE
     if (msglvl > 1 && strcmp(type, "REGULR") != 0)
     {
-        zvout_(&nconv, &d[1], &debug_1.ndigit, "_neupd: Untransformed Ritz values.");
+        zvout_(&nconv, d, &debug_1.ndigit, "_neupd: Untransformed Ritz values.");
         zvout_(&nconv, &workl[ihbds], &debug_1.ndigit, "_neupd: Ritz estimates of the untransformed Ritz values.");
     }
     else if (msglvl > 1)
     {
-        zvout_(&nconv, &d[1], &debug_1.ndigit, "_neupd: Converged Ritz values.");
+        zvout_(&nconv, d, &debug_1.ndigit, "_neupd: Converged Ritz values.");
         zvout_(&nconv, &workl[ihbds], &debug_1.ndigit, "_neupd: Associated Ritz estimates.");
     }
 #endif
@@ -855,12 +848,12 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int 
         /* where H s = s theta.                           */
         /* ---------------------------------------------- */
 
-        for (j = 1; j <= nconv; ++j)
+        for (j = 0; j < nconv; ++j)
         {
-            i__2 = iheig + j - 1;
-            if (workl[i__2].r != 0. || workl[i__2].i != 0.0)
+            i__2 = iheig + j;
+            if (workl[i__2].r != 0.0 || workl[i__2].i != 0.0)
             {
-                z_div(&z__1, &workl[invsub + (j - 1) * ldq + *ncv - 1], &workl[i__2]);
+                z_div(&z__1, &workl[invsub + j * ldq + *ncv - 1], &workl[i__2]);
                 workev[j].r = z__1.r, workev[j].i = z__1.i;
             }
         }
@@ -869,7 +862,7 @@ int zneupd_(bool *rvec, char *howmny, bool *select, zomplex *d, zomplex *z, int 
         /* purify all the Ritz vectors together. */
         /* ------------------------------------- */
 
-        zgeru_(n, &nconv, &z_one, &resid[1], &c__1, &workev[1], &c__1, &z[z_offset], ldz);
+        zgeru_(n, &nconv, &z_one, resid, &c__1, workev, &c__1, &z[z_offset], ldz);
     }
 
 L9000:

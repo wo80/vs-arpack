@@ -173,11 +173,6 @@ int dnapps_(int *n, int *kev, int *np,
     static double smlnum;
 
     /* Parameter adjustments */
-    --workd;
-    --resid;
-    --workl;
-    --shifti;
-    --shiftr;
     v_dim = *ldv;
     v_offset = 1 + v_dim;
     v -= v_offset;
@@ -245,8 +240,9 @@ int dnapps_(int *n, int *kev, int *np,
     i__1 = *np;
     for (jj = 1; jj <= i__1; ++jj)
     {
-        sigmar = shiftr[jj];
-        sigmai = shifti[jj];
+        /* TODO: fix jj - 1 */
+        sigmar = shiftr[jj - 1];
+        sigmai = shifti[jj - 1];
 
 #ifndef NO_TRACE
         if (msglvl > 2)
@@ -322,7 +318,7 @@ L20:
             if (tst1 == 0.0)
             {
                 i__3 = kplusp - jj + 1;
-                tst1 = dlanhs_("1", &i__3, &h[h_offset], ldh, &workl[1]);
+                tst1 = dlanhs_("1", &i__3, &h[h_offset], ldh, workl);
             }
             /* Computing MAX */
             d__1 = h[i + 1 + i * h_dim];
@@ -516,7 +512,7 @@ L40:
                 /* ------------------------------------ */
 
                 i__3 = kplusp - i + 1;
-                dlarf_("L", &nr, &i__3, u, &c__1, &tau, &h[i + i * h_dim], ldh, &workl[1]);
+                dlarf_("L", &nr, &i__3, u, &c__1, &tau, &h[i + i * h_dim], ldh, workl);
 
                 /* ------------------------------------- */
                 /* Apply the reflector to the right of H */
@@ -525,13 +521,13 @@ L40:
                 /* Computing MIN */
                 i__3 = i + 3;
                 ir = min(i__3,iend);
-                dlarf_("R", &ir, &nr, u, &c__1, &tau, &h[i * h_dim + 1], ldh, &workl[1]);
+                dlarf_("R", &ir, &nr, u, &c__1, &tau, &h[i * h_dim + 1], ldh, workl);
 
                 /* --------------------------------------------------- */
                 /* Accumulate the reflector in the matrix Q;  Q <- Q*G */
                 /* --------------------------------------------------- */
 
-                dlarf_("R", &kplusp, &nr, u, &c__1, &tau, &q[i * q_dim + 1], ldq, &workl[1]);
+                dlarf_("R", &kplusp, &nr, u, &c__1, &tau, &q[i * q_dim + 1], ldq, workl);
 
                 /* -------------------------- */
                 /* Prepare for next reflector */
@@ -612,7 +608,7 @@ L110:
         tst1 = abs(d__1) + abs(d__2);
         if (tst1 == 0.0)
         {
-            tst1 = dlanhs_("1", kev, &h[h_offset], ldh, &workl[1]);
+            tst1 = dlanhs_("1", kev, &h[h_offset], ldh, workl);
         }
         /* Computing MAX */
         d__1 = ulp * tst1;
@@ -632,7 +628,7 @@ L110:
 
     if (h[*kev + 1 + *kev * h_dim] > 0.0)
     {
-        dgemv_("N", n, &kplusp, &d_one, &v[v_offset], ldv, &q[(*kev + 1) * q_dim + 1], &c__1, &d_zero, &workd[*n + 1], &c__1);
+        dgemv_("N", n, &kplusp, &d_one, &v[v_offset], ldv, &q[(*kev + 1) * q_dim + 1], &c__1, &d_zero, &workd[*n], &c__1);
     }
 
     /* -------------------------------------------------------- */
@@ -644,8 +640,8 @@ L110:
     for (i = 1; i <= i__1; ++i)
     {
         i__2 = kplusp - i + 1;
-        dgemv_("N", n, &i__2, &d_one, &v[v_offset], ldv, &q[(*kev - i + 1) * q_dim + 1], &c__1, &d_zero, &workd[1], &c__1);
-        dcopy_(n, &workd[1], &c__1, &v[(kplusp - i + 1) * v_dim + 1], &c__1);
+        dgemv_("N", n, &i__2, &d_one, &v[v_offset], ldv, &q[(*kev - i + 1) * q_dim + 1], &c__1, &d_zero, workd, &c__1);
+        dcopy_(n, workd, &c__1, &v[(kplusp - i + 1) * v_dim + 1], &c__1);
     }
 
     /* ----------------------------------------------- */
@@ -664,7 +660,7 @@ L110:
 
     if (h[*kev + 1 + *kev * h_dim] > 0.0)
     {
-        dcopy_(n, &workd[*n + 1], &c__1, &v[(*kev + 1) * v_dim + 1], &c__1);
+        dcopy_(n, &workd[*n], &c__1, &v[(*kev + 1) * v_dim + 1], &c__1);
     }
 
     /* ----------------------------------- */
@@ -675,10 +671,10 @@ L110:
     /*    betak = e_{kev+1}'*H*e_{kev}     */
     /* ----------------------------------- */
 
-    dscal_(n, &q[kplusp + *kev * q_dim], &resid[1], &c__1);
+    dscal_(n, &q[kplusp + *kev * q_dim], resid, &c__1);
     if (h[*kev + 1 + *kev * h_dim] > 0.0)
     {
-        daxpy_(n, &h[*kev + 1 + *kev * h_dim], &v[(*kev + 1) * v_dim + 1],&c__1, &resid[1], &c__1);
+        daxpy_(n, &h[*kev + 1 + *kev * h_dim], &v[(*kev + 1) * v_dim + 1],&c__1, resid, &c__1);
     }
 
 #ifndef NO_TRACE

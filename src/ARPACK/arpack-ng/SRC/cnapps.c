@@ -166,10 +166,6 @@ int cnapps_(int *n, int *kev, int *np, complex *
     static float smlnum;
 
     /* Parameter adjustments */
-    --workd;
-    --resid;
-    --workl;
-    --shift;
     v_dim = *ldv;
     v_offset = 1 + v_dim;
     v -= v_offset;
@@ -238,7 +234,8 @@ int cnapps_(int *n, int *kev, int *np, complex *
     i__1 = *np;
     for (jj = 1; jj <= i__1; ++jj)
     {
-        sigma.r = shift[jj].r, sigma.i = shift[jj].i;
+        /* TODO: fix jj - 1 */
+        sigma.r = shift[jj - 1].r, sigma.i = shift[jj - 1].i;
 
 #ifndef NO_TRACE
         if (msglvl > 2)
@@ -270,7 +267,7 @@ L20:
             if (tst1 == 0.0f)
             {
                 i__3 = kplusp - jj + 1;
-                tst1 = clanhs_("1", &i__3, &h[h_offset], ldh, &workl[1]);
+                tst1 = clanhs_("1", &i__3, &h[h_offset], ldh, workl);
             }
             i__3 = i + 1 + i * h_dim;
             /* Computing MAX */
@@ -505,7 +502,7 @@ L100:
         tst1 = dabs(r__1) + dabs(r__2) + dabs(r__3) + dabs(r__4);
         if (tst1 == 0.0f)
         {
-            tst1 = clanhs_("1", kev, &h[h_offset], ldh, &workl[1]);
+            tst1 = clanhs_("1", kev, &h[h_offset], ldh, workl);
         }
         i__2 = i + 1 + i * h_dim;
         /* Computing MAX */
@@ -527,7 +524,7 @@ L100:
     i__1 = *kev + 1 + *kev * h_dim;
     if (h[i__1].r > 0.0f)
     {
-        cgemv_("N", n, &kplusp, &c_one, &v[v_offset], ldv, &q[(*kev + 1) * q_dim + 1], &c__1, &c_zero, &workd[*n + 1], &c__1);
+        cgemv_("N", n, &kplusp, &c_one, &v[v_offset], ldv, &q[(*kev + 1) * q_dim + 1], &c__1, &c_zero, &workd[*n], &c__1);
     }
 
     /* -------------------------------------------------------- */
@@ -539,8 +536,8 @@ L100:
     for (i = 1; i <= i__1; ++i)
     {
         i__2 = kplusp - i + 1;
-        cgemv_("N", n, &i__2, &c_one, &v[v_offset], ldv, &q[(*kev - i + 1) * q_dim + 1], &c__1, &c_zero, &workd[1], &c__1);
-        ccopy_(n, &workd[1], &c__1, &v[(kplusp - i + 1) * v_dim + 1], &c__1);
+        cgemv_("N", n, &i__2, &c_one, &v[v_offset], ldv, &q[(*kev - i + 1) * q_dim + 1], &c__1, &c_zero, workd, &c__1);
+        ccopy_(n, workd, &c__1, &v[(kplusp - i + 1) * v_dim + 1], &c__1);
     }
 
     /* ----------------------------------------------- */
@@ -556,7 +553,7 @@ L100:
     i__1 = *kev + 1 + *kev * h_dim;
     if (h[i__1].r > 0.0f)
     {
-        ccopy_(n, &workd[*n + 1], &c__1, &v[(*kev + 1) * v_dim + 1], &c__1);
+        ccopy_(n, &workd[*n], &c__1, &v[(*kev + 1) * v_dim + 1], &c__1);
     }
 
     /* ----------------------------------- */
@@ -567,11 +564,11 @@ L100:
     /*    betak = e_{kev+1}'*H*e_{kev}     */
     /* ----------------------------------- */
 
-    cscal_(n, &q[kplusp + *kev * q_dim], &resid[1], &c__1);
+    cscal_(n, &q[kplusp + *kev * q_dim], resid, &c__1);
     i__1 = *kev + 1 + *kev * h_dim;
     if (h[i__1].r > 0.0f)
     {
-        caxpy_(n, &h[i__1], &v[(*kev + 1) * v_dim + 1],&c__1, &resid[1], &c__1);
+        caxpy_(n, &h[i__1], &v[(*kev + 1) * v_dim + 1],&c__1, resid, &c__1);
     }
 
 #ifndef NO_TRACE

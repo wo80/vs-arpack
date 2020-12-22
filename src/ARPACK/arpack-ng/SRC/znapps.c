@@ -167,10 +167,6 @@ int znapps_(int *n, int *kev, int *np,
     static double smlnum;
 
     /* Parameter adjustments */
-    --workd;
-    --resid;
-    --workl;
-    --shift;
     v_dim = *ldv;
     v_offset = 1 + v_dim;
     v -= v_offset;
@@ -239,7 +235,8 @@ int znapps_(int *n, int *kev, int *np,
     i__1 = *np;
     for (jj = 1; jj <= i__1; ++jj)
     {
-        sigma.r = shift[jj].r, sigma.i = shift[jj].i;
+        /* TODO: fix jj - 1 */
+        sigma.r = shift[jj - 1].r, sigma.i = shift[jj - 1].i;
 
 #ifndef NO_TRACE
         if (msglvl > 2)
@@ -271,7 +268,7 @@ L20:
             if (tst1 == 0.0)
             {
                 i__3 = kplusp - jj + 1;
-                tst1 = zlanhs_("1", &i__3, &h[h_offset], ldh, &workl[1]);
+                tst1 = zlanhs_("1", &i__3, &h[h_offset], ldh, workl);
             }
             i__3 = i + 1 + i * h_dim;
             /* Computing MAX */
@@ -506,7 +503,7 @@ L100:
         tst1 = abs(d__1) + abs(d__2) + abs(d__3) + abs(d__4);
         if (tst1 == 0.0)
         {
-            tst1 = zlanhs_("1", kev, &h[h_offset], ldh, &workl[1]);
+            tst1 = zlanhs_("1", kev, &h[h_offset], ldh, workl);
         }
         i__2 = i + 1 + i * h_dim;
         /* Computing MAX */
@@ -528,7 +525,7 @@ L100:
     i__1 = *kev + 1 + *kev * h_dim;
     if (h[i__1].r > 0.0)
     {
-        zgemv_("N", n, &kplusp, &z_one, &v[v_offset], ldv, &q[(*kev + 1) * q_dim + 1], &c__1, &z_zero, &workd[*n + 1], &c__1);
+        zgemv_("N", n, &kplusp, &z_one, &v[v_offset], ldv, &q[(*kev + 1) * q_dim + 1], &c__1, &z_zero, &workd[*n], &c__1);
     }
 
     /* -------------------------------------------------------- */
@@ -540,8 +537,8 @@ L100:
     for (i = 1; i <= i__1; ++i)
     {
         i__2 = kplusp - i + 1;
-        zgemv_("N", n, &i__2, &z_one, &v[v_offset], ldv, &q[(*kev - i + 1) * q_dim + 1], &c__1, &z_zero, &workd[1], &c__1);
-        zcopy_(n, &workd[1], &c__1, &v[(kplusp - i + 1) * v_dim + 1], &c__1);
+        zgemv_("N", n, &i__2, &z_one, &v[v_offset], ldv, &q[(*kev - i + 1) * q_dim + 1], &c__1, &z_zero, workd, &c__1);
+        zcopy_(n, workd, &c__1, &v[(kplusp - i + 1) * v_dim + 1], &c__1);
     }
 
     /* ----------------------------------------------- */
@@ -557,7 +554,7 @@ L100:
     i__1 = *kev + 1 + *kev * h_dim;
     if (h[i__1].r > 0.0)
     {
-        zcopy_(n, &workd[*n + 1], &c__1, &v[(*kev + 1) * v_dim + 1], &c__1);
+        zcopy_(n, &workd[*n], &c__1, &v[(*kev + 1) * v_dim + 1], &c__1);
     }
 
     /* ----------------------------------- */
@@ -568,11 +565,11 @@ L100:
     /*    betak = e_{kev+1}'*H*e_{kev}     */
     /* ----------------------------------- */
 
-    zscal_(n, &q[kplusp + *kev * q_dim], &resid[1], &c__1);
+    zscal_(n, &q[kplusp + *kev * q_dim], resid, &c__1);
     i__1 = *kev + 1 + *kev * h_dim;
     if (h[i__1].r > 0.0)
     {
-        zaxpy_(n, &h[i__1], &v[(*kev + 1) * v_dim + 1],&c__1, &resid[1], &c__1);
+        zaxpy_(n, &h[i__1], &v[(*kev + 1) * v_dim + 1],&c__1, resid, &c__1);
     }
 
 #ifndef NO_TRACE

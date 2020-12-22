@@ -321,8 +321,7 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
     double vl[1]	/* was [1][1] */;
     int ibd, ldh, ldq, iri;
     double sep;
-    int irr, wri, wrr;
-    int mode;
+    int irr, wri, wrr, mode;
     double eps23;
     int ierr;
     double temp;
@@ -338,29 +337,21 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
     int ritzi;
     int ritzr;
     int nconv2;
-    int iheigi, iheigr, bounds, invsub, iuptri, msglvl, outncv, ishift,
-            numcnv;
+    int iheigi, iheigr, bounds, invsub, iuptri, msglvl, outncv, ishift, numcnv;
 
 
     /* Parameter adjustments */
     z_offset = 1 + *ldz;
     z -= z_offset;
-    --workd;
-    --resid;
-    --di;
-    --dr;
-    --workev;
-    --select;
     v_offset = 1 + *ldv;
     v -= v_offset;
-    --iparam;
-    --ipntr;
+    --select;
     --workl;
 
     /* Function Body */
     msglvl = debug_1.mneupd;
-    mode = iparam[7];
-    nconv = iparam[5];
+    mode = iparam[6];
+    nconv = iparam[4];
     *info = 0;
 
     /* ------------------------------- */
@@ -482,10 +473,10 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
     /* GRAND total of NCV * ( 3 * NCV + 6 ) locations.           */
     /* --------------------------------------------------------- */
 
-    ih = ipntr[5];
-    ritzr = ipntr[6];
-    ritzi = ipntr[7];
-    bounds = ipntr[8];
+    ih = ipntr[4];
+    ritzr = ipntr[5];
+    ritzi = ipntr[6];
+    bounds = ipntr[7];
     ldh = *ncv;
     ldq = *ncv;
     iheigr = bounds + ldh;
@@ -493,11 +484,11 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
     ihbds = iheigi + ldh;
     iuptri = ihbds + ldh;
     invsub = iuptri + ldh * *ncv;
-    ipntr[9] = iheigr;
-    ipntr[10] = iheigi;
-    ipntr[11] = ihbds;
-    ipntr[12] = iuptri;
-    ipntr[13] = invsub;
+    ipntr[8] = iheigr;
+    ipntr[9] = iheigi;
+    ipntr[10] = ihbds;
+    ipntr[11] = iuptri;
+    ipntr[12] = invsub;
     wrr = 1;
     wri = *ncv + 1;
     iwev = wri + *ncv;
@@ -514,7 +505,7 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
     /*     _naup2.                             */
     /* --------------------------------------- */
 
-    irr = ipntr[14] + *ncv * *ncv;
+    irr = ipntr[13] + *ncv * *ncv;
     iri = irr + *ncv;
     ibd = iri + *ncv;
 
@@ -698,8 +689,8 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
 
         if (strcmp(type, "REGULR") == 0)
         {
-            dcopy_(&nconv, &workl[iheigr], &c__1, &dr[1], &c__1);
-            dcopy_(&nconv, &workl[iheigi], &c__1, &di[1], &c__1);
+            dcopy_(&nconv, &workl[iheigr], &c__1, dr, &c__1);
+            dcopy_(&nconv, &workl[iheigi], &c__1, di, &c__1);
         }
 
         /* -------------------------------------------------------- */
@@ -708,7 +699,7 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
         /* columns of workl(invsub,ldq).                            */
         /* -------------------------------------------------------- */
 
-        dgeqr2_(ncv, &nconv, &workl[invsub], &ldq, &workev[1], &workev[*ncv + 1], &ierr);
+        dgeqr2_(ncv, &nconv, &workl[invsub], &ldq, workev, &workev[*ncv], &ierr);
 
         /* ------------------------------------------------------- */
         /* * Postmultiply V by Q using dorm2r .                    */
@@ -722,7 +713,7 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
         /* matrix of order NCONV in workl(iuptri)                  */
         /* ------------------------------------------------------- */
 
-        dorm2r_("R", "N", n, ncv, &nconv, &workl[invsub], &ldq, &workev[1], &v[v_offset], ldv, &workd[*n + 1], &ierr);
+        dorm2r_("R", "N", n, ncv, &nconv, &workl[invsub], &ldq, workev, &v[v_offset], ldv, &workd[*n], &ierr);
         dlacpy_("A", n, &nconv, &v[v_offset], ldv, &z[z_offset], ldz);
 
         for (j = 1; j <= nconv; ++j)
@@ -763,7 +754,7 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
                 }
             }
 
-            dtrevc_("R", "S", &select[1], ncv, &workl[iuptri], &ldq, vl, &c__1, &workl[invsub], &ldq, ncv, &outncv, &workev[1],&ierr);
+            dtrevc_("R", "S", &select[1], ncv, &workl[iuptri], &ldq, vl, &c__1, &workl[invsub], &ldq, ncv, &outncv, workev,&ierr);
 
             if (ierr != 0)
             {
@@ -780,10 +771,9 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
             /* ---------------------------------------------- */
 
             iconj = 0;
-            i__1 = nconv;
-            for (j = 1; j <= i__1; ++j)
+            for (j = 1; j <= nconv; ++j)
             {
-                if (workl[iheigi + j - 1] == 0.0)
+                if (workl[iheigi + j] == 0.0)
                 {
                     /* -------------------- */
                     /* real eigenvalue case */
@@ -821,12 +811,12 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
                 }
             }
 
-            dgemv_("T", ncv, &nconv, &d_one, &workl[invsub], &ldq, &workl[ihbds], &c__1, &d_zero, &workev[1], &c__1);
+            dgemv_("T", ncv, &nconv, &d_one, &workl[invsub], &ldq, &workl[ihbds], &c__1, &d_zero, workev, &c__1);
 
             iconj = 0;
-            for (j = 1; j <= nconv; ++j)
+            for (j = 0; j < nconv; ++j)
             {
-                if (workl[iheigi + j - 1] != 0.0)
+                if (workl[iheigi + j] != 0.0)
                 {
                     /* ----------------------------------------- */
                     /* Complex conjugate pair case. Note that    */
@@ -863,7 +853,7 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
             /* Copy Ritz estimates into workl(ihbds) */
             /* ------------------------------------- */
 
-            dcopy_(&nconv, &workev[1], &c__1, &workl[ihbds], &c__1);
+            dcopy_(&nconv, workev, &c__1, &workl[ihbds], &c__1);
 
             /* ------------------------------------------------------- */
             /* Compute the QR factorization of the eigenvector matrix  */
@@ -871,7 +861,7 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
             /* columns of workl(invsub,ldq).                           */
             /* ------------------------------------------------------- */
 
-            dgeqr2_(ncv, &nconv, &workl[invsub], &ldq, &workev[1], &workev[*ncv + 1], &ierr);
+            dgeqr2_(ncv, &nconv, &workl[invsub], &ldq, workev, &workev[*ncv], &ierr);
 
             /* -------------------------------------------- */
             /* * Postmultiply Z by Q.                       */
@@ -881,19 +871,19 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
             /* in workl(iheigr) and workl(iheigi).          */
             /* -------------------------------------------- */
 
-            dorm2r_("R", "N", n, ncv, &nconv, &workl[invsub], &ldq, &workev[1], &z[z_offset], ldz, &workd[*n + 1], &ierr);
+            dorm2r_("R", "N", n, ncv, &nconv, &workl[invsub], &ldq, workev, &z[z_offset], ldz, &workd[*n], &ierr);
             dtrmm_("R", "U", "N", "N", n, &nconv, &d_one, &workl[invsub], &ldq, &z[z_offset], ldz);
         }
     }
     else
     {
-        /* ----------------------------------------------------- */
-        /* An approximate invariant subspace is not needed.      */
-        /* Place the Ritz values computed DNAUPD  into DR and DI */
-        /* ----------------------------------------------------- */
+        /* ---------------------------------------------------- */
+        /* An approximate invariant subspace is not needed.     */
+        /* Place the Ritz values computed DNAUPD into DR and DI */
+        /* ---------------------------------------------------- */
 
-        dcopy_(&nconv, &workl[ritzr], &c__1, &dr[1], &c__1);
-        dcopy_(&nconv, &workl[ritzi], &c__1, &di[1], &c__1);
+        dcopy_(&nconv, &workl[ritzr], &c__1, dr, &c__1);
+        dcopy_(&nconv, &workl[ritzi], &c__1, di, &c__1);
         dcopy_(&nconv, &workl[ritzr], &c__1, &workl[iheigr], &c__1);
         dcopy_(&nconv, &workl[ritzi], &c__1, &workl[iheigi], &c__1);
         dcopy_(&nconv, &workl[bounds], &c__1, &workl[ihbds], &c__1);
@@ -928,24 +918,24 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
             }
 
             i__1 = *ncv;
-            for (k = 1; k <= i__1; ++k)
+            for (k = 0; k < i__1; ++k)
             {
-                temp = dlapy2_(&workl[iheigr + k - 1], &workl[iheigi + k - 1]);
-                d__1 = workl[ihbds + k - 1];
-                workl[ihbds + k - 1] = abs(d__1) / temp / temp;
+                temp = dlapy2_(&workl[iheigr + k], &workl[iheigi + k]);
+                d__1 = workl[ihbds + k];
+                workl[ihbds + k] = abs(d__1) / temp / temp;
             }
         }
         else if (strcmp(type, "REALPT") == 0)
         {
             i__1 = *ncv;
-            for (k = 1; k <= i__1; ++k)
+            for (k = 0; k < i__1; ++k)
             {
             }
         }
         else if (strcmp(type, "IMAGPT") == 0)
         {
             i__1 = *ncv;
-            for (k = 1; k <= i__1; ++k)
+            for (k = 0; k < i__1; ++k)
             {
             }
         }
@@ -963,36 +953,35 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
         if (strcmp(type, "SHIFTI") == 0)
         {
             i__1 = *ncv;
-            for (k = 1; k <= i__1; ++k)
+            for (k = 0; k < i__1; ++k)
             {
-                temp = dlapy2_(&workl[iheigr + k - 1], &workl[iheigi + k - 1]);
-                workl[iheigr + k - 1] = workl[iheigr + k - 1] / temp / temp + *sigmar;
-                workl[iheigi + k - 1] = -workl[iheigi + k - 1] / temp / temp + *sigmai;
+                temp = dlapy2_(&workl[iheigr + k], &workl[iheigi + k]);
+                workl[iheigr + k] = workl[iheigr + k] / temp / temp + *sigmar;
+                workl[iheigi + k] = -workl[iheigi + k] / temp / temp + *sigmai;
             }
 
-            dcopy_(&nconv, &workl[iheigr], &c__1, &dr[1], &c__1);
-            dcopy_(&nconv, &workl[iheigi], &c__1, &di[1], &c__1);
+            dcopy_(&nconv, &workl[iheigr], &c__1, dr, &c__1);
+            dcopy_(&nconv, &workl[iheigi], &c__1, di, &c__1);
 
         }
-        else if (strcmp(type, "REALPT") == 0 ||
-                 strcmp(type, "IMAGPT") == 0)
+        else if (strcmp(type, "REALPT") == 0 || strcmp(type, "IMAGPT") == 0)
         {
-            dcopy_(&nconv, &workl[iheigr], &c__1, &dr[1], &c__1);
-            dcopy_(&nconv, &workl[iheigi], &c__1, &di[1], &c__1);
+            dcopy_(&nconv, &workl[iheigr], &c__1, dr, &c__1);
+            dcopy_(&nconv, &workl[iheigi], &c__1, di, &c__1);
         }
     }
 
 #ifndef NO_TRACE
     if (msglvl > 1 && strcmp(type, "SHIFTI") == 0)
     {
-        dvout_(&nconv, &dr[1], &debug_1.ndigit, "_neupd: Untransformed float part of the Ritz valuess.");
-        dvout_(&nconv, &di[1], &debug_1.ndigit, "_neupd: Untransformed imag part of the Ritz valuess.");
+        dvout_(&nconv, dr, &debug_1.ndigit, "_neupd: Untransformed float part of the Ritz valuess.");
+        dvout_(&nconv, di, &debug_1.ndigit, "_neupd: Untransformed imag part of the Ritz valuess.");
         dvout_(&nconv, &workl[ihbds], &debug_1.ndigit, "_neupd: Ritz estimates of untransformed Ritz values.");
     }
     else if (msglvl > 1 && strcmp(type, "REGULR") == 0)
     {
-        dvout_(&nconv, &dr[1], &debug_1.ndigit, "_neupd: Real parts of converged Ritz values.");
-        dvout_(&nconv, &di[1], &debug_1.ndigit, "_neupd: Imag parts of converged Ritz values.");
+        dvout_(&nconv, dr, &debug_1.ndigit, "_neupd: Real parts of converged Ritz values.");
+        dvout_(&nconv, di, &debug_1.ndigit, "_neupd: Imag parts of converged Ritz values.");
         dvout_(&nconv, &workl[ihbds], &debug_1.ndigit, "_neupd: Associated Ritz estimates.");
     }
 #endif
@@ -1017,19 +1006,19 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
         /* ---------------------------------------------- */
 
         iconj = 0;
-        for (j = 1; j <= nconv; ++j)
+        for (j = 0; j < nconv; ++j)
         {
-            if (workl[iheigi + j - 1] == 0.0 && workl[iheigr + j - 1] != 0.0)
+            if (workl[iheigi + j] == 0.0 && workl[iheigr + j] != 0.0)
             {
-                workev[j] = workl[invsub + (j - 1) * ldq + *ncv - 1] / workl[iheigr + j - 1];
+                workev[j] = workl[invsub + j * ldq + *ncv - 1] / workl[iheigr + j];
             }
             else if (iconj == 0)
             {
-                temp = dlapy2_(&workl[iheigr + j - 1], &workl[iheigi + j - 1]);
+                temp = dlapy2_(&workl[iheigr + j], &workl[iheigi + j]);
                 if (temp != 0.0)
                 {
-                    workev[j] = (workl[invsub + (j - 1) * ldq + *ncv - 1] * workl[iheigr + j - 1] + workl[invsub + j * ldq + * ncv - 1] * workl[iheigi + j - 1]) / temp / temp;
-                    workev[j + 1] = (workl[invsub + j * ldq + *ncv - 1] * workl[iheigr + j - 1] - workl[invsub + (j - 1) * ldq + *ncv - 1] * workl[iheigi + j - 1]) / temp / temp;
+                    workev[j] = (workl[invsub + j * ldq + *ncv - 1] * workl[iheigr + j] + workl[invsub + (j + 1) * ldq + *ncv - 1] * workl[iheigi + j]) / temp / temp;
+                    workev[j + 1] = (workl[invsub + (j + 1) * ldq + *ncv - 1] * workl[iheigr + j] - workl[invsub + j * ldq + *ncv - 1] * workl[iheigi + j]) / temp / temp;
                 }
                 iconj = 1;
             }
@@ -1045,7 +1034,7 @@ int dneupd_(bool *rvec, char *howmny, bool *select, double *dr, double *di, doub
         /* purify all the Ritz vectors together. */
         /* ------------------------------------- */
 
-        dger_(n, &nconv, &d_one, &resid[1], &c__1, &workev[1], &c__1, &z[z_offset], ldz);
+        dger_(n, &nconv, &d_one, resid, &c__1, workev, &c__1, &z[z_offset], ldz);
     }
 
 L9000:
