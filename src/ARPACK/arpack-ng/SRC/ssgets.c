@@ -107,11 +107,6 @@ int ssgets_(int *ishift, char *which, int *kev, int *np, float *ritz,
     /* & message level for debugging */
     /* ----------------------------- */
 
-    /* Parameter adjustments */
-    --shifts;
-    --bounds;
-    --ritz;
-
     /* Function Body */
 #ifndef NO_TIMER
     arscnd_(&t0);
@@ -131,13 +126,13 @@ int ssgets_(int *ishift, char *which, int *kev, int *np, float *ritz,
         /* --------------------------------------------------- */
 
         i__1 = *kev + *np;
-        ssortr_("LA", &c_true, &i__1, &ritz[1], &bounds[1]);
+        ssortr_("LA", &c_true, &i__1, ritz, bounds);
         kevd2 = *kev / 2;
         if (*kev > 1)
         {
             i__1 = min(kevd2,*np);
-            sswap_(&i__1, &ritz[1], &c__1, &ritz[max(kevd2,*np) + 1], &c__1);
-            sswap_(&i__1, &bounds[1], &c__1, &bounds[max(kevd2,*np) + 1], &c__1);
+            sswap_(&i__1, ritz, &c__1, &ritz[max(kevd2,*np)], &c__1);
+            sswap_(&i__1, bounds, &c__1, &bounds[max(kevd2,*np)], &c__1);
         }
     }
     else
@@ -151,7 +146,7 @@ int ssgets_(int *ishift, char *which, int *kev, int *np, float *ritz,
         /* -------------------------------------------------- */
 
         i__1 = *kev + *np;
-        ssortr_(which, &c_true, &i__1, &ritz[1], &bounds[1]);
+        ssortr_(which, &c_true, &i__1, ritz, bounds);
     }
 
     if (*ishift == 1 && *np > 0)
@@ -164,8 +159,8 @@ int ssgets_(int *ishift, char *which, int *kev, int *np, float *ritz,
         /* are applied in subroutine ssapps.                     */
         /* ----------------------------------------------------- */
 
-        ssortr_("SM", &c_true, np, &bounds[1], &ritz[1]);
-        scopy_(np, &ritz[1], &c__1, &shifts[1], &c__1);
+        ssortr_("SM", &c_true, np, bounds, ritz);
+        scopy_(np, ritz, &c__1, shifts, &c__1);
     }
 
 #ifndef NO_TIMER
@@ -179,8 +174,8 @@ int ssgets_(int *ishift, char *which, int *kev, int *np, float *ritz,
         i__1 = *kev + *np;
         ivout_(&c__1, kev, &debug_1.ndigit, "_sgets: KEV is");
         ivout_(&c__1, np, &debug_1.ndigit, "_sgets: NP is");
-        svout_(&i__1, &ritz[1], &debug_1.ndigit, "_sgets: Eigenvalues of current H matrix");
-        svout_(&i__1, &bounds[1], &debug_1.ndigit, "_sgets: Associated Ritz estimates");
+        svout_(&i__1, ritz, &debug_1.ndigit, "_sgets: Eigenvalues of current H matrix");
+        svout_(&i__1, bounds, &debug_1.ndigit, "_sgets: Associated Ritz estimates");
     }
 #endif
 

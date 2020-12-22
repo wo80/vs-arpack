@@ -101,7 +101,7 @@ int dneigh_(double *rnorm, int *n, double *h,
             bounds, double *q, int *ldq, double *workl, int *ierr)
 {
     /* System generated locals */
-    int h_offset, q_dim, q_offset, i__1;
+    int q_dim, i__1;
     double d__1, d__2;
 
     /* Local variables */
@@ -112,22 +112,12 @@ int dneigh_(double *rnorm, int *n, double *h,
     bool select[1];
     int msglvl;
 
-
     /* ----------------------------- */
     /* Initialize timing statistics  */
     /* & message level for debugging */
     /* ----------------------------- */
 
-    /* Parameter adjustments */
-    --workl;
-    --bounds;
-    --ritzi;
-    --ritzr;
-    h_offset = 1 + *ldh;
-    h -= h_offset;
     q_dim = *ldq;
-    q_offset = 1 + q_dim;
-    q -= q_offset;
 
     /* Function Body */
 #ifndef NO_TIMER
@@ -139,7 +129,7 @@ int dneigh_(double *rnorm, int *n, double *h,
 #ifndef NO_TRACE
     if (msglvl > 2)
     {
-        dmout_(n, n, &h[h_offset], ldh, &debug_1.ndigit, "_neigh: Entering upper Hessenberg matrix H ");
+        dmout_(n, n, h, ldh, &debug_1.ndigit, "_neigh: Entering upper Hessenberg matrix H ");
     }
 #endif
 
@@ -151,14 +141,14 @@ int dneigh_(double *rnorm, int *n, double *h,
     /* and the last components of the Schur vectors in BOUNDS.   */
     /* --------------------------------------------------------- */
 
-    dlacpy_("A", n, n, &h[h_offset], ldh, &workl[1], n);
+    dlacpy_("A", n, n, h, ldh, workl, n);
     i__1 = *n - 1;
-    for (j = 1; j <= i__1; ++j)
+    for (j = 0; j < i__1; ++j)
     {
         bounds[j] = 0.0;
     }
-    bounds[*n] = 1.0;
-    dlahqr_(&c_true, &c_true, n, &c__1, n, &workl[1], n, &ritzr[1], &ritzi[1],&c__1, &c__1, &bounds[1], &c__1, ierr);
+    bounds[*n - 1] = 1.0;
+    dlahqr_(&c_true, &c_true, n, &c__1, n, workl, n, ritzr, ritzi,&c__1, &c__1, bounds, &c__1, ierr);
     if (*ierr != 0)
     {
         goto L9000;
@@ -167,7 +157,7 @@ int dneigh_(double *rnorm, int *n, double *h,
 #ifndef NO_TRACE
     if (msglvl > 1)
     {
-        dvout_(n, &bounds[1], &debug_1.ndigit, "_neigh: last row of the Schur matrix for H");
+        dvout_(n, bounds, &debug_1.ndigit, "_neigh: last row of the Schur matrix for H");
     }
 #endif
 
@@ -181,7 +171,7 @@ int dneigh_(double *rnorm, int *n, double *h,
     /* columns of Q.                                             */
     /* --------------------------------------------------------- */
 
-    dtrevc_("R", "A", select, n, &workl[1], n, vl, n, &q[q_offset], ldq, n, n,&workl[*n * *n + 1], ierr);
+    dtrevc_("R", "A", select, n, workl, n, vl, n, q, ldq, n, n,&workl[*n * *n], ierr);
 
     if (*ierr != 0)
     {
@@ -199,7 +189,7 @@ int dneigh_(double *rnorm, int *n, double *h,
 
     iconj = 0;
     i__1 = *n;
-    for (i = 1; i <= i__1; ++i)
+    for (i = 0; i < i__1; ++i)
     {
         if ((d__1 = ritzi[i], abs(d__1)) <= 0.0)
         {
@@ -207,9 +197,9 @@ int dneigh_(double *rnorm, int *n, double *h,
             /* Real eigenvalue case */
             /* -------------------- */
 
-            temp = dnrm2_(n, &q[i * q_dim + 1], &c__1);
+            temp = dnrm2_(n, &q[i * q_dim], &c__1);
             d__1 = 1.0 / temp;
-            dscal_(n, &d__1, &q[i * q_dim + 1], &c__1);
+            dscal_(n, &d__1, &q[i * q_dim], &c__1);
         }
         else
         {
@@ -223,13 +213,13 @@ int dneigh_(double *rnorm, int *n, double *h,
 
             if (iconj == 0)
             {
-                d__1 = dnrm2_(n, &q[i * q_dim + 1], &c__1);
-                d__2 = dnrm2_(n, &q[(i + 1) * q_dim + 1], &c__1);
+                d__1 = dnrm2_(n, &q[i * q_dim], &c__1);
+                d__2 = dnrm2_(n, &q[(i + 1) * q_dim], &c__1);
                 temp = dlapy2_(&d__1, &d__2);
                 d__1 = 1.0 / temp;
-                dscal_(n, &d__1, &q[i * q_dim + 1], &c__1);
+                dscal_(n, &d__1, &q[i * q_dim], &c__1);
                 d__1 = 1.0 / temp;
-                dscal_(n, &d__1, &q[(i + 1) * q_dim + 1], &c__1);
+                dscal_(n, &d__1, &q[(i + 1) * q_dim], &c__1);
                 iconj = 1;
             }
             else
@@ -239,12 +229,12 @@ int dneigh_(double *rnorm, int *n, double *h,
         }
     }
 
-    dgemv_("T", n, n, &d_one, &q[q_offset], ldq, &bounds[1], &c__1, &d_zero, &workl[1], &c__1);
+    dgemv_("T", n, n, &d_one, q, ldq, bounds, &c__1, &d_zero, workl, &c__1);
 
 #ifndef NO_TRACE
     if (msglvl > 1)
     {
-        dvout_(n, &workl[1], &debug_1.ndigit, "_neigh: Last row of the eigenvector matrix for H");
+        dvout_(n, workl, &debug_1.ndigit, "_neigh: Last row of the eigenvector matrix for H");
     }
 #endif
 
@@ -254,7 +244,7 @@ int dneigh_(double *rnorm, int *n, double *h,
 
     iconj = 0;
     i__1 = *n;
-    for (i = 1; i <= i__1; ++i)
+    for (i = 0; i < i__1; ++i)
     {
         if ((d__1 = ritzi[i], abs(d__1)) <= 0.0)
         {
@@ -290,9 +280,9 @@ int dneigh_(double *rnorm, int *n, double *h,
 #ifndef NO_TRACE
     if (msglvl > 2)
     {
-        dvout_(n, &ritzr[1], &debug_1.ndigit, "_neigh: Real part of the eigenvalues of H");
-        dvout_(n, &ritzi[1], &debug_1.ndigit, "_neigh: Imaginary part of the eigenvalues of H");
-        dvout_(n, &bounds[1], &debug_1.ndigit, "_neigh: Ritz estimates for the eigenvalues of H");
+        dvout_(n, ritzr, &debug_1.ndigit, "_neigh: Real part of the eigenvalues of H");
+        dvout_(n, ritzi, &debug_1.ndigit, "_neigh: Imaginary part of the eigenvalues of H");
+        dvout_(n, bounds, &debug_1.ndigit, "_neigh: Ritz estimates for the eigenvalues of H");
     }
 #endif
 
