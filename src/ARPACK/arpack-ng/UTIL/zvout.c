@@ -15,33 +15,25 @@
  */
 int zvout_(int *n, zomplex *cx, int *idigit, char *ifmt)
 {
-
-    /* System generated locals */
-    int i__1, i__3;
-
     /* Local variables */
-    int i, k1, k2, lll;
+    int i, k1, k2, len, m;
     char line[80];
     int ndigit;
-    int len = *n;
-
-    /* Parameter adjustments */
-    --cx;
 
     /* Function Body */
-    /* Computing MIN */
-    i__1 = strlen(ifmt);
-    lll = min(i__1,79);
-    i__1 = lll;
-    for (i = 1; i <= i__1; ++i)
+    len = strlen(ifmt);
+    len = min(len,80);
+    for (i = 0; i < len; ++i)
     {
-        line[i - 1] = '-';
+        line[i] = '-';
     }
-    line[lll] = '\0';
+    i = min(i,79);
+    line[i] = '\0';
 
     printf("\n %s\n %s", ifmt, line);
 
-    if (*n <= 0)
+    len = *n;
+    if (len <= 0)
     {
         return 0;
     }
@@ -62,13 +54,12 @@ int zvout_(int *n, zomplex *cx, int *idigit, char *ifmt)
 
     if (ndigit <= 4)
     {
-        for (k1 = 1; k1 <= len; k1 += 2)
+        for (k1 = 0; k1 < len; k1 += 2)
         {
-            /* Computing MIN */
-            i__3 = k1 + 1;
-            k2 = min(len,i__3);
+            m = k1 + 2;
+            k2 = min(len,m);
             printf("\n  %4d - %4d:  ", k1, k2);
-            for (i = k1; i <= k2; ++i)
+            for (i = k1; i < k2; ++i)
             {
                 printf("(  %10.3e   %10.3e)  ", cx[i].r, cx[i].i);
             }
@@ -76,13 +67,12 @@ int zvout_(int *n, zomplex *cx, int *idigit, char *ifmt)
     }
     else if (ndigit <= 6)
     {
-        for (k1 = 1; k1 <= len; k1 += 2)
+        for (k1 = 0; k1 < len; k1 += 2)
         {
-            /* Computing MIN */
-            i__3 = k1 + 1;
-            k2 = min(len,i__3);
+            m = k1 + 2;
+            k2 = min(len,m);
             printf("\n  %4d - %4d:  ", k1, k2);
-            for (i = k1; i <= k2; ++i)
+            for (i = k1; i < k2; ++i)
             {
                 printf("(  %12.5e   %12.5e)  ", cx[i].r, cx[i].i);
             }
@@ -90,13 +80,12 @@ int zvout_(int *n, zomplex *cx, int *idigit, char *ifmt)
     }
     else if (ndigit <= 8)
     {
-        for (k1 = 1; k1 <= len; k1 += 2)
+        for (k1 = 0; k1 < len; k1 += 2)
         {
-            /* Computing MIN */
-            i__3 = k1 + 1;
-            k2 = min(len,i__3);
+            m = k1 + 2;
+            k2 = min(len,m);
             printf("\n  %4d - %4d:  ", k1, k2);
-            for (i = k1; i <= k2; ++i)
+            for (i = k1; i < k2; ++i)
             {
                 printf("(  %14.7e   %14.7e)  ", cx[i].r, cx[i].i);
             }
@@ -104,9 +93,9 @@ int zvout_(int *n, zomplex *cx, int *idigit, char *ifmt)
     }
     else
     {
-        for (k1 = 1; k1 <= len; ++k1)
+        for (k1 = 0; k1 < len; ++k1)
         {
-            printf("  %4d:  (  %20.13e   %20.13e)  ", k1, cx[i].r, cx[i].i);
+            printf("\n  %4d:  (  %20.13e   %20.13e)  ", k1, cx[i].r, cx[i].i);
         }
     }
 
