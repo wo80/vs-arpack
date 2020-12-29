@@ -534,10 +534,9 @@ int znaupd_(int *ido, char *bmat, int *n, char *which, int *nev, double *tol,
         /* matrix.                                                     */
         /* ----------------------------------------------------------- */
 
-
         /* Computing 2nd power */
         i__1 = *ncv;
-        /* TODO: subtract 1 !!! */
+        /* TODO: ipntr index */
         ipntr[3] = 1 + iw + i__1 * i__1 + i__1 * 3;
         ipntr[4] = 1;
         ipntr[5] = 1 + ritz;

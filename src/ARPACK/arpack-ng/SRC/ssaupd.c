@@ -570,8 +570,7 @@ int ssaupd_(int *ido, char *bmat, int *n, char *which, int *nev, float *tol,
         /* ----------------------------------------------------- */
 
 
-        /* Computing 2nd power */
-        /* TODO: subtract 1 !!! */
+        /* TODO: ipntr index */
         ipntr[3] = 1 + iw + *ncv * 3;
         ipntr[4] = 1;
         ipntr[5] = 1 + ritz;

@@ -569,9 +569,7 @@ int dsaupd_(int *ido, char *bmat, int *n, char *which, int *nev, double *tol,
         /* workl(4*ncv+ncv*ncv+1:7*ncv+ncv*ncv) := workspace     */
         /* ----------------------------------------------------- */
 
-
-        /* Computing 2nd power */
-        /* TODO: subtract 1 !!! */
+        /* TODO: ipntr index */
         ipntr[3] = 1 + iw + *ncv * 3;
         ipntr[4] = 1;
         ipntr[5] = 1 + ritz;

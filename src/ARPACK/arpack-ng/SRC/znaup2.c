@@ -745,7 +745,7 @@ L50:
     {
         ++timing_1.nbx;
         zcopy_(n, resid, &c__1, &workd[*n], &c__1);
-        /* TODO: subtract 1 */
+        /* TODO: ipntr index */
         ipntr[0] = *n + 1;
         ipntr[1] = 1;
         *ido = 2;

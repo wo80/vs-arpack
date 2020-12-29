@@ -203,7 +203,7 @@ int zgetv0_(int *ido, char *bmat, int *itry, bool *initv, int *n, int *j,
         if (*itry == 1)
         {
             ++timing_1.nopx;
-            /* TODO: subtract 1 */
+            /* TODO: ipntr index */
             ipntr[0] = 1;
             ipntr[1] = *n + 1;
             zcopy_(n, resid, &c__1, workd, &c__1);
@@ -256,7 +256,7 @@ int zgetv0_(int *ido, char *bmat, int *itry, bool *initv, int *n, int *j,
     if (*bmat == 'G')
     {
         ++timing_1.nbx;
-        /* TODO: subtract 1 */
+        /* TODO: ipntr index */
         ipntr[0] = *n + 1;
         ipntr[1] = 1;
         *ido = 2;
@@ -333,7 +333,7 @@ L30:
     {
         ++timing_1.nbx;
         zcopy_(n, resid, &c__1, &workd[*n], &c__1);
-        /* TODO: subtract 1 */
+        /* TODO: ipntr index */
         ipntr[0] = *n + 1;
         ipntr[1] = 1;
         *ido = 2;
