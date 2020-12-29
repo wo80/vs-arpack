@@ -258,7 +258,7 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
             int *info)
 {
     /* System generated locals */
-    int v_offset, z_offset, i__1, i__2;
+    int i__1, i__2;
     float r__1, r__2, r__3, r__4;
     complex q__1, q__2;
 
@@ -288,24 +288,13 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
 
 
     /* Parameter adjustments */
-    --workd;
-    --resid;
-    z_offset = 1 + *ldz;
-    z -= z_offset;
-    --d;
-    --rwork;
-    --workev;
     --select;
-    v_offset = 1 + *ldv;
-    v -= v_offset;
-    --iparam;
-    --ipntr;
     --workl;
 
     /* Function Body */
     msglvl = debug_1.mceupd;
-    mode = iparam[7];
-    nconv = iparam[5];
+    mode = iparam[6];
+    nconv = iparam[4];
     *info = 0;
 
     /* ------------------------------- */
@@ -421,20 +410,20 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
     /* GRAND total of NCV * ( 3 * NCV + 4 ) locations.           */
     /* --------------------------------------------------------- */
 
-    ih = ipntr[5];
-    ritz = ipntr[6];
-    iq = ipntr[7];
-    bounds = ipntr[8];
+    ih = ipntr[4];
+    ritz = ipntr[5];
+    iq = ipntr[6];
+    bounds = ipntr[7];
     ldh = *ncv;
     ldq = *ncv;
     iheig = bounds + ldh;
     ihbds = iheig + ldh;
     iuptri = ihbds + ldh;
     invsub = iuptri + ldh * *ncv;
-    ipntr[9] = iheig;
-    ipntr[11] = ihbds;
-    ipntr[12] = iuptri;
-    ipntr[13] = invsub;
+    ipntr[8] = iheig;
+    ipntr[10] = ihbds;
+    ipntr[11] = iuptri;
+    ipntr[12] = invsub;
     wr = 1;
     iwev = wr + *ncv;
 
@@ -446,7 +435,7 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
     /*     _naup2.                             */
     /* --------------------------------------- */
 
-    irz = ipntr[14] + *ncv * *ncv;
+    irz = ipntr[13] + *ncv * *ncv;
     ibd = irz + *ncv;
 
     /* ---------------------------------- */
@@ -518,7 +507,7 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
             r__1 = eps23, r__2 = slapy2_(&workl[i__2].r, &workl[i__2].i);
             rtemp = dmax(r__1,r__2);
             i__2 = bounds + *ncv - j;
-            jj = workl[i__2].r;
+            jj = (int)  workl[i__2].r;
             i__2 = ibd + jj - 1;
             if (numcnv < nconv && slapy2_(&workl[i__2].r, &workl[i__2].i) <= *tol * rtemp)
             {
@@ -589,7 +578,7 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
             /* Reorder the computed upper triangular matrix. */
             /* --------------------------------------------- */
 
-            ctrsen_("N", "V", &select[1], ncv, &workl[iuptri], &ldh, &workl[invsub], &ldq, &workl[iheig], &nconv2, &conds, &sep,&workev[1], ncv, &ierr);
+            ctrsen_("N", "V", &select[1], ncv, &workl[iuptri], &ldh, &workl[invsub], &ldq, &workl[iheig], &nconv2, &conds, &sep,workev, ncv, &ierr);
 
             if (nconv2 < nconv)
             {
@@ -629,7 +618,7 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
 
         if (strcmp(type, "REGULR") == 0)
         {
-            ccopy_(&nconv, &workl[iheig], &c__1, &d[1], &c__1);
+            ccopy_(&nconv, &workl[iheig], &c__1, d, &c__1);
         }
 
         /* -------------------------------------------------------- */
@@ -638,7 +627,7 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
         /* columns of workl(invsub,ldq).                            */
         /* -------------------------------------------------------- */
 
-        cgeqr2_(ncv, &nconv, &workl[invsub], &ldq, &workev[1], &workev[*ncv + 1], &ierr);
+        cgeqr2_(ncv, &nconv, &workl[invsub], &ldq, workev, &workev[*ncv], &ierr);
 
         /* ------------------------------------------------------ */
         /* * Postmultiply V by Q using cunm2r.                    */
@@ -652,8 +641,8 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
         /* NCONV in workl(iuptri).                                */
         /* ------------------------------------------------------ */
 
-        cunm2r_("R", "N", n, ncv, &nconv, &workl[invsub], &ldq, &workev[1], &v[v_offset], ldv, &workd[*n + 1], &ierr);
-        clacpy_("A", n, &nconv, &v[v_offset], ldv, &z[z_offset], ldz);
+        cunm2r_("R", "N", n, ncv, &nconv, &workl[invsub], &ldq, workev, v, ldv, &workd[*n], &ierr);
+        clacpy_("A", n, &nconv, v, ldv, z, ldz);
 
         for (j = 1; j <= nconv; ++j)
         {
@@ -669,9 +658,9 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
             i__2 = invsub + (j - 1) * ldq + j - 1;
             if (workl[i__2].r < 0.0f)
             {
-                q__1.r = -1.f, q__1.i = -0.0f;
+                q__1.r = -1.0f, q__1.i = -0.0f;
                 cscal_(&nconv, &q__1, &workl[iuptri + j - 1], &ldq);
-                q__1.r = -1.f, q__1.i = -0.0f;
+                q__1.r = -1.0f, q__1.i = -0.0f;
                 cscal_(&nconv, &q__1, &workl[iuptri + (j - 1) * ldq], &c__1);
             }
         }
@@ -696,7 +685,7 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
                 }
             }
 
-            ctrevc_("R", "S", &select[1], ncv, &workl[iuptri], &ldq, vl, &c__1, &workl[invsub], &ldq, ncv, &outncv, &workev[1],&rwork[1], &ierr);
+            ctrevc_("R", "S", &select[1], ncv, &workl[iuptri], &ldq, vl, &c__1, &workl[invsub], &ldq, ncv, &outncv, workev,rwork, &ierr);
 
             if (ierr != 0)
             {
@@ -712,11 +701,11 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
             /* magnitude 1.                                   */
             /* ---------------------------------------------- */
 
-            for (j = 1; j <= nconv; ++j)
+            for (j = 0; j < nconv; ++j)
             {
-                rtemp = scnrm2_(ncv, &workl[invsub + (j - 1) * ldq], &c__1);
+                rtemp = scnrm2_(ncv, &workl[invsub + j * ldq], &c__1);
                 rtemp = 1.0f / rtemp;
-                csscal_(ncv, &rtemp, &workl[invsub + (j - 1) * ldq], &c__1);
+                csscal_(ncv, &rtemp, &workl[invsub + j * ldq], &c__1);
 
                 /* ---------------------------------------- */
                 /* Ritz estimates can be obtained by taking */
@@ -727,7 +716,8 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
                 /* inner product can be set to j.           */
                 /* ---------------------------------------- */
 
-                cdotc_(&q__1, &j, &workl[ihbds], &c__1, &workl[invsub + (j - 1) * ldq], &c__1);
+                i__2 = j + 1;
+                cdotc_(&q__1, &i__2, &workl[ihbds], &c__1, &workl[invsub + j * ldq], &c__1);
                 workev[j].r = q__1.r, workev[j].i = q__1.i;
             }
 
@@ -747,14 +737,14 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
             /* Copy Ritz estimates into workl(ihbds) */
             /* ------------------------------------- */
 
-            ccopy_(&nconv, &workev[1], &c__1, &workl[ihbds], &c__1);
+            ccopy_(&nconv, workev, &c__1, &workl[ihbds], &c__1);
 
             /* -------------------------------------------- */
             /* The eigenvector matrix Q of T is triangular. */
             /* Form Z*Q.                                    */
             /* -------------------------------------------- */
 
-            ctrmm_("R", "U", "N", "N", n, &nconv, &c_one, &workl[invsub], &ldq, &z[z_offset], ldz);
+            ctrmm_("R", "U", "N", "N", n, &nconv, &c_one, &workl[invsub], &ldq, z, ldz);
         }
     }
     else
@@ -764,7 +754,7 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
         /* Place the Ritz values computed CNAUPD into D.    */
         /* ------------------------------------------------ */
 
-        ccopy_(&nconv, &workl[ritz], &c__1, &d[1], &c__1);
+        ccopy_(&nconv, &workl[ritz], &c__1, d, &c__1);
         ccopy_(&nconv, &workl[ritz], &c__1, &workl[iheig], &c__1);
         ccopy_(&nconv, &workl[bounds], &c__1, &workl[ihbds], &c__1);
     }
@@ -796,12 +786,12 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
         }
 
         i__1 = *ncv;
-        for (k = 1; k <= i__1; ++k)
+        for (k = 0; k < i__1; ++k)
         {
-            i__2 = iheig + k - 1;
+            i__2 = iheig + k;
             temp.r = workl[i__2].r, temp.i = workl[i__2].i;
-            i__2 = ihbds + k - 1;
-            c_div(&q__2, &workl[ihbds + k - 1], &temp);
+            i__2 = ihbds + k;
+            c_div(&q__2, &workl[ihbds + k], &temp);
             c_div(&q__1, &q__2, &temp);
             workl[i__2].r = q__1.r, workl[i__2].i = q__1.i;
         }
@@ -817,23 +807,23 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
 
     if (strcmp(type, "SHIFTI") == 0)
     {
-        for (k = 1; k <= nconv; ++k)
+        for (k = 0; k < nconv; ++k)
         {
-            c_div(&q__2, &c_one, &workl[iheig + k - 1]);
-            q__1.r = q__2.r + sigma->r, q__1.i = q__2.i + sigma->i;
-            d[k].r = q__1.r, d[k].i = q__1.i;
+            c_div(&q__2, &c_one, &workl[iheig + k]);
+            d[k].r = q__2.r + sigma->r;
+            d[k].i = q__2.i + sigma->i;
         }
     }
 
 #ifndef NO_TRACE
     if (msglvl > 1 && strcmp(type, "REGULR") != 0)
     {
-        cvout_(&nconv, &d[1], &debug_1.ndigit, "_neupd: Untransformed Ritz values.");
+        cvout_(&nconv, d, &debug_1.ndigit, "_neupd: Untransformed Ritz values.");
         cvout_(&nconv, &workl[ihbds], &debug_1.ndigit, "_neupd: Ritz estimates of the untransformed Ritz values.");
     }
     else if (msglvl > 1)
     {
-        cvout_(&nconv, &d[1], &debug_1.ndigit, "_neupd: Converged Ritz values.");
+        cvout_(&nconv, d, &debug_1.ndigit, "_neupd: Converged Ritz values.");
         cvout_(&nconv, &workl[ihbds], &debug_1.ndigit, "_neupd: Associated Ritz estimates.");
     }
 #endif
@@ -855,12 +845,12 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
         /* where H s = s theta.                           */
         /* ---------------------------------------------- */
 
-        for (j = 1; j <= nconv; ++j)
+        for (j = 0; j < nconv; ++j)
         {
-            i__2 = iheig + j - 1;
+            i__2 = iheig + j;
             if (workl[i__2].r != 0.0f || workl[i__2].i != 0.0f)
             {
-                c_div(&q__1, &workl[invsub + (j - 1) * ldq + *ncv - 1], &workl[i__2]);
+                c_div(&q__1, &workl[invsub + j * ldq + *ncv - 1], &workl[i__2]);
                 workev[j].r = q__1.r, workev[j].i = q__1.i;
             }
         }
@@ -870,7 +860,7 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
         /* purify all the Ritz vectors together. */
         /* ------------------------------------- */
 
-        cgeru_(n, &nconv, &c_one, &resid[1], &c__1, &workev[1], &c__1, &z[z_offset], ldz);
+        cgeru_(n, &nconv, &c_one, resid, &c__1, workev, &c__1, z, ldz);
     }
 
 L9000:

@@ -102,7 +102,7 @@ int cneigh_(float *rnorm, int *n, complex *h, int *
             complex *workl, float *rwork, int *ierr)
 {
     /* System generated locals */
-    int h_offset, q_dim, q_offset, i__1;
+    int q_dim, i__1;
     float r__1;
 
     /* Local variables */
@@ -113,22 +113,12 @@ int cneigh_(float *rnorm, int *n, complex *h, int *
     bool select[1];
     int msglvl;
 
-
     /* ----------------------------- */
     /* Initialize timing statistics  */
     /* & message level for debugging */
     /* ----------------------------- */
 
-    /* Parameter adjustments */
-    --rwork;
-    --workl;
-    --bounds;
-    --ritz;
-    h_offset = 1 + *ldh;
-    h -= h_offset;
     q_dim = *ldq;
-    q_offset = 1 + q_dim;
-    q -= q_offset;
 
     /* Function Body */
 #ifndef NO_TIMER
@@ -140,7 +130,7 @@ int cneigh_(float *rnorm, int *n, complex *h, int *
 #ifndef NO_TRACE
     if (msglvl > 2)
     {
-        cmout_(n, n, &h[h_offset], ldh, &debug_1.ndigit, "_neigh: Entering upper Hessenberg matrix H ");
+        cmout_(n, n, h, ldh, &debug_1.ndigit, "_neigh: Entering upper Hessenberg matrix H ");
     }
 #endif
 
@@ -152,19 +142,19 @@ int cneigh_(float *rnorm, int *n, complex *h, int *
     /*    in WORKL(1:N**2), and the Schur vectors in q.         */
     /* -------------------------------------------------------- */
 
-    clacpy_("A", n, n, &h[h_offset], ldh, &workl[1], n);
-    claset_("A", n, n, &c_zero, &c_one, &q[q_offset], ldq);
-    clahqr_(&c_true, &c_true, n, &c__1, n, &workl[1], ldh, &ritz[1], &c__1, n,&q[q_offset], ldq, ierr);
+    clacpy_("A", n, n, h, ldh, workl, n);
+    claset_("A", n, n, &c_zero, &c_one, q, ldq);
+    clahqr_(&c_true, &c_true, n, &c__1, n, workl, ldh, ritz, &c__1, n,q, ldq, ierr);
     if (*ierr != 0)
     {
         goto L9000;
     }
 
-    ccopy_(n, &q[*n - 1 + q_dim], ldq, &bounds[1], &c__1);
+    ccopy_(n, &q[*n - 2], ldq, bounds, &c__1);
 #ifndef NO_TRACE
     if (msglvl > 1)
     {
-        cvout_(n, &bounds[1], &debug_1.ndigit, "_neigh: last row of the Schur matrix for H");
+        cvout_(n, bounds, &debug_1.ndigit, "_neigh: last row of the Schur matrix for H");
     }
 #endif
 
@@ -174,7 +164,7 @@ int cneigh_(float *rnorm, int *n, complex *h, int *
     /*    eigenvectors.                                         */
     /* -------------------------------------------------------- */
 
-    ctrevc_("R", "B", select, n, &workl[1], n, vl, n, &q[q_offset], ldq, n, n, &workl[*n * *n + 1], &rwork[1], ierr);
+    ctrevc_("R", "B", select, n, workl, n, vl, n, q, ldq, n, n, &workl[*n * *n], rwork, ierr);
 
     if (*ierr != 0)
     {
@@ -191,18 +181,18 @@ int cneigh_(float *rnorm, int *n, complex *h, int *
     /* ---------------------------------------------- */
 
     i__1 = *n;
-    for (j = 1; j <= i__1; ++j)
+    for (j = 0; j < i__1; ++j)
     {
-        temp = scnrm2_(n, &q[j * q_dim + 1], &c__1);
+        temp = scnrm2_(n, &q[j * q_dim], &c__1);
         r__1 = 1.0f / temp;
-        csscal_(n, &r__1, &q[j * q_dim + 1], &c__1);
+        csscal_(n, &r__1, &q[j * q_dim], &c__1);
     }
 
 #ifndef NO_TRACE
     if (msglvl > 1)
     {
-        ccopy_(n, &q[*n + q_dim], ldq, &workl[1], &c__1);
-        cvout_(n, &workl[1], &debug_1.ndigit, "_neigh: Last row of the eigenvector matrix for H");
+        ccopy_(n, &q[*n - 1], ldq, workl, &c__1);
+        cvout_(n, workl, &debug_1.ndigit, "_neigh: Last row of the eigenvector matrix for H");
     }
 #endif
 
@@ -210,14 +200,14 @@ int cneigh_(float *rnorm, int *n, complex *h, int *
     /* Compute the Ritz estimates */
     /* -------------------------- */
 
-    ccopy_(n, &q[*n + q_dim], n, &bounds[1], &c__1);
-    csscal_(n, rnorm, &bounds[1], &c__1);
+    ccopy_(n, &q[*n - 1], n, bounds, &c__1);
+    csscal_(n, rnorm, bounds, &c__1);
 
 #ifndef NO_TRACE
     if (msglvl > 2)
     {
-        cvout_(n, &ritz[1], &debug_1.ndigit, "_neigh: The eigenvalues of H");
-        cvout_(n, &bounds[1], &debug_1.ndigit, "_neigh: Ritz estimates for the eigenvalues of H");
+        cvout_(n, ritz, &debug_1.ndigit, "_neigh: The eigenvalues of H");
+        cvout_(n, bounds, &debug_1.ndigit, "_neigh: Ritz estimates for the eigenvalues of H");
     }
 #endif
 

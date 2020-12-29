@@ -172,11 +172,6 @@ int snapps_(int *n, int *kev, int *np, float *
     static float smlnum;
 
     /* Parameter adjustments */
-    --workd;
-    --resid;
-    --workl;
-    --shifti;
-    --shiftr;
     v_dim = *ldv;
     v_offset = 1 + v_dim;
     v -= v_offset;
@@ -244,8 +239,9 @@ int snapps_(int *n, int *kev, int *np, float *
     i__1 = *np;
     for (jj = 1; jj <= i__1; ++jj)
     {
-        sigmar = shiftr[jj];
-        sigmai = shifti[jj];
+        /* TODO: fix jj - 1 */
+        sigmar = shiftr[jj - 1];
+        sigmai = shifti[jj - 1];
 
 #ifndef NO_TRACE
         if (msglvl > 2)
@@ -321,7 +317,7 @@ L20:
             if (tst1 == 0.0f)
             {
                 i__3 = kplusp - jj + 1;
-                tst1 = slanhs_("1", &i__3, &h[h_offset], ldh, &workl[1]);
+                tst1 = slanhs_("1", &i__3, &h[h_offset], ldh, workl);
             }
             /* Computing MAX */
             r__1 = h[i + 1 + i * h_dim];
@@ -515,7 +511,7 @@ L40:
                 /* ------------------------------------ */
 
                 i__3 = kplusp - i + 1;
-                slarf_("L", &nr, &i__3, u, &c__1, &tau, &h[i + i * h_dim], ldh, &workl[1]);
+                slarf_("L", &nr, &i__3, u, &c__1, &tau, &h[i + i * h_dim], ldh, workl);
 
                 /* ------------------------------------- */
                 /* Apply the reflector to the right of H */
@@ -524,13 +520,13 @@ L40:
                 /* Computing MIN */
                 i__3 = i + 3;
                 ir = min(i__3,iend);
-                slarf_("R", &ir, &nr, u, &c__1, &tau, &h[i * h_dim + 1], ldh, &workl[1]);
+                slarf_("R", &ir, &nr, u, &c__1, &tau, &h[i * h_dim + 1], ldh, workl);
 
                 /* --------------------------------------------------- */
                 /* Accumulate the reflector in the matrix Q;  Q <- Q*G */
                 /* --------------------------------------------------- */
 
-                slarf_("R", &kplusp, &nr, u, &c__1, &tau, &q[i * q_dim + 1], ldq, &workl[1]);
+                slarf_("R", &kplusp, &nr, u, &c__1, &tau, &q[i * q_dim + 1], ldq, workl);
 
                 /* -------------------------- */
                 /* Prepare for next reflector */
@@ -611,7 +607,7 @@ L110:
         tst1 = dabs(r__1) + dabs(r__2);
         if (tst1 == 0.0f)
         {
-            tst1 = slanhs_("1", kev, &h[h_offset], ldh, &workl[1]);
+            tst1 = slanhs_("1", kev, &h[h_offset], ldh, workl);
         }
         /* Computing MAX */
         r__1 = ulp * tst1;
@@ -631,7 +627,7 @@ L110:
 
     if (h[*kev + 1 + *kev * h_dim] > 0.0f)
     {
-        sgemv_("N", n, &kplusp, &s_one, &v[v_offset], ldv, &q[(*kev + 1) * q_dim + 1], &c__1, &s_zero, &workd[*n + 1], &c__1);
+        sgemv_("N", n, &kplusp, &s_one, &v[v_offset], ldv, &q[(*kev + 1) * q_dim + 1], &c__1, &s_zero, &workd[*n], &c__1);
     }
 
     /* -------------------------------------------------------- */
@@ -643,8 +639,8 @@ L110:
     for (i = 1; i <= i__1; ++i)
     {
         i__2 = kplusp - i + 1;
-        sgemv_("N", n, &i__2, &s_one, &v[v_offset], ldv, &q[(*kev - i + 1) * q_dim + 1], &c__1, &s_zero, &workd[1], &c__1);
-        scopy_(n, &workd[1], &c__1, &v[(kplusp - i + 1) * v_dim + 1], &c__1);
+        sgemv_("N", n, &i__2, &s_one, &v[v_offset], ldv, &q[(*kev - i + 1) * q_dim + 1], &c__1, &s_zero, workd, &c__1);
+        scopy_(n, workd, &c__1, &v[(kplusp - i + 1) * v_dim + 1], &c__1);
     }
 
     /* ----------------------------------------------- */
@@ -659,7 +655,7 @@ L110:
 
     if (h[*kev + 1 + *kev * h_dim] > 0.0f)
     {
-        scopy_(n, &workd[*n + 1], &c__1, &v[(*kev + 1) * v_dim + 1], &c__1);
+        scopy_(n, &workd[*n], &c__1, &v[(*kev + 1) * v_dim + 1], &c__1);
     }
 
     /* ----------------------------------- */
@@ -670,10 +666,10 @@ L110:
     /*    betak = e_{kev+1}'*H*e_{kev}     */
     /* ----------------------------------- */
 
-    sscal_(n, &q[kplusp + *kev * q_dim], &resid[1], &c__1);
+    sscal_(n, &q[kplusp + *kev * q_dim], resid, &c__1);
     if (h[*kev + 1 + *kev * h_dim] > 0.0f)
     {
-        saxpy_(n, &h[*kev + 1 + *kev * h_dim], &v[(*kev + 1) * v_dim + 1],&c__1, &resid[1], &c__1);
+        saxpy_(n, &h[*kev + 1 + *kev * h_dim], &v[(*kev + 1) * v_dim + 1],&c__1, resid, &c__1);
     }
 
 #ifndef NO_TRACE

@@ -101,7 +101,7 @@ int sneigh_(float *rnorm, int *n, float *h, int *ldh,
             workl, int *ierr)
 {
     /* System generated locals */
-    int h_offset, q_dim, q_offset, i__1;
+    int q_dim, i__1;
     float r__1, r__2;
 
     /* Local variables */
@@ -112,22 +112,12 @@ int sneigh_(float *rnorm, int *n, float *h, int *ldh,
     bool select[1];
     int msglvl;
 
-
     /* ----------------------------- */
     /* Initialize timing statistics  */
     /* & message level for debugging */
     /* ----------------------------- */
 
-    /* Parameter adjustments */
-    --workl;
-    --bounds;
-    --ritzi;
-    --ritzr;
-    h_offset = 1 + *ldh;
-    h -= h_offset;
     q_dim = *ldq;
-    q_offset = 1 + q_dim;
-    q -= q_offset;
 
     /* Function Body */
 #ifndef NO_TIMER
@@ -139,7 +129,7 @@ int sneigh_(float *rnorm, int *n, float *h, int *ldh,
 #ifndef NO_TRACE
     if (msglvl > 2)
     {
-        smout_(n, n, &h[h_offset], ldh, &debug_1.ndigit, "_neigh: Entering upper Hessenberg matrix H ");
+        smout_(n, n, h, ldh, &debug_1.ndigit, "_neigh: Entering upper Hessenberg matrix H ");
     }
 #endif
 
@@ -151,14 +141,14 @@ int sneigh_(float *rnorm, int *n, float *h, int *ldh,
     /* and the last components of the Schur vectors in BOUNDS.   */
     /* --------------------------------------------------------- */
 
-    slacpy_("A", n, n, &h[h_offset], ldh, &workl[1], n);
+    slacpy_("A", n, n, h, ldh, workl, n);
     i__1 = *n - 1;
-    for (j = 1; j <= i__1; ++j)
+    for (j = 0; j < i__1; ++j)
     {
         bounds[j] = 0.0f;
     }
-    bounds[*n] = 1.0f;
-    slahqr_(&c_true, &c_true, n, &c__1, n, &workl[1], n, &ritzr[1], &ritzi[1],&c__1, &c__1, &bounds[1], &c__1, ierr);
+    bounds[*n - 1] = 1.0f;
+    slahqr_(&c_true, &c_true, n, &c__1, n, workl, n, ritzr, ritzi,&c__1, &c__1, bounds, &c__1, ierr);
     if (*ierr != 0)
     {
         goto L9000;
@@ -167,7 +157,7 @@ int sneigh_(float *rnorm, int *n, float *h, int *ldh,
 #ifndef NO_TRACE
     if (msglvl > 1)
     {
-        svout_(n, &bounds[1], &debug_1.ndigit, "_neigh: last row of the Schur matrix for H");
+        svout_(n, bounds, &debug_1.ndigit, "_neigh: last row of the Schur matrix for H");
     }
 #endif
 
@@ -181,7 +171,7 @@ int sneigh_(float *rnorm, int *n, float *h, int *ldh,
     /* columns of Q.                                             */
     /* --------------------------------------------------------- */
 
-    strevc_("R", "A", select, n, &workl[1], n, vl, n, &q[q_offset], ldq, n, n,&workl[*n * *n + 1], ierr);
+    strevc_("R", "A", select, n, workl, n, vl, n, q, ldq, n, n,&workl[*n * *n], ierr);
 
     if (*ierr != 0)
     {
@@ -199,7 +189,7 @@ int sneigh_(float *rnorm, int *n, float *h, int *ldh,
 
     iconj = 0;
     i__1 = *n;
-    for (i = 1; i <= i__1; ++i)
+    for (i = 0; i < i__1; ++i)
     {
         if ((r__1 = ritzi[i], dabs(r__1)) <= 0.0f)
         {
@@ -207,9 +197,9 @@ int sneigh_(float *rnorm, int *n, float *h, int *ldh,
             /* Real eigenvalue case */
             /* -------------------- */
 
-            temp = snrm2_(n, &q[i * q_dim + 1], &c__1);
+            temp = snrm2_(n, &q[i * q_dim], &c__1);
             r__1 = 1.0f / temp;
-            sscal_(n, &r__1, &q[i * q_dim + 1], &c__1);
+            sscal_(n, &r__1, &q[i * q_dim], &c__1);
         }
         else
         {
@@ -223,13 +213,13 @@ int sneigh_(float *rnorm, int *n, float *h, int *ldh,
 
             if (iconj == 0)
             {
-                r__1 = snrm2_(n, &q[i * q_dim + 1], &c__1);
-                r__2 = snrm2_(n, &q[(i + 1) * q_dim + 1], &c__1);
+                r__1 = snrm2_(n, &q[i * q_dim], &c__1);
+                r__2 = snrm2_(n, &q[(i + 1) * q_dim], &c__1);
                 temp = slapy2_(&r__1, &r__2);
                 r__1 = 1.0f / temp;
-                sscal_(n, &r__1, &q[i * q_dim + 1], &c__1);
+                sscal_(n, &r__1, &q[i * q_dim], &c__1);
                 r__1 = 1.0f / temp;
-                sscal_(n, &r__1, &q[(i + 1) * q_dim + 1], &c__1);
+                sscal_(n, &r__1, &q[(i + 1) * q_dim], &c__1);
                 iconj = 1;
             }
             else
@@ -239,12 +229,12 @@ int sneigh_(float *rnorm, int *n, float *h, int *ldh,
         }
     }
 
-    sgemv_("T", n, n, &s_one, &q[q_offset], ldq, &bounds[1], &c__1, &s_zero, &workl[1], &c__1);
+    sgemv_("T", n, n, &s_one, q, ldq, bounds, &c__1, &s_zero, workl, &c__1);
 
 #ifndef NO_TRACE
     if (msglvl > 1)
     {
-        svout_(n, &workl[1], &debug_1.ndigit, "_neigh: Last row of the eigenvector matrix for H");
+        svout_(n, workl, &debug_1.ndigit, "_neigh: Last row of the eigenvector matrix for H");
     }
 #endif
 
@@ -254,7 +244,7 @@ int sneigh_(float *rnorm, int *n, float *h, int *ldh,
 
     iconj = 0;
     i__1 = *n;
-    for (i = 1; i <= i__1; ++i)
+    for (i = 0; i < i__1; ++i)
     {
         if ((r__1 = ritzi[i], dabs(r__1)) <= 0.0f)
         {
@@ -290,9 +280,9 @@ int sneigh_(float *rnorm, int *n, float *h, int *ldh,
 #ifndef NO_TRACE
     if (msglvl > 2)
     {
-        svout_(n, &ritzr[1], &debug_1.ndigit, "_neigh: Real part of the eigenvalues of H");
-        svout_(n, &ritzi[1], &debug_1.ndigit, "_neigh: Imaginary part of the eigenvalues of H");
-        svout_(n, &bounds[1], &debug_1.ndigit, "_neigh: Ritz estimates for the eigenvalues of H");
+        svout_(n, ritzr, &debug_1.ndigit, "_neigh: Real part of the eigenvalues of H");
+        svout_(n, ritzi, &debug_1.ndigit, "_neigh: Imaginary part of the eigenvalues of H");
+        svout_(n, bounds, &debug_1.ndigit, "_neigh: Ritz estimates for the eigenvalues of H");
     }
 #endif
 

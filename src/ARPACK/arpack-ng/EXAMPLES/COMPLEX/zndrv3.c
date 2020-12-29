@@ -48,8 +48,6 @@ int zndrv3()
     int i__1, i__2;
     zomplex z__1, z__2;
 
-    void z_div(zomplex *, zomplex *, zomplex *);
-
     /* Local variables */
     zomplex d[25];
     zomplex workev[50];
@@ -120,26 +118,18 @@ int zndrv3()
     zomplex* dl = (zomplex*)malloc(n * sizeof(zomplex));
     zomplex* du2 = (zomplex*)malloc(n * sizeof(zomplex));
 
-    i__1 = n + 1;
-    z__2.r = (double) i__1, z__2.i = 0.0;
-    z_div(&z__1, &z_one, &z__2);
-    h.r = z__1.r, h.i = z__1.i;
+    h.r = 1.0 / (double)(n + 1);
+    h.i = 0.0;
     i__1 = n - 1;
     for (j = 1; j <= i__1; ++j)
     {
         i__2 = j - 1;
-        z__1.r = h.r * 1.0 - h.i * 0.0, z__1.i = h.i * 1. + h.r * 0.0;
-        dl[i__2].r = z__1.r, dl[i__2].i = z__1.i;
-        i__2 = j - 1;
-        z__1.r = h.r * 4.0 - h.i * 0.0, z__1.i = h.r * 0. + h.i * 4.0;
-        dd[i__2].r = z__1.r, dd[i__2].i = z__1.i;
-        i__2 = j - 1;
-        z__1.r = h.r * 1.0 - h.i * 0.0, z__1.i = h.i * 1. + h.r * 0.0;
-        du[i__2].r = z__1.r, du[i__2].i = z__1.i;
+        dl[i__2].r = h.r * 1.0, dl[i__2].i = h.i * 1.0;
+        dd[i__2].r = h.r * 4.0, dd[i__2].i = h.i * 4.0;
+        du[i__2].r = h.r * 1.0, du[i__2].i = h.i * 1.0;
     }
     i__1 = n - 1;
-    z__1.r = h.r * 4.0 - h.i * 0.0, z__1.i = h.r * 0. + h.i * 4.0;
-    dd[i__1].r = z__1.r, dd[i__1].i = z__1.i;
+    dd[i__1].r = h.r * 4.0, dd[i__1].i = h.i * 4.0;
 
     zgttrf_(&n, dl, dd, du, du2, ipiv, &ierr);
     if (ierr != 0)
@@ -401,132 +391,79 @@ EXIT:
     return ierr;
 }
 
-/* ========================================================================== */
-
-/*     matrix vector multiplication subroutine */
-
+/** Matrix vector multiplication subroutine.
+ *
+ * Compute the matrix vector multiplication y<---A*x
+ * where A is the stiffness matrix formed by using piecewise linear
+ * elements on [0,1].
+ */
 int zndrv3_av_(const int n, zomplex *v, zomplex *w)
 {
     /* System generated locals */
-    int i__1, i__2, i__3, i__4, i__5;
-    zomplex z__1, z__2, z__3, z__4, z__5;
-
-    /* Builtin functions */
-    void z_div(zomplex *, zomplex *, zomplex *);
+    int i__1, i__2, i__3;
 
     /* Local variables */
-    zomplex h;
     int j;
-    zomplex s, dd, dl, du;
-
-    /*     Compute the matrix vector multiplication y<---A*x */
-    /*     where A is the stiffness matrix formed by using piecewise linear */
-    /*     elements on [0,1]. */
-
-    /* Parameter adjustments */
-    --w;
-    --v;
+    double h, s, dd, dl, du;
 
     /* Function Body */
-    i__1 = n + 1;
-    z__2.r = (double) i__1, z__2.i = 0.0;
-    z_div(&z__1, &z_one, &z__2);
-    h.r = z__1.r, h.i = z__1.i;
-    z_div(&z__1, &z_ten, &z_two);
-    s.r = z__1.r, s.i = z__1.i;
-    z_div(&z__1, &z_two, &h);
-    dd.r = z__1.r, dd.i = z__1.i;
-    z__3.r = -1., z__3.i = -0.0;
-    z_div(&z__2, &z__3, &h);
-    z__1.r = z__2.r - s.r, z__1.i = z__2.i - s.i;
-    dl.r = z__1.r, dl.i = z__1.i;
-    z__3.r = -1., z__3.i = -0.0;
-    z_div(&z__2, &z__3, &h);
-    z__1.r = z__2.r + s.r, z__1.i = z__2.i + s.i;
-    du.r = z__1.r, du.i = z__1.i;
+    h = 1.0 / (double)(n + 1);
+    s = 10.0 / 2.0;
+    dd = 2.0 / h;
+    dl = -1.0 / h - s;
+    du = -1.0 / h + s;
 
-    z__2.r = dd.r * v[1].r - dd.i * v[1].i, z__2.i = dd.r * v[1].i + dd.i * v[1].r;
-    z__3.r = du.r * v[2].r - du.i * v[2].i, z__3.i = du.r * v[2].i + du.i * v[2].r;
-    z__1.r = z__2.r + z__3.r, z__1.i = z__2.i + z__3.i;
-    w[1].r = z__1.r, w[1].i = z__1.i;
+    w[0].r = dd * v[0].r + du * v[1].r;
+    w[0].i = dd * v[0].i + du * v[1].i;
+
     i__1 = n - 1;
-    for (j = 2; j <= i__1; ++j)
+    for (j = 1; j < i__1; ++j)
     {
-        i__2 = j;
-        i__3 = j - 1;
-        z__3.r = dl.r * v[i__3].r - dl.i * v[i__3].i, z__3.i = dl.r * v[i__3].i + dl.i * v[i__3].r;
-        i__4 = j;
-        z__4.r = dd.r * v[i__4].r - dd.i * v[i__4].i, z__4.i = dd.r * v[i__4].i + dd.i * v[i__4].r;
-        z__2.r = z__3.r + z__4.r, z__2.i = z__3.i + z__4.i;
-        i__5 = j + 1;
-        z__5.r = du.r * v[i__5].r - du.i * v[i__5].i, z__5.i = du.r * v[i__5].i + du.i * v[i__5].r;
-        z__1.r = z__2.r + z__5.r, z__1.i = z__2.i + z__5.i;
-        w[i__2].r = z__1.r, w[i__2].i = z__1.i;
+        i__2 = j - 1;
+        i__3 = j + 1;
+        w[j].r = (dl * v[i__2].r + dd * v[j].r) + du * v[i__3].r;
+        w[j].i = (dl * v[i__2].i + dd * v[j].i) + du * v[i__3].i;
     }
-    i__1 = n;
-    i__2 = n - 1;
-    z__2.r = dl.r * v[i__2].r - dl.i * v[i__2].i, z__2.i = dl.r * v[i__2].i + dl.i * v[i__2].r;
-    i__3 = n;
-    z__3.r = dd.r * v[i__3].r - dd.i * v[i__3].i, z__3.i = dd.r * v[i__3].i + dd.i * v[i__3].r;
-    z__1.r = z__2.r + z__3.r, z__1.i = z__2.i + z__3.i;
-    w[i__1].r = z__1.r, w[i__1].i = z__1.i;
+    i__1 = n - 1;
+    i__2 = n - 2;
+    w[i__1].r = dl * v[i__2].r + dd * v[i__1].r;
+    w[i__1].i = dl * v[i__2].i + dd * v[i__1].i;
     return 0;
 } /* av_ */
 
-/* ------------------------------------------------------------------------ */
+/**
+ * Compute the matrix vector multiplication y<---M*x
+ * where M is the mass matrix formed by using piecewise linear elements
+ * on [0,1].
+ */
 int zndrv3_mv_(const int n, zomplex *v, zomplex *w)
 {
     /* System generated locals */
-    int i__1, i__2, i__3, i__4, i__5;
-    zomplex z__1, z__2, z__3, z__4, z__5;
-
-    /* Builtin functions */
-    void z_div(zomplex *, zomplex *, zomplex *);
+    int i__1, i__2, i__3;
 
     /* Local variables */
     zomplex h;
     int j;
 
-    /*     Compute the matrix vector multiplication y<---M*x */
-    /*     where M is the mass matrix formed by using piecewise linear elements */
-    /*     on [0,1]. */
-
-    /* Parameter adjustments */
-    --w;
-    --v;
-
     /* Function Body */
-    z__2.r = v[1].r * 4.0 - v[1].i * 0.0, z__2.i = v[1].i * 4.0 + v[1].r * 0.0;
-    z__3.r = v[2].r * 1.0 - v[2].i * 0.0, z__3.i = v[2].i * 1. + v[2].r * 0.0;
-    z__1.r = z__2.r + z__3.r, z__1.i = z__2.i + z__3.i;
-    w[1].r = z__1.r, w[1].i = z__1.i;
-    i__1 = n - 1;
-    for (j = 2; j <= i__1; ++j)
-    {
-        i__2 = j;
-        i__3 = j - 1;
-        z__3.r = v[i__3].r * 1.0 - v[i__3].i * 0.0, z__3.i = v[i__3].i * 1. + v[i__3].r * 0.0;
-        i__4 = j;
-        z__4.r = v[i__4].r * 4.0 - v[i__4].i * 0.0, z__4.i = v[i__4].i * 4.0 + v[i__4].r * 0.0;
-        z__2.r = z__3.r + z__4.r, z__2.i = z__3.i + z__4.i;
-        i__5 = j + 1;
-        z__5.r = v[i__5].r * 1.0 - v[i__5].i * 0.0, z__5.i = v[i__5].i * 1. + v[i__5].r * 0.0;
-        z__1.r = z__2.r + z__5.r, z__1.i = z__2.i + z__5.i;
-        w[i__2].r = z__1.r, w[i__2].i = z__1.i;
-    }
-    i__1 = n;
-    i__2 = n - 1;
-    z__2.r = v[i__2].r * 1.0 - v[i__2].i * 0.0, z__2.i = v[i__2].i * 1. + v[i__2].r * 0.0;
-    i__3 = n;
-    z__3.r = v[i__3].r * 4.0 - v[i__3].i * 0.0, z__3.i = v[i__3].i * 4.0 + v[i__3].r * 0.0;
-    z__1.r = z__2.r + z__3.r, z__1.i = z__2.i + z__3.i;
-    w[i__1].r = z__1.r, w[i__1].i = z__1.i;
+    w[0].r = v[0].r * 4.0 + v[1].r * 1.0;
+    w[0].i = v[0].i * 4.0 + v[1].i * 1.0;
 
-    i__1 = n + 1;
-    z__2.r = (double) i__1, z__2.i = 0.0;
-    z_div(&z__1, &z_one, &z__2);
-    h.r = z__1.r, h.i = z__1.i;
-    zscal_(&n, &h, &w[1], &c__1);
+    i__1 = n - 1;
+    for (j = 1; j < i__1; ++j)
+    {
+        i__2 = j - 1;
+        i__3 = j + 1;
+        w[j].r = (v[i__2].r * 1.0 + v[j].r * 4.0) + v[i__3].r * 1.0;
+        w[j].i = (v[i__2].i * 1.0 + v[j].i * 4.0) + v[i__3].i * 1.0;
+    }
+    i__1 = n - 1;
+    i__2 = n - 2;
+    w[i__1].r = v[i__2].r * 1.0 + v[i__1].r * 4.0;
+    w[i__1].i = v[i__2].i * 1.0 + v[i__1].i * 4.0;
+
+    h.r = 1.0 / (double)(n + 1);
+    h.i = 0.0;
+    zscal_(&n, &h, w, &c__1);
     return 0;
 } /* mv_ */
-

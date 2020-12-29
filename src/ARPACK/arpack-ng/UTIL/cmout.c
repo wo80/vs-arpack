@@ -18,36 +18,28 @@
  */
 int cmout_(int *m, int *n, complex *a, int *lda, int *idigit, char *ifmt)
 {
-    /* Initialized data */
-
+    /* System generated locals */
     complex d__1;
 
-    /* System generated locals */
-    int a_dim, a_offset, i__1, i__3;
-
     /* Local variables */
-    int i, j, k1, k2, lll;
+    int i, j, k1, k2, len, p;
     char line[80];
     int ndigit;
     int cols = *n;
     int rows = *m;
 
-    /* Parameter adjustments */
-    a_dim = *lda;
-    a_offset = 1 + a_dim;
-    a -= a_offset;
+    int a_dim = *lda;
 
     /* Function Body */
 
-    /* Computing MIN */
-    i__1 = strlen(ifmt);
-    lll = min(i__1,79);
-    i__1 = lll;
-    for (i = 1; i <= i__1; ++i)
+    len = strlen(ifmt);
+    len = min(len,80);
+    for (i = 0; i < len; ++i)
     {
-        line[i - 1] = '-';
+        line[i] = '-';
     }
-    line[lll] = '\0';
+    i = min(i,79);
+    line[i] = '\0';
 
     printf("\n %s\n %s", ifmt, line);
 
@@ -72,20 +64,19 @@ int cmout_(int *m, int *n, complex *a, int *lda, int *idigit, char *ifmt)
 
     if (ndigit <= 4)
     {
-        for (k1 = 1; k1 <= cols; k1 += 2)
+        for (k1 = 0; k1 < cols; k1 += 2)
         {
-            /* Computing MIN */
-            i__3 = k1 + 1;
-            k2 = min(cols,i__3);
+            p = k1 + 2;
+            k2 = min(cols,p);
             printf("\n           ");
-            for (i = k1; i <= k2; ++i)
+            for (i = k1; i < k2; ++i)
             {
                 printf("          Col %4d         ", i);
             }
-            for (i = 1; i <= rows; ++i)
+            for (i = 0; i < rows; ++i)
             {
                 printf("\n  Row %4d:  ", i);
-                for (j = k1; j <= k2; ++j)
+                for (j = k1; j < k2; ++j)
                 {
                     d__1 = a[i + j * a_dim];
                     printf("(  %10.3e   %10.3e)  ", d__1.r, d__1.i);
@@ -95,20 +86,19 @@ int cmout_(int *m, int *n, complex *a, int *lda, int *idigit, char *ifmt)
     }
     else if (ndigit <= 6)
     {
-        for (k1 = 1; k1 <= cols; k1 += 2)
+        for (k1 = 0; k1 < cols; k1 += 2)
         {
-            /* Computing MIN */
-            i__3 = k1 + 1;
-            k2 = min(cols,i__3);
+            p = k1 + 2;
+            k2 = min(cols,p);
             printf("\n          ");
-            for (i = k1; i <= k2; ++i)
+            for (i = k1; i < k2; ++i)
             {
                 printf("            Col %4d           ", i);
             }
-            for (i = 1; i <= rows; ++i)
+            for (i = 0; i < rows; ++i)
             {
                 printf("\n  Row %4d:  ", i);
-                for (j = k1; j <= k2; ++j)
+                for (j = k1; j < k2; ++j)
                 {
                     d__1 = a[i + j * a_dim];
                     printf("(  %12.5e   %12.5e)  ", d__1.r, d__1.i);
@@ -118,20 +108,19 @@ int cmout_(int *m, int *n, complex *a, int *lda, int *idigit, char *ifmt)
     }
     else if (ndigit <= 8)
     {
-        for (k1 = 1; k1 <= cols; k1 += 2)
+        for (k1 = 0; k1 < cols; k1 += 2)
         {
-            /* Computing MIN */
-            i__3 = k1 + 1;
-            k2 = min(cols,i__3);
+            p = k1 + 2;
+            k2 = min(cols,p);
             printf("\n          ");
-            for (i = k1; i <= k2; ++i)
+            for (i = k1; i < k2; ++i)
             {
                 printf("              Col %4d             ", i);
             }
-            for (i = 1; i <= rows; ++i)
+            for (i = 0; i < rows; ++i)
             {
                 printf("\n  Row %4d:  ", i);
-                for (j = k1; j <= k2; ++j)
+                for (j = k1; j < k2; ++j)
                 {
                     d__1 = a[i + j * a_dim];
                     printf("(  %14.7e   %14.7e)  ", d__1.r, d__1.i);
@@ -141,10 +130,10 @@ int cmout_(int *m, int *n, complex *a, int *lda, int *idigit, char *ifmt)
     }
     else
     {
-        for (k1 = 1; k1 <= cols; ++k1)
+        for (k1 = 0; k1 < cols; ++k1)
         {
             printf("                               Col %4d                  ", i);
-            for (i = 1; i <= rows; ++i)
+            for (i = 0; i < rows; ++i)
             {
                 d__1 = a[i + k1 * a_dim];
                 printf("\n  Row %4d:  (  %20.13e   %20.13e)", i, d__1.r, d__1.i);

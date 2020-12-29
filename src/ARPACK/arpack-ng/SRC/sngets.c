@@ -107,11 +107,6 @@ int sngets_(int *ishift, char *which, int *kev, int *np, float *ritzr,
     /* & message level for debugging */
     /* ----------------------------- */
 
-    /* Parameter adjustments */
-    --bounds;
-    --ritzi;
-    --ritzr;
-
     /* Function Body */
 #ifndef NO_TIMER
     arscnd_(&t0);
@@ -133,30 +128,30 @@ int sngets_(int *ishift, char *which, int *kev, int *np, float *ritzr,
 
     if (strcmp(which, "LM") == 0)
     {
-        ssortc_("LR", &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1]);
+        ssortc_("LR", &c_true, &i__1, ritzr, ritzi, bounds);
     }
     else if (strcmp(which, "SM") == 0)
     {
-        ssortc_("SR", &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1]);
+        ssortc_("SR", &c_true, &i__1, ritzr, ritzi, bounds);
     }
     else if (strcmp(which, "LR") == 0)
     {
-        ssortc_("LM", &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1]);
+        ssortc_("LM", &c_true, &i__1, ritzr, ritzi, bounds);
     }
     else if (strcmp(which, "SR") == 0)
     {
-        ssortc_("SM", &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1]);
+        ssortc_("SM", &c_true, &i__1, ritzr, ritzi, bounds);
     }
     else if (strcmp(which, "LI") == 0)
     {
-        ssortc_("LM", &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1]);
+        ssortc_("LM", &c_true, &i__1, ritzr, ritzi, bounds);
     }
     else if (strcmp(which, "SI") == 0)
     {
-        ssortc_("SM", &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1]);
+        ssortc_("SM", &c_true, &i__1, ritzr, ritzi, bounds);
     }
 
-    ssortc_(which, &c_true, &i__1, &ritzr[1], &ritzi[1], &bounds[1]);
+    ssortc_(which, &c_true, &i__1, ritzr, ritzi, bounds);
 
     /* ----------------------------------------------------- */
     /* Increase KEV by one if the ( ritzr(np),ritzi(np) )    */
@@ -165,7 +160,7 @@ int sngets_(int *ishift, char *which, int *kev, int *np, float *ritzr,
     /* complex conjugate pairs together.                     */
     /* ----------------------------------------------------- */
 
-    if (ritzr[*np + 1] - ritzr[*np] == 0.0f && ritzi[*np + 1] + ritzi[*np] == 0.0f)
+    if (ritzr[*np] - ritzr[*np - 1] == 0.0f && ritzi[*np] + ritzi[*np - 1] == 0.0f)
     {
         --(*np);
         ++(*kev);
@@ -182,7 +177,7 @@ int sngets_(int *ishift, char *which, int *kev, int *np, float *ritzr,
         /* Be careful and use 'SR' since we want to sort BOUNDS! */
         /* ----------------------------------------------------- */
 
-        ssortc_("SR", &c_true, np, &bounds[1], &ritzr[1], &ritzi[1]);
+        ssortc_("SR", &c_true, np, bounds, ritzr, ritzi);
     }
 
 #ifndef NO_TIMER
@@ -196,9 +191,9 @@ int sngets_(int *ishift, char *which, int *kev, int *np, float *ritzr,
         i__1 = *kev + *np;
         ivout_(&c__1, kev, &debug_1.ndigit, "_ngets: KEV is");
         ivout_(&c__1, np, &debug_1.ndigit, "_ngets: NP is");
-        svout_(&i__1, &ritzr[1], &debug_1.ndigit, "_ngets: Eigenvalues of current H matrix -- float part");
-        svout_(&i__1, &ritzi[1], &debug_1.ndigit, "_ngets: Eigenvalues of current H matrix -- imag part");
-        svout_(&i__1, &bounds[1], &debug_1.ndigit, "_ngets: Ritz estimates of the current KEV+NP Ritz values");
+        svout_(&i__1, ritzr, &debug_1.ndigit, "_ngets: Eigenvalues of current H matrix -- float part");
+        svout_(&i__1, ritzi, &debug_1.ndigit, "_ngets: Eigenvalues of current H matrix -- imag part");
+        svout_(&i__1, bounds, &debug_1.ndigit, "_ngets: Ritz estimates of the current KEV+NP Ritz values");
     }
 #endif
 

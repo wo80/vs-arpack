@@ -183,8 +183,7 @@ int ssaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
             float *q, int *ldq, float *workl, int *ipntr, float *workd, int *info)
 {
     /* System generated locals */
-    int h_dim, h_offset, q_offset, v_offset, i__1, i__2,
-            i__3;
+    int i__1, i__2, i__3;
     float r__1, r__2, r__3;
 
     /* Builtin functions */
@@ -212,21 +211,6 @@ int ssaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
     static bool ushift;
     static int kplusp, msglvl;
     int nptemp;
-
-    /* Parameter adjustments */
-    --workd;
-    --resid;
-    --workl;
-    --bounds;
-    --ritz;
-    v_offset = 1 + *ldv;
-    v -= v_offset;
-    h_dim = *ldh;
-    h_offset = 1 + h_dim;
-    h -= h_offset;
-    q_offset = 1 + *ldq;
-    q -= q_offset;
-    --ipntr;
 
     /* Function Body */
     if (*ido == 0)
@@ -303,7 +287,7 @@ int ssaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
 
     if (getv0)
     {
-        sgetv0_(ido, bmat, &c__1, &initv, n, &c__1, &v[v_offset], ldv, &resid[1], &rnorm, &ipntr[1], &workd[1], info);
+        sgetv0_(ido, bmat, &c__1, &initv, n, &c__1, v, ldv, resid, &rnorm, ipntr, workd, info);
 
         if (*ido != 99)
         {
@@ -355,7 +339,7 @@ int ssaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
     /* Compute the first NEV steps of the Lanczos factorization */
     /* -------------------------------------------------------- */
 
-    ssaitr_(ido, bmat, n, &c__0, &nev0, mode, &resid[1], &rnorm, &v[v_offset],ldv, &h[h_offset], ldh, &ipntr[1], &workd[1], info);
+    ssaitr_(ido, bmat, n, &c__0, &nev0, mode, resid, &rnorm, v,ldv, h, ldh, ipntr, workd, info);
 
     /* ------------------------------------------------- */
     /* ido .ne. 99 implies use of reverse communication  */
@@ -414,7 +398,7 @@ L1000:
 L20:
     update = true;
 
-    ssaitr_(ido, bmat, n, nev, np, mode, &resid[1], &rnorm, &v[v_offset], ldv,&h[h_offset], ldh, &ipntr[1], &workd[1], info);
+    ssaitr_(ido, bmat, n, nev, np, mode, resid, &rnorm, v, ldv,h, ldh, ipntr, workd, info);
 
     /* ------------------------------------------------- */
     /* ido .ne. 99 implies use of reverse communication  */
@@ -453,7 +437,7 @@ L20:
     /* of the current symmetric tridiagonal matrix.           */
     /* ------------------------------------------------------ */
 
-    sseigt_(&rnorm, &kplusp, &h[h_offset], ldh, &ritz[1], &bounds[1], &workl[1], &ierr);
+    sseigt_(&rnorm, &kplusp, h, ldh, ritz, bounds, workl, &ierr);
 
     if (ierr != 0)
     {
@@ -466,8 +450,8 @@ L20:
     /* bounds obtained from _seigt.                       */
     /* -------------------------------------------------- */
 
-    scopy_(&kplusp, &ritz[1], &c__1, &workl[kplusp + 1], &c__1);
-    scopy_(&kplusp, &bounds[1], &c__1, &workl[(kplusp << 1) + 1], &c__1);
+    scopy_(&kplusp, ritz, &c__1, &workl[kplusp], &c__1);
+    scopy_(&kplusp, bounds, &c__1, &workl[kplusp << 1], &c__1);
 
     /* ------------------------------------------------- */
     /* Select the wanted Ritz values and their bounds    */
@@ -481,14 +465,14 @@ L20:
 
     *nev = nev0;
     *np = np0;
-    ssgets_(ishift, which, nev, np, &ritz[1], &bounds[1], &workl[1]);
+    ssgets_(ishift, which, nev, np, ritz, bounds, workl);
 
     /* ----------------- */
     /* Convergence test. */
     /* ----------------- */
 
-    scopy_(nev, &bounds[*np + 1], &c__1, &workl[*np + 1], &c__1);
-    ssconv_(nev, &ritz[*np + 1], &workl[*np + 1], tol, &nconv);
+    scopy_(nev, &bounds[*np], &c__1, &workl[*np], &c__1);
+    ssconv_(nev, &ritz[*np], &workl[*np], tol, &nconv);
 
 #ifndef NO_TRACE
     if (msglvl > 2)
@@ -497,8 +481,8 @@ L20:
         kp[1] = *np;
         kp[2] = nconv;
         ivout_(&c__3, kp, &debug_1.ndigit, "_saup2: NEV, NP, NCONV are");
-        svout_(&kplusp, &ritz[1], &debug_1.ndigit, "_saup2: The eigenvalues of H");
-        svout_(&kplusp, &bounds[1], &debug_1.ndigit, "_saup2: Ritz estimates of the current NCV Ritz values");
+        svout_(&kplusp, ritz, &debug_1.ndigit, "_saup2: The eigenvalues of H");
+        svout_(&kplusp, bounds, &debug_1.ndigit, "_saup2: Ritz estimates of the current NCV Ritz values");
     }
 #endif
 
@@ -513,7 +497,7 @@ L20:
     /* ------------------------------------------------------- */
 
     nptemp = *np;
-    for (j = 1; j <= nptemp; ++j)
+    for (j = 0; j < nptemp; ++j)
     {
         if (bounds[j] == 0.0f)
         {
@@ -544,7 +528,7 @@ L20:
             /* --------------------------------------------------- */
 
             strcpy(wprime, "SA");
-            ssortr_(wprime, &c_true, &kplusp, &ritz[1], &bounds[1]);
+            ssortr_(wprime, &c_true, &kplusp, ritz, bounds);
             nevd2 = nev0 / 2;
             nevm2 = nev0 - nevd2;
             if (*nev > 1)
@@ -552,9 +536,9 @@ L20:
                 /* TODO: compare with dsaup2 (update *np = kplusp - nev0) */
                 i__1 = min(nevd2,*np);
                 /* Computing MAX */
-                i__2 = kplusp - nevd2 + 1, i__3 = kplusp - *np + 1;
-                sswap_(&i__1, &ritz[nevm2 + 1], &c__1, &ritz[max(i__2,i__3)], &c__1);
-                sswap_(&i__1, &bounds[nevm2 + 1], &c__1, &bounds[max(i__2,i__3)], &c__1);
+                i__2 = kplusp - nevd2, i__3 = kplusp - *np;
+                sswap_(&i__1, &ritz[nevm2], &c__1, &ritz[max(i__2,i__3)], &c__1);
+                sswap_(&i__1, &bounds[nevm2], &c__1, &bounds[max(i__2,i__3)], &c__1);
             }
         }
         else
@@ -585,7 +569,7 @@ L20:
                 strcpy(wprime, "LA");
             }
 
-            ssortr_(wprime, &c_true, &kplusp, &ritz[1], &bounds[1]);
+            ssortr_(wprime, &c_true, &kplusp, ritz, bounds);
         }
 
         /* ------------------------------------------------ */
@@ -593,7 +577,7 @@ L20:
         /* by 1 / max(eps23,magnitude of the Ritz value).   */
         /* ------------------------------------------------ */
 
-        for (j = 1; j <= nev0; ++j)
+        for (j = 0; j < nev0; ++j)
         {
             /* Computing MAX */
             r__2 = eps23, r__3 = (r__1 = ritz[j], dabs(r__1));
@@ -609,14 +593,14 @@ L20:
         /* -------------------------------------------------- */
 
         strcpy(wprime, "LA");
-        ssortr_(wprime, &c_true, &nev0, &bounds[1], &ritz[1]);
+        ssortr_(wprime, &c_true, &nev0, bounds, ritz);
 
         /* -------------------------------------------- */
         /* Scale the Ritz estimate back to its original */
         /* value.                                       */
         /* -------------------------------------------- */
 
-        for (j = 1; j <= nev0; ++j)
+        for (j = 0; j < nev0; ++j)
         {
             /* Computing MAX */
             r__2 = eps23, r__3 = (r__1 = ritz[j], dabs(r__1));
@@ -640,7 +624,7 @@ L20:
             /* ---------------------------------------------- */
 
             strcpy(wprime, "LA");
-            ssortr_(wprime, &c_true, &nconv, &ritz[1], &bounds[1]);
+            ssortr_(wprime, &c_true, &nconv, ritz, bounds);
         }
         else
         {
@@ -650,7 +634,7 @@ L20:
             /* "threshold" value appears at the front of    */
             /* ritz.                                        */
             /* -------------------------------------------- */
-            ssortr_(which, &c_true, &nconv, &ritz[1], &bounds[1]);
+            ssortr_(which, &c_true, &nconv, ritz, bounds);
         }
 
         /* ---------------------------------------- */
@@ -658,13 +642,13 @@ L20:
         /*  rnorm to _seupd if needed               */
         /* ---------------------------------------- */
 
-        h[h_dim + 1] = rnorm;
+        h[0] = rnorm;
 
 #ifndef NO_TRACE
         if (msglvl > 1)
         {
-            svout_(&kplusp, &ritz[1], &debug_1.ndigit, "_saup2: Sorted Ritz values.");
-            svout_(&kplusp, &bounds[1], &debug_1.ndigit, "_saup2: Sorted ritz estimates.");
+            svout_(&kplusp, ritz, &debug_1.ndigit, "_saup2: Sorted Ritz values.");
+            svout_(&kplusp, bounds, &debug_1.ndigit, "_saup2: Sorted ritz estimates.");
         }
 #endif
 
@@ -718,7 +702,7 @@ L20:
 
         if (nevbef < *nev)
         {
-            ssgets_(ishift, which, nev, np, &ritz[1], &bounds[1], &workl[1]);
+            ssgets_(ishift, which, nev, np, ritz, bounds, workl);
         }
     }
 
@@ -731,8 +715,8 @@ L20:
             kp[0] = *nev;
             kp[1] = *np;
             ivout_(&c__2, kp, &debug_1.ndigit, "_saup2: NEV and NP are");
-            svout_(nev, &ritz[*np + 1], &debug_1.ndigit, "_saup2: \"wanted\" Ritz values.");
-            svout_(nev, &bounds[*np + 1], &debug_1.ndigit, "_saup2: Ritz estimates of the \"wanted\" values ");
+            svout_(nev, &ritz[*np], &debug_1.ndigit, "_saup2: \"wanted\" Ritz values.");
+            svout_(nev, &bounds[*np], &debug_1.ndigit, "_saup2: Ritz estimates of the \"wanted\" values ");
         }
     }
 #endif
@@ -768,17 +752,17 @@ L50:
 
     if (*ishift == 0)
     {
-        scopy_(np, &workl[1], &c__1, &ritz[1], &c__1);
+        scopy_(np, workl, &c__1, ritz, &c__1);
     }
 
 #ifndef NO_TRACE
     if (msglvl > 2)
     {
         ivout_(&c__1, np, &debug_1.ndigit, "_saup2: The number of shifts to apply ");
-        svout_(np, &workl[1], &debug_1.ndigit, "_saup2: shifts selected");
+        svout_(np, workl, &debug_1.ndigit, "_saup2: shifts selected");
         if (*ishift == 1)
         {
-            svout_(np, &bounds[1], &debug_1.ndigit, "_saup2: corresponding Ritz estimates");
+            svout_(np, bounds, &debug_1.ndigit, "_saup2: corresponding Ritz estimates");
         }
     }
 #endif
@@ -791,7 +775,7 @@ L50:
     /* factorization of length NEV.                            */
     /* ------------------------------------------------------- */
 
-    ssapps_(n, nev, np, &ritz[1], &v[v_offset], ldv, &h[h_offset], ldh, &resid[1], &q[q_offset], ldq, &workd[1]);
+    ssapps_(n, nev, np, ritz, v, ldv, h, ldh, resid, q, ldq, workd);
 
     /* ------------------------------------------- */
     /* Compute the B-norm of the updated residual. */
@@ -807,9 +791,10 @@ L50:
     if (*bmat == 'G')
     {
         ++timing_1.nbx;
-        scopy_(n, &resid[1], &c__1, &workd[*n + 1], &c__1);
-        ipntr[1] = *n + 1;
-        ipntr[2] = 1;
+        scopy_(n, resid, &c__1, &workd[*n], &c__1);
+        /* TODO: ipntr index */
+        ipntr[0] = *n + 1;
+        ipntr[1] = 1;
         *ido = 2;
 
         /* -------------------------------- */
@@ -820,7 +805,7 @@ L50:
     }
     else if (*bmat == 'I')
     {
-        scopy_(n, &resid[1], &c__1, &workd[1], &c__1);
+        scopy_(n, resid, &c__1, workd, &c__1);
     }
 
 L100:
@@ -836,12 +821,12 @@ L100:
         arscnd_(&t3);
         timing_1.tmvbx += t3 - t2;
 #endif
-        rnorm = sdot_(n, &resid[1], &c__1, &workd[1], &c__1);
+        rnorm = sdot_(n, resid, &c__1, workd, &c__1);
         rnorm = sqrt((dabs(rnorm)));
     }
     else if (*bmat == 'I')
     {
-        rnorm = snrm2_(n, &resid[1], &c__1);
+        rnorm = snrm2_(n, resid, &c__1);
     }
     cnorm = false;
 
@@ -850,9 +835,9 @@ L100:
     if (msglvl > 2)
     {
         svout_(&c__1, &rnorm, &debug_1.ndigit, "_saup2: B-norm of residual for NEV factorization");
-        svout_(nev, &h[(h_dim << 1) + 1], &debug_1.ndigit,"_saup2: main diagonal of compressed H matrix");
+        svout_(nev, &h[*ldh], &debug_1.ndigit,"_saup2: main diagonal of compressed H matrix");
         i__1 = *nev - 1;
-        svout_(&i__1, &h[h_dim + 2], &debug_1.ndigit, "_saup2: subdiagonal of compressed H matrix");
+        svout_(&i__1, &h[1], &debug_1.ndigit, "_saup2: subdiagonal of compressed H matrix");
     }
 #endif
 

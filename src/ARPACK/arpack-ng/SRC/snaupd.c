@@ -413,7 +413,7 @@ int snaupd_(int *ido, char *bmat, int *n, char *which, int *nev, float *tol,
 {
 
     /* System generated locals */
-    int v_offset, i__1, i__2;
+    int i__1, i__2;
 
     /* Local variables */
     int j, ierr;
@@ -424,21 +424,11 @@ int snaupd_(int *ido, char *bmat, int *n, char *which, int *nev, float *tol,
 
     int ldh = *ncv;
     int ldq = *ncv;
-    int ih = 1;
-    int ritzr = ih + ldh * *ncv;
+    int ritzr =  ldh * *ncv;
     int ritzi = ritzr + *ncv;
     int bounds = ritzi + *ncv;
     int iq = bounds + *ncv;
     int iw = iq + ldq * *ncv;
-
-    /* Parameter adjustments */
-    --workd;
-    --resid;
-    v_offset = 1 + *ldv;
-    v -= v_offset;
-    --iparam;
-    --ipntr;
-    --workl;
 
     /* Function Body */
     if (*ido == 0)
@@ -458,16 +448,16 @@ int snaupd_(int *ido, char *bmat, int *n, char *which, int *nev, float *tol,
         /* -------------- */
 
         ierr = 0;
-        ishift = iparam[1];
-        /*         levec  = iparam(2) */
-        mxiter = iparam[3];
-        /*         nb     = iparam(4) */
+        ishift = iparam[0];
+        /* levec  = iparam(2) */
+        mxiter = iparam[2];
+        /* nb     = iparam(4) */
 
         /* ------------------------------------------ */
         /* Revision 2 performs only implicit restart. */
         /* ------------------------------------------ */
 
-        mode = iparam[7];
+        mode = iparam[6];
 
         if (*n <= 0)
         {
@@ -554,7 +544,7 @@ int snaupd_(int *ido, char *bmat, int *n, char *which, int *nev, float *tol,
         /* Computing 2nd power */
         i__2 = *ncv;
         i__1 = i__2 * i__2 * 3 + *ncv * 6;
-        for (j = 1; j <= i__1; ++j)
+        for (j = 0; j < i__1; ++j)
         {
             workl[j] = 0.0f;
         }
@@ -576,22 +566,22 @@ int snaupd_(int *ido, char *bmat, int *n, char *which, int *nev, float *tol,
         /* matrix.                                                     */
         /* ----------------------------------------------------------- */
 
-
         /* Computing 2nd power */
         i__1 = *ncv;
-        ipntr[4] = iw + i__1 * i__1 + i__1 * 3;
-        ipntr[5] = ih;
-        ipntr[6] = ritzr;
-        ipntr[7] = ritzi;
-        ipntr[8] = bounds;
-        ipntr[14] = iw;
+        /* TODO: ipntr index */
+        ipntr[3] = 1 + iw + i__1 * i__1 + i__1 * 3;
+        ipntr[4] = 1;
+        ipntr[5] = 1 + ritzr;
+        ipntr[6] = 1 + ritzi;
+        ipntr[7] = 1 + bounds;
+        ipntr[13] = 1 + iw;
     }
 
     /* ----------------------------------------------------- */
     /* Carry out the Implicitly restarted Arnoldi Iteration. */
     /* ----------------------------------------------------- */
 
-    snaup2_(ido, bmat, n, which, &nev0, &np, tol, &resid[1], &mode, &iupd, &ishift, &mxiter, &v[v_offset], ldv, &workl[ih], &ldh, &workl[ritzr], &workl[ritzi], &workl[bounds], &workl[iq], &ldq, &workl[iw], &ipntr[1], &workd[1], info);
+    snaup2_(ido, bmat, n, which, &nev0, &np, tol, resid, &mode, &iupd, &ishift, &mxiter, v, ldv, workl, &ldh, &workl[ritzr], &workl[ritzi], &workl[bounds], &workl[iq], &ldq, &workl[iw], ipntr, workd, info);
 
     /* ------------------------------------------------ */
     /* ido .ne. 99 implies use of reverse communication */
@@ -600,18 +590,18 @@ int snaupd_(int *ido, char *bmat, int *n, char *which, int *nev, float *tol,
 
     if (*ido == 3)
     {
-        iparam[8] = np;
+        iparam[7] = np;
     }
     if (*ido != 99)
     {
         goto L9000;
     }
 
-    iparam[3] = mxiter;
-    iparam[5] = np;
-    iparam[9] = timing_1.nopx;
-    iparam[10] = timing_1.nbx;
-    iparam[11] = timing_1.nrorth;
+    iparam[2] = mxiter;
+    iparam[4] = np;
+    iparam[8] = timing_1.nopx;
+    iparam[9] = timing_1.nbx;
+    iparam[10] = timing_1.nrorth;
 
     /* ---------------------------------- */
     /* Exit if there was an informational */

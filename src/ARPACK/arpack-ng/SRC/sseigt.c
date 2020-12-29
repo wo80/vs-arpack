@@ -88,7 +88,7 @@ int sseigt_(float *rnorm, int *n, float *h, int *ldh,
             float *eig, float *bounds, float *workl, int *ierr)
 {
     /* System generated locals */
-    int h_dim, h_offset, i__1;
+    int h_dim, i__1;
     float r__1;
 
     /* Local variables */
@@ -96,20 +96,12 @@ int sseigt_(float *rnorm, int *n, float *h, int *ldh,
     static float t0, t1;
     int msglvl;
 
-
     /* ----------------------------- */
     /* Initialize timing statistics  */
     /* & message level for debugging */
     /* ----------------------------- */
 
-    /* Parameter adjustments */
-    --workl;
-    --bounds;
-    --eig;
     h_dim = *ldh;
-    h_offset = 1 + h_dim;
-    h -= h_offset;
-
     /* Function Body */
 #ifndef NO_TIMER
     arscnd_(&t0);
@@ -120,19 +112,19 @@ int sseigt_(float *rnorm, int *n, float *h, int *ldh,
 #ifndef NO_TRACE
     if (msglvl > 0)
     {
-        svout_(n, &h[(h_dim << 1) + 1], &debug_1.ndigit, "_seigt: main diagonal of matrix H");
+        svout_(n, &h[h_dim], &debug_1.ndigit, "_seigt: main diagonal of matrix H");
         if (*n > 1)
         {
             i__1 = *n - 1;
-            svout_(&i__1, &h[h_dim + 2], &debug_1.ndigit, "_seigt: sub diagonal of matrix H");
+            svout_(&i__1, &h[1], &debug_1.ndigit, "_seigt: sub diagonal of matrix H");
         }
     }
 #endif
 
-    scopy_(n, &h[(h_dim << 1) + 1], &c__1, &eig[1], &c__1);
+    scopy_(n, &h[h_dim], &c__1, eig, &c__1);
     i__1 = *n - 1;
-    scopy_(&i__1, &h[h_dim + 2], &c__1, &workl[1], &c__1);
-    sstqrb_(n, &eig[1], &workl[1], &bounds[1], &workl[*n + 1], ierr);
+    scopy_(&i__1, &h[1], &c__1, workl, &c__1);
+    sstqrb_(n, eig, workl, bounds, &workl[*n], ierr);
     if (*ierr != 0)
     {
         goto L9000;
@@ -140,7 +132,7 @@ int sseigt_(float *rnorm, int *n, float *h, int *ldh,
 #ifndef NO_TRACE
     if (msglvl > 1)
     {
-        svout_(n, &bounds[1], &debug_1.ndigit, "_seigt: last row of the eigenvector matrix for H");
+        svout_(n, bounds, &debug_1.ndigit, "_seigt: last row of the eigenvector matrix for H");
     }
 #endif
 
@@ -150,7 +142,7 @@ int sseigt_(float *rnorm, int *n, float *h, int *ldh,
     /* --------------------------------------------- */
 
     i__1 = *n;
-    for (k = 1; k <= i__1; ++k)
+    for (k = 0; k < i__1; ++k)
     {
         bounds[k] = *rnorm * (r__1 = bounds[k], dabs(r__1));
     }

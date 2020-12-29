@@ -99,10 +99,6 @@ int cngets_(int *ishift, char *which, int *kev, int *np, complex *ritz, complex 
     /* & message level for debugging */
     /* ----------------------------- */
 
-    /* Parameter adjustments */
-    --bounds;
-    --ritz;
-
     /* Function Body */
 #ifndef NO_TIMER
     arscnd_(&t0);
@@ -111,7 +107,7 @@ int cngets_(int *ishift, char *which, int *kev, int *np, complex *ritz, complex 
     msglvl = debug_1.mcgets;
 
     i__1 = *kev + *np;
-    csortc_(which, &c_true, &i__1, &ritz[1], &bounds[1]);
+    csortc_(which, &c_true, &i__1, ritz, bounds);
 
     if (*ishift == 1)
     {
@@ -124,7 +120,7 @@ int cngets_(int *ishift, char *which, int *kev, int *np, complex *ritz, complex 
         /* Be careful and use 'SM' since we want to sort BOUNDS! */
         /* ----------------------------------------------------- */
 
-        csortc_("SM", &c_true, np, &bounds[1], &ritz[1]);
+        csortc_("SM", &c_true, np, bounds, ritz);
     }
 
 #ifndef NO_TIMER
@@ -137,8 +133,8 @@ int cngets_(int *ishift, char *which, int *kev, int *np, complex *ritz, complex 
     {
         ivout_(&c__1, kev, &debug_1.ndigit, "_ngets: KEV is");
         ivout_(&c__1, np, &debug_1.ndigit, "_ngets: NP is");
-        cvout_(&i__1, &ritz[1], &debug_1.ndigit, "_ngets: Eigenvalues of current H matrix ");
-        cvout_(&i__1, &bounds[1], &debug_1.ndigit, "_ngets: Ritz estimates of the current KEV+NP Ritz values");
+        cvout_(&i__1, ritz, &debug_1.ndigit, "_ngets: Eigenvalues of current H matrix ");
+        cvout_(&i__1, bounds, &debug_1.ndigit, "_ngets: Ritz estimates of the current KEV+NP Ritz values");
     }
 #endif
 

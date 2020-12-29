@@ -453,150 +453,102 @@ EXIT:
     return ierr;
 }
 
-/* ========================================================================== */
-
-/*     matrix vector subroutine */
-
-/*     The matrix used is the convection-diffusion operator */
-/*     discretized using centered difference. */
-
+/** Matrix vector subroutine.
+ *
+ * The matrix used is the convection-diffusion operator
+ * discretized using centered difference.
+ *
+ * Computes w <--- OP*v, where OP is the nx*nx by nx*nx block
+ * tridiagonal matrix
+ *
+ *                  | T -I          |
+ *                  |-I  T -I       |
+ *             OP = |   -I  T       |
+ *                  |        ...  -I|
+ *                  |           -I T|
+ *
+ * derived from the standard central difference discretization
+ * of the 2-dimensional convection-diffusion operator
+ *              (Laplacian u) + rho*(du/dx)
+ * on the unit squqre with zero boundary condition.
+ *
+ * The subroutine TV is called to computed y<---T*x.
+ */
 int znsimp_av_(const int nx, zomplex *v, zomplex *w)
 {
     /* System generated locals */
     int i__1;
-    zomplex z__1, z__2;
-
-    /* Builtin functions */
-    void z_div(zomplex *, zomplex *, zomplex *);
 
     /* Local variables */
     int j;
-    zomplex h2;
     int lo;
-
-    /*     Computes w <--- OP*v, where OP is the nx*nx by nx*nx block */
-    /*     tridiagonal matrix */
-
-    /*                  | T -I          | */
-    /*                  |-I  T -I       | */
-    /*             OP = |   -I  T       | */
-    /*                  |        ...  -I| */
-    /*                  |           -I T| */
-
-    /*     derived from the standard central difference discretization */
-    /*     of the 2-dimensional convection-diffusion operator */
-    /*                  (Laplacian u) + rho*(du/dx) */
-    /*     on the unit squqre with zero boundary condition. */
-
-    /*     The subroutine TV is called to computed y<---T*x. */
+    double h2;
+    zomplex z;
 
     /* Parameter adjustments */
     --w;
     --v;
 
     /* Function Body */
-    i__1 = (nx + 1) * (nx + 1);
-    z__2.r = (double) i__1, z__2.i = 0.0;
-    z_div(&z__1, &z_one, &z__2);
-    h2.r = z__1.r, h2.i = z__1.i;
+    h2 = 1.0 / (double)((nx + 1) * (nx + 1));
+
+    z.r = -1.0 / h2;
+    z.i = -0.0;
 
     znsimp_tv_(nx, &v[1], &w[1]);
-    z__2.r = -1., z__2.i = -0.0;
-    z_div(&z__1, &z__2, &h2);
-    zaxpy_(&nx, &z__1, &v[nx + 1], &c__1, &w[1], &c__1);
+    zaxpy_(&nx, &z, &v[nx + 1], &c__1, &w[1], &c__1);
 
     i__1 = nx - 1;
     for (j = 2; j <= i__1; ++j)
     {
         lo = (j - 1) * nx;
         znsimp_tv_(nx, &v[lo + 1], &w[lo + 1]);
-        z__2.r = -1., z__2.i = -0.0;
-        z_div(&z__1, &z__2, &h2);
-        zaxpy_(&nx, &z__1, &v[lo - nx + 1], &c__1, &w[lo + 1], &c__1);
-        z__2.r = -1., z__2.i = -0.0;
-        z_div(&z__1, &z__2, &h2);
-        zaxpy_(&nx, &z__1, &v[lo + nx + 1], &c__1, &w[lo + 1], &c__1);
+        zaxpy_(&nx, &z, &v[lo - nx + 1], &c__1, &w[lo + 1], &c__1);
+        zaxpy_(&nx, &z, &v[lo + nx + 1], &c__1, &w[lo + 1], &c__1);
     }
 
     lo = (nx - 1) * nx;
     znsimp_tv_(nx, &v[lo + 1], &w[lo + 1]);
-    z__2.r = -1., z__2.i = -0.0;
-    z_div(&z__1, &z__2, &h2);
-    zaxpy_(&nx, &z__1, &v[lo - nx + 1], &c__1, &w[lo + 1], &c__1);
+    zaxpy_(&nx, &z, &v[lo - nx + 1], &c__1, &w[lo + 1], &c__1);
 
     return 0;
 } /* av_ */
 
-/* ========================================================================= */
+/**
+ * Compute the matrix vector multiplication y<---T*x
+ * where T is a nx by nx tridiagonal matrix with DD on the
+ * diagonal, DL on the subdiagonal, and DU on the superdiagonal
+ */
 int znsimp_tv_(const int nx, zomplex *x, zomplex *y)
 {
     /* System generated locals */
-    int i__1, i__2, i__3, i__4, i__5;
-    zomplex z__1, z__2, z__3, z__4, z__5;
-
-    /* Builtin functions */
-    void z_div(zomplex *, zomplex *, zomplex *);
+    int i__1, i__2, i__3;
 
     /* Local variables */
-    zomplex h;
     int j;
-    zomplex h2, dd, dl, du;
-
-    /*     Compute the matrix vector multiplication y<---T*x */
-    /*     where T is a nx by nx tridiagonal matrix with DD on the */
-    /*     diagonal, DL on the subdiagonal, and DU on the superdiagonal */
-
-    /* Parameter adjustments */
-    --y;
-    --x;
+    double h, h2, dd, dl, du;
 
     /* Function Body */
-    i__1 = nx + 1;
-    z__2.r = (double) i__1, z__2.i = 0.0;
-    z_div(&z__1, &z_one, &z__2);
-    h.r = z__1.r, h.i = z__1.i;
-    z__1.r = h.r * h.r - h.i * h.i, z__1.i = h.r * h.i + h.i * h.r;
-    h2.r = z__1.r, h2.i = z__1.i;
-    z_div(&z__1, &z_four, &h2);
-    dd.r = z__1.r, dd.i = z__1.i;
-    z__3.r = -1., z__3.i = -0.0;
-    z_div(&z__2, &z__3, &h2);
-    z__5.r = 50.0, z__5.i = 0.0;
-    z_div(&z__4, &z__5, &h);
-    z__1.r = z__2.r - z__4.r, z__1.i = z__2.i - z__4.i;
-    dl.r = z__1.r, dl.i = z__1.i;
-    z__3.r = -1., z__3.i = -0.0;
-    z_div(&z__2, &z__3, &h2);
-    z__5.r = 50.0, z__5.i = 0.0;
-    z_div(&z__4, &z__5, &h);
-    z__1.r = z__2.r + z__4.r, z__1.i = z__2.i + z__4.i;
-    du.r = z__1.r, du.i = z__1.i;
+    h = 1.0 / (double)(nx + 1);
+    h2 = h * h;
+    dd = 4.0 / h2;
+    dl = -1.0 / h2 - 50.0 / h;
+    du = -1.0 / h2 + 50.0 / h;
 
-    z__2.r = dd.r * x[1].r - dd.i * x[1].i, z__2.i = dd.r * x[1].i + dd.i * x[1].r;
-    z__3.r = du.r * x[2].r - du.i * x[2].i, z__3.i = du.r * x[2].i + du.i * x[2].r;
-    z__1.r = z__2.r + z__3.r, z__1.i = z__2.i + z__3.i;
-    y[1].r = z__1.r, y[1].i = z__1.i;
+    y[0].r = dd * x[0].r + du * x[1].r;
+    y[0].i = dd * x[0].i + du * x[1].i;
+
     i__1 = nx - 1;
-    for (j = 2; j <= i__1; ++j)
+    for (j = 1; j < i__1; ++j)
     {
-        i__2 = j;
-        i__3 = j - 1;
-        z__3.r = dl.r * x[i__3].r - dl.i * x[i__3].i, z__3.i = dl.r * x[i__3].i + dl.i * x[i__3].r;
-        i__4 = j;
-        z__4.r = dd.r * x[i__4].r - dd.i * x[i__4].i, z__4.i = dd.r * x[i__4].i + dd.i * x[i__4].r;
-        z__2.r = z__3.r + z__4.r, z__2.i = z__3.i + z__4.i;
-        i__5 = j + 1;
-        z__5.r = du.r * x[i__5].r - du.i * x[i__5].i, z__5.i = du.r * x[i__5].i + du.i * x[i__5].r;
-        z__1.r = z__2.r + z__5.r, z__1.i = z__2.i + z__5.i;
-        y[i__2].r = z__1.r, y[i__2].i = z__1.i;
+        i__2 = j - 1;
+        i__3 = j + 1;
+        y[j].r = (dl * x[i__2].r + dd * x[j].r) + du * x[i__3].r;
+        y[j].i = (dl * x[i__2].i + dd * x[j].i) + du * x[i__3].i;
     }
-    i__1 = nx;
-    i__2 = nx - 1;
-    z__2.r = dl.r * x[i__2].r - dl.i * x[i__2].i, z__2.i = dl.r * x[i__2].i + dl.i * x[i__2].r;
-    i__3 = nx;
-    z__3.r = dd.r * x[i__3].r - dd.i * x[i__3].i, z__3.i = dd.r * x[i__3].i + dd.i * x[i__3].r;
-    z__1.r = z__2.r + z__3.r, z__1.i = z__2.i + z__3.i;
-    y[i__1].r = z__1.r, y[i__1].i = z__1.i;
+    i__1 = nx - 1;
+    i__2 = nx - 2;
+    y[i__1].r = dl * x[i__2].r + dd * x[i__1].r;
+    y[i__1].i = dl * x[i__2].i + dd * x[i__1].i;
     return 0;
 } /* tv_ */
-
