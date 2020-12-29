@@ -3,12 +3,7 @@
 #include <stdlib.h>
 #include "arpack.h"
 
-struct
-{
-    zomplex rho;
-} convct_;
-
-#define convct_1 convct_
+#define RHO 10.0
 
 /**
  * \BeginDoc
@@ -56,9 +51,7 @@ int zndrv4()
 {
     /* System generated locals */
     int i__1, i__2;
-    zomplex z__1, z__2, z__3, z__4, z__5, z__6;
-
-    void z_div(zomplex *, zomplex *, zomplex *);
+    zomplex z__1;
 
     /* Local variables */
     zomplex d[25];
@@ -66,8 +59,8 @@ int zndrv4()
     double rd[75] /* (3 * MAXNCV) */;
     double rwork[256];
 
-    zomplex h, s, s1, s2, s3;
-    zomplex sigma;
+    double h, s;
+    zomplex sigma, s1, s2, s3;
 
     int j;
     int ierr, nconv;
@@ -119,7 +112,7 @@ int zndrv4()
     }
     char* bmat = "G";
     char* which = "LM";
-    sigma.r = 1., sigma.i = 0.0;
+    sigma.r = 1.0, sigma.i = 0.0;
 
     /* ------------------------------------------------ */
     /* Construct C = A - SIGMA*M in COMPLEX arithmetic. */
@@ -139,47 +132,24 @@ int zndrv4()
     zomplex* dl = (zomplex*)malloc(n * sizeof(zomplex));
     zomplex* du2 = (zomplex*)malloc(n * sizeof(zomplex));
 
-    convct_1.rho.r = 10.0, convct_1.rho.i = 0.0;
-    i__1 = n + 1;
-    z__2.r = (double) i__1, z__2.i = 0.0;
-    z_div(&z__1, &z_one, &z__2);
-    h.r = z__1.r, h.i = z__1.i;
-    z_div(&z__1, &convct_1.rho, &z_two);
-    s.r = z__1.r, s.i = z__1.i;
+    h = 1.0 / (double)(n + 1);
+    s = RHO / 2.0;
 
-    z__4.r = -1., z__4.i = -0.0;
-    z_div(&z__3, &z__4, &h);
-    z__2.r = z__3.r - s.r, z__2.i = z__3.i - s.i;
-    z__6.r = sigma.r * h.r - sigma.i * h.i, z__6.i = sigma.r * h.i +
-             sigma.i * h.r;
-    z_div(&z__5, &z__6, &z_six);
-    z__1.r = z__2.r - z__5.r, z__1.i = z__2.i - z__5.i;
-    s1.r = z__1.r, s1.i = z__1.i;
-    z_div(&z__2, &z_two, &h);
-    z__5.r = sigma.r * 4.0 - sigma.i * 0.0, z__5.i = sigma.i * 4.0 + sigma.r *
-             0.0;
-    z__4.r = z__5.r * h.r - z__5.i * h.i, z__4.i = z__5.r * h.i +
-             z__5.i * h.r;
-    z_div(&z__3, &z__4, &z_six);
-    z__1.r = z__2.r - z__3.r, z__1.i = z__2.i - z__3.i;
-    s2.r = z__1.r, s2.i = z__1.i;
-    z__4.r = -1., z__4.i = -0.0;
-    z_div(&z__3, &z__4, &h);
-    z__2.r = z__3.r + s.r, z__2.i = z__3.i + s.i;
-    z__6.r = sigma.r * h.r - sigma.i * h.i, z__6.i = sigma.r * h.i +
-             sigma.i * h.r;
-    z_div(&z__5, &z__6, &z_six);
-    z__1.r = z__2.r - z__5.r, z__1.i = z__2.i - z__5.i;
-    s3.r = z__1.r, s3.i = z__1.i;
+    s1.r = (-1.0 / h - s) - sigma.r * h / 6.0;
+    s1.i = -sigma.i * h / 6.0;
+
+    s2.r = 2.0 / h - (sigma.r * 4.0 * h / 6.0);
+    s2.i = -sigma.i * 4.0 * h / 6.0;
+
+    s3.r = (-1.0 / h + s) - (sigma.r * h / 6.0);
+    s3.i = -sigma.i * h / 6.0;
 
     i__1 = n - 1;
     for (j = 1; j <= i__1; ++j)
     {
         i__2 = j - 1;
         dl[i__2].r = s1.r, dl[i__2].i = s1.i;
-        i__2 = j - 1;
         dd[i__2].r = s2.r, dd[i__2].i = s2.i;
-        i__2 = j - 1;
         du[i__2].r = s3.r, du[i__2].i = s3.i;
     }
     i__1 = n - 1;
@@ -460,131 +430,73 @@ EXIT:
     return ierr;
 }
 
-/* ========================================================================== */
-
-/*     matrix vector multiplication subroutine */
-
+/** Matrix vector multiplication subroutine.
+ *
+ * Compute the matrix vector multiplication y<---M*x
+ * where M is a n by n symmetric tridiagonal matrix with 4 on the
+ * diagonal, 1 on the subdiagonal and superdiagonal.
+ */
 int zndrv4_mv_(const int n, zomplex *v, zomplex *w)
 {
     /* System generated locals */
-    int i__1, i__2, i__3, i__4, i__5;
-    zomplex z__1, z__2, z__3, z__4, z__5, z__6;
-
-    /* Builtin functions */
-    void z_div(zomplex *, zomplex *, zomplex *);
+    int i__1, i__2, i__3;
 
     /* Local variables */
     zomplex h;
     int j;
 
-    /*     Compute the matrix vector multiplication y<---M*x */
-    /*     where M is a n by n symmetric tridiagonal matrix with 4 on the */
-    /*     diagonal, 1 on the subdiagonal and superdiagonal. */
-
-    /* Parameter adjustments */
-    --w;
-    --v;
-
     /* Function Body */
-    z__3.r = v[1].r * 4.0 - v[1].i * 0.0, z__3.i = v[1].i * 4.0 + v[1].r * 0.0;
-    z__4.r = v[2].r * 1.0 - v[2].i * 0.0, z__4.i = v[2].i * 1. + v[2].r * 0.0;
-    z__2.r = z__3.r + z__4.r, z__2.i = z__3.i + z__4.i;
-    z_div(&z__1, &z__2, &z_six);
-    w[1].r = z__1.r, w[1].i = z__1.i;
+    w[0].r = (v[0].r * 4.0 + v[1].r) / 6.0;
+    w[0].i = (v[0].i * 4.0 + v[1].i) / 6.0;
     i__1 = n - 1;
-    for (j = 2; j <= i__1; ++j)
+    for (j = 1; j < i__1; ++j)
     {
-        i__2 = j;
-        i__3 = j - 1;
-        z__4.r = v[i__3].r * 1.0 - v[i__3].i * 0.0, z__4.i = v[i__3].i * 1. + v[i__3].r * 0.0;
-        i__4 = j;
-        z__5.r = v[i__4].r * 4.0 - v[i__4].i * 0.0, z__5.i = v[i__4].i * 4.0 + v[i__4].r * 0.0;
-        z__3.r = z__4.r + z__5.r, z__3.i = z__4.i + z__5.i;
-        i__5 = j + 1;
-        z__6.r = v[i__5].r * 1.0 - v[i__5].i * 0.0, z__6.i = v[i__5].i * 1. + v[i__5].r * 0.0;
-        z__2.r = z__3.r + z__6.r, z__2.i = z__3.i + z__6.i;
-        z_div(&z__1, &z__2, &z_six);
-        w[i__2].r = z__1.r, w[i__2].i = z__1.i;
+        i__2 = j - 1;
+        i__3 = j + 1;
+        w[j].r = (v[i__2].r + v[j].r * 4.0 + v[i__3].r) / 6.0;
+        w[j].i = (v[i__2].i + v[j].i * 4.0 + v[i__3].i) / 6.0;
     }
-    i__1 = n;
-    i__2 = n - 1;
-    z__3.r = v[i__2].r * 1.0 - v[i__2].i * 0.0, z__3.i = v[i__2].i * 1. + v[i__2].r * 0.0;
-    i__3 = n;
-    z__4.r = v[i__3].r * 4.0 - v[i__3].i * 0.0, z__4.i = v[i__3].i * 4.0 + v[i__3].r * 0.0;
-    z__2.r = z__3.r + z__4.r, z__2.i = z__3.i + z__4.i;
-    z_div(&z__1, &z__2, &z_six);
-    w[i__1].r = z__1.r, w[i__1].i = z__1.i;
+    i__1 = n - 1;
+    i__2 = n - 2;
+    w[i__1].r = (v[i__2].r + v[i__1].r * 4.0) / 6.0;
+    w[i__1].i = (v[i__2].i + v[i__1].i * 4.0) / 6.0;
 
-    i__1 = n + 1;
-    z__2.r = (double) i__1, z__2.i = 0.0;
-    z_div(&z__1, &z_one, &z__2);
-    h.r = z__1.r, h.i = z__1.i;
-    zscal_(&n, &h, &w[1], &c__1);
+    h.r = 1.0 / (double)(n + 1);
+    h.i = 0.0;
+    zscal_(&n, &h, w, &c__1);
     return 0;
 } /* mv_ */
 
-/* ------------------------------------------------------------------ */
 int zndrv4_av_(const int n, zomplex *v, zomplex *w)
 {
     /* System generated locals */
-    int i__1, i__2, i__3, i__4, i__5;
-    zomplex z__1, z__2, z__3, z__4, z__5;
-
-    /* Builtin functions */
-    void z_div(zomplex *, zomplex *, zomplex *);
+    int i__1, i__2, i__3;
 
     /* Local variables */
-    zomplex h;
     int j;
-    zomplex s, dd, dl, du;
-
-    /* Parameter adjustments */
-    --w;
-    --v;
+    double h, s, dd, dl, du;
 
     /* Function Body */
-    i__1 = n + 1;
-    z__2.r = (double) i__1, z__2.i = 0.0;
-    z_div(&z__1, &z_one, &z__2);
-    h.r = z__1.r, h.i = z__1.i;
-    z_div(&z__1, &convct_1.rho, &z_two);
-    s.r = z__1.r, s.i = z__1.i;
-    z_div(&z__1, &z_two, &h);
-    dd.r = z__1.r, dd.i = z__1.i;
-    z__3.r = -1., z__3.i = -0.0;
-    z_div(&z__2, &z__3, &h);
-    z__1.r = z__2.r - s.r, z__1.i = z__2.i - s.i;
-    dl.r = z__1.r, dl.i = z__1.i;
-    z__3.r = -1., z__3.i = -0.0;
-    z_div(&z__2, &z__3, &h);
-    z__1.r = z__2.r + s.r, z__1.i = z__2.i + s.i;
-    du.r = z__1.r, du.i = z__1.i;
+    h = 1.0 / (double)(n + 1);
+    s = RHO / 2.0;
+    dd = 2.0 / h;
+    dl = -1.0 / h - s;
+    du = -1.0 / h + s;
 
-    z__2.r = dd.r * v[1].r - dd.i * v[1].i, z__2.i = dd.r * v[1].i + dd.i * v[1].r;
-    z__3.r = du.r * v[2].r - du.i * v[2].i, z__3.i = du.r * v[2].i + du.i * v[2].r;
-    z__1.r = z__2.r + z__3.r, z__1.i = z__2.i + z__3.i;
-    w[1].r = z__1.r, w[1].i = z__1.i;
+    w[0].r = dd * v[0].r + du * v[1].r;
+    w[0].i = dd * v[0].i + du * v[1].i;
+
     i__1 = n - 1;
-    for (j = 2; j <= i__1; ++j)
+    for (j = 1; j < i__1; ++j)
     {
-        i__2 = j;
-        i__3 = j - 1;
-        z__3.r = dl.r * v[i__3].r - dl.i * v[i__3].i, z__3.i = dl.r * v[i__3].i + dl.i * v[i__3].r;
-        i__4 = j;
-        z__4.r = dd.r * v[i__4].r - dd.i * v[i__4].i, z__4.i = dd.r * v[i__4].i + dd.i * v[i__4].r;
-        z__2.r = z__3.r + z__4.r, z__2.i = z__3.i + z__4.i;
-        i__5 = j + 1;
-        z__5.r = du.r * v[i__5].r - du.i * v[i__5].i, z__5.i = du.r * v[i__5].i + du.i * v[i__5].r;
-        z__1.r = z__2.r + z__5.r, z__1.i = z__2.i + z__5.i;
-        w[i__2].r = z__1.r, w[i__2].i = z__1.i;
+        i__2 = j - 1;
+        i__3 = j + 1;
+        w[j].r = dl * v[i__2].r + dd * v[j].r + du * v[i__3].r;
+        w[j].i = dl * v[i__2].i + dd * v[j].i + du * v[i__3].i;
     }
-    i__1 = n;
-    i__2 = n - 1;
-    z__2.r = dl.r * v[i__2].r - dl.i * v[i__2].i, z__2.i = dl.r * v[i__2].i + dl.i * v[i__2].r;
-    i__3 = n;
-    z__3.r = dd.r * v[i__3].r - dd.i * v[i__3].i, z__3.i = dd.r * v[i__3].i + dd.i * v[i__3].r;
-    z__1.r = z__2.r + z__3.r, z__1.i = z__2.i + z__3.i;
-    w[i__1].r = z__1.r, w[i__1].i = z__1.i;
+    i__1 = n - 1;
+    i__2 = n - 2;
+    w[i__1].r = dl * v[i__2].r + dd * v[i__1].r;
+    w[i__1].i = dl * v[i__2].i + dd * v[i__1].i;
     return 0;
 } /* av_ */
-

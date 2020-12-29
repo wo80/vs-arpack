@@ -3,12 +3,7 @@
 #include <stdlib.h>
 #include "arpack.h"
 
-struct
-{
-    complex rho;
-} convct_;
-
-#define convct_1 convct_
+#define RHO 10.0f
 
 /**
  * \BeginDoc
@@ -56,9 +51,7 @@ int cndrv4()
 {
     /* System generated locals */
     int i__1, i__2;
-    complex q__1, q__2, q__3, q__4, q__5, q__6;
-
-    void c_div(complex *, complex *, complex *);
+    complex q__1;
 
     /* Local variables */
     complex d[25];
@@ -66,8 +59,8 @@ int cndrv4()
     float rd[75] /* (3 * MAXNCV) */;
     float rwork[256];
 
-    complex h, s, s1, s2, s3;
-    complex sigma;
+    float h, s;
+    complex sigma, s1, s2, s3;
 
     int j;
     int ierr, nconv;
@@ -139,47 +132,24 @@ int cndrv4()
     complex* dl = (complex*)malloc(n * sizeof(complex));
     complex* du2 = (complex*)malloc(n * sizeof(complex));
 
-    convct_1.rho.r = 10.0f, convct_1.rho.i = 0.0f;
-    i__1 = n + 1;
-    q__2.r = (float) i__1, q__2.i = 0.0f;
-    c_div(&q__1, &c_one, &q__2);
-    h.r = q__1.r, h.i = q__1.i;
-    c_div(&q__1, &convct_1.rho, &c_two);
-    s.r = q__1.r, s.i = q__1.i;
+    h = 1.0f / (float)(n + 1);
+    s = RHO / 2.0f;
 
-    q__4.r = -1.f, q__4.i = -0.0f;
-    c_div(&q__3, &q__4, &h);
-    q__2.r = q__3.r - s.r, q__2.i = q__3.i - s.i;
-    q__6.r = sigma.r * h.r - sigma.i * h.i, q__6.i = sigma.r * h.i +
-             sigma.i * h.r;
-    c_div(&q__5, &q__6, &c_six);
-    q__1.r = q__2.r - q__5.r, q__1.i = q__2.i - q__5.i;
-    s1.r = q__1.r, s1.i = q__1.i;
-    c_div(&q__2, &c_two, &h);
-    q__5.r = sigma.r * 4.0f - sigma.i * 0.0f, q__5.i = sigma.i * 4.0f + sigma.r *
-             0.0f;
-    q__4.r = q__5.r * h.r - q__5.i * h.i, q__4.i = q__5.r * h.i +
-             q__5.i * h.r;
-    c_div(&q__3, &q__4, &c_six);
-    q__1.r = q__2.r - q__3.r, q__1.i = q__2.i - q__3.i;
-    s2.r = q__1.r, s2.i = q__1.i;
-    q__4.r = -1.f, q__4.i = -0.0f;
-    c_div(&q__3, &q__4, &h);
-    q__2.r = q__3.r + s.r, q__2.i = q__3.i + s.i;
-    q__6.r = sigma.r * h.r - sigma.i * h.i, q__6.i = sigma.r * h.i +
-             sigma.i * h.r;
-    c_div(&q__5, &q__6, &c_six);
-    q__1.r = q__2.r - q__5.r, q__1.i = q__2.i - q__5.i;
-    s3.r = q__1.r, s3.i = q__1.i;
+    s1.r = (-1.0f / h - s) - sigma.r * h / 6.0f;
+    s1.i = -sigma.i * h / 6.0f;
+
+    s2.r = 2.0f / h - (sigma.r * 4.0f * h / 6.0f);
+    s2.i = -sigma.i * 4.0f * h / 6.0f;
+
+    s3.r = (-1.0f / h + s) - (sigma.r * h / 6.0f);
+    s3.i = -sigma.i * h / 6.0f;
 
     i__1 = n - 1;
     for (j = 1; j <= i__1; ++j)
     {
         i__2 = j - 1;
         dl[i__2].r = s1.r, dl[i__2].i = s1.i;
-        i__2 = j - 1;
         dd[i__2].r = s2.r, dd[i__2].i = s2.i;
-        i__2 = j - 1;
         du[i__2].r = s3.r, du[i__2].i = s3.i;
     }
     i__1 = n - 1;
@@ -460,133 +430,73 @@ EXIT:
     return ierr;
 }
 
-/* ========================================================================== */
-
-/*     matrix vector multiplication subroutine */
-
+/** Matrix vector multiplication subroutine.
+ *
+ * Compute the matrix vector multiplication y<---M*x
+ * where M is a n by n symmetric tridiagonal matrix with 4 on the
+ * diagonal, 1 on the subdiagonal and superdiagonal.
+ */
 int cndrv4_mv_(const int n, complex *v, complex *w)
 {
     /* System generated locals */
-    int i__1, i__2, i__3, i__4, i__5;
-    complex q__1, q__2, q__3, q__4, q__5, q__6;
-
-    /* Builtin functions */
-    void c_div(complex *, complex *, complex *);
+    int i__1, i__2, i__3;
 
     /* Local variables */
     complex h;
     int j;
 
-    /*     Compute the matrix vector multiplication y<---M*x */
-    /*     where M is a n by n symmetric tridiagonal matrix with 4 on the */
-    /*     diagonal, 1 on the subdiagonal and superdiagonal. */
-
-    /* Parameter adjustments */
-    --w;
-    --v;
-
     /* Function Body */
-    q__3.r = v[1].r * 4.0f - v[1].i * 0.0f, q__3.i = v[1].i * 4.0f + v[1].r *
-             0.0f;
-    q__4.r = v[2].r * 1.0f - v[2].i * 0.0f, q__4.i = v[2].i * 1.0f + v[2].r *
-             0.0f;
-    q__2.r = q__3.r + q__4.r, q__2.i = q__3.i + q__4.i;
-    c_div(&q__1, &q__2, &c_six);
-    w[1].r = q__1.r, w[1].i = q__1.i;
+    w[0].r = (v[0].r * 4.0f + v[1].r) / 6.0f;
+    w[0].i = (v[0].i * 4.0f + v[1].i) / 6.0f;
     i__1 = n - 1;
-    for (j = 2; j <= i__1; ++j)
+    for (j = 1; j < i__1; ++j)
     {
-        i__2 = j;
-        i__3 = j - 1;
-        q__4.r = v[i__3].r * 1.0f - v[i__3].i * 0.0f, q__4.i = v[i__3].i * 1.0f + v[i__3].r * 0.0f;
-        i__4 = j;
-        q__5.r = v[i__4].r * 4.0f - v[i__4].i * 0.0f, q__5.i = v[i__4].i * 4.0f + v[i__4].r * 0.0f;
-        q__3.r = q__4.r + q__5.r, q__3.i = q__4.i + q__5.i;
-        i__5 = j + 1;
-        q__6.r = v[i__5].r * 1.0f - v[i__5].i * 0.0f, q__6.i = v[i__5].i * 1.0f + v[i__5].r * 0.0f;
-        q__2.r = q__3.r + q__6.r, q__2.i = q__3.i + q__6.i;
-        c_div(&q__1, &q__2, &c_six);
-        w[i__2].r = q__1.r, w[i__2].i = q__1.i;
+        i__2 = j - 1;
+        i__3 = j + 1;
+        w[j].r = (v[i__2].r + v[j].r * 4.0f + v[i__3].r) / 6.0f;
+        w[j].i = (v[i__2].i + v[j].i * 4.0f + v[i__3].i) / 6.0f;
     }
-    i__1 = n;
-    i__2 = n - 1;
-    q__3.r = v[i__2].r * 1.0f - v[i__2].i * 0.0f, q__3.i = v[i__2].i * 1.0f + v[i__2].r * 0.0f;
-    i__3 = n;
-    q__4.r = v[i__3].r * 4.0f - v[i__3].i * 0.0f, q__4.i = v[i__3].i * 4.0f + v[i__3].r * 0.0f;
-    q__2.r = q__3.r + q__4.r, q__2.i = q__3.i + q__4.i;
-    c_div(&q__1, &q__2, &c_six);
-    w[i__1].r = q__1.r, w[i__1].i = q__1.i;
+    i__1 = n - 1;
+    i__2 = n - 2;
+    w[i__1].r = (v[i__2].r + v[i__1].r * 4.0f) / 6.0f;
+    w[i__1].i = (v[i__2].i + v[i__1].i * 4.0f) / 6.0f;
 
-    i__1 = n + 1;
-    q__2.r = (float) i__1, q__2.i = 0.0f;
-    c_div(&q__1, &c_one, &q__2);
-    h.r = q__1.r, h.i = q__1.i;
-    cscal_(&n, &h, &w[1], &c__1);
+    h.r = 1.0f / (float)(n + 1);
+    h.i = 0.0f;
+    cscal_(&n, &h, w, &c__1);
     return 0;
 } /* mv_ */
 
-/* ------------------------------------------------------------------ */
 int cndrv4_av_(const int n, complex *v, complex *w)
 {
     /* System generated locals */
-    int i__1, i__2, i__3, i__4, i__5;
-    complex q__1, q__2, q__3, q__4, q__5;
-
-    /* Builtin functions */
-    void c_div(complex *, complex *, complex *);
+    int i__1, i__2, i__3;
 
     /* Local variables */
-    complex h;
     int j;
-    complex s, dd, dl, du;
-
-    /* Parameter adjustments */
-    --w;
-    --v;
+    float h, s, dd, dl, du;
 
     /* Function Body */
-    i__1 = n + 1;
-    q__2.r = (float) i__1, q__2.i = 0.0f;
-    c_div(&q__1, &c_one, &q__2);
-    h.r = q__1.r, h.i = q__1.i;
-    c_div(&q__1, &convct_1.rho, &c_two);
-    s.r = q__1.r, s.i = q__1.i;
-    c_div(&q__1, &c_two, &h);
-    dd.r = q__1.r, dd.i = q__1.i;
-    q__3.r = -1.f, q__3.i = -0.0f;
-    c_div(&q__2, &q__3, &h);
-    q__1.r = q__2.r - s.r, q__1.i = q__2.i - s.i;
-    dl.r = q__1.r, dl.i = q__1.i;
-    q__3.r = -1.f, q__3.i = -0.0f;
-    c_div(&q__2, &q__3, &h);
-    q__1.r = q__2.r + s.r, q__1.i = q__2.i + s.i;
-    du.r = q__1.r, du.i = q__1.i;
+    h = 1.0f / (float)(n + 1);
+    s = RHO / 2.0f;
+    dd = 2.0f / h;
+    dl = -1.0f / h - s;
+    du = -1.0f / h + s;
 
-    q__2.r = dd.r * v[1].r - dd.i * v[1].i, q__2.i = dd.r * v[1].i + dd.i * v[1].r;
-    q__3.r = du.r * v[2].r - du.i * v[2].i, q__3.i = du.r * v[2].i + du.i * v[2].r;
-    q__1.r = q__2.r + q__3.r, q__1.i = q__2.i + q__3.i;
-    w[1].r = q__1.r, w[1].i = q__1.i;
+    w[0].r = dd * v[0].r + du * v[1].r;
+    w[0].i = dd * v[0].i + du * v[1].i;
+
     i__1 = n - 1;
-    for (j = 2; j <= i__1; ++j)
+    for (j = 1; j < i__1; ++j)
     {
-        i__2 = j;
-        i__3 = j - 1;
-        q__3.r = dl.r * v[i__3].r - dl.i * v[i__3].i, q__3.i = dl.r * v[i__3].i + dl.i * v[i__3].r;
-        i__4 = j;
-        q__4.r = dd.r * v[i__4].r - dd.i * v[i__4].i, q__4.i = dd.r * v[i__4].i + dd.i * v[i__4].r;
-        q__2.r = q__3.r + q__4.r, q__2.i = q__3.i + q__4.i;
-        i__5 = j + 1;
-        q__5.r = du.r * v[i__5].r - du.i * v[i__5].i, q__5.i = du.r * v[i__5].i + du.i * v[i__5].r;
-        q__1.r = q__2.r + q__5.r, q__1.i = q__2.i + q__5.i;
-        w[i__2].r = q__1.r, w[i__2].i = q__1.i;
+        i__2 = j - 1;
+        i__3 = j + 1;
+        w[j].r = dl * v[i__2].r + dd * v[j].r + du * v[i__3].r;
+        w[j].i = dl * v[i__2].i + dd * v[j].i + du * v[i__3].i;
     }
-    i__1 = n;
-    i__2 = n - 1;
-    q__2.r = dl.r * v[i__2].r - dl.i * v[i__2].i, q__2.i = dl.r * v[i__2].i + dl.i * v[i__2].r;
-    i__3 = n;
-    q__3.r = dd.r * v[i__3].r - dd.i * v[i__3].i, q__3.i = dd.r * v[i__3].i + dd.i * v[i__3].r;
-    q__1.r = q__2.r + q__3.r, q__1.i = q__2.i + q__3.i;
-    w[i__1].r = q__1.r, w[i__1].i = q__1.i;
+    i__1 = n - 1;
+    i__2 = n - 2;
+    w[i__1].r = dl * v[i__2].r + dd * v[i__1].r;
+    w[i__1].i = dl * v[i__2].i + dd * v[i__1].i;
     return 0;
 } /* av_ */
-
