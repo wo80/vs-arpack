@@ -587,7 +587,7 @@ L20:
 
         /* -------------------------------------------------- */
         /* Sort the Ritz values according to the scaled Ritz  */
-        /* esitmates.  This will push all the converged ones  */
+        /* estimates.  This will push all the converged ones  */
         /* towards the front of ritzr, ritzi, bounds          */
         /* (in the case when NCONV < NEV.)                    */
         /* -------------------------------------------------- */

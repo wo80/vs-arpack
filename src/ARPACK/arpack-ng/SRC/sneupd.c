@@ -969,8 +969,8 @@ int sneupd_(bool *rvec, char *howmny, bool *select, float *dr, float *di, float 
 #ifndef NO_TRACE
     if (msglvl > 1 && strcmp(type, "SHIFTI") == 0)
     {
-        svout_(&nconv, dr, &debug_1.ndigit, "_neupd: Untransformed float part of the Ritz valuess.");
-        svout_(&nconv, di, &debug_1.ndigit, "_neupd: Untransformed imag part of the Ritz valuess.");
+        svout_(&nconv, dr, &debug_1.ndigit, "_neupd: Untransformed float part of the Ritz values.");
+        svout_(&nconv, di, &debug_1.ndigit, "_neupd: Untransformed imag part of the Ritz values.");
         svout_(&nconv, &workl[ihbds], &debug_1.ndigit, "_neupd: Ritz estimates of untransformed Ritz values.");
     }
     else if (msglvl > 1 && strcmp(type, "REGULR") == 0)

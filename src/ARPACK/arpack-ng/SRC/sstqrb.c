@@ -98,7 +98,7 @@
  * \Remarks
  *     1. Starting with version 2.5, this routine is a modified version
  *        of LAPACK version 2.0 subroutine SSTEQR. No lines are deleted,
- *        only commeted out and new lines inserted.
+ *        only commented out and new lines inserted.
  *        All lines commented out have "c$$$" at the beginning.
  *        Note that the LAPACK version 1.0 subroutine SSTEQR contained
  *        bugs.

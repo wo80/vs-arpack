@@ -237,8 +237,8 @@ extern void    dSetRWork (int, int, double *, double **, double **);
 extern void    dLUWorkFree (int *, double *, GlobalLU_t *);
 extern int     dLUMemXpand (int, int, MemType, int *, GlobalLU_t *);
 
-extern double  *doubleMalloc(int);
-extern double  *doubleCalloc(int);
+extern double  *doubleMalloc(size_t);
+extern double  *doubleCalloc(size_t);
 extern int     dmemory_usage(const int, const int, const int, const int);
 extern int     dQuerySpace (SuperMatrix *, SuperMatrix *, mem_usage_t *);
 extern int     ilu_dQuerySpace (SuperMatrix *, SuperMatrix *, mem_usage_t *);
@@ -274,6 +274,10 @@ extern int dtrsm_(char*, char*, char*, char*, int*, int*,
                   double*, double*, int*, double*, int*);
 extern int dgemv_(char *, int *, int *, double *, double *a, int *,
                   double *, int *, double *, double *, int *);
+
+extern void dusolve(int, int, double*, double*);
+extern void dlsolve(int, int, double*, double*);
+extern void dmatvec(int, int, int, double*, double*, double*);
 
 #ifdef __cplusplus
   }

@@ -39,7 +39,7 @@ at the top-level directory.
 /*                                                                                           
  * You can support older version of SuperLU.                                              
  * At compile-time, you can catch the new release as:                                          
- *   #ifdef SUPERLU_MAIN_VERSION == 5                                                     
+ *   #ifdef SUPERLU_MAJOR_VERSION == 5
  *       use the new interface                                                                 
  *   #else                                                                                     
  *       use the old interface                                                                 
@@ -47,8 +47,8 @@ at the top-level directory.
  * Versions 4.x and earlier do not include a #define'd version numbers.                        
  */
 #define SUPERLU_MAJOR_VERSION     5
-#define SUPERLU_MINOR_VERSION     2
-#define SUPERLU_PATCH_VERSION     1
+#define SUPERLU_MINOR_VERSION     3
+#define SUPERLU_PATCH_VERSION     0
 
 
 #define FIRSTCOL_OF_SNODE(i)	(xsup[i])
@@ -394,7 +394,7 @@ extern void    ilu_heap_relax_snode (const int, int *, const int, int *,
 extern void    resetrep_col (const int, const int *, int *);
 extern int     spcoletree (int *, int *, int *, int, int, int *);
 extern int     *TreePostorder (int, int *);
-extern double  SuperLU_timer_ ();
+extern double  SuperLU_timer_ (void);
 extern int     sp_ienv (int);
 extern int     xerbla_ (char *, int *);
 extern void    ifill (int *, int, int);

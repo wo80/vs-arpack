@@ -300,7 +300,7 @@
  *     L`z = x  where x is a Ritz vector of OP.
  *
  *  4. At present there is no a-priori analysis to guide the selection
- *     of NCV relative to NEV.  The only formal requrement is that NCV > NEV.
+ *     of NCV relative to NEV.  The only formal requirement is that NCV > NEV.
  *     However, it is recommended that NCV .ge. 2*NEV.  If many problems of
  *     the same type are to be solved, one should experiment with increasing
  *     NCV while keeping NEV fixed for a given test problem.  This will

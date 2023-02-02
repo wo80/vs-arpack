@@ -61,7 +61,7 @@
  *          program.
  *
  *  RESID   Complex array of length N.  (INPUT/OUTPUT)
- *          On INPUT, RESID contains the the residual vector r_{k+p}.
+ *          On INPUT, RESID contains the residual vector r_{k+p}.
  *          On OUTPUT, RESID is the update residual vector rnew_{k}
  *          in the first KEV locations.
  *

@@ -17,7 +17,7 @@
  *     A*(V_{k}*Q) - (V_{k}*Q)*(Q^T* H_{k}*Q) = r_{k+p}*e_{k+p}^T * Q
  *
  *  where Q is an orthogonal matrix which is the product of rotations
- *  and reflections resulting from the NP bulge chage sweeps.
+ *  and reflections resulting from the NP bulge change sweeps.
  *  The updated Arnoldi factorization becomes:
  *
  *     A*VNEW_{k} - VNEW_{k}*HNEW_{k} = rnew_{k}*e_{k}^T.
@@ -65,7 +65,7 @@
  *          program.
  *
  *  RESID   Real array of length N.  (INPUT/OUTPUT)
- *          On INPUT, RESID contains the the residual vector r_{k+p}.
+ *          On INPUT, RESID contains the residual vector r_{k+p}.
  *          On OUTPUT, RESID is the update residual vector rnew_{k}
  *          in the first KEV locations.
  *

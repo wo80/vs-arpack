@@ -61,7 +61,7 @@
  *          program.
  *
  *  RESID   Double precision array of length (N).  (INPUT/OUTPUT)
- *          INPUT: RESID contains the the residual vector r_{k+p}.
+ *          INPUT: RESID contains the residual vector r_{k+p}.
  *          OUTPUT: RESID is the updated residual vector rnew_{k}.
  *
  *  Q       Double precision KEV+NP by KEV+NP work array.  (WORKSPACE)

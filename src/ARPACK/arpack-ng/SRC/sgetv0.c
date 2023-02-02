@@ -120,10 +120,6 @@ int sgetv0_(int *ido, char *bmat, int *itry, bool *initv, int *n, int *j,
             float *v, int *ldv, float *resid, float *rnorm, int *ipntr, float *workd,
             int *ierr)
 {
-    /* Initialized data */
-
-    static bool inits = true;
-
     /* System generated locals */
     int i__1;
 
@@ -149,14 +145,10 @@ int sgetv0_(int *ido, char *bmat, int *itry, bool *initv, int *n, int *j,
     /* random number generator           */
     /* --------------------------------- */
 
-    if (inits)
-    {
-        iseed[0] = 1;
-        iseed[1] = 3;
-        iseed[2] = 5;
-        iseed[3] = 7;
-        inits = false;
-    }
+    iseed[0] = 1;
+    iseed[1] = 3;
+    iseed[2] = 5;
+    iseed[3] = 7;
 
     if (*ido == 0)
     {

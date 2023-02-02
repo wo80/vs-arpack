@@ -238,8 +238,8 @@ extern void    cSetRWork (int, int, complex *, complex **, complex **);
 extern void    cLUWorkFree (int *, complex *, GlobalLU_t *);
 extern int     cLUMemXpand (int, int, MemType, int *, GlobalLU_t *);
 
-extern complex  *complexMalloc(int);
-extern complex  *complexCalloc(int);
+extern complex  *complexMalloc(size_t);
+extern complex  *complexCalloc(size_t);
 extern float  *floatMalloc(int);
 extern float  *floatCalloc(int);
 extern int     cmemory_usage(const int, const int, const int, const int);
@@ -277,6 +277,10 @@ extern int ctrsm_(char*, char*, char*, char*, int*, int*,
                   complex*, complex*, int*, complex*, int*);
 extern int cgemv_(char *, int *, int *, complex *, complex *a, int *,
                   complex *, int *, complex *, complex *, int *);
+
+extern void cusolve(int, int, complex*, complex*);
+extern void clsolve(int, int, complex*, complex*);
+extern void cmatvec(int, int, int, complex*, complex*, complex*);
 
 #ifdef __cplusplus
   }

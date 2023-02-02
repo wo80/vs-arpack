@@ -237,8 +237,8 @@ extern void    sSetRWork (int, int, float *, float **, float **);
 extern void    sLUWorkFree (int *, float *, GlobalLU_t *);
 extern int     sLUMemXpand (int, int, MemType, int *, GlobalLU_t *);
 
-extern float  *floatMalloc(int);
-extern float  *floatCalloc(int);
+extern float  *floatMalloc(size_t);
+extern float  *floatCalloc(size_t);
 extern int     smemory_usage(const int, const int, const int, const int);
 extern int     sQuerySpace (SuperMatrix *, SuperMatrix *, mem_usage_t *);
 extern int     ilu_sQuerySpace (SuperMatrix *, SuperMatrix *, mem_usage_t *);
@@ -274,6 +274,10 @@ extern int strsm_(char*, char*, char*, char*, int*, int*,
                   float*, float*, int*, float*, int*);
 extern int sgemv_(char *, int *, int *, float *, float *a, int *,
                   float *, int *, float *, float *, int *);
+
+extern void susolve(int, int, float*, float*);
+extern void slsolve(int, int, float*, float*);
+extern void smatvec(int, int, int, float*, float*, float*);
 
 #ifdef __cplusplus
   }

@@ -467,7 +467,7 @@ EXIT:
  * derived from the standard central difference discretization
  * of the 2-dimensional convection-diffusion operator
  *              (Laplacian u) + rho*(du/dx)
- * on the unit squqre with zero boundary condition.
+ * on the unit square with zero boundary condition.
  *
  * The subroutine TV is called to computed y<---T*x.
  */
