@@ -1,0 +1,12 @@
+target_sources(libarpack
+  PRIVATE
+    arerror.cpp
+    ar_ci_exports.cpp
+    ar_ci_exports.h
+    ar_di_exports.cpp
+    ar_di_exports.h
+    ar_si_exports.cpp
+    ar_si_exports.h
+    ar_zi_exports.cpp
+    ar_zi_exports.h
+    common.h)

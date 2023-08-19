@@ -1,0 +1,12 @@
+target_sources(arpack-ng
+  PRIVATE
+    cmout.c
+    cvout.c
+    dmout.c
+    dvout.c
+    ivout.c
+    second.c
+    smout.c
+    svout.c
+    zmout.c
+    zvout.c)
