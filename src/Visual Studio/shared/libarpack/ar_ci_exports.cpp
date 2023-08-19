@@ -14,141 +14,141 @@
 #define AR_TYPE arcomplex<float>
 
 int ar_ci_ns(char* which, int k, int ncv, int maxit, double tol,
-		   ar_spmat *A, ar_result *result)
+    ar_spmat* A, ar_result* result)
 {
-	int nconv = 0; // Number of converged eigenvalues.
-	
-	AR_TYPE *eigvec = (AR_TYPE *)result->eigvec;
-	AR_TYPE *eigval = (AR_TYPE *)result->eigvalr;
+    int nconv = 0; // Number of converged eigenvalues.
 
-	try
-	{
-		ARluNonSymMatrix<AR_TYPE, float> matrix(A->n, A->nnz, (AR_TYPE *)A->x, A->i, A->p);
-		ARluCompStdEig<float> prob(k, matrix, which, ncv, static_cast<float>(tol), maxit);
+    AR_TYPE* eigvec = (AR_TYPE*)result->eigvec;
+    AR_TYPE* eigval = (AR_TYPE*)result->eigvalr;
 
-		if (eigvec == NULL)
-		{
-			nconv = prob.Eigenvalues(eigval);
-		}
-		else
-		{
-			nconv = prob.EigenValVectors(eigvec, eigval);
-		}
+    try
+    {
+        ARluNonSymMatrix<AR_TYPE, float> matrix(A->n, A->nnz, (AR_TYPE*)A->x, A->i, A->p);
+        ARluCompStdEig<float> prob(k, matrix, which, ncv, static_cast<float>(tol), maxit);
 
-		result->iterations = prob.GetIter();
-		result->ncv = prob.GetNcv();
-		result->info = 0;
-	}
-	catch(const ArpackError& e)
-	{
-		result->info = e.Status();
-	}
+        if (eigvec == NULL)
+        {
+            nconv = prob.Eigenvalues(eigval);
+        }
+        else
+        {
+            nconv = prob.EigenValVectors(eigvec, eigval);
+        }
 
-	return nconv;
+        result->iterations = prob.GetIter();
+        result->ncv = prob.GetNcv();
+        result->info = 0;
+    }
+    catch (const ArpackError& e)
+    {
+        result->info = e.Status();
+    }
+
+    return nconv;
 }
 
-int ar_ci_ns_shift(char* which,  int k, int ncv, int maxit, double tol, arcomplex<float> sigma,
-				 ar_spmat *A, ar_result *result)
+int ar_ci_ns_shift(char* which, int k, int ncv, int maxit, double tol, arcomplex<float> sigma,
+    ar_spmat* A, ar_result* result)
 {
-	int nconv = 0; // Number of converged eigenvalues.
-	
-	AR_TYPE *eigvec = (AR_TYPE *)result->eigvec;
-	AR_TYPE *eigval = (AR_TYPE *)result->eigvalr;
+    int nconv = 0; // Number of converged eigenvalues.
 
-	try
-	{
-		ARluNonSymMatrix<AR_TYPE, float> matrix(A->n, A->nnz, (AR_TYPE *)A->x, A->i, A->p);
-		ARluCompStdEig<float> prob(k, matrix, sigma, which, ncv, static_cast<float>(tol), maxit);
+    AR_TYPE* eigvec = (AR_TYPE*)result->eigvec;
+    AR_TYPE* eigval = (AR_TYPE*)result->eigvalr;
 
-		if (eigvec == NULL)
-		{
-			nconv = prob.Eigenvalues(eigval);
-		}
-		else
-		{
-			nconv = prob.EigenValVectors(eigvec, eigval);
-		}
+    try
+    {
+        ARluNonSymMatrix<AR_TYPE, float> matrix(A->n, A->nnz, (AR_TYPE*)A->x, A->i, A->p);
+        ARluCompStdEig<float> prob(k, matrix, sigma, which, ncv, static_cast<float>(tol), maxit);
 
-		result->iterations = prob.GetIter();
-		result->ncv = prob.GetNcv();
-		result->info = 0;
-	}
-	catch(const ArpackError& e)
-	{
-		result->info = e.Status();
-	}
+        if (eigvec == NULL)
+        {
+            nconv = prob.Eigenvalues(eigval);
+        }
+        else
+        {
+            nconv = prob.EigenValVectors(eigvec, eigval);
+        }
 
-	return nconv;
+        result->iterations = prob.GetIter();
+        result->ncv = prob.GetNcv();
+        result->info = 0;
+    }
+    catch (const ArpackError& e)
+    {
+        result->info = e.Status();
+    }
+
+    return nconv;
 }
 
 int ar_ci_ng(char* which, int k, int ncv, int maxit, double tol,
-		   ar_spmat *A, ar_spmat *B, ar_result *result)
+    ar_spmat* A, ar_spmat* B, ar_result* result)
 {
-	int nconv = 0; // Number of converged eigenvalues.
-	
-	AR_TYPE *eigvec = (AR_TYPE *)result->eigvec;
-	AR_TYPE *eigval = (AR_TYPE *)result->eigvalr;
+    int nconv = 0; // Number of converged eigenvalues.
 
-	try
-	{
-		ARluNonSymMatrix<AR_TYPE, float> matrixA(A->n, A->nnz, (AR_TYPE *)A->x, A->i, A->p);
-		ARluNonSymMatrix<AR_TYPE, float> matrixB(B->n, B->nnz, (AR_TYPE *)B->x, B->i, B->p);
-		ARluCompGenEig<float> prob(k, matrixA, matrixB, which, ncv, static_cast<float>(tol), maxit);
+    AR_TYPE* eigvec = (AR_TYPE*)result->eigvec;
+    AR_TYPE* eigval = (AR_TYPE*)result->eigvalr;
 
-		if (eigvec == NULL)
-		{
-			nconv = prob.Eigenvalues(eigval);
-		}
-		else
-		{
-			nconv = prob.EigenValVectors(eigvec, eigval);
-		}
+    try
+    {
+        ARluNonSymMatrix<AR_TYPE, float> matrixA(A->n, A->nnz, (AR_TYPE*)A->x, A->i, A->p);
+        ARluNonSymMatrix<AR_TYPE, float> matrixB(B->n, B->nnz, (AR_TYPE*)B->x, B->i, B->p);
+        ARluCompGenEig<float> prob(k, matrixA, matrixB, which, ncv, static_cast<float>(tol), maxit);
 
-		result->iterations = prob.GetIter();
-		result->ncv = prob.GetNcv();
-		result->info = 0;
-	}
-	catch(const ArpackError& e)
-	{
-		result->info = e.Status();
-	}
+        if (eigvec == NULL)
+        {
+            nconv = prob.Eigenvalues(eigval);
+        }
+        else
+        {
+            nconv = prob.EigenValVectors(eigvec, eigval);
+        }
 
-	return nconv;
+        result->iterations = prob.GetIter();
+        result->ncv = prob.GetNcv();
+        result->info = 0;
+    }
+    catch (const ArpackError& e)
+    {
+        result->info = e.Status();
+    }
+
+    return nconv;
 }
 
-int ar_ci_ng_shift(char* which,  int k, int ncv, int maxit, double tol, arcomplex<float> sigma,
-				 ar_spmat *A, ar_spmat *B, ar_result *result)
+int ar_ci_ng_shift(char* which, int k, int ncv, int maxit, double tol, arcomplex<float> sigma,
+    ar_spmat* A, ar_spmat* B, ar_result* result)
 {
-	int nconv = 0; // Number of converged eigenvalues.
-	
-	AR_TYPE *eigvec = (AR_TYPE *)result->eigvec;
-	AR_TYPE *eigval = (AR_TYPE *)result->eigvalr;
+    int nconv = 0; // Number of converged eigenvalues.
 
-	try
-	{
-		ARluNonSymMatrix<AR_TYPE, float> matrixA(A->n, A->nnz, (AR_TYPE *)A->x, A->i, A->p);
-		ARluNonSymMatrix<AR_TYPE, float> matrixB(B->n, B->nnz, (AR_TYPE *)B->x, B->i, B->p);
-		ARluCompGenEig<float> prob(k, matrixA, matrixB, sigma, which, ncv, static_cast<float>(tol), maxit);
+    AR_TYPE* eigvec = (AR_TYPE*)result->eigvec;
+    AR_TYPE* eigval = (AR_TYPE*)result->eigvalr;
 
-		if (eigvec == NULL)
-		{
-			nconv = prob.Eigenvalues(eigval);
-		}
-		else
-		{
-			nconv = prob.EigenValVectors(eigvec, eigval);
-		}
+    try
+    {
+        ARluNonSymMatrix<AR_TYPE, float> matrixA(A->n, A->nnz, (AR_TYPE*)A->x, A->i, A->p);
+        ARluNonSymMatrix<AR_TYPE, float> matrixB(B->n, B->nnz, (AR_TYPE*)B->x, B->i, B->p);
+        ARluCompGenEig<float> prob(k, matrixA, matrixB, sigma, which, ncv, static_cast<float>(tol), maxit);
 
-		result->iterations = prob.GetIter();
-		result->ncv = prob.GetNcv();
-		result->info = 0;
-	}
-	catch(const ArpackError& e)
-	{
-		result->info = e.Status();
-	}
+        if (eigvec == NULL)
+        {
+            nconv = prob.Eigenvalues(eigval);
+        }
+        else
+        {
+            nconv = prob.EigenValVectors(eigvec, eigval);
+        }
 
-	return nconv;
+        result->iterations = prob.GetIter();
+        result->ncv = prob.GetNcv();
+        result->info = 0;
+    }
+    catch (const ArpackError& e)
+    {
+        result->info = e.Status();
+    }
+
+    return nconv;
 }
 
 #undef AR_TYPE
