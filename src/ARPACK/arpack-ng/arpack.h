@@ -1,12 +1,6 @@
 #pragma once
 
-#include <stdio.h>
-#include <string.h>
-
 #include "arpack_types.h"
-#include "arpack_constants.h"
-#include "lapack.h"
-#include "arpack_internal.h"
 
 /* Legacy ARPACK version */
 #define ARPACK_VERSION "2.4.0"

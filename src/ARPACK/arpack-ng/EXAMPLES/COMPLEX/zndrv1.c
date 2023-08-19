@@ -1,7 +1,7 @@
 /* EXAMPLES\COMPLEX\zndrv1.f -- translated by f2c (version 20100827). */
 
 #include <stdlib.h>
-#include "arpack.h"
+#include "arpack_internal.h"
 
 /**
  * \BeginDoc

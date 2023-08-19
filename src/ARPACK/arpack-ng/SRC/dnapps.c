@@ -1,6 +1,6 @@
 /* arpack-ng\SRC\dnapps.f -- translated by f2c (version 20100827). */
 
-#include "arpack.h"
+#include "arpack_internal.h"
 
 /**
  * \BeginDoc

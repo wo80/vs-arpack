@@ -1,5 +1,12 @@
 #pragma once
 
+#include <stdio.h>
+#include <string.h>
+
+#include "arpack.h"
+#include "arpack_constants.h"
+#include "lapack.h"
+
 #ifdef __cplusplus
 extern "C"
 {

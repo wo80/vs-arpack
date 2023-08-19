@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #endif
 
-#include "arpack.h"
+#include "arpack_internal.h"
 
 /**
  *  Returns the user time for a process in arscnds.
