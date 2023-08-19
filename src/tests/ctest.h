@@ -1,6 +1,6 @@
 #pragma once
 
-#include "arpack.h"
+#include "arpack_internal.h"
 
 int cnsimp();
 int cnsimp_av_(const int nx, complex* v, complex* w);

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "arpack.h"
+#include "arpack_internal.h"
 
 int znsimp();
 int znsimp_av_(const int nx, zomplex* v, zomplex* w);

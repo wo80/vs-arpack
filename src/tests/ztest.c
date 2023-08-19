@@ -1,5 +1,5 @@
 
-#include "examples.h"
+#include "ztest.h"
 
 int main()
 {

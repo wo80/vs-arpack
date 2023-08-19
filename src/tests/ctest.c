@@ -1,5 +1,5 @@
 
-#include "examples.h"
+#include "ctest.h"
 
 int main()
 {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "arpack.h"
+#include "arpack_internal.h"
 
 int sndrv1();
 int sndrv1_av_(const int nx, float* v, float* w);

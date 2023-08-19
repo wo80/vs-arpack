@@ -1,6 +1,6 @@
 #pragma once
 
-#include "arpack.h"
+#include "arpack_internal.h"
 
 int dndrv1();
 int dndrv1_av_(const int nx, double* v, double* w);
