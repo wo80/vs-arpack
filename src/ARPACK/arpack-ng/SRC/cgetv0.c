@@ -118,7 +118,6 @@ int cgetv0_(int *ido, char *bmat, int *itry, bool *initv, int *n, int *j,
             int *ierr)
 {
     /* Initialized data */
-
     static bool inits = true;
 
     /* System generated locals */

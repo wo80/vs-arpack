@@ -117,6 +117,9 @@ int zgetv0_(int *ido, char *bmat, int *itry, bool *initv, int *n, int *j,
             zomplex *v, int *ldv, zomplex *resid, double *rnorm, int *ipntr, zomplex *workd,
             int *ierr)
 {
+    /* Initialized data */
+    static bool inits = true;
+
     /* System generated locals */
     int i__1;
     double d__1, d__2;
@@ -145,10 +148,14 @@ int zgetv0_(int *ido, char *bmat, int *itry, bool *initv, int *n, int *j,
     /* random number generator           */
     /* --------------------------------- */
 
-    iseed[0] = 1;
-    iseed[1] = 3;
-    iseed[2] = 5;
-    iseed[3] = 7;
+    if (inits)
+    {
+        iseed[0] = 1;
+        iseed[1] = 3;
+        iseed[2] = 5;
+        iseed[3] = 7;
+        inits = false;
+    }
 
     if (*ido == 0)
     {
