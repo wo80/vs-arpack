@@ -3,6 +3,9 @@
 #include <stdlib.h>
 #include "arpack_internal.h"
 
+int cndrv1_av_(const int nx, complex* v, complex* w);
+int cndrv1_tv_(const int nx, complex* x, complex* y);
+
 /**
  * \BeginDoc
  *
@@ -43,7 +46,7 @@
  *
  * \EndLib
  */
-int cndrv1()
+int main()
 {
     /* System generated locals */
     int i__1, i__2;

@@ -3,6 +3,9 @@
 #include <stdlib.h>
 #include "arpack_internal.h"
 
+int dsdrv5_av_(const int nx, double* v, double* w);
+int dsdrv5_mv_(const int n, double* v, double* w);
+
 /**
  * \BeginDoc
  *
@@ -43,7 +46,7 @@
  *
  * \EndLib
  */
-int dsdrv5()
+int main()
 {
     /* System generated locals */
     double d__1;

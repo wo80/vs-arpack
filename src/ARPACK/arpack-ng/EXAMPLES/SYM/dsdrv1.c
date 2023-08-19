@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include "arpack_internal.h"
 
+int dsdrv1_av_(const int nx, double* v, double* w);
+
 /**
  * \BeginDoc
  *
@@ -40,7 +42,7 @@
  *
  * \EndLib
  */
-int dsdrv1()
+int main()
 {
     /* System generated locals */
     double d__1;

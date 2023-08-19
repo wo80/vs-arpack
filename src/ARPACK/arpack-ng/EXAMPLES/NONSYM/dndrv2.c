@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include "arpack_internal.h"
 
+int dndrv2_av_(const int n, double* v, double* w);
+
 struct
 {
     double rho;
@@ -50,7 +52,7 @@ struct
  *
  * \EndLib
  */
-int dndrv2()
+int main()
 {
     /* System generated locals */
     int i__1;

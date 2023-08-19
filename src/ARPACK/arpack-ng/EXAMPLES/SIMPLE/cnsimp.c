@@ -3,6 +3,9 @@
 #include <stdlib.h>
 #include "arpack_internal.h"
 
+int cnsimp_av_(const int nx, complex* v, complex* w);
+int cnsimp_tv_(const int nx, complex* x, complex* y);
+
 /**
  * \BeginDoc
  *
@@ -71,7 +74,7 @@
  *
  * \EndLib
  */
-int cnsimp()
+int main()
 {
     /* System generated locals */
     int i__1, i__2;

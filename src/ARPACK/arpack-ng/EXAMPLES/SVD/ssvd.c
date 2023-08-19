@@ -3,6 +3,9 @@
 #include <stdlib.h>
 #include "arpack_internal.h"
 
+int ssvd_av_(const int m, const int n, float* x, float* w);
+int ssvd_atv_(const int m, const int n, float* w, float* y);
+
 /**
  * \BeginDoc
  *
@@ -91,7 +94,7 @@
  *
  * \EndLib
  */
-int ssvd()
+int main()
 {
     /* System generated locals */
     float r__1;

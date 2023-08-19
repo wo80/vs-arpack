@@ -3,6 +3,9 @@
 #include <stdlib.h>
 #include "arpack_internal.h"
 
+int dssimp_av_(const int nx, double* v, double* w);
+int dssimp_tv_(const int nx, double* x, double* y);
+
 /**
  * \BeginDoc
  *
@@ -69,7 +72,7 @@
  *
  * \EndLib
  */
-int dssimp()
+int main()
 {
     /* System generated locals */
     double d__1;

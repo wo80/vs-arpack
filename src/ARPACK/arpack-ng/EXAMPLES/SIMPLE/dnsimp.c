@@ -3,6 +3,9 @@
 #include <stdlib.h>
 #include "arpack_internal.h"
 
+int dnsimp_av_(const int nx, double* v, double* w);
+int dnsimp_tv_(const int nx, double* x, double* y);
+
 /**
  * \BeginDoc
  *
@@ -76,7 +79,7 @@
  *
  * \EndLib
  */
-int dnsimp()
+int main()
 {
     /* System generated locals */
     double d__1;

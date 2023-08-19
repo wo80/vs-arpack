@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include "arpack_internal.h"
 
+int zndrv2_av_(const int n, zomplex* v, zomplex* w);
+
 #define RHO 10.0
 
 /**
@@ -44,7 +46,7 @@
  *
  * \EndLib
  */
-int zndrv2()
+int main()
 {
     /* System generated locals */
     int i__1, i__2;

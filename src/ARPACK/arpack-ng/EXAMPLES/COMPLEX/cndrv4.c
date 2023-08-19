@@ -3,6 +3,9 @@
 #include <stdlib.h>
 #include "arpack_internal.h"
 
+int cndrv4_av_(const int n, complex* v, complex* w);
+int cndrv4_mv_(const int n, complex* v, complex* w);
+
 #define RHO 10.0f
 
 /**
@@ -47,7 +50,7 @@
  *
  * \EndLib
  */
-int cndrv4()
+int main()
 {
     /* System generated locals */
     int i__1, i__2;

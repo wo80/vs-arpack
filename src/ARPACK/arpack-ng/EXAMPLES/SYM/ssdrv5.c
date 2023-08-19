@@ -3,6 +3,9 @@
 #include <stdlib.h>
 #include "arpack_internal.h"
 
+int ssdrv5_av_(const int nx, float* v, float* w);
+int ssdrv5_mv_(const int n, float* v, float* w);
+
 /**
  * \BeginDoc
  *
@@ -43,7 +46,7 @@
  *
  * \EndLib
  */
-int ssdrv5()
+int main()
 {
     /* System generated locals */
     float r__1;

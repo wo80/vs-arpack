@@ -3,6 +3,9 @@
 #include <stdlib.h>
 #include "arpack_internal.h"
 
+int snsimp_av_(const int nx, float* v, float* w);
+int snsimp_tv_(const int nx, float* x, float* y);
+
 /**
  * \BeginDoc
  *
@@ -76,7 +79,7 @@
  *
  * \EndLib
  */
-int snsimp()
+int main()
 {
     /* System generated locals */
     float r__1;

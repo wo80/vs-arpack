@@ -3,6 +3,9 @@
 #include <stdlib.h>
 #include "arpack_internal.h"
 
+int dsvd_av_(const int m, const int n, double* x, double* w);
+int dsvd_atv_(const int m, const int n, double* w, double* y);
+
 /**
  * \BeginDoc
  *
@@ -91,7 +94,7 @@
  *
  * \EndLib
  */
-int dsvd()
+int main()
 {
     /* System generated locals */
     double d__1;

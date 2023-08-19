@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include "arpack_internal.h"
 
+int sndrv2_av_(const int n, float* v, float* w);
+
 struct
 {
     float rho;
@@ -50,7 +52,7 @@ struct
  *
  * \EndLib
  */
-int sndrv2()
+int main()
 {
     /* System generated locals */
     int i__1;

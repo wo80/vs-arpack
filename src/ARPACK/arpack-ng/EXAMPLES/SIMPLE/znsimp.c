@@ -3,6 +3,9 @@
 #include <stdlib.h>
 #include "arpack_internal.h"
 
+int znsimp_av_(const int nx, zomplex* v, zomplex* w);
+int znsimp_tv_(const int nx, zomplex* x, zomplex* y);
+
 /**
  * \BeginDoc
  *
@@ -74,7 +77,7 @@
  *
  * \EndLib
  */
-int znsimp()
+int main()
 {
     /* System generated locals */
     int i__1, i__2;

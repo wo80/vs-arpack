@@ -3,6 +3,9 @@
 #include <stdlib.h>
 #include "arpack_internal.h"
 
+int dndrv1_av_(const int nx, double* v, double* w);
+int dndrv1_tv_(const int nx, double* x, double* y);
+
 /**
  * \BeginDoc
  *
@@ -43,7 +46,7 @@
  *
  * \EndLib
  */
-int dndrv1()
+int main()
 {
     /* System generated locals */
     double d__1;

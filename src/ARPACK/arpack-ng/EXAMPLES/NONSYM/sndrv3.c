@@ -3,6 +3,9 @@
 #include <stdlib.h>
 #include "arpack_internal.h"
 
+int sndrv3_av_(const int n, float* v, float* w);
+int sndrv3_mv_(const int n, float* v, float* w);
+
 /**
  * \BeginDoc
  *
@@ -42,7 +45,7 @@
  *
  * \EndLib
  */
-int sndrv3()
+int main()
 {
     /* System generated locals */
     int i__1;

@@ -3,6 +3,9 @@
 #include <stdlib.h>
 #include "arpack_internal.h"
 
+int zndrv1_av_(const int nx, zomplex* v, zomplex* w);
+int zndrv1_tv_(const int nx, zomplex* x, zomplex* y);
+
 /**
  * \BeginDoc
  *
@@ -43,7 +46,7 @@
  *
  * \EndLib
  */
-int zndrv1()
+int main()
 {
     /* System generated locals */
     int i__1, i__2;

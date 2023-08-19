@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include "arpack_internal.h"
 
+int ssdrv1_av_(const int nx, float* v, float* w);
+
 /**
  * \BeginDoc
  *
@@ -40,7 +42,7 @@
  *
  * \EndLib
  */
-int ssdrv1()
+int main()
 {
     /* System generated locals */
     float r__1;
