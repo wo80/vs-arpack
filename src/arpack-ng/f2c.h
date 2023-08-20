@@ -3,7 +3,7 @@
 
 typedef struct { float r, i; } complex;
 typedef struct { double r, i; } doublecomplex;
-typedef long int logical;
+typedef int logical;
 
 #define VOID void
 #define TRUE_ (1)
