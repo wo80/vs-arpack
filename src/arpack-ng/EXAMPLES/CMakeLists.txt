@@ -2,7 +2,7 @@
 function(examples list_name)
     foreach(name ${${list_name}})
         add_executable(${name} "${arpackexample_DIR}/${name}.c")
-        target_link_libraries(${name} arpack-ng ${f2c_LIBRARY} BLAS::BLAS LAPACK::LAPACK ${EXTRA_LDFLAGS})
+        target_link_libraries(${name} arpack-ng BLAS::BLAS LAPACK::LAPACK ${EXTRA_LDFLAGS})
         add_test(NAME ${name}_test COMMAND ${name})
     endforeach()
 endfunction(examples)

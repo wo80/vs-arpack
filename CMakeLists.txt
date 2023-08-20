@@ -35,8 +35,6 @@ if(MSVC)
   add_compile_definitions(NOMINMAX _COMPLEX_DEFINED)
 endif()
 
-find_package(F2C)
-
 if(BUILD_SHARED_LIBS)
   find_package(SuperLU)
 endif()

@@ -41,7 +41,7 @@ if(BUILD_SHARED_LIBS)
   # Enable arcomplex type of ARPACK++
   target_compile_definitions(libarpack PRIVATE __GNUG__)
 
-  target_link_libraries(libarpack arpack-ng ${f2c_LIBRARY} ${SuperLU_LIBRARIES} BLAS::BLAS LAPACK::LAPACK ${EXTRA_LDFLAGS})
+  target_link_libraries(libarpack arpack-ng ${SuperLU_LIBRARIES} BLAS::BLAS LAPACK::LAPACK ${EXTRA_LDFLAGS})
 
   target_include_directories(libarpack
     PUBLIC
