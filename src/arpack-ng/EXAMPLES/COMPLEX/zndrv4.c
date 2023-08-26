@@ -3,8 +3,8 @@
 #include <stdlib.h>
 #include "arpack_internal.h"
 
-int zndrv4_av_(const int n, zomplex* v, zomplex* w);
-int zndrv4_mv_(const int n, zomplex* v, zomplex* w);
+int zndrv4_av_(const int n, a_dcomplex* v, a_dcomplex* w);
+int zndrv4_mv_(const int n, a_dcomplex* v, a_dcomplex* w);
 
 #define RHO 10.0
 
@@ -54,16 +54,16 @@ int main()
 {
     /* System generated locals */
     int i__1, i__2;
-    zomplex z__1;
+    a_dcomplex z__1;
 
     /* Local variables */
-    zomplex d[25];
-    zomplex workev[50];
+    a_dcomplex d[25];
+    a_dcomplex workev[50];
     double rd[75] /* (3 * MAXNCV) */;
     double rwork[256];
 
     double h, s;
-    zomplex sigma, s1, s2, s3;
+    a_dcomplex sigma, s1, s2, s3;
 
     int j;
     int ierr, nconv;
@@ -130,10 +130,10 @@ int main()
     /* diagonal and 1.0 on the off-diagonals.           */
     /* ------------------------------------------------ */
 
-    zomplex* du = (zomplex*)malloc(n * sizeof(zomplex));
-    zomplex* dd = (zomplex*)malloc(n * sizeof(zomplex));
-    zomplex* dl = (zomplex*)malloc(n * sizeof(zomplex));
-    zomplex* du2 = (zomplex*)malloc(n * sizeof(zomplex));
+    a_dcomplex* du = (a_dcomplex*)malloc(n * sizeof(a_dcomplex));
+    a_dcomplex* dd = (a_dcomplex*)malloc(n * sizeof(a_dcomplex));
+    a_dcomplex* dl = (a_dcomplex*)malloc(n * sizeof(a_dcomplex));
+    a_dcomplex* du2 = (a_dcomplex*)malloc(n * sizeof(a_dcomplex));
 
     h = 1.0 / (double)(n + 1);
     s = RHO / 2.0;
@@ -184,12 +184,12 @@ int main()
     int ido = 0;
     int info = 0;
 
-    zomplex* ax = (zomplex*)malloc(n * sizeof(zomplex));
-    zomplex* mx = (zomplex*)malloc(n * sizeof(zomplex));
-    zomplex* resid = (zomplex*)malloc(n * sizeof(zomplex));
-    zomplex* v = (zomplex*)malloc(n * ncv * sizeof(zomplex));
-    zomplex* workl = (zomplex*)malloc(lworkl * sizeof(zomplex));
-    zomplex* workd = (zomplex*)malloc(3 * n * sizeof(zomplex));
+    a_dcomplex* ax = (a_dcomplex*)malloc(n * sizeof(a_dcomplex));
+    a_dcomplex* mx = (a_dcomplex*)malloc(n * sizeof(a_dcomplex));
+    a_dcomplex* resid = (a_dcomplex*)malloc(n * sizeof(a_dcomplex));
+    a_dcomplex* v = (a_dcomplex*)malloc(n * ncv * sizeof(a_dcomplex));
+    a_dcomplex* workl = (a_dcomplex*)malloc(lworkl * sizeof(a_dcomplex));
+    a_dcomplex* workd = (a_dcomplex*)malloc(3 * n * sizeof(a_dcomplex));
 
     /* ------------------------------------------------- */
     /* This program uses exact shifts with respect to    */
@@ -439,13 +439,13 @@ EXIT:
  * where M is a n by n symmetric tridiagonal matrix with 4 on the
  * diagonal, 1 on the subdiagonal and superdiagonal.
  */
-int zndrv4_mv_(const int n, zomplex *v, zomplex *w)
+int zndrv4_mv_(const int n, a_dcomplex *v, a_dcomplex *w)
 {
     /* System generated locals */
     int i__1, i__2, i__3;
 
     /* Local variables */
-    zomplex h;
+    a_dcomplex h;
     int j;
 
     /* Function Body */
@@ -470,7 +470,7 @@ int zndrv4_mv_(const int n, zomplex *v, zomplex *w)
     return 0;
 } /* mv_ */
 
-int zndrv4_av_(const int n, zomplex *v, zomplex *w)
+int zndrv4_av_(const int n, a_dcomplex *v, a_dcomplex *w)
 {
     /* System generated locals */
     int i__1, i__2, i__3;

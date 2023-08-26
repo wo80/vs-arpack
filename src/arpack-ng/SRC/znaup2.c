@@ -167,15 +167,15 @@
  * \EndLib
  */
 int znaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
-            double *tol, zomplex *resid, int *mode, int *iupd, int *ishift, int *mxiter,
-            zomplex *v, int *ldv, zomplex *h, int *ldh, zomplex *ritz, zomplex *bounds,
-            zomplex *q, int *ldq, zomplex *workl, int *ipntr, zomplex *workd, double *rwork,
+            double *tol, a_dcomplex *resid, int *mode, int *iupd, int *ishift, int *mxiter,
+            a_dcomplex *v, int *ldv, a_dcomplex *h, int *ldh, a_dcomplex *ritz, a_dcomplex *bounds,
+            a_dcomplex *q, int *ldq, a_dcomplex *workl, int *ipntr, a_dcomplex *workd, double *rwork,
             int *info)
 {
     /* System generated locals */
     int i__1, i__2;
     double d__1, d__2, d__3, d__4;
-    zomplex z__1;
+    a_dcomplex z__1;
 
     /* Builtin functions */
     double sqrt(double);
@@ -198,7 +198,7 @@ int znaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
     static int kplusp, msglvl;
     int nptemp;
     char wprime[3];
-    zomplex cmpnorm;
+    a_dcomplex cmpnorm;
 
     /* Function Body */
     if (*ido == 0)

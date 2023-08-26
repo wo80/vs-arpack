@@ -114,7 +114,7 @@
  * \EndLib
  */
 int cgetv0_(int *ido, char *bmat, int *itry, logical *initv, int *n, int *j,
-            complex *v, int *ldv, complex *resid, float *rnorm, int *ipntr, complex *workd,
+            a_fcomplex *v, int *ldv, a_fcomplex *resid, float *rnorm, int *ipntr, a_fcomplex *workd,
             int *ierr)
 {
     /* Initialized data */
@@ -123,7 +123,7 @@ int cgetv0_(int *ido, char *bmat, int *itry, logical *initv, int *n, int *j,
     /* System generated locals */
     int i__1;
     float r__1, r__2;
-    complex q__1;
+    a_fcomplex q__1;
 
     /* Builtin functions */
     double sqrt(double);
@@ -135,7 +135,7 @@ int cgetv0_(int *ido, char *bmat, int *itry, logical *initv, int *n, int *j,
     static logical orth;
     static int iseed[4];
     int idist;
-    complex cnorm;
+    a_fcomplex cnorm;
     static logical first;
     static float rnorm0;
     static int msglvl;

@@ -378,8 +378,8 @@
  * \EndLib
  */
 int znaupd_(int *ido, char *bmat, int *n, char *which, int *nev, double *tol,
-            zomplex *resid, int *ncv, zomplex *v, int *ldv, int *iparam, int *ipntr,
-            zomplex *workd, zomplex *workl, int *lworkl, double *rwork, int *info)
+            a_dcomplex *resid, int *ncv, a_dcomplex *v, int *ldv, int *iparam, int *ipntr,
+            a_dcomplex *workd, a_dcomplex *workl, int *lworkl, double *rwork, int *info)
 {
 
     /* System generated locals */

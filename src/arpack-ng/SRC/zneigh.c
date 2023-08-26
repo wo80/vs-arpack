@@ -97,9 +97,9 @@
  *
  * \EndLib
  */
-int zneigh_(double *rnorm, int *n, zomplex *
-            h, int *ldh, zomplex *ritz, zomplex *bounds,
-            zomplex *q, int *ldq, zomplex *workl, double *
+int zneigh_(double *rnorm, int *n, a_dcomplex *
+            h, int *ldh, a_dcomplex *ritz, a_dcomplex *bounds,
+            a_dcomplex *q, int *ldq, a_dcomplex *workl, double *
             rwork, int *ierr)
 {
     /* System generated locals */
@@ -109,7 +109,7 @@ int zneigh_(double *rnorm, int *n, zomplex *
     /* Local variables */
     int j;
     static float t0, t1;
-    zomplex vl[1];
+    a_dcomplex vl[1];
     double temp;
     logical select[1];
     int msglvl;

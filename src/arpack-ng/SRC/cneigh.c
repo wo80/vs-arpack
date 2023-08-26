@@ -97,9 +97,9 @@
  *
  * \EndLib
  */
-int cneigh_(float *rnorm, int *n, complex *h, int *
-            ldh, complex *ritz, complex *bounds, complex *q, int *ldq,
-            complex *workl, float *rwork, int *ierr)
+int cneigh_(float *rnorm, int *n, a_fcomplex *h, int *
+            ldh, a_fcomplex *ritz, a_fcomplex *bounds, a_fcomplex *q, int *ldq,
+            a_fcomplex *workl, float *rwork, int *ierr)
 {
     /* System generated locals */
     int q_dim, i__1;
@@ -108,7 +108,7 @@ int cneigh_(float *rnorm, int *n, complex *h, int *
     /* Local variables */
     int j;
     static float t0, t1;
-    complex vl[1];
+    a_fcomplex vl[1];
     float temp;
     logical select[1];
     int msglvl;

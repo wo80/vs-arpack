@@ -3,8 +3,8 @@
 #include <stdlib.h>
 #include "arpack_internal.h"
 
-int cnsimp_av_(const int nx, complex* v, complex* w);
-int cnsimp_tv_(const int nx, complex* x, complex* y);
+int cnsimp_av_(const int nx, a_fcomplex* v, a_fcomplex* w);
+int cnsimp_tv_(const int nx, a_fcomplex* x, a_fcomplex* y);
 
 /**
  * \BeginDoc
@@ -78,16 +78,16 @@ int main()
 {
     /* System generated locals */
     int i__1, i__2;
-    complex q__1;
+    a_fcomplex q__1;
 
     /* Local variables */
     float rd[90] /* (3 * MAXNCV) */;
     float rwork[30];
 
-    complex d[30];
-    complex workev[60];
+    a_fcomplex d[30];
+    a_fcomplex workev[60];
 
-    complex sigma;
+    a_fcomplex sigma;
 
     int j;
     int ierr, nconv;
@@ -239,11 +239,11 @@ int main()
     int ido = 0;
     int info = 0;
 
-    complex* ax = (complex*)malloc(n * sizeof(complex));
-    complex* resid = (complex*)malloc(n * sizeof(complex));
-    complex* v = (complex*)malloc(n * ncv * sizeof(complex));
-    complex* workl = (complex*)malloc(lworkl * sizeof(complex));
-    complex* workd = (complex*)malloc(3 * n * sizeof(complex));
+    a_fcomplex* ax = (a_fcomplex*)malloc(n * sizeof(a_fcomplex));
+    a_fcomplex* resid = (a_fcomplex*)malloc(n * sizeof(a_fcomplex));
+    a_fcomplex* v = (a_fcomplex*)malloc(n * ncv * sizeof(a_fcomplex));
+    a_fcomplex* workl = (a_fcomplex*)malloc(lworkl * sizeof(a_fcomplex));
+    a_fcomplex* workd = (a_fcomplex*)malloc(3 * n * sizeof(a_fcomplex));
 
     /* ------------------------------------------------- */
     /* Specification of Algorithm Mode:                  */
@@ -474,7 +474,7 @@ EXIT:
  *
  * The subroutine TV is called to computed y<---T*x.
  */
-int cnsimp_av_(const int nx, complex *v, complex *w)
+int cnsimp_av_(const int nx, a_fcomplex *v, a_fcomplex *w)
 {
     /* System generated locals */
     int i__1;
@@ -483,7 +483,7 @@ int cnsimp_av_(const int nx, complex *v, complex *w)
     int j;
     int lo;
     float h2;
-    complex z;
+    a_fcomplex z;
 
     /* Parameter adjustments */
     --w;
@@ -519,7 +519,7 @@ int cnsimp_av_(const int nx, complex *v, complex *w)
  * where T is a nx by nx tridiagonal matrix with DD on the
  * diagonal, DL on the subdiagonal, and DU on the superdiagonal
  */
-int cnsimp_tv_(const int nx, complex *x, complex *y)
+int cnsimp_tv_(const int nx, a_fcomplex *x, a_fcomplex *y)
 {
     /* System generated locals */
     int i__1, i__2, i__3;

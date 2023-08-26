@@ -251,29 +251,29 @@
  *
  * \EndLib
  */
-int cneupd_(logical *rvec, char *howmny, logical *select, complex *d, complex *z, int *ldz,
-            complex *sigma, complex *workev, char *bmat, int *n, char *which, int *nev,
-            float *tol, complex *resid, int *ncv, complex *v, int *ldv, int *iparam,
-            int *ipntr, complex *workd, complex *workl, int *lworkl, float *rwork,
+int cneupd_(logical *rvec, char *howmny, logical *select, a_fcomplex *d, a_fcomplex *z, int *ldz,
+            a_fcomplex *sigma, a_fcomplex *workev, char *bmat, int *n, char *which, int *nev,
+            float *tol, a_fcomplex *resid, int *ncv, a_fcomplex *v, int *ldv, int *iparam,
+            int *ipntr, a_fcomplex *workd, a_fcomplex *workl, int *lworkl, float *rwork,
             int *info)
 {
     /* System generated locals */
     int i__1, i__2;
     float r__1, r__2, r__3, r__4;
-    complex q__1, q__2;
+    a_fcomplex q__1, q__2;
 
     /* Builtin functions */
-    void c_div(complex *, complex *, complex *);
+    void c_div(a_fcomplex *, a_fcomplex *, a_fcomplex *);
 
     /* Local variables */
     int j, k, ih, jj, iq, np;
-    complex vl[1];
+    a_fcomplex vl[1];
     int wr, ibd, ldh, ldq;
     float sep;
     int irz, mode;
     float eps23;
     int ierr;
-    complex temp;
+    a_fcomplex temp;
     int iwev;
     char type[7];
     int ritz, iheig;
@@ -282,7 +282,7 @@ int cneupd_(logical *rvec, char *howmny, logical *select, complex *d, complex *z
     logical reord;
     int nconv;
     float rtemp;
-    complex rnorm;
+    a_fcomplex rnorm;
     int nconv2;
     int bounds, invsub, iuptri, msglvl, outncv, numcnv, ishift;
 

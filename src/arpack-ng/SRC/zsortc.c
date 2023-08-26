@@ -58,7 +58,7 @@
  *
  * \EndLib
  */
-int zsortc_(char *which, logical *apply, int *n, zomplex *x, zomplex *y)
+int zsortc_(char *which, logical *apply, int *n, a_dcomplex *x, a_dcomplex *y)
 {
     /* System generated locals */
     int i__1, k;
@@ -66,7 +66,7 @@ int zsortc_(char *which, logical *apply, int *n, zomplex *x, zomplex *y)
 
     /* Local variables */
     int i, j, igap;
-    zomplex temp;
+    a_dcomplex temp;
     double temp1, temp2;
 
 

@@ -49,7 +49,7 @@ int main()
     /* System generated locals */
     int i__1, i__2, i__3;
     double d__1, d__2;
-    zomplex z__1;
+    a_dcomplex z__1;
 
     /* Local variables */
     double d[75]; /* (3 * MAXNCV) */
@@ -59,7 +59,7 @@ int main()
     double numr, numi;
     double sigmar, sigmai;
 
-    zomplex c1, c2, c3;
+    a_dcomplex c1, c2, c3;
 
     int j;
     int ierr, nconv;
@@ -126,11 +126,11 @@ int main()
     /* diagonal and 1 on the off-diagonals.               */
     /* -------------------------------------------------- */
 
-    zomplex* cdd = (zomplex*)malloc(n * sizeof(zomplex));
-    zomplex* cdl = (zomplex*)malloc(n * sizeof(zomplex));
-    zomplex* cdu = (zomplex*)malloc(n * sizeof(zomplex));
-    zomplex* cdu2 = (zomplex*)malloc(n * sizeof(zomplex));
-    zomplex* ctemp = (zomplex*)malloc(n * sizeof(zomplex));
+    a_dcomplex* cdd = (a_dcomplex*)malloc(n * sizeof(a_dcomplex));
+    a_dcomplex* cdl = (a_dcomplex*)malloc(n * sizeof(a_dcomplex));
+    a_dcomplex* cdu = (a_dcomplex*)malloc(n * sizeof(a_dcomplex));
+    a_dcomplex* cdu2 = (a_dcomplex*)malloc(n * sizeof(a_dcomplex));
+    a_dcomplex* ctemp = (a_dcomplex*)malloc(n * sizeof(a_dcomplex));
 
     d__1 = -2.0 - sigmar;
     d__2 = -sigmai;

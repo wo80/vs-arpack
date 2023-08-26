@@ -132,9 +132,9 @@
  *
  * \EndLib
  */
-int cnapps_(int *n, int *kev, int *np, complex *
-            shift, complex *v, int *ldv, complex *h, int *ldh, complex *
-            resid, complex *q, int *ldq, complex *workl, complex *workd)
+int cnapps_(int *n, int *kev, int *np, a_fcomplex *
+            shift, a_fcomplex *v, int *ldv, a_fcomplex *h, int *ldh, a_fcomplex *
+            resid, a_fcomplex *q, int *ldq, a_fcomplex *workl, a_fcomplex *workd)
 {
     /* Initialized data */
 
@@ -144,24 +144,24 @@ int cnapps_(int *n, int *kev, int *np, complex *
     int h_dim, h_offset, v_dim, v_offset, q_dim, q_offset, i__1, i__2,
             i__3, i__4, i__5, i__6;
     float r__1, r__2, r__3, r__4;
-    complex q__1, q__2, q__3, q__4, q__5;
+    a_fcomplex q__1, q__2, q__3, q__4, q__5;
 
     /* Builtin functions */
-    void r_cnjg(complex *, complex *);
+    void r_cnjg(a_fcomplex *, a_fcomplex *);
 
     /* Local variables */
     float c;
-    complex f, g;
+    a_fcomplex f, g;
     int i, j;
-    complex r, s, t;
+    a_fcomplex r, s, t;
     static float t0, t1;
-    complex h11, h21;
+    a_fcomplex h11, h21;
     int jj;
     static float ulp;
     float tst1;
     int iend;
     static float unfl, ovfl;
-    complex sigma;
+    a_fcomplex sigma;
     int istart, kplusp, msglvl;
     static float smlnum;
 

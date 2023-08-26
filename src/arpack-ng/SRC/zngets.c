@@ -84,8 +84,8 @@
  *
  * \EndLib
  */
-int zngets_(int *ishift, char *which, int *kev, int *np, zomplex *ritz,
-            zomplex *bounds)
+int zngets_(int *ishift, char *which, int *kev, int *np, a_dcomplex *ritz,
+            a_dcomplex *bounds)
 {
     /* System generated locals */
     int i__1;

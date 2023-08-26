@@ -13,7 +13,7 @@
  *              If IDIGIT .LT. 0, printing is done with 72 columns.
  *              If IDIGIT .GT. 0, printing is done with 132 columns.
  */
-int zvout_(int *n, zomplex *cx, int *idigit, char *ifmt)
+int zvout_(int *n, a_dcomplex *cx, int *idigit, char *ifmt)
 {
     /* Local variables */
     int i, k1, k2, len, m;

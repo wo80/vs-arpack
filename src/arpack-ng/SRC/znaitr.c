@@ -207,8 +207,8 @@
  * \EndLib
  */
 int znaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *nb,
-            zomplex *resid, double *rnorm, zomplex *v, int *ldv, zomplex *h, int *ldh,
-            int *ipntr, zomplex *workd, int *info)
+            a_dcomplex *resid, double *rnorm, a_dcomplex *v, int *ldv, a_dcomplex *h, int *ldh,
+            int *ipntr, a_dcomplex *workd, int *info)
 {
     /* Initialized data */
 
@@ -217,7 +217,7 @@ int znaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *nb,
     /* System generated locals */
     int h_dim, h_offset, v_dim, v_offset, i__1, i__2, i__3;
     double d__1;
-    zomplex z__1;
+    a_dcomplex z__1;
 
     /* Builtin functions */
     double sqrt(double);
@@ -236,7 +236,7 @@ int znaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *nb,
     static logical orth1, orth2, step3, step4;
     static double betaj;
     int infol;
-    zomplex cnorm;
+    a_dcomplex cnorm;
     double rtemp[2];
     static double wnorm;
     static double rnorm1;

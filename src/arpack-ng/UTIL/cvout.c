@@ -13,7 +13,7 @@
  *              If IDIGIT .LT. 0, printing is done with 72 columns.
  *              If IDIGIT .GT. 0, printing is done with 132 columns.
  */
-int cvout_(int *n, complex *cx, int *idigit, char *ifmt)
+int cvout_(int *n, a_fcomplex *cx, int *idigit, char *ifmt)
 {
     /* Local variables */
     int i, k1, k2, len, m;

@@ -378,8 +378,8 @@
  * \EndLib
  */
 int cnaupd_(int *ido, char *bmat, int *n, char *which, int *nev, float *tol,
-            complex *resid, int *ncv, complex *v, int *ldv, int *iparam, int *ipntr,
-            complex *workd, complex *workl, int *lworkl, float *rwork, int *info)
+            a_fcomplex *resid, int *ncv, a_fcomplex *v, int *ldv, int *iparam, int *ipntr,
+            a_fcomplex *workd, a_fcomplex *workl, int *lworkl, float *rwork, int *info)
 {
 
     /* System generated locals */

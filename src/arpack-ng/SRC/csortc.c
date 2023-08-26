@@ -58,7 +58,7 @@
  *
  * \EndLib
  */
-int csortc_(char *which, logical *apply, int *n, complex *x, complex *y)
+int csortc_(char *which, logical *apply, int *n, a_fcomplex *x, a_fcomplex *y)
 {
     /* System generated locals */
     int i__1, k;
@@ -66,7 +66,7 @@ int csortc_(char *which, logical *apply, int *n, complex *x, complex *y)
 
     /* Local variables */
     int i, j, igap;
-    complex temp;
+    a_fcomplex temp;
     float temp1, temp2;
 
 

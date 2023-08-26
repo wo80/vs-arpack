@@ -16,10 +16,10 @@
  *              If IDIGIT .LT. 0, printing is done with 72 columns.
  *              If IDIGIT .GT. 0, printing is done with 132 columns.
  */
-int zmout_(int *m, int *n, zomplex *a, int *lda, int *idigit, char *ifmt)
+int zmout_(int *m, int *n, a_dcomplex *a, int *lda, int *idigit, char *ifmt)
 {
     /* System generated locals */
-    zomplex d__1;
+    a_dcomplex d__1;
 
     /* Local variables */
     int i, j, k1, k2, len, p;

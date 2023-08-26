@@ -3,8 +3,8 @@
 #include <stdlib.h>
 #include "arpack_internal.h"
 
-int zndrv1_av_(const int nx, zomplex* v, zomplex* w);
-int zndrv1_tv_(const int nx, zomplex* x, zomplex* y);
+int zndrv1_av_(const int nx, a_dcomplex* v, a_dcomplex* w);
+int zndrv1_tv_(const int nx, a_dcomplex* x, a_dcomplex* y);
 
 /**
  * \BeginDoc
@@ -50,15 +50,15 @@ int main()
 {
     /* System generated locals */
     int i__1, i__2;
-    zomplex z__1;
+    a_dcomplex z__1;
 
     /* Local variables */
-    zomplex workev[90];
-    zomplex d[30];
+    a_dcomplex workev[90];
+    a_dcomplex d[30];
     double rd[90] /* (3 * MAXNCV) */;
     double rwork[30];
 
-    zomplex sigma;
+    a_dcomplex sigma;
 
     int j;
     int ierr, nconv;
@@ -131,11 +131,11 @@ int main()
     int ido = 0;
     int info = 0;
 
-    zomplex* ax = (zomplex*)malloc(n * sizeof(zomplex));
-    zomplex* resid = (zomplex*)malloc(n * sizeof(zomplex));
-    zomplex* v = (zomplex*)malloc(n * ncv * sizeof(zomplex));
-    zomplex* workl = (zomplex*)malloc(lworkl * sizeof(zomplex));
-    zomplex* workd = (zomplex*)malloc(3 * n * sizeof(zomplex));
+    a_dcomplex* ax = (a_dcomplex*)malloc(n * sizeof(a_dcomplex));
+    a_dcomplex* resid = (a_dcomplex*)malloc(n * sizeof(a_dcomplex));
+    a_dcomplex* v = (a_dcomplex*)malloc(n * ncv * sizeof(a_dcomplex));
+    a_dcomplex* workl = (a_dcomplex*)malloc(lworkl * sizeof(a_dcomplex));
+    a_dcomplex* workd = (a_dcomplex*)malloc(3 * n * sizeof(a_dcomplex));
 
     /* ------------------------------------------------- */
     /* This program uses exact shift with respect to     */
@@ -356,7 +356,7 @@ EXIT:
  *
  * The subroutine TV is called to computed y<---T*x.
  */
-int zndrv1_av_(const int nx, zomplex *v, zomplex *w)
+int zndrv1_av_(const int nx, a_dcomplex *v, a_dcomplex *w)
 {
     /* System generated locals */
     int i__1;
@@ -365,7 +365,7 @@ int zndrv1_av_(const int nx, zomplex *v, zomplex *w)
     int j;
     int lo;
     double h2;
-    zomplex z;
+    a_dcomplex z;
 
     /* Parameter adjustments */
     --w;
@@ -401,7 +401,7 @@ int zndrv1_av_(const int nx, zomplex *v, zomplex *w)
  * where T is a nx by nx tridiagonal matrix with DD on the
  * diagonal, DL on the subdiagonal, and DU on the superdiagonal
  */
-int zndrv1_tv_(const int nx, zomplex *x, zomplex *y)
+int zndrv1_tv_(const int nx, a_dcomplex *x, a_dcomplex *y)
 {
     /* System generated locals */
     int i__1, i__2, i__3;

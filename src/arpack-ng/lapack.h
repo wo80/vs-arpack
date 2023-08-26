@@ -9,27 +9,27 @@ extern "C"
 
 	/* complex */
 
-	extern float scnrm2_(int*, complex*, int*);
-	extern void cdotc_(complex*, int*, complex*, int*, complex*, int*); // OpenBLAS: complex* cdotc_(int*, complex*, int*, complex*, int*);
-	extern void caxpy_(int*, complex*, complex*, int*, complex*, int*);
-	extern void ccopy_(int*, complex*, int*, complex*, int*);
-	extern void cgemv_(char*, int*, int*, complex*, complex*, int*, complex*, int*, complex*, complex*, int*);
-	extern void cgeru_(int*, int*, complex*, complex*, int*, complex*, int*, complex*, int*);
-	extern void cscal_(int*, complex*, complex*, int*);
-	extern void csscal_(int*, float*, complex*, int*);
-	extern void ctrmm_(char*, char*, char*, char*, int*, int*, complex*, complex*, int*, complex*, int*);
+	extern float scnrm2_(int*, a_fcomplex*, int*);
+	extern void cdotc_(a_fcomplex*, int*, a_fcomplex*, int*, a_fcomplex*, int*); // OpenBLAS: complex* cdotc_(int*, complex*, int*, complex*, int*);
+	extern void caxpy_(int*, a_fcomplex*, a_fcomplex*, int*, a_fcomplex*, int*);
+	extern void ccopy_(int*, a_fcomplex*, int*, a_fcomplex*, int*);
+	extern void cgemv_(char*, int*, int*, a_fcomplex*, a_fcomplex*, int*, a_fcomplex*, int*, a_fcomplex*, a_fcomplex*, int*);
+	extern void cgeru_(int*, int*, a_fcomplex*, a_fcomplex*, int*, a_fcomplex*, int*, a_fcomplex*, int*);
+	extern void cscal_(int*, a_fcomplex*, a_fcomplex*, int*);
+	extern void csscal_(int*, float*, a_fcomplex*, int*);
+	extern void ctrmm_(char*, char*, char*, char*, int*, int*, a_fcomplex*, a_fcomplex*, int*, a_fcomplex*, int*);
 
-	extern void cgeqr2_(int*, int*, complex*, int*, complex*, complex*, int*);
-	extern void clacpy_(char*, int*, int*, complex*, int*, complex*, int*);
-	extern void clahqr_(logical*, logical*, int*, int*, int*, complex*, int*, complex*, int*, int*, complex*, int*, int*);
-	extern float clanhs_(char*, int*, complex*, int*, complex*);
-	extern void clarnv_(int*, int*, int*, complex*);
-	extern void clartg_(complex*, complex*, float*, complex*, complex*);
-	extern void clascl_(char*, int*, int*, float*, float*, int*, int*, complex*, int*, int*);
-	extern void claset_(char*, int*, int*, complex*, complex*, complex*, int*);
-	extern void ctrevc_(char*, char*, logical*, int*, complex*, int*, complex*, int*, complex*, int*, int*, int*, complex*, float*, int*);
-	extern void ctrsen_(char*, char*, logical*, int*, complex*, int*, complex*, int*, complex*, int*, float*, float*, complex*, int*, int*);
-	extern void cunm2r_(char*, char*, int*, int*, int*, complex*, int*, complex*, complex*, int*, complex*, int*);
+	extern void cgeqr2_(int*, int*, a_fcomplex*, int*, a_fcomplex*, a_fcomplex*, int*);
+	extern void clacpy_(char*, int*, int*, a_fcomplex*, int*, a_fcomplex*, int*);
+	extern void clahqr_(logical*, logical*, int*, int*, int*, a_fcomplex*, int*, a_fcomplex*, int*, int*, a_fcomplex*, int*, int*);
+	extern float clanhs_(char*, int*, a_fcomplex*, int*, a_fcomplex*);
+	extern void clarnv_(int*, int*, int*, a_fcomplex*);
+	extern void clartg_(a_fcomplex*, a_fcomplex*, float*, a_fcomplex*, a_fcomplex*);
+	extern void clascl_(char*, int*, int*, float*, float*, int*, int*, a_fcomplex*, int*, int*);
+	extern void claset_(char*, int*, int*, a_fcomplex*, a_fcomplex*, a_fcomplex*, int*);
+	extern void ctrevc_(char*, char*, logical*, int*, a_fcomplex*, int*, a_fcomplex*, int*, a_fcomplex*, int*, int*, int*, a_fcomplex*, float*, int*);
+	extern void ctrsen_(char*, char*, logical*, int*, a_fcomplex*, int*, a_fcomplex*, int*, a_fcomplex*, int*, float*, float*, a_fcomplex*, int*, int*);
+	extern void cunm2r_(char*, char*, int*, int*, int*, a_fcomplex*, int*, a_fcomplex*, a_fcomplex*, int*, a_fcomplex*, int*);
 
 	/* double */
 
@@ -103,27 +103,27 @@ extern "C"
 
 	/* doublecomplex */
 
-	extern double dznrm2_(int*, doublecomplex*, int*);
-	extern void zaxpy_(int*, doublecomplex*, doublecomplex*, int*, doublecomplex*, int*);
-	extern void zcopy_(int*, doublecomplex*, int*, doublecomplex*, int*);
-	extern void zdotc_(doublecomplex*, int*, doublecomplex*, int*, doublecomplex*, int*);
-	extern void zgemv_(char*, int*, int*, doublecomplex*, doublecomplex*, int*, doublecomplex*, int*, doublecomplex*, doublecomplex*, int*);
-	extern void zgeru_(int*, int*, doublecomplex*, doublecomplex*, int*, doublecomplex*, int*, doublecomplex*, int*);
-	extern void zscal_(int*, doublecomplex*, doublecomplex*, int*);
-	extern void ztrmm_(char*, char*, char*, char*, int*, int*, doublecomplex*, doublecomplex*, int*, doublecomplex*, int*);
+	extern double dznrm2_(int*, a_dcomplex*, int*);
+	extern void zaxpy_(int*, a_dcomplex*, a_dcomplex*, int*, a_dcomplex*, int*);
+	extern void zcopy_(int*, a_dcomplex*, int*, a_dcomplex*, int*);
+	extern void zdotc_(a_dcomplex*, int*, a_dcomplex*, int*, a_dcomplex*, int*);
+	extern void zgemv_(char*, int*, int*, a_dcomplex*, a_dcomplex*, int*, a_dcomplex*, int*, a_dcomplex*, a_dcomplex*, int*);
+	extern void zgeru_(int*, int*, a_dcomplex*, a_dcomplex*, int*, a_dcomplex*, int*, a_dcomplex*, int*);
+	extern void zscal_(int*, a_dcomplex*, a_dcomplex*, int*);
+	extern void ztrmm_(char*, char*, char*, char*, int*, int*, a_dcomplex*, a_dcomplex*, int*, a_dcomplex*, int*);
 
-	extern void zdscal_(int*, double*, doublecomplex*, int*);
-	extern void zgeqr2_(int*, int*, doublecomplex*, int*, doublecomplex*, doublecomplex*, int*);
-	extern void zlacpy_(char*, int*, int*, doublecomplex*, int*, doublecomplex*, int*);
-	extern void zlahqr_(logical*, logical*, int*, int*, int*, doublecomplex*, int*, doublecomplex*, int*, int*, doublecomplex*, int*, int*);
-	extern double zlanhs_(char*, int*, doublecomplex*, int*, doublecomplex*);
-	extern void zlarnv_(int*, int*, int*, doublecomplex*);
-	extern void zlartg_(doublecomplex*, doublecomplex*, double*, doublecomplex*, doublecomplex*);
-	extern void zlascl_(char*, int*, int*, double*, double*, int*, int*, doublecomplex*, int*, int*);
-	extern void zlaset_(char*, int*, int*, doublecomplex*, doublecomplex*, doublecomplex*, int*);
-	extern void ztrevc_(char*, char*, logical*, int*, doublecomplex*, int*, doublecomplex*, int*, doublecomplex*, int*, int*, int*, doublecomplex*, double*, int*);
-	extern void ztrsen_(char*, char*, logical*, int*, doublecomplex*, int*, doublecomplex*, int*, doublecomplex*, int*, double*, double*, doublecomplex*, int*, int*);
-	extern void zunm2r_(char*, char*, int*, int*, int*, doublecomplex*, int*, doublecomplex*, doublecomplex*, int*, doublecomplex*, int*);
+	extern void zdscal_(int*, double*, a_dcomplex*, int*);
+	extern void zgeqr2_(int*, int*, a_dcomplex*, int*, a_dcomplex*, a_dcomplex*, int*);
+	extern void zlacpy_(char*, int*, int*, a_dcomplex*, int*, a_dcomplex*, int*);
+	extern void zlahqr_(logical*, logical*, int*, int*, int*, a_dcomplex*, int*, a_dcomplex*, int*, int*, a_dcomplex*, int*, int*);
+	extern double zlanhs_(char*, int*, a_dcomplex*, int*, a_dcomplex*);
+	extern void zlarnv_(int*, int*, int*, a_dcomplex*);
+	extern void zlartg_(a_dcomplex*, a_dcomplex*, double*, a_dcomplex*, a_dcomplex*);
+	extern void zlascl_(char*, int*, int*, double*, double*, int*, int*, a_dcomplex*, int*, int*);
+	extern void zlaset_(char*, int*, int*, a_dcomplex*, a_dcomplex*, a_dcomplex*, int*);
+	extern void ztrevc_(char*, char*, logical*, int*, a_dcomplex*, int*, a_dcomplex*, int*, a_dcomplex*, int*, int*, int*, a_dcomplex*, double*, int*);
+	extern void ztrsen_(char*, char*, logical*, int*, a_dcomplex*, int*, a_dcomplex*, int*, a_dcomplex*, int*, double*, double*, a_dcomplex*, int*, int*);
+	extern void zunm2r_(char*, char*, int*, int*, int*, a_dcomplex*, int*, a_dcomplex*, a_dcomplex*, int*, a_dcomplex*, int*);
 
 #ifdef __cplusplus
 }

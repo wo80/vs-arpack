@@ -133,9 +133,9 @@
  * \EndLib
  */
 int znapps_(int *n, int *kev, int *np,
-            zomplex *shift, zomplex *v, int *ldv, zomplex *
-            h, int *ldh, zomplex *resid, zomplex *q, int *
-            ldq, zomplex *workl, zomplex *workd)
+            a_dcomplex *shift, a_dcomplex *v, int *ldv, a_dcomplex *
+            h, int *ldh, a_dcomplex *resid, a_dcomplex *q, int *
+            ldq, a_dcomplex *workl, a_dcomplex *workd)
 {
     /* Initialized data */
 
@@ -145,24 +145,24 @@ int znapps_(int *n, int *kev, int *np,
     int h_dim, h_offset, v_dim, v_offset, q_dim, q_offset, i__1, i__2,
             i__3, i__4, i__5, i__6;
     double d__1, d__2, d__3, d__4;
-    zomplex z__1, z__2, z__3, z__4, z__5;
+    a_dcomplex z__1, z__2, z__3, z__4, z__5;
 
     /* Builtin functions */
-    void d_cnjg(zomplex *, zomplex *);
+    void d_cnjg(a_dcomplex *, a_dcomplex *);
 
     /* Local variables */
     double c;
-    zomplex f, g;
+    a_dcomplex f, g;
     int i, j;
-    zomplex r, s, t;
+    a_dcomplex r, s, t;
     static float t0, t1;
-    zomplex h11, h21;
+    a_dcomplex h11, h21;
     int jj;
     static double ulp;
     double tst1;
     int iend;
     static double unfl, ovfl;
-    zomplex sigma;
+    a_dcomplex sigma;
     int istart, kplusp, msglvl;
     static double smlnum;
 

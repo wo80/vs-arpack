@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include "arpack_internal.h"
 
-int zndrv2_av_(const int n, zomplex* v, zomplex* w);
+int zndrv2_av_(const int n, a_dcomplex* v, a_dcomplex* w);
 
 #define RHO 10.0
 
@@ -50,16 +50,16 @@ int main()
 {
     /* System generated locals */
     int i__1, i__2;
-    zomplex z__1;
+    a_dcomplex z__1;
 
     /* Local variables */
-    zomplex d[25];
-    zomplex workev[50];
+    a_dcomplex d[25];
+    a_dcomplex workev[50];
     double rd[75] /* (3 * MAXNCV) */;
     double rwork[256];
 
     double h, s, h2, s1, s3;
-    zomplex s2, sigma;
+    a_dcomplex s2, sigma;
 
     int j;
     int ierr, nconv;
@@ -123,10 +123,10 @@ int main()
     /* condition.                                         */
     /* -------------------------------------------------- */
 
-    zomplex* du = (zomplex*)malloc(n * sizeof(zomplex));
-    zomplex* dd = (zomplex*)malloc(n * sizeof(zomplex));
-    zomplex* dl = (zomplex*)malloc(n * sizeof(zomplex));
-    zomplex* du2 = (zomplex*)malloc(n * sizeof(zomplex));
+    a_dcomplex* du = (a_dcomplex*)malloc(n * sizeof(a_dcomplex));
+    a_dcomplex* dd = (a_dcomplex*)malloc(n * sizeof(a_dcomplex));
+    a_dcomplex* dl = (a_dcomplex*)malloc(n * sizeof(a_dcomplex));
+    a_dcomplex* du2 = (a_dcomplex*)malloc(n * sizeof(a_dcomplex));
 
     h = 1.0 / (double)(n + 1);
     h2 = h * h;
@@ -173,11 +173,11 @@ int main()
     int ido = 0;
     int info = 0;
 
-    zomplex* ax = (zomplex*)malloc(n * sizeof(zomplex));
-    zomplex* resid = (zomplex*)malloc(n * sizeof(zomplex));
-    zomplex* v = (zomplex*)malloc(n * ncv * sizeof(zomplex));
-    zomplex* workl = (zomplex*)malloc(lworkl * sizeof(zomplex));
-    zomplex* workd = (zomplex*)malloc(3 * n * sizeof(zomplex));
+    a_dcomplex* ax = (a_dcomplex*)malloc(n * sizeof(a_dcomplex));
+    a_dcomplex* resid = (a_dcomplex*)malloc(n * sizeof(a_dcomplex));
+    a_dcomplex* v = (a_dcomplex*)malloc(n * ncv * sizeof(a_dcomplex));
+    a_dcomplex* workl = (a_dcomplex*)malloc(lworkl * sizeof(a_dcomplex));
+    a_dcomplex* workd = (a_dcomplex*)malloc(3 * n * sizeof(a_dcomplex));
 
     /* ------------------------------------------------- */
     /* This program uses exact shifts with respect to    */
@@ -392,7 +392,7 @@ EXIT:
 /**
  * Matrix vector multiplication subroutine.
  */
-int zndrv2_av_(const int n, zomplex *v, zomplex *w)
+int zndrv2_av_(const int n, a_dcomplex *v, a_dcomplex *w)
 {
     /* System generated locals */
     int i__1, i__2, i__3;

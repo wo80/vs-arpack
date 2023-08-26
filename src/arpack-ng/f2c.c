@@ -12,21 +12,21 @@ double r_sign(float* a, float* b)
 	return(*b >= 0 ? x : -x);
 }
 
-void r_cnjg(complex* r, complex* z)
+void r_cnjg(a_fcomplex* r, a_fcomplex* z)
 {
 	float zi = z->i;
 	r->r = z->r;
 	r->i = -zi;
 }
 
-void d_cnjg(doublecomplex* r, doublecomplex* z)
+void d_cnjg(a_dcomplex* r, a_dcomplex* z)
 {
 	double zi = z->i;
 	r->r = z->r;
 	r->i = -zi;
 }
 
-void c_div(complex* c, complex* a, complex* b)
+void c_div(a_fcomplex* c, a_fcomplex* a, a_fcomplex* b)
 {
 	double ratio, den;
 	double abr, abi, cr;
@@ -62,7 +62,7 @@ void c_div(complex* c, complex* a, complex* b)
 	c->r = cr;
 }
 
-void z_div(doublecomplex* c, doublecomplex* a, doublecomplex* b)
+void z_div(a_dcomplex* c, a_dcomplex* a, a_dcomplex* b)
 {
 	double ratio, den;
 	double abr, abi, cr;

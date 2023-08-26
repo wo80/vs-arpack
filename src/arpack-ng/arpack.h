@@ -25,13 +25,13 @@ extern "C"
     /* BEGIN: public interface */
 
     int cnaupd_(int* ido, char* bmat, int* n, char* which, int* nev, float* tol,
-        complex* resid, int* ncv, complex* v, int* ldv, int* iparam, int* ipntr,
-        complex* workd, complex* workl, int* lworkl, float* rwork, int* info);
+        a_fcomplex* resid, int* ncv, a_fcomplex* v, int* ldv, int* iparam, int* ipntr,
+        a_fcomplex* workd, a_fcomplex* workl, int* lworkl, float* rwork, int* info);
 
-    int cneupd_(logical* rvec, char* howmny, logical* select, complex* d, complex* z, int* ldz,
-        complex* sigma, complex* workev, char* bmat, int* n, char* which, int* nev,
-        float* tol, complex* resid, int* ncv, complex* v, int* ldv, int* iparam,
-        int* ipntr, complex* workd, complex* workl, int* lworkl, float* rwork,
+    int cneupd_(logical* rvec, char* howmny, logical* select, a_fcomplex* d, a_fcomplex* z, int* ldz,
+        a_fcomplex* sigma, a_fcomplex* workev, char* bmat, int* n, char* which, int* nev,
+        float* tol, a_fcomplex* resid, int* ncv, a_fcomplex* v, int* ldv, int* iparam,
+        int* ipntr, a_fcomplex* workd, a_fcomplex* workl, int* lworkl, float* rwork,
         int* info);
 
     int dnaupd_(int* ido, char* bmat, int* n, char* which, int* nev, double* tol,
@@ -73,13 +73,13 @@ extern "C"
         float* workd, float* workl, int* lworkl, int* info);
 
     int znaupd_(int* ido, char* bmat, int* n, char* which, int* nev, double* tol,
-        zomplex* resid, int* ncv, zomplex* v, int* ldv, int* iparam, int* ipntr,
-        zomplex* workd, zomplex* workl, int* lworkl, double* rwork, int* info);
+        a_dcomplex* resid, int* ncv, a_dcomplex* v, int* ldv, int* iparam, int* ipntr,
+        a_dcomplex* workd, a_dcomplex* workl, int* lworkl, double* rwork, int* info);
 
-    int zneupd_(logical* rvec, char* howmny, logical* select, zomplex* d, zomplex* z, int* ldz,
-        zomplex* sigma, zomplex* workev, char* bmat, int* n, char* which, int* nev,
-        double* tol, zomplex* resid, int* ncv, zomplex* v, int* ldv, int* iparam,
-        int* ipntr, zomplex* workd, zomplex* workl, int* lworkl, double* rwork,
+    int zneupd_(logical* rvec, char* howmny, logical* select, a_dcomplex* d, a_dcomplex* z, int* ldz,
+        a_dcomplex* sigma, a_dcomplex* workev, char* bmat, int* n, char* which, int* nev,
+        double* tol, a_dcomplex* resid, int* ncv, a_dcomplex* v, int* ldv, int* iparam,
+        int* ipntr, a_dcomplex* workd, a_dcomplex* workl, int* lworkl, double* rwork,
         int* info);
 
     /* END: public interface */

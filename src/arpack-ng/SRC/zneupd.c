@@ -251,29 +251,29 @@
  *
  * \EndLib
  */
-int zneupd_(logical *rvec, char *howmny, logical *select, zomplex *d, zomplex *z, int *ldz,
-            zomplex *sigma, zomplex *workev, char *bmat, int *n, char *which, int *nev,
-            double *tol, zomplex *resid, int *ncv, zomplex *v, int *ldv, int *iparam,
-            int *ipntr, zomplex *workd, zomplex *workl, int *lworkl, double *rwork,
+int zneupd_(logical *rvec, char *howmny, logical *select, a_dcomplex *d, a_dcomplex *z, int *ldz,
+            a_dcomplex *sigma, a_dcomplex *workev, char *bmat, int *n, char *which, int *nev,
+            double *tol, a_dcomplex *resid, int *ncv, a_dcomplex *v, int *ldv, int *iparam,
+            int *ipntr, a_dcomplex *workd, a_dcomplex *workl, int *lworkl, double *rwork,
             int *info)
 {
     /* System generated locals */
     int i__1, i__2;
     double d__1, d__2, d__3, d__4;
-    zomplex z__1, z__2;
+    a_dcomplex z__1, z__2;
 
     /* Builtin functions */
-    void z_div(zomplex *, zomplex *, zomplex *);
+    void z_div(a_dcomplex *, a_dcomplex *, a_dcomplex *);
 
     /* Local variables */
     int j, k, ih, jj, iq, np;
-    zomplex vl[1];
+    a_dcomplex vl[1];
     int wr, ibd, ldh, ldq;
     double sep;
     int irz, mode;
     double eps23;
     int ierr;
-    zomplex temp;
+    a_dcomplex temp;
     int iwev;
     char type[7];
     int ritz, iheig, ihbds;
@@ -281,7 +281,7 @@ int zneupd_(logical *rvec, char *howmny, logical *select, zomplex *d, zomplex *z
     logical reord;
     int nconv;
     double rtemp;
-    zomplex rnorm;
+    a_dcomplex rnorm;
     int nconv2;
     int bounds, invsub, iuptri, msglvl, outncv, numcnv, ishift;
 

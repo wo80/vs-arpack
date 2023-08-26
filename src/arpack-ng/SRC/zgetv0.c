@@ -114,7 +114,7 @@
  * \EndLib
  */
 int zgetv0_(int *ido, char *bmat, int *itry, logical *initv, int *n, int *j,
-            zomplex *v, int *ldv, zomplex *resid, double *rnorm, int *ipntr, zomplex *workd,
+            a_dcomplex *v, int *ldv, a_dcomplex *resid, double *rnorm, int *ipntr, a_dcomplex *workd,
             int *ierr)
 {
     /* Initialized data */
@@ -123,7 +123,7 @@ int zgetv0_(int *ido, char *bmat, int *itry, logical *initv, int *n, int *j,
     /* System generated locals */
     int i__1;
     double d__1, d__2;
-    zomplex z__1;
+    a_dcomplex z__1;
 
     /* Builtin functions */
     double sqrt(double);
@@ -135,7 +135,7 @@ int zgetv0_(int *ido, char *bmat, int *itry, logical *initv, int *n, int *j,
     static logical orth;
     static int iseed[4];
     int idist;
-    zomplex cnorm;
+    a_dcomplex cnorm;
     static logical first;
     static double rnorm0;
     static int msglvl;

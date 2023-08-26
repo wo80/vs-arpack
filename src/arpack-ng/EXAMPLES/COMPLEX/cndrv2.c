@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include "arpack_internal.h"
 
-int cndrv2_av_(const int n, complex* v, complex* w);
+int cndrv2_av_(const int n, a_fcomplex* v, a_fcomplex* w);
 
 #define RHO 10.0f
 
@@ -50,16 +50,16 @@ int main()
 {
     /* System generated locals */
     int i__1, i__2;
-    complex q__1;
+    a_fcomplex q__1;
 
     /* Local variables */
-    complex d[25];
-    complex workev[50];
+    a_fcomplex d[25];
+    a_fcomplex workev[50];
     float rd[75] /* (3 * MAXNCV) */;
     float rwork[256];
 
     float h, s, h2, s1, s3;
-    complex sigma, s2;
+    a_fcomplex sigma, s2;
 
     int j;
     int ierr, nconv;
@@ -123,10 +123,10 @@ int main()
     /* condition.                                         */
     /* -------------------------------------------------- */
 
-    complex* du = (complex*)malloc(n * sizeof(complex));
-    complex* dd = (complex*)malloc(n * sizeof(complex));
-    complex* dl = (complex*)malloc(n * sizeof(complex));
-    complex* du2 = (complex*)malloc(n * sizeof(complex));
+    a_fcomplex* du = (a_fcomplex*)malloc(n * sizeof(a_fcomplex));
+    a_fcomplex* dd = (a_fcomplex*)malloc(n * sizeof(a_fcomplex));
+    a_fcomplex* dl = (a_fcomplex*)malloc(n * sizeof(a_fcomplex));
+    a_fcomplex* du2 = (a_fcomplex*)malloc(n * sizeof(a_fcomplex));
 
     h = 1.0f / (float)(n + 1);
     h2 = h * h;
@@ -173,11 +173,11 @@ int main()
     int ido = 0;
     int info = 0;
 
-    complex* ax = (complex*)malloc(n * sizeof(complex));
-    complex* resid = (complex*)malloc(n * sizeof(complex));
-    complex* v = (complex*)malloc(n * ncv * sizeof(complex));
-    complex* workl = (complex*)malloc(lworkl * sizeof(complex));
-    complex* workd = (complex*)malloc(3 * n * sizeof(complex));
+    a_fcomplex* ax = (a_fcomplex*)malloc(n * sizeof(a_fcomplex));
+    a_fcomplex* resid = (a_fcomplex*)malloc(n * sizeof(a_fcomplex));
+    a_fcomplex* v = (a_fcomplex*)malloc(n * ncv * sizeof(a_fcomplex));
+    a_fcomplex* workl = (a_fcomplex*)malloc(lworkl * sizeof(a_fcomplex));
+    a_fcomplex* workd = (a_fcomplex*)malloc(3 * n * sizeof(a_fcomplex));
 
     /* ------------------------------------------------- */
     /* This program uses exact shifts with respect to    */
@@ -392,7 +392,7 @@ EXIT:
 /**
  * Matrix vector multiplication subroutine.
  */
-int cndrv2_av_(const int n, complex *v, complex *w)
+int cndrv2_av_(const int n, a_fcomplex *v, a_fcomplex *w)
 {
     /* System generated locals */
     int i__1, i__2, i__3;

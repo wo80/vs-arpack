@@ -1,8 +1,8 @@
 /* f2c.h  --  Standard Fortran to C header file */
 #pragma once
 
-typedef struct { float r, i; } complex;
-typedef struct { double r, i; } doublecomplex;
+typedef struct { float r, i; } a_fcomplex;
+typedef struct { double r, i; } a_dcomplex;
 typedef int logical;
 
 #define VOID void

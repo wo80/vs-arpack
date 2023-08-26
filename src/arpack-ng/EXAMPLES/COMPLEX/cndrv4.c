@@ -3,8 +3,8 @@
 #include <stdlib.h>
 #include "arpack_internal.h"
 
-int cndrv4_av_(const int n, complex* v, complex* w);
-int cndrv4_mv_(const int n, complex* v, complex* w);
+int cndrv4_av_(const int n, a_fcomplex* v, a_fcomplex* w);
+int cndrv4_mv_(const int n, a_fcomplex* v, a_fcomplex* w);
 
 #define RHO 10.0f
 
@@ -54,16 +54,16 @@ int main()
 {
     /* System generated locals */
     int i__1, i__2;
-    complex q__1;
+    a_fcomplex q__1;
 
     /* Local variables */
-    complex d[25];
-    complex workev[50];
+    a_fcomplex d[25];
+    a_fcomplex workev[50];
     float rd[75] /* (3 * MAXNCV) */;
     float rwork[256];
 
     float h, s;
-    complex sigma, s1, s2, s3;
+    a_fcomplex sigma, s1, s2, s3;
 
     int j;
     int ierr, nconv;
@@ -130,10 +130,10 @@ int main()
     /* diagonal and 1.0 on the off-diagonals.           */
     /* ------------------------------------------------ */
 
-    complex* du = (complex*)malloc(n * sizeof(complex));
-    complex* dd = (complex*)malloc(n * sizeof(complex));
-    complex* dl = (complex*)malloc(n * sizeof(complex));
-    complex* du2 = (complex*)malloc(n * sizeof(complex));
+    a_fcomplex* du = (a_fcomplex*)malloc(n * sizeof(a_fcomplex));
+    a_fcomplex* dd = (a_fcomplex*)malloc(n * sizeof(a_fcomplex));
+    a_fcomplex* dl = (a_fcomplex*)malloc(n * sizeof(a_fcomplex));
+    a_fcomplex* du2 = (a_fcomplex*)malloc(n * sizeof(a_fcomplex));
 
     h = 1.0f / (float)(n + 1);
     s = RHO / 2.0f;
@@ -184,12 +184,12 @@ int main()
     int ido = 0;
     int info = 0;
 
-    complex* ax = (complex*)malloc(n * sizeof(complex));
-    complex* mx = (complex*)malloc(n * sizeof(complex));
-    complex* resid = (complex*)malloc(n * sizeof(complex));
-    complex* v = (complex*)malloc(n * ncv * sizeof(complex));
-    complex* workl = (complex*)malloc(lworkl * sizeof(complex));
-    complex* workd = (complex*)malloc(3 * n * sizeof(complex));
+    a_fcomplex* ax = (a_fcomplex*)malloc(n * sizeof(a_fcomplex));
+    a_fcomplex* mx = (a_fcomplex*)malloc(n * sizeof(a_fcomplex));
+    a_fcomplex* resid = (a_fcomplex*)malloc(n * sizeof(a_fcomplex));
+    a_fcomplex* v = (a_fcomplex*)malloc(n * ncv * sizeof(a_fcomplex));
+    a_fcomplex* workl = (a_fcomplex*)malloc(lworkl * sizeof(a_fcomplex));
+    a_fcomplex* workd = (a_fcomplex*)malloc(3 * n * sizeof(a_fcomplex));
 
     /* ------------------------------------------------- */
     /* This program uses exact shifts with respect to    */
@@ -439,13 +439,13 @@ EXIT:
  * where M is a n by n symmetric tridiagonal matrix with 4 on the
  * diagonal, 1 on the subdiagonal and superdiagonal.
  */
-int cndrv4_mv_(const int n, complex *v, complex *w)
+int cndrv4_mv_(const int n, a_fcomplex *v, a_fcomplex *w)
 {
     /* System generated locals */
     int i__1, i__2, i__3;
 
     /* Local variables */
-    complex h;
+    a_fcomplex h;
     int j;
 
     /* Function Body */
@@ -470,7 +470,7 @@ int cndrv4_mv_(const int n, complex *v, complex *w)
     return 0;
 } /* mv_ */
 
-int cndrv4_av_(const int n, complex *v, complex *w)
+int cndrv4_av_(const int n, a_fcomplex *v, a_fcomplex *w)
 {
     /* System generated locals */
     int i__1, i__2, i__3;

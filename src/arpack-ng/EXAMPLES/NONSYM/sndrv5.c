@@ -49,7 +49,7 @@ int main()
     /* System generated locals */
     int i__1, i__2, i__3;
     float r__1, r__2;
-    complex q__1;
+    a_fcomplex q__1;
 
     /* Local variables */
     float d[75]; /* (3 * MAXNCV) */
@@ -59,7 +59,7 @@ int main()
     float numr, numi;
     float sigmar, sigmai;
 
-    complex c1, c2, c3;
+    a_fcomplex c1, c2, c3;
 
     int j;
     int ierr, nconv;
@@ -126,11 +126,11 @@ int main()
     /* diagonal and 1 on the off-diagonals.              */
     /* ------------------------------------------------- */
 
-    complex* cdd = (complex*)malloc(n * sizeof(complex));
-    complex* cdl = (complex*)malloc(n * sizeof(complex));
-    complex* cdu = (complex*)malloc(n * sizeof(complex));
-    complex* cdu2 = (complex*)malloc(n * sizeof(complex));
-    complex* ctemp = (complex*)malloc(n * sizeof(complex));
+    a_fcomplex* cdd = (a_fcomplex*)malloc(n * sizeof(a_fcomplex));
+    a_fcomplex* cdl = (a_fcomplex*)malloc(n * sizeof(a_fcomplex));
+    a_fcomplex* cdu = (a_fcomplex*)malloc(n * sizeof(a_fcomplex));
+    a_fcomplex* cdu2 = (a_fcomplex*)malloc(n * sizeof(a_fcomplex));
+    a_fcomplex* ctemp = (a_fcomplex*)malloc(n * sizeof(a_fcomplex));
 
     r__1 = -2.0f - sigmar;
     r__2 = -sigmai;

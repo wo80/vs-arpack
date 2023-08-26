@@ -16,10 +16,10 @@
  *              If IDIGIT .LT. 0, printing is done with 72 columns.
  *              If IDIGIT .GT. 0, printing is done with 132 columns.
  */
-int cmout_(int *m, int *n, complex *a, int *lda, int *idigit, char *ifmt)
+int cmout_(int *m, int *n, a_fcomplex *a, int *lda, int *idigit, char *ifmt)
 {
     /* System generated locals */
-    complex d__1;
+    a_fcomplex d__1;
 
     /* Local variables */
     int i, j, k1, k2, len, p;

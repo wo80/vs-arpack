@@ -207,8 +207,8 @@
  * \EndLib
  */
 int cnaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *nb,
-            complex *resid, float *rnorm, complex *v, int *ldv, complex *h, int *ldh,
-            int *ipntr, complex *workd, int *info)
+            a_fcomplex *resid, float *rnorm, a_fcomplex *v, int *ldv, a_fcomplex *h, int *ldh,
+            int *ipntr, a_fcomplex *workd, int *info)
 {
     /* Initialized data */
 
@@ -217,7 +217,7 @@ int cnaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *nb,
     /* System generated locals */
     int h_dim, h_offset, v_dim, v_offset, i__1, i__2, i__3;
     float r__1;
-    complex q__1;
+    a_fcomplex q__1;
 
     /* Builtin functions */
     double sqrt(double);
@@ -236,7 +236,7 @@ int cnaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *nb,
     static logical orth1, orth2, step3, step4;
     static float betaj;
     int infol;
-    complex cnorm;
+    a_fcomplex cnorm;
     float rtemp[2];
     static float wnorm;
     static float rnorm1;

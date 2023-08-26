@@ -2,8 +2,6 @@
 
 #include "f2c.h"
 
-#define zomplex doublecomplex
-
 /* Common blocks */
 
 struct {

@@ -20,17 +20,17 @@ extern "C"
 
     /* complex */
 
-    int cgetv0_(int*, char*, int*, logical*, int*, int*, complex*, int*, complex*, float*, int*, complex*, int*);
-    int cnaitr_(int*, char*, int*, int*, int*, int*, complex*, float*, complex*, int*, complex*, int*, int*, complex*, int*);
-    int cnapps_(int*, int*, int*, complex*, complex*, int*, complex*, int*, complex*, complex*, int*, complex*, complex*);
-    int cnaup2_(int*, char*, int*, char*, int*, int*, float*, complex*, int*, int*, int*, int*, complex*, int*, complex*, int*, complex*, complex*, complex*, int*, complex*, int*, complex*, float*, int*);
-    int cneigh_(float*, int*, complex*, int*, complex*, complex*, complex*, int*, complex*, float*, int*);
-    int cngets_(int*, char*, int*, int*, complex*, complex*);
-    int csortc_(char*, logical*, int*, complex*, complex*);
+    int cgetv0_(int*, char*, int*, logical*, int*, int*, a_fcomplex*, int*, a_fcomplex*, float*, int*, a_fcomplex*, int*);
+    int cnaitr_(int*, char*, int*, int*, int*, int*, a_fcomplex*, float*, a_fcomplex*, int*, a_fcomplex*, int*, int*, a_fcomplex*, int*);
+    int cnapps_(int*, int*, int*, a_fcomplex*, a_fcomplex*, int*, a_fcomplex*, int*, a_fcomplex*, a_fcomplex*, int*, a_fcomplex*, a_fcomplex*);
+    int cnaup2_(int*, char*, int*, char*, int*, int*, float*, a_fcomplex*, int*, int*, int*, int*, a_fcomplex*, int*, a_fcomplex*, int*, a_fcomplex*, a_fcomplex*, a_fcomplex*, int*, a_fcomplex*, int*, a_fcomplex*, float*, int*);
+    int cneigh_(float*, int*, a_fcomplex*, int*, a_fcomplex*, a_fcomplex*, a_fcomplex*, int*, a_fcomplex*, float*, int*);
+    int cngets_(int*, char*, int*, int*, a_fcomplex*, a_fcomplex*);
+    int csortc_(char*, logical*, int*, a_fcomplex*, a_fcomplex*);
     int cstatn_(void);
 
-    int cmout_(int*, int*, complex*, int*, int*, char*);
-    int cvout_(int*, complex*, int*, char*);
+    int cmout_(int*, int*, a_fcomplex*, int*, int*, char*);
+    int cvout_(int*, a_fcomplex*, int*, char*);
 
     /* double */
 
@@ -82,19 +82,19 @@ extern "C"
     int smout_(int*, int*, float*, int*, int*, char*);
     int svout_(int*, float*, int*, char*);
 
-    /* zomplex */
+    /* a_dcomplex */
 
-    int zgetv0_(int*, char*, int*, logical*, int*, int*, zomplex*, int*, zomplex*, double*, int*, zomplex*, int*);
-    int znaitr_(int*, char*, int*, int*, int*, int*, zomplex*, double*, zomplex*, int*, zomplex*, int*, int*, zomplex*, int*);
-    int znapps_(int*, int*, int*, zomplex*, zomplex*, int*, zomplex*, int*, zomplex*, zomplex*, int*, zomplex*, zomplex*);
-    int znaup2_(int*, char*, int*, char*, int*, int*, double*, zomplex*, int*, int*, int*, int*, zomplex*, int*, zomplex*, int*, zomplex*, zomplex*, zomplex*, int*, zomplex*, int*, zomplex*, double*, int*);
-    int zneigh_(double*, int*, zomplex*, int*, zomplex*, zomplex*, zomplex*, int*, zomplex*, double*, int*);
-    int zngets_(int*, char*, int*, int*, zomplex*, zomplex*);
-    int zsortc_(char*, logical*, int*, zomplex*, zomplex*);
+    int zgetv0_(int*, char*, int*, logical*, int*, int*, a_dcomplex*, int*, a_dcomplex*, double*, int*, a_dcomplex*, int*);
+    int znaitr_(int*, char*, int*, int*, int*, int*, a_dcomplex*, double*, a_dcomplex*, int*, a_dcomplex*, int*, int*, a_dcomplex*, int*);
+    int znapps_(int*, int*, int*, a_dcomplex*, a_dcomplex*, int*, a_dcomplex*, int*, a_dcomplex*, a_dcomplex*, int*, a_dcomplex*, a_dcomplex*);
+    int znaup2_(int*, char*, int*, char*, int*, int*, double*, a_dcomplex*, int*, int*, int*, int*, a_dcomplex*, int*, a_dcomplex*, int*, a_dcomplex*, a_dcomplex*, a_dcomplex*, int*, a_dcomplex*, int*, a_dcomplex*, double*, int*);
+    int zneigh_(double*, int*, a_dcomplex*, int*, a_dcomplex*, a_dcomplex*, a_dcomplex*, int*, a_dcomplex*, double*, int*);
+    int zngets_(int*, char*, int*, int*, a_dcomplex*, a_dcomplex*);
+    int zsortc_(char*, logical*, int*, a_dcomplex*, a_dcomplex*);
     int zstatn_(void);
 
-    int zmout_(int*, int*, zomplex*, int*, int*, char*);
-    int zvout_(int*, zomplex*, int*, char*);
+    int zmout_(int*, int*, a_dcomplex*, int*, int*, char*);
+    int zvout_(int*, a_dcomplex*, int*, char*);
 
     /* END: private interface */
 

@@ -167,15 +167,15 @@
  * \EndLib
  */
 int cnaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
-            float *tol, complex *resid, int *mode, int *iupd, int *ishift, int *mxiter,
-            complex *v, int *ldv, complex *h, int *ldh, complex *ritz, complex *bounds,
-            complex *q, int *ldq, complex *workl, int *ipntr, complex *workd, float *rwork,
+            float *tol, a_fcomplex *resid, int *mode, int *iupd, int *ishift, int *mxiter,
+            a_fcomplex *v, int *ldv, a_fcomplex *h, int *ldh, a_fcomplex *ritz, a_fcomplex *bounds,
+            a_fcomplex *q, int *ldq, a_fcomplex *workl, int *ipntr, a_fcomplex *workd, float *rwork,
             int *info)
 {
     /* System generated locals */
     int i__1, i__2;
     float r__1, r__2, r__3, r__4;
-    complex q__1;
+    a_fcomplex q__1;
 
     /* Builtin functions */
     double sqrt(double);
@@ -198,7 +198,7 @@ int cnaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
     static int kplusp, msglvl;
     int nptemp;
     char wprime[3];
-    complex cmpnorm;
+    a_fcomplex cmpnorm;
 
     /* Function Body */
     if (*ido == 0)
