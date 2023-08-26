@@ -23,6 +23,8 @@ option(BUILD_SHARED_LIBS "Build shared libraries instead of static libraries" ON
 option(USE_EIGEN "Enable support for eigenvalue-problems solver based on ICB and eigen" OFF)
 option(ENABLE_TESTS "Compile ARPACK tests" ON)
 option(ENABLE_ICB "Include ICB interface" OFF)
+option(ENABLE_TIMING "Enable ARPACK timing feature" ON)
+option(ENABLE_TRACING "Enable ARPACK tracing feature" ON)
 
 # 'make install' to the correct location, and also define
 # paths for target_include_directories and target_link_libraries
@@ -34,6 +36,14 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
 if(MSVC)
   add_compile_definitions(NOMINMAX _COMPLEX_DEFINED)
+endif()
+
+if(NOT ENABLE_TIMING)
+  add_compile_definitions(NO_TIMER)
+endif()
+
+if(NOT ENABLE_TRACING)
+  add_compile_definitions(NO_TRACE)
 endif()
 
 if(BUILD_SHARED_LIBS)
