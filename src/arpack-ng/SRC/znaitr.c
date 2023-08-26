@@ -212,7 +212,7 @@ int znaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *nb,
 {
     /* Initialized data */
 
-    static bool first = true;
+    static logical first = TRUE_;
 
     /* System generated locals */
     int h_dim, h_offset, v_dim, v_offset, i__1, i__2, i__3;
@@ -233,14 +233,14 @@ int znaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *nb,
     static double unfl, ovfl;
     static int itry;
     double temp1;
-    static bool orth1, orth2, step3, step4;
+    static logical orth1, orth2, step3, step4;
     static double betaj;
     int infol;
     zomplex cnorm;
     double rtemp[2];
     static double wnorm;
     static double rnorm1;
-    static bool rstart;
+    static logical rstart;
     static int msglvl;
     static double smlnum;
 
@@ -275,7 +275,7 @@ int znaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *nb,
         dlabad_(&unfl, &ovfl);
         ulp = dlamch_("P");
         smlnum = unfl * (*n / ulp);
-        first = false;
+        first = FALSE_;
     }
 
     if (*ido == 0)
@@ -296,11 +296,11 @@ int znaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *nb,
         /* ---------------------------- */
 
         *info = 0;
-        step3 = false;
-        step4 = false;
-        rstart = false;
-        orth1 = false;
-        orth2 = false;
+        step3 = FALSE_;
+        step4 = FALSE_;
+        rstart = FALSE_;
+        orth1 = FALSE_;
+        orth2 = FALSE_;
         j = *k + 1;
     }
 
@@ -393,7 +393,7 @@ L1000:
     ++timing_1.nrstrt;
     itry = 1;
 L20:
-    rstart = true;
+    rstart = TRUE_;
     *ido = 0;
 L30:
 
@@ -463,7 +463,7 @@ L40:
     /* Note that this is not quite yet r_{j}. See STEP 4    */
     /* ---------------------------------------------------- */
 
-    step3 = true;
+    step3 = TRUE_;
     ++timing_1.nopx;
 #ifndef NO_TIMER
     arscnd_(&t2);
@@ -493,7 +493,7 @@ L50:
     timing_1.tmvopx += t3 - t2;
 #endif
 
-    step3 = false;
+    step3 = FALSE_;
 
     /* ---------------------------------------- */
     /* Put another copy of OP*v_{j} into RESID. */
@@ -513,7 +513,7 @@ L50:
     if (*bmat == 'G')
     {
         ++timing_1.nbx;
-        step4 = true;
+        step4 = TRUE_;
         ipntr[0] = irj;
         ipntr[1] = ipj;
         *ido = 2;
@@ -544,7 +544,7 @@ L60:
     }
 #endif
 
-    step4 = false;
+    step4 = FALSE_;
 
     /* ----------------------------------- */
     /* The following is needed for STEP 5. */
@@ -597,7 +597,7 @@ L60:
     arscnd_(&t2);
 #endif
 
-    orth1 = true;
+    orth1 = TRUE_;
 
     if (*bmat == 'G')
     {
@@ -632,7 +632,7 @@ L70:
     }
 #endif
 
-    orth1 = false;
+    orth1 = FALSE_;
 
     /* ---------------------------- */
     /* Compute the B-norm of r_{j}. */
@@ -712,7 +712,7 @@ L80:
     zgemv_("N", n, &j, &z__1, &v[v_offset], ldv, &workd[irj], &c__1, &z_one, resid, &c__1);
     zaxpy_(&j, &z_one, &workd[irj], &c__1, &h[j * h_dim + 1], &c__1);
 
-    orth2 = true;
+    orth2 = TRUE_;
 #ifndef NO_TIMER
     arscnd_(&t2);
 #endif
@@ -828,8 +828,8 @@ L90:
 
 L100:
 
-    rstart = false;
-    orth2 = false;
+    rstart = FALSE_;
+    orth2 = FALSE_;
 
 #ifndef NO_TIMER
     arscnd_(&t5);

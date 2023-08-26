@@ -219,7 +219,7 @@
  *
  * \EndLib
  */
-int dseupd_(bool *rvec, char *howmny, bool *select, double *d, double *z, int *ldz,
+int dseupd_(logical *rvec, char *howmny, logical *select, double *d, double *z, int *ldz,
             double *sigma, char *bmat, int *n, char *which, int *nev, double *tol,
             double *resid, int *ncv, double *v, int *ldv, int *iparam, int *ipntr,
             double *workd, double *workl, int *lworkl, int *info)
@@ -240,7 +240,7 @@ int dseupd_(bool *rvec, char *howmny, bool *select, double *d, double *z, int *l
     char type[7];
     int ritz;
     double temp1;
-    bool reord;
+    logical reord;
     int nconv;
     double rnorm;
     double bnorm2;
@@ -451,7 +451,7 @@ int dseupd_(bool *rvec, char *howmny, bool *select, double *d, double *z, int *l
 
     if (*rvec)
     {
-        reord = false;
+        reord = FALSE_;
 
         /* ------------------------------------------------- */
         /* Use the temporary bounds array to store indices   */
@@ -462,7 +462,7 @@ int dseupd_(bool *rvec, char *howmny, bool *select, double *d, double *z, int *l
         for (j = 1; j <= i__1; ++j)
         {
             workl[bounds + j - 1] = (double) j;
-            select[j] = false;
+            select[j] = FALSE_;
         }
 
         /* ----------------------------------- */
@@ -502,11 +502,11 @@ int dseupd_(bool *rvec, char *howmny, bool *select, double *d, double *z, int *l
             jj = (int) workl[bounds + *ncv - j];
             if (numcnv < nconv && workl[ibd + jj - 1] <= *tol * temp1)
             {
-                select[jj] = true;
+                select[jj] = TRUE_;
                 ++numcnv;
                 if (jj > nconv)
                 {
-                    reord = true;
+                    reord = TRUE_;
                 }
             }
         }

@@ -219,7 +219,7 @@
  *
  * \EndLib
  */
-int sseupd_(bool *rvec, char *howmny, bool *select, float *d, float *z, int *ldz,
+int sseupd_(logical *rvec, char *howmny, logical *select, float *d, float *z, int *ldz,
             float *sigma, char *bmat, int *n, char *which, int *nev, float *tol,
             float *resid, int *ncv, float *v, int *ldv, int *iparam, int *ipntr,
             float *workd, float *workl, int *lworkl, int *info)
@@ -239,7 +239,7 @@ int sseupd_(bool *rvec, char *howmny, bool *select, float *d, float *z, int *ldz
     char type[7];
     int ritz;
     float temp1;
-    bool reord;
+    logical reord;
     int nconv;
     float rnorm;
     float bnorm2;
@@ -451,7 +451,7 @@ int sseupd_(bool *rvec, char *howmny, bool *select, float *d, float *z, int *ldz
 
     if (*rvec)
     {
-        reord = false;
+        reord = FALSE_;
 
         /* ------------------------------------------------- */
         /* Use the temporary bounds array to store indices   */
@@ -462,7 +462,7 @@ int sseupd_(bool *rvec, char *howmny, bool *select, float *d, float *z, int *ldz
         for (j = 1; j <= i__1; ++j)
         {
             workl[bounds + j - 1] = (float) j;
-            select[j] = false;
+            select[j] = FALSE_;
         }
 
         /* ----------------------------------- */
@@ -502,11 +502,11 @@ int sseupd_(bool *rvec, char *howmny, bool *select, float *d, float *z, int *ldz
             jj = workl[bounds + *ncv - j];
             if (numcnv < nconv && workl[ibd + jj - 1] <= *tol * temp1)
             {
-                select[jj] = true;
+                select[jj] = TRUE_;
                 ++numcnv;
                 if (jj > nconv)
                 {
-                    reord = true;
+                    reord = TRUE_;
                 }
             }
         }

@@ -111,7 +111,7 @@ int zneigh_(double *rnorm, int *n, zomplex *
     static float t0, t1;
     zomplex vl[1];
     double temp;
-    bool select[1];
+    logical select[1];
     int msglvl;
 
     /* ----------------------------- */

@@ -109,7 +109,7 @@ int sneigh_(float *rnorm, int *n, float *h, int *ldh,
     static float t0, t1;
     float vl[1], temp;
     int iconj;
-    bool select[1];
+    logical select[1];
     int msglvl;
 
     /* ----------------------------- */

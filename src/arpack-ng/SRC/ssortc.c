@@ -63,7 +63,7 @@
  *
  * \EndLib
  */
-int ssortc_(char *which, bool *apply, int *n, float *xfloat, float *ximag, float *y)
+int ssortc_(char *which, logical *apply, int *n, float *xfloat, float *ximag, float *y)
 {
     /* System generated locals */
     int i__1;

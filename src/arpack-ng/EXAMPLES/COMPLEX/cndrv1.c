@@ -65,8 +65,8 @@ int main()
     int ishfts, maxitr, mode;
     int ipntr[14];
     int iparam[11];
-    bool select[30];
-    bool rvec;
+    logical select[30];
+    logical rvec;
 
     /* Define maximum dimensions for all arrays. */
 
@@ -222,7 +222,7 @@ L10:
     /* desired.  (indicated by rvec = .true.)    */
     /* ----------------------------------------- */
 
-    rvec = true;
+    rvec = TRUE_;
 
     cneupd_(&rvec, "A", select, d, v, &n, &sigma, workev, bmat, &n,which, &nev, &tol, resid, &ncv, v, &n, iparam, ipntr, workd, workl, &lworkl, rwork, &ierr);
 

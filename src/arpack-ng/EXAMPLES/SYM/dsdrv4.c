@@ -63,8 +63,8 @@ int main()
     int ipiv[256];
     int ipntr[11];
     int iparam[11];
-    bool select[25];
-    bool rvec;
+    logical select[25];
+    logical rvec;
 
     /* Define maximum dimensions for all arrays. */
 
@@ -301,7 +301,7 @@ L10:
     /* desired.  (indicated by rvec = .true.)    */
     /* ----------------------------------------- */
 
-    rvec = true;
+    rvec = TRUE_;
 
     dseupd_(&rvec, "A", select, d, v, &n, &sigma, bmat, &n, which, &nev, &tol, resid, &ncv, v, &n, iparam, ipntr, workd, workl, &lworkl, &ierr);
 

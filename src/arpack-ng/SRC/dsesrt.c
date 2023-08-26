@@ -65,7 +65,7 @@
  *
  * \EndLib
  */
-int dsesrt_(char *which, bool *apply, int *n, double *x, int *na, double *a,
+int dsesrt_(char *which, logical *apply, int *n, double *x, int *na, double *a,
             int *lda)
 {
     /* System generated locals */

@@ -147,7 +147,7 @@ int dnapps_(int *n, int *kev, int *np,
 {
     /* Initialized data */
 
-    static bool first = true;
+    static logical first = TRUE_;
 
     /* System generated locals */
     int h_dim, h_offset, v_dim, v_offset, q_dim, q_offset, i__1, i__2,
@@ -166,7 +166,7 @@ int dnapps_(int *n, int *kev, int *np,
     double tst1;
     int iend;
     static double unfl, ovfl;
-    bool cconj;
+    logical cconj;
     double sigmai;
     int istart, kplusp, msglvl;
     double sigmar;
@@ -199,7 +199,7 @@ int dnapps_(int *n, int *kev, int *np,
         dlabad_(&unfl, &ovfl);
         ulp = dlamch_("P");
         smlnum = unfl * (*n / ulp);
-        first = false;
+        first = FALSE_;
     }
 
     /* ----------------------------- */
@@ -236,7 +236,7 @@ int dnapps_(int *n, int *kev, int *np,
     /* whole matrix including each block.           */
     /* -------------------------------------------- */
 
-    cconj = false;
+    cconj = FALSE_;
     i__1 = *np;
     for (jj = 1; jj <= i__1; ++jj)
     {
@@ -266,7 +266,7 @@ int dnapps_(int *n, int *kev, int *np,
             /* had non-zero imaginary part.            */
             /* --------------------------------------- */
 
-            cconj = false;
+            cconj = FALSE_;
             goto L110;
         }
         else if (jj < *np && abs(sigmai) > 0.0)
@@ -275,7 +275,7 @@ int dnapps_(int *n, int *kev, int *np,
             /* Start of a complex conjugate pair. */
             /* ---------------------------------- */
 
-            cconj = true;
+            cconj = TRUE_;
         }
         else if (jj == *np && abs(sigmai) > 0.0)
         {

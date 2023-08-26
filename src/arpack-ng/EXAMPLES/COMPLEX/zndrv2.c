@@ -67,8 +67,8 @@ int main()
     int ipiv[256];
     int ipntr[14];
     int iparam[11];
-    bool select[25];
-    bool rvec;
+    logical select[25];
+    logical rvec;
 
     /* Define maximum dimensions for all arrays. */
 
@@ -271,7 +271,7 @@ L20:
     /* desired.  (indicated by rvec = .true.)    */
     /* ----------------------------------------- */
 
-    rvec = true;
+    rvec = TRUE_;
 
     zneupd_(&rvec, "A", select, d, v, &n, &sigma, workev, bmat, &n,which, &nev, &tol, resid, &ncv, v, &n, iparam, ipntr, workd, workl, &lworkl, rwork, &ierr);
 

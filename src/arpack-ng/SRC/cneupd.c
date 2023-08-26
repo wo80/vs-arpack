@@ -251,7 +251,7 @@
  *
  * \EndLib
  */
-int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int *ldz,
+int cneupd_(logical *rvec, char *howmny, logical *select, complex *d, complex *z, int *ldz,
             complex *sigma, complex *workev, char *bmat, int *n, char *which, int *nev,
             float *tol, complex *resid, int *ncv, complex *v, int *ldv, int *iparam,
             int *ipntr, complex *workd, complex *workl, int *lworkl, float *rwork,
@@ -279,7 +279,7 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
     int ritz, iheig;
     int ihbds;
     float conds;
-    bool reord;
+    logical reord;
     int nconv;
     float rtemp;
     complex rnorm;
@@ -456,7 +456,7 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
 
     if (*rvec)
     {
-        reord = false;
+        reord = FALSE_;
 
         /* ------------------------------------------------- */
         /* Use the temporary bounds array to store indices   */
@@ -468,7 +468,7 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
         {
             i__2 = bounds + j - 1;
             workl[i__2].r = (float) j, workl[i__2].i = 0.0f;
-            select[j] = false;
+            select[j] = FALSE_;
         }
 
         /* ----------------------------------- */
@@ -511,11 +511,11 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
             i__2 = ibd + jj - 1;
             if (numcnv < nconv && slapy2_(&workl[i__2].r, &workl[i__2].i) <= *tol * rtemp)
             {
-                select[jj] = true;
+                select[jj] = TRUE_;
                 ++numcnv;
                 if (jj > nconv)
                 {
-                    reord = true;
+                    reord = TRUE_;
                 }
             }
         }
@@ -677,11 +677,11 @@ int cneupd_(bool *rvec, char *howmny, bool *select, complex *d, complex *z, int 
             {
                 if (j <= nconv)
                 {
-                    select[j] = true;
+                    select[j] = TRUE_;
                 }
                 else
                 {
-                    select[j] = false;
+                    select[j] = FALSE_;
                 }
             }
 

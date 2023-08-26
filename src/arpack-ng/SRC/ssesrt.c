@@ -65,7 +65,7 @@
  *
  * \EndLib
  */
-int ssesrt_(char *which, bool *apply, int *n, float *x,int *na, float *a,
+int ssesrt_(char *which, logical *apply, int *n, float *x,int *na, float *a,
             int *lda)
 {
     /* System generated locals */

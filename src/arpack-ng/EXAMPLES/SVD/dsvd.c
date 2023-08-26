@@ -113,8 +113,8 @@ int main()
 
     int ipntr[11];
     int iparam[11];
-    bool select[25];
-    bool rvec;
+    logical select[25];
+    logical rvec;
 
     /* ---------------------------------------------------- */
     /* Storage Declarations:                                */
@@ -364,7 +364,7 @@ L10:
     /* post processing                            */
     /* ------------------------------------------ */
 
-    rvec = true;
+    rvec = TRUE_;
 
     dseupd_(&rvec, "A", select, s, v, &n, &sigma, bmat, &n, which, &nev, &tol, resid, &ncv, v, &n, iparam, ipntr, workd, workl, &lworkl, &ierr);
 

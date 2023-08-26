@@ -95,8 +95,8 @@ int main()
 
     int ipntr[14];
     int iparam[11];
-    bool select[30];
-    bool rvec;
+    logical select[30];
+    logical rvec;
 
     /* ---------------------------------------------------- */
     /* Storage Declarations:                                */
@@ -340,7 +340,7 @@ L10:
     /*                                           */
     /* ----------------------------------------- */
 
-    rvec = true;
+    rvec = TRUE_;
 
     cneupd_(&rvec, "A", select, d, v, &n, &sigma, workev, bmat, &n,which, &nev, &tol, resid, &ncv, v, &n, iparam, ipntr, workd, workl, &lworkl, rwork, &ierr);
 

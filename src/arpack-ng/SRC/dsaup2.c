@@ -199,16 +199,16 @@ int dsaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
     static int iter;
     double temp;
     int nevd2;
-    static bool getv0;
+    static logical getv0;
     int nevm2;
-    static bool cnorm;
+    static logical cnorm;
     static int nconv;
-    static bool initv;
+    static logical initv;
     static double rnorm;
     int nevbef;
-    static bool update;
+    static logical update;
     char wprime[3];
-    static bool ushift;
+    static logical ushift;
     static int kplusp, msglvl;
     int nptemp;
 
@@ -259,10 +259,10 @@ int dsaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
         /* of the Lanczos factorization.               */
         /* ------------------------------------------- */
 
-        getv0 = true;
-        update = false;
-        ushift = false;
-        cnorm = false;
+        getv0 = TRUE_;
+        update = FALSE_;
+        ushift = FALSE_;
+        cnorm = FALSE_;
 
         if (*info != 0)
         {
@@ -270,12 +270,12 @@ int dsaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
             /* User provides the initial residual vector. */
             /* ------------------------------------------ */
 
-            initv = true;
+            initv = TRUE_;
             *info = 0;
         }
         else
         {
-            initv = false;
+            initv = FALSE_;
         }
     }
 
@@ -303,7 +303,7 @@ int dsaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
             *info = -9;
             goto L1200;
         }
-        getv0 = false;
+        getv0 = FALSE_;
         *ido = 0;
     }
 
@@ -396,7 +396,7 @@ L1000:
 
     *ido = 0;
 L20:
-    update = true;
+    update = TRUE_;
 
     dsaitr_(ido, bmat, n, nev, np, mode, resid, &rnorm, v, ldv,h, ldh, ipntr, workd, info);
 
@@ -423,7 +423,7 @@ L20:
         *info = -9999;
         goto L1200;
     }
-    update = false;
+    update = FALSE_;
 
 #ifndef NO_TRACE
     if (msglvl > 1)
@@ -729,7 +729,7 @@ L20:
         /* NP locations of WORKL.                              */
         /* --------------------------------------------------- */
 
-        ushift = true;
+        ushift = TRUE_;
         *ido = 3;
         goto L9000;
     }
@@ -742,7 +742,7 @@ L50:
     /* in WORKL(1:*NP)                    */
     /* ---------------------------------- */
 
-    ushift = false;
+    ushift = FALSE_;
 
     /* ------------------------------------------------------- */
     /* Move the NP shifts to the first NP locations of RITZ to */
@@ -783,7 +783,7 @@ L50:
     /* the first step of the next call to dsaitr.  */
     /* ------------------------------------------- */
 
-    cnorm = true;
+    cnorm = TRUE_;
 #ifndef NO_TIMER
     arscnd_(&t2);
 #endif
@@ -828,7 +828,7 @@ L100:
     {
         rnorm = dnrm2_(n, resid, &c__1);
     }
-    cnorm = false;
+    cnorm = FALSE_;
 
 
 #ifndef NO_TRACE

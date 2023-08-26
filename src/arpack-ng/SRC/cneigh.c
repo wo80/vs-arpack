@@ -110,7 +110,7 @@ int cneigh_(float *rnorm, int *n, complex *h, int *
     static float t0, t1;
     complex vl[1];
     float temp;
-    bool select[1];
+    logical select[1];
     int msglvl;
 
     /* ----------------------------- */

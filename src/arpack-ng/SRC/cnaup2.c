@@ -188,13 +188,13 @@ int cnaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
     static float eps23;
     int ierr;
     static int iter;
-    static bool getv0, cnorm;
+    static logical getv0, cnorm;
     static int nconv;
     float rtemp;
-    static bool initv;
+    static logical initv;
     static float rnorm;
     static int nevbef;
-    static bool update, ushift;
+    static logical update, ushift;
     static int kplusp, msglvl;
     int nptemp;
     char wprime[3];
@@ -238,10 +238,10 @@ int cnaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
         /* steps of the Arnoldi factorization.   */
         /* ------------------------------------- */
 
-        getv0 = true;
-        update = false;
-        ushift = false;
-        cnorm = false;
+        getv0 = TRUE_;
+        update = FALSE_;
+        ushift = FALSE_;
+        cnorm = FALSE_;
 
         if (*info != 0)
         {
@@ -249,12 +249,12 @@ int cnaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
             /* User provides the initial residual vector. */
             /* ------------------------------------------ */
 
-            initv = true;
+            initv = TRUE_;
             *info = 0;
         }
         else
         {
-            initv = false;
+            initv = FALSE_;
         }
     }
 
@@ -282,7 +282,7 @@ int cnaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
             *info = -9;
             goto L1100;
         }
-        getv0 = false;
+        getv0 = FALSE_;
         *ido = 0;
     }
 
@@ -375,7 +375,7 @@ L1000:
 
     *ido = 0;
 L20:
-    update = true;
+    update = TRUE_;
 
     cnaitr_(ido, bmat, n, nev, np, mode, resid, &rnorm, v, ldv,h, ldh, ipntr, workd, info);
 
@@ -391,7 +391,7 @@ L20:
         *info = -9999;
         goto L1200;
     }
-    update = false;
+    update = FALSE_;
 
 #ifndef NO_TRACE
     if (msglvl > 1)
@@ -691,12 +691,12 @@ L20:
         /* and return them in the first 2*NP locations of WORKL. */
         /* ----------------------------------------------------- */
 
-        ushift = true;
+        ushift = TRUE_;
         *ido = 3;
         goto L9000;
     }
 L50:
-    ushift = false;
+    ushift = FALSE_;
 
     if (*ishift != 1)
     {
@@ -736,7 +736,7 @@ L50:
     /* the first step of the next call to cnaitr.  */
     /* ------------------------------------------- */
 
-    cnorm = true;
+    cnorm = TRUE_;
 #ifndef NO_TIMER
     arscnd_(&t2);
 #endif
@@ -781,7 +781,7 @@ L100:
     {
         rnorm = scnrm2_(n, resid, &c__1);
     }
-    cnorm = false;
+    cnorm = FALSE_;
 
 #ifndef NO_TRACE
     if (msglvl > 2)

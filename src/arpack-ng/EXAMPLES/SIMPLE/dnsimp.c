@@ -96,8 +96,8 @@ int main()
 
     int ipntr[14];
     int iparam[11];
-    bool select[30];
-    bool first, rvec;
+    logical select[30];
+    logical first, rvec;
 
     /* ---------------------------------------------------- */
     /* Storage Declarations:                                */
@@ -339,7 +339,7 @@ L10:
     /*                                           */
     /* ----------------------------------------- */
 
-    rvec = true;
+    rvec = TRUE_;
 
     dneupd_(&rvec, "A", select, d, &d[30], v, &n, &sigmar, &sigmai, workev, bmat, &n, which, &nev, &tol, resid, &ncv, v, &n, iparam, ipntr, workd, workl, &lworkl, &ierr);
 
@@ -371,7 +371,7 @@ L10:
         goto EXIT;
     }
 
-    first = true;
+    first = TRUE_;
     nconv = iparam[4];
     for (j = 1; j <= nconv; ++j)
     {
@@ -425,11 +425,11 @@ L10:
             d[j + 59] = dlapy2_(&d[j + 59], &d__1);
             d[j + 59] /= dlapy2_(&d[j - 1], &d[j + 29]);
             d[j + 60] = d[j + 59];
-            first = false;
+            first = FALSE_;
         }
         else
         {
-            first = true;
+            first = TRUE_;
         }
     }
 

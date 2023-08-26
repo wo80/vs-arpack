@@ -109,7 +109,7 @@ int dneigh_(double *rnorm, int *n, double *h,
     static float t0, t1;
     double vl[1], temp;
     int iconj;
-    bool select[1];
+    logical select[1];
     int msglvl;
 
     /* ----------------------------- */

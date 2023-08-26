@@ -116,12 +116,12 @@
  *
  * \EndLib
  */
-int dgetv0_(int *ido, char *bmat, int *itry, bool *initv, int *n, int *j,
+int dgetv0_(int *ido, char *bmat, int *itry, logical *initv, int *n, int *j,
             double *v, int *ldv, double *resid, double *rnorm, int *ipntr, double *workd,
             int *ierr)
 {
     /* Initialized data */
-    static bool inits = true;
+    static logical inits = TRUE_;
 
     /* System generated locals */
     int i__1;
@@ -133,10 +133,10 @@ int dgetv0_(int *ido, char *bmat, int *itry, bool *initv, int *n, int *j,
     static float t0, t1, t2, t3;
     int jj;
     static int iter;
-    static bool orth;
+    static logical orth;
     static int iseed[4];
     int idist;
-    static bool first;
+    static logical first;
     static double rnorm0;
     static int msglvl;
 
@@ -154,7 +154,7 @@ int dgetv0_(int *ido, char *bmat, int *itry, bool *initv, int *n, int *j,
         iseed[1] = 3;
         iseed[2] = 5;
         iseed[3] = 7;
-        inits = false;
+        inits = FALSE_;
     }
 
     if (*ido == 0)
@@ -172,8 +172,8 @@ int dgetv0_(int *ido, char *bmat, int *itry, bool *initv, int *n, int *j,
 
         *ierr = 0;
         iter = 0;
-        first = false;
-        orth = false;
+        first = FALSE_;
+        orth = FALSE_;
 
         /* --------------------------------------------------- */
         /* Possibly generate a random starting vector in RESID */
@@ -250,7 +250,7 @@ int dgetv0_(int *ido, char *bmat, int *itry, bool *initv, int *n, int *j,
     arscnd_(&t2);
 #endif
 
-    first = true;
+    first = TRUE_;
     if (*itry == 1)
     {
         dcopy_(n, &workd[*n], &c__1, resid, &c__1);
@@ -271,7 +271,7 @@ int dgetv0_(int *ido, char *bmat, int *itry, bool *initv, int *n, int *j,
 
 L20:
 
-    first = false;
+    first = FALSE_;
     if (*bmat == 'G')
     {
 #ifndef NO_TIMER
@@ -308,7 +308,7 @@ L20:
     /* Parlett's book, page 107 and in Gragg & Reichel TOMS paper.   */
     /* ------------------------------------------------------------- */
 
-    orth = true;
+    orth = TRUE_;
 L30:
 
     i__1 = *j - 1;

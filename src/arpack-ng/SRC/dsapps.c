@@ -135,7 +135,7 @@ int dsapps_(int *n, int *kev, int *np,
 {
     /* Initialized data */
 
-    static bool first = true;
+    static logical first = TRUE_;
 
     /* System generated locals */
     int h_dim, h_offset, q_dim, q_offset, v_dim, v_offset, i__1, i__2,
@@ -169,7 +169,7 @@ int dsapps_(int *n, int *kev, int *np,
     if (first)
     {
         epsmch = dlamch_("E");
-        first = false;
+        first = FALSE_;
     }
     itop = 1;
 

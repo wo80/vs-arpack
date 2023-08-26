@@ -68,8 +68,8 @@ int main()
     int ipiv[256];
     int ipntr[14];
     int iparam[11];
-    bool select[25];
-    bool first, rvec;
+    logical select[25];
+    logical first, rvec;
 
     /* Define maximum dimensions for all arrays. */
 
@@ -351,7 +351,7 @@ L20:
     /* desired.  (indicated by rvec = .true.)    */
     /* ----------------------------------------- */
 
-    rvec = true;
+    rvec = TRUE_;
     dneupd_(&rvec, "A", select, d, &d[25], v, &n, &sigmar, &sigmai, workev, bmat, &n, which, &nev, &tol, resid, &ncv, v, &n, iparam, ipntr, workd, workl, &lworkl, &ierr);
 
     /* --------------------------------------------- */
@@ -381,7 +381,7 @@ L20:
         goto EXIT;
     }
 
-    first = true;
+    first = TRUE_;
     nconv = iparam[4];
     for (j = 1; j <= nconv; ++j)
     {
@@ -441,7 +441,7 @@ L20:
 
             d[j - 1] = (numr * denr + numi * deni) / dlapy2_(&denr, &deni);
             d[j + 24] = (numi * denr - numr * deni) / dlapy2_(&denr,&deni);
-            first = false;
+            first = FALSE_;
         }
         else
         {
@@ -454,7 +454,7 @@ L20:
 
             d[j - 1] = d[j - 2];
             d[j + 24] = -d[j + 23];
-            first = true;
+            first = TRUE_;
         }
     }
 
@@ -471,7 +471,7 @@ L20:
     /* tolerance)                */
     /* ------------------------- */
 
-    first = true;
+    first = TRUE_;
     nconv = iparam[4];
     for (j = 1; j <= nconv; ++j)
     {
@@ -517,11 +517,11 @@ L20:
             d[j + 49] = dlapy2_(&d[j + 49], &d__1);
             d[j + 49] /= dlapy2_(&d[j - 1], &d[j + 24]);
             d[j + 50] = d[j + 49];
-            first = false;
+            first = FALSE_;
         }
         else
         {
-            first = true;
+            first = TRUE_;
         }
     }
 

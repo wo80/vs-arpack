@@ -146,7 +146,7 @@ int snapps_(int *n, int *kev, int *np, float *
 {
     /* Initialized data */
 
-    static bool first = true;
+    static logical first = TRUE_;
 
     /* System generated locals */
     int h_dim, h_offset, v_dim, v_offset, q_dim, q_offset, i__1, i__2,
@@ -165,7 +165,7 @@ int snapps_(int *n, int *kev, int *np, float *
     float tst1;
     int iend;
     static float unfl, ovfl;
-    bool cconj;
+    logical cconj;
     float sigmai;
     float sigmar;
     int istart, kplusp, msglvl;
@@ -198,7 +198,7 @@ int snapps_(int *n, int *kev, int *np, float *
         slabad_(&unfl, &ovfl);
         ulp = slamch_("P");
         smlnum = unfl * (*n / ulp);
-        first = false;
+        first = FALSE_;
     }
 
     /* ----------------------------- */
@@ -235,7 +235,7 @@ int snapps_(int *n, int *kev, int *np, float *
     /* whole matrix including each block.           */
     /* -------------------------------------------- */
 
-    cconj = false;
+    cconj = FALSE_;
     i__1 = *np;
     for (jj = 1; jj <= i__1; ++jj)
     {
@@ -265,7 +265,7 @@ int snapps_(int *n, int *kev, int *np, float *
             /* had non-zero imaginary part.            */
             /* --------------------------------------- */
 
-            cconj = false;
+            cconj = FALSE_;
             goto L110;
         }
         else if (jj < *np && dabs(sigmai) > 0.0f)
@@ -274,7 +274,7 @@ int snapps_(int *n, int *kev, int *np, float *
             /* Start of a complex conjugate pair. */
             /* ---------------------------------- */
 
-            cconj = true;
+            cconj = TRUE_;
         }
         else if (jj == *np && dabs(sigmai) > 0.0f)
         {
