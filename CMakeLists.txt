@@ -22,6 +22,7 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 option(BUILD_SHARED_LIBS "Build shared libraries instead of static libraries" ON)
 option(USE_EIGEN "Enable support for eigenvalue-problems solver based on ICB and eigen" OFF)
 option(ENABLE_TESTS "Compile ARPACK tests" ON)
+option(ENABLE_ICB "Include ICB interface" OFF)
 
 # 'make install' to the correct location, and also define
 # paths for target_include_directories and target_link_libraries

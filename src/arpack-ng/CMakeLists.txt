@@ -7,8 +7,13 @@ target_include_directories(arpack-ng
 
 add_subdirectory(SRC)
 add_subdirectory(UTIL)
+
+if(ENABLE_ICB)
+  add_subdirectory(ICB)
+endif()
+
 target_sources(arpack-ng PRIVATE f2c.c)
 
 if(ENABLE_TESTS)
-    add_subdirectory(EXAMPLES)
+  add_subdirectory(EXAMPLES)
 endif()
