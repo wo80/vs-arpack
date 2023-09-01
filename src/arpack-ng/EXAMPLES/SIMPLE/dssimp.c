@@ -1,10 +1,16 @@
 /* EXAMPLES\SIMPLE\dssimp.f -- translated by f2c (version 20100827). */
 
 #include <stdlib.h>
-#include "arpack_internal.h"
+#include "arpack.h"
 
 int dssimp_av_(const int nx, double* v, double* w);
 int dssimp_tv_(const int nx, double* x, double* y);
+
+static int c__1 = 1;
+static int c__2 = 2;
+static int c__25 = 25;
+static int c_n6 = -6;
+static double d_m1 = -1.0;
 
 /**
  * \BeginDoc

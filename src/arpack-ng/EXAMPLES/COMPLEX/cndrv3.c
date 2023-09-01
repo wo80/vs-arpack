@@ -1,10 +1,15 @@
 /* EXAMPLES\COMPLEX\cndrv3.f -- translated by f2c (version 20100827). */
 
 #include <stdlib.h>
-#include "arpack_internal.h"
+#include "arpack.h"
 
 int cndrv3_av_(const int n, a_fcomplex* v, a_fcomplex* w);
 int cndrv3_mv_(const int n, a_fcomplex* v, a_fcomplex* w);
+
+static int c__1 = 1;
+static int c__3 = 3;
+static int c__25 = 25;
+static int c_n6 = -6;
 
 /**
  * \BeginDoc

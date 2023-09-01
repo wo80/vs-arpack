@@ -1,9 +1,14 @@
 /* EXAMPLES\SYM\ssdrv2.f -- translated by f2c (version 20100827). */
 
 #include <stdlib.h>
-#include "arpack_internal.h"
+#include "arpack.h"
 
 int ssdrv2_av_(const int nx, float* v, float* w);
+
+static int c__1 = 1;
+static int c__2 = 2;
+static int c__25 = 25;
+static int c_n6 = -6;
 
 /**
  * \BeginDoc

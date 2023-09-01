@@ -1,10 +1,15 @@
 /* EXAMPLES\NONSYM\sndrv1.f -- translated by f2c (version 20100827). */
 
 #include <stdlib.h>
-#include "arpack_internal.h"
+#include "arpack.h"
 
 int sndrv1_av_(const int nx, float* v, float* w);
 int sndrv1_tv_(const int nx, float* x, float* y);
+
+static int c__1 = 1;
+static int c__3 = 3;
+static int c__30 = 30;
+static int c_n6 = -6;
 
 /**
  * \BeginDoc

@@ -1,10 +1,15 @@
 /* EXAMPLES\SIMPLE\znsimp.f -- translated by f2c (version 20100827). */
 
 #include <stdlib.h>
-#include "arpack_internal.h"
+#include "arpack.h"
 
 int znsimp_av_(const int nx, a_dcomplex* v, a_dcomplex* w);
 int znsimp_tv_(const int nx, a_dcomplex* x, a_dcomplex* y);
+
+static int c__1 = 1;
+static int c__3 = 3;
+static int c__30 = 30;
+static int c_n6 = -6;
 
 /**
  * \BeginDoc

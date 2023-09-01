@@ -1,10 +1,15 @@
 /* EXAMPLES\SVD\dsvd.f -- translated by f2c (version 20100827). */
 
 #include <stdlib.h>
-#include "arpack_internal.h"
+#include "arpack.h"
 
 int dsvd_av_(const int m, const int n, double* x, double* w);
 int dsvd_atv_(const int m, const int n, double* w, double* y);
+
+static int c__1 = 1;
+static int c__2 = 2;
+static int c__25 = 25;
+static int c_n6 = -6;
 
 /**
  * \BeginDoc

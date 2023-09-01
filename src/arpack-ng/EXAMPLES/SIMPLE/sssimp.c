@@ -1,10 +1,16 @@
 /* EXAMPLES\SIMPLE\sssimp.f -- translated by f2c (version 20100827). */
 
 #include <stdlib.h>
-#include "arpack_internal.h"
+#include "arpack.h"
 
 int sssimp_av_(const int nx, float* v, float* w);
 int sssimp_tv_(const int nx, float* x, float* y);
+
+static int c__1 = 1;
+static int c__2 = 2;
+static int c__25 = 25;
+static int c_n6 = -6;
+static float s_m1 = -1.0f;
 
 /**
  * \BeginDoc
