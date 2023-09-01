@@ -10,12 +10,7 @@ static int c__3 = 3;
 static int c__25 = 25;
 static int c_n6 = -6;
 
-struct
-{
-    float rho;
-} convct_;
-
-#define convct_1 convct_
+#define RHO 10.0f
 
 /**
  * \BeginDoc
@@ -139,9 +134,8 @@ int main()
     float* dl = (float*)malloc(n * sizeof(float));
     float* du2 = (float*)malloc(n * sizeof(float));
 
-    convct_1.rho = 10.0f;
     h = 1.0f / (float) (n + 1);
-    s = convct_1.rho * h / 2.0f;
+    s = RHO * h / 2.0f;
 
     s1 = -1.f - s;
     s2 = 2.0f - sigmar;
@@ -454,7 +448,7 @@ int sndrv2_av_(const int n, float *v, float *w)
 
     /* Function Body */
     h = 1.0f / (float) (n + 1);
-    s = convct_1.rho * h / 2.0f;
+    s = RHO * h / 2.0f;
     dd = 2.0f;
     dl = -1.f - s;
     du = s - 1.0f;
