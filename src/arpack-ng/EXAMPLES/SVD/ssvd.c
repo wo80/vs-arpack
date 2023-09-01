@@ -8,7 +8,7 @@ int ssvd_atv_(const int m, const int n, float* w, float* y);
 
 extern int smout_(const int, const int, const float*, const int, const int, const char*);
 
-static int c__1 = 1;
+static int i_one = 1;
 
 /**
  * \BeginDoc
@@ -411,9 +411,9 @@ L10:
         /* --------------------------- */
 
         ssvd_av_(m, n, &v[(j - 1) * n], ax);
-        scopy_(&m, ax, &c__1, &u[(j - 1) * m], &c__1);
-        temp = 1.0f / snrm2_(&m, &u[(j - 1) * m], &c__1);
-        sscal_(&m, &temp, &u[(j - 1) * m], &c__1);
+        scopy_(&m, ax, &i_one, &u[(j - 1) * m], &i_one);
+        temp = 1.0f / snrm2_(&m, &u[(j - 1) * m], &i_one);
+        sscal_(&m, &temp, &u[(j - 1) * m], &i_one);
 
         /* ------------------------- */
         /*                           */
@@ -432,8 +432,8 @@ L10:
         /* ------------------------- */
 
         r__1 = -s[j - 1];
-        saxpy_(&m, &r__1, &u[(j - 1) * m], &c__1, ax, &c__1);
-        s[j + 24] = snrm2_(&m, ax, &c__1);
+        saxpy_(&m, &r__1, &u[(j - 1) * m], &i_one, ax, &i_one);
+        s[j + 24] = snrm2_(&m, ax, &i_one);
 
     }
 

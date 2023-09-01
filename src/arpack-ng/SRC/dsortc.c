@@ -63,7 +63,7 @@
  *
  * \EndLib
  */
-int dsortc_(char *which, logical *apply, int *n, double *xfloat, double *ximag, double *y)
+int dsortc_(const char *which, logical *apply, int *n, double *xfloat, double *ximag, double *y)
 {
     /* System generated locals */
     int i__1;

@@ -3,6 +3,11 @@
 #include <math.h>
 #include "arpack_internal.h"
 
+/* Constants */
+static logical b_true = TRUE_;
+static int i_zero = 0;
+static int i_one  = 1;
+
 /**
  * \BeginDoc
  *
@@ -182,6 +187,9 @@ int dsaup2_(int *ido, const char *bmat, int *n, const char *which, int *nev, int
             double *v, int *ldv, double *h, int *ldh, double *ritz, double *bounds,
             double *q, int *ldq, double *workl, int *ipntr, double *workd, int *info)
 {
+    /* Constants */
+    const double d_23 = 0.666666666666666667;
+
     /* System generated locals */
     int i__1, i__2, i__3;
     double d__1, d__2, d__3;
@@ -287,7 +295,7 @@ int dsaup2_(int *ido, const char *bmat, int *n, const char *which, int *nev, int
 
     if (getv0)
     {
-        dgetv0_(ido, bmat, &c__1, &initv, n, &c__1, v, ldv, resid, &rnorm, ipntr, workd, info);
+        dgetv0_(ido, bmat, &i_one, &initv, n, &i_one, v, ldv, resid, &rnorm, ipntr, workd, info);
 
         if (*ido != 99)
         {
@@ -339,7 +347,7 @@ int dsaup2_(int *ido, const char *bmat, int *n, const char *which, int *nev, int
     /* Compute the first NEV steps of the Lanczos factorization */
     /* -------------------------------------------------------- */
 
-    dsaitr_(ido, bmat, n, &c__0, &nev0, mode, resid, &rnorm, v,ldv, h, ldh, ipntr, workd, info);
+    dsaitr_(ido, bmat, n, &i_zero, &nev0, mode, resid, &rnorm, v,ldv, h, ldh, ipntr, workd, info);
 
     /* ------------------------------------------------- */
     /* ido .ne. 99 implies use of reverse communication  */
@@ -450,8 +458,8 @@ L20:
     /* bounds obtained from _seigt.                       */
     /* -------------------------------------------------- */
 
-    dcopy_(&kplusp, ritz, &c__1, &workl[kplusp], &c__1);
-    dcopy_(&kplusp, bounds, &c__1, &workl[kplusp << 1], &c__1);
+    dcopy_(&kplusp, ritz, &i_one, &workl[kplusp], &i_one);
+    dcopy_(&kplusp, bounds, &i_one, &workl[kplusp << 1], &i_one);
 
     /* ------------------------------------------------- */
     /* Select the wanted Ritz values and their bounds    */
@@ -471,7 +479,7 @@ L20:
     /* Convergence test. */
     /* ----------------- */
 
-    dcopy_(nev, &bounds[*np], &c__1, &workl[*np], &c__1);
+    dcopy_(nev, &bounds[*np], &i_one, &workl[*np], &i_one);
     dsconv_(nev, &ritz[*np], &workl[*np], tol, &nconv);
 
 #ifndef NO_TRACE
@@ -528,7 +536,7 @@ L20:
             /* --------------------------------------------------- */
 
             strcpy(wprime, "SA");
-            dsortr_(wprime, &c_true, &kplusp, ritz, bounds);
+            dsortr_(wprime, &b_true, &kplusp, ritz, bounds);
             nevd2 = nev0 / 2;
             nevm2 = nev0 - nevd2;
             if (*nev > 1)
@@ -537,8 +545,8 @@ L20:
                 i__1 = min(nevd2,*np);
                 /* Computing MAX */
                 i__2 = kplusp - nevd2, i__3 = kplusp - *np;
-                dswap_(&i__1, &ritz[nevm2], &c__1, &ritz[max(i__2,i__3)], &c__1);
-                dswap_(&i__1, &bounds[nevm2], &c__1, &bounds[max(i__2,i__3)], &c__1);
+                dswap_(&i__1, &ritz[nevm2], &i_one, &ritz[max(i__2,i__3)], &i_one);
+                dswap_(&i__1, &bounds[nevm2], &i_one, &bounds[max(i__2,i__3)], &i_one);
             }
         }
         else
@@ -569,7 +577,7 @@ L20:
                 strcpy(wprime, "LA");
             }
 
-            dsortr_(wprime, &c_true, &kplusp, ritz, bounds);
+            dsortr_(wprime, &b_true, &kplusp, ritz, bounds);
         }
 
         /* ------------------------------------------------ */
@@ -593,7 +601,7 @@ L20:
         /* -------------------------------------------------- */
 
         strcpy(wprime, "LA");
-        dsortr_(wprime, &c_true, &nev0, bounds, ritz);
+        dsortr_(wprime, &b_true, &nev0, bounds, ritz);
 
         /* -------------------------------------------- */
         /* Scale the Ritz estimate back to its original */
@@ -624,7 +632,7 @@ L20:
             /* ---------------------------------------------- */
 
             strcpy(wprime, "LA");
-            dsortr_(wprime, &c_true, &nconv, ritz, bounds);
+            dsortr_(wprime, &b_true, &nconv, ritz, bounds);
         }
         else
         {
@@ -634,7 +642,7 @@ L20:
             /* "threshold" value appears at the front of    */
             /* ritz.                                        */
             /* -------------------------------------------- */
-            dsortr_(which, &c_true, &nconv, ritz, bounds);
+            dsortr_(which, &b_true, &nconv, ritz, bounds);
         }
 
         /* ---------------------------------------- */
@@ -752,7 +760,7 @@ L50:
 
     if (*ishift == 0)
     {
-        dcopy_(np, workl, &c__1, ritz, &c__1);
+        dcopy_(np, workl, &i_one, ritz, &i_one);
     }
 
 #ifndef NO_TRACE
@@ -791,7 +799,7 @@ L50:
     if (*bmat == 'G')
     {
         ++timing_1.nbx;
-        dcopy_(n, resid, &c__1, &workd[*n], &c__1);
+        dcopy_(n, resid, &i_one, &workd[*n], &i_one);
         /* TODO: ipntr index */
         ipntr[0] = *n + 1;
         ipntr[1] = 1;
@@ -805,7 +813,7 @@ L50:
     }
     else if (*bmat == 'I')
     {
-        dcopy_(n, resid, &c__1, workd, &c__1);
+        dcopy_(n, resid, &i_one, workd, &i_one);
     }
 
 L100:
@@ -821,12 +829,12 @@ L100:
         arscnd_(&t3);
         timing_1.tmvbx += t3 - t2;
 #endif
-        rnorm = ddot_(n, resid, &c__1, workd, &c__1);
+        rnorm = ddot_(n, resid, &i_one, workd, &i_one);
         rnorm = sqrt((abs(rnorm)));
     }
     else if (*bmat == 'I')
     {
-        rnorm = dnrm2_(n, resid, &c__1);
+        rnorm = dnrm2_(n, resid, &i_one);
     }
     cnorm = FALSE_;
 

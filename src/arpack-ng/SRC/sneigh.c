@@ -2,6 +2,12 @@
 
 #include "arpack_internal.h"
 
+/* Constants */
+static logical b_true = TRUE_;
+static int i_one  = 1;
+static float s_zero = 0.0f;
+static float s_one  = 1.0f;
+
 /**
  * \BeginDoc
  *
@@ -148,7 +154,7 @@ int sneigh_(float *rnorm, int *n, float *h, int *ldh,
         bounds[j] = 0.0f;
     }
     bounds[*n - 1] = 1.0f;
-    slahqr_(&c_true, &c_true, n, &c__1, n, workl, n, ritzr, ritzi,&c__1, &c__1, bounds, &c__1, ierr);
+    slahqr_(&b_true, &b_true, n, &i_one, n, workl, n, ritzr, ritzi,&i_one, &i_one, bounds, &i_one, ierr);
     if (*ierr != 0)
     {
         goto L9000;
@@ -197,9 +203,9 @@ int sneigh_(float *rnorm, int *n, float *h, int *ldh,
             /* Real eigenvalue case */
             /* -------------------- */
 
-            temp = snrm2_(n, &q[i * q_dim], &c__1);
+            temp = snrm2_(n, &q[i * q_dim], &i_one);
             r__1 = 1.0f / temp;
-            sscal_(n, &r__1, &q[i * q_dim], &c__1);
+            sscal_(n, &r__1, &q[i * q_dim], &i_one);
         }
         else
         {
@@ -213,13 +219,13 @@ int sneigh_(float *rnorm, int *n, float *h, int *ldh,
 
             if (iconj == 0)
             {
-                r__1 = snrm2_(n, &q[i * q_dim], &c__1);
-                r__2 = snrm2_(n, &q[(i + 1) * q_dim], &c__1);
+                r__1 = snrm2_(n, &q[i * q_dim], &i_one);
+                r__2 = snrm2_(n, &q[(i + 1) * q_dim], &i_one);
                 temp = slapy2_(&r__1, &r__2);
                 r__1 = 1.0f / temp;
-                sscal_(n, &r__1, &q[i * q_dim], &c__1);
+                sscal_(n, &r__1, &q[i * q_dim], &i_one);
                 r__1 = 1.0f / temp;
-                sscal_(n, &r__1, &q[(i + 1) * q_dim], &c__1);
+                sscal_(n, &r__1, &q[(i + 1) * q_dim], &i_one);
                 iconj = 1;
             }
             else
@@ -229,7 +235,7 @@ int sneigh_(float *rnorm, int *n, float *h, int *ldh,
         }
     }
 
-    sgemv_("T", n, n, &s_one, q, ldq, bounds, &c__1, &s_zero, workl, &c__1);
+    sgemv_("T", n, n, &s_one, q, ldq, bounds, &i_one, &s_zero, workl, &i_one);
 
 #ifndef NO_TRACE
     if (msglvl > 1)

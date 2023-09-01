@@ -2,6 +2,12 @@
 
 #include "arpack_internal.h"
 
+/* Constants */
+static logical b_true = TRUE_;
+static int i_one = 1;
+static double d_zero = 0.0;
+static double d_one  = 1.0;
+
 /**
  * \BeginDoc
  *
@@ -148,7 +154,7 @@ int dneigh_(double *rnorm, int *n, double *h,
         bounds[j] = 0.0;
     }
     bounds[*n - 1] = 1.0;
-    dlahqr_(&c_true, &c_true, n, &c__1, n, workl, n, ritzr, ritzi,&c__1, &c__1, bounds, &c__1, ierr);
+    dlahqr_(&b_true, &b_true, n, &i_one, n, workl, n, ritzr, ritzi,&i_one, &i_one, bounds, &i_one, ierr);
     if (*ierr != 0)
     {
         goto L9000;
@@ -197,9 +203,9 @@ int dneigh_(double *rnorm, int *n, double *h,
             /* Real eigenvalue case */
             /* -------------------- */
 
-            temp = dnrm2_(n, &q[i * q_dim], &c__1);
+            temp = dnrm2_(n, &q[i * q_dim], &i_one);
             d__1 = 1.0 / temp;
-            dscal_(n, &d__1, &q[i * q_dim], &c__1);
+            dscal_(n, &d__1, &q[i * q_dim], &i_one);
         }
         else
         {
@@ -213,13 +219,13 @@ int dneigh_(double *rnorm, int *n, double *h,
 
             if (iconj == 0)
             {
-                d__1 = dnrm2_(n, &q[i * q_dim], &c__1);
-                d__2 = dnrm2_(n, &q[(i + 1) * q_dim], &c__1);
+                d__1 = dnrm2_(n, &q[i * q_dim], &i_one);
+                d__2 = dnrm2_(n, &q[(i + 1) * q_dim], &i_one);
                 temp = dlapy2_(&d__1, &d__2);
                 d__1 = 1.0 / temp;
-                dscal_(n, &d__1, &q[i * q_dim], &c__1);
+                dscal_(n, &d__1, &q[i * q_dim], &i_one);
                 d__1 = 1.0 / temp;
-                dscal_(n, &d__1, &q[(i + 1) * q_dim], &c__1);
+                dscal_(n, &d__1, &q[(i + 1) * q_dim], &i_one);
                 iconj = 1;
             }
             else
@@ -229,7 +235,7 @@ int dneigh_(double *rnorm, int *n, double *h,
         }
     }
 
-    dgemv_("T", n, n, &d_one, q, ldq, bounds, &c__1, &d_zero, workl, &c__1);
+    dgemv_("T", n, n, &d_one, q, ldq, bounds, &i_one, &d_zero, workl, &i_one);
 
 #ifndef NO_TRACE
     if (msglvl > 1)

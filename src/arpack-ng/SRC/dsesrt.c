@@ -2,6 +2,9 @@
 
 #include "arpack_internal.h"
 
+/* Constants */
+static int i_one  = 1;
+
 /**
  * \BeginDoc
  *
@@ -65,7 +68,7 @@
  *
  * \EndLib
  */
-int dsesrt_(char *which, logical *apply, int *n, double *x, int *na, double *a,
+int dsesrt_(const char *which, logical *apply, int *n, double *x, int *na, double *a,
             int *lda)
 {
     /* System generated locals */
@@ -111,7 +114,7 @@ L20:
                 x[j + igap] = temp;
                 if (*apply)
                 {
-                    dswap_(na, &a[j * a_dim + 1], &c__1, &a[(j + igap) * a_dim + 1], &c__1);
+                    dswap_(na, &a[j * a_dim + 1], &i_one, &a[(j + igap) * a_dim + 1], &i_one);
                 }
             }
             else
@@ -153,7 +156,7 @@ L50:
                 x[j + igap] = temp;
                 if (*apply)
                 {
-                    dswap_(na, &a[j * a_dim + 1], &c__1, &a[(j + igap) * a_dim + 1], &c__1);
+                    dswap_(na, &a[j * a_dim + 1], &i_one, &a[(j + igap) * a_dim + 1], &i_one);
                 }
             }
             else
@@ -195,7 +198,7 @@ L80:
                 x[j + igap] = temp;
                 if (*apply)
                 {
-                    dswap_(na, &a[j * a_dim + 1], &c__1, &a[(j + igap) * a_dim + 1], &c__1);
+                    dswap_(na, &a[j * a_dim + 1], &i_one, &a[(j + igap) * a_dim + 1], &i_one);
                 }
             }
             else
@@ -237,7 +240,7 @@ L110:
                 x[j + igap] = temp;
                 if (*apply)
                 {
-                    dswap_(na, &a[j * a_dim + 1], &c__1, &a[(j + igap) * a_dim + 1], &c__1);
+                    dswap_(na, &a[j * a_dim + 1], &i_one, &a[(j + igap) * a_dim + 1], &i_one);
                 }
             }
             else

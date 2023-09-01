@@ -2,6 +2,11 @@
 
 #include "arpack_internal.h"
 
+/* Constants */
+static int i_one  = 1;
+static a_fcomplex c_zero = { 0.0f, 0.0f };
+static a_fcomplex c_one = { 1.0f, 0.0f };
+
 /**
  * \BeginDoc
  *
@@ -469,11 +474,11 @@ L100:
             /* Computing MIN */
             i__3 = j + 2;
             i__2 = min(i__3,kplusp);
-            cscal_(&i__2, &t, &h[(j + 1) * h_dim + 1], &c__1);
+            cscal_(&i__2, &t, &h[(j + 1) * h_dim + 1], &i_one);
             /* Computing MIN */
             i__3 = j + *np + 1;
             i__2 = min(i__3,kplusp);
-            cscal_(&i__2, &t, &q[(j + 1) * q_dim + 1], &c__1);
+            cscal_(&i__2, &t, &q[(j + 1) * q_dim + 1], &i_one);
 
             /* h(j+1,j) = cmplx( real( h(j+1,j) ), rzero ) */
             i__2 = j + 1 + j * h_dim;
@@ -524,7 +529,7 @@ L100:
     i__1 = *kev + 1 + *kev * h_dim;
     if (h[i__1].r > 0.0f)
     {
-        cgemv_("N", n, &kplusp, &c_one, &v[v_offset], ldv, &q[(*kev + 1) * q_dim + 1], &c__1, &c_zero, &workd[*n], &c__1);
+        cgemv_("N", n, &kplusp, &c_one, &v[v_offset], ldv, &q[(*kev + 1) * q_dim + 1], &i_one, &c_zero, &workd[*n], &i_one);
     }
 
     /* -------------------------------------------------------- */
@@ -536,8 +541,8 @@ L100:
     for (i = 1; i <= i__1; ++i)
     {
         i__2 = kplusp - i + 1;
-        cgemv_("N", n, &i__2, &c_one, &v[v_offset], ldv, &q[(*kev - i + 1) * q_dim + 1], &c__1, &c_zero, workd, &c__1);
-        ccopy_(n, workd, &c__1, &v[(kplusp - i + 1) * v_dim + 1], &c__1);
+        cgemv_("N", n, &i__2, &c_one, &v[v_offset], ldv, &q[(*kev - i + 1) * q_dim + 1], &i_one, &c_zero, workd, &i_one);
+        ccopy_(n, workd, &i_one, &v[(kplusp - i + 1) * v_dim + 1], &i_one);
     }
 
     /* ----------------------------------------------- */
@@ -553,7 +558,7 @@ L100:
     i__1 = *kev + 1 + *kev * h_dim;
     if (h[i__1].r > 0.0f)
     {
-        ccopy_(n, &workd[*n], &c__1, &v[(*kev + 1) * v_dim + 1], &c__1);
+        ccopy_(n, &workd[*n], &i_one, &v[(*kev + 1) * v_dim + 1], &i_one);
     }
 
     /* ----------------------------------- */
@@ -564,11 +569,11 @@ L100:
     /*    betak = e_{kev+1}'*H*e_{kev}     */
     /* ----------------------------------- */
 
-    cscal_(n, &q[kplusp + *kev * q_dim], resid, &c__1);
+    cscal_(n, &q[kplusp + *kev * q_dim], resid, &i_one);
     i__1 = *kev + 1 + *kev * h_dim;
     if (h[i__1].r > 0.0f)
     {
-        caxpy_(n, &h[i__1], &v[(*kev + 1) * v_dim + 1],&c__1, resid, &c__1);
+        caxpy_(n, &h[i__1], &v[(*kev + 1) * v_dim + 1],&i_one, resid, &i_one);
     }
 
 #ifndef NO_TRACE

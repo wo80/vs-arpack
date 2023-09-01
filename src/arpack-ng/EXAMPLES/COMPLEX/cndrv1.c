@@ -8,7 +8,7 @@ int cndrv1_tv_(const int nx, a_fcomplex* x, a_fcomplex* y);
 
 extern int smout_(const int, const int, const float*, const int, const int, const char*);
 
-static int c__1 = 1;
+static int i_one = 1;
 
 /**
  * \BeginDoc
@@ -277,11 +277,11 @@ L10:
         cndrv1_av_(nx, &v[k], ax);
         i__2 = j - 1;
         q__1.r = -d[i__2].r, q__1.i = -d[i__2].i;
-        caxpy_(&n, &q__1, &v[k], &c__1, ax, &c__1);
+        caxpy_(&n, &q__1, &v[k], &i_one, ax, &i_one);
         i__2 = j - 1;
         rd[j - 1] = d[i__2].r;
         rd[j + 29] = d[i__2].i;
-        rd[j + 59] = scnrm2_(&n, ax, &c__1);
+        rd[j + 59] = scnrm2_(&n, ax, &i_one);
         rd[j + 59] /= slapy2_(&rd[j - 1], &rd[j + 29]);
 
     }
@@ -382,20 +382,20 @@ int cndrv1_av_(const int nx, a_fcomplex *v, a_fcomplex *w)
     z.i = -0.0f;
 
     cndrv1_tv_(nx, &v[1], &w[1]);
-    caxpy_(&nx, &z, &v[nx + 1], &c__1, &w[1], &c__1);
+    caxpy_(&nx, &z, &v[nx + 1], &i_one, &w[1], &i_one);
 
     i__1 = nx - 1;
     for (j = 2; j <= i__1; ++j)
     {
         lo = (j - 1) * nx;
         cndrv1_tv_(nx, &v[lo + 1], &w[lo + 1]);
-        caxpy_(&nx, &z, &v[lo - nx + 1], &c__1, &w[lo + 1], &c__1);
-        caxpy_(&nx, &z, &v[lo + nx + 1], &c__1, &w[lo + 1], &c__1);
+        caxpy_(&nx, &z, &v[lo - nx + 1], &i_one, &w[lo + 1], &i_one);
+        caxpy_(&nx, &z, &v[lo + nx + 1], &i_one, &w[lo + 1], &i_one);
     }
 
     lo = (nx - 1) * nx;
     cndrv1_tv_(nx, &v[lo + 1], &w[lo + 1]);
-    caxpy_(&nx, &z, &v[lo - nx + 1], &c__1, &w[lo + 1], &c__1);
+    caxpy_(&nx, &z, &v[lo - nx + 1], &i_one, &w[lo + 1], &i_one);
 
     return 0;
 } /* av_ */

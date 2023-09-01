@@ -8,7 +8,7 @@ int sndrv6_mv_(const int n, float* v, float* w);
 
 extern int smout_(const int, const int, const float*, const int, const int, const char*);
 
-static int c__1 = 1;
+static int i_one = 1;
 static int c__25 = 25;
 static int c__256 = 256;
 static int c_n6 = -6;
@@ -250,7 +250,7 @@ L20:
 
         }
 
-        cgttrs_("N", &n, &c__1, cdl, cdd, cdu, cdu2, ipiv, ctemp, &c__256, &ierr);
+        cgttrs_("N", &n, &i_one, cdl, cdd, cdu, cdu2, ipiv, ctemp, &c__256, &ierr);
         if (ierr != 0)
         {
             printf(" \n");
@@ -289,7 +289,7 @@ L20:
             ctemp[i__2].r = q__1.r, ctemp[i__2].i = q__1.i;
 
         }
-        cgttrs_("N", &n, &c__1, cdl, cdd, cdu, cdu2, ipiv, ctemp, &c__256, &ierr);
+        cgttrs_("N", &n, &i_one, cdl, cdd, cdu, cdu2, ipiv, ctemp, &c__256, &ierr);
         if (ierr != 0)
         {
             printf(" \n");
@@ -407,9 +407,9 @@ L20:
             /* -------------------------- */
 
             sndrv6_av_(n, &v[k], ax);
-            numr = sdot_(&n, &v[k], &c__1, ax, &c__1);
+            numr = sdot_(&n, &v[k], &i_one, ax, &i_one);
             sndrv6_mv_(n, &v[k], ax);
-            denr = sdot_(&n, &v[k], &c__1, ax, &c__1);
+            denr = sdot_(&n, &v[k], &i_one, ax, &i_one);
             d[j - 1] = numr / denr;
         }
         else if (first)
@@ -425,22 +425,22 @@ L20:
             /* -------------- */
 
             sndrv6_av_(n, &v[k], ax);
-            numr = sdot_(&n, &v[k], &c__1, ax, &c__1);
-            numi = sdot_(&n, &v[j * n], &c__1, ax, &c__1);
+            numr = sdot_(&n, &v[k], &i_one, ax, &i_one);
+            numi = sdot_(&n, &v[j * n], &i_one, ax, &i_one);
             sndrv6_av_(n, &v[j * n], ax);
-            numr += sdot_(&n, &v[j * n], &c__1, ax, &c__1);
-            numi = -numi + sdot_(&n, &v[k], &c__1, ax, &c__1);
+            numr += sdot_(&n, &v[j * n], &i_one, ax, &i_one);
+            numi = -numi + sdot_(&n, &v[k], &i_one, ax, &i_one);
 
             /* -------------- */
             /* Compute x'(Mx) */
             /* -------------- */
 
             sndrv6_mv_(n, &v[k], ax);
-            denr = sdot_(&n, &v[k], &c__1, ax, &c__1);
-            deni = sdot_(&n, &v[j * n], &c__1, ax, &c__1);
+            denr = sdot_(&n, &v[k], &i_one, ax, &i_one);
+            deni = sdot_(&n, &v[j * n], &i_one, ax, &i_one);
             sndrv6_mv_(n, &v[j * n], ax);
-            denr += sdot_(&n, &v[j * n], &c__1, ax, &c__1);
-            deni = -deni + sdot_(&n, &v[k], &c__1, ax, &c__1);
+            denr += sdot_(&n, &v[j * n], &i_one, ax, &i_one);
+            deni = -deni + sdot_(&n, &v[k], &i_one, ax, &i_one);
 
             /* -------------- */
             /* d=x'(Ax)/x'(Mx)*/
@@ -493,8 +493,8 @@ L20:
             sndrv6_av_(n, &v[k], ax);
             sndrv6_mv_(n, &v[k], mx);
             r__1 = -d[j - 1];
-            saxpy_(&n, &r__1, mx, &c__1, ax, &c__1);
-            d[j + 49] = snrm2_(&n, ax, &c__1);
+            saxpy_(&n, &r__1, mx, &i_one, ax, &i_one);
+            d[j + 49] = snrm2_(&n, ax, &i_one);
             d[j + 49] /= (r__1 = d[j - 1], dabs(r__1));
         }
         else if (first)
@@ -509,18 +509,18 @@ L20:
             sndrv6_av_(n, &v[k], ax);
             sndrv6_mv_(n, &v[k], mx);
             r__1 = -d[j - 1];
-            saxpy_(&n, &r__1, mx, &c__1, ax, &c__1);
+            saxpy_(&n, &r__1, mx, &i_one, ax, &i_one);
             sndrv6_mv_(n, &v[j * n], mx);
-            saxpy_(&n, &d[j + 24], mx, &c__1, ax, &c__1);
-            d[j + 49] = snrm2_(&n, ax, &c__1);
+            saxpy_(&n, &d[j + 24], mx, &i_one, ax, &i_one);
+            d[j + 49] = snrm2_(&n, ax, &i_one);
             sndrv6_av_(n, &v[j * n], ax);
             sndrv6_mv_(n, &v[j * n], mx);
             r__1 = -d[j - 1];
-            saxpy_(&n, &r__1, mx, &c__1, ax, &c__1);
+            saxpy_(&n, &r__1, mx, &i_one, ax, &i_one);
             sndrv6_mv_(n, &v[k], mx);
             r__1 = -d[j + 24];
-            saxpy_(&n, &r__1, mx, &c__1, ax, &c__1);
-            r__1 = snrm2_(&n, ax, &c__1);
+            saxpy_(&n, &r__1, mx, &i_one, ax, &i_one);
+            r__1 = snrm2_(&n, ax, &i_one);
             d[j + 49] = slapy2_(&d[j + 49], &r__1);
             d[j + 49] /= slapy2_(&d[j - 1], &d[j + 24]);
             d[j + 50] = d[j + 49];

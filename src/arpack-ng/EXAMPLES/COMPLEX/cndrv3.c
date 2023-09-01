@@ -8,7 +8,7 @@ int cndrv3_mv_(const int n, a_fcomplex* v, a_fcomplex* w);
 
 extern int smout_(const int, const int, const float*, const int, const int, const char*);
 
-static int c__1 = 1;
+static int i_one = 1;
 
 /**
  * \BeginDoc
@@ -217,7 +217,7 @@ L10:
         /* -------------------------------------- */
 
         cndrv3_av_(n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
-        cgttrs_("N", &n, &c__1, dl, dd, du, du2, ipiv, &workd[ipntr[1] - 1], &n, &ierr);
+        cgttrs_("N", &n, &i_one, dl, dd, du, du2, ipiv, &workd[ipntr[1] - 1], &n, &ierr);
         if (ierr != 0)
         {
             printf(" \n");
@@ -334,11 +334,11 @@ L10:
         cndrv3_mv_(n, &v[k], mx);
         i__2 = j - 1;
         q__1.r = -d[i__2].r, q__1.i = -d[i__2].i;
-        caxpy_(&n, &q__1, mx, &c__1, ax, &c__1);
+        caxpy_(&n, &q__1, mx, &i_one, ax, &i_one);
         i__2 = j - 1;
         rd[j - 1] = d[i__2].r;
         rd[j + 24] = d[i__2].i;
-        rd[j + 49] = scnrm2_(&n, ax, &c__1);
+        rd[j + 49] = scnrm2_(&n, ax, &i_one);
         rd[j + 49] /= slapy2_(&rd[j - 1], &rd[j + 24]);
 
     }
@@ -471,6 +471,6 @@ int cndrv3_mv_(const int n, a_fcomplex *v, a_fcomplex *w)
 
     h.r = 1.0f / (float)(n + 1);
     h.i = 0.0f;
-    cscal_(&n, &h, w, &c__1);
+    cscal_(&n, &h, w, &i_one);
     return 0;
 } /* mv_ */

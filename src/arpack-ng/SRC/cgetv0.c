@@ -2,6 +2,11 @@
 
 #include "arpack_internal.h"
 
+/* Constants */
+static int i_one  = 1;
+static a_fcomplex c_zero = { 0.0f, 0.0f };
+static a_fcomplex c_one = { 1.0f, 0.0f };
+
 /**
  * \BeginDoc
  *
@@ -205,13 +210,13 @@ int cgetv0_(int *ido, const char *bmat, int *itry, logical *initv, int *n, int *
             /* TODO: ipntr index */
             ipntr[0] = 1;
             ipntr[1] = *n + 1;
-            ccopy_(n, resid, &c__1, workd, &c__1);
+            ccopy_(n, resid, &i_one, workd, &i_one);
             *ido = -1;
             goto L9000;
         }
         else if (*itry > 1 && *bmat == 'G')
         {
-            ccopy_(n, resid, &c__1, &workd[*n], &c__1);
+            ccopy_(n, resid, &i_one, &workd[*n], &i_one);
         }
     }
 
@@ -250,7 +255,7 @@ int cgetv0_(int *ido, const char *bmat, int *itry, logical *initv, int *n, int *
     first = TRUE_;
     if (*itry == 1)
     {
-        ccopy_(n, &workd[*n], &c__1, resid, &c__1);
+        ccopy_(n, &workd[*n], &i_one, resid, &i_one);
     }
     if (*bmat == 'G')
     {
@@ -263,7 +268,7 @@ int cgetv0_(int *ido, const char *bmat, int *itry, logical *initv, int *n, int *
     }
     else if (*bmat == 'I')
     {
-        ccopy_(n, resid, &c__1, workd, &c__1);
+        ccopy_(n, resid, &i_one, workd, &i_one);
     }
 
 L20:
@@ -275,7 +280,7 @@ L20:
         arscnd_(&t3);
         timing_1.tmvbx += t3 - t2;
 #endif
-        cdotc_(&q__1, n, resid, &c__1, workd, &c__1);
+        cdotc_(&q__1, n, resid, &i_one, workd, &i_one);
         cnorm.r = q__1.r, cnorm.i = q__1.i;
         r__1 = cnorm.r;
         r__2 = cnorm.i;
@@ -283,7 +288,7 @@ L20:
     }
     else if (*bmat == 'I')
     {
-        rnorm0 = scnrm2_(n, resid, &c__1);
+        rnorm0 = scnrm2_(n, resid, &i_one);
     }
     *rnorm = rnorm0;
 
@@ -312,9 +317,9 @@ L20:
 L30:
 
     i__1 = *j - 1;
-    cgemv_("C", n, &i__1, &c_one, v, ldv, workd, &c__1, &c_zero, &workd[*n], &c__1);
+    cgemv_("C", n, &i__1, &c_one, v, ldv, workd, &i_one, &c_zero, &workd[*n], &i_one);
     q__1.r = -1.f, q__1.i = -0.0f;
-    cgemv_("N", n, &i__1, &q__1, v, ldv, &workd[*n], &c__1, &c_one, resid, &c__1);
+    cgemv_("N", n, &i__1, &q__1, v, ldv, &workd[*n], &i_one, &c_one, resid, &i_one);
 
     /* -------------------------------------------------------- */
     /* Compute the B-norm of the orthogonalized starting vector */
@@ -327,7 +332,7 @@ L30:
     if (*bmat == 'G')
     {
         ++timing_1.nbx;
-        ccopy_(n, resid, &c__1, &workd[*n], &c__1);
+        ccopy_(n, resid, &i_one, &workd[*n], &i_one);
         /* TODO: ipntr index */
         ipntr[0] = *n + 1;
         ipntr[1] = 1;
@@ -336,7 +341,7 @@ L30:
     }
     else if (*bmat == 'I')
     {
-        ccopy_(n, resid, &c__1, workd, &c__1);
+        ccopy_(n, resid, &i_one, workd, &i_one);
     }
 
 L40:
@@ -351,7 +356,7 @@ L40:
 
     if (*bmat == 'G')
     {
-        cdotc_(&q__1, n, resid, &c__1, workd, &c__1);
+        cdotc_(&q__1, n, resid, &i_one, workd, &i_one);
         cnorm.r = q__1.r, cnorm.i = q__1.i;
         r__1 = cnorm.r;
         r__2 = cnorm.i;
@@ -359,7 +364,7 @@ L40:
     }
     else if (*bmat == 'I')
     {
-        *rnorm = scnrm2_(n, resid, &c__1);
+        *rnorm = scnrm2_(n, resid, &i_one);
     }
 
     /* ------------------------------------ */

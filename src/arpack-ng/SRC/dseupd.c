@@ -3,6 +3,11 @@
 #include <math.h>
 #include "arpack_internal.h"
 
+/* Constants */
+static logical b_true = TRUE_;
+static int i_one  = 1;
+static double d_one = 1.0;
+
 /**
  * \BeginDoc
  *
@@ -224,6 +229,9 @@ int dseupd_(logical *rvec, const char *howmny, logical *select, double *d, doubl
             double *resid, int *ncv, double *v, int *ldv, int *iparam, int *ipntr,
             double *workd, double *workl, int *lworkl, int *info)
 {
+    /* Constants */
+    const double d_23 = 0.666666666666666667;
+
     /* System generated locals */
     int i__1;
     double d__1, d__2, d__3;
@@ -438,7 +446,7 @@ int dseupd_(logical *rvec, const char *howmny, logical *select, double *d, doubl
     }
     else if (*bmat == 'G')
     {
-        bnorm2 = dnrm2_(n, workd, &c__1);
+        bnorm2 = dnrm2_(n, workd, &i_one);
     }
 
 #ifndef NO_TRACE
@@ -539,8 +547,8 @@ int dseupd_(logical *rvec, const char *howmny, logical *select, double *d, doubl
         /* --------------------------------------------------------- */
 
         i__1 = *ncv - 1;
-        dcopy_(&i__1, &workl[ih + 1], &c__1, &workl[ihb], &c__1);
-        dcopy_(ncv, &workl[ih + ldh], &c__1, &workl[ihd], &c__1);
+        dcopy_(&i__1, &workl[ih + 1], &i_one, &workl[ihb], &i_one);
+        dcopy_(ncv, &workl[ih + ldh], &i_one, &workl[ihd], &i_one);
 
         dsteqr_("I", ncv, &workl[ihd], &workl[ihb], &workl[iq], &ldq, &workl[iw], &ierr);
 
@@ -553,7 +561,7 @@ int dseupd_(logical *rvec, const char *howmny, logical *select, double *d, doubl
 #ifndef NO_TRACE
         if (msglvl > 1)
         {
-            dcopy_(ncv, &workl[iq + *ncv - 1], &ldq, &workl[iw], &c__1);
+            dcopy_(ncv, &workl[iq + *ncv - 1], &ldq, &workl[iw], &i_one);
             dvout_(*ncv, &workl[ihd], debug_1.ndigit, "_seupd: NCV Ritz values of the final H matrix");
             dvout_(*ncv, &workl[iw], debug_1.ndigit, "_seupd: last row of the eigenvector matrix for H");
         }
@@ -610,9 +618,9 @@ L20:
                 temp = workl[ihd + leftptr - 1];
                 workl[ihd + leftptr - 1] = workl[ihd + rghtptr - 1];
                 workl[ihd + rghtptr - 1] = temp;
-                dcopy_(ncv, &workl[iq + *ncv * (leftptr - 1)], &c__1, &workl[iw], &c__1);
-                dcopy_(ncv, &workl[iq + *ncv * (rghtptr - 1)], &c__1, &workl[iq + *ncv * (leftptr - 1)], &c__1);
-                dcopy_(ncv, &workl[iw], &c__1, &workl[iq + *ncv * (rghtptr - 1)], &c__1);
+                dcopy_(ncv, &workl[iq + *ncv * (leftptr - 1)], &i_one, &workl[iw], &i_one);
+                dcopy_(ncv, &workl[iq + *ncv * (rghtptr - 1)], &i_one, &workl[iq + *ncv * (leftptr - 1)], &i_one);
+                dcopy_(ncv, &workl[iw], &i_one, &workl[iq + *ncv * (rghtptr - 1)], &i_one);
                 ++leftptr;
                 --rghtptr;
             }
@@ -635,7 +643,7 @@ L30:
         /* Load the converged Ritz values into D. */
         /* -------------------------------------- */
 
-        dcopy_(&nconv, &workl[ihd], &c__1, d, &c__1);
+        dcopy_(&nconv, &workl[ihd], &i_one, d, &i_one);
     }
     else
     {
@@ -643,8 +651,8 @@ L30:
         /* Ritz vectors not required. Load Ritz values into D. */
         /* --------------------------------------------------- */
 
-        dcopy_(&nconv, &workl[ritz], &c__1, d, &c__1);
-        dcopy_(ncv, &workl[ritz], &c__1, &workl[ihd], &c__1);
+        dcopy_(&nconv, &workl[ritz], &i_one, d, &i_one);
+        dcopy_(ncv, &workl[ritz], &i_one, &workl[ihd], &i_one);
     }
 
     /* ---------------------------------------------------------------- */
@@ -666,7 +674,7 @@ L30:
         }
         else
         {
-            dcopy_(ncv, &workl[bounds], &c__1, &workl[ihb], &c__1);
+            dcopy_(ncv, &workl[bounds], &i_one, &workl[ihb], &i_one);
         }
     }
     else
@@ -686,7 +694,7 @@ L30:
         /*  They are only reordered.                                   */
         /* ----------------------------------------------------------- */
 
-        dcopy_(ncv, &workl[ihd], &c__1, &workl[iw], &c__1);
+        dcopy_(ncv, &workl[ihd], &i_one, &workl[iw], &i_one);
         if (strcmp(type, "SHIFTI") == 0)
         {
             i__1 = *ncv;
@@ -727,18 +735,18 @@ L30:
         /*  Ritz vector purification.                                  */
         /* ----------------------------------------------------------- */
 
-        dcopy_(&nconv, &workl[ihd], &c__1, d, &c__1);
-        dsortr_("LA", &c_true, &nconv, &workl[ihd], &workl[iw]);
+        dcopy_(&nconv, &workl[ihd], &i_one, d, &i_one);
+        dsortr_("LA", &b_true, &nconv, &workl[ihd], &workl[iw]);
         if (*rvec)
         {
             dsesrt_("LA", rvec, &nconv, d, ncv, &workl[iq], &ldq);
         }
         else
         {
-            dcopy_(ncv, &workl[bounds], &c__1, &workl[ihb], &c__1);
+            dcopy_(ncv, &workl[bounds], &i_one, &workl[ihb], &i_one);
             d__1 = bnorm2 / rnorm;
-            dscal_(ncv, &d__1, &workl[ihb], &c__1);
-            dsortr_("LA", &c_true, &nconv, d, &workl[ihb]);
+            dscal_(ncv, &d__1, &workl[ihb], &i_one);
+            dsortr_("LA", &b_true, &nconv, d, &workl[ihb]);
         }
     }
 
@@ -781,7 +789,7 @@ L30:
             workl[ihb + j - 1] = 0.0;
         }
         workl[ihb + *ncv - 1] = 1.0;
-        dorm2r_("L", "T", ncv, &c__1, &nconv, &workl[iq], &ldq, &workl[iw + *ncv], &workl[ihb], ncv, &temp, &ierr);
+        dorm2r_("L", "T", ncv, &i_one, &nconv, &workl[iq], &ldq, &workl[iw + *ncv], &workl[ihb], ncv, &temp, &ierr);
 
         /* --------------------------------------------------- */
         /* Make a copy of the last row into                    */
@@ -819,7 +827,7 @@ L30:
         /* *  Determine Ritz estimates of the lambda.      */
         /* ----------------------------------------------- */
 
-        dscal_(ncv, &bnorm2, &workl[ihb], &c__1);
+        dscal_(ncv, &bnorm2, &workl[ihb], &i_one);
         if (strcmp(type, "SHIFTI") == 0)
         {
             i__1 = *ncv;
@@ -892,7 +900,7 @@ L30:
 
     if (*rvec && strcmp(type, "REGULR") != 0)
     {
-        dger_(n, &nconv, &d_one, resid, &c__1, &workl[iw], &c__1, z, ldz);
+        dger_(n, &nconv, &d_one, resid, &i_one, &workl[iw], &i_one, z, ldz);
     }
 
 L9000:

@@ -2,6 +2,12 @@
 
 #include "arpack_internal.h"
 
+/* Constants */
+static int i_one = 1;
+static double d_zero = 0.0;
+static double d_one  = 1.0;
+static double d_m1  = -1.0;
+
 /**
  * \BeginDoc
  *
@@ -494,7 +500,7 @@ L40:
                 /* G is of the form I - tau*( 1 u )' * ( 1 u' ).       */
                 /* --------------------------------------------------- */
 
-                dlarfg_(&nr, u, &u[1], &c__1, &tau);
+                dlarfg_(&nr, u, &u[1], &i_one, &tau);
 
                 if (i > istart)
                 {
@@ -512,7 +518,7 @@ L40:
                 /* ------------------------------------ */
 
                 i__3 = kplusp - i + 1;
-                dlarf_("L", &nr, &i__3, u, &c__1, &tau, &h[i + i * h_dim], ldh, workl);
+                dlarf_("L", &nr, &i__3, u, &i_one, &tau, &h[i + i * h_dim], ldh, workl);
 
                 /* ------------------------------------- */
                 /* Apply the reflector to the right of H */
@@ -521,13 +527,13 @@ L40:
                 /* Computing MIN */
                 i__3 = i + 3;
                 ir = min(i__3,iend);
-                dlarf_("R", &ir, &nr, u, &c__1, &tau, &h[i * h_dim + 1], ldh, workl);
+                dlarf_("R", &ir, &nr, u, &i_one, &tau, &h[i * h_dim + 1], ldh, workl);
 
                 /* --------------------------------------------------- */
                 /* Accumulate the reflector in the matrix Q;  Q <- Q*G */
                 /* --------------------------------------------------- */
 
-                dlarf_("R", &kplusp, &nr, u, &c__1, &tau, &q[i * q_dim + 1], ldq, workl);
+                dlarf_("R", &kplusp, &nr, u, &i_one, &tau, &q[i * q_dim + 1], ldq, workl);
 
                 /* -------------------------- */
                 /* Prepare for next reflector */
@@ -586,11 +592,11 @@ L110:
             /* Computing MIN */
             i__3 = j + 2;
             i__2 = min(i__3,kplusp);
-            dscal_(&i__2, &d_m1, &h[(j + 1) * h_dim + 1], &c__1);
+            dscal_(&i__2, &d_m1, &h[(j + 1) * h_dim + 1], &i_one);
             /* Computing MIN */
             i__3 = j + *np + 1;
             i__2 = min(i__3,kplusp);
-            dscal_(&i__2, &d_m1, &q[(j + 1) * q_dim + 1], &c__1);
+            dscal_(&i__2, &d_m1, &q[(j + 1) * q_dim + 1], &i_one);
         }
     }
 
@@ -628,7 +634,7 @@ L110:
 
     if (h[*kev + 1 + *kev * h_dim] > 0.0)
     {
-        dgemv_("N", n, &kplusp, &d_one, &v[v_offset], ldv, &q[(*kev + 1) * q_dim + 1], &c__1, &d_zero, &workd[*n], &c__1);
+        dgemv_("N", n, &kplusp, &d_one, &v[v_offset], ldv, &q[(*kev + 1) * q_dim + 1], &i_one, &d_zero, &workd[*n], &i_one);
     }
 
     /* -------------------------------------------------------- */
@@ -640,8 +646,8 @@ L110:
     for (i = 1; i <= i__1; ++i)
     {
         i__2 = kplusp - i + 1;
-        dgemv_("N", n, &i__2, &d_one, &v[v_offset], ldv, &q[(*kev - i + 1) * q_dim + 1], &c__1, &d_zero, workd, &c__1);
-        dcopy_(n, workd, &c__1, &v[(kplusp - i + 1) * v_dim + 1], &c__1);
+        dgemv_("N", n, &i__2, &d_one, &v[v_offset], ldv, &q[(*kev - i + 1) * q_dim + 1], &i_one, &d_zero, workd, &i_one);
+        dcopy_(n, workd, &i_one, &v[(kplusp - i + 1) * v_dim + 1], &i_one);
     }
 
     /* ----------------------------------------------- */
@@ -651,7 +657,7 @@ L110:
     i__1 = *kev;
     for (i = 1; i <= i__1; ++i)
     {
-        dcopy_(n, &v[(kplusp - *kev + i) * v_dim + 1], &c__1, &v[i * v_dim + 1], &c__1);
+        dcopy_(n, &v[(kplusp - *kev + i) * v_dim + 1], &i_one, &v[i * v_dim + 1], &i_one);
     }
 
     /* ------------------------------------------------------------ */
@@ -660,7 +666,7 @@ L110:
 
     if (h[*kev + 1 + *kev * h_dim] > 0.0)
     {
-        dcopy_(n, &workd[*n], &c__1, &v[(*kev + 1) * v_dim + 1], &c__1);
+        dcopy_(n, &workd[*n], &i_one, &v[(*kev + 1) * v_dim + 1], &i_one);
     }
 
     /* ----------------------------------- */
@@ -671,10 +677,10 @@ L110:
     /*    betak = e_{kev+1}'*H*e_{kev}     */
     /* ----------------------------------- */
 
-    dscal_(n, &q[kplusp + *kev * q_dim], resid, &c__1);
+    dscal_(n, &q[kplusp + *kev * q_dim], resid, &i_one);
     if (h[*kev + 1 + *kev * h_dim] > 0.0)
     {
-        daxpy_(n, &h[*kev + 1 + *kev * h_dim], &v[(*kev + 1) * v_dim + 1],&c__1, resid, &c__1);
+        daxpy_(n, &h[*kev + 1 + *kev * h_dim], &v[(*kev + 1) * v_dim + 1],&i_one, resid, &i_one);
     }
 
 #ifndef NO_TRACE

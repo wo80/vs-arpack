@@ -2,6 +2,13 @@
 
 #include "arpack_internal.h"
 
+/* Constants */
+static logical b_false = FALSE_;
+static int i_one  = 1;
+static float s_one = 1.0f;
+static a_fcomplex c_zero = { 0.0f, 0.0f };
+static a_fcomplex c_one = { 1.0f, 0.0f };
+
 /**
  * \BeginDoc
  *
@@ -402,7 +409,7 @@ L30:
     /* RSTART = .true. flow returns here.   */
     /* ------------------------------------ */
 
-    cgetv0_(ido, bmat, &itry, &c_false, n, &j, &v[v_offset], ldv, resid, rnorm, ipntr, &workd[1], &ierr);
+    cgetv0_(ido, bmat, &itry, &b_false, n, &j, &v[v_offset], ldv, resid, rnorm, ipntr, &workd[1], &ierr);
     if (*ido != 99)
     {
         goto L9000;
@@ -440,12 +447,12 @@ L40:
     /* machine bound.                                          */
     /* ------------------------------------------------------- */
 
-    ccopy_(n, resid, &c__1, &v[j * v_dim + 1], &c__1);
+    ccopy_(n, resid, &i_one, &v[j * v_dim + 1], &i_one);
     if (*rnorm >= unfl)
     {
         temp1 = 1.0f / *rnorm;
-        csscal_(n, &temp1, &v[j * v_dim + 1], &c__1);
-        csscal_(n, &temp1, &workd[ipj], &c__1);
+        csscal_(n, &temp1, &v[j * v_dim + 1], &i_one);
+        csscal_(n, &temp1, &workd[ipj], &i_one);
     }
     else
     {
@@ -454,8 +461,8 @@ L40:
         /* use LAPACK routine clascl               */
         /* --------------------------------------- */
 
-        clascl_("G", &i, &i, rnorm, &s_one, n, &c__1, &v[j * v_dim + 1], n, &infol);
-        clascl_("G", &i, &i, rnorm, &s_one, n, &c__1, &workd[ipj], n, &infol);
+        clascl_("G", &i, &i, rnorm, &s_one, n, &i_one, &v[j * v_dim + 1], n, &infol);
+        clascl_("G", &i, &i, rnorm, &s_one, n, &i_one, &workd[ipj], n, &infol);
     }
 
     /* ---------------------------------------------------- */
@@ -469,7 +476,7 @@ L40:
     arscnd_(&t2);
 #endif
 
-    ccopy_(n, &v[j * v_dim + 1], &c__1, &workd[ivj], &c__1);
+    ccopy_(n, &v[j * v_dim + 1], &i_one, &workd[ivj], &i_one);
     ipntr[0] = ivj;
     ipntr[1] = irj;
     ipntr[2] = ipj;
@@ -499,7 +506,7 @@ L50:
     /* Put another copy of OP*v_{j} into RESID. */
     /* ---------------------------------------- */
 
-    ccopy_(n, &workd[irj], &c__1, resid, &c__1);
+    ccopy_(n, &workd[irj], &i_one, resid, &i_one);
 
     /* ------------------------------------- */
     /* STEP 4:  Finish extending the Arnoldi */
@@ -526,7 +533,7 @@ L50:
     }
     else if (*bmat == 'I')
     {
-        ccopy_(n, resid, &c__1, &workd[ipj], &c__1);
+        ccopy_(n, resid, &i_one, &workd[ipj], &i_one);
     }
 L60:
 
@@ -553,13 +560,13 @@ L60:
 
     if (*bmat == 'G')
     {
-        cdotc_(&q__1, n, resid, &c__1, &workd[ipj], &c__1);
+        cdotc_(&q__1, n, resid, &i_one, &workd[ipj], &i_one);
         cnorm.r = q__1.r, cnorm.i = q__1.i;
         wnorm = sqrt(slapy2_(&cnorm.r, &cnorm.i));
     }
     else if (*bmat == 'I')
     {
-        wnorm = scnrm2_(n, resid, &c__1);
+        wnorm = scnrm2_(n, resid, &i_one);
     }
 
     /* --------------------------------------- */
@@ -575,7 +582,7 @@ L60:
     /* WORKD(IPJ:IPJ+N-1) contains B*OP*v_{j}.  */
     /* ---------------------------------------- */
 
-    cgemv_("C", n, &j, &c_one, &v[v_offset], ldv, &workd[ipj], &c__1, &c_zero, &h[j * h_dim + 1], &c__1);
+    cgemv_("C", n, &j, &c_one, &v[v_offset], ldv, &workd[ipj], &i_one, &c_zero, &h[j * h_dim + 1], &i_one);
 
     /* ------------------------------------ */
     /* Orthogonalize r_{j} against V_{j}.   */
@@ -583,7 +590,7 @@ L60:
     /* ------------------------------------ */
 
     q__1.r = -1.0f, q__1.i = -0.0f;
-    cgemv_("N", n, &j, &q__1, &v[v_offset], ldv, &h[j * h_dim + 1], &c__1, &c_one, resid, &c__1);
+    cgemv_("N", n, &j, &q__1, &v[v_offset], ldv, &h[j * h_dim + 1], &i_one, &c_one, resid, &i_one);
 
     if (j > 1)
     {
@@ -602,7 +609,7 @@ L60:
     if (*bmat == 'G')
     {
         ++timing_1.nbx;
-        ccopy_(n, resid, &c__1, &workd[irj], &c__1);
+        ccopy_(n, resid, &i_one, &workd[irj], &i_one);
         ipntr[0] = irj;
         ipntr[1] = ipj;
         *ido = 2;
@@ -615,7 +622,7 @@ L60:
     }
     else if (*bmat == 'I')
     {
-        ccopy_(n, resid, &c__1, &workd[ipj], &c__1);
+        ccopy_(n, resid, &i_one, &workd[ipj], &i_one);
     }
 L70:
 
@@ -640,13 +647,13 @@ L70:
 
     if (*bmat == 'G')
     {
-        cdotc_(&q__1, n, resid, &c__1, &workd[ipj], &c__1);
+        cdotc_(&q__1, n, resid, &i_one, &workd[ipj], &i_one);
         cnorm.r = q__1.r, cnorm.i = q__1.i;
         *rnorm = sqrt(slapy2_(&cnorm.r, &cnorm.i));
     }
     else if (*bmat == 'I')
     {
-        *rnorm = scnrm2_(n, resid, &c__1);
+        *rnorm = scnrm2_(n, resid, &i_one);
     }
 
     /* --------------------------------------------------------- */
@@ -699,7 +706,7 @@ L80:
     /* WORKD(IRJ:IRJ+J-1) = v(:,1:J)'*WORKD(IPJ:IPJ+N-1). */
     /* -------------------------------------------------- */
 
-    cgemv_("C", n, &j, &c_one, &v[v_offset], ldv, &workd[ipj], &c__1, &c_zero, &workd[irj], &c__1);
+    cgemv_("C", n, &j, &c_one, &v[v_offset], ldv, &workd[ipj], &i_one, &c_zero, &workd[irj], &i_one);
 
     /* ------------------------------------------- */
     /* Compute the correction to the residual:     */
@@ -709,8 +716,8 @@ L80:
     /* ------------------------------------------- */
 
     q__1.r = -1.f, q__1.i = -0.0f;
-    cgemv_("N", n, &j, &q__1, &v[v_offset], ldv, &workd[irj], &c__1, &c_one, resid, &c__1);
-    caxpy_(&j, &c_one, &workd[irj], &c__1, &h[j * h_dim + 1], &c__1);
+    cgemv_("N", n, &j, &q__1, &v[v_offset], ldv, &workd[irj], &i_one, &c_one, resid, &i_one);
+    caxpy_(&j, &c_one, &workd[irj], &i_one, &h[j * h_dim + 1], &i_one);
 
     orth2 = TRUE_;
 #ifndef NO_TIMER
@@ -720,7 +727,7 @@ L80:
     if (*bmat == 'G')
     {
         ++timing_1.nbx;
-        ccopy_(n, resid, &c__1, &workd[irj], &c__1);
+        ccopy_(n, resid, &i_one, &workd[irj], &i_one);
         ipntr[0] = irj;
         ipntr[1] = ipj;
         *ido = 2;
@@ -734,7 +741,7 @@ L80:
     }
     else if (*bmat == 'I')
     {
-        ccopy_(n, resid, &c__1, &workd[ipj], &c__1);
+        ccopy_(n, resid, &i_one, &workd[ipj], &i_one);
     }
 L90:
 
@@ -752,13 +759,13 @@ L90:
         arscnd_(&t3);
         timing_1.tmvbx += t3 - t2;
 #endif
-        cdotc_(&q__1, n, resid, &c__1, &workd[ipj], &c__1);
+        cdotc_(&q__1, n, resid, &i_one, &workd[ipj], &i_one);
         cnorm.r = q__1.r, cnorm.i = q__1.i;
         rnorm1 = sqrt(slapy2_(&cnorm.r, &cnorm.i));
     }
     else if (*bmat == 'I')
     {
-        rnorm1 = scnrm2_(n, resid, &c__1);
+        rnorm1 = scnrm2_(n, resid, &i_one);
     }
 
 #ifndef NO_TRACE

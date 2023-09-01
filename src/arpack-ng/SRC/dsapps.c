@@ -2,6 +2,12 @@
 
 #include "arpack_internal.h"
 
+/* Constants */
+static int i_one = 1;
+static double d_zero = 0.0;
+static double d_one  = 1.0;
+static double d_m1  = -1.0;
+
 /**
  * \BeginDoc
  *
@@ -389,7 +395,7 @@ L40:
         if (h[iend + h_dim] < 0.0)
         {
             h[iend + h_dim] = -h[iend + h_dim];
-            dscal_(&kplusp, &d_m1, &q[iend * q_dim + 1], &c__1);
+            dscal_(&kplusp, &d_m1, &q[iend * q_dim + 1], &i_one);
         }
 
         /* ------------------------------------------------------ */
@@ -458,7 +464,7 @@ L90:
 
     if (h[*kev + 1 + h_dim] > 0.0)
     {
-        dgemv_("N", n, &kplusp, &d_one, &v[v_offset], ldv, &q[(*kev + 1) * q_dim + 1], &c__1, &d_zero, &workd[*n], &c__1);
+        dgemv_("N", n, &kplusp, &d_one, &v[v_offset], ldv, &q[(*kev + 1) * q_dim + 1], &i_one, &d_zero, &workd[*n], &i_one);
     }
 
     /* ----------------------------------------------------- */
@@ -472,8 +478,8 @@ L90:
     for (i = 1; i <= i__1; ++i)
     {
         i__2 = kplusp - i + 1;
-        dgemv_("N", n, &i__2, &d_one, &v[v_offset], ldv, &q[(*kev - i + 1) * q_dim + 1], &c__1, &d_zero, workd, &c__1);
-        dcopy_(n, workd, &c__1, &v[(kplusp - i + 1) * v_dim + 1], &c__1);
+        dgemv_("N", n, &i__2, &d_one, &v[v_offset], ldv, &q[(*kev - i + 1) * q_dim + 1], &i_one, &d_zero, workd, &i_one);
+        dcopy_(n, workd, &i_one, &v[(kplusp - i + 1) * v_dim + 1], &i_one);
     }
 
     /* ----------------------------------------------- */
@@ -483,7 +489,7 @@ L90:
     i__1 = *kev;
     for (i = 1; i <= i__1; ++i)
     {
-        dcopy_(n, &v[(*np + i) * v_dim + 1], &c__1, &v[i * v_dim + 1], &c__1);
+        dcopy_(n, &v[(*np + i) * v_dim + 1], &i_one, &v[i * v_dim + 1], &i_one);
     }
 
     /* ------------------------------------------ */
@@ -493,7 +499,7 @@ L90:
 
     if (h[*kev + 1 + h_dim] > 0.0)
     {
-        dcopy_(n, &workd[*n], &c__1, &v[(*kev + 1) * v_dim + 1], &c__1);
+        dcopy_(n, &workd[*n], &i_one, &v[(*kev + 1) * v_dim + 1], &i_one);
     }
 
     /* ----------------------------------- */
@@ -504,10 +510,10 @@ L90:
     /*    betak = e_{kev+1}'*H*e_{kev}     */
     /* ----------------------------------- */
 
-    dscal_(n, &q[kplusp + *kev * q_dim], resid, &c__1);
+    dscal_(n, &q[kplusp + *kev * q_dim], resid, &i_one);
     if (h[*kev + 1 + h_dim] > 0.0)
     {
-        daxpy_(n, &h[*kev + 1 + h_dim], &v[(*kev + 1) * v_dim + 1], &c__1,resid, &c__1);
+        daxpy_(n, &h[*kev + 1 + h_dim], &v[(*kev + 1) * v_dim + 1], &i_one,resid, &i_one);
     }
 
 #ifndef NO_TRACE

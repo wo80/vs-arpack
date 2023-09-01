@@ -2,6 +2,9 @@
 
 #include "arpack_internal.h"
 
+/* Constants */
+static int i_one  = 1;
+
 /**
  * \BeginDoc
  *
@@ -121,9 +124,9 @@ int sseigt_(float *rnorm, int *n, float *h, int *ldh,
     }
 #endif
 
-    scopy_(n, &h[h_dim], &c__1, eig, &c__1);
+    scopy_(n, &h[h_dim], &i_one, eig, &i_one);
     i__1 = *n - 1;
-    scopy_(&i__1, &h[1], &c__1, workl, &c__1);
+    scopy_(&i__1, &h[1], &i_one, workl, &i_one);
     sstqrb_(n, eig, workl, bounds, &workl[*n], ierr);
     if (*ierr != 0)
     {

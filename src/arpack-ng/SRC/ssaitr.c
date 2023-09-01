@@ -2,6 +2,13 @@
 
 #include "arpack_internal.h"
 
+/* Constants */
+static logical b_false = FALSE_;
+static int i_one  = 1;
+static float s_zero = 0.0f;
+static float s_one  = 1.0f;
+static float s_m1  = -1.0f;
+
 /**
  * \BeginDoc
  *
@@ -393,7 +400,7 @@ L30:
     /* RSTART = .true. flow returns here.   */
     /* ------------------------------------ */
 
-    sgetv0_(ido, bmat, &itry, &c_false, n, &j, &v[v_offset], ldv, resid, rnorm, ipntr, &workd[1], &ierr);
+    sgetv0_(ido, bmat, &itry, &b_false, n, &j, &v[v_offset], ldv, resid, rnorm, ipntr, &workd[1], &ierr);
     if (*ido != 99)
     {
         goto L9000;
@@ -431,12 +438,12 @@ L40:
     /* machine bound.                                          */
     /* ------------------------------------------------------- */
 
-    scopy_(n, resid, &c__1, &v[j * v_dim + 1], &c__1);
+    scopy_(n, resid, &i_one, &v[j * v_dim + 1], &i_one);
     if (*rnorm >= safmin)
     {
         temp1 = 1.0f / *rnorm;
-        sscal_(n, &temp1, &v[j * v_dim + 1], &c__1);
-        sscal_(n, &temp1, &workd[ipj], &c__1);
+        sscal_(n, &temp1, &v[j * v_dim + 1], &i_one);
+        sscal_(n, &temp1, &workd[ipj], &i_one);
     }
     else
     {
@@ -445,8 +452,8 @@ L40:
         /* use LAPACK routine SLASCL               */
         /* --------------------------------------- */
 
-        slascl_("G", &i, &i, rnorm, &s_one, n, &c__1, &v[j * v_dim + 1], n, &infol);
-        slascl_("G", &i, &i, rnorm, &s_one, n, &c__1, &workd[ipj], n, &infol);
+        slascl_("G", &i, &i, rnorm, &s_one, n, &i_one, &v[j * v_dim + 1], n, &infol);
+        slascl_("G", &i, &i, rnorm, &s_one, n, &i_one, &workd[ipj], n, &infol);
     }
 
     /* ---------------------------------------------------- */
@@ -460,7 +467,7 @@ L40:
     arscnd_(&t2);
 #endif
 
-    scopy_(n, &v[j * v_dim + 1], &c__1, &workd[ivj], &c__1);
+    scopy_(n, &v[j * v_dim + 1], &i_one, &workd[ivj], &i_one);
     ipntr[0] = ivj;
     ipntr[1] = irj;
     ipntr[2] = ipj;
@@ -489,7 +496,7 @@ L50:
     /* Put another copy of OP*v_{j} into RESID. */
     /* ---------------------------------------- */
 
-    scopy_(n, &workd[irj], &c__1, resid, &c__1);
+    scopy_(n, &workd[irj], &i_one, resid, &i_one);
 
     /* ----------------------------------------- */
     /* STEP 4:  Finish extending the symmetric   */
@@ -524,7 +531,7 @@ L50:
     }
     else if (*bmat == 'I')
     {
-        scopy_(n, resid, &c__1, &workd[ipj], &c__1);
+        scopy_(n, resid, &i_one, &workd[ipj], &i_one);
     }
 L60:
 
@@ -556,17 +563,17 @@ L65:
         /* is the inv(B)-norm of A*v_{j}.   */
         /* -------------------------------- */
 
-        wnorm = sdot_(n, resid, &c__1, &workd[ivj], &c__1);
+        wnorm = sdot_(n, resid, &i_one, &workd[ivj], &i_one);
         wnorm = sqrt((dabs(wnorm)));
     }
     else if (*bmat == 'G')
     {
-        wnorm = sdot_(n, resid, &c__1, &workd[ipj], &c__1);
+        wnorm = sdot_(n, resid, &i_one, &workd[ipj], &i_one);
         wnorm = sqrt((dabs(wnorm)));
     }
     else if (*bmat == 'I')
     {
-        wnorm = snrm2_(n, resid, &c__1);
+        wnorm = snrm2_(n, resid, &i_one);
     }
 
     /* --------------------------------------- */
@@ -584,11 +591,11 @@ L65:
 
     if (*mode != 2)
     {
-        sgemv_("T", n, &j, &s_one, &v[v_offset], ldv, &workd[ipj], &c__1, &s_zero, &workd[irj], &c__1);
+        sgemv_("T", n, &j, &s_one, &v[v_offset], ldv, &workd[ipj], &i_one, &s_zero, &workd[irj], &i_one);
     }
     else if (*mode == 2)
     {
-        sgemv_("T", n, &j, &s_one, &v[v_offset], ldv, &workd[ivj], &c__1, &s_zero, &workd[irj], &c__1);
+        sgemv_("T", n, &j, &s_one, &v[v_offset], ldv, &workd[ivj], &i_one, &s_zero, &workd[irj], &i_one);
     }
 
     /* ------------------------------------ */
@@ -596,7 +603,7 @@ L65:
     /* RESID contains OP*v_{j}. See STEP 3. */
     /* ------------------------------------ */
 
-    sgemv_("N", n, &j, &s_m1, &v[v_offset], ldv, &workd[irj], &c__1, &s_one, resid, &c__1);
+    sgemv_("N", n, &j, &s_m1, &v[v_offset], ldv, &workd[irj], &i_one, &s_one, resid, &i_one);
 
     /* ------------------------------------ */
     /* Extend H to have j rows and columns. */
@@ -622,7 +629,7 @@ L65:
     if (*bmat == 'G')
     {
         ++timing_1.nbx;
-        scopy_(n, resid, &c__1, &workd[irj], &c__1);
+        scopy_(n, resid, &i_one, &workd[irj], &i_one);
         ipntr[0] = irj;
         ipntr[1] = ipj;
         *ido = 2;
@@ -635,7 +642,7 @@ L65:
     }
     else if (*bmat == 'I')
     {
-        scopy_(n, resid, &c__1, &workd[ipj], &c__1);
+        scopy_(n, resid, &i_one, &workd[ipj], &i_one);
     }
 L70:
 
@@ -656,12 +663,12 @@ L70:
         arscnd_(&t3);
         timing_1.tmvbx += t3 - t2;
 #endif
-        *rnorm = sdot_(n, resid, &c__1, &workd[ipj], &c__1);
+        *rnorm = sdot_(n, resid, &i_one, &workd[ipj], &i_one);
         *rnorm = sqrt((dabs(*rnorm)));
     }
     else if (*bmat == 'I')
     {
-        *rnorm = snrm2_(n, resid, &c__1);
+        *rnorm = snrm2_(n, resid, &i_one);
     }
 
     /* --------------------------------------------------------- */
@@ -708,7 +715,7 @@ L80:
     /* WORKD(IRJ:IRJ+J-1) = v(:,1:J)'*WORKD(IPJ:IPJ+N-1). */
     /* -------------------------------------------------- */
 
-    sgemv_("T", n, &j, &s_one, &v[v_offset], ldv, &workd[ipj], &c__1, &s_zero, &workd[irj], &c__1);
+    sgemv_("T", n, &j, &s_one, &v[v_offset], ldv, &workd[ipj], &i_one, &s_zero, &workd[irj], &i_one);
 
     /* -------------------------------------------- */
     /* Compute the correction to the residual:      */
@@ -718,7 +725,7 @@ L80:
     /* H(j,j) is updated.                           */
     /* -------------------------------------------- */
 
-    sgemv_("N", n, &j, &s_m1, &v[v_offset], ldv, &workd[irj], &c__1, &s_one, resid, &c__1);
+    sgemv_("N", n, &j, &s_m1, &v[v_offset], ldv, &workd[irj], &i_one, &s_one, resid, &i_one);
 
     if (j == 1 || rstart)
     {
@@ -734,7 +741,7 @@ L80:
     if (*bmat == 'G')
     {
         ++timing_1.nbx;
-        scopy_(n, resid, &c__1, &workd[irj], &c__1);
+        scopy_(n, resid, &i_one, &workd[irj], &i_one);
         ipntr[0] = irj;
         ipntr[1] = ipj;
         *ido = 2;
@@ -748,7 +755,7 @@ L80:
     }
     else if (*bmat == 'I')
     {
-        scopy_(n, resid, &c__1, &workd[ipj], &c__1);
+        scopy_(n, resid, &i_one, &workd[ipj], &i_one);
     }
 L90:
 
@@ -766,12 +773,12 @@ L90:
         arscnd_(&t3);
         timing_1.tmvbx += t3 - t2;
 #endif
-        rnorm1 = sdot_(n, resid, &c__1, &workd[ipj], &c__1);
+        rnorm1 = sdot_(n, resid, &i_one, &workd[ipj], &i_one);
         rnorm1 = sqrt((dabs(rnorm1)));
     }
     else if (*bmat == 'I')
     {
-        rnorm1 = snrm2_(n, resid, &c__1);
+        rnorm1 = snrm2_(n, resid, &i_one);
     }
 
 #ifndef NO_TRACE
@@ -854,11 +861,11 @@ L100:
         h[j + h_dim] = -h[j + h_dim];
         if (j < *k + *np)
         {
-            sscal_(n, &s_m1, &v[(j + 1) * v_dim + 1], &c__1);
+            sscal_(n, &s_m1, &v[(j + 1) * v_dim + 1], &i_one);
         }
         else
         {
-            sscal_(n, &s_m1, resid, &c__1);
+            sscal_(n, &s_m1, resid, &i_one);
         }
     }
 

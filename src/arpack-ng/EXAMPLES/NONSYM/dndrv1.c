@@ -8,7 +8,7 @@ int dndrv1_tv_(const int nx, double* x, double* y);
 
 extern int dmout_(const int, const int, const double*, const int, const int, const char*);
 
-static int c__1 = 1;
+static int i_one = 1;
 
 /**
  * \BeginDoc
@@ -281,8 +281,8 @@ L10:
 
             dndrv1_av_(nx, &v[k], ax);
             d__1 = -d[j - 1];
-            daxpy_(&n, &d__1, &v[k], &c__1, ax, &c__1);
-            d[j + 59] = dnrm2_(&n, ax, &c__1);
+            daxpy_(&n, &d__1, &v[k], &i_one, ax, &i_one);
+            d[j + 59] = dnrm2_(&n, ax, &i_one);
             d[j + 59] /= (d__1 = d[j - 1], abs(d__1));
         }
         else if (first)
@@ -296,15 +296,15 @@ L10:
 
             dndrv1_av_(nx, &v[k], ax);
             d__1 = -d[j - 1];
-            daxpy_(&n, &d__1, &v[k], &c__1, ax, &c__1);
-            daxpy_(&n, &d[j + 29], &v[j * n], &c__1, ax, &c__1);
-            d[j + 59] = dnrm2_(&n, ax, &c__1);
+            daxpy_(&n, &d__1, &v[k], &i_one, ax, &i_one);
+            daxpy_(&n, &d[j + 29], &v[j * n], &i_one, ax, &i_one);
+            d[j + 59] = dnrm2_(&n, ax, &i_one);
             dndrv1_av_(nx, &v[j * n], ax);
             d__1 = -d[j + 29];
-            daxpy_(&n, &d__1, &v[k], &c__1, ax, &c__1);
+            daxpy_(&n, &d__1, &v[k], &i_one, ax, &i_one);
             d__1 = -d[j - 1];
-            daxpy_(&n, &d__1, &v[j * n], &c__1, ax, &c__1);
-            d__1 = dnrm2_(&n, ax, &c__1);
+            daxpy_(&n, &d__1, &v[j * n], &i_one, ax, &i_one);
+            d__1 = dnrm2_(&n, ax, &i_one);
             d[j + 59] = dlapy2_(&d[j + 59], &d__1);
             d[j + 59] /= dlapy2_(&d[j - 1], &d[j + 29]);
             d[j + 60] = d[j + 59];
@@ -416,7 +416,7 @@ int dndrv1_av_(const int nx, double *v, double *w)
 
     dndrv1_tv_(nx, &v[1], &w[1]);
     d__1 = -1.0 / h2;
-    daxpy_(&nx, &d__1, &v[nx + 1], &c__1, &w[1], &c__1);
+    daxpy_(&nx, &d__1, &v[nx + 1], &i_one, &w[1], &i_one);
 
     i__1 = nx - 1;
     for (j = 2; j <= i__1; ++j)
@@ -424,15 +424,15 @@ int dndrv1_av_(const int nx, double *v, double *w)
         lo = (j - 1) * nx;
         dndrv1_tv_(nx, &v[lo + 1], &w[lo + 1]);
         d__1 = -1.0 / h2;
-        daxpy_(&nx, &d__1, &v[lo - nx + 1], &c__1, &w[lo + 1], &c__1);
+        daxpy_(&nx, &d__1, &v[lo - nx + 1], &i_one, &w[lo + 1], &i_one);
         d__1 = -1.0 / h2;
-        daxpy_(&nx, &d__1, &v[lo + nx + 1], &c__1, &w[lo + 1], &c__1);
+        daxpy_(&nx, &d__1, &v[lo + nx + 1], &i_one, &w[lo + 1], &i_one);
     }
 
     lo = (nx - 1) * nx;
     dndrv1_tv_(nx, &v[lo + 1], &w[lo + 1]);
     d__1 = -1.0 / h2;
-    daxpy_(&nx, &d__1, &v[lo - nx + 1], &c__1, &w[lo + 1], &c__1);
+    daxpy_(&nx, &d__1, &v[lo - nx + 1], &i_one, &w[lo + 1], &i_one);
 
     return 0;
 } /* av_ */

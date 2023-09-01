@@ -60,6 +60,9 @@
 int dsconv_(int *n, double *ritz, double *bounds,
             double *tol, int *nconv)
 {
+    /* Constants */
+    const double d_23 = 0.666666666666666667;
+
     /* System generated locals */
     int i__1;
     double d__1, d__2, d__3;

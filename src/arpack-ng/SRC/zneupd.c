@@ -3,6 +3,12 @@
 #include <math.h>
 #include "arpack_internal.h"
 
+/* Constants */
+static logical b_true = TRUE_;
+static int i_one  = 1;
+static a_dcomplex z_zero = { 0.0, 0.0 };
+static a_dcomplex z_one = { 1.0, 0.0 };
+
 /**
  * \BeginDoc
  *
@@ -257,6 +263,9 @@ int zneupd_(logical *rvec, const char *howmny, logical *select, a_dcomplex *d, a
             int *ipntr, a_dcomplex *workd, a_dcomplex *workl, int *lworkl, double *rwork,
             int *info)
 {
+    /* Constants */
+    const double d_23 = 0.666666666666666667;
+
     /* System generated locals */
     int i__1, i__2;
     double d__1, d__2, d__3, d__4;
@@ -548,10 +557,10 @@ int zneupd_(logical *rvec, const char *howmny, logical *select, a_dcomplex *d, a
         /* ----------------------------------------------------- */
 
         i__1 = ldh * *ncv;
-        zcopy_(&i__1, &workl[ih], &c__1, &workl[iuptri], &c__1);
+        zcopy_(&i__1, &workl[ih], &i_one, &workl[iuptri], &i_one);
         zlaset_("A", ncv, ncv, &z_zero, &z_one, &workl[invsub], &ldq);
-        zlahqr_(&c_true, &c_true, ncv, &c__1, ncv, &workl[iuptri], &ldh, &workl[iheig], &c__1, ncv, &workl[invsub], &ldq, &ierr);
-        zcopy_(ncv, &workl[invsub + *ncv - 1], &ldq, &workl[ihbds], &c__1);
+        zlahqr_(&b_true, &b_true, ncv, &i_one, ncv, &workl[iuptri], &ldh, &workl[iheig], &i_one, ncv, &workl[invsub], &ldq, &ierr);
+        zcopy_(ncv, &workl[invsub + *ncv - 1], &ldq, &workl[ihbds], &i_one);
 
         if (ierr != 0)
         {
@@ -608,7 +617,7 @@ int zneupd_(logical *rvec, const char *howmny, logical *select, a_dcomplex *d, a
         /* Ritz values.                                */
         /* ------------------------------------------- */
 
-        zcopy_(ncv, &workl[invsub + *ncv - 1], &ldq, &workl[ihbds], &c__1);
+        zcopy_(ncv, &workl[invsub + *ncv - 1], &ldq, &workl[ihbds], &i_one);
 
         /* ------------------------------------------ */
         /* Place the computed eigenvalues of H into D */
@@ -617,7 +626,7 @@ int zneupd_(logical *rvec, const char *howmny, logical *select, a_dcomplex *d, a
 
         if (strcmp(type, "REGULR") == 0)
         {
-            zcopy_(&nconv, &workl[iheig], &c__1, d, &c__1);
+            zcopy_(&nconv, &workl[iheig], &i_one, d, &i_one);
         }
 
         /* -------------------------------------------------------- */
@@ -660,7 +669,7 @@ int zneupd_(logical *rvec, const char *howmny, logical *select, a_dcomplex *d, a
                 z__1.r = -1.0, z__1.i = -0.0;
                 zscal_(&nconv, &z__1, &workl[iuptri + j - 1], &ldq);
                 z__1.r = -1.0, z__1.i = -0.0;
-                zscal_(&nconv, &z__1, &workl[iuptri + (j - 1) * ldq], &c__1);
+                zscal_(&nconv, &z__1, &workl[iuptri + (j - 1) * ldq], &i_one);
             }
         }
 
@@ -684,7 +693,7 @@ int zneupd_(logical *rvec, const char *howmny, logical *select, a_dcomplex *d, a
                 }
             }
 
-            ztrevc_("R", "S", &select[1], ncv, &workl[iuptri], &ldq, vl, &c__1, &workl[invsub], &ldq, ncv, &outncv, workev,rwork, &ierr);
+            ztrevc_("R", "S", &select[1], ncv, &workl[iuptri], &ldq, vl, &i_one, &workl[invsub], &ldq, ncv, &outncv, workev,rwork, &ierr);
 
             if (ierr != 0)
             {
@@ -702,9 +711,9 @@ int zneupd_(logical *rvec, const char *howmny, logical *select, a_dcomplex *d, a
 
             for (j = 0; j < nconv; ++j)
             {
-                rtemp = dznrm2_(ncv, &workl[invsub + j * ldq], &c__1);
+                rtemp = dznrm2_(ncv, &workl[invsub + j * ldq], &i_one);
                 rtemp = 1.0 / rtemp;
-                zdscal_(ncv, &rtemp, &workl[invsub + j * ldq], &c__1);
+                zdscal_(ncv, &rtemp, &workl[invsub + j * ldq], &i_one);
 
                 /* ---------------------------------------- */
                 /* Ritz estimates can be obtained by taking */
@@ -716,14 +725,14 @@ int zneupd_(logical *rvec, const char *howmny, logical *select, a_dcomplex *d, a
                 /* ---------------------------------------- */
 
                 i__2 = j + 1;
-                zdotc_(&z__1, &i__2, &workl[ihbds], &c__1, &workl[invsub + j * ldq], &c__1);
+                zdotc_(&z__1, &i__2, &workl[ihbds], &i_one, &workl[invsub + j * ldq], &i_one);
                 workev[j].r = z__1.r, workev[j].i = z__1.i;
             }
 
 #ifndef NO_TRACE
             if (msglvl > 2)
             {
-                zcopy_(&nconv, &workl[invsub + *ncv - 1], &ldq, &workl[ihbds],&c__1);
+                zcopy_(&nconv, &workl[invsub + *ncv - 1], &ldq, &workl[ihbds],&i_one);
                 zvout_(nconv, &workl[ihbds], debug_1.ndigit, "_neupd: Last row of the eigenvector matrix for T");
                 if (msglvl > 3)
                 {
@@ -736,7 +745,7 @@ int zneupd_(logical *rvec, const char *howmny, logical *select, a_dcomplex *d, a
             /* Copy Ritz estimates into workl(ihbds) */
             /* ------------------------------------- */
 
-            zcopy_(&nconv, workev, &c__1, &workl[ihbds], &c__1);
+            zcopy_(&nconv, workev, &i_one, &workl[ihbds], &i_one);
 
             /* -------------------------------------------- */
             /* The eigenvector matrix Q of T is triangular. */
@@ -753,9 +762,9 @@ int zneupd_(logical *rvec, const char *howmny, logical *select, a_dcomplex *d, a
         /* Place the Ritz values computed ZNAUPD into D.    */
         /* ------------------------------------------------ */
 
-        zcopy_(&nconv, &workl[ritz], &c__1, d, &c__1);
-        zcopy_(&nconv, &workl[ritz], &c__1, &workl[iheig], &c__1);
-        zcopy_(&nconv, &workl[bounds], &c__1, &workl[ihbds], &c__1);
+        zcopy_(&nconv, &workl[ritz], &i_one, d, &i_one);
+        zcopy_(&nconv, &workl[ritz], &i_one, &workl[iheig], &i_one);
+        zcopy_(&nconv, &workl[bounds], &i_one, &workl[ihbds], &i_one);
     }
 
     /* ---------------------------------------------- */
@@ -768,7 +777,7 @@ int zneupd_(logical *rvec, const char *howmny, logical *select, a_dcomplex *d, a
     {
         if (*rvec)
         {
-            zscal_(ncv, &rnorm, &workl[ihbds], &c__1);
+            zscal_(ncv, &rnorm, &workl[ihbds], &i_one);
         }
     }
     else
@@ -781,7 +790,7 @@ int zneupd_(logical *rvec, const char *howmny, logical *select, a_dcomplex *d, a
 
         if (*rvec)
         {
-            zscal_(ncv, &rnorm, &workl[ihbds], &c__1);
+            zscal_(ncv, &rnorm, &workl[ihbds], &i_one);
         }
 
         i__1 = *ncv;
@@ -858,7 +867,7 @@ int zneupd_(logical *rvec, const char *howmny, logical *select, a_dcomplex *d, a
         /* purify all the Ritz vectors together. */
         /* ------------------------------------- */
 
-        zgeru_(n, &nconv, &z_one, resid, &c__1, workev, &c__1, z, ldz);
+        zgeru_(n, &nconv, &z_one, resid, &i_one, workev, &i_one, z, ldz);
     }
 
 L9000:

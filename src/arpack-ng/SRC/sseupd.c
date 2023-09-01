@@ -3,6 +3,11 @@
 #include <math.h>
 #include "arpack_internal.h"
 
+/* Constants */
+static logical b_true = TRUE_;
+static int i_one  = 1;
+static float s_one = 1.0f;
+
 /**
  * \BeginDoc
  *
@@ -224,6 +229,9 @@ int sseupd_(logical *rvec, const char *howmny, logical *select, float *d, float 
             float *resid, int *ncv, float *v, int *ldv, int *iparam, int *ipntr,
             float *workd, float *workl, int *lworkl, int *info)
 {
+    /* Constants */
+    const double d_23 = 0.666666666666666667;
+
     /* System generated locals */
     int i__1;
     float r__1, r__2, r__3;
@@ -438,7 +446,7 @@ int sseupd_(logical *rvec, const char *howmny, logical *select, float *d, float 
     }
     else if (*bmat == 'G')
     {
-        bnorm2 = snrm2_(n, workd, &c__1);
+        bnorm2 = snrm2_(n, workd, &i_one);
     }
 
 #ifndef NO_TRACE
@@ -539,8 +547,8 @@ int sseupd_(logical *rvec, const char *howmny, logical *select, float *d, float 
         /* --------------------------------------------------------- */
 
         i__1 = *ncv - 1;
-        scopy_(&i__1, &workl[ih + 1], &c__1, &workl[ihb], &c__1);
-        scopy_(ncv, &workl[ih + ldh], &c__1, &workl[ihd], &c__1);
+        scopy_(&i__1, &workl[ih + 1], &i_one, &workl[ihb], &i_one);
+        scopy_(ncv, &workl[ih + ldh], &i_one, &workl[ihd], &i_one);
 
         ssteqr_("I", ncv, &workl[ihd], &workl[ihb], &workl[iq], &ldq, &workl[iw], &ierr);
 
@@ -553,7 +561,7 @@ int sseupd_(logical *rvec, const char *howmny, logical *select, float *d, float 
 #ifndef NO_TRACE
         if (msglvl > 1)
         {
-            scopy_(ncv, &workl[iq + *ncv - 1], &ldq, &workl[iw], &c__1);
+            scopy_(ncv, &workl[iq + *ncv - 1], &ldq, &workl[iw], &i_one);
             svout_(*ncv, &workl[ihd], debug_1.ndigit, "_seupd: NCV Ritz values of the final H matrix");
             svout_(*ncv, &workl[iw], debug_1.ndigit, "_seupd: last row of the eigenvector matrix for H");
         }
@@ -610,9 +618,9 @@ L20:
                 temp = workl[ihd + leftptr - 1];
                 workl[ihd + leftptr - 1] = workl[ihd + rghtptr - 1];
                 workl[ihd + rghtptr - 1] = temp;
-                scopy_(ncv, &workl[iq + *ncv * (leftptr - 1)], &c__1, &workl[iw], &c__1);
-                scopy_(ncv, &workl[iq + *ncv * (rghtptr - 1)], &c__1, &workl[iq + *ncv * (leftptr - 1)], &c__1);
-                scopy_(ncv, &workl[iw], &c__1, &workl[iq + *ncv * (rghtptr - 1)], &c__1);
+                scopy_(ncv, &workl[iq + *ncv * (leftptr - 1)], &i_one, &workl[iw], &i_one);
+                scopy_(ncv, &workl[iq + *ncv * (rghtptr - 1)], &i_one, &workl[iq + *ncv * (leftptr - 1)], &i_one);
+                scopy_(ncv, &workl[iw], &i_one, &workl[iq + *ncv * (rghtptr - 1)], &i_one);
                 ++leftptr;
                 --rghtptr;
             }
@@ -635,7 +643,7 @@ L30:
         /* Load the converged Ritz values into D. */
         /* -------------------------------------- */
 
-        scopy_(&nconv, &workl[ihd], &c__1, d, &c__1);
+        scopy_(&nconv, &workl[ihd], &i_one, d, &i_one);
     }
     else
     {
@@ -643,8 +651,8 @@ L30:
         /* Ritz vectors not required. Load Ritz values into D. */
         /* --------------------------------------------------- */
 
-        scopy_(&nconv, &workl[ritz], &c__1, d, &c__1);
-        scopy_(ncv, &workl[ritz], &c__1, &workl[ihd], &c__1);
+        scopy_(&nconv, &workl[ritz], &i_one, d, &i_one);
+        scopy_(ncv, &workl[ritz], &i_one, &workl[ihd], &i_one);
     }
 
     /* ---------------------------------------------------------------- */
@@ -666,7 +674,7 @@ L30:
         }
         else
         {
-            scopy_(ncv, &workl[bounds], &c__1, &workl[ihb], &c__1);
+            scopy_(ncv, &workl[bounds], &i_one, &workl[ihb], &i_one);
         }
     }
     else
@@ -686,7 +694,7 @@ L30:
         /*  They are only reordered.                                   */
         /* ----------------------------------------------------------- */
 
-        scopy_(ncv, &workl[ihd], &c__1, &workl[iw], &c__1);
+        scopy_(ncv, &workl[ihd], &i_one, &workl[iw], &i_one);
         if (strcmp(type, "SHIFTI") == 0)
         {
             i__1 = *ncv;
@@ -727,18 +735,18 @@ L30:
         /*  Ritz vector purification.                                  */
         /* ----------------------------------------------------------- */
 
-        scopy_(&nconv, &workl[ihd], &c__1, d, &c__1);
-        ssortr_("LA", &c_true, &nconv, &workl[ihd], &workl[iw]);
+        scopy_(&nconv, &workl[ihd], &i_one, d, &i_one);
+        ssortr_("LA", &b_true, &nconv, &workl[ihd], &workl[iw]);
         if (*rvec)
         {
             ssesrt_("LA", rvec, &nconv, d, ncv, &workl[iq], &ldq);
         }
         else
         {
-            scopy_(ncv, &workl[bounds], &c__1, &workl[ihb], &c__1);
+            scopy_(ncv, &workl[bounds], &i_one, &workl[ihb], &i_one);
             r__1 = bnorm2 / rnorm;
-            sscal_(ncv, &r__1, &workl[ihb], &c__1);
-            ssortr_("LA", &c_true, &nconv, d, &workl[ihb]);
+            sscal_(ncv, &r__1, &workl[ihb], &i_one);
+            ssortr_("LA", &b_true, &nconv, d, &workl[ihb]);
         }
     }
 
@@ -781,7 +789,7 @@ L30:
             workl[ihb + j - 1] = 0.0f;
         }
         workl[ihb + *ncv - 1] = 1.0f;
-        sorm2r_("L", "T", ncv, &c__1, &nconv, &workl[iq], &ldq, &workl[iw + *ncv], &workl[ihb], ncv, &temp, &ierr);
+        sorm2r_("L", "T", ncv, &i_one, &nconv, &workl[iq], &ldq, &workl[iw + *ncv], &workl[ihb], ncv, &temp, &ierr);
 
         /* --------------------------------------------------- */
         /* Make a copy of the last row into                    */
@@ -818,7 +826,7 @@ L30:
         /* *  Determine Ritz estimates of the lambda.      */
         /* ----------------------------------------------- */
 
-        sscal_(ncv, &bnorm2, &workl[ihb], &c__1);
+        sscal_(ncv, &bnorm2, &workl[ihb], &i_one);
         if (strcmp(type, "SHIFTI") == 0)
         {
             i__1 = *ncv;
@@ -887,7 +895,7 @@ L30:
 
     if (strcmp(type, "REGULR") != 0)
     {
-        sger_(n, &nconv, &s_one, resid, &c__1, &workl[iw], &c__1, z, ldz);
+        sger_(n, &nconv, &s_one, resid, &i_one, &workl[iw], &i_one, z, ldz);
     }
 
 L9000:

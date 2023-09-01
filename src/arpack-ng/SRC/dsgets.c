@@ -2,6 +2,10 @@
 
 #include "arpack_internal.h"
 
+/* Constants */
+static logical b_true = TRUE_;
+static int i_one  = 1;
+
 /**
  * \BeginDoc
  *
@@ -126,13 +130,13 @@ int dsgets_(int *ishift, const char *which, int *kev, int *np, double *ritz,
         /* --------------------------------------------------- */
 
         i__1 = *kev + *np;
-        dsortr_("LA", &c_true, &i__1, ritz, bounds);
+        dsortr_("LA", &b_true, &i__1, ritz, bounds);
         kevd2 = *kev / 2;
         if (*kev > 1)
         {
             i__1 = min(kevd2,*np);
-            dswap_(&i__1, ritz, &c__1, &ritz[max(kevd2,*np)], &c__1);
-            dswap_(&i__1, bounds, &c__1, &bounds[max(kevd2,*np)], &c__1);
+            dswap_(&i__1, ritz, &i_one, &ritz[max(kevd2,*np)], &i_one);
+            dswap_(&i__1, bounds, &i_one, &bounds[max(kevd2,*np)], &i_one);
         }
     }
     else
@@ -146,7 +150,7 @@ int dsgets_(int *ishift, const char *which, int *kev, int *np, double *ritz,
         /* -------------------------------------------------- */
 
         i__1 = *kev + *np;
-        dsortr_(which, &c_true, &i__1, ritz, bounds);
+        dsortr_(which, &b_true, &i__1, ritz, bounds);
     }
 
     if (*ishift == 1 && *np > 0)
@@ -159,8 +163,8 @@ int dsgets_(int *ishift, const char *which, int *kev, int *np, double *ritz,
         /* are applied in subroutine dsapps.                     */
         /* ----------------------------------------------------- */
 
-        dsortr_("SM", &c_true, np, bounds, ritz);
-        dcopy_(np, ritz, &c__1, shifts, &c__1);
+        dsortr_("SM", &b_true, np, bounds, ritz);
+        dcopy_(np, ritz, &i_one, shifts, &i_one);
     }
 
 #ifndef NO_TIMER

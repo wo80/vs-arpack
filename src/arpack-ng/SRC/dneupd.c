@@ -3,6 +3,13 @@
 #include <math.h>
 #include "arpack_internal.h"
 
+/* Constants */
+static logical b_true = TRUE_;
+static int i_one = 1;
+static double d_zero = 0.0;
+static double d_one  = 1.0;
+static double d_m1  = -1.0;
+
 /**
  * \BeginDoc
  *
@@ -311,6 +318,9 @@ int dneupd_(logical *rvec, const char *howmny, logical *select, double *dr, doub
             int *ldv, int *iparam, int *ipntr, double *workd, double *workl,
             int *lworkl, int *info)
 {
+    /* Constants */
+    const double d_23 = 0.666666666666666667;
+
     /* System generated locals */
     int i__1;
     double d__1, d__2;
@@ -614,10 +624,10 @@ int dneupd_(logical *rvec, const char *howmny, logical *select, double *dr, doub
         /* ---------------------------------------------------------- */
 
         i__1 = ldh * *ncv;
-        dcopy_(&i__1, &workl[ih], &c__1, &workl[iuptri], &c__1);
+        dcopy_(&i__1, &workl[ih], &i_one, &workl[iuptri], &i_one);
         dlaset_("A", ncv, ncv, &d_zero, &d_one, &workl[invsub], &ldq);
-        dlahqr_(&c_true, &c_true, ncv, &c__1, ncv, &workl[iuptri], &ldh, &workl[iheigr], &workl[iheigi], &c__1, ncv, &workl[invsub], &ldq, &ierr);
-        dcopy_(ncv, &workl[invsub + *ncv - 1], &ldq, &workl[ihbds], &c__1);
+        dlahqr_(&b_true, &b_true, ncv, &i_one, ncv, &workl[iuptri], &ldh, &workl[iheigr], &workl[iheigi], &i_one, ncv, &workl[invsub], &ldq, &ierr);
+        dcopy_(ncv, &workl[invsub + *ncv - 1], &ldq, &workl[ihbds], &i_one);
 
         if (ierr != 0)
         {
@@ -644,7 +654,7 @@ int dneupd_(logical *rvec, const char *howmny, logical *select, double *dr, doub
             /* Reorder the computed upper quasi-triangular matrix. */
             /* --------------------------------------------------- */
 
-            dtrsen_("N", "V", &select[1], ncv, &workl[iuptri], &ldh, &workl[invsub], &ldq, &workl[iheigr], &workl[iheigi], &nconv2, &conds, &sep, &workl[ihbds], ncv, iwork, &c__1, &ierr);
+            dtrsen_("N", "V", &select[1], ncv, &workl[iuptri], &ldh, &workl[invsub], &ldq, &workl[iheigr], &workl[iheigi], &nconv2, &conds, &sep, &workl[ihbds], ncv, iwork, &i_one, &ierr);
 
             if (nconv2 < nconv)
             {
@@ -676,7 +686,7 @@ int dneupd_(logical *rvec, const char *howmny, logical *select, double *dr, doub
         /* converged Ritz values.                */
         /* ------------------------------------- */
 
-        dcopy_(ncv, &workl[invsub + *ncv - 1], &ldq, &workl[ihbds], &c__1);
+        dcopy_(ncv, &workl[invsub + *ncv - 1], &ldq, &workl[ihbds], &i_one);
 
         /* -------------------------------------------------- */
         /* Place the computed eigenvalues of H into DR and DI */
@@ -685,8 +695,8 @@ int dneupd_(logical *rvec, const char *howmny, logical *select, double *dr, doub
 
         if (strcmp(type, "REGULR") == 0)
         {
-            dcopy_(&nconv, &workl[iheigr], &c__1, dr, &c__1);
-            dcopy_(&nconv, &workl[iheigi], &c__1, di, &c__1);
+            dcopy_(&nconv, &workl[iheigr], &i_one, dr, &i_one);
+            dcopy_(&nconv, &workl[iheigi], &i_one, di, &i_one);
         }
 
         /* -------------------------------------------------------- */
@@ -726,7 +736,7 @@ int dneupd_(logical *rvec, const char *howmny, logical *select, double *dr, doub
             if (workl[invsub + (j - 1) * ldq + j - 1] < 0.0)
             {
                 dscal_(&nconv, &d_m1, &workl[iuptri + j - 1], &ldq);
-                dscal_(&nconv, &d_m1, &workl[iuptri + (j - 1) * ldq], &c__1);
+                dscal_(&nconv, &d_m1, &workl[iuptri + (j - 1) * ldq], &i_one);
             }
         }
 
@@ -750,7 +760,7 @@ int dneupd_(logical *rvec, const char *howmny, logical *select, double *dr, doub
                 }
             }
 
-            dtrevc_("R", "S", &select[1], ncv, &workl[iuptri], &ldq, vl, &c__1, &workl[invsub], &ldq, ncv, &outncv, workev,&ierr);
+            dtrevc_("R", "S", &select[1], ncv, &workl[iuptri], &ldq, vl, &i_one, &workl[invsub], &ldq, ncv, &outncv, workev,&ierr);
 
             if (ierr != 0)
             {
@@ -775,9 +785,9 @@ int dneupd_(logical *rvec, const char *howmny, logical *select, double *dr, doub
                     /* real eigenvalue case */
                     /* -------------------- */
 
-                    temp = dnrm2_(ncv, &workl[invsub + (j - 1) * ldq], &c__1);
+                    temp = dnrm2_(ncv, &workl[invsub + (j - 1) * ldq], &i_one);
                     d__1 = 1.0 / temp;
-                    dscal_(ncv, &d__1, &workl[invsub + (j - 1) * ldq], &c__1);
+                    dscal_(ncv, &d__1, &workl[invsub + (j - 1) * ldq], &i_one);
                 }
                 else
                 {
@@ -791,13 +801,13 @@ int dneupd_(logical *rvec, const char *howmny, logical *select, double *dr, doub
 
                     if (iconj == 0)
                     {
-                        d__1 = dnrm2_(ncv, &workl[invsub + (j - 1) * ldq], &c__1);
-                        d__2 = dnrm2_(ncv, &workl[invsub + j * ldq], &c__1);
+                        d__1 = dnrm2_(ncv, &workl[invsub + (j - 1) * ldq], &i_one);
+                        d__2 = dnrm2_(ncv, &workl[invsub + j * ldq], &i_one);
                         temp = dlapy2_(&d__1, &d__2);
                         d__1 = 1.0 / temp;
-                        dscal_(ncv, &d__1, &workl[invsub + (j - 1) * ldq], &c__1);
+                        dscal_(ncv, &d__1, &workl[invsub + (j - 1) * ldq], &i_one);
                         d__1 = 1.0 / temp;
-                        dscal_(ncv, &d__1, &workl[invsub + j * ldq], &c__1);
+                        dscal_(ncv, &d__1, &workl[invsub + j * ldq], &i_one);
                         iconj = 1;
                     }
                     else
@@ -807,7 +817,7 @@ int dneupd_(logical *rvec, const char *howmny, logical *select, double *dr, doub
                 }
             }
 
-            dgemv_("T", ncv, &nconv, &d_one, &workl[invsub], &ldq, &workl[ihbds], &c__1, &d_zero, workev, &c__1);
+            dgemv_("T", ncv, &nconv, &d_one, &workl[invsub], &ldq, &workl[ihbds], &i_one, &d_zero, workev, &i_one);
 
             iconj = 0;
             for (j = 0; j < nconv; ++j)
@@ -836,7 +846,7 @@ int dneupd_(logical *rvec, const char *howmny, logical *select, double *dr, doub
 #ifndef NO_TRACE
             if (msglvl > 2)
             {
-                dcopy_(ncv, &workl[invsub + *ncv - 1], &ldq, &workl[ihbds], &c__1);
+                dcopy_(ncv, &workl[invsub + *ncv - 1], &ldq, &workl[ihbds], &i_one);
                 dvout_(*ncv, &workl[ihbds], debug_1.ndigit, "_neupd: Last row of the eigenvector matrix for T");
                 if (msglvl > 3)
                 {
@@ -849,7 +859,7 @@ int dneupd_(logical *rvec, const char *howmny, logical *select, double *dr, doub
             /* Copy Ritz estimates into workl(ihbds) */
             /* ------------------------------------- */
 
-            dcopy_(&nconv, workev, &c__1, &workl[ihbds], &c__1);
+            dcopy_(&nconv, workev, &i_one, &workl[ihbds], &i_one);
 
             /* ------------------------------------------------------- */
             /* Compute the QR factorization of the eigenvector matrix  */
@@ -878,11 +888,11 @@ int dneupd_(logical *rvec, const char *howmny, logical *select, double *dr, doub
         /* Place the Ritz values computed DNAUPD into DR and DI */
         /* ---------------------------------------------------- */
 
-        dcopy_(&nconv, &workl[ritzr], &c__1, dr, &c__1);
-        dcopy_(&nconv, &workl[ritzi], &c__1, di, &c__1);
-        dcopy_(&nconv, &workl[ritzr], &c__1, &workl[iheigr], &c__1);
-        dcopy_(&nconv, &workl[ritzi], &c__1, &workl[iheigi], &c__1);
-        dcopy_(&nconv, &workl[bounds], &c__1, &workl[ihbds], &c__1);
+        dcopy_(&nconv, &workl[ritzr], &i_one, dr, &i_one);
+        dcopy_(&nconv, &workl[ritzi], &i_one, di, &i_one);
+        dcopy_(&nconv, &workl[ritzr], &i_one, &workl[iheigr], &i_one);
+        dcopy_(&nconv, &workl[ritzi], &i_one, &workl[iheigi], &i_one);
+        dcopy_(&nconv, &workl[bounds], &i_one, &workl[ihbds], &i_one);
     }
 
     /* ---------------------------------------------- */
@@ -895,7 +905,7 @@ int dneupd_(logical *rvec, const char *howmny, logical *select, double *dr, doub
     {
         if (*rvec)
         {
-            dscal_(ncv, &rnorm, &workl[ihbds], &c__1);
+            dscal_(ncv, &rnorm, &workl[ihbds], &i_one);
         }
     }
     else
@@ -910,7 +920,7 @@ int dneupd_(logical *rvec, const char *howmny, logical *select, double *dr, doub
         {
             if (*rvec)
             {
-                dscal_(ncv, &rnorm, &workl[ihbds], &c__1);
+                dscal_(ncv, &rnorm, &workl[ihbds], &i_one);
             }
 
             i__1 = *ncv;
@@ -956,14 +966,14 @@ int dneupd_(logical *rvec, const char *howmny, logical *select, double *dr, doub
                 workl[iheigi + k] = -workl[iheigi + k] / temp / temp + *sigmai;
             }
 
-            dcopy_(&nconv, &workl[iheigr], &c__1, dr, &c__1);
-            dcopy_(&nconv, &workl[iheigi], &c__1, di, &c__1);
+            dcopy_(&nconv, &workl[iheigr], &i_one, dr, &i_one);
+            dcopy_(&nconv, &workl[iheigi], &i_one, di, &i_one);
 
         }
         else if (strcmp(type, "REALPT") == 0 || strcmp(type, "IMAGPT") == 0)
         {
-            dcopy_(&nconv, &workl[iheigr], &c__1, dr, &c__1);
-            dcopy_(&nconv, &workl[iheigi], &c__1, di, &c__1);
+            dcopy_(&nconv, &workl[iheigr], &i_one, dr, &i_one);
+            dcopy_(&nconv, &workl[iheigi], &i_one, di, &i_one);
         }
     }
 
@@ -1030,7 +1040,7 @@ int dneupd_(logical *rvec, const char *howmny, logical *select, double *dr, doub
         /* purify all the Ritz vectors together. */
         /* ------------------------------------- */
 
-        dger_(n, &nconv, &d_one, resid, &c__1, workev, &c__1, z, ldz);
+        dger_(n, &nconv, &d_one, resid, &i_one, workev, &i_one, z, ldz);
     }
 
 L9000:

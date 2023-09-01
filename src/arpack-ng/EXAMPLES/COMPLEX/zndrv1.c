@@ -6,7 +6,7 @@
 int zndrv1_av_(const int nx, a_dcomplex* v, a_dcomplex* w);
 int zndrv1_tv_(const int nx, a_dcomplex* x, a_dcomplex* y);
 
-static int c__1 = 1;
+static int i_one = 1;
 
 /**
  * \BeginDoc
@@ -275,11 +275,11 @@ L10:
         zndrv1_av_(nx, &v[k], ax);
         i__2 = j - 1;
         z__1.r = -d[i__2].r, z__1.i = -d[i__2].i;
-        zaxpy_(&n, &z__1, &v[k], &c__1, ax, &c__1);
+        zaxpy_(&n, &z__1, &v[k], &i_one, ax, &i_one);
         i__2 = j - 1;
         rd[j - 1] = d[i__2].r;
         rd[j + 29] = d[i__2].i;
-        rd[j + 59] = dznrm2_(&n, ax, &c__1);
+        rd[j + 59] = dznrm2_(&n, ax, &i_one);
         rd[j + 59] /= dlapy2_(&rd[j - 1], &rd[j + 29]);
 
     }
@@ -380,20 +380,20 @@ int zndrv1_av_(const int nx, a_dcomplex *v, a_dcomplex *w)
     z.i = -0.0;
 
     zndrv1_tv_(nx, &v[1], &w[1]);
-    zaxpy_(&nx, &z, &v[nx + 1], &c__1, &w[1], &c__1);
+    zaxpy_(&nx, &z, &v[nx + 1], &i_one, &w[1], &i_one);
 
     i__1 = nx - 1;
     for (j = 2; j <= i__1; ++j)
     {
         lo = (j - 1) * nx;
         zndrv1_tv_(nx, &v[lo + 1], &w[lo + 1]);
-        zaxpy_(&nx, &z, &v[lo - nx + 1], &c__1, &w[lo + 1], &c__1);
-        zaxpy_(&nx, &z, &v[lo + nx + 1], &c__1, &w[lo + 1], &c__1);
+        zaxpy_(&nx, &z, &v[lo - nx + 1], &i_one, &w[lo + 1], &i_one);
+        zaxpy_(&nx, &z, &v[lo + nx + 1], &i_one, &w[lo + 1], &i_one);
     }
 
     lo = (nx - 1) * nx;
     zndrv1_tv_(nx, &v[lo + 1], &w[lo + 1]);
-    zaxpy_(&nx, &z, &v[lo - nx + 1], &c__1, &w[lo + 1], &c__1);
+    zaxpy_(&nx, &z, &v[lo - nx + 1], &i_one, &w[lo + 1], &i_one);
 
     return 0;
 } /* av_ */

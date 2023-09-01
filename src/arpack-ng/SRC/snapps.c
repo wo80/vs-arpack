@@ -2,6 +2,12 @@
 
 #include "arpack_internal.h"
 
+/* Constants */
+static int i_one  = 1;
+static float s_zero = 0.0f;
+static float s_one  = 1.0f;
+static float s_m1  = -1.0f;
+
 /**
  * \BeginDoc
  *
@@ -493,7 +499,7 @@ L40:
                 /* G is of the form I - tau*( 1 u )' * ( 1 u' ).       */
                 /* --------------------------------------------------- */
 
-                slarfg_(&nr, u, &u[1], &c__1, &tau);
+                slarfg_(&nr, u, &u[1], &i_one, &tau);
 
                 if (i > istart)
                 {
@@ -511,7 +517,7 @@ L40:
                 /* ------------------------------------ */
 
                 i__3 = kplusp - i + 1;
-                slarf_("L", &nr, &i__3, u, &c__1, &tau, &h[i + i * h_dim], ldh, workl);
+                slarf_("L", &nr, &i__3, u, &i_one, &tau, &h[i + i * h_dim], ldh, workl);
 
                 /* ------------------------------------- */
                 /* Apply the reflector to the right of H */
@@ -520,13 +526,13 @@ L40:
                 /* Computing MIN */
                 i__3 = i + 3;
                 ir = min(i__3,iend);
-                slarf_("R", &ir, &nr, u, &c__1, &tau, &h[i * h_dim + 1], ldh, workl);
+                slarf_("R", &ir, &nr, u, &i_one, &tau, &h[i * h_dim + 1], ldh, workl);
 
                 /* --------------------------------------------------- */
                 /* Accumulate the reflector in the matrix Q;  Q <- Q*G */
                 /* --------------------------------------------------- */
 
-                slarf_("R", &kplusp, &nr, u, &c__1, &tau, &q[i * q_dim + 1], ldq, workl);
+                slarf_("R", &kplusp, &nr, u, &i_one, &tau, &q[i * q_dim + 1], ldq, workl);
 
                 /* -------------------------- */
                 /* Prepare for next reflector */
@@ -585,11 +591,11 @@ L110:
             /* Computing MIN */
             i__3 = j + 2;
             i__2 = min(i__3,kplusp);
-            sscal_(&i__2, &s_m1, &h[(j + 1) * h_dim + 1], &c__1);
+            sscal_(&i__2, &s_m1, &h[(j + 1) * h_dim + 1], &i_one);
             /* Computing MIN */
             i__3 = j + *np + 1;
             i__2 = min(i__3,kplusp);
-            sscal_(&i__2, &s_m1, &q[(j + 1) * q_dim + 1], &c__1);
+            sscal_(&i__2, &s_m1, &q[(j + 1) * q_dim + 1], &i_one);
         }
     }
 
@@ -627,7 +633,7 @@ L110:
 
     if (h[*kev + 1 + *kev * h_dim] > 0.0f)
     {
-        sgemv_("N", n, &kplusp, &s_one, &v[v_offset], ldv, &q[(*kev + 1) * q_dim + 1], &c__1, &s_zero, &workd[*n], &c__1);
+        sgemv_("N", n, &kplusp, &s_one, &v[v_offset], ldv, &q[(*kev + 1) * q_dim + 1], &i_one, &s_zero, &workd[*n], &i_one);
     }
 
     /* -------------------------------------------------------- */
@@ -639,8 +645,8 @@ L110:
     for (i = 1; i <= i__1; ++i)
     {
         i__2 = kplusp - i + 1;
-        sgemv_("N", n, &i__2, &s_one, &v[v_offset], ldv, &q[(*kev - i + 1) * q_dim + 1], &c__1, &s_zero, workd, &c__1);
-        scopy_(n, workd, &c__1, &v[(kplusp - i + 1) * v_dim + 1], &c__1);
+        sgemv_("N", n, &i__2, &s_one, &v[v_offset], ldv, &q[(*kev - i + 1) * q_dim + 1], &i_one, &s_zero, workd, &i_one);
+        scopy_(n, workd, &i_one, &v[(kplusp - i + 1) * v_dim + 1], &i_one);
     }
 
     /* ----------------------------------------------- */
@@ -655,7 +661,7 @@ L110:
 
     if (h[*kev + 1 + *kev * h_dim] > 0.0f)
     {
-        scopy_(n, &workd[*n], &c__1, &v[(*kev + 1) * v_dim + 1], &c__1);
+        scopy_(n, &workd[*n], &i_one, &v[(*kev + 1) * v_dim + 1], &i_one);
     }
 
     /* ----------------------------------- */
@@ -666,10 +672,10 @@ L110:
     /*    betak = e_{kev+1}'*H*e_{kev}     */
     /* ----------------------------------- */
 
-    sscal_(n, &q[kplusp + *kev * q_dim], resid, &c__1);
+    sscal_(n, &q[kplusp + *kev * q_dim], resid, &i_one);
     if (h[*kev + 1 + *kev * h_dim] > 0.0f)
     {
-        saxpy_(n, &h[*kev + 1 + *kev * h_dim], &v[(*kev + 1) * v_dim + 1],&c__1, resid, &c__1);
+        saxpy_(n, &h[*kev + 1 + *kev * h_dim], &v[(*kev + 1) * v_dim + 1],&i_one, resid, &i_one);
     }
 
 #ifndef NO_TRACE

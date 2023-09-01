@@ -7,7 +7,7 @@ int ssdrv2_av_(const int nx, float* v, float* w);
 
 extern int smout_(const int, const int, const float*, const int, const int, const char*);
 
-static int c__1 = 1;
+static int i_one = 1;
 
 /**
  * \BeginDoc
@@ -163,7 +163,7 @@ int main()
         ad[j - 1] = 2.0f / h2 - sigma;
         adl[j - 1] = -1.0f / h2;
     }
-    scopy_(&n, adl, &c__1, adu, &c__1);
+    scopy_(&n, adl, &i_one, adu, &i_one);
     sgttrf_(&n, adl, ad, adu, adu2, ipiv, &ierr);
     if (ierr != 0)
     {
@@ -198,9 +198,9 @@ L10:
         /* workd(ipntr(2)).                       */
         /* -------------------------------------- */
 
-        scopy_(&n, &workd[ipntr[0] - 1], &c__1, &workd[ipntr[1] - 1], &c__1);
+        scopy_(&n, &workd[ipntr[0] - 1], &i_one, &workd[ipntr[1] - 1], &i_one);
 
-        sgttrs_("N", &n, &c__1, adl, ad, adu, adu2, ipiv, &workd[ipntr[1] - 1], &n, &ierr);
+        sgttrs_("N", &n, &i_one, adl, ad, adu, adu2, ipiv, &workd[ipntr[1] - 1], &n, &ierr);
         if (ierr != 0)
         {
             printf(" \n");
@@ -295,8 +295,8 @@ L10:
 
         ssdrv2_av_(n, &v[k], ax);
         r__1 = -d[j - 1];
-        saxpy_(&n, &r__1, &v[k], &c__1, ax, &c__1);
-        d[j + 24] = snrm2_(&n, ax, &c__1);
+        saxpy_(&n, &r__1, &v[k], &i_one, ax, &i_one);
+        d[j + 24] = snrm2_(&n, ax, &i_one);
         d[j + 24] /= (r__1 = d[j - 1], dabs(r__1));
 
     }
@@ -391,7 +391,7 @@ int ssdrv2_av_(const int n, float *v, float *w)
 
     h2 = 1.0f / (float) ((n + 1) * (n + 1));
     r__1 = 1.0f / h2;
-    sscal_(&n, &r__1, &w[1], &c__1);
+    sscal_(&n, &r__1, &w[1], &i_one);
     return 0;
 } /* av_ */
 

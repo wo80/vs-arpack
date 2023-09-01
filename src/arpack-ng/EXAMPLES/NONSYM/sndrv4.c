@@ -8,7 +8,7 @@ int sndrv4_mv_(const int n, float* v, float* w);
 
 extern int smout_(const int, const int, const float*, const int, const int, const char*);
 
-static int c__1 = 1;
+static int i_one = 1;
 
 #define RHO 10.0f
 
@@ -236,7 +236,7 @@ L20:
         /* ----------------------------------------- */
 
         sndrv4_mv_(n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
-        sgttrs_("N", &n, &c__1, dl, dd, du, du2, ipiv, &workd[ipntr[1] - 1], &n, &ierr);
+        sgttrs_("N", &n, &i_one, dl, dd, du, du2, ipiv, &workd[ipntr[1] - 1], &n, &ierr);
         if (ierr != 0)
         {
             printf(" \n");
@@ -262,8 +262,8 @@ L20:
         /* workd(ipntr(2)).                        */
         /* --------------------------------------- */
 
-        scopy_(&n, &workd[ipntr[2] - 1], &c__1, &workd[ipntr[1] - 1], &c__1);
-        sgttrs_("N", &n, &c__1, dl, dd, du, du2, ipiv, &workd[ipntr[1] - 1], &n, &ierr);
+        scopy_(&n, &workd[ipntr[2] - 1], &i_one, &workd[ipntr[1] - 1], &i_one);
+        sgttrs_("N", &n, &i_one, dl, dd, du, du2, ipiv, &workd[ipntr[1] - 1], &n, &ierr);
         if (ierr != 0)
         {
             printf(" \n");
@@ -385,8 +385,8 @@ L20:
             sndrv4_av_(n, &v[k], ax);
             sndrv4_mv_(n, &v[k], mx);
             r__1 = -d[j - 1];
-            saxpy_(&n, &r__1, mx, &c__1, ax, &c__1);
-            d[j + 49] = snrm2_(&n, ax, &c__1);
+            saxpy_(&n, &r__1, mx, &i_one, ax, &i_one);
+            d[j + 49] = snrm2_(&n, ax, &i_one);
             d[j + 49] /= (r__1 = d[j - 1], dabs(r__1));
         }
         else if (first)
@@ -401,18 +401,18 @@ L20:
             sndrv4_av_(n, &v[k], ax);
             sndrv4_mv_(n, &v[k], mx);
             r__1 = -d[j - 1];
-            saxpy_(&n, &r__1, mx, &c__1, ax, &c__1);
+            saxpy_(&n, &r__1, mx, &i_one, ax, &i_one);
             sndrv4_mv_(n, &v[j * n], mx);
-            saxpy_(&n, &d[j + 24], mx, &c__1, ax, &c__1);
-            d[j + 49] = snrm2_(&n, ax, &c__1);
+            saxpy_(&n, &d[j + 24], mx, &i_one, ax, &i_one);
+            d[j + 49] = snrm2_(&n, ax, &i_one);
             sndrv4_av_(n, &v[j * n], ax);
             sndrv4_mv_(n, &v[j * n], mx);
             r__1 = -d[j - 1];
-            saxpy_(&n, &r__1, mx, &c__1, ax, &c__1);
+            saxpy_(&n, &r__1, mx, &i_one, ax, &i_one);
             sndrv4_mv_(n, &v[k], mx);
             r__1 = -d[j + 24];
-            saxpy_(&n, &r__1, mx, &c__1, ax, &c__1);
-            r__1 = snrm2_(&n, ax, &c__1);
+            saxpy_(&n, &r__1, mx, &i_one, ax, &i_one);
+            r__1 = snrm2_(&n, ax, &i_one);
             d[j + 49] = slapy2_(&d[j + 49], &r__1);
             d[j + 49] /= slapy2_(&d[j - 1], &d[j + 24]);
             d[j + 50] = d[j + 49];
@@ -514,7 +514,7 @@ int sndrv4_mv_(const int n, float *v, float *w)
     w[n] = (v[n - 1] * 1.0f + v[n] * 4.0f) / 6.0f;
 
     h = 1.0f / (float) (n + 1);
-    sscal_(&n, &h, &w[1], &c__1);
+    sscal_(&n, &h, &w[1], &i_one);
     return 0;
 } /* mv_ */
 

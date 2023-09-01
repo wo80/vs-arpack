@@ -8,7 +8,7 @@ int sssimp_tv_(const int nx, float* x, float* y);
 
 extern int smout_(const int, const int, const float*, const int, const int, const char*);
 
-static int c__1 = 1;
+static int i_one = 1;
 static float s_m1 = -1.0f;
 
 /**
@@ -386,8 +386,8 @@ L10:
 
         sssimp_av_(nx, &v[k], ax);
         r__1 = -d[j - 1];
-        saxpy_(&n, &r__1, &v[k], &c__1, ax, &c__1);
-        d[j + 24] = snrm2_(&n, ax, &c__1);
+        saxpy_(&n, &r__1, &v[k], &i_one, ax, &i_one);
+        d[j + 24] = snrm2_(&n, ax, &i_one);
         d[j + 24] /= (r__1 = d[j - 1], dabs(r__1));
 
     }
@@ -479,27 +479,27 @@ int sssimp_av_(const int nx, float *v, float *w)
 
     /* Function Body */
     sssimp_tv_(nx, &v[1], &w[1]);
-    saxpy_(&nx, &s_m1, &v[nx + 1], &c__1, &w[1], &c__1);
+    saxpy_(&nx, &s_m1, &v[nx + 1], &i_one, &w[1], &i_one);
 
     i__1 = nx - 1;
     for (j = 2; j <= i__1; ++j)
     {
         lo = (j - 1) * nx;
         sssimp_tv_(nx, &v[lo + 1], &w[lo + 1]);
-        saxpy_(&nx, &s_m1, &v[lo - nx + 1], &c__1, &w[lo + 1], &c__1);
-        saxpy_(&nx, &s_m1, &v[lo + nx + 1], &c__1, &w[lo + 1], &c__1);
+        saxpy_(&nx, &s_m1, &v[lo - nx + 1], &i_one, &w[lo + 1], &i_one);
+        saxpy_(&nx, &s_m1, &v[lo + nx + 1], &i_one, &w[lo + 1], &i_one);
     }
 
     lo = (nx - 1) * nx;
     sssimp_tv_(nx, &v[lo + 1], &w[lo + 1]);
-    saxpy_(&nx, &s_m1, &v[lo - nx + 1], &c__1, &w[lo + 1], &c__1);
+    saxpy_(&nx, &s_m1, &v[lo - nx + 1], &i_one, &w[lo + 1], &i_one);
 
     /*     Scale the vector w by (1/h^2), where h is the mesh size */
 
     n2 = nx * nx;
     h2 = 1.0f / (float) ((nx + 1) * (nx + 1));
     r__1 = 1.0f / h2;
-    sscal_(&n2, &r__1, &w[1], &c__1);
+    sscal_(&n2, &r__1, &w[1], &i_one);
     return 0;
 } /* av_ */
 

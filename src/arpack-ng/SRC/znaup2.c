@@ -3,6 +3,11 @@
 #include <math.h>
 #include "arpack_internal.h"
 
+/* Constants */
+static logical b_true = TRUE_;
+static int i_zero = 0;
+static int i_one  = 1;
+
 /**
  * \BeginDoc
  *
@@ -172,6 +177,9 @@ int znaup2_(int *ido, const char *bmat, int *n, const char *which, int *nev, int
             a_dcomplex *q, int *ldq, a_dcomplex *workl, int *ipntr, a_dcomplex *workd, double *rwork,
             int *info)
 {
+    /* Constants */
+    const double d_23 = 0.666666666666666667;
+
     /* System generated locals */
     int i__1, i__2;
     double d__1, d__2, d__3, d__4;
@@ -266,7 +274,7 @@ int znaup2_(int *ido, const char *bmat, int *n, const char *which, int *nev, int
 
     if (getv0)
     {
-        zgetv0_(ido, bmat, &c__1, &initv, n, &c__1, v, ldv, resid, &rnorm, ipntr, workd, info);
+        zgetv0_(ido, bmat, &i_one, &initv, n, &i_one, v, ldv, resid, &rnorm, ipntr, workd, info);
 
         if (*ido != 99)
         {
@@ -319,7 +327,7 @@ int znaup2_(int *ido, const char *bmat, int *n, const char *which, int *nev, int
     /* Compute the first NEV steps of the Arnoldi factorization */
     /* -------------------------------------------------------- */
 
-    znaitr_(ido, bmat, n, &c__0, nev, mode, resid, &rnorm, v, ldv, h, ldh, ipntr, workd, info);
+    znaitr_(ido, bmat, n, &i_zero, nev, mode, resid, &rnorm, v, ldv, h, ldh, ipntr, workd, info);
 
     if (*ido != 99)
     {
@@ -431,8 +439,8 @@ L20:
 
     /* Computing 2nd power */
     i__1 = kplusp * kplusp;
-    zcopy_(&kplusp, ritz, &c__1, &workl[i__1], &c__1);
-    zcopy_(&kplusp, bounds, &c__1, &workl[i__1 + kplusp], &c__1);
+    zcopy_(&kplusp, ritz, &i_one, &workl[i__1], &i_one);
+    zcopy_(&kplusp, bounds, &i_one, &workl[i__1 + kplusp], &i_one);
 
     /* ------------------------------------------------- */
     /* Select the wanted Ritz values and their bounds    */
@@ -559,7 +567,7 @@ L20:
             strcpy(wprime, "LI");
         }
 
-        zsortc_(wprime, &c_true, &kplusp, ritz, bounds);
+        zsortc_(wprime, &b_true, &kplusp, ritz, bounds);
 
         /* ------------------------------------------------ */
         /* Scale the Ritz estimate of each Ritz value       */
@@ -583,7 +591,7 @@ L20:
         /* ------------------------------------------------- */
 
         strcpy(wprime, "LM");
-        zsortc_(wprime, &c_true, &nev0, bounds, ritz);
+        zsortc_(wprime, &b_true, &nev0, bounds, ritz);
 
         /* -------------------------------------------- */
         /* Scale the Ritz estimate back to its original */
@@ -605,7 +613,7 @@ L20:
         /* ritz and bound.                               */
         /* --------------------------------------------- */
 
-        zsortc_(which, &c_true, &nconv, ritz, bounds);
+        zsortc_(which, &b_true, &nconv, ritz, bounds);
 
 #ifndef NO_TRACE
         if (msglvl > 1)
@@ -706,7 +714,7 @@ L50:
         /* for non-exact shift case.        */
         /* -------------------------------- */
 
-        zcopy_(np, workl, &c__1, ritz, &c__1);
+        zcopy_(np, workl, &i_one, ritz, &i_one);
     }
 
 #ifndef NO_TRACE
@@ -744,7 +752,7 @@ L50:
     if (*bmat == 'G')
     {
         ++timing_1.nbx;
-        zcopy_(n, resid, &c__1, &workd[*n], &c__1);
+        zcopy_(n, resid, &i_one, &workd[*n], &i_one);
         /* TODO: ipntr index */
         ipntr[0] = *n + 1;
         ipntr[1] = 1;
@@ -758,7 +766,7 @@ L50:
     }
     else if (*bmat == 'I')
     {
-        zcopy_(n, resid, &c__1, workd, &c__1);
+        zcopy_(n, resid, &i_one, workd, &i_one);
     }
 
 L100:
@@ -774,12 +782,12 @@ L100:
         arscnd_(&t3);
         timing_1.tmvbx += t3 - t2;
 #endif
-        zdotc_(&cmpnorm, n, resid, &c__1, workd, &c__1);
+        zdotc_(&cmpnorm, n, resid, &i_one, workd, &i_one);
         rnorm = sqrt(dlapy2_(&cmpnorm.r, &cmpnorm.i));
     }
     else if (*bmat == 'I')
     {
-        rnorm = dznrm2_(n, resid, &c__1);
+        rnorm = dznrm2_(n, resid, &i_one);
     }
     cnorm = FALSE_;
 

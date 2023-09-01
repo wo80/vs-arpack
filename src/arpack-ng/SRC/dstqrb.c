@@ -2,6 +2,11 @@
 
 #include "arpack_internal.h"
 
+/* Constants */
+static int i_zero = 0;
+static int i_one  = 1;
+static double d_one = 1.0;
+
 /**
  * \BeginDoc
  *
@@ -279,17 +284,17 @@ L30:
     {
         iscale = 1;
         i__1 = lend - l + 1;
-        dlascl_("G", &c__0, &c__0, &anorm, &ssfmax, &i__1, &c__1, &d[l], n, info);
+        dlascl_("G", &i_zero, &i_zero, &anorm, &ssfmax, &i__1, &i_one, &d[l], n, info);
         i__1 = lend - l;
-        dlascl_("G", &c__0, &c__0, &anorm, &ssfmax, &i__1, &c__1, &e[l], n, info);
+        dlascl_("G", &i_zero, &i_zero, &anorm, &ssfmax, &i__1, &i_one, &e[l], n, info);
     }
     else if (anorm < ssfmin)
     {
         iscale = 2;
         i__1 = lend - l + 1;
-        dlascl_("G", &c__0, &c__0, &anorm, &ssfmin, &i__1, &c__1, &d[l], n, info);
+        dlascl_("G", &i_zero, &i_zero, &anorm, &ssfmin, &i__1, &i_one, &d[l], n, info);
         i__1 = lend - l;
-        dlascl_("G", &c__0, &c__0, &anorm, &ssfmin, &i__1, &c__1, &e[l], n, info);
+        dlascl_("G", &i_zero, &i_zero, &anorm, &ssfmin, &i__1, &i_one, &e[l], n, info);
     }
 
     /*     choose between ql and qr iteration */
@@ -426,7 +431,7 @@ L60:
 
             /*             *** New starting with version 2.5 *** */
 
-            dlasr_("r", "v", "b", &c__1, &mm, &work[l], &work[*n - 1 + l], &z[l], &c__1);
+            dlasr_("r", "v", "b", &i_one, &mm, &work[l], &work[*n - 1 + l], &z[l], &i_one);
             /*             ************************************* */
         }
 
@@ -572,7 +577,7 @@ L110:
 
             /*           *** New starting with version 2.5 *** */
 
-            dlasr_("r", "v", "f", &c__1, &mm, &work[m], &work[*n - 1 + m], &z[m], &c__1);
+            dlasr_("r", "v", "f", &i_one, &mm, &work[m], &work[*n - 1 + m], &z[m], &i_one);
             /*           ************************************* */
         }
 
@@ -599,16 +604,16 @@ L140:
     if (iscale == 1)
     {
         i__1 = lendsv - lsv + 1;
-        dlascl_("G", &c__0, &c__0, &ssfmax, &anorm, &i__1, &c__1, &d[lsv], n, info);
+        dlascl_("G", &i_zero, &i_zero, &ssfmax, &anorm, &i__1, &i_one, &d[lsv], n, info);
         i__1 = lendsv - lsv;
-        dlascl_("G", &c__0, &c__0, &ssfmax, &anorm, &i__1, &c__1, &e[lsv], n, info);
+        dlascl_("G", &i_zero, &i_zero, &ssfmax, &anorm, &i__1, &i_one, &e[lsv], n, info);
     }
     else if (iscale == 2)
     {
         i__1 = lendsv - lsv + 1;
-        dlascl_("G", &c__0, &c__0, &ssfmin, &anorm, &i__1, &c__1, &d[lsv], n, info);
+        dlascl_("G", &i_zero, &i_zero, &ssfmin, &anorm, &i__1, &i_one, &d[lsv], n, info);
         i__1 = lendsv - lsv;
-        dlascl_("G", &c__0, &c__0, &ssfmin, &anorm, &i__1, &c__1, &e[lsv], n, info);
+        dlascl_("G", &i_zero, &i_zero, &ssfmin, &anorm, &i__1, &i_one, &e[lsv], n, info);
     }
 
     /*     check for no convergence to an eigenvalue after a total */

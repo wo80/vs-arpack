@@ -2,6 +2,12 @@
 
 #include "arpack_internal.h"
 
+/* Constants */
+static int i_one  = 1;
+static float s_zero = 0.0f;
+static float s_one  = 1.0f;
+static float s_m1  = -1.0f;
+
 /**
  * \BeginDoc
  *
@@ -205,13 +211,13 @@ int sgetv0_(int *ido, const char *bmat, int *itry, logical *initv, int *n, int *
             /* TODO: ipntr index */
             ipntr[0] = 1;
             ipntr[1] = *n + 1;
-            scopy_(n, resid, &c__1, workd, &c__1);
+            scopy_(n, resid, &i_one, workd, &i_one);
             *ido = -1;
             goto L9000;
         }
         else if (*itry > 1 && *bmat == 'G')
         {
-            scopy_(n, resid, &c__1, &workd[*n], &c__1);
+            scopy_(n, resid, &i_one, &workd[*n], &i_one);
         }
     }
 
@@ -253,7 +259,7 @@ int sgetv0_(int *ido, const char *bmat, int *itry, logical *initv, int *n, int *
     first = TRUE_;
     if (*itry == 1)
     {
-        scopy_(n, &workd[*n], &c__1, resid, &c__1);
+        scopy_(n, &workd[*n], &i_one, resid, &i_one);
     }
     if (*bmat == 'G')
     {
@@ -266,7 +272,7 @@ int sgetv0_(int *ido, const char *bmat, int *itry, logical *initv, int *n, int *
     }
     else if (*bmat == 'I')
     {
-        scopy_(n, resid, &c__1, workd, &c__1);
+        scopy_(n, resid, &i_one, workd, &i_one);
     }
 
 L20:
@@ -278,12 +284,12 @@ L20:
         arscnd_(&t3);
         timing_1.tmvbx += t3 - t2;
 #endif
-        rnorm0 = sdot_(n, resid, &c__1, workd, &c__1);
+        rnorm0 = sdot_(n, resid, &i_one, workd, &i_one);
         rnorm0 = sqrt((dabs(rnorm0)));
     }
     else if (*bmat == 'I')
     {
-        rnorm0 = snrm2_(n, resid, &c__1);
+        rnorm0 = snrm2_(n, resid, &i_one);
     }
     *rnorm = rnorm0;
 
@@ -312,8 +318,8 @@ L20:
 L30:
 
     i__1 = *j - 1;
-    sgemv_("T", n, &i__1, &s_one, v, ldv, workd, &c__1, &s_zero,&workd[*n], &c__1);
-    sgemv_("N", n, &i__1, &s_m1, v, ldv, &workd[*n], &c__1, &s_one, resid, &c__1);
+    sgemv_("T", n, &i__1, &s_one, v, ldv, workd, &i_one, &s_zero,&workd[*n], &i_one);
+    sgemv_("N", n, &i__1, &s_m1, v, ldv, &workd[*n], &i_one, &s_one, resid, &i_one);
 
     /* -------------------------------------------------------- */
     /* Compute the B-norm of the orthogonalized starting vector */
@@ -326,7 +332,7 @@ L30:
     if (*bmat == 'G')
     {
         ++timing_1.nbx;
-        scopy_(n, resid, &c__1, &workd[*n], &c__1);
+        scopy_(n, resid, &i_one, &workd[*n], &i_one);
         /* TODO: ipntr index */
         ipntr[0] = *n + 1;
         ipntr[1] = 1;
@@ -335,7 +341,7 @@ L30:
     }
     else if (*bmat == 'I')
     {
-        scopy_(n, resid, &c__1, workd, &c__1);
+        scopy_(n, resid, &i_one, workd, &i_one);
     }
 
 L40:
@@ -346,12 +352,12 @@ L40:
         arscnd_(&t3);
         timing_1.tmvbx += t3 - t2;
 #endif
-        *rnorm = sdot_(n, resid, &c__1, workd, &c__1);
+        *rnorm = sdot_(n, resid, &i_one, workd, &i_one);
         *rnorm = sqrt((dabs(*rnorm)));
     }
     else if (*bmat == 'I')
     {
-        *rnorm = snrm2_(n, resid, &c__1);
+        *rnorm = snrm2_(n, resid, &i_one);
     }
 
     /* ------------------------------------ */

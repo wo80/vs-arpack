@@ -56,7 +56,7 @@
  *
  * \EndLib
  */
-int ssortr_(char *which, logical *apply, int *n, float *x1, float *x2)
+int ssortr_(const char *which, logical *apply, int *n, float *x1, float *x2)
 {
     /* System generated locals */
     int i__1;

@@ -2,6 +2,13 @@
 
 #include "arpack_internal.h"
 
+/* Constants */
+static logical b_false = FALSE_;
+static int i_one = 1;
+static double d_zero = 0.0;
+static double d_one  = 1.0;
+static double d_m1  = -1.0;
+
 /**
  * \BeginDoc
  *
@@ -392,7 +399,7 @@ L30:
     /* RSTART = .true. flow returns here.   */
     /* ------------------------------------ */
 
-    dgetv0_(ido, bmat, &itry, &c_false, n, &j, &v[v_offset], ldv, resid, rnorm, ipntr, &workd[1], &ierr);
+    dgetv0_(ido, bmat, &itry, &b_false, n, &j, &v[v_offset], ldv, resid, rnorm, ipntr, &workd[1], &ierr);
     if (*ido != 99)
     {
         goto L9000;
@@ -430,12 +437,12 @@ L40:
     /* machine bound.                                          */
     /* ------------------------------------------------------- */
 
-    dcopy_(n, resid, &c__1, &v[j * v_dim + 1], &c__1);
+    dcopy_(n, resid, &i_one, &v[j * v_dim + 1], &i_one);
     if (*rnorm >= safmin)
     {
         temp1 = 1.0 / *rnorm;
-        dscal_(n, &temp1, &v[j * v_dim + 1], &c__1);
-        dscal_(n, &temp1, &workd[ipj], &c__1);
+        dscal_(n, &temp1, &v[j * v_dim + 1], &i_one);
+        dscal_(n, &temp1, &workd[ipj], &i_one);
     }
     else
     {
@@ -444,8 +451,8 @@ L40:
         /* use LAPACK routine SLASCL               */
         /* --------------------------------------- */
 
-        dlascl_("G", &i, &i, rnorm, &d_one, n, &c__1, &v[j * v_dim + 1], n, &infol);
-        dlascl_("G", &i, &i, rnorm, &d_one, n, &c__1, &workd[ipj], n, &infol);
+        dlascl_("G", &i, &i, rnorm, &d_one, n, &i_one, &v[j * v_dim + 1], n, &infol);
+        dlascl_("G", &i, &i, rnorm, &d_one, n, &i_one, &workd[ipj], n, &infol);
     }
 
     /* ---------------------------------------------------- */
@@ -459,7 +466,7 @@ L40:
     arscnd_(&t2);
 #endif
 
-    dcopy_(n, &v[j * v_dim + 1], &c__1, &workd[ivj], &c__1);
+    dcopy_(n, &v[j * v_dim + 1], &i_one, &workd[ivj], &i_one);
     ipntr[0] = ivj;
     ipntr[1] = irj;
     ipntr[2] = ipj;
@@ -488,7 +495,7 @@ L50:
     /* Put another copy of OP*v_{j} into RESID. */
     /* ---------------------------------------- */
 
-    dcopy_(n, &workd[irj], &c__1, resid, &c__1);
+    dcopy_(n, &workd[irj], &i_one, resid, &i_one);
 
     /* ----------------------------------------- */
     /* STEP 4:  Finish extending the symmetric   */
@@ -523,7 +530,7 @@ L50:
     }
     else if (*bmat == 'I')
     {
-        dcopy_(n, resid, &c__1, &workd[ipj], &c__1);
+        dcopy_(n, resid, &i_one, &workd[ipj], &i_one);
     }
 L60:
 
@@ -555,17 +562,17 @@ L65:
         /* is the inv(B)-norm of A*v_{j}.   */
         /* -------------------------------- */
 
-        wnorm = ddot_(n, resid, &c__1, &workd[ivj], &c__1);
+        wnorm = ddot_(n, resid, &i_one, &workd[ivj], &i_one);
         wnorm = sqrt((abs(wnorm)));
     }
     else if (*bmat == 'G')
     {
-        wnorm = ddot_(n, resid, &c__1, &workd[ipj], &c__1);
+        wnorm = ddot_(n, resid, &i_one, &workd[ipj], &i_one);
         wnorm = sqrt((abs(wnorm)));
     }
     else if (*bmat == 'I')
     {
-        wnorm = dnrm2_(n, resid, &c__1);
+        wnorm = dnrm2_(n, resid, &i_one);
     }
 
     /* --------------------------------------- */
@@ -583,11 +590,11 @@ L65:
 
     if (*mode != 2)
     {
-        dgemv_("T", n, &j, &d_one, &v[v_offset], ldv, &workd[ipj], &c__1, &d_zero, &workd[irj], &c__1);
+        dgemv_("T", n, &j, &d_one, &v[v_offset], ldv, &workd[ipj], &i_one, &d_zero, &workd[irj], &i_one);
     }
     else if (*mode == 2)
     {
-        dgemv_("T", n, &j, &d_one, &v[v_offset], ldv, &workd[ivj], &c__1, &d_zero, &workd[irj], &c__1);
+        dgemv_("T", n, &j, &d_one, &v[v_offset], ldv, &workd[ivj], &i_one, &d_zero, &workd[irj], &i_one);
     }
 
     /* ------------------------------------ */
@@ -595,7 +602,7 @@ L65:
     /* RESID contains OP*v_{j}. See STEP 3. */
     /* ------------------------------------ */
 
-    dgemv_("N", n, &j, &d_m1, &v[v_offset], ldv, &workd[irj], &c__1, &d_one, resid, &c__1);
+    dgemv_("N", n, &j, &d_m1, &v[v_offset], ldv, &workd[irj], &i_one, &d_one, resid, &i_one);
 
     /* ------------------------------------ */
     /* Extend H to have j rows and columns. */
@@ -621,7 +628,7 @@ L65:
     if (*bmat == 'G')
     {
         ++timing_1.nbx;
-        dcopy_(n, resid, &c__1, &workd[irj], &c__1);
+        dcopy_(n, resid, &i_one, &workd[irj], &i_one);
         ipntr[0] = irj;
         ipntr[1] = ipj;
         *ido = 2;
@@ -634,7 +641,7 @@ L65:
     }
     else if (*bmat == 'I')
     {
-        dcopy_(n, resid, &c__1, &workd[ipj], &c__1);
+        dcopy_(n, resid, &i_one, &workd[ipj], &i_one);
     }
 L70:
 
@@ -655,12 +662,12 @@ L70:
         arscnd_(&t3);
         timing_1.tmvbx += t3 - t2;
 #endif
-        *rnorm = ddot_(n, resid, &c__1, &workd[ipj], &c__1);
+        *rnorm = ddot_(n, resid, &i_one, &workd[ipj], &i_one);
         *rnorm = sqrt((abs(*rnorm)));
     }
     else if (*bmat == 'I')
     {
-        *rnorm = dnrm2_(n, resid, &c__1);
+        *rnorm = dnrm2_(n, resid, &i_one);
     }
 
     /* --------------------------------------------------------- */
@@ -707,7 +714,7 @@ L80:
     /* WORKD(IRJ:IRJ+J-1) = v(:,1:J)'*WORKD(IPJ:IPJ+N-1). */
     /* -------------------------------------------------- */
 
-    dgemv_("T", n, &j, &d_one, &v[v_offset], ldv, &workd[ipj], &c__1, &d_zero, &workd[irj], &c__1);
+    dgemv_("T", n, &j, &d_one, &v[v_offset], ldv, &workd[ipj], &i_one, &d_zero, &workd[irj], &i_one);
 
     /* -------------------------------------------- */
     /* Compute the correction to the residual:      */
@@ -717,7 +724,7 @@ L80:
     /* H(j,j) is updated.                           */
     /* -------------------------------------------- */
 
-    dgemv_("N", n, &j, &d_m1, &v[v_offset], ldv, &workd[irj], &c__1, &d_one, resid, &c__1);
+    dgemv_("N", n, &j, &d_m1, &v[v_offset], ldv, &workd[irj], &i_one, &d_one, resid, &i_one);
 
     if (j == 1 || rstart)
     {
@@ -733,7 +740,7 @@ L80:
     if (*bmat == 'G')
     {
         ++timing_1.nbx;
-        dcopy_(n, resid, &c__1, &workd[irj], &c__1);
+        dcopy_(n, resid, &i_one, &workd[irj], &i_one);
         ipntr[0] = irj;
         ipntr[1] = ipj;
         *ido = 2;
@@ -747,7 +754,7 @@ L80:
     }
     else if (*bmat == 'I')
     {
-        dcopy_(n, resid, &c__1, &workd[ipj], &c__1);
+        dcopy_(n, resid, &i_one, &workd[ipj], &i_one);
     }
 L90:
 
@@ -765,12 +772,12 @@ L90:
         arscnd_(&t3);
         timing_1.tmvbx += t3 - t2;
 #endif
-        rnorm1 = ddot_(n, resid, &c__1, &workd[ipj], &c__1);
+        rnorm1 = ddot_(n, resid, &i_one, &workd[ipj], &i_one);
         rnorm1 = sqrt((abs(rnorm1)));
     }
     else if (*bmat == 'I')
     {
-        rnorm1 = dnrm2_(n, resid, &c__1);
+        rnorm1 = dnrm2_(n, resid, &i_one);
     }
 
 #ifndef NO_TRACE
@@ -853,11 +860,11 @@ L100:
         h[j + h_dim] = -h[j + h_dim];
         if (j < *k + *np)
         {
-            dscal_(n, &d_m1, &v[(j + 1) * v_dim + 1], &c__1);
+            dscal_(n, &d_m1, &v[(j + 1) * v_dim + 1], &i_one);
         }
         else
         {
-            dscal_(n, &d_m1, resid, &c__1);
+            dscal_(n, &d_m1, resid, &i_one);
         }
     }
 

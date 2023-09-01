@@ -2,6 +2,11 @@
 
 #include "arpack_internal.h"
 
+/* Constants */
+static int i_one  = 1;
+static a_dcomplex z_zero = { 0.0, 0.0 };
+static a_dcomplex z_one = { 1.0, 0.0 };
+
 /**
  * \BeginDoc
  *
@@ -470,11 +475,11 @@ L100:
             /* Computing MIN */
             i__3 = j + 2;
             i__2 = min(i__3,kplusp);
-            zscal_(&i__2, &t, &h[(j + 1) * h_dim + 1], &c__1);
+            zscal_(&i__2, &t, &h[(j + 1) * h_dim + 1], &i_one);
             /* Computing MIN */
             i__3 = j + *np + 1;
             i__2 = min(i__3,kplusp);
-            zscal_(&i__2, &t, &q[(j + 1) * q_dim + 1], &c__1);
+            zscal_(&i__2, &t, &q[(j + 1) * q_dim + 1], &i_one);
 
             /* h(j+1,j) = dcmplx( dble( h(j+1,j) ), rzero ) */
             i__2 = j + 1 + j * h_dim;
@@ -525,7 +530,7 @@ L100:
     i__1 = *kev + 1 + *kev * h_dim;
     if (h[i__1].r > 0.0)
     {
-        zgemv_("N", n, &kplusp, &z_one, &v[v_offset], ldv, &q[(*kev + 1) * q_dim + 1], &c__1, &z_zero, &workd[*n], &c__1);
+        zgemv_("N", n, &kplusp, &z_one, &v[v_offset], ldv, &q[(*kev + 1) * q_dim + 1], &i_one, &z_zero, &workd[*n], &i_one);
     }
 
     /* -------------------------------------------------------- */
@@ -537,8 +542,8 @@ L100:
     for (i = 1; i <= i__1; ++i)
     {
         i__2 = kplusp - i + 1;
-        zgemv_("N", n, &i__2, &z_one, &v[v_offset], ldv, &q[(*kev - i + 1) * q_dim + 1], &c__1, &z_zero, workd, &c__1);
-        zcopy_(n, workd, &c__1, &v[(kplusp - i + 1) * v_dim + 1], &c__1);
+        zgemv_("N", n, &i__2, &z_one, &v[v_offset], ldv, &q[(*kev - i + 1) * q_dim + 1], &i_one, &z_zero, workd, &i_one);
+        zcopy_(n, workd, &i_one, &v[(kplusp - i + 1) * v_dim + 1], &i_one);
     }
 
     /* ----------------------------------------------- */
@@ -554,7 +559,7 @@ L100:
     i__1 = *kev + 1 + *kev * h_dim;
     if (h[i__1].r > 0.0)
     {
-        zcopy_(n, &workd[*n], &c__1, &v[(*kev + 1) * v_dim + 1], &c__1);
+        zcopy_(n, &workd[*n], &i_one, &v[(*kev + 1) * v_dim + 1], &i_one);
     }
 
     /* ----------------------------------- */
@@ -565,11 +570,11 @@ L100:
     /*    betak = e_{kev+1}'*H*e_{kev}     */
     /* ----------------------------------- */
 
-    zscal_(n, &q[kplusp + *kev * q_dim], resid, &c__1);
+    zscal_(n, &q[kplusp + *kev * q_dim], resid, &i_one);
     i__1 = *kev + 1 + *kev * h_dim;
     if (h[i__1].r > 0.0)
     {
-        zaxpy_(n, &h[i__1], &v[(*kev + 1) * v_dim + 1],&c__1, resid, &c__1);
+        zaxpy_(n, &h[i__1], &v[(*kev + 1) * v_dim + 1],&i_one, resid, &i_one);
     }
 
 #ifndef NO_TRACE

@@ -56,7 +56,7 @@
  *
  * \EndLib
  */
-int dsortr_(char *which, logical *apply, int *n, double *x1, double *x2)
+int dsortr_(const char *which, logical *apply, int *n, double *x1, double *x2)
 {
     /* System generated locals */
     int i__1;

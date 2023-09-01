@@ -2,6 +2,9 @@
 
 #include "arpack_internal.h"
 
+/* Constants */
+static int i_one  = 1;
+
 /**
  * \BeginDoc
  *
@@ -122,9 +125,9 @@ int dseigt_(double *rnorm, int *n, double *h,
     }
 #endif
 
-    dcopy_(n, &h[h_dim], &c__1, eig, &c__1);
+    dcopy_(n, &h[h_dim], &i_one, eig, &i_one);
     i__1 = *n - 1;
-    dcopy_(&i__1, &h[1], &c__1, workl, &c__1);
+    dcopy_(&i__1, &h[1], &i_one, workl, &i_one);
     dstqrb_(n, eig, workl, bounds, &workl[*n], ierr);
     if (*ierr != 0)
     {

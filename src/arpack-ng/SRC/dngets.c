@@ -2,6 +2,9 @@
 
 #include "arpack_internal.h"
 
+/* Constants */
+static logical b_true = TRUE_;
+
 /**
  * \BeginDoc
  *
@@ -128,30 +131,30 @@ int dngets_(int *ishift, const char *which, int *kev, int *np, double *ritzr,
 
     if (strcmp(which, "LM") == 0)
     {
-        dsortc_("LR", &c_true, &i__1, ritzr, ritzi, bounds);
+        dsortc_("LR", &b_true, &i__1, ritzr, ritzi, bounds);
     }
     else if (strcmp(which, "SM") == 0)
     {
-        dsortc_("SR", &c_true, &i__1, ritzr, ritzi, bounds);
+        dsortc_("SR", &b_true, &i__1, ritzr, ritzi, bounds);
     }
     else if (strcmp(which, "LR") == 0)
     {
-        dsortc_("LM", &c_true, &i__1, ritzr, ritzi, bounds);
+        dsortc_("LM", &b_true, &i__1, ritzr, ritzi, bounds);
     }
     else if (strcmp(which, "SR") == 0)
     {
-        dsortc_("SM", &c_true, &i__1, ritzr, ritzi, bounds);
+        dsortc_("SM", &b_true, &i__1, ritzr, ritzi, bounds);
     }
     else if (strcmp(which, "LI") == 0)
     {
-        dsortc_("LM", &c_true, &i__1, ritzr, ritzi, bounds);
+        dsortc_("LM", &b_true, &i__1, ritzr, ritzi, bounds);
     }
     else if (strcmp(which, "SI") == 0)
     {
-        dsortc_("SM", &c_true, &i__1, ritzr, ritzi, bounds);
+        dsortc_("SM", &b_true, &i__1, ritzr, ritzi, bounds);
     }
 
-    dsortc_(which, &c_true, &i__1, ritzr, ritzi, bounds);
+    dsortc_(which, &b_true, &i__1, ritzr, ritzi, bounds);
 
     /* ----------------------------------------------------- */
     /* Increase KEV by one if the ( ritzr(np),ritzi(np) )    */
@@ -177,7 +180,7 @@ int dngets_(int *ishift, const char *which, int *kev, int *np, double *ritzr,
         /* Be careful and use 'SR' since we want to sort BOUNDS! */
         /* ----------------------------------------------------- */
 
-        dsortc_("SR", &c_true, np, bounds, ritzr, ritzi);
+        dsortc_("SR", &b_true, np, bounds, ritzr, ritzi);
     }
 
 #ifndef NO_TIMER

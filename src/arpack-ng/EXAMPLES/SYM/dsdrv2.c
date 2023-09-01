@@ -7,7 +7,7 @@ int dsdrv2_av_(const int nx, double* v, double* w);
 
 extern int dmout_(const int, const int, const double*, const int, const int, const char*);
 
-static int c__1 = 1;
+static int i_one = 1;
 
 /**
  * \BeginDoc
@@ -163,7 +163,7 @@ int main()
         ad[j - 1] = 2. / h2 - sigma;
         adl[j - 1] = -1.0 / h2;
     }
-    dcopy_(&n, adl, &c__1, adu, &c__1);
+    dcopy_(&n, adl, &i_one, adu, &i_one);
     dgttrf_(&n, adl, ad, adu, adu2, ipiv, &ierr);
     if (ierr != 0)
     {
@@ -198,9 +198,9 @@ L10:
         /* workd(ipntr(2)).                       */
         /* -------------------------------------- */
 
-        dcopy_(&n, &workd[ipntr[0] - 1], &c__1, &workd[ipntr[1] - 1], &c__1);
+        dcopy_(&n, &workd[ipntr[0] - 1], &i_one, &workd[ipntr[1] - 1], &i_one);
 
-        dgttrs_("N", &n, &c__1, adl, ad, adu, adu2, ipiv, &workd[ipntr[1] - 1], &n, &ierr);
+        dgttrs_("N", &n, &i_one, adl, ad, adu, adu2, ipiv, &workd[ipntr[1] - 1], &n, &ierr);
         if (ierr != 0)
         {
             printf(" \n");
@@ -295,8 +295,8 @@ L10:
 
         dsdrv2_av_(n, &v[k], ax);
         d__1 = -d[j - 1];
-        daxpy_(&n, &d__1, &v[k], &c__1, ax, &c__1);
-        d[j + 24] = dnrm2_(&n, ax, &c__1);
+        daxpy_(&n, &d__1, &v[k], &i_one, ax, &i_one);
+        d[j + 24] = dnrm2_(&n, ax, &i_one);
         d[j + 24] /= (d__1 = d[j - 1], abs(d__1));
 
     }
@@ -391,7 +391,7 @@ int dsdrv2_av_(const int n, double *v, double *w)
 
     h2 = 1.0 / (double) ((n + 1) * (n + 1));
     d__1 = 1.0 / h2;
-    dscal_(&n, &d__1, &w[1], &c__1);
+    dscal_(&n, &d__1, &w[1], &i_one);
     return 0;
 } /* av_ */
 

@@ -2,6 +2,12 @@
 
 #include "arpack_internal.h"
 
+/* Constants */
+static logical b_true = TRUE_;
+static int i_one  = 1;
+static a_fcomplex c_zero = { 0.0f, 0.0f };
+static a_fcomplex c_one = { 1.0f, 0.0f };
+
 /**
  * \BeginDoc
  *
@@ -144,13 +150,13 @@ int cneigh_(float *rnorm, int *n, a_fcomplex *h, int *
 
     clacpy_("A", n, n, h, ldh, workl, n);
     claset_("A", n, n, &c_zero, &c_one, q, ldq);
-    clahqr_(&c_true, &c_true, n, &c__1, n, workl, ldh, ritz, &c__1, n,q, ldq, ierr);
+    clahqr_(&b_true, &b_true, n, &i_one, n, workl, ldh, ritz, &i_one, n,q, ldq, ierr);
     if (*ierr != 0)
     {
         goto L9000;
     }
 
-    ccopy_(n, &q[*n - 2], ldq, bounds, &c__1);
+    ccopy_(n, &q[*n - 2], ldq, bounds, &i_one);
 #ifndef NO_TRACE
     if (msglvl > 1)
     {
@@ -183,15 +189,15 @@ int cneigh_(float *rnorm, int *n, a_fcomplex *h, int *
     i__1 = *n;
     for (j = 0; j < i__1; ++j)
     {
-        temp = scnrm2_(n, &q[j * q_dim], &c__1);
+        temp = scnrm2_(n, &q[j * q_dim], &i_one);
         r__1 = 1.0f / temp;
-        csscal_(n, &r__1, &q[j * q_dim], &c__1);
+        csscal_(n, &r__1, &q[j * q_dim], &i_one);
     }
 
 #ifndef NO_TRACE
     if (msglvl > 1)
     {
-        ccopy_(n, &q[*n - 1], ldq, workl, &c__1);
+        ccopy_(n, &q[*n - 1], ldq, workl, &i_one);
         cvout_(*n, workl, debug_1.ndigit, "_neigh: Last row of the eigenvector matrix for H");
     }
 #endif
@@ -200,8 +206,8 @@ int cneigh_(float *rnorm, int *n, a_fcomplex *h, int *
     /* Compute the Ritz estimates */
     /* -------------------------- */
 
-    ccopy_(n, &q[*n - 1], n, bounds, &c__1);
-    csscal_(n, rnorm, bounds, &c__1);
+    ccopy_(n, &q[*n - 1], n, bounds, &i_one);
+    csscal_(n, rnorm, bounds, &i_one);
 
 #ifndef NO_TRACE
     if (msglvl > 2)

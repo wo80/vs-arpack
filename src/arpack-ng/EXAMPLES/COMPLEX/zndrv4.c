@@ -6,7 +6,7 @@
 int zndrv4_av_(const int n, a_dcomplex* v, a_dcomplex* w);
 int zndrv4_mv_(const int n, a_dcomplex* v, a_dcomplex* w);
 
-static int c__1 = 1;
+static int i_one = 1;
 
 #define RHO 10.0
 
@@ -241,7 +241,7 @@ L20:
         /* ----------------------------------------- */
 
         zndrv4_mv_(n, &workd[ipntr[0] - 1], &workd[ipntr[1] - 1]);
-        zgttrs_("N", &n, &c__1, dl, dd, du, du2, ipiv, &workd[ipntr[1] - 1], &n, &ierr);
+        zgttrs_("N", &n, &i_one, dl, dd, du, du2, ipiv, &workd[ipntr[1] - 1], &n, &ierr);
         if (ierr != 0)
         {
             printf(" \n");
@@ -267,8 +267,8 @@ L20:
         /* workd(ipntr(2)).                        */
         /* --------------------------------------- */
 
-        zcopy_(&n, &workd[ipntr[2] - 1], &c__1, &workd[ipntr[1] - 1], &c__1);
-        zgttrs_("N", &n, &c__1, dl, dd, du, du2, ipiv, &workd[ipntr[1] - 1], &n, &ierr);
+        zcopy_(&n, &workd[ipntr[2] - 1], &i_one, &workd[ipntr[1] - 1], &i_one);
+        zgttrs_("N", &n, &i_one, dl, dd, du, du2, ipiv, &workd[ipntr[1] - 1], &n, &ierr);
         if (ierr != 0)
         {
             printf(" \n");
@@ -371,11 +371,11 @@ L20:
         zndrv4_mv_(n, &v[k], mx);
         i__2 = j - 1;
         z__1.r = -d[i__2].r, z__1.i = -d[i__2].i;
-        zaxpy_(&n, &z__1, mx, &c__1, ax, &c__1);
+        zaxpy_(&n, &z__1, mx, &i_one, ax, &i_one);
         i__2 = j - 1;
         rd[j - 1] = d[i__2].r;
         rd[j + 24] = d[i__2].i;
-        rd[j + 49] = dznrm2_(&n, ax, &c__1);
+        rd[j + 49] = dznrm2_(&n, ax, &i_one);
         rd[j + 49] /= dlapy2_(&rd[j - 1], &rd[j + 24]);
 
     }
@@ -468,7 +468,7 @@ int zndrv4_mv_(const int n, a_dcomplex *v, a_dcomplex *w)
 
     h.r = 1.0 / (double)(n + 1);
     h.i = 0.0;
-    zscal_(&n, &h, w, &c__1);
+    zscal_(&n, &h, w, &i_one);
     return 0;
 } /* mv_ */
 

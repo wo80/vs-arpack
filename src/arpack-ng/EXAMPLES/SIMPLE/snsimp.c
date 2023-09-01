@@ -8,7 +8,7 @@ int snsimp_tv_(const int nx, float* x, float* y);
 
 extern int smout_(const int, const int, const float*, const int, const int, const char*);
 
-static int c__1 = 1;
+static int i_one = 1;
 
 /**
  * \BeginDoc
@@ -402,8 +402,8 @@ L10:
 
             snsimp_av_(nx, &v[k], ax);
             r__1 = -d[j - 1];
-            saxpy_(&n, &r__1, &v[k], &c__1, ax, &c__1);
-            d[j + 59] = snrm2_(&n, ax, &c__1);
+            saxpy_(&n, &r__1, &v[k], &i_one, ax, &i_one);
+            d[j + 59] = snrm2_(&n, ax, &i_one);
             d[j + 59] /= (r__1 = d[j - 1], dabs(r__1));
         }
         else if (first)
@@ -417,15 +417,15 @@ L10:
 
             snsimp_av_(nx, &v[k], ax);
             r__1 = -d[j - 1];
-            saxpy_(&n, &r__1, &v[k], &c__1, ax, &c__1);
-            saxpy_(&n, &d[j + 29], &v[j * n], &c__1, ax, &c__1);
-            d[j + 59] = snrm2_(&n, ax, &c__1);
+            saxpy_(&n, &r__1, &v[k], &i_one, ax, &i_one);
+            saxpy_(&n, &d[j + 29], &v[j * n], &i_one, ax, &i_one);
+            d[j + 59] = snrm2_(&n, ax, &i_one);
             snsimp_av_(nx, &v[j * n], ax);
             r__1 = -d[j + 29];
-            saxpy_(&n, &r__1, &v[k], &c__1, ax, &c__1);
+            saxpy_(&n, &r__1, &v[k], &i_one, ax, &i_one);
             r__1 = -d[j - 1];
-            saxpy_(&n, &r__1, &v[j * n], &c__1, ax, &c__1);
-            r__1 = snrm2_(&n, ax, &c__1);
+            saxpy_(&n, &r__1, &v[j * n], &i_one, ax, &i_one);
+            r__1 = snrm2_(&n, ax, &i_one);
             d[j + 59] = slapy2_(&d[j + 59], &r__1);
             d[j + 59] /= slapy2_(&d[j - 1], &d[j + 29]);
             d[j + 60] = d[j + 59];
@@ -537,7 +537,7 @@ int snsimp_av_(const int nx, float *v, float *w)
 
     snsimp_tv_(nx, &v[1], &w[1]);
     r__1 = -1.0f / h2;
-    saxpy_(&nx, &r__1, &v[nx + 1], &c__1, &w[1], &c__1);
+    saxpy_(&nx, &r__1, &v[nx + 1], &i_one, &w[1], &i_one);
 
     i__1 = nx - 1;
     for (j = 2; j <= i__1; ++j)
@@ -545,15 +545,15 @@ int snsimp_av_(const int nx, float *v, float *w)
         lo = (j - 1) * nx;
         snsimp_tv_(nx, &v[lo + 1], &w[lo + 1]);
         r__1 = -1.0f / h2;
-        saxpy_(&nx, &r__1, &v[lo - nx + 1], &c__1, &w[lo + 1], &c__1);
+        saxpy_(&nx, &r__1, &v[lo - nx + 1], &i_one, &w[lo + 1], &i_one);
         r__1 = -1.0f / h2;
-        saxpy_(&nx, &r__1, &v[lo + nx + 1], &c__1, &w[lo + 1], &c__1);
+        saxpy_(&nx, &r__1, &v[lo + nx + 1], &i_one, &w[lo + 1], &i_one);
     }
 
     lo = (nx - 1) * nx;
     snsimp_tv_(nx, &v[lo + 1], &w[lo + 1]);
     r__1 = -1.0f / h2;
-    saxpy_(&nx, &r__1, &v[lo - nx + 1], &c__1, &w[lo + 1], &c__1);
+    saxpy_(&nx, &r__1, &v[lo - nx + 1], &i_one, &w[lo + 1], &i_one);
 
     return 0;
 } /* av_ */

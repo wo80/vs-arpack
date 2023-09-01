@@ -8,7 +8,7 @@ int dndrv5_mv_(const int n, double* v, double* w);
 
 extern int dmout_(const int, const int, const double*, const int, const int, const char*);
 
-static int c__1 = 1;
+static int i_one = 1;
 
 /**
  * \BeginDoc
@@ -248,7 +248,7 @@ L20:
 
         }
 
-        zgttrs_("N", &n, &c__1, cdl, cdd, cdu, cdu2, ipiv, ctemp, &n, &ierr);
+        zgttrs_("N", &n, &i_one, cdl, cdd, cdu, cdu2, ipiv, ctemp, &n, &ierr);
         if (ierr != 0)
         {
             printf(" \n");
@@ -288,7 +288,7 @@ L20:
             ctemp[i__2].r = z__1.r, ctemp[i__2].i = z__1.i;
 
         }
-        zgttrs_("N", &n, &c__1, cdl, cdd, cdu, cdu2, ipiv, ctemp, &n, &ierr);
+        zgttrs_("N", &n, &i_one, cdl, cdd, cdu, cdu2, ipiv, ctemp, &n, &ierr);
         if (ierr != 0)
         {
             printf(" \n");
@@ -408,9 +408,9 @@ L20:
             /* ------------------------- */
 
             dndrv5_av_(n, &v[k], ax);
-            numr = ddot_(&n, &v[k], &c__1, ax, &c__1);
+            numr = ddot_(&n, &v[k], &i_one, ax, &i_one);
             dndrv5_mv_(n, &v[k], ax);
-            denr = ddot_(&n, &v[k], &c__1, ax, &c__1);
+            denr = ddot_(&n, &v[k], &i_one, ax, &i_one);
             d[j - 1] = numr / denr;
         }
         else if (first)
@@ -425,22 +425,22 @@ L20:
             /* Compute x'(Ax) */
             /* -------------- */
             dndrv5_av_(n, &v[k], ax);
-            numr = ddot_(&n, &v[k], &c__1, ax, &c__1);
-            numi = ddot_(&n, &v[j * n], &c__1, ax, &c__1);
+            numr = ddot_(&n, &v[k], &i_one, ax, &i_one);
+            numi = ddot_(&n, &v[j * n], &i_one, ax, &i_one);
             dndrv5_av_(n, &v[j * n], ax);
-            numr += ddot_(&n, &v[j * n], &c__1, ax, &c__1);
-            numi = -numi + ddot_(&n, &v[k], &c__1, ax, &c__1);
+            numr += ddot_(&n, &v[j * n], &i_one, ax, &i_one);
+            numi = -numi + ddot_(&n, &v[k], &i_one, ax, &i_one);
 
             /* -------------- */
             /* Compute x'(Mx) */
             /* -------------- */
 
             dndrv5_mv_(n, &v[k], ax);
-            denr = ddot_(&n, &v[k], &c__1, ax, &c__1);
-            deni = ddot_(&n, &v[j * n], &c__1, ax, &c__1);
+            denr = ddot_(&n, &v[k], &i_one, ax, &i_one);
+            deni = ddot_(&n, &v[j * n], &i_one, ax, &i_one);
             dndrv5_mv_(n, &v[j * n], ax);
-            denr += ddot_(&n, &v[j * n], &c__1, ax, &c__1);
-            deni = -deni + ddot_(&n, &v[k], &c__1, ax, &c__1);
+            denr += ddot_(&n, &v[j * n], &i_one, ax, &i_one);
+            deni = -deni + ddot_(&n, &v[k], &i_one, ax, &i_one);
 
             /* -------------- */
             /* d=x'(Ax)/x'(Mx)*/
@@ -492,8 +492,8 @@ L20:
             dndrv5_av_(n, &v[k], ax);
             dndrv5_mv_(n, &v[k], mx);
             d__1 = -d[j - 1];
-            daxpy_(&n, &d__1, mx, &c__1, ax, &c__1);
-            d[j + 49] = dnrm2_(&n, ax, &c__1);
+            daxpy_(&n, &d__1, mx, &i_one, ax, &i_one);
+            d[j + 49] = dnrm2_(&n, ax, &i_one);
             d[j + 49] /= (d__1 = d[j - 1], abs(d__1));
         }
         else if (first)
@@ -508,18 +508,18 @@ L20:
             dndrv5_av_(n, &v[k], ax);
             dndrv5_mv_(n, &v[k], mx);
             d__1 = -d[j - 1];
-            daxpy_(&n, &d__1, mx, &c__1, ax, &c__1);
+            daxpy_(&n, &d__1, mx, &i_one, ax, &i_one);
             dndrv5_mv_(n, &v[j * n], mx);
-            daxpy_(&n, &d[j + 24], mx, &c__1, ax, &c__1);
-            d[j + 49] = dnrm2_(&n, ax, &c__1);
+            daxpy_(&n, &d[j + 24], mx, &i_one, ax, &i_one);
+            d[j + 49] = dnrm2_(&n, ax, &i_one);
             dndrv5_av_(n, &v[j * n], ax);
             dndrv5_mv_(n, &v[j * n], mx);
             d__1 = -d[j - 1];
-            daxpy_(&n, &d__1, mx, &c__1, ax, &c__1);
+            daxpy_(&n, &d__1, mx, &i_one, ax, &i_one);
             dndrv5_mv_(n, &v[k], mx);
             d__1 = -d[j + 24];
-            daxpy_(&n, &d__1, mx, &c__1, ax, &c__1);
-            d__1 = dnrm2_(&n, ax, &c__1);
+            daxpy_(&n, &d__1, mx, &i_one, ax, &i_one);
+            d__1 = dnrm2_(&n, ax, &i_one);
             d[j + 49] = dlapy2_(&d[j + 49], &d__1);
             d[j + 49] /= dlapy2_(&d[j - 1], &d[j + 24]);
             d[j + 50] = d[j + 49];

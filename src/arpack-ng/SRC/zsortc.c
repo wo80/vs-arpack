@@ -58,7 +58,7 @@
  *
  * \EndLib
  */
-int zsortc_(char *which, logical *apply, int *n, a_dcomplex *x, a_dcomplex *y)
+int zsortc_(const char *which, logical *apply, int *n, a_dcomplex *x, a_dcomplex *y)
 {
     /* System generated locals */
     int i__1, k;

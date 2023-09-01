@@ -2,6 +2,9 @@
 
 #include "arpack_internal.h"
 
+/* Constants */
+static logical b_true = TRUE_;
+
 /**
  * \BeginDoc
  *
@@ -108,7 +111,7 @@ int zngets_(int *ishift, const char *which, int *kev, int *np, a_dcomplex *ritz,
     msglvl = debug_1.mcgets;
 
     i__1 = *kev + *np;
-    zsortc_(which, &c_true, &i__1, ritz, bounds);
+    zsortc_(which, &b_true, &i__1, ritz, bounds);
 
     if (*ishift == 1)
     {
@@ -121,7 +124,7 @@ int zngets_(int *ishift, const char *which, int *kev, int *np, a_dcomplex *ritz,
         /* Be careful and use 'SM' since we want to sort BOUNDS! */
         /* ----------------------------------------------------- */
 
-        zsortc_("SM", &c_true, np, bounds, ritz);
+        zsortc_("SM", &b_true, np, bounds, ritz);
     }
 
 #ifndef NO_TIMER

@@ -66,6 +66,9 @@
 int snconv_(int *n, float *ritzr, float *ritzi, float *
             bounds, float *tol, int *nconv)
 {
+    /* Constants */
+    const double d_23 = 0.666666666666666667;
+
     /* System generated locals */
     int i__1;
     float r__1, r__2;

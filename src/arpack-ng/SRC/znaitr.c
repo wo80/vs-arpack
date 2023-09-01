@@ -2,6 +2,13 @@
 
 #include "arpack_internal.h"
 
+/* Constants */
+static logical b_false = FALSE_;
+static int i_one  = 1;
+static double d_one = 1.0;
+static a_dcomplex z_zero = { 0.0, 0.0 };
+static a_dcomplex z_one = { 1.0, 0.0 };
+
 /**
  * \BeginDoc
  *
@@ -402,7 +409,7 @@ L30:
     /* RSTART = .true. flow returns here.   */
     /* ------------------------------------ */
 
-    zgetv0_(ido, bmat, &itry, &c_false, n, &j, &v[v_offset], ldv, resid, rnorm, ipntr, &workd[1], &ierr);
+    zgetv0_(ido, bmat, &itry, &b_false, n, &j, &v[v_offset], ldv, resid, rnorm, ipntr, &workd[1], &ierr);
     if (*ido != 99)
     {
         goto L9000;
@@ -440,12 +447,12 @@ L40:
     /* machine bound.                                          */
     /* ------------------------------------------------------- */
 
-    zcopy_(n, resid, &c__1, &v[j * v_dim + 1], &c__1);
+    zcopy_(n, resid, &i_one, &v[j * v_dim + 1], &i_one);
     if (*rnorm >= unfl)
     {
         temp1 = 1.0 / *rnorm;
-        zdscal_(n, &temp1, &v[j * v_dim + 1], &c__1);
-        zdscal_(n, &temp1, &workd[ipj], &c__1);
+        zdscal_(n, &temp1, &v[j * v_dim + 1], &i_one);
+        zdscal_(n, &temp1, &workd[ipj], &i_one);
     }
     else
     {
@@ -454,8 +461,8 @@ L40:
         /* use LAPACK routine zlascl               */
         /* --------------------------------------- */
 
-        zlascl_("G", &i, &i, rnorm, &d_one, n, &c__1, &v[j * v_dim + 1], n, &infol);
-        zlascl_("G", &i, &i, rnorm, &d_one, n, &c__1, &workd[ipj], n, &infol);
+        zlascl_("G", &i, &i, rnorm, &d_one, n, &i_one, &v[j * v_dim + 1], n, &infol);
+        zlascl_("G", &i, &i, rnorm, &d_one, n, &i_one, &workd[ipj], n, &infol);
     }
 
     /* ---------------------------------------------------- */
@@ -469,7 +476,7 @@ L40:
     arscnd_(&t2);
 #endif
 
-    zcopy_(n, &v[j * v_dim + 1], &c__1, &workd[ivj], &c__1);
+    zcopy_(n, &v[j * v_dim + 1], &i_one, &workd[ivj], &i_one);
     ipntr[0] = ivj;
     ipntr[1] = irj;
     ipntr[2] = ipj;
@@ -499,7 +506,7 @@ L50:
     /* Put another copy of OP*v_{j} into RESID. */
     /* ---------------------------------------- */
 
-    zcopy_(n, &workd[irj], &c__1, resid, &c__1);
+    zcopy_(n, &workd[irj], &i_one, resid, &i_one);
 
     /* ------------------------------------- */
     /* STEP 4:  Finish extending the Arnoldi */
@@ -526,7 +533,7 @@ L50:
     }
     else if (*bmat == 'I')
     {
-        zcopy_(n, resid, &c__1, &workd[ipj], &c__1);
+        zcopy_(n, resid, &i_one, &workd[ipj], &i_one);
     }
 L60:
 
@@ -553,13 +560,13 @@ L60:
 
     if (*bmat == 'G')
     {
-        zdotc_(&z__1, n, resid, &c__1, &workd[ipj], &c__1);
+        zdotc_(&z__1, n, resid, &i_one, &workd[ipj], &i_one);
         cnorm.r = z__1.r, cnorm.i = z__1.i;
         wnorm = sqrt(dlapy2_(&cnorm.r, &cnorm.i));
     }
     else if (*bmat == 'I')
     {
-        wnorm = dznrm2_(n, resid, &c__1);
+        wnorm = dznrm2_(n, resid, &i_one);
     }
 
     /* --------------------------------------- */
@@ -575,7 +582,7 @@ L60:
     /* WORKD(IPJ:IPJ+N-1) contains B*OP*v_{j}.  */
     /* ---------------------------------------- */
 
-    zgemv_("C", n, &j, &z_one, &v[v_offset], ldv, &workd[ipj], &c__1, &z_zero, &h[j * h_dim + 1], &c__1);
+    zgemv_("C", n, &j, &z_one, &v[v_offset], ldv, &workd[ipj], &i_one, &z_zero, &h[j * h_dim + 1], &i_one);
 
     /* ------------------------------------ */
     /* Orthogonalize r_{j} against V_{j}.   */
@@ -583,7 +590,7 @@ L60:
     /* ------------------------------------ */
 
     z__1.r = -1.0, z__1.i = -0.0;
-    zgemv_("N", n, &j, &z__1, &v[v_offset], ldv, &h[j * h_dim + 1], &c__1, &z_one, resid, &c__1);
+    zgemv_("N", n, &j, &z__1, &v[v_offset], ldv, &h[j * h_dim + 1], &i_one, &z_one, resid, &i_one);
 
     if (j > 1)
     {
@@ -602,7 +609,7 @@ L60:
     if (*bmat == 'G')
     {
         ++timing_1.nbx;
-        zcopy_(n, resid, &c__1, &workd[irj], &c__1);
+        zcopy_(n, resid, &i_one, &workd[irj], &i_one);
         ipntr[0] = irj;
         ipntr[1] = ipj;
         *ido = 2;
@@ -615,7 +622,7 @@ L60:
     }
     else if (*bmat == 'I')
     {
-        zcopy_(n, resid, &c__1, &workd[ipj], &c__1);
+        zcopy_(n, resid, &i_one, &workd[ipj], &i_one);
     }
 L70:
 
@@ -640,13 +647,13 @@ L70:
 
     if (*bmat == 'G')
     {
-        zdotc_(&z__1, n, resid, &c__1, &workd[ipj], &c__1);
+        zdotc_(&z__1, n, resid, &i_one, &workd[ipj], &i_one);
         cnorm.r = z__1.r, cnorm.i = z__1.i;
         *rnorm = sqrt(dlapy2_(&cnorm.r, &cnorm.i));
     }
     else if (*bmat == 'I')
     {
-        *rnorm = dznrm2_(n, resid, &c__1);
+        *rnorm = dznrm2_(n, resid, &i_one);
     }
 
     /* --------------------------------------------------------- */
@@ -699,7 +706,7 @@ L80:
     /* WORKD(IRJ:IRJ+J-1) = v(:,1:J)'*WORKD(IPJ:IPJ+N-1). */
     /* -------------------------------------------------- */
 
-    zgemv_("C", n, &j, &z_one, &v[v_offset], ldv, &workd[ipj], &c__1, &z_zero, &workd[irj], &c__1);
+    zgemv_("C", n, &j, &z_one, &v[v_offset], ldv, &workd[ipj], &i_one, &z_zero, &workd[irj], &i_one);
 
     /* ------------------------------------------- */
     /* Compute the correction to the residual:     */
@@ -709,8 +716,8 @@ L80:
     /* ------------------------------------------- */
 
     z__1.r = -1., z__1.i = -0.0;
-    zgemv_("N", n, &j, &z__1, &v[v_offset], ldv, &workd[irj], &c__1, &z_one, resid, &c__1);
-    zaxpy_(&j, &z_one, &workd[irj], &c__1, &h[j * h_dim + 1], &c__1);
+    zgemv_("N", n, &j, &z__1, &v[v_offset], ldv, &workd[irj], &i_one, &z_one, resid, &i_one);
+    zaxpy_(&j, &z_one, &workd[irj], &i_one, &h[j * h_dim + 1], &i_one);
 
     orth2 = TRUE_;
 #ifndef NO_TIMER
@@ -720,7 +727,7 @@ L80:
     if (*bmat == 'G')
     {
         ++timing_1.nbx;
-        zcopy_(n, resid, &c__1, &workd[irj], &c__1);
+        zcopy_(n, resid, &i_one, &workd[irj], &i_one);
         ipntr[0] = irj;
         ipntr[1] = ipj;
         *ido = 2;
@@ -734,7 +741,7 @@ L80:
     }
     else if (*bmat == 'I')
     {
-        zcopy_(n, resid, &c__1, &workd[ipj], &c__1);
+        zcopy_(n, resid, &i_one, &workd[ipj], &i_one);
     }
 L90:
 
@@ -752,13 +759,13 @@ L90:
         arscnd_(&t3);
         timing_1.tmvbx += t3 - t2;
 #endif
-        zdotc_(&z__1, n, resid, &c__1, &workd[ipj], &c__1);
+        zdotc_(&z__1, n, resid, &i_one, &workd[ipj], &i_one);
         cnorm.r = z__1.r, cnorm.i = z__1.i;
         rnorm1 = sqrt(dlapy2_(&cnorm.r, &cnorm.i));
     }
     else if (*bmat == 'I')
     {
-        rnorm1 = dznrm2_(n, resid, &c__1);
+        rnorm1 = dznrm2_(n, resid, &i_one);
     }
 
 #ifndef NO_TRACE

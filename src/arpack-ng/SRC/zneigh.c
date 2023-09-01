@@ -2,6 +2,12 @@
 
 #include "arpack_internal.h"
 
+/* Constants */
+static logical b_true = TRUE_;
+static int i_one  = 1;
+static a_dcomplex z_zero = { 0.0, 0.0 };
+static a_dcomplex z_one = { 1.0, 0.0 };
+
 /**
  * \BeginDoc
  *
@@ -145,13 +151,13 @@ int zneigh_(double *rnorm, int *n, a_dcomplex *
 
     zlacpy_("A", n, n, h, ldh, workl, n);
     zlaset_("A", n, n, &z_zero, &z_one, q, ldq);
-    zlahqr_(&c_true, &c_true, n, &c__1, n, workl, ldh, ritz, &c__1, n,q, ldq, ierr);
+    zlahqr_(&b_true, &b_true, n, &i_one, n, workl, ldh, ritz, &i_one, n,q, ldq, ierr);
     if (*ierr != 0)
     {
         goto L9000;
     }
 
-    zcopy_(n, &q[*n - 2], ldq, bounds, &c__1);
+    zcopy_(n, &q[*n - 2], ldq, bounds, &i_one);
 #ifndef NO_TRACE
     if (msglvl > 1)
     {
@@ -184,15 +190,15 @@ int zneigh_(double *rnorm, int *n, a_dcomplex *
     i__1 = *n;
     for (j = 0; j < i__1; ++j)
     {
-        temp = dznrm2_(n, &q[j * q_dim], &c__1);
+        temp = dznrm2_(n, &q[j * q_dim], &i_one);
         d__1 = 1.0 / temp;
-        zdscal_(n, &d__1, &q[j * q_dim], &c__1);
+        zdscal_(n, &d__1, &q[j * q_dim], &i_one);
     }
 
 #ifndef NO_TRACE
     if (msglvl > 1)
     {
-        zcopy_(n, &q[*n - 1], ldq, workl, &c__1);
+        zcopy_(n, &q[*n - 1], ldq, workl, &i_one);
         zvout_(*n, workl, debug_1.ndigit, "_neigh: Last row of the eigenvector matrix for H");
     }
 #endif
@@ -201,8 +207,8 @@ int zneigh_(double *rnorm, int *n, a_dcomplex *
     /* Compute the Ritz estimates */
     /* -------------------------- */
 
-    zcopy_(n, &q[*n - 1], n, bounds, &c__1);
-    zdscal_(n, rnorm, bounds, &c__1);
+    zcopy_(n, &q[*n - 1], n, bounds, &i_one);
+    zdscal_(n, rnorm, bounds, &i_one);
 
 #ifndef NO_TRACE
     if (msglvl > 2)

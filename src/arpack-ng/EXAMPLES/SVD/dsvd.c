@@ -8,7 +8,7 @@ int dsvd_atv_(const int m, const int n, double* w, double* y);
 
 extern int dmout_(const int, const int, const double*, const int, const int, const char*);
 
-static int c__1 = 1;
+static int i_one = 1;
 
 /**
  * \BeginDoc
@@ -411,9 +411,9 @@ L10:
         /* --------------------------- */
 
         dsvd_av_(m, n, &v[(j - 1) * n], ax);
-        dcopy_(&m, ax, &c__1, &u[(j - 1) * m], &c__1);
-        temp = 1.0 / dnrm2_(&m, &u[(j - 1) * m], &c__1);
-        dscal_(&m, &temp, &u[(j - 1) * m], &c__1);
+        dcopy_(&m, ax, &i_one, &u[(j - 1) * m], &i_one);
+        temp = 1.0 / dnrm2_(&m, &u[(j - 1) * m], &i_one);
+        dscal_(&m, &temp, &u[(j - 1) * m], &i_one);
 
         /* ------------------------- */
         /*                           */
@@ -432,8 +432,8 @@ L10:
         /* ------------------------- */
 
         d__1 = -s[j - 1];
-        daxpy_(&m, &d__1, &u[(j - 1) * m], &c__1, ax, &c__1);
-        s[j + 24] = dnrm2_(&m, ax, &c__1);
+        daxpy_(&m, &d__1, &u[(j - 1) * m], &i_one, ax, &i_one);
+        s[j + 24] = dnrm2_(&m, ax, &i_one);
 
     }
 
