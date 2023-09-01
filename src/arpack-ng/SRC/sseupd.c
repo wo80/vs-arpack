@@ -219,8 +219,8 @@
  *
  * \EndLib
  */
-int sseupd_(logical *rvec, char *howmny, logical *select, float *d, float *z, int *ldz,
-            float *sigma, char *bmat, int *n, char *which, int *nev, float *tol,
+int sseupd_(logical *rvec, const char *howmny, logical *select, float *d, float *z, int *ldz,
+            float *sigma, const char *bmat, int *n, const char *which, int *nev, float *tol,
             float *resid, int *ncv, float *v, int *ldv, int *iparam, int *ipntr,
             float *workd, float *workl, int *lworkl, int *info)
 {

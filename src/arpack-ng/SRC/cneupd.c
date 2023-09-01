@@ -251,8 +251,8 @@
  *
  * \EndLib
  */
-int cneupd_(logical *rvec, char *howmny, logical *select, a_fcomplex *d, a_fcomplex *z, int *ldz,
-            a_fcomplex *sigma, a_fcomplex *workev, char *bmat, int *n, char *which, int *nev,
+int cneupd_(logical *rvec, const char *howmny, logical *select, a_fcomplex *d, a_fcomplex *z, int *ldz,
+            a_fcomplex *sigma, a_fcomplex *workev, const char *bmat, int *n, const char *which, int *nev,
             float *tol, a_fcomplex *resid, int *ncv, a_fcomplex *v, int *ldv, int *iparam,
             int *ipntr, a_fcomplex *workd, a_fcomplex *workl, int *lworkl, float *rwork,
             int *info)

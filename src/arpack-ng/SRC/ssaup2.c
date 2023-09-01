@@ -177,7 +177,7 @@
  *
  * \EndLib
  */
-int ssaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
+int ssaup2_(int *ido, const char *bmat, int *n, const char *which, int *nev, int *np,
             float *tol, float *resid, int *mode, int *iupd, int *ishift, int *mxiter,
             float *v, int *ldv, float *h, int *ldh, float *ritz, float *bounds,
             float *q, int *ldq, float *workl, int *ipntr, float *workd, int *info)

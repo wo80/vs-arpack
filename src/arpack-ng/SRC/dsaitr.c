@@ -201,7 +201,7 @@
  *
  * \EndLib
  */
-int dsaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *mode,
+int dsaitr_(int *ido, const char *bmat, int *n, int *k,int *np, int *mode,
             double *resid, double *rnorm, double *v, int *ldv, double *h, int *ldh,
             int *ipntr, double *workd, int *info)
 {

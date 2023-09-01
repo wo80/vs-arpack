@@ -305,8 +305,8 @@
  *
  * \EndLib
  */
-int dneupd_(logical *rvec, char *howmny, logical *select, double *dr, double *di, double *z,
-            int *ldz, double *sigmar, double *sigmai, double *workev, char *bmat, int *n,
+int dneupd_(logical *rvec, const char *howmny, logical *select, double *dr, double *di, double *z,
+            int *ldz, double *sigmar, double *sigmai, double *workev, const char *bmat, int *n,
             char *which, int *nev, double *tol, double *resid, int *ncv, double *v,
             int *ldv, int *iparam, int *ipntr, double *workd, double *workl,
             int *lworkl, int *info)

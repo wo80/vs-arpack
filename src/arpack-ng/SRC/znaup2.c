@@ -166,7 +166,7 @@
  *
  * \EndLib
  */
-int znaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
+int znaup2_(int *ido, const char *bmat, int *n, const char *which, int *nev, int *np,
             double *tol, a_dcomplex *resid, int *mode, int *iupd, int *ishift, int *mxiter,
             a_dcomplex *v, int *ldv, a_dcomplex *h, int *ldh, a_dcomplex *ritz, a_dcomplex *bounds,
             a_dcomplex *q, int *ldq, a_dcomplex *workl, int *ipntr, a_dcomplex *workd, double *rwork,

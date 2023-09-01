@@ -113,7 +113,7 @@
  *
  * \EndLib
  */
-int cgetv0_(int *ido, char *bmat, int *itry, logical *initv, int *n, int *j,
+int cgetv0_(int *ido, const char *bmat, int *itry, logical *initv, int *n, int *j,
             a_fcomplex *v, int *ldv, a_fcomplex *resid, float *rnorm, int *ipntr, a_fcomplex *workd,
             int *ierr)
 {

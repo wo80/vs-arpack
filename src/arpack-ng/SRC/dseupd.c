@@ -219,8 +219,8 @@
  *
  * \EndLib
  */
-int dseupd_(logical *rvec, char *howmny, logical *select, double *d, double *z, int *ldz,
-            double *sigma, char *bmat, int *n, char *which, int *nev, double *tol,
+int dseupd_(logical *rvec, const char *howmny, logical *select, double *d, double *z, int *ldz,
+            double *sigma, const char *bmat, int *n, const char *which, int *nev, double *tol,
             double *resid, int *ncv, double *v, int *ldv, int *iparam, int *ipntr,
             double *workd, double *workl, int *lworkl, int *info)
 {

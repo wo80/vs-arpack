@@ -305,8 +305,8 @@
  *
  * \EndLib
  */
-int sneupd_(logical *rvec, char *howmny, logical *select, float *dr, float *di, float *z,
-            int *ldz, float *sigmar, float *sigmai, float *workev, char *bmat, int *n,
+int sneupd_(logical *rvec, const char *howmny, logical *select, float *dr, float *di, float *z,
+            int *ldz, float *sigmar, float *sigmai, float *workev, const char *bmat, int *n,
             char *which, int *nev, float *tol, float *resid, int *ncv, float *v,
             int *ldv, int *iparam, int *ipntr, float *workd, float *workl, int *lworkl,
             int *info)

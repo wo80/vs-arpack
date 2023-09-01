@@ -77,13 +77,6 @@ int main()
     const int MAXN   = 256; /* Maximum dimension of the A allowed. */
     const int MAXNEV =  10; /* Maximum NEV allowed */
     const int MAXNCV =  25; /* Maximum NCV allowed */
-    debug_1.mcaupd = 3;
-    debug_1.mcaup2 = 3;
-    debug_1.mcaitr = 3;
-    debug_1.mceigh = 3;
-    debug_1.mcapps = 3;
-    debug_1.mcgets = 3;
-    debug_1.mceupd = 3;
 
     /* ------------------------------------------------ */
     /* The number N is the dimension of the matrix.  A  */

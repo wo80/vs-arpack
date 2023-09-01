@@ -173,7 +173,7 @@
  *
  * \EndLib
  */
-int dnaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
+int dnaup2_(int *ido, const char *bmat, int *n, const char *which, int *nev, int *np,
             double *tol, double *resid, int *mode, int *iupd, int *ishift, int *mxiter,
             double *v, int *ldv, double *h, int *ldh, double *ritzr, double *ritzi,
             double *bounds, double *q, int *ldq, double *workl, int *ipntr, double *workd,

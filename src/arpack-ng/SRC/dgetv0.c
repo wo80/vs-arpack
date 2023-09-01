@@ -116,7 +116,7 @@
  *
  * \EndLib
  */
-int dgetv0_(int *ido, char *bmat, int *itry, logical *initv, int *n, int *j,
+int dgetv0_(int *ido, const char *bmat, int *itry, logical *initv, int *n, int *j,
             double *v, int *ldv, double *resid, double *rnorm, int *ipntr, double *workd,
             int *ierr)
 {

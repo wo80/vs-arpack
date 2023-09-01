@@ -201,7 +201,7 @@
  *
  * \EndLib
  */
-int ssaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *mode,
+int ssaitr_(int *ido, const char *bmat, int *n, int *k,int *np, int *mode,
             float *resid, float *rnorm, float *v, int *ldv, float *h, int *ldh,
             int *ipntr, float *workd, int *info)
 {

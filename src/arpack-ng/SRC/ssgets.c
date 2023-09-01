@@ -90,7 +90,7 @@
  *
  * \EndLib
  */
-int ssgets_(int *ishift, char *which, int *kev, int *np, float *ritz,
+int ssgets_(int *ishift, const char *which, int *kev, int *np, float *ritz,
             float *bounds, float *shifts)
 {
     /* System generated locals */

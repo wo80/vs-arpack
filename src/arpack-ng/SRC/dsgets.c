@@ -90,7 +90,7 @@
  *
  * \EndLib
  */
-int dsgets_(int *ishift, char *which, int *kev, int *np, double *ritz,
+int dsgets_(int *ishift, const char *which, int *kev, int *np, double *ritz,
             double *bounds, double *shifts)
 {
     /* System generated locals */

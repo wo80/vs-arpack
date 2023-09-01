@@ -91,7 +91,7 @@
  *
  * \EndLib
  */
-int dngets_(int *ishift, char *which, int *kev, int *np, double *ritzr,
+int dngets_(int *ishift, const char *which, int *kev, int *np, double *ritzr,
             double *ritzi, double *bounds,double *shiftr, double *shifti)
 {
     /* System generated locals */

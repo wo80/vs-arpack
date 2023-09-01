@@ -206,7 +206,7 @@
  *
  * \EndLib
  */
-int cnaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *nb,
+int cnaitr_(int *ido, const char *bmat, int *n, int *k,int *np, int *nb,
             a_fcomplex *resid, float *rnorm, a_fcomplex *v, int *ldv, a_fcomplex *h, int *ldh,
             int *ipntr, a_fcomplex *workd, int *info)
 {

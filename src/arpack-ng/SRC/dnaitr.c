@@ -206,7 +206,7 @@
  *
  * \EndLib
  */
-int dnaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *nb,
+int dnaitr_(int *ido, const char *bmat, int *n, int *k,int *np, int *nb,
             double *resid, double *rnorm, double *v, int *ldv, double *h, int *ldh,
             int *ipntr, double *workd, int *info)
 {

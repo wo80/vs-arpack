@@ -91,7 +91,7 @@
  *
  * \EndLib
  */
-int sngets_(int *ishift, char *which, int *kev, int *np, float *ritzr,
+int sngets_(int *ishift, const char *which, int *kev, int *np, float *ritzr,
             float *ritzi, float *bounds, float *shiftr, float *shifti)
 {
     /* System generated locals */

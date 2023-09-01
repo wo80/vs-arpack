@@ -166,7 +166,7 @@
  *
  * \EndLib
  */
-int cnaup2_(int *ido, char *bmat, int *n, char *which, int *nev, int *np,
+int cnaup2_(int *ido, const char *bmat, int *n, const char *which, int *nev, int *np,
             float *tol, a_fcomplex *resid, int *mode, int *iupd, int *ishift, int *mxiter,
             a_fcomplex *v, int *ldv, a_fcomplex *h, int *ldh, a_fcomplex *ritz, a_fcomplex *bounds,
             a_fcomplex *q, int *ldq, a_fcomplex *workl, int *ipntr, a_fcomplex *workd, float *rwork,

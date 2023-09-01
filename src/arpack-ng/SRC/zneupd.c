@@ -251,8 +251,8 @@
  *
  * \EndLib
  */
-int zneupd_(logical *rvec, char *howmny, logical *select, a_dcomplex *d, a_dcomplex *z, int *ldz,
-            a_dcomplex *sigma, a_dcomplex *workev, char *bmat, int *n, char *which, int *nev,
+int zneupd_(logical *rvec, const char *howmny, logical *select, a_dcomplex *d, a_dcomplex *z, int *ldz,
+            a_dcomplex *sigma, a_dcomplex *workev, const char *bmat, int *n, const char *which, int *nev,
             double *tol, a_dcomplex *resid, int *ncv, a_dcomplex *v, int *ldv, int *iparam,
             int *ipntr, a_dcomplex *workd, a_dcomplex *workl, int *lworkl, double *rwork,
             int *info)

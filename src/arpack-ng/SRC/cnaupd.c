@@ -377,7 +377,7 @@
  *
  * \EndLib
  */
-int cnaupd_(int *ido, char *bmat, int *n, char *which, int *nev, float *tol,
+int cnaupd_(int *ido, const char *bmat, int *n, const char *which, int *nev, float *tol,
             a_fcomplex *resid, int *ncv, a_fcomplex *v, int *ldv, int *iparam, int *ipntr,
             a_fcomplex *workd, a_fcomplex *workl, int *lworkl, float *rwork, int *info)
 {

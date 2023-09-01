@@ -116,7 +116,7 @@
  *
  * \EndLib
  */
-int sgetv0_(int *ido, char *bmat, int *itry, logical *initv, int *n, int *j,
+int sgetv0_(int *ido, const char *bmat, int *itry, logical *initv, int *n, int *j,
             float *v, int *ldv, float *resid, float *rnorm, int *ipntr, float *workd,
             int *ierr)
 {

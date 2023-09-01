@@ -113,7 +113,7 @@
  *
  * \EndLib
  */
-int zgetv0_(int *ido, char *bmat, int *itry, logical *initv, int *n, int *j,
+int zgetv0_(int *ido, const char *bmat, int *itry, logical *initv, int *n, int *j,
             a_dcomplex *v, int *ldv, a_dcomplex *resid, double *rnorm, int *ipntr, a_dcomplex *workd,
             int *ierr)
 {

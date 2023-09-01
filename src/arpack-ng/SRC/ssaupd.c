@@ -407,7 +407,7 @@
  *
  * \EndLib
  */
-int ssaupd_(int *ido, char *bmat, int *n, char *which, int *nev, float *tol,
+int ssaupd_(int *ido, const char *bmat, int *n, const char *which, int *nev, float *tol,
             float *resid, int *ncv, float *v, int *ldv, int *iparam, int *ipntr,
             float *workd, float *workl, int *lworkl, int *info)
 {

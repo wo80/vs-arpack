@@ -84,7 +84,7 @@
  *
  * \EndLib
  */
-int cngets_(int *ishift, char *which, int *kev, int *np, a_fcomplex *ritz, a_fcomplex *bounds)
+int cngets_(int *ishift, const char *which, int *kev, int *np, a_fcomplex *ritz, a_fcomplex *bounds)
 {
     /* System generated locals */
     int i__1;

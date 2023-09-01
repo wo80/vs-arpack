@@ -24,60 +24,60 @@ extern "C"
 
     /* BEGIN: public interface */
 
-    int cnaupd_(int* ido, char* bmat, int* n, char* which, int* nev, float* tol,
+    int cnaupd_(int* ido, const char* bmat, int* n, const char* which, int* nev, float* tol,
         a_fcomplex* resid, int* ncv, a_fcomplex* v, int* ldv, int* iparam, int* ipntr,
         a_fcomplex* workd, a_fcomplex* workl, int* lworkl, float* rwork, int* info);
 
-    int cneupd_(logical* rvec, char* howmny, logical* select, a_fcomplex* d, a_fcomplex* z, int* ldz,
-        a_fcomplex* sigma, a_fcomplex* workev, char* bmat, int* n, char* which, int* nev,
+    int cneupd_(logical* rvec, const char* howmny, logical* select, a_fcomplex* d, a_fcomplex* z, int* ldz,
+        a_fcomplex* sigma, a_fcomplex* workev, const char* bmat, int* n, const char* which, int* nev,
         float* tol, a_fcomplex* resid, int* ncv, a_fcomplex* v, int* ldv, int* iparam,
         int* ipntr, a_fcomplex* workd, a_fcomplex* workl, int* lworkl, float* rwork,
         int* info);
 
-    int dnaupd_(int* ido, char* bmat, int* n, char* which, int* nev, double* tol,
+    int dnaupd_(int* ido, const char* bmat, int* n, const char* which, int* nev, double* tol,
         double* resid, int* ncv, double* v, int* ldv, int* iparam, int* ipntr,
         double* workd, double* workl, int* lworkl, int* info);
 
-    int dneupd_(logical* rvec, char* howmny, logical* select, double* dr, double* di, double* z,
-        int* ldz, double* sigmar, double* sigmai, double* workev, char* bmat, int* n,
+    int dneupd_(logical* rvec, const char* howmny, logical* select, double* dr, double* di, double* z,
+        int* ldz, double* sigmar, double* sigmai, double* workev, const char* bmat, int* n,
         char* which, int* nev, double* tol, double* resid, int* ncv, double* v,
         int* ldv, int* iparam, int* ipntr, double* workd, double* workl, int* lworkl,
         int* info);
 
-    int dsaupd_(int* ido, char* bmat, int* n, char* which, int* nev, double* tol,
+    int dsaupd_(int* ido, const char* bmat, int* n, const char* which, int* nev, double* tol,
         double* resid, int* ncv, double* v, int* ldv, int* iparam, int* ipntr,
         double* workd, double* workl, int* lworkl, int* info);
 
-    int dseupd_(logical* rvec, char* howmny, logical* select, double* d, double* z, int* ldz,
-        double* sigma, char* bmat, int* n, char* which, int* nev, double* tol,
+    int dseupd_(logical* rvec, const char* howmny, logical* select, double* d, double* z, int* ldz,
+        double* sigma, const char* bmat, int* n, const char* which, int* nev, double* tol,
         double* resid, int* ncv, double* v, int* ldv, int* iparam, int* ipntr,
         double* workd, double* workl, int* lworkl, int* info);
 
-    int snaupd_(int* ido, char* bmat, int* n, char* which, int* nev, float* tol,
+    int snaupd_(int* ido, const char* bmat, int* n, const char* which, int* nev, float* tol,
         float* resid, int* ncv, float* v, int* ldv, int* iparam, int* ipntr,
         float* workd, float* workl, int* lworkl, int* info);
 
-    int sneupd_(logical* rvec, char* howmny, logical* select, float* dr, float* di, float* z,
-        int* ldz, float* sigmar, float* sigmai, float* workev, char* bmat, int* n,
+    int sneupd_(logical* rvec, const char* howmny, logical* select, float* dr, float* di, float* z,
+        int* ldz, float* sigmar, float* sigmai, float* workev, const char* bmat, int* n,
         char* which, int* nev, float* tol, float* resid, int* ncv, float* v,
         int* ldv, int* iparam, int* ipntr, float* workd, float* workl, int* lworkl,
         int* info);
 
-    int ssaupd_(int* ido, char* bmat, int* n, char* which, int* nev, float* tol,
+    int ssaupd_(int* ido, const char* bmat, int* n, const char* which, int* nev, float* tol,
         float* resid, int* ncv, float* v, int* ldv, int* iparam, int* ipntr,
         float* workd, float* workl, int* lworkl, int* info);
 
-    int sseupd_(logical* rvec, char* howmny, logical* select, float* d, float* z, int* ldz,
-        float* sigma, char* bmat, int* n, char* which, int* nev, float* tol,
+    int sseupd_(logical* rvec, const char* howmny, logical* select, float* d, float* z, int* ldz,
+        float* sigma, const char* bmat, int* n, const char* which, int* nev, float* tol,
         float* resid, int* ncv, float* v, int* ldv, int* iparam, int* ipntr,
         float* workd, float* workl, int* lworkl, int* info);
 
-    int znaupd_(int* ido, char* bmat, int* n, char* which, int* nev, double* tol,
+    int znaupd_(int* ido, const char* bmat, int* n, const char* which, int* nev, double* tol,
         a_dcomplex* resid, int* ncv, a_dcomplex* v, int* ldv, int* iparam, int* ipntr,
         a_dcomplex* workd, a_dcomplex* workl, int* lworkl, double* rwork, int* info);
 
-    int zneupd_(logical* rvec, char* howmny, logical* select, a_dcomplex* d, a_dcomplex* z, int* ldz,
-        a_dcomplex* sigma, a_dcomplex* workev, char* bmat, int* n, char* which, int* nev,
+    int zneupd_(logical* rvec, const char* howmny, logical* select, a_dcomplex* d, a_dcomplex* z, int* ldz,
+        a_dcomplex* sigma, a_dcomplex* workev, const char* bmat, int* n, const char* which, int* nev,
         double* tol, a_dcomplex* resid, int* ncv, a_dcomplex* v, int* ldv, int* iparam,
         int* ipntr, a_dcomplex* workd, a_dcomplex* workl, int* lworkl, double* rwork,
         int* info);

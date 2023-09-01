@@ -206,7 +206,7 @@
  *
  * \EndLib
  */
-int znaitr_(int *ido, char *bmat, int *n, int *k,int *np, int *nb,
+int znaitr_(int *ido, const char *bmat, int *n, int *k,int *np, int *nb,
             a_dcomplex *resid, double *rnorm, a_dcomplex *v, int *ldv, a_dcomplex *h, int *ldh,
             int *ipntr, a_dcomplex *workd, int *info)
 {

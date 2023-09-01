@@ -20,12 +20,12 @@ extern "C"
 
     /* complex */
 
-    int cgetv0_(int*, char*, int*, logical*, int*, int*, a_fcomplex*, int*, a_fcomplex*, float*, int*, a_fcomplex*, int*);
-    int cnaitr_(int*, char*, int*, int*, int*, int*, a_fcomplex*, float*, a_fcomplex*, int*, a_fcomplex*, int*, int*, a_fcomplex*, int*);
+    int cgetv0_(int*, const char*, int*, logical*, int*, int*, a_fcomplex*, int*, a_fcomplex*, float*, int*, a_fcomplex*, int*);
+    int cnaitr_(int*, const char*, int*, int*, int*, int*, a_fcomplex*, float*, a_fcomplex*, int*, a_fcomplex*, int*, int*, a_fcomplex*, int*);
     int cnapps_(int*, int*, int*, a_fcomplex*, a_fcomplex*, int*, a_fcomplex*, int*, a_fcomplex*, a_fcomplex*, int*, a_fcomplex*, a_fcomplex*);
-    int cnaup2_(int*, char*, int*, char*, int*, int*, float*, a_fcomplex*, int*, int*, int*, int*, a_fcomplex*, int*, a_fcomplex*, int*, a_fcomplex*, a_fcomplex*, a_fcomplex*, int*, a_fcomplex*, int*, a_fcomplex*, float*, int*);
+    int cnaup2_(int*, const char*, int*, const char*, int*, int*, float*, a_fcomplex*, int*, int*, int*, int*, a_fcomplex*, int*, a_fcomplex*, int*, a_fcomplex*, a_fcomplex*, a_fcomplex*, int*, a_fcomplex*, int*, a_fcomplex*, float*, int*);
     int cneigh_(float*, int*, a_fcomplex*, int*, a_fcomplex*, a_fcomplex*, a_fcomplex*, int*, a_fcomplex*, float*, int*);
-    int cngets_(int*, char*, int*, int*, a_fcomplex*, a_fcomplex*);
+    int cngets_(int*, const char*, int*, int*, a_fcomplex*, a_fcomplex*);
     int csortc_(char*, logical*, int*, a_fcomplex*, a_fcomplex*);
     int cstatn_(void);
 
@@ -34,20 +34,20 @@ extern "C"
 
     /* double */
 
-    int dgetv0_(int*, char*, int*, logical*, int*, int*, double*, int*, double*, double*, int*, double*, int*);
-    int dnaitr_(int*, char*, int*, int*, int*, int*, double*, double*, double*, int*, double*, int*, int*, double*, int*);
+    int dgetv0_(int*, const char*, int*, logical*, int*, int*, double*, int*, double*, double*, int*, double*, int*);
+    int dnaitr_(int*, const char*, int*, int*, int*, int*, double*, double*, double*, int*, double*, int*, int*, double*, int*);
     int dnapps_(int*, int*, int*, double*, double*, double*, int*, double*, int*, double*, double*, int*, double*, double*);
-    int dnaup2_(int*, char*, int*, char*, int*, int*, double*, double*, int*, int*, int*, int*, double*, int*, double*, int*, double*, double*, double*, double*, int*, double*, int*, double*, int*);
+    int dnaup2_(int*, const char*, int*, const char*, int*, int*, double*, double*, int*, int*, int*, int*, double*, int*, double*, int*, double*, double*, double*, double*, int*, double*, int*, double*, int*);
     int dnconv_(int*, double*, double*, double*, double*, int*);
     int dneigh_(double*, int*, double*, int*, double*, double*, double*, double*, int*, double*, int*);
-    int dngets_(int*, char*, int*, int*, double*, double*, double*, double*, double*);
-    int dsaitr_(int*, char*, int*, int*, int*, int*, double*, double*, double*, int*, double*, int*, int*, double*, int*);
+    int dngets_(int*, const char*, int*, int*, double*, double*, double*, double*, double*);
+    int dsaitr_(int*, const char*, int*, int*, int*, int*, double*, double*, double*, int*, double*, int*, int*, double*, int*);
     int dsapps_(int*, int*, int*, double*, double*, int*, double*, int*, double*, double*, int*, double*);
-    int dsaup2_(int*, char*, int*, char*, int*, int*, double*, double*, int*, int*, int*, int*, double*, int*, double*, int*, double*, double*, double*, int*, double*, int*, double*, int*);
+    int dsaup2_(int*, const char*, int*, const char*, int*, int*, double*, double*, int*, int*, int*, int*, double*, int*, double*, int*, double*, double*, double*, int*, double*, int*, double*, int*);
     int dsconv_(int*, double*, double*, double*, int*);
     int dseigt_(double*, int*, double*, int*, double*, double*, double*, int*);
     int dsesrt_(char*, logical*, int*, double*, int*, double*, int*);
-    int dsgets_(int*, char*, int*, int*, double*, double*, double*);
+    int dsgets_(int*, const char*, int*, int*, double*, double*, double*);
     int dsortc_(char*, logical*, int*, double*, double*, double*);
     int dsortr_(char*, logical*, int*, double*, double*);
     int dstatn_(void);
@@ -59,20 +59,20 @@ extern "C"
 
     /* single */
 
-    int sgetv0_(int*, char*, int*, logical*, int*, int*, float*, int*, float*, float*, int*, float*, int*);
-    int snaitr_(int*, char*, int*, int*, int*, int*, float*, float*, float*, int*, float*, int*, int*, float*, int*);
+    int sgetv0_(int*, const char*, int*, logical*, int*, int*, float*, int*, float*, float*, int*, float*, int*);
+    int snaitr_(int*, const char*, int*, int*, int*, int*, float*, float*, float*, int*, float*, int*, int*, float*, int*);
     int snapps_(int*, int*, int*, float*, float*, float*, int*, float*, int*, float*, float*, int*, float*, float*);
-    int snaup2_(int*, char*, int*, char*, int*, int*, float*, float*, int*, int*, int*, int*, float*, int*, float*, int*, float*, float*, float*, float*, int*, float*, int*, float*, int*);
+    int snaup2_(int*, const char*, int*, const char*, int*, int*, float*, float*, int*, int*, int*, int*, float*, int*, float*, int*, float*, float*, float*, float*, int*, float*, int*, float*, int*);
     int snconv_(int*, float*, float*, float*, float*, int*);
     int sneigh_(float*, int*, float*, int*, float*, float*, float*, float*, int*, float*, int*);
-    int sngets_(int*, char*, int*, int*, float*, float*, float*, float*, float*);
-    int ssaitr_(int*, char*, int*, int*, int*, int*, float*, float*, float*, int*, float*, int*, int*, float*, int*);
+    int sngets_(int*, const char*, int*, int*, float*, float*, float*, float*, float*);
+    int ssaitr_(int*, const char*, int*, int*, int*, int*, float*, float*, float*, int*, float*, int*, int*, float*, int*);
     int ssapps_(int*, int*, int*, float*, float*, int*, float*, int*, float*, float*, int*, float*);
-    int ssaup2_(int*, char*, int*, char*, int*, int*, float*, float*, int*, int*, int*, int*, float*, int*, float*, int*, float*, float*, float*, int*, float*, int*, float*, int*);
+    int ssaup2_(int*, const char*, int*, const char*, int*, int*, float*, float*, int*, int*, int*, int*, float*, int*, float*, int*, float*, float*, float*, int*, float*, int*, float*, int*);
     int ssconv_(int*, float*, float*, float*, int*);
     int sseigt_(float*, int*, float*, int*, float*, float*, float*, int*);
     int ssesrt_(char*, logical*, int*, float*, int*, float*, int*);
-    int ssgets_(int*, char*, int*, int*, float*, float*, float*);
+    int ssgets_(int*, const char*, int*, int*, float*, float*, float*);
     int ssortc_(char*, logical*, int*, float*, float*, float*);
     int ssortr_(char*, logical*, int*, float*, float*);
     int sstatn_(void);
@@ -84,12 +84,12 @@ extern "C"
 
     /* a_dcomplex */
 
-    int zgetv0_(int*, char*, int*, logical*, int*, int*, a_dcomplex*, int*, a_dcomplex*, double*, int*, a_dcomplex*, int*);
-    int znaitr_(int*, char*, int*, int*, int*, int*, a_dcomplex*, double*, a_dcomplex*, int*, a_dcomplex*, int*, int*, a_dcomplex*, int*);
+    int zgetv0_(int*, const char*, int*, logical*, int*, int*, a_dcomplex*, int*, a_dcomplex*, double*, int*, a_dcomplex*, int*);
+    int znaitr_(int*, const char*, int*, int*, int*, int*, a_dcomplex*, double*, a_dcomplex*, int*, a_dcomplex*, int*, int*, a_dcomplex*, int*);
     int znapps_(int*, int*, int*, a_dcomplex*, a_dcomplex*, int*, a_dcomplex*, int*, a_dcomplex*, a_dcomplex*, int*, a_dcomplex*, a_dcomplex*);
-    int znaup2_(int*, char*, int*, char*, int*, int*, double*, a_dcomplex*, int*, int*, int*, int*, a_dcomplex*, int*, a_dcomplex*, int*, a_dcomplex*, a_dcomplex*, a_dcomplex*, int*, a_dcomplex*, int*, a_dcomplex*, double*, int*);
+    int znaup2_(int*, const char*, int*, const char*, int*, int*, double*, a_dcomplex*, int*, int*, int*, int*, a_dcomplex*, int*, a_dcomplex*, int*, a_dcomplex*, a_dcomplex*, a_dcomplex*, int*, a_dcomplex*, int*, a_dcomplex*, double*, int*);
     int zneigh_(double*, int*, a_dcomplex*, int*, a_dcomplex*, a_dcomplex*, a_dcomplex*, int*, a_dcomplex*, double*, int*);
-    int zngets_(int*, char*, int*, int*, a_dcomplex*, a_dcomplex*);
+    int zngets_(int*, const char*, int*, int*, a_dcomplex*, a_dcomplex*);
     int zsortc_(char*, logical*, int*, a_dcomplex*, a_dcomplex*);
     int zstatn_(void);
 
