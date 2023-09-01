@@ -102,17 +102,17 @@ int main()
     int n = 100;
     int nev = 4;
     int ncv = 10;
-    if (n > 256)
+    if (n > MAXN)
     {
         printf(" ERROR with _NDRV4: N is greater than MAXN \n");
         return 0;
     }
-    else if (nev > 10)
+    else if (nev > MAXNEV)
     {
         printf(" ERROR with _NDRV4: NEV is greater than MAXNEV \n");
         return 0;
     }
-    else if (ncv > 25)
+    else if (ncv > MAXNCV)
     {
         printf(" ERROR with _NDRV4: NCV is greater than MAXNCV \n");
         return 0;
@@ -328,7 +328,7 @@ L20:
     /* ----------------------------------------- */
 
     rvec = TRUE_;
-    sneupd_(&rvec, "A", select, d, &d[25], v, &n, &sigmar, &sigmai, workev, bmat, &n, which, &nev, &tol, resid, &ncv, v, &n, iparam, ipntr, workd, workl, &lworkl, &ierr);
+    sneupd_(&rvec, "A", select, d, &d[MAXNCV], v, &n, &sigmar, &sigmai, workev, bmat, &n, which, &nev, &tol, resid, &ncv, v, &n, iparam, ipntr, workd, workl, &lworkl, &ierr);
 
     /* --------------------------------------------- */
     /* The real part of the eigenvalue is returned   */
@@ -428,7 +428,7 @@ L20:
     /* Display computed residuals. */
     /* --------------------------- */
 
-    smout_(nconv, 3, d, 25, -6, "Ritz values (Real,Imag) and relative residuals");
+    smout_(nconv, 3, d, MAXNCV, -6, "Ritz values (Real,Imag) and relative residuals");
 
     /* ----------------------------------------- */
     /* Print additional convergence information. */

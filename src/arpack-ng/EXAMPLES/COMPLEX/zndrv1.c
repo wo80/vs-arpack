@@ -98,17 +98,17 @@ int main()
     int n = nx * nx;
     int nev = 4;
     int ncv = 20;
-    if (n > 256)
+    if (n > MAXN)
     {
         printf(" ERROR with _NDRV1: N is greater than MAXN \n");
         return 0;
     }
-    else if (nev > 12)
+    else if (nev > MAXNEV)
     {
         printf(" ERROR with _NDRV1: NEV is greater than MAXNEV \n");
         return 0;
     }
-    else if (ncv > 30)
+    else if (nev > MAXNCV)
     {
         printf(" ERROR with _NDRV1: NCV is greater than MAXNCV \n");
         return 0;
@@ -288,7 +288,7 @@ L10:
     /* Display computed residuals. */
     /* --------------------------- */
 
-    dmout_(nconv, 3, rd, 30, -6, "Ritz values (Real, Imag) and relative residuals");
+    dmout_(nconv, 3, rd, MAXNCV, -6, "Ritz values (Real, Imag) and relative residuals");
 
     /* ----------------------------------------- */
     /* Print additional convergence information. */

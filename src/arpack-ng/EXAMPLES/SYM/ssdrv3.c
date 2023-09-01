@@ -91,17 +91,17 @@ int main()
     int n = 100;
     int nev = 4;
     int ncv = 10;
-    if (n > 256)
+    if (n > MAXN)
     {
         printf(" ERROR with _SDRV3: N is greater than MAXN \n");
         return 0;
     }
-    else if (nev > 10)
+    else if (nev > MAXNEV)
     {
         printf(" ERROR with _SDRV3: NEV is greater than MAXNEV \n");
         return 0;
     }
-    else if (ncv > 25)
+    else if (ncv > MAXNCV)
     {
         printf(" ERROR with _SDRV3: NCV is greater than MAXNCV \n");
         return 0;
@@ -339,7 +339,7 @@ L10:
     /* Display computed residuals. */
     /* --------------------------- */
 
-    smout_(nconv, 2, d, 25, -6, "Ritz values and relative residuals");
+    smout_(nconv, 2, d, MAXNCV, -6, "Ritz values and relative residuals");
     /* ---------------------------------------- */
     /* Print additional convergence information */
     /* ---------------------------------------- */
