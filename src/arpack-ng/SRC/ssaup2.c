@@ -187,9 +187,6 @@ int ssaup2_(int *ido, const char *bmat, int *n, const char *which, int *nev, int
             float *v, int *ldv, float *h, int *ldh, float *ritz, float *bounds,
             float *q, int *ldq, float *workl, int *ipntr, float *workd, int *info)
 {
-    /* Constants */
-    const double d_23 = 0.666666666666666667;
-
     /* System generated locals */
     int i__1, i__2, i__3;
     float r__1, r__2, r__3;
@@ -239,7 +236,7 @@ int ssaup2_(int *ido, const char *bmat, int *n, const char *which, int *nev, int
         /* ------------------------------- */
 
         eps23 = slamch_("E");
-        eps23 = pow((double)eps23, d_23);
+        eps23 = pow((double)eps23, TWO_THIRDS);
 
         /* ----------------------------------- */
         /* nev0 and np0 are integer variables  */

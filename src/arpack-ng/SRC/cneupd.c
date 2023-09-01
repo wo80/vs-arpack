@@ -263,9 +263,6 @@ int cneupd_(logical *rvec, const char *howmny, logical *select, a_fcomplex *d, a
             int *ipntr, a_fcomplex *workd, a_fcomplex *workl, int *lworkl, float *rwork,
             int *info)
 {
-    /* Constants */
-    const double d_23 = 0.666666666666666667;
-
     /* System generated locals */
     int i__1, i__2;
     float r__1, r__2, r__3, r__4;
@@ -311,7 +308,7 @@ int cneupd_(logical *rvec, const char *howmny, logical *select, a_fcomplex *d, a
     /* ------------------------------- */
 
     eps23 = slamch_("E");
-    eps23 = pow((double)eps23, d_23);
+    eps23 = pow((double)eps23, TWO_THIRDS);
 
     /* ----------------------------- */
     /* Quick return                  */

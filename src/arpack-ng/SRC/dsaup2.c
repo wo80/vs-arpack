@@ -187,9 +187,6 @@ int dsaup2_(int *ido, const char *bmat, int *n, const char *which, int *nev, int
             double *v, int *ldv, double *h, int *ldh, double *ritz, double *bounds,
             double *q, int *ldq, double *workl, int *ipntr, double *workd, int *info)
 {
-    /* Constants */
-    const double d_23 = 0.666666666666666667;
-
     /* System generated locals */
     int i__1, i__2, i__3;
     double d__1, d__2, d__3;
@@ -239,7 +236,7 @@ int dsaup2_(int *ido, const char *bmat, int *n, const char *which, int *nev, int
         /* ------------------------------- */
 
         eps23 = dlamch_("E");
-        eps23 = pow(eps23, d_23);
+        eps23 = pow(eps23, TWO_THIRDS);
 
         /* ----------------------------------- */
         /* nev0 and np0 are integer variables  */

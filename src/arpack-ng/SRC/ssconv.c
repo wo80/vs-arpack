@@ -60,9 +60,6 @@
 int ssconv_(int *n, float *ritz, float *bounds, float *tol,
             int *nconv)
 {
-    /* Constants */
-    const double d_23 = 0.666666666666666667;
-
     /* System generated locals */
     int i__1;
     float r__1, r__2, r__3;
@@ -83,7 +80,7 @@ int ssconv_(int *n, float *ritz, float *bounds, float *tol,
 #endif
 
     eps23 = slamch_("E");
-    eps23 = pow((double)eps23, d_23);
+    eps23 = pow((double)eps23, TWO_THIRDS);
 
     *nconv = 0;
     i__1 = *n;

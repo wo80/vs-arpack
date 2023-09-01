@@ -318,9 +318,6 @@ int sneupd_(logical *rvec, const char *howmny, logical *select, float *dr, float
             int *ldv, int *iparam, int *ipntr, float *workd, float *workl, int *lworkl,
             int *info)
 {
-    /* Constants */
-    const double d_23 = 0.666666666666666667;
-
     /* System generated locals */
     int i__1;
     float r__1, r__2;
@@ -365,7 +362,7 @@ int sneupd_(logical *rvec, const char *howmny, logical *select, float *dr, float
     /* ------------------------------- */
 
     eps23 = slamch_("E");
-    eps23 = pow((double)eps23, d_23);
+    eps23 = pow((double)eps23, TWO_THIRDS);
 
     /* ------------ */
     /* Quick return */

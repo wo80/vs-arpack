@@ -263,9 +263,6 @@ int zneupd_(logical *rvec, const char *howmny, logical *select, a_dcomplex *d, a
             int *ipntr, a_dcomplex *workd, a_dcomplex *workl, int *lworkl, double *rwork,
             int *info)
 {
-    /* Constants */
-    const double d_23 = 0.666666666666666667;
-
     /* System generated locals */
     int i__1, i__2;
     double d__1, d__2, d__3, d__4;
@@ -310,7 +307,7 @@ int zneupd_(logical *rvec, const char *howmny, logical *select, a_dcomplex *d, a
     /* ------------------------------- */
 
     eps23 = dlamch_("E");
-    eps23 = pow(eps23, d_23);
+    eps23 = pow(eps23, TWO_THIRDS);
 
     /* ----------------------------- */
     /* Quick return                  */

@@ -6,6 +6,8 @@
 #include "arpack.h"
 #include "lapack.h"
 
+#define TWO_THIRDS 0.66666666666666666667
+
 #ifdef __cplusplus
 extern "C"
 {

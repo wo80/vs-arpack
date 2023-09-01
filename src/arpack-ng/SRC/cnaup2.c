@@ -177,9 +177,6 @@ int cnaup2_(int *ido, const char *bmat, int *n, const char *which, int *nev, int
             a_fcomplex *q, int *ldq, a_fcomplex *workl, int *ipntr, a_fcomplex *workd, float *rwork,
             int *info)
 {
-    /* Constants */
-    const double d_23 = 0.666666666666666667;
-
     /* System generated locals */
     int i__1, i__2;
     float r__1, r__2, r__3, r__4;
@@ -239,7 +236,7 @@ int cnaup2_(int *ido, const char *bmat, int *n, const char *which, int *nev, int
         /* ------------------------------- */
 
         eps23 = slamch_("E");
-        eps23 = pow((double)eps23, d_23);
+        eps23 = pow((double)eps23, TWO_THIRDS);
 
         /* ------------------------------------- */
         /* Set flags for computing the first NEV */

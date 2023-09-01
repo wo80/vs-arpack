@@ -229,9 +229,6 @@ int dseupd_(logical *rvec, const char *howmny, logical *select, double *d, doubl
             double *resid, int *ncv, double *v, int *ldv, int *iparam, int *ipntr,
             double *workd, double *workl, int *lworkl, int *info)
 {
-    /* Constants */
-    const double d_23 = 0.666666666666666667;
-
     /* System generated locals */
     int i__1;
     double d__1, d__2, d__3;
@@ -430,7 +427,7 @@ int dseupd_(logical *rvec, const char *howmny, logical *select, double *d, doubl
     /* ------------------------------- */
 
     eps23 = dlamch_("E");
-    eps23 = pow(eps23, d_23);
+    eps23 = pow(eps23, TWO_THIRDS);
 
     /* ------------------------------------- */
     /* RNORM is B-norm of the RESID(1:N).    */

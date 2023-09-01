@@ -177,9 +177,6 @@ int znaup2_(int *ido, const char *bmat, int *n, const char *which, int *nev, int
             a_dcomplex *q, int *ldq, a_dcomplex *workl, int *ipntr, a_dcomplex *workd, double *rwork,
             int *info)
 {
-    /* Constants */
-    const double d_23 = 0.666666666666666667;
-
     /* System generated locals */
     int i__1, i__2;
     double d__1, d__2, d__3, d__4;
@@ -239,7 +236,7 @@ int znaup2_(int *ido, const char *bmat, int *n, const char *which, int *nev, int
         /* ------------------------------- */
 
         eps23 = dlamch_("E");
-        eps23 = pow(eps23, d_23);
+        eps23 = pow(eps23, TWO_THIRDS);
 
         /* ------------------------------------- */
         /* Set flags for computing the first NEV */

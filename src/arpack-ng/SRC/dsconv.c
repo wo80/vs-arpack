@@ -60,9 +60,6 @@
 int dsconv_(int *n, double *ritz, double *bounds,
             double *tol, int *nconv)
 {
-    /* Constants */
-    const double d_23 = 0.666666666666666667;
-
     /* System generated locals */
     int i__1;
     double d__1, d__2, d__3;
@@ -83,7 +80,7 @@ int dsconv_(int *n, double *ritz, double *bounds,
 #endif
 
     eps23 = dlamch_("E");
-    eps23 = pow(eps23, d_23);
+    eps23 = pow(eps23, TWO_THIRDS);
 
     *nconv = 0;
     i__1 = *n;

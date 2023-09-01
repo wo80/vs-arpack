@@ -318,9 +318,6 @@ int dneupd_(logical *rvec, const char *howmny, logical *select, double *dr, doub
             int *ldv, int *iparam, int *ipntr, double *workd, double *workl,
             int *lworkl, int *info)
 {
-    /* Constants */
-    const double d_23 = 0.666666666666666667;
-
     /* System generated locals */
     int i__1;
     double d__1, d__2;
@@ -365,7 +362,7 @@ int dneupd_(logical *rvec, const char *howmny, logical *select, double *dr, doub
     /* ------------------------------- */
 
     eps23 = dlamch_("E");
-    eps23 = pow(eps23, d_23);
+    eps23 = pow(eps23, TWO_THIRDS);
 
     /* ------------ */
     /* Quick return */
