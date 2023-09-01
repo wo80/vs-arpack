@@ -627,11 +627,11 @@ int snaupd_(int *ido, char *bmat, int *n, char *which, int *nev, float *tol,
 
     if (msglvl > 1)
     {
-        ivout_(&c__1, &mxiter, &debug_1.ndigit, "_naupd: Number of update iterations taken");
-        ivout_(&c__1, &np, &debug_1.ndigit, "_naupd: Number of wanted \"converged\" Ritz values");
-        svout_(&np, &workl[ritzr], &debug_1.ndigit, "_naupd: Real part of the final Ritz values");
-        svout_(&np, &workl[ritzi], &debug_1.ndigit, "_naupd: Imaginary part of the final Ritz values");
-        svout_(&np, &workl[bounds], &debug_1.ndigit, "_naupd: Associated Ritz estimates");
+        ivout_(1, &mxiter, debug_1.ndigit, "_naupd: Number of update iterations taken");
+        ivout_(1, &np, debug_1.ndigit, "_naupd: Number of wanted \"converged\" Ritz values");
+        svout_(np, &workl[ritzr], debug_1.ndigit, "_naupd: Real part of the final Ritz values");
+        svout_(np, &workl[ritzi], debug_1.ndigit, "_naupd: Imaginary part of the final Ritz values");
+        svout_(np, &workl[bounds], debug_1.ndigit, "_naupd: Associated Ritz estimates");
     }
 
     if (msglvl > 0)

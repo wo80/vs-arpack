@@ -6,10 +6,9 @@
 int sndrv1_av_(const int nx, float* v, float* w);
 int sndrv1_tv_(const int nx, float* x, float* y);
 
+extern int smout_(const int, const int, const float*, const int, const int, const char*);
+
 static int c__1 = 1;
-static int c__3 = 3;
-static int c__30 = 30;
-static int c_n6 = -6;
 
 /**
  * \BeginDoc
@@ -321,7 +320,7 @@ L10:
     /* Display computed residuals. */
     /* --------------------------- */
 
-    smout_(&nconv, &c__3, d, &c__30, &c_n6, "Ritz values (Real,Imag) and relative residuals");
+    smout_(nconv, 3, d, 30, -6, "Ritz values (Real,Imag) and relative residuals");
 
     /* ----------------------------------------- */
     /* Print additional convergence information. */

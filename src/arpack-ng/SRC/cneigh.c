@@ -130,7 +130,7 @@ int cneigh_(float *rnorm, int *n, a_fcomplex *h, int *
 #ifndef NO_TRACE
     if (msglvl > 2)
     {
-        cmout_(n, n, h, ldh, &debug_1.ndigit, "_neigh: Entering upper Hessenberg matrix H ");
+        cmout_(*n, *n, h, *ldh, debug_1.ndigit, "_neigh: Entering upper Hessenberg matrix H ");
     }
 #endif
 
@@ -154,7 +154,7 @@ int cneigh_(float *rnorm, int *n, a_fcomplex *h, int *
 #ifndef NO_TRACE
     if (msglvl > 1)
     {
-        cvout_(n, bounds, &debug_1.ndigit, "_neigh: last row of the Schur matrix for H");
+        cvout_(*n, bounds, debug_1.ndigit, "_neigh: last row of the Schur matrix for H");
     }
 #endif
 
@@ -192,7 +192,7 @@ int cneigh_(float *rnorm, int *n, a_fcomplex *h, int *
     if (msglvl > 1)
     {
         ccopy_(n, &q[*n - 1], ldq, workl, &c__1);
-        cvout_(n, workl, &debug_1.ndigit, "_neigh: Last row of the eigenvector matrix for H");
+        cvout_(*n, workl, debug_1.ndigit, "_neigh: Last row of the eigenvector matrix for H");
     }
 #endif
 
@@ -206,8 +206,8 @@ int cneigh_(float *rnorm, int *n, a_fcomplex *h, int *
 #ifndef NO_TRACE
     if (msglvl > 2)
     {
-        cvout_(n, ritz, &debug_1.ndigit, "_neigh: The eigenvalues of H");
-        cvout_(n, bounds, &debug_1.ndigit, "_neigh: Ritz estimates for the eigenvalues of H");
+        cvout_(*n, ritz, debug_1.ndigit, "_neigh: The eigenvalues of H");
+        cvout_(*n, bounds, debug_1.ndigit, "_neigh: Ritz estimates for the eigenvalues of H");
     }
 #endif
 

@@ -13,10 +13,10 @@
  *              If IDIGIT .LT. 0, printing is done with 72 columns.
  *              If IDIGIT .GT. 0, printing is done with 132 columns.
  */
-int ivout_(int *n, int *ix, int *idigit, char *ifmt)
+int ivout_(const int n, const int *ix, const int idigit, const char *ifmt)
 {
     /* Local variables */
-    int i, k1, k2, len, m;
+    int i, j, k, len, m;
     char line[80];
     int ndigit;
 
@@ -32,12 +32,11 @@ int ivout_(int *n, int *ix, int *idigit, char *ifmt)
 
     printf("\n %s\n %s", ifmt, line);
 
-    len = *n;
-    if (len <= 0)
+    if (n <= 0)
     {
         return 0;
     }
-    ndigit = *idigit;
+    ndigit = idigit;
     if (ndigit == 0)
     {
         ndigit = 4;
@@ -55,12 +54,12 @@ int ivout_(int *n, int *ix, int *idigit, char *ifmt)
 
     if (ndigit <= 4)
     {
-        for (k1 = 0; k1 < len; k1 += 10)
+        for (j = 0; j < n; j += 10)
         {
-            m = k1 + 10;
-            k2 = min(len,m);
-            printf("\n  %4d - %4d: ", k1, k2);
-            for (i = k1; i < k2; ++i)
+            m = j + 10;
+            k = min(n,m);
+            printf("\n  %4d - %4d: ", j, k);
+            for (i = j; i < k; ++i)
             {
                 printf("   %5d", ix[i]);
             }
@@ -68,12 +67,12 @@ int ivout_(int *n, int *ix, int *idigit, char *ifmt)
     }
     else if (ndigit <= 6)
     {
-        for (k1 = 0; k1 < len; k1 += 7)
+        for (j = 0; j < n; j += 7)
         {
-            m = k1 + 7;
-            k2 = min(len,m);
-            printf("\n  %4d - %4d: ", k1, k2);
-            for (i = k1; i < k2; ++i)
+            m = j + 7;
+            k = min(n,m);
+            printf("\n  %4d - %4d: ", j, k);
+            for (i = j; i < k; ++i)
             {
                 printf("  %7d", ix[i]);
             }
@@ -81,12 +80,12 @@ int ivout_(int *n, int *ix, int *idigit, char *ifmt)
     }
     else if (ndigit <= 10)
     {
-        for (k1 = 0; k1 < len; k1 += 5)
+        for (j = 0; j < n; j += 5)
         {
-            m = k1 + 5;
-            k2 = min(len,m);
-            printf("\n  %4d - %4d: ", k1, k2);
-            for (i = k1; i < k2; ++i)
+            m = j + 5;
+            k = min(n,m);
+            printf("\n  %4d - %4d: ", j, k);
+            for (i = j; i < k; ++i)
             {
                 printf("  %11d", ix[i]);
             }
@@ -94,12 +93,12 @@ int ivout_(int *n, int *ix, int *idigit, char *ifmt)
     }
     else
     {
-        for (k1 = 0; k1 < len; k1 += 3)
+        for (j = 0; j < n; j += 3)
         {
-            m = k1 + 3;
-            k2 = min(len,m);
-            printf("\n  %4d - %4d: ", k1, k2);
-            for (i = k1; i < k2; ++i)
+            m = j + 3;
+            k = min(n,m);
+            printf("\n  %4d - %4d: ", j, k);
+            for (i = j; i < k; ++i)
             {
                 printf("  %15d", ix[i]);
             }

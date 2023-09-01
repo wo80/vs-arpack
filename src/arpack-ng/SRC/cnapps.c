@@ -240,8 +240,8 @@ int cnapps_(int *n, int *kev, int *np, a_fcomplex *
 #ifndef NO_TRACE
         if (msglvl > 2)
         {
-            ivout_(&c__1, &jj, &debug_1.ndigit, "_napps: shift number.");
-            cvout_(&c__1, &sigma, &debug_1.ndigit, "_napps: Value of the shift ");
+            ivout_(1, &jj, debug_1.ndigit, "_napps: shift number.");
+            cvout_(1, &sigma, debug_1.ndigit, "_napps: Value of the shift ");
         }
 #endif
 
@@ -277,9 +277,9 @@ L20:
 #ifndef NO_TRACE
                 if (msglvl > 0)
                 {
-                    ivout_(&c__1, &i, &debug_1.ndigit, "_napps: matrix splitting at row/column no.");
-                    ivout_(&c__1, &jj, &debug_1.ndigit, "_napps: matrix splitting with shift number.");
-                    cvout_(&c__1, &h[i__3], &debug_1.ndigit, "_napps: off diagonal element.");
+                    ivout_(1, &i, debug_1.ndigit, "_napps: matrix splitting at row/column no.");
+                    ivout_(1, &jj, debug_1.ndigit, "_napps: matrix splitting with shift number.");
+                    cvout_(1, &h[i__3], debug_1.ndigit, "_napps: off diagonal element.");
                 }
 #endif
 
@@ -294,8 +294,8 @@ L40:
 #ifndef NO_TRACE
         if (msglvl > 2)
         {
-            ivout_(&c__1, &istart, &debug_1.ndigit, "_napps: Start of current block ");
-            ivout_(&c__1, &iend, &debug_1.ndigit, "_napps: End of current block ");
+            ivout_(1, &istart, debug_1.ndigit, "_napps: Start of current block ");
+            ivout_(1, &iend, debug_1.ndigit, "_napps: End of current block ");
         }
 #endif
 
@@ -574,12 +574,12 @@ L100:
 #ifndef NO_TRACE
     if (msglvl > 1)
     {
-        cvout_(&c__1, &q[kplusp + *kev * q_dim], &debug_1.ndigit, "_napps: sigmak = (e_{kev+p}^T*Q)*e_{kev}");
-        cvout_(&c__1, &h[i__1], &debug_1.ndigit, "_napps: betak = e_{kev+1}^T*H*e_{kev}");
-        ivout_(&c__1, kev, &debug_1.ndigit, "_napps: Order of the final Hessenberg matrix ");
+        cvout_(1, &q[kplusp + *kev * q_dim], debug_1.ndigit, "_napps: sigmak = (e_{kev+p}^T*Q)*e_{kev}");
+        cvout_(1, &h[i__1], debug_1.ndigit, "_napps: betak = e_{kev+1}^T*H*e_{kev}");
+        ivout_(1, kev, debug_1.ndigit, "_napps: Order of the final Hessenberg matrix ");
         if (msglvl > 2)
         {
-            cmout_(kev, kev, &h[h_offset], ldh, &debug_1.ndigit, "_napps: updated Hessenberg matrix H for next iteration");
+            cmout_(*kev, *kev, &h[h_offset], *ldh, debug_1.ndigit, "_napps: updated Hessenberg matrix H for next iteration");
         }
     }
 #endif

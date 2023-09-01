@@ -16,7 +16,7 @@
  *              If IDIGIT .LT. 0, printing is done with 72 columns.
  *              If IDIGIT .GT. 0, printing is done with 132 columns.
  */
-int zmout_(int *m, int *n, a_dcomplex *a, int *lda, int *idigit, char *ifmt)
+int zmout_(const int m, const int n, const a_dcomplex *a, const int lda, const int idigit, const char *ifmt)
 {
     /* System generated locals */
     a_dcomplex d__1;
@@ -25,10 +25,10 @@ int zmout_(int *m, int *n, a_dcomplex *a, int *lda, int *idigit, char *ifmt)
     int i, j, k1, k2, len, p;
     char line[80];
     int ndigit;
-    int cols = *n;
-    int rows = *m;
+    int cols = n;
+    int rows = m;
 
-    int a_dim = *lda;
+    int a_dim = lda;
 
     /* Function Body */
 
@@ -43,11 +43,11 @@ int zmout_(int *m, int *n, a_dcomplex *a, int *lda, int *idigit, char *ifmt)
 
     printf("\n %s\n %s", ifmt, line);
 
-    if (*m <= 0 || *n <= 0 || *lda <= 0)
+    if (m <= 0 || n <= 0 || lda <= 0)
     {
         return 0;
     }
-    ndigit = *idigit;
+    ndigit = idigit;
     if (ndigit == 0)
     {
         ndigit = 4;

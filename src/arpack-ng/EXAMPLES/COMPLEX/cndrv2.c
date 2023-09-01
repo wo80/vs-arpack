@@ -6,9 +6,6 @@
 int cndrv2_av_(const int n, a_fcomplex* v, a_fcomplex* w);
 
 static int c__1 = 1;
-static int c__3 = 3;
-static int c__25 = 25;
-static int c_n6 = -6;
 
 #define RHO 10.0f
 
@@ -80,6 +77,13 @@ int main()
     const int MAXN   = 256; /* Maximum dimension of the A allowed. */
     const int MAXNEV =  10; /* Maximum NEV allowed */
     const int MAXNCV =  25; /* Maximum NCV allowed */
+    debug_1.mcaupd = 3;
+    debug_1.mcaup2 = 3;
+    debug_1.mcaitr = 3;
+    debug_1.mceigh = 3;
+    debug_1.mcapps = 3;
+    debug_1.mcgets = 3;
+    debug_1.mceupd = 3;
 
     /* ------------------------------------------------ */
     /* The number N is the dimension of the matrix.  A  */
@@ -340,7 +344,7 @@ L20:
     /* Display computed residuals. */
     /* --------------------------- */
 
-    smout_(&nconv, &c__3, rd, &c__25, &c_n6, "Ritz values (Real, Imag) and relative residuals");
+    smout_(nconv, 3, rd, 25, -6, "Ritz values (Real, Imag) and relative residuals");
 
     /* ----------------------------------------- */
     /* Print additional convergence information. */

@@ -380,13 +380,13 @@ L1000:
 #ifndef NO_TRACE
     if (msglvl > 0)
     {
-        ivout_(&c__1, &iter, &debug_1.ndigit, "_saup2: **** Start of major iteration number ****");
+        ivout_(1, &iter, debug_1.ndigit, "_saup2: **** Start of major iteration number ****");
     }
 
     if (msglvl > 1)
     {
-        ivout_(&c__1, nev, &debug_1.ndigit, "_saup2: The length of the current Lanczos factorization");
-        ivout_(&c__1, np, &debug_1.ndigit, "_saup2: Extend the Lanczos factorization by");
+        ivout_(1, nev, debug_1.ndigit, "_saup2: The length of the current Lanczos factorization");
+        ivout_(1, np, debug_1.ndigit, "_saup2: Extend the Lanczos factorization by");
     }
 #endif
 
@@ -428,7 +428,7 @@ L20:
 #ifndef NO_TRACE
     if (msglvl > 1)
     {
-        svout_(&c__1, &rnorm, &debug_1.ndigit, "_saup2: Current B-norm of residual for factorization");
+        svout_(1, &rnorm, debug_1.ndigit, "_saup2: Current B-norm of residual for factorization");
     }
 #endif
 
@@ -480,9 +480,9 @@ L20:
         kp[0] = *nev;
         kp[1] = *np;
         kp[2] = nconv;
-        ivout_(&c__3, kp, &debug_1.ndigit, "_saup2: NEV, NP, NCONV are");
-        svout_(&kplusp, ritz, &debug_1.ndigit, "_saup2: The eigenvalues of H");
-        svout_(&kplusp, bounds, &debug_1.ndigit, "_saup2: Ritz estimates of the current NCV Ritz values");
+        ivout_(3, kp, debug_1.ndigit, "_saup2: NEV, NP, NCONV are");
+        svout_(kplusp, ritz, debug_1.ndigit, "_saup2: The eigenvalues of H");
+        svout_(kplusp, bounds, debug_1.ndigit, "_saup2: Ritz estimates of the current NCV Ritz values");
     }
 #endif
 
@@ -647,8 +647,8 @@ L20:
 #ifndef NO_TRACE
         if (msglvl > 1)
         {
-            svout_(&kplusp, ritz, &debug_1.ndigit, "_saup2: Sorted Ritz values.");
-            svout_(&kplusp, bounds, &debug_1.ndigit, "_saup2: Sorted ritz estimates.");
+            svout_(kplusp, ritz, debug_1.ndigit, "_saup2: Sorted Ritz values.");
+            svout_(kplusp, bounds, debug_1.ndigit, "_saup2: Sorted ritz estimates.");
         }
 #endif
 
@@ -709,14 +709,14 @@ L20:
 #ifndef NO_TRACE
     if (msglvl > 0)
     {
-        ivout_(&c__1, &nconv, &debug_1.ndigit, "_saup2: no. of \"converged\" Ritz values at this iter.");
+        ivout_(1, &nconv, debug_1.ndigit, "_saup2: no. of \"converged\" Ritz values at this iter.");
         if (msglvl > 1)
         {
             kp[0] = *nev;
             kp[1] = *np;
-            ivout_(&c__2, kp, &debug_1.ndigit, "_saup2: NEV and NP are");
-            svout_(nev, &ritz[*np], &debug_1.ndigit, "_saup2: \"wanted\" Ritz values.");
-            svout_(nev, &bounds[*np], &debug_1.ndigit, "_saup2: Ritz estimates of the \"wanted\" values ");
+            ivout_(2, kp, debug_1.ndigit, "_saup2: NEV and NP are");
+            svout_(*nev, &ritz[*np], debug_1.ndigit, "_saup2: \"wanted\" Ritz values.");
+            svout_(*nev, &bounds[*np], debug_1.ndigit, "_saup2: Ritz estimates of the \"wanted\" values ");
         }
     }
 #endif
@@ -758,11 +758,11 @@ L50:
 #ifndef NO_TRACE
     if (msglvl > 2)
     {
-        ivout_(&c__1, np, &debug_1.ndigit, "_saup2: The number of shifts to apply ");
-        svout_(np, workl, &debug_1.ndigit, "_saup2: shifts selected");
+        ivout_(1, np, debug_1.ndigit, "_saup2: The number of shifts to apply ");
+        svout_(*np, workl, debug_1.ndigit, "_saup2: shifts selected");
         if (*ishift == 1)
         {
-            svout_(np, bounds, &debug_1.ndigit, "_saup2: corresponding Ritz estimates");
+            svout_(*np, bounds, debug_1.ndigit, "_saup2: corresponding Ritz estimates");
         }
     }
 #endif
@@ -834,10 +834,10 @@ L100:
 #ifndef NO_TRACE
     if (msglvl > 2)
     {
-        svout_(&c__1, &rnorm, &debug_1.ndigit, "_saup2: B-norm of residual for NEV factorization");
-        svout_(nev, &h[*ldh], &debug_1.ndigit,"_saup2: main diagonal of compressed H matrix");
+        svout_(1, &rnorm, debug_1.ndigit, "_saup2: B-norm of residual for NEV factorization");
+        svout_(*nev, &h[*ldh], debug_1.ndigit, "_saup2: main diagonal of compressed H matrix");
         i__1 = *nev - 1;
-        svout_(&i__1, &h[1], &debug_1.ndigit, "_saup2: subdiagonal of compressed H matrix");
+        svout_(1, &h[1], debug_1.ndigit, "_saup2: subdiagonal of compressed H matrix");
     }
 #endif
 

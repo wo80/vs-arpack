@@ -5,10 +5,9 @@
 
 int ssdrv2_av_(const int nx, float* v, float* w);
 
+extern int smout_(const int, const int, const float*, const int, const int, const char*);
+
 static int c__1 = 1;
-static int c__2 = 2;
-static int c__25 = 25;
-static int c_n6 = -6;
 
 /**
  * \BeginDoc
@@ -306,7 +305,7 @@ L10:
     /* Display computed residuals    */
     /* ----------------------------- */
 
-    smout_(&nconv, &c__2, d, &c__25, &c_n6, "Ritz values and relative residuals");
+    smout_(nconv, 2, d, 25, -6, "Ritz values and relative residuals");
     /* ---------------------------------------- */
     /* Print additional convergence information */
     /* ---------------------------------------- */

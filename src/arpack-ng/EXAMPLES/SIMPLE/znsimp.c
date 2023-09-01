@@ -7,9 +7,6 @@ int znsimp_av_(const int nx, a_dcomplex* v, a_dcomplex* w);
 int znsimp_tv_(const int nx, a_dcomplex* x, a_dcomplex* y);
 
 static int c__1 = 1;
-static int c__3 = 3;
-static int c__30 = 30;
-static int c_n6 = -6;
 
 /**
  * \BeginDoc
@@ -412,7 +409,7 @@ L10:
     /* Display computed residuals. */
     /* --------------------------- */
 
-    dmout_(&nconv, &c__3, rd, &c__30, &c_n6, "Ritz values (Real, Imag) and relative residuals");
+    dmout_(nconv, 3, rd, 30, -6, "Ritz values (Real, Imag) and relative residuals");
 
     /* ----------------------------------------- */
     /* Print additional convergence information. */

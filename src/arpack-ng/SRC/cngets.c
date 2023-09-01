@@ -131,10 +131,10 @@ int cngets_(int *ishift, char *which, int *kev, int *np, a_fcomplex *ritz, a_fco
 #ifndef NO_TRACE
     if (msglvl > 0)
     {
-        ivout_(&c__1, kev, &debug_1.ndigit, "_ngets: KEV is");
-        ivout_(&c__1, np, &debug_1.ndigit, "_ngets: NP is");
-        cvout_(&i__1, ritz, &debug_1.ndigit, "_ngets: Eigenvalues of current H matrix ");
-        cvout_(&i__1, bounds, &debug_1.ndigit, "_ngets: Ritz estimates of the current KEV+NP Ritz values");
+        ivout_(1, kev, debug_1.ndigit, "_ngets: KEV is");
+        ivout_(1, np, debug_1.ndigit, "_ngets: NP is");
+        cvout_(1, ritz, debug_1.ndigit, "_ngets: Eigenvalues of current H matrix ");
+        cvout_(1, bounds, debug_1.ndigit, "_ngets: Ritz estimates of the current KEV+NP Ritz values");
     }
 #endif
 

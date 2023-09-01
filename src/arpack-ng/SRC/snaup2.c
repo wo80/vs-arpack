@@ -362,7 +362,7 @@ L1000:
 #ifndef NO_TRACE
     if (msglvl > 0)
     {
-        ivout_(&c__1, &iter, &debug_1.ndigit, "_naup2: **** Start of major iteration number ****");
+        ivout_(1, &iter, debug_1.ndigit, "_naup2: **** Start of major iteration number ****");
     }
 #endif
 
@@ -377,8 +377,8 @@ L1000:
 #ifndef NO_TRACE
     if (msglvl > 1)
     {
-        ivout_(&c__1, nev, &debug_1.ndigit, "_naup2: The length of the current Arnoldi factorization");
-        ivout_(&c__1, np, &debug_1.ndigit, "_naup2: Extend the Arnoldi factorization by");
+        ivout_(1, nev, debug_1.ndigit, "_naup2: The length of the current Arnoldi factorization");
+        ivout_(1, np, debug_1.ndigit, "_naup2: Extend the Arnoldi factorization by");
     }
 #endif
 
@@ -414,7 +414,7 @@ L20:
 #ifndef NO_TRACE
     if (msglvl > 1)
     {
-        svout_(&c__1, &rnorm, &debug_1.ndigit, "_naup2: Corresponding B-norm of the residual");
+        svout_(1, &rnorm, debug_1.ndigit, "_naup2: Corresponding B-norm of the residual");
     }
 #endif
 
@@ -478,10 +478,10 @@ L20:
         kp[1] = *np;
         kp[2] = numcnv;
         kp[3] = nconv;
-        ivout_(&c__4, kp, &debug_1.ndigit, "_naup2: NEV, NP, NUMCNV, NCONV are");
-        svout_(&kplusp, ritzr, &debug_1.ndigit, "_naup2: Real part of the eigenvalues of H");
-        svout_(&kplusp, ritzi, &debug_1.ndigit, "_naup2: Imaginary part of the eigenvalues of H");
-        svout_(&kplusp, bounds, &debug_1.ndigit, "_naup2: Ritz estimates of the current NCV Ritz values");
+        ivout_(4, kp, debug_1.ndigit, "_naup2: NEV, NP, NUMCNV, NCONV are");
+        svout_(kplusp, ritzr, debug_1.ndigit, "_naup2: Real part of the eigenvalues of H");
+        svout_(kplusp, ritzi, debug_1.ndigit, "_naup2: Imaginary part of the eigenvalues of H");
+        svout_(kplusp, bounds, debug_1.ndigit, "_naup2: Ritz estimates of the current NCV Ritz values");
     }
 #endif
 
@@ -513,9 +513,9 @@ L20:
         {
             /* Computing 2nd power */
             i__1 = kplusp * kplusp;
-            svout_(&kplusp, &workl[i__1], &debug_1.ndigit, "_naup2: Real part of the eig computed by _neigh:");
-            svout_(&kplusp, &workl[i__1 + kplusp],&debug_1.ndigit, "_naup2: Imag part of the eig computed by _neigh:");
-            svout_(&kplusp, &workl[i__1 + (kplusp << 1)], &debug_1.ndigit, "_naup2: Ritz eistmates computed by _neigh:");
+            svout_(kplusp, &workl[i__1], debug_1.ndigit, "_naup2: Real part of the eig computed by _neigh:");
+            svout_(kplusp, &workl[i__1 + kplusp], debug_1.ndigit, "_naup2: Imag part of the eig computed by _neigh:");
+            svout_(kplusp, &workl[i__1 + (kplusp << 1)], debug_1.ndigit, "_naup2: Ritz eistmates computed by _neigh:");
         }
 #endif
 
@@ -649,9 +649,9 @@ L20:
 #ifndef NO_TRACE
         if (msglvl > 1)
         {
-            svout_(&kplusp, ritzr, &debug_1.ndigit, "_naup2: Sorted float part of the eigenvalues");
-            svout_(&kplusp, ritzi, &debug_1.ndigit, "_naup2: Sorted imaginary part of the eigenvalues");
-            svout_(&kplusp, bounds, &debug_1.ndigit, "_naup2: Sorted ritz estimates.");
+            svout_(kplusp, ritzr, debug_1.ndigit, "_naup2: Sorted float part of the eigenvalues");
+            svout_(kplusp, ritzi, debug_1.ndigit, "_naup2: Sorted imaginary part of the eigenvalues");
+            svout_(kplusp, bounds, debug_1.ndigit, "_naup2: Sorted ritz estimates.");
         }
 #endif
 
@@ -724,15 +724,15 @@ L20:
 #ifndef NO_TRACE
     if (msglvl > 0)
     {
-        ivout_(&c__1, &nconv, &debug_1.ndigit, "_naup2: no. of \"converged\" Ritz values at this iter.");
+        ivout_(1, &nconv, debug_1.ndigit, "_naup2: no. of \"converged\" Ritz values at this iter.");
         if (msglvl > 1)
         {
             kp[0] = *nev;
             kp[1] = *np;
-            ivout_(&c__2, kp, &debug_1.ndigit, "_naup2: NEV and NP are");
-            svout_(nev, &ritzr[*np], &debug_1.ndigit, "_naup2: \"wanted\" Ritz values -- float part");
-            svout_(nev, &ritzi[*np], &debug_1.ndigit, "_naup2: \"wanted\" Ritz values -- imag part");
-            svout_(nev, &bounds[*np], &debug_1.ndigit, "_naup2: Ritz estimates of the \"wanted\" values ");
+            ivout_(2, kp, debug_1.ndigit, "_naup2: NEV and NP are");
+            svout_(*nev, &ritzr[*np], debug_1.ndigit, "_naup2: \"wanted\" Ritz values -- float part");
+            svout_(*nev, &ritzi[*np], debug_1.ndigit, "_naup2: \"wanted\" Ritz values -- imag part");
+            svout_(*nev, &bounds[*np], debug_1.ndigit, "_naup2: Ritz estimates of the \"wanted\" values ");
         }
     }
 #endif
@@ -775,12 +775,12 @@ L50:
 #ifndef NO_TRACE
     if (msglvl > 2)
     {
-        ivout_(&c__1, np, &debug_1.ndigit, "_naup2: The number of shifts to apply ");
-        svout_(np, ritzr, &debug_1.ndigit, "_naup2: Real part of the shifts");
-        svout_(np, ritzi, &debug_1.ndigit, "_naup2: Imaginary part of the shifts");
+        ivout_(1, np, debug_1.ndigit, "_naup2: The number of shifts to apply ");
+        svout_(*np, ritzr, debug_1.ndigit, "_naup2: Real part of the shifts");
+        svout_(*np, ritzi, debug_1.ndigit, "_naup2: Imaginary part of the shifts");
         if (*ishift == 1)
         {
-            svout_(np, bounds, &debug_1.ndigit, "_naup2: Ritz estimates of the shifts");
+            svout_(*np, bounds, debug_1.ndigit, "_naup2: Ritz estimates of the shifts");
         }
     }
 #endif
@@ -850,8 +850,8 @@ L100:
 #ifndef NO_TRACE
     if (msglvl > 2)
     {
-        svout_(&c__1, &rnorm, &debug_1.ndigit, "_naup2: B-norm of residual for compressed factorization");
-        smout_(nev, nev, h, ldh, &debug_1.ndigit, "_naup2: Compressed upper Hessenberg matrix H");
+        svout_(1, &rnorm, debug_1.ndigit, "_naup2: B-norm of residual for compressed factorization");
+        smout_(*nev, *nev, h, *ldh, debug_1.ndigit, "_naup2: Compressed upper Hessenberg matrix H");
     }
 #endif
 

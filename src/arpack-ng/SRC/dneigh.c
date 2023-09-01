@@ -129,7 +129,7 @@ int dneigh_(double *rnorm, int *n, double *h,
 #ifndef NO_TRACE
     if (msglvl > 2)
     {
-        dmout_(n, n, h, ldh, &debug_1.ndigit, "_neigh: Entering upper Hessenberg matrix H ");
+        dmout_(*n, *n, h, *ldh, debug_1.ndigit, "_neigh: Entering upper Hessenberg matrix H ");
     }
 #endif
 
@@ -157,7 +157,7 @@ int dneigh_(double *rnorm, int *n, double *h,
 #ifndef NO_TRACE
     if (msglvl > 1)
     {
-        dvout_(n, bounds, &debug_1.ndigit, "_neigh: last row of the Schur matrix for H");
+        dvout_(*n, bounds, debug_1.ndigit, "_neigh: last row of the Schur matrix for H");
     }
 #endif
 
@@ -234,7 +234,7 @@ int dneigh_(double *rnorm, int *n, double *h,
 #ifndef NO_TRACE
     if (msglvl > 1)
     {
-        dvout_(n, workl, &debug_1.ndigit, "_neigh: Last row of the eigenvector matrix for H");
+        dvout_(*n, workl, debug_1.ndigit, "_neigh: Last row of the eigenvector matrix for H");
     }
 #endif
 
@@ -280,9 +280,9 @@ int dneigh_(double *rnorm, int *n, double *h,
 #ifndef NO_TRACE
     if (msglvl > 2)
     {
-        dvout_(n, ritzr, &debug_1.ndigit, "_neigh: Real part of the eigenvalues of H");
-        dvout_(n, ritzi, &debug_1.ndigit, "_neigh: Imaginary part of the eigenvalues of H");
-        dvout_(n, bounds, &debug_1.ndigit, "_neigh: Ritz estimates for the eigenvalues of H");
+        dvout_(*n, ritzr, debug_1.ndigit, "_neigh: Real part of the eigenvalues of H");
+        dvout_(*n, ritzi, debug_1.ndigit, "_neigh: Imaginary part of the eigenvalues of H");
+        dvout_(*n, bounds, debug_1.ndigit, "_neigh: Ritz estimates for the eigenvalues of H");
     }
 #endif
 

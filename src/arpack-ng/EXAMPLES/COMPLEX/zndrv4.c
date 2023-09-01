@@ -7,9 +7,6 @@ int zndrv4_av_(const int n, a_dcomplex* v, a_dcomplex* w);
 int zndrv4_mv_(const int n, a_dcomplex* v, a_dcomplex* w);
 
 static int c__1 = 1;
-static int c__3 = 3;
-static int c__25 = 25;
-static int c_n6 = -6;
 
 #define RHO 10.0
 
@@ -387,7 +384,7 @@ L20:
     /* Display computed residuals. */
     /* --------------------------- */
 
-    dmout_(&nconv, &c__3, rd, &c__25, &c_n6, "Ritz values (Real, Imag) and direct residuals");
+    dmout_(nconv, 3, rd, 25, -6, "Ritz values (Real, Imag) and direct residuals");
 
     /* ----------------------------------------- */
     /* Print additional convergence information. */

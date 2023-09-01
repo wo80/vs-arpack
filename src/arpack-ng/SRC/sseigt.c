@@ -112,11 +112,11 @@ int sseigt_(float *rnorm, int *n, float *h, int *ldh,
 #ifndef NO_TRACE
     if (msglvl > 0)
     {
-        svout_(n, &h[h_dim], &debug_1.ndigit, "_seigt: main diagonal of matrix H");
+        svout_(*n, &h[h_dim], debug_1.ndigit, "_seigt: main diagonal of matrix H");
         if (*n > 1)
         {
             i__1 = *n - 1;
-            svout_(&i__1, &h[1], &debug_1.ndigit, "_seigt: sub diagonal of matrix H");
+            svout_(1, &h[1], debug_1.ndigit, "_seigt: sub diagonal of matrix H");
         }
     }
 #endif
@@ -132,7 +132,7 @@ int sseigt_(float *rnorm, int *n, float *h, int *ldh,
 #ifndef NO_TRACE
     if (msglvl > 1)
     {
-        svout_(n, bounds, &debug_1.ndigit, "_seigt: last row of the eigenvector matrix for H");
+        svout_(*n, bounds, debug_1.ndigit, "_seigt: last row of the eigenvector matrix for H");
     }
 #endif
 

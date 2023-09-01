@@ -246,9 +246,9 @@ int snapps_(int *n, int *kev, int *np, float *
 #ifndef NO_TRACE
         if (msglvl > 2)
         {
-            ivout_(&c__1, &jj, &debug_1.ndigit, "_napps: shift number.");
-            svout_(&c__1, &sigmar, &debug_1.ndigit, "_napps: The float part of the shift ");
-            svout_(&c__1, &sigmai, &debug_1.ndigit, "_napps: The imaginary part of the shift ");
+            ivout_(1, &jj, debug_1.ndigit, "_napps: shift number.");
+            svout_(1, &sigmar, debug_1.ndigit, "_napps: The float part of the shift ");
+            svout_(1, &sigmai, debug_1.ndigit, "_napps: The imaginary part of the shift ");
         }
 #endif
 
@@ -327,9 +327,9 @@ L20:
 #ifndef NO_TRACE
                 if (msglvl > 0)
                 {
-                    ivout_(&c__1, &i, &debug_1.ndigit, "_napps: matrix splitting at row/column no.");
-                    ivout_(&c__1, &jj, &debug_1.ndigit, "_napps: matrix splitting with shift number.");
-                    svout_(&c__1, &h[i + 1 + i * h_dim], &debug_1.ndigit, "_napps: off diagonal element.");
+                    ivout_(1, &i, debug_1.ndigit, "_napps: matrix splitting at row/column no.");
+                    ivout_(1, &jj, debug_1.ndigit, "_napps: matrix splitting with shift number.");
+                    svout_(1, &h[i + 1 + i * h_dim], debug_1.ndigit, "_napps: off diagonal element.");
                 }
 #endif
 
@@ -344,8 +344,8 @@ L40:
 #ifndef NO_TRACE
         if (msglvl > 2)
         {
-            ivout_(&c__1, &istart, &debug_1.ndigit, "_napps: Start of current block ");
-            ivout_(&c__1, &iend, &debug_1.ndigit, "_napps: End of current block ");
+            ivout_(1, &istart, debug_1.ndigit, "_napps: Start of current block ");
+            ivout_(1, &iend, debug_1.ndigit, "_napps: End of current block ");
         }
 #endif
 
@@ -675,12 +675,12 @@ L110:
 #ifndef NO_TRACE
     if (msglvl > 1)
     {
-        svout_(&c__1, &q[kplusp + *kev * q_dim], &debug_1.ndigit, "_napps: sigmak = (e_{kev+p}^T*Q)*e_{kev}");
-        svout_(&c__1, &h[*kev + 1 + *kev * h_dim], &debug_1.ndigit, "_napps: betak = e_{kev+1}^T*H*e_{kev}");
-        ivout_(&c__1, kev, &debug_1.ndigit, "_napps: Order of the final Hessenberg matrix ");
+        svout_(1, &q[kplusp + *kev * q_dim], debug_1.ndigit, "_napps: sigmak = (e_{kev+p}^T*Q)*e_{kev}");
+        svout_(1, &h[*kev + 1 + *kev * h_dim], debug_1.ndigit, "_napps: betak = e_{kev+1}^T*H*e_{kev}");
+        ivout_(1, kev, debug_1.ndigit, "_napps: Order of the final Hessenberg matrix ");
         if (msglvl > 2)
         {
-            smout_(kev, kev, &h[h_offset], ldh, &debug_1.ndigit, "_napps: updated Hessenberg matrix H for next iteration");
+            smout_(*kev, *kev, &h[h_offset], *ldh, debug_1.ndigit, "_napps: updated Hessenberg matrix H for next iteration");
         }
     }
 #endif

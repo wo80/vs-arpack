@@ -361,8 +361,8 @@ L40:
 #ifndef NO_TRACE
     if (msglvl > 2)
     {
-        dvout_(&c__1, &rnorm0, &debug_1.ndigit, "_getv0: re-orthonalization ; rnorm0 is");
-        dvout_(&c__1, rnorm, &debug_1.ndigit, "_getv0: re-orthonalization ; rnorm is");
+        dvout_(1, &rnorm0, debug_1.ndigit, "_getv0: re-orthonalization ; rnorm0 is");
+        dvout_(1, rnorm, debug_1.ndigit, "_getv0: re-orthonalization ; rnorm is");
     }
 #endif
 
@@ -401,12 +401,12 @@ L50:
 #ifndef NO_TRACE
     if (msglvl > 0)
     {
-        dvout_(&c__1, rnorm, &debug_1.ndigit, "_getv0: B-norm of initial / restarted starting vector");
+        dvout_(1, rnorm, debug_1.ndigit, "_getv0: B-norm of initial / restarted starting vector");
     }
 
     if (msglvl > 3)
     {
-        dvout_(n, resid, &debug_1.ndigit, "_getv0: initial / restarted starting vector");
+        dvout_(*n, resid, debug_1.ndigit, "_getv0: initial / restarted starting vector");
     }
 #endif
 

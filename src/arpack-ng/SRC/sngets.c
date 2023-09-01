@@ -189,11 +189,11 @@ int sngets_(int *ishift, char *which, int *kev, int *np, float *ritzr,
     if (msglvl > 0)
     {
         i__1 = *kev + *np;
-        ivout_(&c__1, kev, &debug_1.ndigit, "_ngets: KEV is");
-        ivout_(&c__1, np, &debug_1.ndigit, "_ngets: NP is");
-        svout_(&i__1, ritzr, &debug_1.ndigit, "_ngets: Eigenvalues of current H matrix -- float part");
-        svout_(&i__1, ritzi, &debug_1.ndigit, "_ngets: Eigenvalues of current H matrix -- imag part");
-        svout_(&i__1, bounds, &debug_1.ndigit, "_ngets: Ritz estimates of the current KEV+NP Ritz values");
+        ivout_(1, kev, debug_1.ndigit, "_ngets: KEV is");
+        ivout_(1, np, debug_1.ndigit, "_ngets: NP is");
+        svout_(1, ritzr, debug_1.ndigit, "_ngets: Eigenvalues of current H matrix -- float part");
+        svout_(1, ritzi, debug_1.ndigit, "_ngets: Eigenvalues of current H matrix -- imag part");
+        svout_(1, bounds, debug_1.ndigit, "_ngets: Ritz estimates of the current KEV+NP Ritz values");
     }
 #endif
 

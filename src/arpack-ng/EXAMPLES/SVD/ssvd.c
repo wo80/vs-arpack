@@ -6,10 +6,9 @@
 int ssvd_av_(const int m, const int n, float* x, float* w);
 int ssvd_atv_(const int m, const int n, float* w, float* y);
 
+extern int smout_(const int, const int, const float*, const int, const int, const char*);
+
 static int c__1 = 1;
-static int c__2 = 2;
-static int c__25 = 25;
-static int c_n6 = -6;
 
 /**
  * \BeginDoc
@@ -442,7 +441,7 @@ L10:
     /* Display computed residuals    */
     /* ----------------------------- */
 
-    smout_(&nconv, &c__2, s, &c__25, &c_n6, "Singular values and direct residuals");
+    smout_(nconv, 2, s, 25, -6, "Singular values and direct residuals");
 
     /* ---------------------------------------- */
     /* Print additional convergence information */

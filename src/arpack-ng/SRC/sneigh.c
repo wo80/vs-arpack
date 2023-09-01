@@ -129,7 +129,7 @@ int sneigh_(float *rnorm, int *n, float *h, int *ldh,
 #ifndef NO_TRACE
     if (msglvl > 2)
     {
-        smout_(n, n, h, ldh, &debug_1.ndigit, "_neigh: Entering upper Hessenberg matrix H ");
+        smout_(*n, *n, h, *ldh, debug_1.ndigit, "_neigh: Entering upper Hessenberg matrix H ");
     }
 #endif
 
@@ -157,7 +157,7 @@ int sneigh_(float *rnorm, int *n, float *h, int *ldh,
 #ifndef NO_TRACE
     if (msglvl > 1)
     {
-        svout_(n, bounds, &debug_1.ndigit, "_neigh: last row of the Schur matrix for H");
+        svout_(*n, bounds, debug_1.ndigit, "_neigh: last row of the Schur matrix for H");
     }
 #endif
 
@@ -234,7 +234,7 @@ int sneigh_(float *rnorm, int *n, float *h, int *ldh,
 #ifndef NO_TRACE
     if (msglvl > 1)
     {
-        svout_(n, workl, &debug_1.ndigit, "_neigh: Last row of the eigenvector matrix for H");
+        svout_(*n, workl, debug_1.ndigit, "_neigh: Last row of the eigenvector matrix for H");
     }
 #endif
 
@@ -280,9 +280,9 @@ int sneigh_(float *rnorm, int *n, float *h, int *ldh,
 #ifndef NO_TRACE
     if (msglvl > 2)
     {
-        svout_(n, ritzr, &debug_1.ndigit, "_neigh: Real part of the eigenvalues of H");
-        svout_(n, ritzi, &debug_1.ndigit, "_neigh: Imaginary part of the eigenvalues of H");
-        svout_(n, bounds, &debug_1.ndigit, "_neigh: Ritz estimates for the eigenvalues of H");
+        svout_(*n, ritzr, debug_1.ndigit, "_neigh: Real part of the eigenvalues of H");
+        svout_(*n, ritzi, debug_1.ndigit, "_neigh: Imaginary part of the eigenvalues of H");
+        svout_(*n, bounds, debug_1.ndigit, "_neigh: Ritz estimates for the eigenvalues of H");
     }
 #endif
 

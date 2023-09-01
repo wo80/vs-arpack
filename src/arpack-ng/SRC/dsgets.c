@@ -172,10 +172,10 @@ int dsgets_(int *ishift, char *which, int *kev, int *np, double *ritz,
     if (msglvl > 0)
     {
         i__1 = *kev + *np;
-        ivout_(&c__1, kev, &debug_1.ndigit, "_sgets: KEV is");
-        ivout_(&c__1, np, &debug_1.ndigit, "_sgets: NP is");
-        dvout_(&i__1, ritz, &debug_1.ndigit, "_sgets: Eigenvalues of current H matrix");
-        dvout_(&i__1, bounds, &debug_1.ndigit, "_sgets: Associated Ritz estimates");
+        ivout_(1, kev, debug_1.ndigit, "_sgets: KEV is");
+        ivout_(1, np, debug_1.ndigit, "_sgets: NP is");
+        dvout_(1, ritz, debug_1.ndigit, "_sgets: Eigenvalues of current H matrix");
+        dvout_(1, bounds, debug_1.ndigit, "_sgets: Associated Ritz estimates");
     }
 #endif
 

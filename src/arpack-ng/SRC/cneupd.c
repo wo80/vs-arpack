@@ -449,8 +449,8 @@ int cneupd_(logical *rvec, char *howmny, logical *select, a_fcomplex *d, a_fcomp
 #ifndef NO_TRACE
     if (msglvl > 2)
     {
-        cvout_(ncv, &workl[irz], &debug_1.ndigit, "_neupd: Ritz values passed in from _NAUPD.");
-        cvout_(ncv, &workl[ibd], &debug_1.ndigit, "_neupd: Ritz estimates passed in from _NAUPD.");
+        cvout_(*ncv, &workl[irz], debug_1.ndigit, "_neupd: Ritz values passed in from _NAUPD.");
+        cvout_(*ncv, &workl[ibd], debug_1.ndigit, "_neupd: Ritz estimates passed in from _NAUPD.");
     }
 #endif
 
@@ -488,8 +488,8 @@ int cneupd_(logical *rvec, char *howmny, logical *select, a_fcomplex *d, a_fcomp
 #ifndef NO_TRACE
         if (msglvl > 2)
         {
-            cvout_(ncv, &workl[irz], &debug_1.ndigit, "_neupd: Ritz values after calling _NGETS.");
-            cvout_(ncv, &workl[bounds], &debug_1.ndigit, "_neupd: Ritz value indices after calling _NGETS.");
+            cvout_(*ncv, &workl[irz], debug_1.ndigit, "_neupd: Ritz values after calling _NGETS.");
+            cvout_(*ncv, &workl[bounds], debug_1.ndigit, "_neupd: Ritz value indices after calling _NGETS.");
         }
 #endif
 
@@ -530,8 +530,8 @@ int cneupd_(logical *rvec, char *howmny, logical *select, a_fcomplex *d, a_fcomp
 #ifndef NO_TRACE
         if (msglvl > 2)
         {
-            ivout_(&c__1, &numcnv, &debug_1.ndigit, "_neupd: Number of specified eigenvalues");
-            ivout_(&c__1, &nconv, &debug_1.ndigit, "_neupd: Number of \"converged\" eigenvalues");
+            ivout_(1, &numcnv, debug_1.ndigit, "_neupd: Number of specified eigenvalues");
+            ivout_(1, &nconv, debug_1.ndigit, "_neupd: Number of \"converged\" eigenvalues");
         }
 #endif
 
@@ -563,11 +563,11 @@ int cneupd_(logical *rvec, char *howmny, logical *select, a_fcomplex *d, a_fcomp
 #ifndef NO_TRACE
         if (msglvl > 1)
         {
-            cvout_(ncv, &workl[iheig], &debug_1.ndigit, "_neupd: Eigenvalues of H");
-            cvout_(ncv, &workl[ihbds], &debug_1.ndigit, "_neupd: Last row of the Schur vector matrix");
+            cvout_(*ncv, &workl[iheig], debug_1.ndigit, "_neupd: Eigenvalues of H");
+            cvout_(*ncv, &workl[ihbds], debug_1.ndigit, "_neupd: Last row of the Schur vector matrix");
             if (msglvl > 3)
             {
-                cmout_(ncv, ncv, &workl[iuptri], &ldh, &debug_1.ndigit, "_neupd: The upper triangular matrix ");
+                cmout_(*ncv, *ncv, &workl[iuptri], ldh, debug_1.ndigit, "_neupd: The upper triangular matrix ");
             }
         }
 #endif
@@ -593,10 +593,10 @@ int cneupd_(logical *rvec, char *howmny, logical *select, a_fcomplex *d, a_fcomp
 #ifndef NO_TRACE
             if (msglvl > 2)
             {
-                cvout_(ncv, &workl[iheig], &debug_1.ndigit, "_neupd: Eigenvalues of H--reordered");
+                cvout_(*ncv, &workl[iheig], debug_1.ndigit, "_neupd: Eigenvalues of H--reordered");
                 if (msglvl > 3)
                 {
-                    cmout_(ncv, ncv, &workl[iuptri], &ldq, &debug_1.ndigit, "_neupd: Triangular matrix after re-ordering");
+                    cmout_(*ncv, *ncv, &workl[iuptri], ldq, debug_1.ndigit, "_neupd: Triangular matrix after re-ordering");
                 }
             }
 #endif
@@ -725,10 +725,10 @@ int cneupd_(logical *rvec, char *howmny, logical *select, a_fcomplex *d, a_fcomp
             if (msglvl > 2)
             {
                 ccopy_(&nconv, &workl[invsub + *ncv - 1], &ldq, &workl[ihbds],&c__1);
-                cvout_(&nconv, &workl[ihbds], &debug_1.ndigit, "_neupd: Last row of the eigenvector matrix for T");
+                cvout_(nconv, &workl[ihbds], debug_1.ndigit, "_neupd: Last row of the eigenvector matrix for T");
                 if (msglvl > 3)
                 {
-                    cmout_(ncv, ncv, &workl[invsub], &ldq, &debug_1.ndigit, "_neupd: The eigenvector matrix for T");
+                    cmout_(*ncv, *ncv, &workl[invsub], ldq, debug_1.ndigit, "_neupd: The eigenvector matrix for T");
                 }
             }
 #endif
@@ -818,13 +818,13 @@ int cneupd_(logical *rvec, char *howmny, logical *select, a_fcomplex *d, a_fcomp
 #ifndef NO_TRACE
     if (msglvl > 1 && strcmp(type, "REGULR") != 0)
     {
-        cvout_(&nconv, d, &debug_1.ndigit, "_neupd: Untransformed Ritz values.");
-        cvout_(&nconv, &workl[ihbds], &debug_1.ndigit, "_neupd: Ritz estimates of the untransformed Ritz values.");
+        cvout_(nconv, d, debug_1.ndigit, "_neupd: Untransformed Ritz values.");
+        cvout_(nconv, &workl[ihbds], debug_1.ndigit, "_neupd: Ritz estimates of the untransformed Ritz values.");
     }
     else if (msglvl > 1)
     {
-        cvout_(&nconv, d, &debug_1.ndigit, "_neupd: Converged Ritz values.");
-        cvout_(&nconv, &workl[ihbds], &debug_1.ndigit, "_neupd: Associated Ritz estimates.");
+        cvout_(nconv, d, debug_1.ndigit, "_neupd: Converged Ritz values.");
+        cvout_(nconv, &workl[ihbds], debug_1.ndigit, "_neupd: Associated Ritz estimates.");
     }
 #endif
 

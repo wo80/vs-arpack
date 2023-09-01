@@ -13,10 +13,10 @@
  *              If IDIGIT .LT. 0, printing is done with 72 columns.
  *              If IDIGIT .GT. 0, printing is done with 132 columns.
  */
-int svout_(int *n, float *sx, int *idigit, char *ifmt)
+int svout_(const int n, const float *sx, const int idigit, const char *ifmt)
 {
     /* Local variables */
-    int i, k1, k2, len, m;
+    int i, j, k, len, m;
     char line[80];
     int ndigit;
 
@@ -32,12 +32,11 @@ int svout_(int *n, float *sx, int *idigit, char *ifmt)
 
     printf("\n %s\n %s", ifmt, line);
 
-    len = *n;
-    if (len <= 0)
+    if (n <= 0)
     {
         return 0;
     }
-    ndigit = *idigit;
+    ndigit = idigit;
     if (ndigit == 0)
     {
         ndigit = 4;
@@ -54,12 +53,12 @@ int svout_(int *n, float *sx, int *idigit, char *ifmt)
 
     if (ndigit <= 4)
     {
-        for (k1 = 0; k1 < len; k1 += 5)
+        for (j = 0; j < n; j += 5)
         {
-            m = k1 + 5;
-            k2 = min(len,m);
-            printf("\n  %4d - %4d:", k1, k2);
-            for (i = k1; i < k2; ++i)
+            m = j + 5;
+            k = min(n,m);
+            printf("\n  %4d - %4d:", j, k);
+            for (i = j; i < k; ++i)
             {
                 printf(" %12.3e", sx[i]);
             }
@@ -67,12 +66,12 @@ int svout_(int *n, float *sx, int *idigit, char *ifmt)
     }
     else if (ndigit <= 6)
     {
-        for (k1 = 0; k1 < len; k1 += 4)
+        for (j = 0; j < n; j += 4)
         {
-            m = k1 + 4;
-            k2 = min(len,m);
-            printf("\n  %4d - %4d:", k1, k2);
-            for (i = k1; i < k2; ++i)
+            m = j + 4;
+            k = min(n,m);
+            printf("\n  %4d - %4d:", j, k);
+            for (i = j; i < k; ++i)
             {
                 printf(" %14.5e", sx[i]);
             }
@@ -80,12 +79,12 @@ int svout_(int *n, float *sx, int *idigit, char *ifmt)
     }
     else if (ndigit <= 10)
     {
-        for (k1 = 0; k1 < len; k1 += 3)
+        for (j = 0; j < n; j += 3)
         {
-            m = k1 + 3;
-            k2 = min(len,m);
-            printf("\n  %4d - %4d:", k1, k2);
-            for (i = k1; i < k2; ++i)
+            m = j + 3;
+            k = min(n,m);
+            printf("\n  %4d - %4d:", j, k);
+            for (i = j; i < k; ++i)
             {
                 printf(" %18.9e", sx[i]);
             }
@@ -93,12 +92,12 @@ int svout_(int *n, float *sx, int *idigit, char *ifmt)
     }
     else
     {
-        for (k1 = 0; k1 < len; k1 += 2)
+        for (j = 0; j < n; j += 2)
         {
-            m = k1 + 2;
-            k2 = min(len,m);
-            printf("\n  %4d - %4d:", k1, k2);
-            for (i = k1; i < k2; ++i)
+            m = j + 2;
+            k = min(n,m);
+            printf("\n  %4d - %4d:", j, k);
+            for (i = j; i < k; ++i)
             {
                 printf(" %24.13e", sx[i]);
             }

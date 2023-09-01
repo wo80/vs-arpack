@@ -444,8 +444,8 @@ int sseupd_(logical *rvec, char *howmny, logical *select, float *d, float *z, in
 #ifndef NO_TRACE
     if (msglvl > 2)
     {
-        svout_(ncv, &workl[irz], &debug_1.ndigit, "_seupd: Ritz values passed in from _SAUPD.");
-        svout_(ncv, &workl[ibd], &debug_1.ndigit, "_seupd: Ritz estimates passed in from _SAUPD.");
+        svout_(*ncv, &workl[irz], debug_1.ndigit, "_seupd: Ritz values passed in from _SAUPD.");
+        svout_(*ncv, &workl[ibd], debug_1.ndigit, "_seupd: Ritz estimates passed in from _SAUPD.");
     }
 #endif
 
@@ -482,8 +482,8 @@ int sseupd_(logical *rvec, char *howmny, logical *select, float *d, float *z, in
 #ifndef NO_TRACE
         if (msglvl > 2)
         {
-            svout_(ncv, &workl[irz], &debug_1.ndigit, "_seupd: Ritz values after calling _SGETS.");
-            svout_(ncv, &workl[bounds], &debug_1.ndigit, "_seupd: Ritz value indices after calling _SGETS.");
+            svout_(*ncv, &workl[irz], debug_1.ndigit, "_seupd: Ritz values after calling _SGETS.");
+            svout_(*ncv, &workl[bounds], debug_1.ndigit, "_seupd: Ritz value indices after calling _SGETS.");
         }
 #endif
 
@@ -521,8 +521,8 @@ int sseupd_(logical *rvec, char *howmny, logical *select, float *d, float *z, in
 #ifndef NO_TRACE
         if (msglvl > 2)
         {
-            ivout_(&c__1, &numcnv, &debug_1.ndigit, "_seupd: Number of specified eigenvalues");
-            ivout_(&c__1, &nconv, &debug_1.ndigit, "_seupd: Number of \"converged\" eigenvalues");
+            ivout_(1, &numcnv, debug_1.ndigit, "_seupd: Number of specified eigenvalues");
+            ivout_(1, &nconv, debug_1.ndigit, "_seupd: Number of \"converged\" eigenvalues");
         }
 #endif
 
@@ -554,8 +554,8 @@ int sseupd_(logical *rvec, char *howmny, logical *select, float *d, float *z, in
         if (msglvl > 1)
         {
             scopy_(ncv, &workl[iq + *ncv - 1], &ldq, &workl[iw], &c__1);
-            svout_(ncv, &workl[ihd], &debug_1.ndigit, "_seupd: NCV Ritz values of the final H matrix");
-            svout_(ncv, &workl[iw], &debug_1.ndigit, "_seupd: last row of the eigenvector matrix for H");
+            svout_(*ncv, &workl[ihd], debug_1.ndigit, "_seupd: NCV Ritz values of the final H matrix");
+            svout_(*ncv, &workl[iw], debug_1.ndigit, "_seupd: last row of the eigenvector matrix for H");
         }
 #endif
 
@@ -627,7 +627,7 @@ L30:
 #ifndef NO_TRACE
         if (msglvl > 2)
         {
-            svout_(ncv, &workl[ihd], &debug_1.ndigit, "_seupd: The eigenvalues of H--reordered");
+            svout_(*ncv, &workl[ihd], debug_1.ndigit, "_seupd: The eigenvalues of H--reordered");
         }
 #endif
 
@@ -852,13 +852,13 @@ L30:
 #ifndef NO_TRACE
     if (msglvl > 1 && strcmp(type, "REGULR") != 0)
     {
-        svout_(&nconv, d, &debug_1.ndigit, "_seupd: Untransformed converged Ritz values");
-        svout_(&nconv, &workl[ihb], &debug_1.ndigit, "_seupd: Ritz estimates of the untransformed Ritz values");
+        svout_(nconv, d, debug_1.ndigit, "_seupd: Untransformed converged Ritz values");
+        svout_(nconv, &workl[ihb], debug_1.ndigit, "_seupd: Ritz estimates of the untransformed Ritz values");
     }
     else if (msglvl > 1)
     {
-        svout_(&nconv, d, &debug_1.ndigit, "_seupd: Converged Ritz values");
-        svout_(&nconv, &workl[ihb], &debug_1.ndigit, "_seupd: Associated Ritz estimates");
+        svout_(nconv, d, debug_1.ndigit, "_seupd: Converged Ritz values");
+        svout_(nconv, &workl[ihb], debug_1.ndigit, "_seupd: Associated Ritz estimates");
     }
 #endif
 

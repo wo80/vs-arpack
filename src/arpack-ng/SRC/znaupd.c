@@ -595,10 +595,10 @@ int znaupd_(int *ido, char *bmat, int *n, char *which, int *nev, double *tol,
 
     if (msglvl > 1)
     {
-        ivout_(&c__1, &mxiter, &debug_1.ndigit, "_naupd: Number of update iterations taken");
-        ivout_(&c__1, &np, &debug_1.ndigit, "_naupd: Number of wanted \"converged\" Ritz values");
-        zvout_(&np, &workl[ritz], &debug_1.ndigit, "_naupd: The final Ritz values");
-        zvout_(&np, &workl[bounds], &debug_1.ndigit, "_naupd: Associated Ritz estimates");
+        ivout_(1, &mxiter, debug_1.ndigit, "_naupd: Number of update iterations taken");
+        ivout_(1, &np, debug_1.ndigit, "_naupd: Number of wanted \"converged\" Ritz values");
+        zvout_(np, &workl[ritz], debug_1.ndigit, "_naupd: The final Ritz values");
+        zvout_(np, &workl[bounds], debug_1.ndigit, "_naupd: Associated Ritz estimates");
     }
 
     if (msglvl > 0)

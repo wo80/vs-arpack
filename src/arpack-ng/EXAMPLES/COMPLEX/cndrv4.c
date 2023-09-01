@@ -6,10 +6,9 @@
 int cndrv4_av_(const int n, a_fcomplex* v, a_fcomplex* w);
 int cndrv4_mv_(const int n, a_fcomplex* v, a_fcomplex* w);
 
+extern int smout_(const int, const int, const float*, const int, const int, const char*);
+
 static int c__1 = 1;
-static int c__3 = 3;
-static int c__25 = 25;
-static int c_n6 = -6;
 
 #define RHO 10.0f
 
@@ -387,7 +386,7 @@ L20:
     /* Display computed residuals. */
     /* --------------------------- */
 
-    smout_(&nconv, &c__3, rd, &c__25, &c_n6, "Ritz values (Real, Imag) and direct residuals");
+    smout_(nconv, 3, rd, 25, -6, "Ritz values (Real, Imag) and direct residuals");
 
     /* ----------------------------------------- */
     /* Print additional convergence information. */

@@ -6,10 +6,9 @@
 int dsdrv3_av_(const int nx, double* v, double* w);
 int dsdrv3_mv_(const int n, double* v, double* w);
 
+extern int dmout_(const int, const int, const double*, const int, const int, const char*);
+
 static int c__1 = 1;
-static int c__2 = 2;
-static int c__25 = 25;
-static int c_n6 = -6;
 
 /**
  * \BeginDoc
@@ -340,7 +339,7 @@ L10:
     /* Display computed residuals. */
     /* --------------------------- */
 
-    dmout_(&nconv, &c__2, d, &c__25, &c_n6, "Ritz values and relative residuals");
+    dmout_(nconv, 2, d, 25, -6, "Ritz values and relative residuals");
     /* ---------------------------------------- */
     /* Print additional convergence information */
     /* ---------------------------------------- */

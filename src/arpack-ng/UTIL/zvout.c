@@ -13,10 +13,10 @@
  *              If IDIGIT .LT. 0, printing is done with 72 columns.
  *              If IDIGIT .GT. 0, printing is done with 132 columns.
  */
-int zvout_(int *n, a_dcomplex *cx, int *idigit, char *ifmt)
+int zvout_(const int n, const a_dcomplex *cx, const int idigit, const char *ifmt)
 {
     /* Local variables */
-    int i, k1, k2, len, m;
+    int i, j, k, len, m;
     char line[80];
     int ndigit;
 
@@ -32,12 +32,11 @@ int zvout_(int *n, a_dcomplex *cx, int *idigit, char *ifmt)
 
     printf("\n %s\n %s", ifmt, line);
 
-    len = *n;
-    if (len <= 0)
+    if (n <= 0)
     {
         return 0;
     }
-    ndigit = *idigit;
+    ndigit = idigit;
     if (ndigit == 0)
     {
         ndigit = 4;
@@ -54,12 +53,12 @@ int zvout_(int *n, a_dcomplex *cx, int *idigit, char *ifmt)
 
     if (ndigit <= 4)
     {
-        for (k1 = 0; k1 < len; k1 += 2)
+        for (j = 0; j < n; j += 2)
         {
-            m = k1 + 2;
-            k2 = min(len,m);
-            printf("\n  %4d - %4d:  ", k1, k2);
-            for (i = k1; i < k2; ++i)
+            m = j + 2;
+            k = min(n,m);
+            printf("\n  %4d - %4d:  ", j, k);
+            for (i = j; i < k; ++i)
             {
                 printf("(  %10.3e   %10.3e)  ", cx[i].r, cx[i].i);
             }
@@ -67,12 +66,12 @@ int zvout_(int *n, a_dcomplex *cx, int *idigit, char *ifmt)
     }
     else if (ndigit <= 6)
     {
-        for (k1 = 0; k1 < len; k1 += 2)
+        for (j = 0; j < n; j += 2)
         {
-            m = k1 + 2;
-            k2 = min(len,m);
-            printf("\n  %4d - %4d:  ", k1, k2);
-            for (i = k1; i < k2; ++i)
+            m = j + 2;
+            k = min(n,m);
+            printf("\n  %4d - %4d:  ", j, k);
+            for (i = j; i < k; ++i)
             {
                 printf("(  %12.5e   %12.5e)  ", cx[i].r, cx[i].i);
             }
@@ -80,12 +79,12 @@ int zvout_(int *n, a_dcomplex *cx, int *idigit, char *ifmt)
     }
     else if (ndigit <= 8)
     {
-        for (k1 = 0; k1 < len; k1 += 2)
+        for (j = 0; j < n; j += 2)
         {
-            m = k1 + 2;
-            k2 = min(len,m);
-            printf("\n  %4d - %4d:  ", k1, k2);
-            for (i = k1; i < k2; ++i)
+            m = j + 2;
+            k = min(n,m);
+            printf("\n  %4d - %4d:  ", j, k);
+            for (i = j; i < k; ++i)
             {
                 printf("(  %14.7e   %14.7e)  ", cx[i].r, cx[i].i);
             }
@@ -93,9 +92,9 @@ int zvout_(int *n, a_dcomplex *cx, int *idigit, char *ifmt)
     }
     else
     {
-        for (k1 = 0; k1 < len; ++k1)
+        for (j = 0; j < n; ++j)
         {
-            printf("\n  %4d:  (  %20.13e   %20.13e)  ", k1, cx[i].r, cx[i].i);
+            printf("\n  %4d:  (  %20.13e   %20.13e)  ", j, cx[i].r, cx[i].i);
         }
     }
 

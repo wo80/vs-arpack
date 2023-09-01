@@ -353,8 +353,8 @@ L1000:
 #ifndef NO_TRACE
     if (msglvl > 1)
     {
-        ivout_(&c__1, &j, &debug_1.ndigit, "_naitr: generating Arnoldi vector number");
-        svout_(&c__1, rnorm, &debug_1.ndigit, "_naitr: B-norm of the current residual is");
+        ivout_(1, &j, debug_1.ndigit, "_naitr: generating Arnoldi vector number");
+        svout_(1, rnorm, debug_1.ndigit, "_naitr: B-norm of the current residual is");
     }
 #endif
 
@@ -379,7 +379,7 @@ L1000:
 #ifndef NO_TRACE
     if (msglvl > 0)
     {
-        ivout_(&c__1, &j, &debug_1.ndigit, "_naitr: ****** RESTART AT STEP ******");
+        ivout_(1, &j, debug_1.ndigit, "_naitr: ****** RESTART AT STEP ******");
     }
 #endif
 
@@ -689,8 +689,8 @@ L80:
     {
         rtemp[0] = wnorm;
         rtemp[1] = *rnorm;
-        svout_(&c__2, rtemp, &debug_1.ndigit, "_naitr: re-orthogonalization; wnorm and rnorm are");
-        cvout_(&j, &h[j * h_dim + 1], &debug_1.ndigit, "_naitr: j-th column of H");
+        svout_(2, rtemp, debug_1.ndigit, "_naitr: re-orthogonalization; wnorm and rnorm are");
+        cvout_(j, &h[j * h_dim + 1], debug_1.ndigit, "_naitr: j-th column of H");
     }
 #endif
 
@@ -764,12 +764,12 @@ L90:
 #ifndef NO_TRACE
     if (msglvl > 0 && iter > 0)
     {
-        ivout_(&c__1, &j, &debug_1.ndigit, "_naitr: Iterative refinement for Arnoldi residual");
+        ivout_(1, &j, debug_1.ndigit, "_naitr: Iterative refinement for Arnoldi residual");
         if (msglvl > 2)
         {
             rtemp[0] = *rnorm;
             rtemp[1] = rnorm1;
-            svout_(&c__2, rtemp, &debug_1.ndigit, "_naitr: iterative refinement ; rnorm and rnorm1 are");
+            svout_(2, rtemp, debug_1.ndigit, "_naitr: iterative refinement ; rnorm and rnorm1 are");
         }
     }
 #endif
@@ -879,7 +879,7 @@ L100:
         if (msglvl > 2)
         {
             i__1 = *k + *np;
-            cmout_(&i__1, &i__1, &h[h_offset], ldh, &debug_1.ndigit, "_naitr: Final upper Hessenberg matrix H of order K+NP");
+            cmout_(1, 1, &h[h_offset], *ldh, debug_1.ndigit, "_naitr: Final upper Hessenberg matrix H of order K+NP");
         }
 #endif
 

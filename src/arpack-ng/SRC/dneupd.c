@@ -515,9 +515,9 @@ int dneupd_(logical *rvec, char *howmny, logical *select, double *dr, double *di
 #ifndef NO_TRACE
     if (msglvl > 2)
     {
-        dvout_(ncv, &workl[irr], &debug_1.ndigit, "_neupd: Real part of Ritz values passed in from _NAUPD.");
-        dvout_(ncv, &workl[iri], &debug_1.ndigit, "_neupd: Imag part of Ritz values passed in from _NAUPD.");
-        dvout_(ncv, &workl[ibd], &debug_1.ndigit, "_neupd: Ritz estimates passed in from _NAUPD.");
+        dvout_(*ncv, &workl[irr], debug_1.ndigit, "_neupd: Real part of Ritz values passed in from _NAUPD.");
+        dvout_(*ncv, &workl[iri], debug_1.ndigit, "_neupd: Imag part of Ritz values passed in from _NAUPD.");
+        dvout_(*ncv, &workl[ibd], debug_1.ndigit, "_neupd: Ritz estimates passed in from _NAUPD.");
     }
 #endif
 
@@ -554,9 +554,9 @@ int dneupd_(logical *rvec, char *howmny, logical *select, double *dr, double *di
 #ifndef NO_TRACE
         if (msglvl > 2)
         {
-            dvout_(ncv, &workl[irr], &debug_1.ndigit, "_neupd: Real part of Ritz values after calling _NGETS.");
-            dvout_(ncv, &workl[iri], &debug_1.ndigit, "_neupd: Imag part of Ritz values after calling _NGETS.");
-            dvout_(ncv, &workl[bounds], &debug_1.ndigit, "_neupd: Ritz value indices after calling _NGETS.");
+            dvout_(*ncv, &workl[irr], debug_1.ndigit, "_neupd: Real part of Ritz values after calling _NGETS.");
+            dvout_(*ncv, &workl[iri], debug_1.ndigit, "_neupd: Imag part of Ritz values after calling _NGETS.");
+            dvout_(*ncv, &workl[bounds], debug_1.ndigit, "_neupd: Ritz value indices after calling _NGETS.");
         }
 #endif
 
@@ -595,8 +595,8 @@ int dneupd_(logical *rvec, char *howmny, logical *select, double *dr, double *di
 #ifndef NO_TRACE
         if (msglvl > 2)
         {
-            ivout_(&c__1, &numcnv, &debug_1.ndigit, "_neupd: Number of specified eigenvalues");
-            ivout_(&c__1, &nconv, &debug_1.ndigit, "_neupd: Number of \"converged\" eigenvalues");
+            ivout_(1, &numcnv, debug_1.ndigit, "_neupd: Number of specified eigenvalues");
+            ivout_(1, &nconv, debug_1.ndigit, "_neupd: Number of \"converged\" eigenvalues");
         }
 #endif
 
@@ -628,12 +628,12 @@ int dneupd_(logical *rvec, char *howmny, logical *select, double *dr, double *di
 #ifndef NO_TRACE
         if (msglvl > 1)
         {
-            dvout_(ncv, &workl[iheigr], &debug_1.ndigit, "_neupd: Real part of the eigenvalues of H");
-            dvout_(ncv, &workl[iheigi], &debug_1.ndigit, "_neupd: Imaginary part of the Eigenvalues of H");
-            dvout_(ncv, &workl[ihbds], &debug_1.ndigit, "_neupd: Last row of the Schur vector matrix");
+            dvout_(*ncv, &workl[iheigr], debug_1.ndigit, "_neupd: Real part of the eigenvalues of H");
+            dvout_(*ncv, &workl[iheigi], debug_1.ndigit, "_neupd: Imaginary part of the Eigenvalues of H");
+            dvout_(*ncv, &workl[ihbds], debug_1.ndigit, "_neupd: Last row of the Schur vector matrix");
             if (msglvl > 3)
             {
-                dmout_(ncv, ncv, &workl[iuptri], &ldh, &debug_1.ndigit, "_neupd: The upper quasi-triangular matrix ");
+                dmout_(*ncv, *ncv, &workl[iuptri], ldh, debug_1.ndigit, "_neupd: The upper quasi-triangular matrix ");
             }
         }
 #endif
@@ -659,11 +659,11 @@ int dneupd_(logical *rvec, char *howmny, logical *select, double *dr, double *di
 #ifndef NO_TRACE
             if (msglvl > 2)
             {
-                dvout_(ncv, &workl[iheigr], &debug_1.ndigit, "_neupd: Real part of the eigenvalues of H--reordered");
-                dvout_(ncv, &workl[iheigi], &debug_1.ndigit, "_neupd: Imag part of the eigenvalues of H--reordered");
+                dvout_(*ncv, &workl[iheigr], debug_1.ndigit, "_neupd: Real part of the eigenvalues of H--reordered");
+                dvout_(*ncv, &workl[iheigi], debug_1.ndigit, "_neupd: Imag part of the eigenvalues of H--reordered");
                 if (msglvl > 3)
                 {
-                    dmout_(ncv, ncv, &workl[iuptri], &ldq, &debug_1.ndigit, "_neupd: Quasi-triangular matrix after re-ordering");
+                    dmout_(*ncv, *ncv, &workl[iuptri], ldq, debug_1.ndigit, "_neupd: Quasi-triangular matrix after re-ordering");
                 }
             }
 #endif
@@ -837,10 +837,10 @@ int dneupd_(logical *rvec, char *howmny, logical *select, double *dr, double *di
             if (msglvl > 2)
             {
                 dcopy_(ncv, &workl[invsub + *ncv - 1], &ldq, &workl[ihbds], &c__1);
-                dvout_(ncv, &workl[ihbds], &debug_1.ndigit, "_neupd: Last row of the eigenvector matrix for T");
+                dvout_(*ncv, &workl[ihbds], debug_1.ndigit, "_neupd: Last row of the eigenvector matrix for T");
                 if (msglvl > 3)
                 {
-                    dmout_(ncv, ncv, &workl[invsub], &ldq, &debug_1.ndigit, "_neupd: The eigenvector matrix for T");
+                    dmout_(*ncv, *ncv, &workl[invsub], ldq, debug_1.ndigit, "_neupd: The eigenvector matrix for T");
                 }
             }
 #endif
@@ -970,15 +970,15 @@ int dneupd_(logical *rvec, char *howmny, logical *select, double *dr, double *di
 #ifndef NO_TRACE
     if (msglvl > 1 && strcmp(type, "SHIFTI") == 0)
     {
-        dvout_(&nconv, dr, &debug_1.ndigit, "_neupd: Untransformed float part of the Ritz values.");
-        dvout_(&nconv, di, &debug_1.ndigit, "_neupd: Untransformed imag part of the Ritz values.");
-        dvout_(&nconv, &workl[ihbds], &debug_1.ndigit, "_neupd: Ritz estimates of untransformed Ritz values.");
+        dvout_(nconv, dr, debug_1.ndigit, "_neupd: Untransformed float part of the Ritz values.");
+        dvout_(nconv, di, debug_1.ndigit, "_neupd: Untransformed imag part of the Ritz values.");
+        dvout_(nconv, &workl[ihbds], debug_1.ndigit, "_neupd: Ritz estimates of untransformed Ritz values.");
     }
     else if (msglvl > 1 && strcmp(type, "REGULR") == 0)
     {
-        dvout_(&nconv, dr, &debug_1.ndigit, "_neupd: Real parts of converged Ritz values.");
-        dvout_(&nconv, di, &debug_1.ndigit, "_neupd: Imag parts of converged Ritz values.");
-        dvout_(&nconv, &workl[ihbds], &debug_1.ndigit, "_neupd: Associated Ritz estimates.");
+        dvout_(nconv, dr, debug_1.ndigit, "_neupd: Real parts of converged Ritz values.");
+        dvout_(nconv, di, debug_1.ndigit, "_neupd: Imag parts of converged Ritz values.");
+        dvout_(nconv, &workl[ihbds], debug_1.ndigit, "_neupd: Associated Ritz estimates.");
     }
 #endif
 
