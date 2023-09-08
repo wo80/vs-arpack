@@ -269,7 +269,7 @@ int zneupd_(logical *rvec, const char *howmny, logical *select, a_dcomplex *d, a
     a_dcomplex z__1, z__2;
 
     /* Builtin functions */
-    void z_div(a_dcomplex *, a_dcomplex *, a_dcomplex *);
+    void ar_z_div(a_dcomplex *, a_dcomplex *, a_dcomplex *);
 
     /* Local variables */
     int j, k, ih, jj, iq, np;
@@ -796,8 +796,8 @@ int zneupd_(logical *rvec, const char *howmny, logical *select, a_dcomplex *d, a
             i__2 = iheig + k;
             temp.r = workl[i__2].r, temp.i = workl[i__2].i;
             i__2 = ihbds + k;
-            z_div(&z__2, &workl[ihbds + k], &temp);
-            z_div(&z__1, &z__2, &temp);
+            ar_z_div(&z__2, &workl[ihbds + k], &temp);
+            ar_z_div(&z__1, &z__2, &temp);
             workl[i__2].r = z__1.r, workl[i__2].i = z__1.i;
         }
     }
@@ -814,7 +814,7 @@ int zneupd_(logical *rvec, const char *howmny, logical *select, a_dcomplex *d, a
     {
         for (k = 0; k < nconv; ++k)
         {
-            z_div(&z__2, &z_one, &workl[iheig + k]);
+            ar_z_div(&z__2, &z_one, &workl[iheig + k]);
             d[k].r = z__2.r + sigma->r;
             d[k].i = z__2.i + sigma->i;
         }
@@ -855,7 +855,7 @@ int zneupd_(logical *rvec, const char *howmny, logical *select, a_dcomplex *d, a
             i__2 = iheig + j;
             if (workl[i__2].r != 0.0 || workl[i__2].i != 0.0)
             {
-                z_div(&z__1, &workl[invsub + j * ldq + *ncv - 1], &workl[i__2]);
+                ar_z_div(&z__1, &workl[invsub + j * ldq + *ncv - 1], &workl[i__2]);
                 workev[j].r = z__1.r, workev[j].i = z__1.i;
             }
         }

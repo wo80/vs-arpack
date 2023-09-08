@@ -118,7 +118,7 @@ int dstqrb_(int *n, double *d, double *e,
     double d__1, d__2;
 
     /* Builtin functions */
-    double sqrt(double), d_sign(double *, double *);
+    double sqrt(double), ar_d_sign(double *, double *);
 
     /* Local variables */
     double b, c, f, g;
@@ -388,7 +388,7 @@ L60:
 
         g = (d[l + 1] - p) / (e[l] * 2.);
         r = dlapy2_(&g, &d_one);
-        g = d[m] - p + e[l] / (g + d_sign(&r, &g));
+        g = d[m] - p + e[l] / (g + ar_d_sign(&r, &g));
 
         s = 1.0;
         c = 1.0;
@@ -534,7 +534,7 @@ L110:
 
         g = (d[l - 1] - p) / (e[l - 1] * 2.);
         r = dlapy2_(&g, &d_one);
-        g = d[m] - p + e[l - 1] / (g + d_sign(&r, &g));
+        g = d[m] - p + e[l - 1] / (g + ar_d_sign(&r, &g));
 
         s = 1.0;
         c = 1.0;

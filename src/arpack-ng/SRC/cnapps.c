@@ -152,7 +152,7 @@ int cnapps_(int *n, int *kev, int *np, a_fcomplex *
     a_fcomplex q__1, q__2, q__3, q__4, q__5;
 
     /* Builtin functions */
-    void r_cnjg(a_fcomplex *, a_fcomplex *);
+    void ar_r_cnjg(a_fcomplex *, a_fcomplex *);
 
     /* Local variables */
     float c;
@@ -469,7 +469,7 @@ L100:
 
             i__2 = kplusp - j + 1;
             i__3 = j + 1 + j * h_dim;
-            r_cnjg(&q__1, &t);
+            ar_r_cnjg(&q__1, &t);
             cscal_(&i__2, &q__1, &h[i__3], ldh);
             /* Computing MIN */
             i__3 = j + 2;

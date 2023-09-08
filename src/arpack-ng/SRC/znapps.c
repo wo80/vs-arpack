@@ -153,7 +153,7 @@ int znapps_(int *n, int *kev, int *np,
     a_dcomplex z__1, z__2, z__3, z__4, z__5;
 
     /* Builtin functions */
-    void d_cnjg(a_dcomplex *, a_dcomplex *);
+    void ar_d_cnjg(a_dcomplex *, a_dcomplex *);
 
     /* Local variables */
     double c;
@@ -470,7 +470,7 @@ L100:
 
             i__2 = kplusp - j + 1;
             i__3 = j + 1 + j * h_dim;
-            d_cnjg(&z__1, &t);
+            ar_d_cnjg(&z__1, &t);
             zscal_(&i__2, &z__1, &h[i__3], ldh);
             /* Computing MIN */
             i__3 = j + 2;

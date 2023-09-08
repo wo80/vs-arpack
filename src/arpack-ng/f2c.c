@@ -1,32 +1,32 @@
 #include "f2c.h"
 
-double d_sign(double* a, double* b)
+double ar_d_sign(double* a, double* b)
 {
 	double x = fabs(*a);
 	return *b >= 0 ? x : -x;
 }
 
-double r_sign(float* a, float* b)
+double ar_r_sign(float* a, float* b)
 {
 	double x = (*a >= 0 ? *a : -*a);
 	return(*b >= 0 ? x : -x);
 }
 
-void r_cnjg(a_fcomplex* r, a_fcomplex* z)
+void ar_r_cnjg(a_fcomplex* r, a_fcomplex* z)
 {
 	float zi = z->i;
 	r->r = z->r;
 	r->i = -zi;
 }
 
-void d_cnjg(a_dcomplex* r, a_dcomplex* z)
+void ar_d_cnjg(a_dcomplex* r, a_dcomplex* z)
 {
 	double zi = z->i;
 	r->r = z->r;
 	r->i = -zi;
 }
 
-void c_div(a_fcomplex* c, a_fcomplex* a, a_fcomplex* b)
+void ar_c_div(a_fcomplex* c, a_fcomplex* a, a_fcomplex* b)
 {
 	double ratio, den;
 	double abr, abi, cr;
@@ -62,7 +62,7 @@ void c_div(a_fcomplex* c, a_fcomplex* a, a_fcomplex* b)
 	c->r = cr;
 }
 
-void z_div(a_dcomplex* c, a_dcomplex* a, a_dcomplex* b)
+void ar_z_div(a_dcomplex* c, a_dcomplex* a, a_dcomplex* b)
 {
 	double ratio, den;
 	double abr, abi, cr;

@@ -269,7 +269,7 @@ int cneupd_(logical *rvec, const char *howmny, logical *select, a_fcomplex *d, a
     a_fcomplex q__1, q__2;
 
     /* Builtin functions */
-    void c_div(a_fcomplex *, a_fcomplex *, a_fcomplex *);
+    void ar_c_div(a_fcomplex *, a_fcomplex *, a_fcomplex *);
 
     /* Local variables */
     int j, k, ih, jj, iq, np;
@@ -797,8 +797,8 @@ int cneupd_(logical *rvec, const char *howmny, logical *select, a_fcomplex *d, a
             i__2 = iheig + k;
             temp.r = workl[i__2].r, temp.i = workl[i__2].i;
             i__2 = ihbds + k;
-            c_div(&q__2, &workl[ihbds + k], &temp);
-            c_div(&q__1, &q__2, &temp);
+            ar_c_div(&q__2, &workl[ihbds + k], &temp);
+            ar_c_div(&q__1, &q__2, &temp);
             workl[i__2].r = q__1.r, workl[i__2].i = q__1.i;
         }
     }
@@ -815,7 +815,7 @@ int cneupd_(logical *rvec, const char *howmny, logical *select, a_fcomplex *d, a
     {
         for (k = 0; k < nconv; ++k)
         {
-            c_div(&q__2, &c_one, &workl[iheig + k]);
+            ar_c_div(&q__2, &c_one, &workl[iheig + k]);
             d[k].r = q__2.r + sigma->r;
             d[k].i = q__2.i + sigma->i;
         }
@@ -856,7 +856,7 @@ int cneupd_(logical *rvec, const char *howmny, logical *select, a_fcomplex *d, a
             i__2 = iheig + j;
             if (workl[i__2].r != 0.0f || workl[i__2].i != 0.0f)
             {
-                c_div(&q__1, &workl[invsub + j * ldq + *ncv - 1], &workl[i__2]);
+                ar_c_div(&q__1, &workl[invsub + j * ldq + *ncv - 1], &workl[i__2]);
                 workev[j].r = q__1.r, workev[j].i = q__1.i;
             }
         }

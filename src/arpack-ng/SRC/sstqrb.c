@@ -118,7 +118,7 @@ int sstqrb_(int *n, float *d, float *e, float *z, float *
     float r__1, r__2;
 
     /* Builtin functions */
-    double sqrt(double), r_sign(float *, float *);
+    double sqrt(double), ar_r_sign(float *, float *);
 
     /* Local variables */
     float b, c, f, g;
@@ -389,7 +389,7 @@ L60:
 
         g = (d[l + 1] - p) / (e[l] * 2.0f);
         r = slapy2_(&g, &s_one);
-        g = d[m] - p + e[l] / (g + r_sign(&r, &g));
+        g = d[m] - p + e[l] / (g + ar_r_sign(&r, &g));
 
         s = 1.0f;
         c = 1.0f;
@@ -535,7 +535,7 @@ L110:
 
         g = (d[l - 1] - p) / (e[l - 1] * 2.0f);
         r = slapy2_(&g, &s_one);
-        g = d[m] - p + e[l - 1] / (g + r_sign(&r, &g));
+        g = d[m] - p + e[l - 1] / (g + ar_r_sign(&r, &g));
 
         s = 1.0f;
         c = 1.0f;
