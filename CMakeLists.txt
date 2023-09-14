@@ -47,7 +47,13 @@ if(NOT ENABLE_TRACING)
 endif()
 
 if(BUILD_SHARED_LIBS)
-  find_package(SuperLU)
+  find_package(superlu REQUIRED)
+
+  if (TARGET superlu::superlu)
+    message( STATUS "Found SuperLU: version ${superlu_VERSION}" )
+  else()
+    message(FATAL_ERROR "SuperLU not found")
+  endif()
 endif()
 
 # Find BLAS
