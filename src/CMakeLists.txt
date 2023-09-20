@@ -30,7 +30,7 @@ target_include_directories(arpack
 
 include_directories("${PROJECT_BINARY_DIR}") # Find arpackdef.h and arpackicb.h
 
-add_subdirectory(arpack)
+add_subdirectory(arpack-ng)
 
 
 # Add target: arpack-ds shared library

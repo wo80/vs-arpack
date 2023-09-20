@@ -1,4 +1,4 @@
-target_sources(arpack-ng
+target_sources(arpack
   PRIVATE
     cmout.c
     cvout.c
