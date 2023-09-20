@@ -37,20 +37,19 @@ add_subdirectory(arpack-ng)
 
 if(BUILD_SHARED_LIBS)
   add_library(arpack-ds SHARED)
+  add_library(ARPACK::arpack-ds ALIAS arpack-ds)
 
   # Enable arcomplex type of ARPACK++
   target_compile_definitions(arpack-ds PRIVATE __GNUG__)
 
-  target_link_libraries(arpack-ds arpack ${SuperLU_LIBRARIES} BLAS::BLAS LAPACK::LAPACK ${EXTRA_LDFLAGS})
+  target_link_libraries(arpack-ds arpack superlu::superlu BLAS::BLAS LAPACK::LAPACK ${EXTRA_LDFLAGS})
 
   target_include_directories(arpack-ds
     PUBLIC
       $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
-      $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
-      ${CMAKE_CURRENT_SOURCE_DIR}/arpackpp/include
-      ${CMAKE_CURRENT_SOURCE_DIR}/arpack-ds
-      ${SuperLU_INCLUDE_DIR}
-  )
+      $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/arpackpp/include>
+      $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/arpack-ds>
+      $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
   add_subdirectory(arpack-ds)
 endif()

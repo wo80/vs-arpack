@@ -139,3 +139,48 @@ if(ENABLE_TESTS)
 endif()
 
 add_subdirectory(src)
+
+
+# Install
+
+install(TARGETS arpack arpack-ds
+    EXPORT arpackngTargets
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+
+install(FILES
+  src/arpack-ng/arpack.h
+  src/arpack-ng/arpack_types.h
+DESTINATION
+  ${ARPACK_INSTALL_INCLUDEDIR})
+    
+if(ICB)
+  install(FILES
+    src/arpack-ng/ICB/arpack.hpp
+    #src/arpack-ng/ICB/debug_c.h
+    #src/arpack-ng/ICB/debug_c.hpp
+    #src/arpack-ng/ICB/stat_c.h
+    #src/arpack-ng/ICB/stat_c.hpp
+  DESTINATION
+    ${ARPACK_INSTALL_INCLUDEDIR})
+
+  #if (EIGEN)
+  #  install(FILES EXAMPLES/MATRIX_MARKET/arpackSolver.hpp DESTINATION ${ARPACK_INSTALL_INCLUDEDIR})
+  #endif()
+endif()
+
+#configure_file(arpackdef.h.in "${PROJECT_BINARY_DIR}/arpackdef.h" @ONLY)
+#install(FILES "${PROJECT_BINARY_DIR}/arpackdef.h" DESTINATION ${ARPACK_INSTALL_INCLUDEDIR})
+
+install(EXPORT arpackngTargets
+  DESTINATION "${ARPACK_INSTALL_CMAKEDIR}"
+)
+# Provide find_package for arpack-ng to users.
+configure_file(cmake/arpackng-config.cmake.in "${PROJECT_BINARY_DIR}/arpackng-config.cmake" @ONLY)
+configure_file(cmake/arpackng-config-version.cmake.in "${PROJECT_BINARY_DIR}/arpackng-config-version.cmake" @ONLY)
+install(
+  FILES
+  "${PROJECT_BINARY_DIR}/arpackng-config.cmake"
+  "${PROJECT_BINARY_DIR}/arpackng-config-version.cmake"
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/arpackng) # find_package(arpackng)
