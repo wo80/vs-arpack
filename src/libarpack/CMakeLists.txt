@@ -1,4 +1,4 @@
-target_sources(libarpack
+target_sources(arpack-ds
   PRIVATE
     arerror.cpp
     ar_ci_exports.cpp

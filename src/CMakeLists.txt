@@ -33,24 +33,24 @@ include_directories("${PROJECT_BINARY_DIR}") # Find arpackdef.h and arpackicb.h
 add_subdirectory(arpack)
 
 
-# Add target: libarpack shared library
+# Add target: arpack-ds shared library
 
 if(BUILD_SHARED_LIBS)
-  add_library(libarpack SHARED)
+  add_library(arpack-ds SHARED)
 
   # Enable arcomplex type of ARPACK++
-  target_compile_definitions(libarpack PRIVATE __GNUG__)
+  target_compile_definitions(arpack-ds PRIVATE __GNUG__)
 
-  target_link_libraries(libarpack arpack ${SuperLU_LIBRARIES} BLAS::BLAS LAPACK::LAPACK ${EXTRA_LDFLAGS})
+  target_link_libraries(arpack-ds arpack ${SuperLU_LIBRARIES} BLAS::BLAS LAPACK::LAPACK ${EXTRA_LDFLAGS})
 
-  target_include_directories(libarpack
+  target_include_directories(arpack-ds
     PUBLIC
       $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
       $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
       ${CMAKE_CURRENT_SOURCE_DIR}/arpackpp/include
-      ${CMAKE_CURRENT_SOURCE_DIR}/libarpack
+      ${CMAKE_CURRENT_SOURCE_DIR}/arpack-ds
       ${SuperLU_INCLUDE_DIR}
   )
 
-  add_subdirectory(libarpack)
+  add_subdirectory(arpack-ds)
 endif()
