@@ -1,23 +1,23 @@
 include_directories(${f2c_INCLUDE_DIR})
 
-# Add target: arpack-ng static library
+# Add target: arpack static library
 
-add_library(arpack-ng STATIC)
-add_library(ARPACK::arpack-ng ALIAS arpack-ng)
+add_library(arpack STATIC)
+add_library(ARPACK::arpack ALIAS arpack)
 
-set_target_properties(arpack-ng PROPERTIES DEBUG_POSTFIX _d)
+set_target_properties(arpack PROPERTIES DEBUG_POSTFIX _d)
 
-target_link_libraries(arpack-ng
+target_link_libraries(arpack
   PUBLIC
   $<INSTALL_INTERFACE:$<IF:$<BOOL:${BUILD_SHARED_LIBS}>,,LAPACK::LAPACK>>
   $<INSTALL_INTERFACE:$<IF:$<BOOL:${BUILD_SHARED_LIBS}>,,BLAS::BLAS>>
   $<BUILD_INTERFACE:LAPACK::LAPACK>
   $<BUILD_INTERFACE:BLAS::BLAS>
 )
-#target_link_options(arpack-ng PUBLIC "${EXTRA_LDFLAGS}")
-#set_target_properties(arpack-ng PROPERTIES VERSION 2.4.0)
-#set_target_properties(arpack-ng PROPERTIES SOVERSION 2)
-target_include_directories(arpack-ng
+#target_link_options(arpack PUBLIC "${EXTRA_LDFLAGS}")
+#set_target_properties(arpack PROPERTIES VERSION 2.4.0)
+#set_target_properties(arpack PROPERTIES SOVERSION 2)
+target_include_directories(arpack
   PUBLIC
   # Exported location of headers
   $<INSTALL_INTERFACE:${ARPACK_INSTALL_INCLUDEDIR}>
@@ -30,7 +30,7 @@ target_include_directories(arpack-ng
 
 include_directories("${PROJECT_BINARY_DIR}") # Find arpackdef.h and arpackicb.h
 
-add_subdirectory(arpack-ng)
+add_subdirectory(arpack)
 
 
 # Add target: libarpack shared library
@@ -41,7 +41,7 @@ if(BUILD_SHARED_LIBS)
   # Enable arcomplex type of ARPACK++
   target_compile_definitions(libarpack PRIVATE __GNUG__)
 
-  target_link_libraries(libarpack arpack-ng ${SuperLU_LIBRARIES} BLAS::BLAS LAPACK::LAPACK ${EXTRA_LDFLAGS})
+  target_link_libraries(libarpack arpack ${SuperLU_LIBRARIES} BLAS::BLAS LAPACK::LAPACK ${EXTRA_LDFLAGS})
 
   target_include_directories(libarpack
     PUBLIC
