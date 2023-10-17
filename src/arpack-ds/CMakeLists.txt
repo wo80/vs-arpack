@@ -1,6 +1,5 @@
 target_sources(arpack-ds
   PRIVATE
-    arerror.cpp
     ar_ci_exports.cpp
     ar_ci_exports.h
     ar_di_exports.cpp
