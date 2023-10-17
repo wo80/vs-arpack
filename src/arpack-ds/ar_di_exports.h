@@ -2,8 +2,6 @@
 
 #include "common.h"
 
-#define EXPORT __declspec(dllexport)
-
 #ifdef __cplusplus
 extern "C"
 {

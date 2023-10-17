@@ -35,8 +35,9 @@ add_subdirectory(arpack-ng)
 
 # Add target: arpack-ds shared library
 
+add_library(arpack-ds SHARED)
+
 if(BUILD_SHARED_LIBS)
-  add_library(arpack-ds SHARED)
   add_library(ARPACK::arpack-ds ALIAS arpack-ds)
 
   # Enable arcomplex type of ARPACK++

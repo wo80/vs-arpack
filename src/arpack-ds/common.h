@@ -1,5 +1,15 @@
 #pragma once
 
+#ifdef _WIN32
+# ifdef WIN_IMPORT
+#   define EXPORT __declspec( dllimport )
+# else
+#   define EXPORT __declspec( dllexport )
+# endif
+#else
+# define EXPORT
+#endif
+
 /* Sparse matrix in column compressed format. */
 typedef struct ar_spmat_t {
 	/* Number of rows. */

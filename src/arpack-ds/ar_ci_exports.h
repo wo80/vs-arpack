@@ -3,8 +3,6 @@
 #include "common.h"
 #include "arcomp.h"
 
-#define EXPORT __declspec(dllexport)
-
 #ifdef __cplusplus
 extern "C"
 {
