@@ -1,7 +1,9 @@
 /* EXAMPLES\SYM\ssdrv2.f -- translated by f2c (version 20100827). */
 
 #include <stdlib.h>
+#include <stdio.h>
 #include "arpack.h"
+#include "lapack.h"
 
 int ssdrv2_av_(const int nx, float* v, float* w);
 

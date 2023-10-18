@@ -1,7 +1,9 @@
 /* EXAMPLES\COMPLEX\cndrv3.f -- translated by f2c (version 20100827). */
 
 #include <stdlib.h>
+#include <stdio.h>
 #include "arpack.h"
+#include "lapack.h"
 
 int cndrv3_av_(const int n, a_fcomplex* v, a_fcomplex* w);
 int cndrv3_mv_(const int n, a_fcomplex* v, a_fcomplex* w);

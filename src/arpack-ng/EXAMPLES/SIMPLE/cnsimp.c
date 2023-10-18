@@ -1,7 +1,9 @@
 /* EXAMPLES\SIMPLE\cnsimp.f -- translated by f2c (version 20100827). */
 
 #include <stdlib.h>
+#include <stdio.h>
 #include "arpack.h"
+#include "lapack.h"
 
 int cnsimp_av_(const int nx, a_fcomplex* v, a_fcomplex* w);
 int cnsimp_tv_(const int nx, a_fcomplex* x, a_fcomplex* y);

@@ -1,7 +1,9 @@
 /* EXAMPLES\SIMPLE\sssimp.f -- translated by f2c (version 20100827). */
 
 #include <stdlib.h>
+#include <stdio.h>
 #include "arpack.h"
+#include "lapack.h"
 
 int sssimp_av_(const int nx, float* v, float* w);
 int sssimp_tv_(const int nx, float* x, float* y);

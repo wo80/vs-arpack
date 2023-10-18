@@ -1,10 +1,14 @@
 /* EXAMPLES\SYM\dsdrv6.f -- translated by f2c (version 20100827). */
 
 #include <stdlib.h>
+#include <stdio.h>
 #include "arpack.h"
+#include "lapack.h"
 
 int dsdrv6_av_(const int nx, double* v, double* w);
 int dsdrv6_mv_(const int n, double* v, double* w);
+
+extern int dmout_(const int, const int, const double*, const int, const int, const char*);
 
 static int i_one = 1;
 

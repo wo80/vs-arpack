@@ -1,7 +1,9 @@
 /* EXAMPLES\SIMPLE\snsimp.f -- translated by f2c (version 20100827). */
 
 #include <stdlib.h>
+#include <stdio.h>
 #include "arpack.h"
+#include "lapack.h"
 
 int snsimp_av_(const int nx, float* v, float* w);
 int snsimp_tv_(const int nx, float* x, float* y);

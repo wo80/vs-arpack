@@ -1,9 +1,12 @@
 /* EXAMPLES\SYM\ssdrv1.f -- translated by f2c (version 20100827). */
 
 #include <stdlib.h>
+#include <stdio.h>
 #include "arpack.h"
+#include "lapack.h"
 
 int ssdrv1_av_(const int nx, float* v, float* w);
+int ssdrv1_tv_(const int nx, float *x, float *y);
 
 extern int smout_(const int, const int, const float*, const int, const int, const char*);
 

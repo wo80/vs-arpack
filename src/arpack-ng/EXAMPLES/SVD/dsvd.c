@@ -1,7 +1,9 @@
 /* EXAMPLES\SVD\dsvd.f -- translated by f2c (version 20100827). */
 
 #include <stdlib.h>
+#include <stdio.h>
 #include "arpack.h"
+#include "lapack.h"
 
 int dsvd_av_(const int m, const int n, double* x, double* w);
 int dsvd_atv_(const int m, const int n, double* w, double* y);

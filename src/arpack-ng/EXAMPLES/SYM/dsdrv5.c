@@ -1,7 +1,9 @@
 /* EXAMPLES\SYM\dsdrv5.f -- translated by f2c (version 20100827). */
 
 #include <stdlib.h>
+#include <stdio.h>
 #include "arpack.h"
+#include "lapack.h"
 
 int dsdrv5_av_(const int nx, double* v, double* w);
 int dsdrv5_mv_(const int n, double* v, double* w);

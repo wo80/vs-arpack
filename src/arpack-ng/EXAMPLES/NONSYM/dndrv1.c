@@ -1,7 +1,9 @@
 /* EXAMPLES\NONSYM\dndrv1.f -- translated by f2c (version 20100827). */
 
 #include <stdlib.h>
+#include <stdio.h>
 #include "arpack.h"
+#include "lapack.h"
 
 int dndrv1_av_(const int nx, double* v, double* w);
 int dndrv1_tv_(const int nx, double* x, double* y);

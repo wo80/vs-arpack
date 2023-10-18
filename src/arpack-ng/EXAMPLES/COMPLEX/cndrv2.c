@@ -1,9 +1,13 @@
 /* EXAMPLES\COMPLEX\cndrv2.f -- translated by f2c (version 20100827). */
 
 #include <stdlib.h>
+#include <stdio.h>
 #include "arpack.h"
+#include "lapack.h"
 
 int cndrv2_av_(const int n, a_fcomplex* v, a_fcomplex* w);
+
+extern int smout_(const int, const int, const float*, const int, const int, const char*);
 
 static int i_one = 1;
 

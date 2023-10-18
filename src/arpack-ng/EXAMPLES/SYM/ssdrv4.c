@@ -1,7 +1,9 @@
 /* EXAMPLES\SYM\ssdrv4.f -- translated by f2c (version 20100827). */
 
 #include <stdlib.h>
+#include <stdio.h>
 #include "arpack.h"
+#include "lapack.h"
 
 int ssdrv4_av_(const int nx, float* v, float* w);
 int ssdrv4_mv_(const int n, float* v, float* w);
