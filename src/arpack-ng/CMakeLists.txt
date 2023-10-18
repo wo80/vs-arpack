@@ -12,7 +12,7 @@ if(ENABLE_ICB)
   add_subdirectory(ICB)
 endif()
 
-target_sources(arpack PRIVATE f2c.c)
+target_sources(arpack PRIVATE f2c.c arpack_types.c)
 
 if(ENABLE_TESTS)
   add_subdirectory(EXAMPLES)
