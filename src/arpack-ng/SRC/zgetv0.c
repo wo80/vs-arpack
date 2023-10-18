@@ -284,7 +284,7 @@ L20:
     first = FALSE_;
     if (*bmat == 'G')
     {
-        zdotc_(&z__1, n, resid, &i_one, workd, &i_one);
+        cblas_cdotc_sub(*n, resid, 1, workd, 1, &z__1);
         cnorm.r = z__1.r, cnorm.i = z__1.i;
         d__1 = cnorm.r;
         d__2 = cnorm.i;
@@ -356,7 +356,7 @@ L40:
         arscnd_(&t3);
         timing_1.tmvbx += t3 - t2;
 #endif
-        zdotc_(&z__1, n, resid, &i_one, workd, &i_one);
+        cblas_cdotc_sub(*n, resid, 1, workd, 1, &z__1);
         cnorm.r = z__1.r, cnorm.i = z__1.i;
         d__1 = cnorm.r;
         d__2 = cnorm.i;

@@ -4,6 +4,7 @@
 #include <string.h>
 
 #include "arpack.h"
+#include "blas.h"
 #include "lapack.h"
 
 #define TWO_THIRDS 0.66666666666666666667

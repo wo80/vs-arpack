@@ -280,7 +280,7 @@ L20:
         arscnd_(&t3);
         timing_1.tmvbx += t3 - t2;
 #endif
-        cdotc_(&q__1, n, resid, &i_one, workd, &i_one);
+        cblas_cdotc_sub(*n, resid, 1, workd, 1, &q__1);
         cnorm.r = q__1.r, cnorm.i = q__1.i;
         r__1 = cnorm.r;
         r__2 = cnorm.i;
@@ -356,7 +356,7 @@ L40:
 
     if (*bmat == 'G')
     {
-        cdotc_(&q__1, n, resid, &i_one, workd, &i_one);
+        cblas_cdotc_sub(*n, resid, 1, workd, 1, &q__1);
         cnorm.r = q__1.r, cnorm.i = q__1.i;
         r__1 = cnorm.r;
         r__2 = cnorm.i;

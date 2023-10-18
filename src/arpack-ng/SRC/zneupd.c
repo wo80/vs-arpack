@@ -721,8 +721,7 @@ int zneupd_(logical *rvec, const char *howmny, logical *select, a_dcomplex *d, a
                 /* inner product can be set to j.           */
                 /* ---------------------------------------- */
 
-                i__2 = j + 1;
-                zdotc_(&z__1, &i__2, &workl[ihbds], &i_one, &workl[invsub + j * ldq], &i_one);
+                cblas_cdotc_sub(j + 1, &workl[ihbds], 1, &workl[invsub + j * ldq], 1, &z__1);
                 workev[j].r = z__1.r, workev[j].i = z__1.i;
             }
 

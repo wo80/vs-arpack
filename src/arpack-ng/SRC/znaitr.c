@@ -560,7 +560,7 @@ L60:
 
     if (*bmat == 'G')
     {
-        zdotc_(&z__1, n, resid, &i_one, &workd[ipj], &i_one);
+        cblas_cdotc_sub(*n, resid, 1, &workd[ipj], 1, &z__1);
         cnorm.r = z__1.r, cnorm.i = z__1.i;
         wnorm = sqrt(dlapy2_(&cnorm.r, &cnorm.i));
     }
@@ -647,7 +647,7 @@ L70:
 
     if (*bmat == 'G')
     {
-        zdotc_(&z__1, n, resid, &i_one, &workd[ipj], &i_one);
+        cblas_cdotc_sub(*n, resid, 1, &workd[ipj], 1, &z__1);
         cnorm.r = z__1.r, cnorm.i = z__1.i;
         *rnorm = sqrt(dlapy2_(&cnorm.r, &cnorm.i));
     }
@@ -759,7 +759,7 @@ L90:
         arscnd_(&t3);
         timing_1.tmvbx += t3 - t2;
 #endif
-        zdotc_(&z__1, n, resid, &i_one, &workd[ipj], &i_one);
+        cblas_cdotc_sub(*n, resid, 1, &workd[ipj], 1, &z__1);
         cnorm.r = z__1.r, cnorm.i = z__1.i;
         rnorm1 = sqrt(dlapy2_(&cnorm.r, &cnorm.i));
     }

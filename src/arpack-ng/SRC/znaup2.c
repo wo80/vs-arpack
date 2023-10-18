@@ -779,7 +779,7 @@ L100:
         arscnd_(&t3);
         timing_1.tmvbx += t3 - t2;
 #endif
-        zdotc_(&cmpnorm, n, resid, &i_one, workd, &i_one);
+        cblas_cdotc_sub(*n, resid, 1, workd, 1, &cmpnorm);
         rnorm = sqrt(dlapy2_(&cmpnorm.r, &cmpnorm.i));
     }
     else if (*bmat == 'I')
