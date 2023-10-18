@@ -143,13 +143,17 @@ add_subdirectory(src)
 
 # Install
 
+set(installTargets arpack)
+
 if(BUILD_SHARED_LIBS)
-  install(TARGETS arpack arpack-ds
-    EXPORT arpackngTargets
-    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+  set(installTargets ${installTargets} arpack-ds)
 endif()
+
+install(TARGETS ${installTargets}
+  EXPORT arpackngTargets
+  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 install(FILES
   src/arpack-ng/arpack.h

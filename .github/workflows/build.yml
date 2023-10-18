@@ -37,6 +37,9 @@ jobs:
   windows:
     name: windows (build and test)
     runs-on: windows-latest
+    defaults:
+      run:
+        shell: cmd
 
     steps:
       - uses: ilammy/msvc-dev-cmd@v1
@@ -46,11 +49,15 @@ jobs:
 
       - name: Download arpackpp
         run: |
-          curl -o arpackpp-2.4.0.tar.gz https://github.com/m-reuter/arpackpp/archive/refs/tags/2.4.0.tar.gz
-          tar -xvf arpackpp-2.4.0.tar.gz -C src
-          mvdir src\arpackpp-2.4.0 arpackpp
-          mkdir src\arpackpp\external
-        shell: cmd
+          cd src
+          mkdir arpackpp
+          curl -L -o arpackpp-2.4.0.tar.gz https://github.com/m-reuter/arpackpp/archive/refs/tags/2.4.0.tar.gz
+          tar -xvf arpackpp-2.4.0.tar.gz
+          xcopy /s arpackpp-2.4.0 arpackpp
+          DIR
+          cd arpackpp
+          mkdir external
+          DIR
 
       - name: Download OpenBLAS
         run: |
@@ -59,7 +66,6 @@ jobs:
           tar -xvf OpenBLAS-0.3.24-x64.zip
           del lib\libopenblas*.a lib\libopenblas.lib
           lib /def:lib\libopenblas.def /machine:x64 /out:lib\libopenblas.lib
-        shell: cmd
 
       - name: Install SuperLU
         run: |
@@ -71,24 +77,29 @@ jobs:
           cmake -B build -D enable_examples=OFF -D enable_tests=OFF -D BUILD_SHARED_LIBS=OFF -D CMAKE_INSTALL_PREFIX=%INSTALL_PREFIX% -D BLAS_LIBRARIES=%INSTALL_PREFIX%\lib\libopenblas.lib
           cmake --build build --config Release
           cmake --install build
-        shell: cmd
 
-      - name: Build and test ARPACK
+      - name: Build ARPACK
         run: |
-          set PATH=%PATH%;%CD%\src\arpackpp\external\bin
           set INSTALL_PREFIX=%CD%\src\arpackpp\external
           cmake -B build -D BUILD_SHARED_LIBS=OFF -D CMAKE_INSTALL_PREFIX=%INSTALL_PREFIX% -D BLAS_LIBRARIES=%INSTALL_PREFIX%\lib\libopenblas.lib -D LAPACK_LIBRARIES=%INSTALL_PREFIX%\lib\libopenblas.lib
           cmake --build build --config Release
+
+      - name: Test ARPACK
+        run: |
+          set PATH=%PATH%;%CD%\src\arpackpp\external\bin
+          set INSTALL_PREFIX=%CD%\src\arpackpp\external
           ctest --test-dir build --output-on-failure -C Release
           cmake --install build --prefix %INSTALL_PREFIX% --config Release
-        shell: cmd
 
-      - name: Build and test arpackpp
+      - name: Build arpackpp
         run: |
           cd src\arpackpp
-          set PATH=%PATH%;%CD%\external\bin
           set INSTALL_PREFIX=%CD%\external
           cmake -B build -D ENABLE_SUPERLU=ON -D CMAKE_BUILD_TYPE=Release -D BLAS_LIBRARIES=%INSTALL_PREFIX%\lib\libopenblas.lib -D LAPACK_LIBRARIES=%INSTALL_PREFIX%\lib\libopenblas.lib
           cmake --build build --config Release
+
+      - name: Test arpackpp
+        run: |
+          cd src\arpackpp
+          set PATH=%PATH%;%CD%\external\bin
           ctest --test-dir build --output-on-failure -C Release
-        shell: cmd
